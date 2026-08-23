@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audience Insight Generator | Evolution Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c0a09;--card:#1c1917;--border:#292524;--accent:#f97316;--accent2:#eab308;--text:#fafaf9;--muted:#78716c}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;padding:20px}
+.container{max-width:920px;margin:0 auto}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.eyebrow::before{content:'';width:20px;height:2px;background:var(--accent)}
+h1{font-size:clamp(26px,4.5vw,38px);font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:32px}
+.config{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+@media(max-width:640px){.config{grid-template-columns:1fr}}
+.config label{display:block;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.config select,.config input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;font-family:inherit;font-size:14px;outline:none}
+.config select:focus,.config input:focus{border-color:var(--accent)}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0c0a09;border:none;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.9}
+.output{display:none;margin-top:32px;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:640px){.insight-grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card h3{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h3 span{font-size:16px}
+.demo-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.demo-row:last-child{border:none}
+.demo-row .val{font-weight:700;color:var(--accent)}
+.donut{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.donut-item{display:flex;align-items:center;gap:6px;font-size:13px}
+.donut-dot{width:10px;height:10px;border-radius:3px}
+.hbar{margin-bottom:10px}
+.hbar-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.hbar-label span:last-child{font-weight:700;color:var(--accent)}
+.hbar-track{height:6px;background:var(--border);border-radius:100px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
+.persona{background:linear-gradient(135deg,rgba(249,115,22,.06),rgba(234,179,8,.06));border:1px solid rgba(249,115,22,.15);border-radius:12px;padding:24px;margin-top:8px}
+.persona h3{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--accent)}
+.persona p{font-size:13px;line-height:1.7;color:var(--muted)}
+.persona .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.persona .tag{padding:4px 10px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);border-radius:100px;font-size:11px;font-weight:600;color:var(--accent)}
+.full-width{grid-column:1/-1}
+.powered{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="eyebrow">Intelligence Module</div>
+  <h1>Audience Insight Generator</h1>
+  <p class="sub">Select a tort vertical and target market to generate a complete audience intelligence profile for campaign planning.</p>
+
+  <div class="config">
+    <div><label>Tort Vertical</label><select id="tort"><option>Depo-Provera</option><option>Ozempic / NAION</option><option>Talcum Powder</option><option>Hair Relaxer</option><option>Institutional Abuse</option><option>MVA</option></select></div>
+    <div><label>Target State</label><select id="state"><option>California</option><option>Texas</option><option>Florida</option><option>New York</option><option>All States</option></select></div>
+    <div><label>Budget Range</label><select id="budget"><option>$5K-$10K/mo</option><option>$10K-$25K/mo</option><option>$25K-$50K/mo</option><option>$50K+/mo</option></select></div>
+  </div>
+  <button class="btn" onclick="generate()">Generate Audience Profile →</button>
+
+  <div class="output" id="output">
+    <div class="insight-grid" id="grid"></div>
+  </div>
+  <div class="powered">Powered by Evolution Engine</div>
+</div>
+
+<script>
+const data={
+  'Depo-Provera':{demo:{age:'28-55',gender:'94% Female',income:'$30K-$65K',edu:'HS Diploma - Some College',device:'72% Mobile'},platforms:{Facebook:85,Instagram:62,TikTok:48,Google:78,YouTube:55},interests:['Women\'s Health','Reproductive Rights','Cancer Awareness','Medical Malpractice','Personal Injury'],persona:{name:'Sarah M.',age:42,desc:'Mother of two who used Depo-Provera for birth control for 5+ years. Recently diagnosed with a reproductive health issue. Active on Facebook, researches health topics on Google, watches health-related YouTube content. Responds to empathetic, informational ads rather than aggressive legal messaging.',tags:['Facebook Mobile','Health Forums','Mommy Blogs','WebMD','Support Groups']},geo:{top:['Texas','California','Florida','Georgia','Ohio'],density:'Suburban/Urban'},timing:{best:'Tue-Thu, 8-10am & 7-9pm',worst:'Saturday mornings',cycle:'Awareness peaks after news coverage'}},
+  'Ozempic / NAION':{demo:{age:'35-65',gender:'58% Female',income:'$45K-$90K',edu:'Some College - Bachelor\'s',device:'65% Mobile'},platforms:{Facebook:72,Instagram:55,TikTok:35,Google:88,YouTube:60},interests:['Weight Loss','Diabetes Management','Vision Health','Pharmaceutical News','Health & Wellness'],persona:{name:'David K.',age:55,desc:'Type 2 diabetic prescribed Ozempic for blood sugar management. Experienced sudden vision changes. Researches heavily on Google before taking action. Prefers detailed, educational content over emotional appeals.',tags:['Google Search','Health News','Diabetes Forums','Medical Journals','YouTube Health']},geo:{top:['Florida','Texas','California','New York','Pennsylvania'],density:'Suburban'},timing:{best:'Mon-Wed, 9am-12pm & 6-8pm',worst:'Weekends',cycle:'Spikes with FDA announcements'}},
+  'Talcum Powder':{demo:{age:'40-70',gender:'88% Female',income:'$35K-$75K',edu:'HS Diploma - Bachelor\'s',device:'60% Mobile'},platforms:{Facebook:90,Instagram:40,TikTok:15,Google:82,YouTube:45},interests:['Cancer Support','Women\'s Health','Consumer Safety','Class Action','Personal Care'],persona:{name:'Linda W.',age:58,desc:'Used Johnson & Johnson baby powder daily for 20+ years. Diagnosed with ovarian cancer. Heavy Facebook user, trusts peer recommendations and news articles. Needs reassurance about the legal process.',tags:['Facebook Groups','Cancer Support','News Sites','Consumer Reports','Church Networks']},geo:{top:['California','New York','New Jersey','Illinois','Texas'],density:'Urban/Suburban'},timing:{best:'Mon-Fri, 10am-2pm',worst:'Late nights',cycle:'Steady with court verdict spikes'}},
+  'Hair Relaxer':{demo:{age:'25-55',gender:'96% Female',income:'$30K-$70K',edu:'HS Diploma - Bachelor\'s',device:'78% Mobile'},platforms:{Facebook:75,Instagram:80,TikTok:70,Google:65,YouTube:72},interests:['Natural Hair','Beauty Products','Health Awareness','Civil Rights','Women of Color Health'],persona:{name:'Keisha T.',age:38,desc:'Used chemical hair relaxers since teenage years. Recently learned about cancer links through social media. Active on Instagram and TikTok. Responds to community-driven content and influencer testimonials.',tags:['Instagram Reels','TikTok','Natural Hair Community','Black Health Matters','Beauty Influencers']},geo:{top:['Georgia','Texas','New York','Florida','Maryland'],density:'Urban'},timing:{best:'Daily, 12-2pm & 8-11pm',worst:'Early mornings',cycle:'Social media driven spikes'}},
+  'Institutional Abuse':{demo:{age:'25-65',gender:'55% Male',income:'$25K-$55K',edu:'Varies widely',device:'68% Mobile'},platforms:{Facebook:65,Instagram:30,TikTok:20,Google:90,YouTube:50},interests:['Survivor Advocacy','Mental Health','Justice Reform','Religious Organizations','Legal Rights'],persona:{name:'James R.',age:47,desc:'Survivor of childhood institutional abuse. Searches privately on Google. Needs extreme sensitivity and confidentiality assurances. Long decision cycle — may research for months before contacting an attorney.',tags:['Google Private','Reddit','Support Forums','News Coverage','Anonymous Helplines']},geo:{top:['New York','California','Pennsylvania','Illinois','Massachusetts'],density:'All areas'},timing:{best:'Late evenings, 9pm-12am',worst:'Work hours',cycle:'Triggered by news investigations'}},
+  'MVA':{demo:{age:'18-55',gender:'52% Male',income:'$30K-$70K',edu:'HS Diploma - Bachelor\'s',device:'82% Mobile'},platforms:{Facebook:60,Instagram:55,TikTok:45,Google:92,YouTube:50},interests:['Auto Insurance','Personal Injury','Local Services','Commuting','Vehicle Safety'],persona:{name:'Marcus J.',age:32,desc:'Recent car accident victim dealing with injuries and insurance disputes. Searching immediately on Google from his phone. Needs fast response, local attorney, and clear next steps. Short decision window.',tags:['Google Maps','Local Search','Yelp','Insurance Forums','Reddit Legal']},geo:{top:['California','Texas','Florida','New York','Georgia'],density:'Urban/Highway corridors'},timing:{best:'Immediately post-accident',worst:'N/A - event driven',cycle:'Constant, weather-dependent spikes'}}
+};
+
+function generate(){
+  const tort=document.getElementById('tort').value;
+  const d=data[tort];
+  const o=document.getElementById('output');
+  o.style.display='block';o.style.animation='none';o.offsetHeight;o.style.animation='fadeIn .5s ease';
+
+  const colors=['#f97316','#eab308','#22c55e','#3b82f6','#a855f7','#ec4899'];
+  document.getElementById('grid').innerHTML=`
+    <div class="card"><h3><span>👤</span> Demographics</h3>
+      ${Object.entries(d.demo).map(([k,v])=>`<div class="demo-row"><span>${k.charAt(0).toUpperCase()+k.slice(1)}</span><span class="val">${v}</span></div>`).join('')}
+    </div>
+    <div class="card"><h3><span>📱</span> Platform Affinity</h3>
+      ${Object.entries(d.platforms).map(([k,v])=>`<div class="hbar"><div class="hbar-label"><span>${k}</span><span>${v}%</span></div><div class="hbar-track"><div class="hbar-fill" style="width:${v}%"></div></div></div>`).join('')}
+    </div>
+    <div class="card"><h3><span>🎯</span> Interest Targeting</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${d.interests.map((i,idx)=>`<span style="padding:5px 12px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.15);border-radius:100px;font-size:12px;font-weight:600;color:var(--accent)">${i}</span>`).join('')}</div>
+      <div style="margin-top:16px">
+        <div class="demo-row"><span>Top Geo Markets</span><span class="val">${d.geo.top.slice(0,3).join(', ')}</span></div>
+        <div class="demo-row"><span>Density</span><span class="val">${d.geo.density}</span></div>
+      </div>
+    </div>
+    <div class="card"><h3><span>⏰</span> Timing Intelligence</h3>
+      <div class="demo-row"><span>Best Windows</span><span class="val">${d.timing.best}</span></div>
+      <div class="demo-row"><span>Avoid</span><span class="val">${d.timing.worst}</span></div>
+      <div class="demo-row"><span>Volume Pattern</span><span class="val">${d.timing.cycle}</span></div>
+    </div>
+    <div class="card full-width">
+      <div class="persona">
+        <h3>🧠 Primary Persona: ${d.persona.name} (Age ${d.persona.age})</h3>
+        <p>${d.persona.desc}</p>
+        <div class="tags">${d.persona.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
