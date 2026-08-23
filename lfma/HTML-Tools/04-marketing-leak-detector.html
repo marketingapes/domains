@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Leak Detector | Evolution Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#09090b;--card:#18181b;--border:#27272a;--red:#ef4444;--amber:#f59e0b;--green:#22c55e;--blue:#3b82f6;--text:#fafafa;--muted:#71717a}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;padding:20px}
+.container{max-width:920px;margin:0 auto}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.header-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--red),var(--amber));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+h1{font-size:clamp(24px,4vw,32px);font-weight:700;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:32px}
+.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+@media(max-width:640px){.audit-grid{grid-template-columns:1fr}}
+.audit-field label{display:block;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.audit-field input,.audit-field select{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;font-family:inherit;font-size:14px;outline:none}
+.audit-field input:focus,.audit-field select:focus{border-color:var(--blue)}
+.checks{margin-bottom:24px}
+.checks h3{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.check-item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:10px 12px;border-radius:8px;font-size:13px;cursor:pointer;transition:border-color .15s}
+.check-item:hover{border-color:var(--blue)}
+.check-item input[type=checkbox]{accent-color:var(--blue)}
+.btn{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s;margin-bottom:8px}
+.btn:hover{opacity:.9}
+.results{display:none;margin-top:32px;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.score-header{display:flex;align-items:center;gap:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.leak-score{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:600;line-height:1}
+.leak-score.critical{color:var(--red)}
+.leak-score.warning{color:var(--amber)}
+.leak-score.good{color:var(--green)}
+.leak-meta{flex:1}
+.leak-meta h2{font-size:20px;margin-bottom:4px}
+.leak-meta p{color:var(--muted);font-size:13px}
+.leak-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.leak-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;align-items:flex-start;gap:12px}
+.leak-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700}
+.leak-icon.red{background:rgba(239,68,68,.15);color:var(--red)}
+.leak-icon.amber{background:rgba(245,158,11,.15);color:var(--amber)}
+.leak-icon.green{background:rgba(34,197,94,.15);color:var(--green)}
+.leak-title{font-weight:600;font-size:14px;margin-bottom:2px}
+.leak-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.money-lost{text-align:center;background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(245,158,11,.08));border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:24px;margin-top:16px}
+.money-lost .label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.money-lost .amount{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:var(--red)}
+.money-lost .note{font-size:12px;color:var(--muted);margin-top:8px}
+.powered{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header"><div class="header-icon">🔍</div><h1>Marketing Leak Detector</h1></div>
+  <p class="sub">Find out exactly where your law firm's marketing dollars are disappearing — and how much it's costing you.</p>
+
+  <div class="audit-grid">
+    <div class="audit-field"><label>Monthly Ad Spend</label><input type="number" id="spend" value="15000"></div>
+    <div class="audit-field"><label>Monthly Leads</label><input type="number" id="leads" value="120"></div>
+    <div class="audit-field"><label>Signed Cases/Month</label><input type="number" id="signed" value="8"></div>
+    <div class="audit-field"><label>Avg Case Value</label><input type="number" id="caseVal" value="60000"></div>
+  </div>
+
+  <div class="checks">
+    <h3>Check all that apply</h3>
+    <div class="check-grid">
+      <label class="check-item"><input type="checkbox" id="c1"> No call tracking</label>
+      <label class="check-item"><input type="checkbox" id="c2" checked> No offline conversions</label>
+      <label class="check-item"><input type="checkbox" id="c3" checked> No lead scoring</label>
+      <label class="check-item"><input type="checkbox" id="c4"> Leads go to generic inbox</label>
+      <label class="check-item"><input type="checkbox" id="c5" checked> No automated follow-up</label>
+      <label class="check-item"><input type="checkbox" id="c6"> Response time >15 min</label>
+      <label class="check-item"><input type="checkbox" id="c7"> No landing pages (using homepage)</label>
+      <label class="check-item"><input type="checkbox" id="c8" checked> No A/B testing</label>
+      <label class="check-item"><input type="checkbox" id="c9"> Campaigns not geo-targeted</label>
+      <label class="check-item"><input type="checkbox" id="c10"> No retargeting</label>
+    </div>
+  </div>
+
+  <button class="btn" onclick="detect()">🔍 Run Leak Detection</button>
+
+  <div class="results" id="results">
+    <div class="score-header">
+      <div class="leak-score" id="leakScore">—</div>
+      <div class="leak-meta">
+        <h2 id="leakTitle">—</h2>
+        <p id="leakSub">—</p>
+      </div>
+    </div>
+    <div class="leak-list" id="leakList"></div>
+    <div class="money-lost">
+      <div class="label">Estimated Annual Revenue Leaked</div>
+      <div class="amount" id="lostAmount">—</div>
+      <div class="note">Based on industry benchmarks for legal marketing optimization</div>
+    </div>
+  </div>
+  <div class="powered">Powered by Evolution Engine — Marketing Apes LLC</div>
+</div>
+
+<script>
+const leakDB=[
+  {id:'c1',title:'No Call Tracking',desc:'You can\'t attribute phone leads to campaigns. ~40% of legal leads come by phone — you\'re flying blind on nearly half your spend.',impact:12,sev:'red'},
+  {id:'c2',title:'No Offline Conversion Feedback',desc:'Your ad platforms never learn which leads became signed cases. Without this signal, algorithms optimize for form fills, not revenue.',impact:18,sev:'red'},
+  {id:'c3',title:'No Lead Scoring System',desc:'Every lead gets equal attention. Your team wastes time on unqualified leads while hot prospects go cold.',impact:10,sev:'amber'},
+  {id:'c4',title:'Leads to Generic Inbox',desc:'Leads compete with spam and admin emails. Average response time jumps to 2+ hours. After 5 minutes, contact rates drop 80%.',impact:15,sev:'red'},
+  {id:'c5',title:'No Automated Follow-up',desc:'80% of leads need 5+ touches to convert. Without automation, your team manually chases — or worse, never follows up at all.',impact:14,sev:'red'},
+  {id:'c6',title:'Slow Response Time (>15 min)',desc:'Speed-to-lead is the #1 predictor of conversion. Responding in 5 min vs 30 min = 21x higher contact rate.',impact:20,sev:'red'},
+  {id:'c7',title:'No Dedicated Landing Pages',desc:'Sending ad traffic to your homepage is like throwing darts blindfolded. Dedicated pages convert 2-5x higher.',impact:16,sev:'red'},
+  {id:'c8',title:'No A/B Testing',desc:'Running one version of ads and pages means you\'re leaving easy wins on the table. Even small tests yield 15-30% improvements.',impact:8,sev:'amber'},
+  {id:'c9',title:'Campaigns Not Geo-Targeted',desc:'Broad targeting wastes spend on people outside your service area or in states with unfavorable SOL.',impact:10,sev:'amber'},
+  {id:'c10',title:'No Retargeting Active',desc:'97% of visitors don\'t convert on first visit. Without retargeting, you\'re paying to acquire attention and then abandoning it.',impact:12,sev:'amber'}
+];
+
+function detect(){
+  const spend=+document.getElementById('spend').value;
+  const leads=+document.getElementById('leads').value;
+  const signed=+document.getElementById('signed').value;
+  const caseVal=+document.getElementById('caseVal').value;
+  const checked=leakDB.filter(l=>document.getElementById(l.id).checked);
+  const totalImpact=checked.reduce((a,l)=>a+l.impact,0);
+  const leakPct=Math.min(85,totalImpact);
+  const annualSpend=spend*12;
+  const lostRev=Math.round(annualSpend*(leakPct/100)*2.5);
+
+  const r=document.getElementById('results');
+  r.style.display='block';r.style.animation='none';r.offsetHeight;r.style.animation='fadeIn .4s ease';
+
+  const scoreEl=document.getElementById('leakScore');
+  scoreEl.textContent=leakPct+'%';
+  scoreEl.className='leak-score '+(leakPct>=50?'critical':leakPct>=25?'warning':'good');
+
+  document.getElementById('leakTitle').textContent=leakPct>=50?'Critical Leaks Detected':leakPct>=25?'Significant Leaks Found':'Minor Optimization Needed';
+  document.getElementById('leakSub').textContent=`${checked.length} of ${leakDB.length} common leak points identified in your marketing stack`;
+
+  document.getElementById('leakList').innerHTML=checked.map(l=>`
+    <div class="leak-item">
+      <div class="leak-icon ${l.sev}">!</div>
+      <div><div class="leak-title">${l.title}</div><div class="leak-desc">${l.desc}</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('lostAmount').textContent='$'+lostRev.toLocaleString();
+}
+</script>
+</body>
+</html>
