@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /index_3.html
+Disallow: /index_live.html
+
+Sitemap: https://doihaveaclaim.ai/sitemap.xml
