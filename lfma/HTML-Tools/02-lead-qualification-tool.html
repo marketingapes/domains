@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Qualification Analyzer | Evolution Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fafaf8;--card:#fff;--border:#e8e5df;--accent:#1a5c3a;--accent-light:#e8f5ee;--red:#c0392b;--amber:#d4890a;--text:#1a1a18;--muted:#78756e}
+body{background:var(--bg);color:var(--text);font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.container{max-width:860px;margin:0 auto;padding:40px 20px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,42px);margin-bottom:8px}
+.sub{color:var(--muted);font-size:15px;margin-bottom:40px;border-bottom:1px solid var(--border);padding-bottom:24px}
+.lead-form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.lead-form{grid-template-columns:1fr}}
+.lead-form .full{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid var(--border);background:var(--card);padding:12px 14px;border-radius:8px;font-family:inherit;font-size:15px;color:var(--text);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;height:80px}
+.btn{margin-top:24px;padding:14px 32px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s}
+.btn:hover{background:#14472d}
+.result-panel{display:none;margin-top:40px;animation:slideUp .4s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.score-ring{width:140px;height:140px;margin:0 auto 24px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring circle{fill:none;stroke-width:10}
+.score-ring .track{stroke:var(--border)}
+.score-ring .fill{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s ease}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:36px;font-weight:700}
+.score-label{text-align:center;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:32px}
+.score-label.high{color:var(--accent)}.score-label.med{color:var(--amber)}.score-label.low{color:var(--red)}
+.factors{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px}
+.factor{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);font-size:14px}
+.factor:last-child{border:none}
+.factor-name{font-weight:600}
+.tag{padding:3px 10px;border-radius:100px;font-size:12px;font-weight:700}
+.tag.pass{background:var(--accent-light);color:var(--accent)}
+.tag.warn{background:#fef3cd;color:var(--amber)}
+.tag.fail{background:#fde8e8;color:var(--red)}
+.recommendation{background:var(--accent-light);border-left:3px solid var(--accent);padding:16px 20px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.6}
+.recommendation strong{display:block;margin-bottom:4px;font-size:13px;letter-spacing:.5px;text-transform:uppercase}
+.powered{text-align:center;margin-top:48px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.powered span{color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="eyebrow">AI-Powered Analysis</div>
+  <h1>Lead Qualification Analyzer</h1>
+  <p class="sub">Paste lead data below and instantly score qualification strength, flag risks, and get a routing recommendation.</p>
+
+  <div class="lead-form">
+    <div class="field"><label>First Name</label><input id="fname" value="Maria"></div>
+    <div class="field"><label>Last Name</label><input id="lname" value="Rodriguez"></div>
+    <div class="field"><label>Tort / Vertical</label>
+      <select id="tort">
+        <option>Depo-Provera</option><option>Ozempic</option><option>Talcum Powder</option><option>Hair Relaxer</option><option>Dupixent</option><option>Institutional Abuse</option><option>MVA</option><option>Workers Comp</option>
+      </select>
+    </div>
+    <div class="field"><label>State</label>
+      <select id="state"><option>California</option><option>Texas</option><option>Florida</option><option>New York</option><option>Illinois</option><option>Pennsylvania</option><option>Ohio</option><option>Georgia</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>Phone Number</label><input id="phone" value="(619) 555-0142"></div>
+    <div class="field"><label>Email</label><input id="email" value="maria.r@email.com"></div>
+    <div class="field full"><label>Injury / Diagnosis Details</label><textarea id="details">Diagnosed with uterine cancer in 2021. Used Depo-Provera injections for 4+ years between 2015-2020.</textarea></div>
+    <div class="field"><label>Statute of Limitations Check</label>
+      <select id="sol"><option value="ok">Within SOL</option><option value="close">SOL Expiring Soon</option><option value="expired">Possibly Expired</option></select>
+    </div>
+    <div class="field"><label>Prior Representation</label>
+      <select id="rep"><option value="none">No Prior Attorney</option><option value="prev">Previously Represented</option><option value="current">Currently Represented</option></select>
+    </div>
+  </div>
+
+  <button class="btn" onclick="analyze()">Analyze Lead Quality →</button>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-ring">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle class="track" cx="70" cy="70" r="60"/>
+        <circle class="fill" id="ringFill" cx="70" cy="70" r="60" stroke-dasharray="377" stroke-dashoffset="377"/>
+      </svg>
+      <div class="score-num" id="scoreNum">—</div>
+    </div>
+    <div class="score-label" id="scoreLabel">—</div>
+
+    <div class="factors" id="factors"></div>
+    <div class="recommendation" id="rec"></div>
+  </div>
+
+  <div class="powered">Powered by <span>Evolution Engine</span></div>
+</div>
+
+<script>
+function analyze(){
+  const details=document.getElementById('details').value.toLowerCase();
+  const sol=document.getElementById('sol').value;
+  const rep=document.getElementById('rep').value;
+  const phone=document.getElementById('phone').value;
+  const email=document.getElementById('email').value;
+  const tort=document.getElementById('tort').value;
+  let score=0;const factors=[];
+
+  // Diagnosis detail scoring
+  const medTerms=['cancer','tumor','diagnosed','surgery','treatment','injection','prescribed','doctor','hospital','injury','fracture','pain'];
+  const found=medTerms.filter(t=>details.includes(t));
+  if(found.length>=3){score+=30;factors.push({n:'Medical Detail Depth',s:'pass',t:'Strong'});}
+  else if(found.length>=1){score+=18;factors.push({n:'Medical Detail Depth',s:'warn',t:'Moderate'});}
+  else{score+=5;factors.push({n:'Medical Detail Depth',s:'fail',t:'Weak'});}
+
+  // Duration / timeline
+  if(details.match(/\d+\+?\s*(year|yr)/)||details.match(/20\d{2}/)){score+=20;factors.push({n:'Timeline Specificity',s:'pass',t:'Verified'});}
+  else{score+=8;factors.push({n:'Timeline Specificity',s:'warn',t:'Unclear'});}
+
+  // SOL
+  if(sol==='ok'){score+=20;factors.push({n:'Statute of Limitations',s:'pass',t:'Clear'});}
+  else if(sol==='close'){score+=12;factors.push({n:'Statute of Limitations',s:'warn',t:'Urgent'});}
+  else{score+=2;factors.push({n:'Statute of Limitations',s:'fail',t:'Risk'});}
+
+  // Prior rep
+  if(rep==='none'){score+=15;factors.push({n:'Prior Representation',s:'pass',t:'Clean'});}
+  else if(rep==='prev'){score+=8;factors.push({n:'Prior Representation',s:'warn',t:'Review'});}
+  else{score+=2;factors.push({n:'Prior Representation',s:'fail',t:'Conflict'});}
+
+  // Contact completeness
+  if(phone.length>=10&&email.includes('@')){score+=15;factors.push({n:'Contact Completeness',s:'pass',t:'Complete'});}
+  else if(phone.length>=10||email.includes('@')){score+=8;factors.push({n:'Contact Completeness',s:'warn',t:'Partial'});}
+  else{score+=2;factors.push({n:'Contact Completeness',s:'fail',t:'Missing'});}
+
+  score=Math.min(100,score);
+
+  // Render
+  const panel=document.getElementById('resultPanel');
+  panel.style.display='block';
+  panel.style.animation='none';panel.offsetHeight;panel.style.animation='slideUp .4s ease';
+
+  document.getElementById('scoreNum').textContent=score;
+  const circ=377-(score/100)*377;
+  const ring=document.getElementById('ringFill');
+  ring.style.stroke=score>=70?'#1a5c3a':score>=45?'#d4890a':'#c0392b';
+  setTimeout(()=>ring.style.strokeDashoffset=circ,100);
+
+  const lbl=document.getElementById('scoreLabel');
+  lbl.textContent=score>=70?'HIGH PRIORITY LEAD':score>=45?'NEEDS FOLLOW-UP':'LOW QUALIFICATION';
+  lbl.className='score-label '+(score>=70?'high':score>=45?'med':'low');
+
+  const fEl=document.getElementById('factors');
+  fEl.innerHTML=factors.map(f=>`<div class="factor"><span class="factor-name">${f.n}</span><span class="tag ${f.s}">${f.t}</span></div>`).join('');
+
+  const rec=document.getElementById('rec');
+  if(score>=70) rec.innerHTML='<strong>Recommendation: Immediate Intake</strong>Route to Sofia (AI Voice Agent) for live qualification call. This lead shows strong case indicators and should be contacted within 15 minutes for maximum conversion.';
+  else if(score>=45) rec.innerHTML='<strong>Recommendation: Nurture Sequence</strong>Add to SMS/email drip. Missing key qualifying details — trigger automated follow-up to gather diagnosis dates, treating physician, and product usage timeline.';
+  else rec.innerHTML='<strong>Recommendation: Archive & Monitor</strong>Low qualification indicators. Add to long-tail nurture list and re-engage if tort criteria expand or new information surfaces.';
+}
+</script>
+</body>
+</html>
