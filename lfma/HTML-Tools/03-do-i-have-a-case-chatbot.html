@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do I Have a Case? | AI Case Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f172a;--chat-bg:#1e293b;--user-bg:#3b82f6;--bot-bg:#334155;--accent:#3b82f6;--accent2:#06b6d4;--text:#f1f5f9;--muted:#94a3b8;--success:#10b981;--border:#334155}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.chat-window{width:100%;max-width:480px;height:700px;display:flex;flex-direction:column;background:var(--chat-bg);border-radius:20px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.4)}
+.chat-header{padding:20px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;gap:12px}
+.chat-avatar{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.chat-title{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.chat-status{font-size:12px;opacity:.8;display:flex;align-items:center;gap:5px}
+.chat-status::before{content:'';width:7px;height:7px;background:#34d399;border-radius:50%}
+.messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.msg{max-width:82%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.55;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.msg.bot{background:var(--bot-bg);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:var(--user-bg);align-self:flex-end;border-bottom-right-radius:4px}
+.msg.typing{display:flex;gap:4px;padding:12px 20px}
+.msg.typing span{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:blink 1.4s infinite}
+.msg.typing span:nth-child(2){animation-delay:.2s}
+.msg.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+.options{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt-btn{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:var(--accent);padding:10px 14px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all .15s}
+.opt-btn:hover{background:rgba(59,130,246,.2);border-color:var(--accent)}
+.input-bar{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center}
+.input-bar input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:12px;font-family:inherit;font-size:14px;outline:none}
+.input-bar input:focus{border-color:var(--accent)}
+.send-btn{width:42px;height:42px;background:var(--accent);border:none;border-radius:10px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.send-btn:hover{background:#2563eb}
+.send-btn svg{width:18px;height:18px}
+.result-card{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(16,185,129,.25);border-radius:14px;padding:18px;margin-top:6px}
+.result-card h4{font-size:14px;font-weight:800;margin-bottom:10px;color:var(--success)}
+.result-card .stat{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.06)}
+.result-card .stat:last-child{border:none}
+.result-card .stat span:last-child{font-weight:700;color:var(--success)}
+.powered{text-align:center;padding:12px;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="chat-window">
+  <div class="chat-header">
+    <div class="chat-avatar">⚖️</div>
+    <div>
+      <div class="chat-title">Do I Have a Case?</div>
+      <div class="chat-status">AI Case Analyzer Online</div>
+    </div>
+  </div>
+  <div class="messages" id="messages"></div>
+  <div class="input-bar">
+    <input type="text" id="userInput" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="send-btn" onclick="sendMsg()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></button>
+  </div>
+  <div class="powered">Powered by <span style="color:var(--accent)">DoIHaveAClaim.ai</span></div>
+</div>
+
+<script>
+const msgs=document.getElementById('messages');
+const input=document.getElementById('userInput');
+let step=0;
+const answers={};
+const flow=[
+  {q:"Hi! I'm here to help you understand if you may have a legal claim. This takes about 2 minutes and is 100% confidential.\n\nWhat type of issue are you dealing with?",opts:["Dangerous Drug/Device","Workplace Injury","Vehicle Accident","Environmental Exposure","Other"]},
+  {q:"Got it. Which specific product or situation applies to you?",opts:null,dynamic:true},
+  {q:"When were you first diagnosed or injured?",opts:["Within the last year","1-3 years ago","3-5 years ago","More than 5 years ago"]},
+  {q:"Did a doctor confirm your diagnosis or injury?",opts:["Yes, formally diagnosed","Yes, but seeking second opinion","Not yet diagnosed","Self-diagnosed"]},
+  {q:"Have you spoken with an attorney about this before?",opts:["No, this is my first time","Yes, but didn't hire one","Yes, I had an attorney previously","I currently have an attorney"]},
+  {q:"Last question — what state do you live in?",opts:["California","Texas","Florida","New York","Other"]}
+];
+
+function addMsg(text,type,extra=''){
+  const d=document.createElement('div');
+  d.className='msg '+type;
+  d.innerHTML=text+extra;
+  msgs.appendChild(d);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addTyping(){
+  const d=document.createElement('div');
+  d.className='msg bot typing';d.id='typing';
+  d.innerHTML='<span></span><span></span><span></span>';
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+
+function makeOpts(opts){
+  return '<div class="options">'+opts.map(o=>`<button class="opt-btn" onclick="pickOpt(this,'${o.replace(/'/g,"\\'")}');">${o}</button>`).join('')+'</div>';
+}
+
+function pickOpt(btn,val){
+  const parent=btn.closest('.options');
+  parent.querySelectorAll('.opt-btn').forEach(b=>{b.disabled=true;b.style.opacity='.4';b.style.cursor='default'});
+  btn.style.opacity='1';btn.style.background='rgba(59,130,246,.3)';
+  addMsg(val,'user');
+  answers[step]=val;
+  step++;
+  setTimeout(()=>nextStep(),600);
+}
+
+function sendMsg(){
+  const v=input.value.trim();if(!v)return;
+  addMsg(v,'user');input.value='';
+  answers[step]=v;step++;
+  setTimeout(()=>nextStep(),600);
+}
+
+function nextStep(){
+  if(step<flow.length){
+    addTyping();
+    setTimeout(()=>{
+      removeTyping();
+      const f=flow[step];
+      let q=f.q;
+      if(step===1){
+        const cat=answers[0];
+        const products={
+          'Dangerous Drug/Device':['Depo-Provera','Ozempic/Wegovy','Talcum Powder','Hair Relaxer','Dupixent','Other'],
+          'Workplace Injury':['Construction Accident','Repetitive Stress','Toxic Exposure','Equipment Failure','Other'],
+          'Vehicle Accident':['Car Accident','Truck Accident','Motorcycle','Rideshare','Other'],
+          'Environmental Exposure':['Camp Lejeune','PFAS/Water Contamination','Asbestos','Lead Paint','Other'],
+          'Other':['Please describe below']
+        };
+        const opts=products[cat]||products['Other'];
+        addMsg(q,'bot',makeOpts(opts));return;
+      }
+      if(f.opts){addMsg(q,'bot',makeOpts(f.opts));}
+      else{addMsg(q,'bot');}
+    },1200);
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  addTyping();
+  setTimeout(()=>{
+    removeTyping();
+    const hasDoc=answers[3]&&answers[3].includes('formally');
+    const noAtty=answers[4]&&answers[4].includes('first');
+    const recent=answers[2]&&(answers[2].includes('last year')||answers[2].includes('1-3'));
+    let strength=40;
+    if(hasDoc)strength+=25;if(noAtty)strength+=15;if(recent)strength+=20;
+    strength=Math.min(95,strength);
+    const level=strength>=75?'Strong':strength>=50?'Moderate':'Needs Review';
+    const color=strength>=75?'#10b981':strength>=50?'#f59e0b':'#ef4444';
+
+    addMsg(`I've analyzed your information. Here's your preliminary case assessment:`,'bot',`
+      <div class="result-card">
+        <h4 style="color:${color}">Case Strength: ${level} (${strength}/100)</h4>
+        <div class="stat"><span>Category</span><span>${answers[0]||'—'}</span></div>
+        <div class="stat"><span>Product/Situation</span><span>${answers[1]||'—'}</span></div>
+        <div class="stat"><span>Timeline</span><span>${answers[2]||'—'}</span></div>
+        <div class="stat"><span>Medical Confirmation</span><span>${hasDoc?'✓ Confirmed':'Pending'}</span></div>
+        <div class="stat"><span>Representation Status</span><span>${noAtty?'✓ Available':'Review Needed'}</span></div>
+        <div class="stat"><span>Qualification Score</span><span style="color:${color};font-size:16px">${strength}/100</span></div>
+      </div>
+    `);
+    setTimeout(()=>{
+      addMsg(strength>=50
+        ?'Based on your answers, <strong>you may have a viable claim</strong>. A qualified attorney can provide a free, no-obligation review. Would you like to be connected with a legal team that specializes in this area?'
+        :'Your situation needs further review. I recommend speaking with an attorney who can evaluate the specific details of your case. Want me to connect you?',
+      'bot',makeOpts(['Yes, connect me','I have more questions','Not right now']));
+    },1500);
+  },2000);
+}
+
+// Init
+setTimeout(()=>{
+  const f=flow[0];
+  addMsg(f.q,'bot',makeOpts(f.opts));
+},800);
+</script>
+</body>
+</html>
