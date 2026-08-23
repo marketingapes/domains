@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversion Funnel Visualizer | Evolution Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#020617;--card:#0f172a;--border:#1e293b;--text:#f8fafc;--muted:#64748b;--blue:#3b82f6;--cyan:#06b6d4;--violet:#8b5cf6;--rose:#f43f5e;--amber:#f59e0b;--green:#22c55e}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;padding:20px}
+.container{max-width:880px;margin:0 auto}
+.header{text-align:center;margin-bottom:40px}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;background:rgba(6,182,212,.08);padding:6px 14px;border-radius:100px;border:1px solid rgba(6,182,212,.2)}
+h1{font-size:clamp(26px,4.5vw,38px);font-weight:800;letter-spacing:-.5px}
+.sub{color:var(--muted);font-size:14px;margin-top:8px}
+.controls{display:flex;gap:12px;justify-content:center;margin-bottom:36px;flex-wrap:wrap}
+.controls select,.controls input{background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-family:inherit;font-size:13px;outline:none}
+.controls input{width:120px}
+.btn{padding:10px 20px;background:var(--cyan);color:var(--bg);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.funnel{position:relative;max-width:600px;margin:0 auto 40px}
+.stage{position:relative;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;height:64px;transition:all .6s ease;opacity:0;transform:translateY(20px)}
+.stage.show{opacity:1;transform:translateY(0)}
+.stage-bg{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;border-radius:8px;transition:width .8s ease}
+.stage-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 24px}
+.stage-left{display:flex;align-items:center;gap:10px}
+.stage-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(255,255,255,.1)}
+.stage-name{font-weight:700;font-size:14px}
+.stage-right{text-align:right}
+.stage-count{font-size:20px;font-weight:800}
+.stage-pct{font-size:11px;color:rgba(255,255,255,.6)}
+.dropoff{text-align:center;padding:4px;font-size:11px;font-weight:600;color:var(--rose);opacity:0;transition:opacity .4s ease}
+.dropoff.show{opacity:1}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.metric .val{font-size:24px;font-weight:800;margin-bottom:2px}
+.metric .val.blue{color:var(--blue)}.metric .val.green{color:var(--green)}.metric .val.amber{color:var(--amber)}.metric .val.rose{color:var(--rose)}
+.metric .lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.insight-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.insight-box h3{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+.insight{padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.6;color:#cbd5e1}
+.insight:last-child{border:none}
+.insight strong{color:var(--text)}
+.powered{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="eyebrow">Funnel Analytics</div>
+    <h1>Conversion Funnel Visualizer</h1>
+    <p class="sub">Map your entire lead-to-signed-case pipeline and identify where cases are falling through the cracks.</p>
+  </div>
+
+  <div class="controls">
+    <select id="vertical"><option>Depo-Provera</option><option>Ozempic</option><option>Talcum</option><option>Hair Relaxer</option><option>MVA</option></select>
+    <input type="number" id="impressions" placeholder="Impressions" value="500000">
+    <input type="number" id="budget" placeholder="Budget" value="15000">
+    <button class="btn" onclick="buildFunnel()">Build Funnel</button>
+  </div>
+
+  <div id="funnelWrap"></div>
+  <div class="metrics" id="metrics"></div>
+  <div class="insight-box" id="insights" style="display:none">
+    <h3>🧠 AI Optimization Insights</h3>
+    <div id="insightList"></div>
+  </div>
+  <div class="powered">Powered by Evolution Engine</div>
+</div>
+
+<script>
+const rates={
+  'Depo-Provera':{ctr:.028,land:.55,form:.14,qual:.28,contact:.65,sign:.35},
+  'Ozempic':{ctr:.022,land:.50,form:.12,qual:.22,contact:.60,sign:.30},
+  'Talcum':{ctr:.025,land:.52,form:.13,qual:.25,contact:.62,sign:.32},
+  'Hair Relaxer':{ctr:.032,land:.58,form:.15,qual:.30,contact:.68,sign:.33},
+  'MVA':{ctr:.035,land:.60,form:.18,qual:.35,contact:.75,sign:.45}
+};
+
+const colors=['#3b82f6','#06b6d4','#8b5cf6','#f59e0b','#f43f5e','#22c55e'];
+const icons=['👁','👆','📄','✅','📞','✍️'];
+const names=['Impressions','Clicks','Page Views','Form Fills','Qualified','Contacted','Signed Cases'];
+
+function buildFunnel(){
+  const vert=document.getElementById('vertical').value;
+  const imp=+document.getElementById('impressions').value;
+  const budget=+document.getElementById('budget').value;
+  const r=rates[vert];
+
+  const clicks=Math.round(imp*r.ctr);
+  const pageViews=Math.round(clicks*r.land);
+  const forms=Math.round(pageViews*r.form);
+  const qualified=Math.round(forms*r.qual);
+  const contacted=Math.round(qualified*r.contact);
+  const signed=Math.max(1,Math.round(contacted*r.sign));
+
+  const stages=[imp,clicks,pageViews,forms,qualified,contacted,signed];
+  const stageNames=['Impressions','Clicks','Page Views','Form Fills','Qualified Leads','Contacted','Signed Cases'];
+
+  const wrap=document.getElementById('funnelWrap');
+  wrap.innerHTML='';
+
+  stages.forEach((count,i)=>{
+    const widthPct=30+70*(count/stages[0]);
+    const el=document.createElement('div');
+    el.className='stage';
+    el.innerHTML=`
+      <div class="stage-bg" style="width:${widthPct}%;background:${colors[i%colors.length]}22;border:1px solid ${colors[i%colors.length]}33"></div>
+      <div class="stage-content">
+        <div class="stage-left"><div class="stage-icon">${icons[i]||'📊'}</div><div class="stage-name">${stageNames[i]}</div></div>
+        <div class="stage-right"><div class="stage-count">${count.toLocaleString()}</div><div class="stage-pct">${i===0?'100%':((count/stages[0])*100).toFixed(2)+'%'}</div></div>
+      </div>
+    `;
+    wrap.appendChild(el);
+    setTimeout(()=>el.classList.add('show'),i*120);
+
+    if(i<stages.length-1){
+      const drop=document.createElement('div');
+      drop.className='dropoff';
+      const dropPct=(100-((stages[i+1]/count)*100)).toFixed(1);
+      drop.textContent=`↓ ${dropPct}% drop-off`;
+      wrap.appendChild(drop);
+      setTimeout(()=>drop.classList.add('show'),i*120+300);
+    }
+  });
+
+  const cpsc=Math.round(budget/signed);
+  document.getElementById('metrics').innerHTML=`
+    <div class="metric"><div class="val blue">${(r.ctr*100).toFixed(1)}%</div><div class="lbl">Click-Through Rate</div></div>
+    <div class="metric"><div class="val green">${(r.form*100).toFixed(0)}%</div><div class="lbl">Form Conv. Rate</div></div>
+    <div class="metric"><div class="val amber">$${cpsc.toLocaleString()}</div><div class="lbl">Cost Per Signed</div></div>
+    <div class="metric"><div class="val rose">${((1-(signed/stages[0]))*100).toFixed(2)}%</div><div class="lbl">Total Funnel Loss</div></div>
+  `;
+
+  const ins=document.getElementById('insights');
+  ins.style.display='block';
+  const worstDrop=Math.max(
+    1-clicks/imp,1-pageViews/clicks,1-forms/pageViews,
+    1-qualified/forms,1-contacted/qualified,1-signed/contacted
+  );
+  const worstIdx=[1-clicks/imp,1-pageViews/clicks,1-forms/pageViews,1-qualified/forms,1-contacted/qualified,1-signed/contacted].indexOf(worstDrop);
+  const dropNames=['Ad → Click','Click → Page View','Page View → Form','Form → Qualified','Qualified → Contacted','Contacted → Signed'];
+
+  document.getElementById('insightList').innerHTML=`
+    <div class="insight">🔴 <strong>Biggest leak: ${dropNames[worstIdx]}</strong> — ${(worstDrop*100).toFixed(1)}% drop-off. ${worstIdx<=1?'Ad creative or targeting needs optimization.':worstIdx<=3?'Landing page or form needs conversion rate optimization.':'Follow-up speed and process needs improvement.'}</div>
+    <div class="insight">⚡ <strong>Speed-to-lead opportunity:</strong> Activating AI voice intake at the Qualified → Contacted stage could improve contact rates from ${(r.contact*100).toFixed(0)}% to 85%+, adding ~${Math.round(qualified*.2)} more contacted leads per month.</div>
+    <div class="insight">🔁 <strong>Feedback loop value:</strong> Feeding ${signed} signed cases back as offline conversions would teach ad algorithms to find more profiles like your converters — typically reducing CPL by 25-40% within 60 days.</div>
+    <div class="insight">💰 <strong>Revenue projection:</strong> At $${cpsc.toLocaleString()} per signed case with current flow, optimizing the worst stage alone could yield ${Math.round(signed*0.3)} additional cases/month — worth $${(Math.round(signed*0.3)*60000).toLocaleString()} in case value.</div>
+  `;
+}
+buildFunnel();
+</script>
+</body>
+</html>
