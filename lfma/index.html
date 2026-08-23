@@ -840,7 +840,7 @@ function buildFV(){
       var drop=document.createElement('div');
       drop.className='fv-drop';
       var dp=(100-((st[i+1]/count)*100)).toFixed(1);
-      drop.textContent='↓ '+dp+'% drop-off';
+      drop.textContent='\u2193 '+dp+'% drop-off';
       wrap.appendChild(drop);
       setTimeout(function(d){return function(){d.classList.add('show');};}(drop),i*100+240);
     }
@@ -856,11 +856,11 @@ function buildFV(){
   var dr=[1-clicks/imp,1-pv/clicks,1-forms/pv,1-qual/forms,1-cont/qual,1-signed/cont];
   var wd=Math.max.apply(null,dr);
   var wi=dr.indexOf(wd);
-  var dn=['Ad→Click','Click→Page View','Page View→Form','Form→Qualified','Qualified→Contacted','Contacted→Signed'];
+  var dn=['Ad\u2192Click','Click\u2192Page View','Page View\u2192Form','Form\u2192Qualified','Qualified\u2192Contacted','Contacted\u2192Signed'];
   document.getElementById('fv_insightList').innerHTML=
-    '<div class="fv-ii">🔴 <strong style="color:#fff;">Biggest leak: '+dn[wi]+'</strong> — '+(wd*100).toFixed(1)+'% drop-off. '+(wi<=1?'Ad creative or targeting needs work.':wi<=3?'Landing page or form needs conversion optimization.':'Follow-up speed and intake process needs improvement.')+'</div>'
-    +'<div class="fv-ii">⚡ <strong style="color:#fff;">Speed-to-lead opportunity:</strong> AI voice intake at the Qualified→Contacted stage could lift contact rates to 85%+, adding ~'+Math.round(qual*.2)+' more contacted leads/month.</div>'
-    +'<div class="fv-ii">🔁 <strong style="color:#fff;">Feedback loop value:</strong> Feeding '+signed+' signed cases back as offline conversions typically reduces CPL 25–40% within 60 days.</div>';
+    '<div class="fv-ii">\uD83D\uDD34 <strong style="color:#fff;">Biggest leak: '+dn[wi]+'</strong> \u2014 '+(wd*100).toFixed(1)+'% drop-off. '+(wi<=1?'Ad creative or targeting needs work.':wi<=3?'Landing page or form needs conversion optimization.':'Follow-up speed and intake process needs improvement.')+'</div>'
+    +'<div class="fv-ii">\u26A1 <strong style="color:#fff;">Speed-to-lead opportunity:</strong> AI voice intake at the Qualified\u2192Contacted stage could lift contact rates to 85%+, adding ~'+Math.round(qual*.2)+' more contacted leads/month.</div>'
+    +'<div class="fv-ii">\uD83D\uDD01 <strong style="color:#fff;">Feedback loop value:</strong> Feeding '+signed+' signed cases back as offline conversions typically reduces CPL 25\u201340% within 60 days.</div>';
 }
 buildFV();
 
@@ -884,19 +884,19 @@ function calcCPC(){
   var r=document.getElementById('cpc_results');
   r.style.display='block';r.style.animation='none';r.offsetHeight;r.style.animation='fu .4s ease';
   document.getElementById('cpc_cpsc').textContent=fmtD(cpsc);
-  document.getElementById('cpc_ctx').textContent=roi+'% ROI per case — every $1 spent returns $'+(cv/cpsc).toFixed(0);
+  document.getElementById('cpc_ctx').textContent=roi+'% ROI per case \u2014 every $1 spent returns $'+(cv/cpsc).toFixed(0);
   document.getElementById('cpc_indAvg').textContent=fmtD(ia);
   document.getElementById('cpc_yourEst').textContent=fmtD(cpsc);
-  document.getElementById('cpc_savings').textContent=sav>0?fmtD(sav):'—';
+  document.getElementById('cpc_savings').textContent=sav>0?fmtD(sav):'\u2014';
   document.getElementById('cpc_bkSpend').textContent=fmtD(budget);
   document.getElementById('cpc_bkLeads').textContent=leads;
   document.getElementById('cpc_bkQual').textContent=qual;
   document.getElementById('cpc_bkSigned').textContent=signed;
   document.getElementById('cpc_bkCPSC').textContent=fmtD(cpsc);
   var v=document.getElementById('cpc_verdict');
-  if(cpsc<ia*.7){v.className='cpc-verd good';v.textContent='Excellent — your cost per case is '+Math.round((1-cpsc/ia)*100)+'% below industry average. High-performance campaign.';}
-  else if(cpsc<ia){v.className='cpc-verd ok';v.textContent='Good — you\'re below industry average. Closing the offline conversion loop could push this lower.';}
-  else{v.className='cpc-verd bad';v.textContent='Above average — cost per case exceeds benchmarks by '+Math.round((cpsc/ia-1)*100)+'%. Let\'s restructure targeting and intake.';}
+  if(cpsc<ia*.7){v.className='cpc-verd good';v.textContent='Excellent \u2014 your cost per case is '+Math.round((1-cpsc/ia)*100)+'% below industry average. High-performance campaign.';}
+  else if(cpsc<ia){v.className='cpc-verd ok';v.textContent='Good \u2014 you\'re below industry average. Closing the offline conversion loop could push this lower.';}
+  else{v.className='cpc-verd bad';v.textContent='Above average \u2014 cost per case exceeds benchmarks by '+Math.round((cpsc/ia-1)*100)+'%. Let\'s restructure targeting and intake.';}
 }
 
 /* ── FORM SUBMIT TO ZAPIER ── */
@@ -921,7 +921,7 @@ function submitForm(){
     err.style.display='block';
     return;
   }
-  btn.textContent='Sending…';
+  btn.textContent='Sending\u2026';
   btn.disabled=true;
   var payload={name:name,firm:firm,phone:phone,email:email,budget:budget,practice:practice,source:'Evolution Engine 2.0',page_url:window.location.href,submitted_at:new Date().toISOString()};
   fetch(WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
