@@ -1,0 +1,54 @@
+# Faces only. The engine is evolution-engine-staging-u0kf in this same
+# Render project — different repo, do not declare it here.
+# Dashboard: ONE project named Evolution Engine. Not four. Not five.
+# Env groups attach to the engine, never to these static sites.
+# Do not add custom domains here. DNS order: DIHAC, then NIL, then LFMA, BTL last
+# (Phillips funnel is not in this repo yet).
+
+previews:
+  generation: off
+
+services:
+  - type: web
+    name: btl-site
+    runtime: static
+    buildCommand: sh build.sh
+    staticPublishPath: btl
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - btl/**
+        - build.sh
+
+  - type: web
+    name: nil-site
+    runtime: static
+    buildCommand: sh build.sh
+    staticPublishPath: nil
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - nil/**
+        - build.sh
+
+  - type: web
+    name: dihac-site
+    runtime: static
+    buildCommand: sh build.sh
+    staticPublishPath: dihac
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - dihac/**
+        - build.sh
+
+  - type: web
+    name: lfma-site
+    runtime: static
+    buildCommand: sh build.sh
+    staticPublishPath: lfma
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - lfma/**
+        - build.sh
