@@ -4,7 +4,7 @@ One folder per domain. Each is a self-contained static site served by its own Re
 Engine stays singular (`evolution-engine-staging-u0kf`); these folders are HTML hosting only.
 
 **One Render project. Four faces + one engine. Not five projects.**
-Claude leftover “dag into five projects” is the old chaos. Kill it.
+Claude leftover “drag into five projects” is the old chaos. Kill it.
 
 | Folder | Domain | Render site | Live face (2026-08-23) | Source of truth (Drive) |
 |---|---|---|---|---|
