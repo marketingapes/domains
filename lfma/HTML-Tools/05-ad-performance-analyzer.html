@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ad Performance Analyzer | Evolution Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fafafa;--card:#fff;--border:#e5e5e5;--primary:#111;--accent:#2563eb;--green:#16a34a;--red:#dc2626;--amber:#d97706;--muted:#737373;--shadow:0 1px 3px rgba(0,0,0,.08)}
+body{background:var(--bg);color:var(--primary);font-family:'IBM Plex Sans',sans-serif;padding:20px}
+.container{max-width:960px;margin:0 auto}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px}
+.logo{font-size:18px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.logo span{background:var(--accent);color:#fff;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600}
+.top-actions{display:flex;gap:8px}
+.top-actions select{background:var(--card);border:1px solid var(--border);padding:8px 12px;border-radius:6px;font-family:inherit;font-size:13px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:var(--shadow)}
+.kpi-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-value{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600}
+.kpi-change{font-size:11px;font-weight:600;margin-top:4px}
+.kpi-change.up{color:var(--green)}.kpi-change.down{color:var(--red)}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:700px){.panels{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+.panel h3{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.chart-bars{display:flex;flex-direction:column;gap:10px}
+.chart-bar{display:flex;align-items:center;gap:10px}
+.chart-bar-label{width:60px;font-size:12px;color:var(--muted);flex-shrink:0}
+.chart-bar-track{flex:1;height:20px;background:#f5f5f5;border-radius:4px;overflow:hidden;position:relative}
+.chart-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:#fff}
+.chart-bar-fill.blue{background:var(--accent)}
+.chart-bar-fill.green{background:var(--green)}
+.chart-bar-fill.amber{background:var(--amber)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+td{padding:10px;border-bottom:1px solid var(--border)}
+td:first-child{font-weight:600}
+.badge-s{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700}
+.badge-s.good{background:#dcfce7;color:var(--green)}
+.badge-s.warn{background:#fef3c7;color:var(--amber)}
+.badge-s.bad{background:#fee2e2;color:var(--red)}
+.btn-row{display:flex;gap:10px;margin-top:20px}
+.btn{padding:12px 24px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.secondary{background:var(--card);border:1px solid var(--border);color:var(--primary)}
+.btn:hover{opacity:.85}
+.powered{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar">
+    <div class="logo">Ad Performance <span>ANALYZER</span></div>
+    <div class="top-actions">
+      <select id="period" onchange="refresh()"><option>Last 30 Days</option><option>Last 7 Days</option><option>Last 90 Days</option></select>
+      <select id="platform" onchange="refresh()"><option>All Platforms</option><option>Google Ads</option><option>Meta</option><option>TikTok</option></select>
+    </div>
+  </div>
+
+  <div class="kpi-row" id="kpis"></div>
+  <div class="panels">
+    <div class="panel"><h3>Spend by Platform</h3><div class="chart-bars" id="platformBars"></div></div>
+    <div class="panel"><h3>Lead Quality Distribution</h3><div class="chart-bars" id="qualityBars"></div></div>
+  </div>
+
+  <div class="panel" style="margin-bottom:24px">
+    <h3>Campaign Breakdown</h3>
+    <div class="table-wrap">
+      <table id="campTable"><thead><tr><th>Campaign</th><th>Spend</th><th>Leads</th><th>CPL</th><th>Conv Rate</th><th>Grade</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>AI Recommendations</h3>
+    <div id="recs" style="font-size:14px;line-height:1.7;color:#404040"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn primary" onclick="refresh()">↻ Refresh Analysis</button>
+    <button class="btn secondary">Export Report</button>
+  </div>
+  <div class="powered">Powered by Evolution Engine — Marketing Apes LLC</div>
+</div>
+
+<script>
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function fmt(n){return'$'+n.toLocaleString()}
+function refresh(){
+  const spend=rnd(12000,25000);const leads=rnd(80,200);const cpl=Math.round(spend/leads);
+  const signed=rnd(5,Math.round(leads*.12));const cpsc=Math.round(spend/signed);
+  const ctr=((rnd(15,45)/10)).toFixed(1);const convRate=((signed/leads)*100).toFixed(1);
+  const roas=((signed*rnd(40000,80000)/spend)).toFixed(1);
+
+  const kpis=[
+    {label:'Total Spend',value:fmt(spend),change:'+12%',dir:'up'},
+    {label:'Total Leads',value:leads,change:'+18%',dir:'up'},
+    {label:'Cost Per Lead',value:fmt(cpl),change:'-8%',dir:'up'},
+    {label:'Signed Cases',value:signed,change:'+25%',dir:'up'},
+    {label:'Cost/Signed Case',value:fmt(cpsc),change:'-15%',dir:'up'},
+    {label:'ROAS',value:roas+'x',change:'+0.8x',dir:'up'}
+  ];
+  document.getElementById('kpis').innerHTML=kpis.map(k=>`<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div><div class="kpi-change ${k.dir}">${k.dir==='up'?'↑':'↓'} ${k.change}</div></div>`).join('');
+
+  const gSpend=rnd(40,55),mSpend=rnd(30,45),tSpend=100-gSpend-mSpend;
+  document.getElementById('platformBars').innerHTML=[
+    {l:'Google',v:gSpend,c:'blue'},{l:'Meta',v:mSpend,c:'green'},{l:'TikTok',v:Math.max(5,tSpend),c:'amber'}
+  ].map(b=>`<div class="chart-bar"><span class="chart-bar-label">${b.l}</span><div class="chart-bar-track"><div class="chart-bar-fill ${b.c}" style="width:${b.v}%">${b.v}%</div></div></div>`).join('');
+
+  document.getElementById('qualityBars').innerHTML=[
+    {l:'Hot',v:rnd(15,30),c:'green'},{l:'Warm',v:rnd(25,40),c:'blue'},{l:'Cold',v:rnd(20,35),c:'amber'},{l:'Junk',v:rnd(5,15),c:'bad'}
+  ].map(b=>`<div class="chart-bar"><span class="chart-bar-label">${b.l}</span><div class="chart-bar-track"><div class="chart-bar-fill ${b.c==='bad'?'amber':b.c}" style="width:${b.v}%">${b.v}%</div></div></div>`).join('');
+
+  const campaigns=['Depo-Provera — National','Ozempic — NAION CA/TX','Talcum — Female 35-65','Hair Relaxer — Social','MVA — San Diego Geo'];
+  document.getElementById('campTable').querySelector('tbody').innerHTML=campaigns.map(c=>{
+    const cs=rnd(2000,7000),cl=rnd(10,50),ccpl=Math.round(cs/cl),cr=rnd(3,18);
+    const grade=cr>=12?'good':cr>=6?'warn':'bad';
+    const gradeText=cr>=12?'A':cr>=6?'B':'C';
+    return`<tr><td>${c}</td><td>${fmt(cs)}</td><td>${cl}</td><td>${fmt(ccpl)}</td><td>${cr}%</td><td><span class="badge-s ${grade}">${gradeText}</span></td></tr>`;
+  }).join('');
+
+  document.getElementById('recs').innerHTML=`
+    <p>📊 <strong>Reallocate budget:</strong> Your Depo-Provera campaign is producing the lowest CPL. Consider shifting 20% of Hair Relaxer spend here for immediate gains.</p>
+    <p style="margin-top:10px">⚡ <strong>Speed-to-lead alert:</strong> Your average response time is 23 minutes. Activating AI voice intake (Sofia) could cut this to under 30 seconds and increase contact rates by 4x.</p>
+    <p style="margin-top:10px">🔁 <strong>Feedback loop gap:</strong> No offline conversions are feeding back to ad platforms. Closing this loop typically reduces CPA by 25-40% within 60 days.</p>
+  `;
+}
+refresh();
+</script>
+</body>
+</html>
