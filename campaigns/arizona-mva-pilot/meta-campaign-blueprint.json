@@ -1,0 +1,55 @@
+{
+  "status": "DRAFT_DO_NOT_PUBLISH",
+  "campaign": {
+    "name": "EE | AZ MVA | NIL vs DIHAC | Pilot 01",
+    "objective": "OUTCOME_LEADS",
+    "buying_type": "AUCTION",
+    "special_ad_categories": ["NONE"],
+    "daily_budget_total_usd": 50,
+    "test_days": 3,
+    "hard_cap_usd": 150,
+    "budget_requires_human_approval": true,
+    "experiment": "META_NATIVE_AB_TEST"
+  },
+  "shared_audience": {
+    "location": ["Arizona, United States"],
+    "age_min": 25,
+    "age_max": 65,
+    "genders": ["all"],
+    "targeting": "broad",
+    "placements": "Advantage+ placements excluding Audience Network for pilot",
+    "optimization_goal": "LEAD_GENERATION"
+  },
+  "cells": [
+    {
+      "cell": "A",
+      "domain_id": "nil",
+      "product_id": "arizona_mva",
+      "campaign_id": "nil_az_mva_meta_pilot_01",
+      "brand": "Nearest Injury Lawyers",
+      "form_spec": "nil-meta-instant-form.json",
+      "primary_text": "After a vehicle accident, the next step can be confusing. Nearest Injury Lawyers helps people share basic details with Sofia, our AI intake specialist, and see whether a participating law firm may be taking claims like theirs. Free first step. No guarantee of a connection or representation.",
+      "headline": "A clearer next step after an accident",
+      "description": "Start with Sofia. Not a law firm. No legal advice.",
+      "call_to_action": "LEARN_MORE"
+    },
+    {
+      "cell": "B",
+      "domain_id": "dihac",
+      "product_id": "arizona_mva",
+      "campaign_id": "dihac_az_mva_meta_pilot_01",
+      "brand": "Do I Have a Case?",
+      "form_spec": "dihac-meta-instant-form.json",
+      "primary_text": "Vehicle-accident questions can be hard to sort through. Sofia, the Do I Have a Case? AI intake specialist, can collect a few basic details and help identify a possible next step, including whether a participating law firm may be taking claims like yours. No legal advice or outcome is promised.",
+      "headline": "Vehicle accident questions? Start here.",
+      "description": "A short intake. A clearer next step.",
+      "call_to_action": "LEARN_MORE"
+    }
+  ],
+  "guardrails": {
+    "avoid_personal_attribute_assertions": true,
+    "avoid_case_value_or_outcome_claims": true,
+    "do_not_call_service_a_law_firm": true,
+    "do_not_publish_without_legal_and_buyer_approval": true
+  }
+}
