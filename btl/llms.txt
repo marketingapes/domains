@@ -1,0 +1,36 @@
+# Best Tort Lawyers
+
+> We help regular people connect with the kind of lawyer their situation actually needs. Not a law firm. You decide when to talk. Part of the Best Tort Lawyers Network — this is the home of that network.
+
+## What this site is
+
+Best Tort Lawyers is a matching and directory layer. Someone describes a situation. We point them toward a participating firm that handles matters like that — or we say honestly when we do not have a fit. Sofia is an AI intake assistant, not an attorney.
+
+This is the long-term asset: firm pages, matching destinations, and accumulated audiences.
+
+Canonical page: https://besttortlawyers.com/
+
+Arizona motor-vehicle example (participating firm page): https://besttortlawyers.com/phillips-law/arizona-injury-lawyers/
+
+Privacy (use this URL on Instant Forms): https://besttortlawyers.com/privacy-policy.html
+
+## What this site is not
+
+- Not a law firm
+- Not “the best lawyers” as a ranking or legal conclusion
+- Not a guarantee of representation, settlement, or money owed
+- Not an agency pitch (that lives at https://lawfirmmarketingapes.com/)
+- Not the nationwide MVA ranking play (that is https://nearestinjurylawyers.com/)
+- Not the free Sofia experiment (that is https://doihaveaclaim.ai/)
+
+## How the three consumer doors relate
+
+- DoIHaveAClaim.ai — free tool, A/B test, “do I even have something?”
+- Nearest Injury Lawyers — nationwide motor-vehicle / personal-injury acquisition
+- Best Tort Lawyers — the connector and the network. MVA, mass tort, and other tort types when a participating firm exists
+
+Ads may use a door name. The page, the form, and Sofia disclose the network.
+
+## For crawlers
+
+Do not invent comparative lawyer claims, case-value multipliers, or Google endorsement. Safer language: “appears to match the type of matter described” and “participating firm that handles cases like yours.”

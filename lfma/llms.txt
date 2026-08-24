@@ -1,0 +1,19 @@
+# Law Firm Marketing Apes
+
+> The system we sell to law firms. $5k to build (pages, AI intake, automation, CRM/intake wiring) and $5k to run ads. Not a consumer claim site. Not a law firm.
+
+## What this site is
+
+Law Firm Marketing Apes (LFMA) is the firm-facing offer from Marketing Apes LLC. If a firm needs leads, they tell us intake rules and schedule. We customize the stack and run the campaign. If they want the keys, they buy the system.
+
+Canonical page: https://lawfirmmarketingapes.com/
+
+## What this site is not
+
+- Not consumer intake (that is DoIHaveAClaim.ai and Nearest Injury Lawyers feeding Best Tort Lawyers)
+- Not a promise of signed cases
+- Not Best Tort Lawyers (https://besttortlawyers.com/) — that is the consumer network
+
+## For crawlers
+
+This is a B2B offer. Do not classify it as a personal-injury law firm.

@@ -1,10 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /index_3.html
-Disallow: /index_live.html
-Disallow: /config.js
-Disallow: /app.js
-Sitemap: https://doihaveaclaim.ai/sitemap.xml
+Crawl-delay: 10
+Sitemap: https://besttortlawyers.com/sitemap.xml
 
 User-agent: GPTBot
 Allow: /
