@@ -1,0 +1,31 @@
+{
+  "status": "DRAFT_DO_NOT_PUBLISH",
+  "name": "NIL | AZ MVA | Sofia | v1",
+  "form_id_env": "META_NIL_FORM_IDS",
+  "form_type": "HIGHER_INTENT",
+  "intro": {
+    "headline": "Start with Sofia",
+    "body": "Share a few basic details about a vehicle accident. Sofia, an AI intake specialist for Nearest Injury Lawyers, may follow up to help identify an appropriate next step. Nearest Injury Lawyers is a marketing and matching service, not a law firm."
+  },
+  "questions": [
+    {"key": "first_name", "type": "FIRST_NAME", "required": true},
+    {"key": "last_name", "type": "LAST_NAME", "required": true},
+    {"key": "phone_number", "type": "PHONE", "required": true},
+    {"key": "email", "type": "EMAIL", "required": true},
+    {"key": "state", "type": "CUSTOM", "prompt": "Confirm where the accident happened", "options": ["Arizona"], "required": true},
+    {"key": "accident_type", "type": "CUSTOM", "prompt": "What type of incident happened?", "options": ["car", "truck_commercial", "motorcycle", "rideshare", "pedestrian_bicycle", "other"], "required": true},
+    {"key": "incident_recency", "type": "CUSTOM", "prompt": "When did it happen?", "options": ["under_30_days", "one_to_six_months", "seven_to_twelve_months", "over_one_year", "unsure"], "required": true},
+    {"key": "contact_consent", "type": "CUSTOM_DISCLAIMER_CHECKBOX", "required": true}
+  ],
+  "consent": {
+    "version": "az-mva-meta-v1",
+    "text": "By checking this box and submitting, I provide my prior express written consent for Nearest Injury Lawyers, Marketing Apes LLC, participating law firms, and authorized service providers to contact me about this inquiry at the phone number and email provided, including by call, text, or email using automated technology and prerecorded or artificial voice, including Sofia, an AI intake assistant. Calls may be recorded. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to opt out. I understand that this service is not a law firm, does not provide legal advice, and does not guarantee a connection, representation, or result."
+  },
+  "privacy_policy_url": "https://nearestinjurylawyers.com/privacy.html",
+  "completion": {
+    "headline": "Thanks. Sofia is next.",
+    "body": "Keep your phone nearby. Sofia may follow up using the permission you provided. A submission does not create an attorney-client relationship or guarantee a firm connection.",
+    "button": "VIEW_WEBSITE",
+    "url": "https://nearestinjurylawyers.com/arizona-mva-thank-you.html"
+  }
+}

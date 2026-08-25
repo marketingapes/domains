@@ -1,0 +1,31 @@
+{
+  "status": "DRAFT_DO_NOT_PUBLISH",
+  "name": "DIHAC | AZ MVA | Sofia | v1",
+  "form_id_env": "META_DIHAC_FORM_IDS",
+  "form_type": "HIGHER_INTENT",
+  "intro": {
+    "headline": "A clearer next step starts here",
+    "body": "Share a few basic details about a vehicle accident. Sofia, the Do I Have a Case? AI intake specialist, may follow up to help identify a possible next step. This is an intake and matching service, not legal advice."
+  },
+  "questions": [
+    {"key": "first_name", "type": "FIRST_NAME", "required": true},
+    {"key": "last_name", "type": "LAST_NAME", "required": true},
+    {"key": "phone_number", "type": "PHONE", "required": true},
+    {"key": "email", "type": "EMAIL", "required": true},
+    {"key": "state", "type": "CUSTOM", "prompt": "Confirm where the accident happened", "options": ["Arizona"], "required": true},
+    {"key": "accident_type", "type": "CUSTOM", "prompt": "What type of incident happened?", "options": ["car", "truck_commercial", "motorcycle", "rideshare", "pedestrian_bicycle", "other"], "required": true},
+    {"key": "incident_recency", "type": "CUSTOM", "prompt": "When did it happen?", "options": ["under_30_days", "one_to_six_months", "seven_to_twelve_months", "over_one_year", "unsure"], "required": true},
+    {"key": "contact_consent", "type": "CUSTOM_DISCLAIMER_CHECKBOX", "required": true}
+  ],
+  "consent": {
+    "version": "az-mva-meta-v1",
+    "text": "By checking this box and submitting, I provide my prior express written consent for Do I Have a Case?, Marketing Apes LLC, participating law firms, and authorized service providers to contact me about this inquiry at the phone number and email provided, including by call, text, or email using automated technology and prerecorded or artificial voice, including Sofia, an AI intake assistant. Calls may be recorded. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to opt out. I understand that this service is not a law firm, does not provide legal advice, and does not guarantee a connection, representation, or result."
+  },
+  "privacy_policy_url": "https://doihaveaclaim.ai/privacy.html",
+  "completion": {
+    "headline": "Your information was received",
+    "body": "Sofia may follow up using the permission you provided. Even if we cannot help make a connection, the goal is to leave you with a clearer next step. No legal outcome or representation is guaranteed.",
+    "button": "VIEW_WEBSITE",
+    "url": "https://doihaveaclaim.ai/arizona-mva-thank-you.html"
+  }
+}
