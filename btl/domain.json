@@ -1,0 +1,83 @@
+{
+  "$schema": "../DOMAINS.md",
+  "domain": "besttortlawyers.com",
+  "tenant_id": "BTL",
+  "entity": "Best Tort Lawyers — the network brand a firm sees as 'their campaign'; operating unit + firm portal (portal.besttortlawyers.com)",
+  "job": "Be the brand firms market under: mass tort + specialty cases, the firm's campaign face, the portal login. Owns comms for the network.",
+  "does_it_by": [
+    "mass-tort lead campaigns under the BTL brand (Talcum, Depo, Dupixent, sex abuse …)",
+    "firm-facing campaign pages (/phillips-law/*)",
+    "portal subdomain for the firm CRM/campaign view"
+  ],
+  "profit_path": "firm buys a campaign → BTL-branded ads + pages → leads → Sofia → transfer/signed → firm pays per campaign or per case",
+  "status": "LIVE elsewhere (SiteGround) — Render site btl-site is the preview package; DNS not cut; /phillips-law/* not mirrored yet",
+  "site": {
+    "repo": "marketingapes/domains",
+    "branch": "main",
+    "folder": "btl",
+    "render_service": "btl-site (srv-da5m24ijobas73f5rhqg, static, publishPath btl, build sh build.sh)",
+    "preview_url": "https://btl-site.onrender.com",
+    "live_url": "https://besttortlawyers.com",
+    "pages": [
+      "/",
+      "/privacy-policy/",
+      "/terms/",
+      "/sms-terms.html",
+      "/404.html"
+    ],
+    "style": "BTL brand (own tokens) — keep as-is",
+    "page_rules": [
+      "copy the <head> measurement block + header/footer from the folder's index.html verbatim",
+      "every button = class cta + data-cta-id; cross-domain links carry utm_source=<domain>",
+      "add new pages to sitemap.xml",
+      "do not cut BTL DNS to Render until /phillips-law/* is mirrored from the current host"
+    ]
+  },
+  "control": {
+    "service": "none yet — clone nil-intake as btl-control when BTL gets its own intake"
+  },
+  "measurement": {
+    "gtm_web": "see GTM account 55322844",
+    "ga4": "423835322",
+    "events": [
+      "ee_page_context",
+      "ee_cta_click"
+    ]
+  },
+  "channels": {
+    "facebook_page": {
+      "status": "live — Page 222081604317115 'Best Tort Lawyers'",
+      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)"
+    },
+    "instagram": {
+      "status": "business 17841464212888132 linked",
+      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431) with post_ig=yes"
+    },
+    "tiktok": {
+      "status": "unknown"
+    },
+    "youtube": {
+      "status": "unknown"
+    }
+  },
+  "comms": {
+    "email": "sofia@besttortlawyers.com (Make Gmail connection 'Sofia ' 8002189)",
+    "phone": "none dedicated",
+    "vapi": "none"
+  },
+  "lanes": {
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  },
+  "cta": {
+    "primary": "Free case review (lead form)"
+  },
+  "drive": {
+    "root": "Best Tort Lawyers Shared Drive /Web/"
+  },
+  "human_todo": [
+    "mirror /phillips-law/* into btl/ before any DNS change",
+    "decide BTL's own Twilio number + A2P when comms move here"
+  ]
+}
