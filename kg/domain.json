@@ -1,0 +1,65 @@
+{
+  "$schema": "../DOMAINS.md",
+  "domain": "kylegosselin.com",
+  "tenant_id": "KG",
+  "entity": "Kyle Gosselin — founder-operator of Marketing Apes (The Builder)",
+  "job": "Be the person behind Marketing Apes: publish the builder's proof log (what got built, what it did, what it cost) so attention lands here and Marketing Apes converts it.",
+  "does_it_by": ["posting proof from the live system", "one principle post + one proof post + one offer post per week", "every link carries utm_source=kylegosselin.com back into BigQuery under tenant_id KG"],
+  "profit_path": "attention -> marketingapes.com/pricing (utm) -> Sofia demo -> trial payment (Marketing Apes QuickBooks)",
+  "status": "preview — noindex + PREVIEW banner until DNS cutover",
+
+  "site": {
+    "repo": "marketingapes/domains",
+    "branch": "main",
+    "folder": "kg",
+    "render_service": "kg-site (srv-dacftmqfngtc73dbbocg, static, publishPath kg, auto-deploy on commit)",
+    "preview_url": "https://kg-site.onrender.com",
+    "live_url": "https://kylegosselin.com",
+    "pages": ["/", "/privacy/", "/pay/", "/404.html"],
+    "style": "NIL house tokens (navy dot-grid, red accent), SVG only, no frameworks, single-file HTML",
+    "page_rules": [
+      "head: dataLayer.push ee_page_context {tenant_id:'KG', domain, page_type} BEFORE the GTM snippet",
+      "every .cta pushes ee_cta_click; pay button pushes ee_pay_redirect; socials push ee_social_click",
+      "outbound links to marketingapes.com carry utm_source=kylegosselin.com&utm_medium=site&utm_campaign=kg-<page>",
+      "while preview: keep <meta name=robots content=noindex,nofollow> and the .build-state banner; add new pages to sitemap.xml"
+    ]
+  },
+
+  "control": {
+    "service": "kg-control (srv-dacg0b15efls73ea8i50) — NIL control template, shadow mode, auto-deploy OFF",
+    "url": "https://kg-control.onrender.com",
+    "state": "kg-state (Render Key Value)",
+    "health": "/live ok; /health not_ready until secrets are entered (expected)",
+    "mcp": "POST /mcp once MCP_ACCESS_KEY is set"
+  },
+
+  "measurement": {
+    "gtm_web": "GTM-W3CTJQ (legacy tags to clean before cutover)",
+    "gtm_server": "GTM-NMT76SV2",
+    "ga4": "TBD — create property for kylegosselin.com",
+    "events": ["ee_page_context", "ee_cta_click", "ee_pay_redirect", "ee_social_click"]
+  },
+
+  "channels": {
+    "facebook_page": {"status": "NOT CREATED — human step", "handle": "@kylegosselin"},
+    "instagram": {"status": "NOT CREATED — link to the Page as business account", "handle": "@kylegosselin"},
+    "tiktok": {"status": "NOT CREATED", "handle": "@kylegosselin"},
+    "youtube": {"status": "NOT CREATED", "handle": "@kylegosselin"},
+    "linkedin": {"status": "exists (personal) — update bio + link"},
+    "x": {"status": "NOT CREATED", "handle": "@kylegosselin"},
+    "publish_lane": "kg-control POST /social/publish (needs META_SYSTEM_USER_TOKEN + page ids) — until then, nothing to post to"
+  },
+
+  "comms": {"email": "none on-domain yet (SiteGround mail question open)", "phone": "none", "vapi": "none — KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"},
+
+  "cta": {"primary": "Talk to Sofia (demo) — via marketingapes.com", "secondary": "See pricing", "pay": "/pay/ -> marketingapes.com/pricing until the MA pay link exists"},
+
+  "drive": {"root": "Evolution Engine / Domains / kylegosselin.com (1J-NPdeKpUWxcp0AX0gG0IYpaUxWI4ANb)", "live": "Website/Live", "releases": "Website/Releases", "social_approved": "Social/<channel>/Approved"},
+
+  "human_todo": [
+    "create Facebook Page 'Kyle Gosselin' + link Instagram; send Page ID",
+    "enter kg-control secrets (see project doc kg-render-project-2026-09-03)",
+    "GTM-W3CTJQ legacy tag cleanup, then cutover commit (noindex off, banner off, robots Allow)",
+    "DNS apex + www -> Render; Search Console verify"
+  ]
+}
