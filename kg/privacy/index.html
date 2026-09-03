@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy Policy | Kyle Gosselin</title>
+  <meta name="description" content="How kylegosselin.com collects, uses, and protects information.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://kylegosselin.com/privacy/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Privacy Policy | Kyle Gosselin">
+  <meta property="og:description" content="How kylegosselin.com collects, uses, and protects information.">
+  <meta property="og:url" content="https://kylegosselin.com/privacy/">
+  <meta name="theme-color" content="#08122B">
+  <!-- Evolution Engine page context (must precede GTM) -->
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event:'ee_page_context',tenant_id:'KG',domain:'kylegosselin.com',page_type:'privacy'});
+  </script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-W3CTJQ');</script>
+  <!-- End Google Tag Manager -->
+  <style>
+    :root{
+      --bg:#08122B;
+      --bg-2:#0F1E3C;
+      --panel:#0D1A35;
+      --ink:#EAF0FB;
+      --muted:#93A9CC;
+      --accent:#EF4444;
+      --accent-soft:#F87171;
+      --cta:#DC2626;
+      --teal:#2FBFA3;
+      --cyan:#5FE0EE;
+      --blue:#8FA8FF;
+      --line:rgba(228,233,241,.14);
+      --max:1060px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 50% 7%, rgba(33,72,140,.30), transparent 23rem),
+        radial-gradient(circle at 15% 34%, rgba(239,68,68,.08), transparent 21rem),
+        linear-gradient(180deg,var(--bg),var(--bg-2) 58%,var(--bg));
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:radial-gradient(rgba(255,255,255,.16) .7px,transparent .7px);
+      background-size:24px 24px;
+      opacity:.15;
+      mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
+      -webkit-mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
+    }
+    a{color:inherit}
+    .skip-link{
+      position:absolute;
+      left:14px;
+      top:-80px;
+      padding:10px 14px;
+      background:#fff;
+      color:#08122B;
+      border-radius:10px;
+      z-index:100;
+    }
+    .skip-link:focus{top:12px}
+
+    .site-header{
+      width:min(var(--max),calc(100% - 36px));
+      margin:0 auto;
+      min-height:88px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      color:var(--ink);
+      text-decoration:none;
+      font-size:20px;
+      font-weight:850;
+      letter-spacing:-.025em;
+    }
+    .brand-mark{width:46px;height:46px;overflow:visible;flex:none}
+    .brand-mark .tile{fill:var(--bg-2);stroke:rgba(255,255,255,.18);stroke-width:2}
+    .brand-mark .glyph{fill:none;stroke:#fff;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round}
+    .brand-mark .dot{fill:var(--accent)}
+    .brand-ape{color:var(--accent)}
+    .build-state{
+      border:1px solid rgba(95,224,238,.22);
+      border-radius:999px;
+      padding:7px 11px;
+      color:#CFE2FF;
+      background:rgba(255,255,255,.035);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      white-space:nowrap;
+    }
+
+    main{width:min(var(--max),calc(100% - 36px));margin:0 auto}
+    .hero{
+      position:relative;
+      min-height:560px;
+      padding:86px 0 62px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      overflow:hidden;
+    }
+    .signal{
+      position:absolute;
+      border:1px solid rgba(95,224,238,.13);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .signal-one{width:560px;height:560px;top:115px;left:50%;transform:translateX(-50%)}
+    .signal-two{width:760px;height:760px;top:14px;left:50%;transform:translateX(-50%);border-style:dashed;opacity:.55}
+    .hero-copy{position:relative;z-index:3;max-width:800px}
+    .eyebrow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin:0 0 15px;
+      color:#D9E6F8;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+    }
+    .eyebrow span{width:28px;height:2px;background:var(--accent);border-radius:2px;box-shadow:0 0 15px rgba(239,68,68,.75);flex:none}
+    h1{
+      margin:0;
+      font-size:clamp(42px,6vw,72px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+    }
+    h1 em{
+      display:block;
+      margin-top:7px;
+      font-style:normal;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .lede{
+      max-width:740px;
+      margin:22px auto 0;
+      color:#B7C6DD;
+      font-size:18px;
+      line-height:1.65;
+    }
+
+    .actions{
+      position:relative;z-index:5;
+      margin-top:34px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:56px;
+      padding:14px 26px;
+      color:#fff;
+      text-decoration:none;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.01em;
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 84% 50%,rgba(95,224,238,.15),transparent 31%),
+        linear-gradient(180deg,#ef4444,#c91e1e);
+      box-shadow:
+        0 20px 50px rgba(220,38,38,.28),
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 0 42px rgba(239,68,68,.18);
+      transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 24px 58px rgba(220,38,38,.34),0 0 0 1px rgba(255,255,255,.08) inset,0 0 48px rgba(239,68,68,.22)}
+    .btn:focus-visible{outline:3px solid var(--cyan);outline-offset:5px}
+    .btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+    .btn-ghost{
+      background:rgba(255,255,255,.035);
+      border-color:rgba(228,233,241,.22);
+      box-shadow:none;
+      color:#DDE7F7;
+    }
+    .btn-ghost:hover{box-shadow:none;border-color:rgba(95,224,238,.52);background:rgba(95,224,238,.10);color:#fff}
+    .hero-note{position:relative;z-index:2;margin:14px 0 0;color:var(--muted);font-size:12px}
+
+    .reassurance{
+      position:relative;z-index:5;
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+    }
+    .reassurance span{
+      padding:8px 13px;
+      border:1px solid rgba(228,233,241,.15);
+      border-radius:999px;
+      background:rgba(255,255,255,.035);
+      color:#DDE7F7;
+      font-size:12.5px;
+    }
+
+    .steps{
+      padding:68px 0;
+      border-top:1px solid var(--line);
+    }
+    .section-heading{max-width:700px;margin:0 auto 32px;text-align:center}
+    .section-heading h2,.trust h2,.cta-block h2{
+      margin:0;
+      font-size:clamp(32px,4.6vw,48px);
+      line-height:1.07;
+      letter-spacing:-.035em;
+    }
+    .steps ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .steps li{
+      min-height:215px;
+      display:grid;
+      grid-template-columns:50px 1fr;
+      gap:15px;
+      align-items:start;
+      padding:24px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+      box-shadow:0 16px 44px rgba(0,0,0,.20);
+    }
+    .steps li>b{
+      width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-size:12px;letter-spacing:.08em;
+    }
+    .steps h3{margin:2px 0 9px;font-size:18px;line-height:1.2}
+    .steps p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+
+    .trust{
+      max-width:820px;
+      margin:0 auto;
+      padding:72px 36px;
+      text-align:center;
+      border-top:1px solid var(--line);
+    }
+    .trust>p:last-child{max-width:680px;margin:20px auto 0;color:#AABAD0;font-size:17px;line-height:1.65}
+    .facts{
+      list-style:none;
+      margin:28px auto 0;
+      padding:0;
+      max-width:720px;
+      display:grid;
+      gap:10px;
+      text-align:left;
+    }
+    .facts li{
+      display:grid;
+      grid-template-columns:22px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px 18px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:16px;
+      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+      color:#DDE7F7;
+      font-size:15px;
+      line-height:1.5;
+    }
+    .facts li>i{
+      width:22px;height:22px;margin-top:1px;border-radius:50%;display:grid;place-items:center;
+      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-style:normal;
+    }
+    .facts li>i svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+    .cta-block{
+      position:relative;
+      margin:0 0 72px;
+      padding:56px 32px;
+      text-align:center;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:28px;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(33,72,140,.35),transparent 60%),
+        linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+      box-shadow:0 16px 44px rgba(0,0,0,.20);
+      overflow:hidden;
+    }
+    .cta-block .eyebrow{margin-bottom:14px}
+    .cta-block>p{max-width:600px;margin:16px auto 0;color:#AABAD0;font-size:17px;line-height:1.65}
+    .cta-block .actions{margin-top:28px}
+
+    /* Long-form pages (privacy, pay, 404) */
+    .page{
+      max-width:760px;
+      margin:0 auto;
+      padding:64px 0 80px;
+    }
+    .page .eyebrow{justify-content:flex-start}
+    .page h1{font-size:clamp(36px,5vw,56px)}
+    .page .updated{margin:14px 0 0;color:var(--muted);font-size:13px}
+    .page h2{margin:38px 0 10px;font-size:22px;line-height:1.2;letter-spacing:-.02em}
+    .page p,.page li{color:#B7C6DD;font-size:16px;line-height:1.65}
+    .page p{margin:12px 0 0}
+    .page ul{margin:12px 0 0;padding-left:22px}
+    .page li{margin:6px 0}
+    .page a{color:var(--cyan)}
+    .page a.btn{color:#fff}
+    .page .box{
+      margin:22px 0 0;
+      padding:18px 20px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:16px;
+      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+    }
+    .page .box p:first-child{margin-top:0}
+    .page .actions{justify-content:flex-start;margin-top:26px}
+    .page-center{text-align:center}
+    .page-center .eyebrow,.page-center .actions{justify-content:center}
+    .page-center .lede{margin-top:18px}
+    .page .hero-note{margin-top:22px;color:var(--muted);font-size:13px;line-height:1.6}
+    .page .hero-note code{font-size:12px;color:#DDE7F7}
+
+    footer{
+      width:min(var(--max),calc(100% - 36px));
+      margin:0 auto;
+      padding:34px 0 48px;
+      border-top:1px solid var(--line);
+      color:#7F92AF;
+      text-align:center;
+      font-size:11.5px;
+      line-height:1.6;
+    }
+    footer p{max-width:900px;margin:8px auto}
+    footer a{color:#AFC0DA;text-decoration:none;border-bottom:1px solid rgba(175,192,218,.35)}
+    footer a:hover{color:#fff;border-bottom-color:var(--cyan)}
+    .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin:0 0 8px}
+    .social-links{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:12px;
+      margin:0 0 24px;
+    }
+    .social-link{
+      width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      color:#DDE7F7;
+      border:1px solid rgba(228,233,241,.18);
+      border-radius:50%;
+      background:rgba(255,255,255,.035);
+      transition:transform .18s ease,color .18s ease,border-color .18s ease,background .18s ease;
+    }
+    .social-link:hover{
+      transform:translateY(-2px);
+      color:#fff;
+      border-color:rgba(95,224,238,.52);
+      background:rgba(95,224,238,.10);
+    }
+    .social-link:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    .social-link svg{width:20px;height:20px;fill:currentColor}
+
+    @media(max-width:760px){
+      .site-header{min-height:76px}
+      .brand{font-size:15px}.brand-mark{width:40px;height:40px}
+      .brand-suffix{display:none}
+      .build-state{font-size:9px;padding:6px 8px}
+      main{width:min(100% - 24px,var(--max))}
+      .hero{min-height:0;padding:58px 0 48px}
+      h1{font-size:44px}
+      .lede{font-size:16px}
+      .actions{flex-direction:column;align-items:stretch}
+      .btn{width:100%}
+      .steps ol{grid-template-columns:1fr}
+      .steps li{min-height:0}
+      .trust{padding:58px 8px}
+      .facts li{font-size:14px;padding:12px 14px}
+      .cta-block{padding:44px 18px;border-radius:22px}
+      .page{padding:44px 0 60px}
+      .page h1{font-size:36px}
+      footer{width:min(100% - 24px,var(--max))}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.social-link{transition:none}}
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3CTJQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" aria-label="Site header">
+    <a class="brand" href="/" aria-label="Kyle Gosselin home">
+      <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
+        <rect class="tile" x="6" y="6" width="84" height="84" rx="22"/>
+        <path class="glyph" d="M26 30v36M45 30 28 48l17 18"/>
+        <path class="glyph" d="M74.5 39.5A12 12 0 1 0 78 48h-11"/>
+        <circle class="dot" cx="80" cy="69" r="5"/>
+      </svg>
+      <span>Kyle Gosselin<span class="brand-suffix"> <span class="brand-ape">·</span> Marketing Apes</span></span>
+    </a>
+    <span class="build-state">PREVIEW BUILD · NOT YET LIVE</span>
+  </header>
+
+  <main id="main">
+    <article class="page">
+      <p class="eyebrow"><span></span> Privacy</p>
+      <h1>Privacy Policy</h1>
+      <p class="updated">Effective date: September 3, 2026</p>
+
+      <p>This site, kylegosselin.com, is the personal and business website of Kyle Gosselin, founder of Marketing Apes. This policy explains what information the site collects, how it is used, and the choices you have. It is written in plain English on purpose.</p>
+
+      <h2>What this site collects</h2>
+      <ul>
+        <li><strong>Information you send me.</strong> If you email me or click through to Marketing Apes and fill out a form there, I receive what you choose to share — typically your name, email address, phone number, and a description of what you need.</li>
+        <li><strong>Information collected automatically.</strong> Like most websites, this site uses Google Tag Manager and Google Analytics 4 to understand how people use it: pages viewed, buttons clicked, approximate location, device and browser type, and referring source. Meta (Facebook/Instagram) and TikTok pixels may also be present so that I can measure advertising and show relevant ads on those platforms.</li>
+        <li><strong>Cookies and similar technologies.</strong> The tools above set cookies or use similar identifiers. You can limit or block them in your browser settings, and most ad platforms offer their own opt-out controls.</li>
+      </ul>
+
+      <h2>How I use it</h2>
+      <ul>
+        <li>To reply to you when you reach out;</li>
+        <li>To understand which pages and campaigns are working, and to attribute inquiries to the page or ad they came from;</li>
+        <li>To improve the site and the services Marketing Apes offers;</li>
+        <li>To meet legal obligations.</li>
+      </ul>
+
+      <h2>What I do not do</h2>
+      <div class="box">
+        <p><strong>I do not sell your personal information.</strong> I do not rent, trade, or sell it to data brokers or unrelated third parties. Analytics and advertising platforms process data on my behalf under their own terms, and I do not hand them your inbox or your phone number for any purpose other than measuring this site and its advertising.</p>
+      </div>
+
+      <h2>Who else sees it</h2>
+      <p>Service providers that help run the site and the business — hosting, analytics, advertising, email, and data-storage providers — may process information under agreements that limit their use of it. If you become a Marketing Apes client, the Marketing Apes privacy terms apply to that relationship. I may also disclose information if required by law.</p>
+
+      <h2>Your choices and rights</h2>
+      <ul>
+        <li>You can ask me what information I hold about you, ask me to correct it, or ask me to delete it. Depending on your state or country you may have additional rights; I honor reasonable requests either way.</li>
+        <li>You can block cookies and tracking through your browser settings, Google's ad settings, and Meta's and TikTok's ad preferences.</li>
+        <li>If you have emailed me and no longer want to hear from me, just say so and I will stop.</li>
+      </ul>
+
+      <h2>Retention and security</h2>
+      <p>I keep information only as long as it is useful for the purposes above or required by law, and I use reasonable technical and administrative safeguards to protect it. No method of storage or transmission is completely secure.</p>
+
+      <h2>Children</h2>
+      <p>This site is intended for adults. I do not knowingly collect information from anyone under 18.</p>
+
+      <h2>Changes</h2>
+      <p>I may update this policy from time to time. The effective date at the top reflects the latest revision.</p>
+
+      <h2>Contact</h2>
+      <p>Questions or requests about this policy or your information: email <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a>.</p>
+    </article>
+  </main>
+
+  <footer>
+    <nav class="social-links" aria-label="Kyle Gosselin social profiles">
+      <a class="social-link" href="#" rel="noopener noreferrer" aria-label="Kyle Gosselin on LinkedIn" data-social-platform="linkedin">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9 21H3.3V8.7h3.6V21ZM5.1 7A2.1 2.1 0 1 1 5.1 2.8 2.1 2.1 0 0 1 5.1 7ZM21 21h-3.6v-6c0-1.4 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V21H9.5V8.7H13v1.7h.1c.5-.9 1.7-1.9 3.4-1.9 3.7 0 4.4 2.4 4.4 5.6V21Z"/></svg>
+      </a>
+      <a class="social-link" href="#" rel="noopener noreferrer" aria-label="Kyle Gosselin on X" data-social-platform="x">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 3h3l-6.7 7.7L22 21h-6.2l-4.8-6.3L5.4 21h-3l7.2-8.2L2 3h6.3l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></svg>
+      </a>
+      <a class="social-link" href="#" rel="noopener noreferrer" aria-label="Kyle Gosselin on Instagram" data-social-platform="instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9Zm9.75 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+      </a>
+      <a class="social-link" href="#" rel="noopener noreferrer" aria-label="Kyle Gosselin on YouTube" data-social-platform="youtube">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z"/></svg>
+      </a>
+    </nav>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="/privacy/">Privacy</a>
+      <a href="https://marketingapes.com/" target="_blank" rel="noopener noreferrer">marketingapes.com</a>
+      <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a>
+    </nav>
+    <p>© <span id="year"></span> Kyle Gosselin · Vista, CA</p>
+  </footer>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.querySelectorAll('.cta').forEach(function(el){
+      el.addEventListener('click', function(){
+        var destination = el.getAttribute('href') || '';
+        window.dataLayer.push({
+          event:'ee_cta_click',
+          cta_id:el.dataset.ctaId || '',
+          cta_text:(el.textContent || '').trim(),
+          destination:destination,
+          tenant_id:'KG',
+          domain:'kylegosselin.com',
+          landing_page_url:location.href
+        });
+        if (el.dataset.pay !== undefined) {
+          window.dataLayer.push({
+            event:'ee_pay_redirect',
+            cta_id:el.dataset.ctaId || '',
+            destination:destination,
+            invoice_ref:(location.pathname.match(/^\/pay\/([^\/]+)/) || [,''])[1],
+            tenant_id:'KG',
+            domain:'kylegosselin.com',
+            landing_page_url:location.href
+          });
+        }
+      });
+    });
+    document.querySelectorAll('[data-social-platform]').forEach(function(link){
+      link.addEventListener('click', function(){
+        window.dataLayer.push({
+          event:'ee_social_click',
+          social_platform:link.dataset.socialPlatform,
+          tenant_id:'KG',
+          domain:'kylegosselin.com',
+          landing_page_url:location.href
+        });
+      });
+    });
+  </script>
+</body>
+</html>
