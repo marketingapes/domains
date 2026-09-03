@@ -1,0 +1,12 @@
+{
+  "name": "Kyle Gosselin",
+  "short_name": "KG",
+  "description": "Kyle Gosselin, founder of Marketing Apes.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#08122B",
+  "theme_color": "#08122B",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
