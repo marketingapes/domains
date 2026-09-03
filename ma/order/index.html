@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Order a Campaign | Marketing Apes</title>
+  <meta name="description" content="Order a lead campaign from Marketing Apes: pick the case type, states, delivery and cap. We confirm within the hour and go live in hours.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://marketingapes.com/order/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Order a Campaign | Marketing Apes">
+  <meta property="og:description" content="Pick the case type, states, delivery and cap. Live in hours.">
+  <meta property="og:url" content="https://marketingapes.com/order/">
+  <meta name="theme-color" content="#08122B">
+  <!-- Evolution Engine measurement: page context first, then GTM. Container id lives in ONE constant (EE_GTM_ID). -->
+  <script>
+  var EE_GTM_ID = 'GTM-PENDING';
+  var EE_TENANT = {tenant_id:'MA', domain:'marketingapes.com'};
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event:'ee_page_context',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,page_type:'order'});
+  /* Google Tag Manager (loads only once EE_GTM_ID is a real container id) */
+  if (/^GTM-[A-Z0-9]+$/.test(EE_GTM_ID) && EE_GTM_ID !== 'GTM-PENDING') {
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer',EE_GTM_ID);
+  }
+  /* End Google Tag Manager */
+  </script>
+  <style>
+    :root{
+      --bg:#08122B;
+      --bg-2:#0F1E3C;
+      --panel:#0D1A35;
+      --ink:#EAF0FB;
+      --muted:#93A9CC;
+      --accent:#EF4444;
+      --accent-soft:#F87171;
+      --cta:#DC2626;
+      --teal:#2FBFA3;
+      --cyan:#5FE0EE;
+      --blue:#8FA8FF;
+      --line:rgba(228,233,241,.14);
+      --max:1060px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 50% 7%, rgba(33,72,140,.30), transparent 23rem),
+        radial-gradient(circle at 15% 34%, rgba(239,68,68,.08), transparent 21rem),
+        linear-gradient(180deg,var(--bg),var(--bg-2) 58%,var(--bg));
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:radial-gradient(rgba(255,255,255,.16) .7px,transparent .7px);
+      background-size:24px 24px;
+      opacity:.15;
+      mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
+      -webkit-mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
+    }
+    a{color:inherit}
+    .skip-link{
+      position:absolute;
+      left:14px;
+      top:-80px;
+      padding:10px 14px;
+      background:#fff;
+      color:#08122B;
+      border-radius:10px;
+      z-index:100;
+    }
+    .skip-link:focus{top:12px}
+
+    .site-header{
+      width:min(var(--max),calc(100% - 36px));
+      margin:0 auto;
+      min-height:88px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      color:var(--ink);
+      text-decoration:none;
+      font-size:20px;
+      font-weight:850;
+      letter-spacing:-.025em;
+    }
+    .brand-mark{width:46px;height:46px;overflow:visible;flex:none}
+    .brand-mark .tile{fill:var(--bg-2);stroke:rgba(255,255,255,.18);stroke-width:2}
+    .brand-mark .glyph{fill:none;stroke:#fff;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
+    .brand-mark .dot{fill:var(--accent)}
+    .brand-ape{color:var(--accent)}
+    .header-right{display:flex;align-items:center;gap:14px}
+    .nav-link{
+      color:#DDE7F7;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:700;
+      padding:8px 2px;
+      border-bottom:2px solid transparent;
+    }
+    .nav-link:hover,.nav-link[aria-current="page"]{border-bottom-color:var(--accent)}
+    .build-state{
+      border:1px solid rgba(95,224,238,.22);
+      border-radius:999px;
+      padding:7px 11px;
+      color:#CFE2FF;
+      background:rgba(255,255,255,.035);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.09em;
+      white-space:nowrap;
+    }
+
+    main{width:min(var(--max),calc(100% - 36px));margin:0 auto}
+    .hero{
+      position:relative;
+      min-height:560px;
+      padding:86px 0 62px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      overflow:hidden;
+    }
+    .signal{
+      position:absolute;
+      border:1px solid rgba(95,224,238,.13);
+      border-radius:50%;
+      pointer-events:none;
+    }
+    .signal-one{width:560px;height:560px;top:115px;left:50%;transform:translateX(-50%)}
+    .signal-two{width:760px;height:760px;top:14px;left:50%;transform:translateX(-50%);border-style:dashed;opacity:.55}
+    .hero-copy{position:relative;z-index:3;max-width:820px}
+    .eyebrow{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin:0 0 15px;
+      color:#D9E6F8;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+    }
+    .eyebrow span{width:28px;height:2px;background:var(--accent);border-radius:2px;box-shadow:0 0 15px rgba(239,68,68,.75);flex:none}
+    h1{
+      margin:0;
+      font-size:clamp(42px,6vw,72px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+    }
+    h1 em{
+      font-style:normal;
+      background:linear-gradient(90deg,var(--blue),var(--cyan));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .lede{
+      max-width:740px;
+      margin:22px auto 0;
+      color:#B7C6DD;
+      font-size:18px;
+      line-height:1.65;
+    }
+
+    .actions{
+      position:relative;z-index:5;
+      margin-top:34px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:56px;
+      padding:14px 26px;
+      color:#fff;
+      text-decoration:none;
+      text-align:center;
+      font-size:17px;
+      font-weight:800;
+      letter-spacing:-.01em;
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 84% 50%,rgba(95,224,238,.15),transparent 31%),
+        linear-gradient(180deg,#ef4444,#c91e1e);
+      box-shadow:
+        0 20px 50px rgba(220,38,38,.28),
+        0 0 0 1px rgba(255,255,255,.05) inset,
+        0 0 42px rgba(239,68,68,.18);
+      transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 24px 58px rgba(220,38,38,.34),0 0 0 1px rgba(255,255,255,.08) inset,0 0 48px rgba(239,68,68,.22)}
+    .btn:focus-visible{outline:3px solid var(--cyan);outline-offset:5px}
+    .btn svg{width:18px;height:18px;fill:currentColor;flex:none}
+    .btn-ghost{
+      background:rgba(255,255,255,.035);
+      border-color:rgba(228,233,241,.22);
+      box-shadow:none;
+      color:#DDE7F7;
+    }
+    .btn-ghost:hover{box-shadow:none;border-color:rgba(95,224,238,.52);background:rgba(95,224,238,.10);color:#fff}
+    .btn-big{min-height:64px;padding:18px 34px;font-size:19px}
+    .hero-note{position:relative;z-index:2;margin:14px 0 0;color:var(--muted);font-size:12px}
+
+    .reassurance{
+      position:relative;z-index:5;
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+    }
+    .reassurance span{
+      padding:8px 13px;
+      border:1px solid rgba(228,233,241,.15);
+      border-radius:999px;
+      background:rgba(255,255,255,.035);
+      color:#DDE7F7;
+      font-size:12.5px;
+    }
+
+    .steps{
+      padding:68px 0;
+      border-top:1px solid var(--line);
+    }
+    .section-heading{max-width:700px;margin:0 auto 32px;text-align:center}
+    .section-heading h2,.cta-block h2{
+      margin:0;
+      font-size:clamp(32px,4.6vw,48px);
+      line-height:1.07;
+      letter-spacing:-.035em;
+    }
+    .steps ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .steps li{
+      min-height:215px;
+      display:grid;
+      grid-template-columns:50px 1fr;
+      gap:15px;
+      align-items:start;
+      padding:24px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+      box-shadow:0 16px 44px rgba(0,0,0,.20);
+    }
+    .steps li>b{
+      width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-size:12px;letter-spacing:.08em;
+    }
+    .steps h3{margin:2px 0 9px;font-size:18px;line-height:1.2}
+    .steps p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+
+    .cta-block{
+      position:relative;
+      margin:0 0 72px;
+      padding:56px 32px;
+      text-align:center;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:28px;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(33,72,140,.35),transparent 60%),
+        linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+      box-shadow:0 16px 44px rgba(0,0,0,.20);
+      overflow:hidden;
+    }
+    .cta-block .eyebrow{margin-bottom:14px}
+    .cta-block>p{max-width:600px;margin:16px auto 0;color:#AABAD0;font-size:17px;line-height:1.65}
+    .cta-block .actions{margin-top:28px}
+
+    /* Pricing */
+    .pricing-hero{padding:64px 0 28px;text-align:center}
+    .pricing-hero h1{font-size:clamp(36px,5.4vw,62px)}
+    .pricing-hero .lede{max-width:700px}
+    .price-card{
+      position:relative;
+      max-width:720px;
+      margin:22px auto 0;
+      padding:36px 32px 34px;
+      border:1px solid rgba(95,224,238,.28);
+      border-radius:28px;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(33,72,140,.40),transparent 60%),
+        linear-gradient(180deg,rgba(13,26,53,.92),rgba(9,20,43,.94));
+      box-shadow:0 22px 60px rgba(0,0,0,.28),0 0 0 1px rgba(95,224,238,.06) inset;
+      text-align:center;
+    }
+    .price-card .eyebrow{margin-bottom:12px}
+    .price{
+      margin:0;
+      font-size:clamp(44px,7vw,68px);
+      line-height:1;
+      letter-spacing:-.045em;
+      font-weight:850;
+    }
+    .price small{
+      display:block;
+      margin-top:8px;
+      font-size:16px;
+      font-weight:700;
+      letter-spacing:0;
+      color:var(--muted);
+    }
+    .facts{
+      list-style:none;
+      margin:26px auto 0;
+      padding:0;
+      max-width:620px;
+      display:grid;
+      gap:10px;
+      text-align:left;
+    }
+    .facts li{
+      display:grid;
+      grid-template-columns:22px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px 18px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:16px;
+      background:rgba(8,21,45,.55);
+      color:#DDE7F7;
+      font-size:15px;
+      line-height:1.5;
+    }
+    .facts li>i{
+      width:22px;height:22px;margin-top:1px;border-radius:50%;display:grid;place-items:center;
+      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-style:normal;
+    }
+    .facts li>i svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+    .facts li.floor{border-color:rgba(47,191,163,.40)}
+    .price-card .actions{margin-top:30px}
+    .pay-note{margin:12px auto 0;max-width:560px;color:#DDE7F7;font-size:14px;line-height:1.5}
+    .alt{margin:10px auto 0;max-width:560px;color:#AABAD0;font-size:14.5px;line-height:1.6}
+    .alt a{color:var(--cyan)}
+
+    .card-quiet{
+      max-width:720px;
+      margin:26px auto 0;
+      padding:30px 32px;
+      border:1px solid rgba(228,233,241,.13);
+      border-radius:24px;
+      background:rgba(255,255,255,.028);
+      text-align:center;
+    }
+    .card-quiet h2{margin:0;font-size:clamp(24px,3.4vw,32px);line-height:1.15;letter-spacing:-.03em}
+    .card-quiet .price-line{margin:12px 0 0;color:#DDE7F7;font-size:17px;font-weight:700;line-height:1.5}
+    .card-quiet p{margin:10px auto 0;max-width:560px;color:var(--muted);font-size:15px;line-height:1.6}
+    .card-quiet .actions{margin-top:22px}
+
+    .fine-print{
+      max-width:720px;
+      margin:34px auto 72px;
+      color:#7F92AF;
+      font-size:12.5px;
+      line-height:1.65;
+      text-align:center;
+    }
+
+    /* Long-form pages (privacy, 404) */
+    .page{
+      max-width:760px;
+      margin:0 auto;
+      padding:64px 0 80px;
+    }
+    .page .eyebrow{justify-content:flex-start}
+    .page h1{font-size:clamp(36px,5vw,56px)}
+    .page .updated{margin:14px 0 0;color:var(--muted);font-size:13px}
+    .page h2{margin:38px 0 10px;font-size:22px;line-height:1.2;letter-spacing:-.02em}
+    .page p,.page li{color:#B7C6DD;font-size:16px;line-height:1.65}
+    .page p{margin:12px 0 0}
+    .page ul{margin:12px 0 0;padding-left:22px}
+    .page li{margin:6px 0}
+    .page a{color:var(--cyan)}
+    .page a.btn{color:#fff}
+    .page .box{
+      margin:22px 0 0;
+      padding:18px 20px;
+      border:1px solid rgba(95,224,238,.15);
+      border-radius:16px;
+      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+    }
+    .page .box p:first-child{margin-top:0}
+    .page .actions{justify-content:flex-start;margin-top:26px}
+    .page-center{text-align:center}
+    .page-center .eyebrow,.page-center .actions{justify-content:center}
+    .page-center .lede{margin-top:18px}
+
+    footer{
+      width:min(var(--max),calc(100% - 36px));
+      margin:0 auto;
+      padding:34px 0 48px;
+      border-top:1px solid var(--line);
+      color:#7F92AF;
+      text-align:center;
+      font-size:11.5px;
+      line-height:1.6;
+    }
+    footer p{max-width:900px;margin:8px auto}
+    footer a{color:#AFC0DA;text-decoration:none;border-bottom:1px solid rgba(175,192,218,.35)}
+    footer a:hover{color:#fff;border-bottom-color:var(--cyan)}
+    .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin:0 0 8px}
+
+    @media(max-width:760px){
+      .site-header{min-height:76px}
+      .brand{font-size:15px}.brand-mark{width:40px;height:40px}
+      .brand-suffix{display:none}
+      .header-right{gap:10px;min-width:0}
+      .nav-link{display:none}
+      .build-state{font-size:9px;padding:6px 8px;white-space:normal;text-align:center;line-height:1.3}
+      main{width:min(100% - 24px,var(--max))}
+      .hero{min-height:0;padding:58px 0 48px}
+      h1{font-size:42px}
+      .lede{font-size:16px}
+      .actions{flex-direction:column;align-items:stretch}
+      .btn{width:100%}
+      .btn-big{font-size:17px;padding:16px 22px}
+      .steps ol{grid-template-columns:1fr}
+      .steps li{min-height:0}
+      .cta-block{padding:44px 18px;border-radius:22px}
+      .pricing-hero{padding:48px 0 20px}
+      .pricing-hero h1{font-size:36px}
+      .price-card{padding:28px 18px 26px;border-radius:22px}
+      .price{font-size:46px}
+      .facts li{font-size:14px;padding:12px 14px}
+      .card-quiet{padding:24px 18px;border-radius:20px}
+      .fine-print{margin-bottom:56px}
+      .page{padding:44px 0 60px}
+      .page h1{font-size:36px}
+      footer{width:min(100% - 24px,var(--max))}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+    /* Order form */
+    .order{max-width:760px;margin:22px auto 0;padding:34px 32px;border:1px solid rgba(95,224,238,.28);border-radius:28px;background:radial-gradient(circle at 50% 0%,rgba(33,72,140,.40),transparent 60%),linear-gradient(180deg,rgba(13,26,53,.92),rgba(9,20,43,.94));box-shadow:0 22px 60px rgba(0,0,0,.28)}
+    .order fieldset{border:0;margin:0 0 22px;padding:0}
+    .order legend{color:#D9E6F8;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+    .order legend::before{content:"";width:28px;height:2px;background:var(--accent);border-radius:2px;box-shadow:0 0 15px rgba(239,68,68,.75)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid .full{grid-column:1/-1}
+    .order label{display:block;color:#B7C6DD;font-size:13px;font-weight:700;margin:0 0 6px}
+    .order input,.order select,.order textarea{width:100%;min-height:48px;padding:12px 14px;color:var(--ink);background:rgba(8,21,45,.75);border:1px solid rgba(228,233,241,.18);border-radius:12px;font:inherit;font-size:15px}
+    .order textarea{min-height:92px;resize:vertical}
+    .order input:focus,.order select:focus,.order textarea:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:transparent}
+    .order select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,#93A9CC 50%),linear-gradient(135deg,#93A9CC 50%,transparent 50%);background-position:calc(100% - 20px) 20px,calc(100% - 14px) 20px;background-size:6px 6px;background-repeat:no-repeat}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chips label{display:inline-flex;align-items:center;gap:8px;margin:0;padding:10px 14px;border:1px solid rgba(228,233,241,.18);border-radius:999px;background:rgba(255,255,255,.035);color:#DDE7F7;font-size:14px;cursor:pointer}
+    .chips input{width:auto;min-height:0;margin:0;accent-color:#EF4444}
+    .chips label:has(input:checked){border-color:rgba(95,224,238,.6);background:rgba(95,224,238,.12);color:#fff}
+    .order .actions{justify-content:flex-start;margin-top:8px}
+    .order .btn{min-width:260px}
+    .form-note{margin:12px 0 0;color:#93A9CC;font-size:13px;line-height:1.55}
+    .thanks{display:none;max-width:760px;margin:22px auto 0;padding:34px 32px;text-align:center;border:1px solid rgba(47,191,163,.5);border-radius:28px;background:rgba(8,21,45,.75)}
+    .thanks h2{margin:0 0 10px;font-size:clamp(26px,3.6vw,36px);letter-spacing:-.03em}
+    .thanks p{color:#B7C6DD;font-size:16px;line-height:1.6;margin:8px 0 0}
+    .err{display:none;margin:12px 0 0;color:#F87171;font-size:14px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.order{padding:24px 18px;border-radius:22px}.order .btn{width:100%}}
+  </style>
+
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" aria-label="Site header">
+    <a class="brand" href="/" aria-label="Marketing Apes home">
+      <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
+        <rect class="tile" x="6" y="6" width="84" height="84" rx="22"/>
+        <path class="glyph" d="M17 64V32l13 17 13-17v32"/>
+        <path class="glyph" d="M51 64l12-32 12 32M56.5 52h13"/>
+        <circle class="dot" cx="80" cy="72" r="4.5"/>
+      </svg>
+      <span>Marketing<span class="brand-ape">&nbsp;</span>Apes<span class="brand-suffix"> <span class="brand-ape">·</span> Evolution Engine</span></span>
+    </a>
+    <div class="header-right">
+      <a class="nav-link" href="/pricing/">Pricing</a>
+      <a class="nav-link" href="/order/" aria-current="page">Order</a>
+      <span class="build-state">PREVIEW BUILD · NOT YET LIVE</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pricing-hero" aria-labelledby="order-title">
+      <p class="eyebrow"><span></span> Order a campaign</p>
+      <h1 id="order-title">Tell us what you buy. <em>We turn it on.</em></h1>
+      <p class="lede">One form. Case type, states, how you want it delivered, how many a day. We confirm within the hour, send the payment link, and the campaign is live in hours — Sofia qualifies every lead and warm-transfers to your intake.</p>
+    </section>
+
+    <form class="order" id="orderForm" novalidate>
+      <fieldset>
+        <legend>Who's ordering</legend>
+        <div class="grid">
+          <div><label for="buyer_name">Firm / company</label><input id="buyer_name" name="buyer_name" required autocomplete="organization"></div>
+          <div><label for="type">You are a</label><select id="type" name="type"><option value="firm">Law firm</option><option value="aggregator">Lead buyer / network</option><option value="agency">Agency</option></select></div>
+          <div><label for="contact_name">Your name</label><input id="contact_name" name="contact_name" required autocomplete="name"></div>
+          <div><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+          <div><label for="phone">Mobile (for the confirmation text)</label><input id="phone" name="phone" type="tel" required autocomplete="tel"></div>
+          <div><label for="transfer_number">Intake line for live transfers</label><input id="transfer_number" name="transfer_number" type="tel" placeholder="(555) 555-5555"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>What you want</legend>
+        <div class="grid">
+          <div class="full"><label>Case types</label>
+            <div class="chips" id="caseChips">
+              <label><input type="checkbox" name="case_types" value="MVA"> Car accidents (MVA)</label>
+              <label><input type="checkbox" name="case_types" value="Premises liability"> Slip &amp; fall / premises</label>
+              <label><input type="checkbox" name="case_types" value="General PI"> General personal injury</label>
+              <label><input type="checkbox" name="case_types" value="Workers comp"> Workers' comp</label>
+              <label><input type="checkbox" name="case_types" value="Rideshare assault"> Rideshare assault</label>
+              <label><input type="checkbox" name="case_types" value="Sexual abuse"> Sexual / institutional abuse</label>
+              <label><input type="checkbox" name="case_types" value="Mass tort (other)"> Other mass tort</label>
+            </div>
+          </div>
+          <div><label for="states">States</label><input id="states" name="states" placeholder="AZ, CA, TX…" required></div>
+          <div><label for="turn_downs">What you don't take</label><input id="turn_downs" name="turn_downs" placeholder="e.g. no workers comp, no out-of-state"></div>
+          <div><label for="product">Product</label><select id="product" name="product">
+            <option value="campaign_5k">The $5k Campaign — 30 days, $3k media + $2k system</option>
+            <option value="transfer">Live qualified transfers — per unit</option>
+            <option value="lead">Verified leads — per unit</option>
+            <option value="signed">Signed retainers — per case</option>
+          </select></div>
+          <div><label for="price_usd">Your price (per unit, or 5000 for the campaign)</label><input id="price_usd" name="price_usd" type="number" min="0" step="1" value="5000"></div>
+          <div><label for="daily_cap">Daily cap</label><input id="daily_cap" name="daily_cap" type="number" min="1" placeholder="e.g. 10"></div>
+          <div><label for="intake_hours">Intake hours</label><input id="intake_hours" name="intake_hours" placeholder="24/7, or M–F 8–6 MT"></div>
+          <div><label for="delivery">Delivery</label><select id="delivery" name="delivery"><option value="live transfer">Live warm transfer to intake</option><option value="api">API post (LeadProsper / webhook)</option><option value="email+sms">Email + SMS</option><option value="sheet">Shared sheet</option></select></div>
+          <div><label for="outcome_return">How you'll tell us what signed</label><select id="outcome_return" name="outcome_return"><option value="daily csv">Daily CSV export</option><option value="webhook">Webhook on status change</option><option value="weekly call">Weekly call</option><option value="unsure">Not sure yet</option></select></div>
+          <div class="full"><label for="notes">Anything else</label><textarea id="notes" name="notes" placeholder="Exclusivity, geography detail, language, acceptance criteria…"></textarea></div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button class="btn cta btn-big" type="submit" data-cta-id="order_submit">Place the order <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z"/></svg></button>
+      </div>
+      <p class="err" id="err">Something didn't send. Email <a href="mailto:kyleg@marketingapes.com" style="color:var(--cyan)">kyleg@marketingapes.com</a> and we'll take it from there.</p>
+      <p class="form-note">Nothing is charged here. Kyle confirms the order within the hour, sends the secure payment link, and the campaign goes live once it's paid. Flat marketing fees; nothing is contingent on case outcomes.</p>
+    </form>
+
+    <section class="thanks" id="thanks" aria-live="polite">
+      <h2>Order received.</h2>
+      <p>You'll hear from Kyle within the hour with the payment link and the go-live plan.</p>
+      <p>Want to feel what your intake team will hear? <a class="cta" href="mailto:kyleg@marketingapes.com?subject=DEMO" data-cta-id="order_demo" style="color:var(--cyan)">Reply DEMO</a> and Sofia calls you in 60 seconds.</p>
+    </section>
+
+    <p class="fine-print">Marketing Apes is a marketing company, not a law firm. Firms are responsible for their own advertising compliance.</p>
+  </main>
+
+  <footer>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="/pricing/">Pricing</a>
+      <a href="/order/">Order</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a>
+    </nav>
+    <p>© <span id="year"></span> Marketing Apes · Vista, CA</p>
+  </footer>
+
+  <script>
+    var ORDER_HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+    window.dataLayer = window.dataLayer || [];
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.querySelectorAll('.cta').forEach(function(el){
+      el.addEventListener('click', function(){
+        window.dataLayer.push({event:'ee_cta_click',cta_id:el.dataset.ctaId||'',cta_text:(el.textContent||'').trim(),destination:el.getAttribute('href')||'',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,landing_page_url:location.href});
+      });
+    });
+    var form = document.getElementById('orderForm');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      var fd = new FormData(form), data = {};
+      fd.forEach(function(v,k){ if (k === 'case_types') { data.case_types = (data.case_types ? data.case_types + ', ' : '') + v; } else { data[k] = v; } });
+      data.case_types = data.case_types || '';
+      data.source_url = location.href;
+      data.tenant_id = EE_TENANT.tenant_id;
+      var btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
+      document.getElementById('err').style.display = 'none';
+      fetch(ORDER_HOOK, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
+        .then(function(){
+          window.dataLayer.push({event:'ee_order_submit',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,product:data.product,value:Number(data.price_usd||0),currency:'USD',case_types:data.case_types,states:data.states,landing_page_url:location.href});
+          form.style.display = 'none'; document.getElementById('thanks').style.display = 'block';
+          document.getElementById('thanks').scrollIntoView({behavior:'smooth'});
+        })
+        .catch(function(){ btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; });
+    });
+  </script>
+</body>
+</html>
