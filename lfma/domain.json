@@ -1,0 +1,79 @@
+{
+  "$schema": "../DOMAINS.md",
+  "domain": "lawfirmmarketingapes.com",
+  "tenant_id": "LFMA",
+  "entity": "Law Firm Marketing Apes — the legal vertical's front door for firms; home of the firm portal / Intake Desk",
+  "job": "Acquire firms: show the machine, sell the campaign, host the firm's portal login. Legal pack of the Marketing Apes platform.",
+  "does_it_by": [
+    "firm-facing pages + 10 HTML tools (ROI calculator, cost-per-case estimator, funnel visualizer …)",
+    "portal / Prospective View for firms (to build on the engine)",
+    "outreach landing for the Monday firm campaign"
+  ],
+  "profit_path": "firm visits → order/demo → paid campaign on NIL/BTL → portal keeps them",
+  "status": "preview package on Render (lfma-site); DNS not flipped; no Facebook Page",
+  "site": {
+    "repo": "marketingapes/domains",
+    "branch": "main",
+    "folder": "lfma",
+    "render_service": "lfma-site (srv-da5m28ijobas73f5s6t0, static, publishPath lfma, build sh build.sh)",
+    "preview_url": "https://lfma-site.onrender.com",
+    "live_url": "https://lawfirmmarketingapes.com",
+    "pages": [
+      "/",
+      "/about.html",
+      "/contact.html",
+      "/seo.html",
+      "/google-ads.html",
+      "/HTML-Tools/01…10"
+    ],
+    "style": "LFMA brand (own tokens)",
+    "page_rules": [
+      "copy the <head> measurement block + header/footer from the folder's index.html verbatim",
+      "every button = class cta + data-cta-id; cross-domain links carry utm_source=<domain>",
+      "add new pages to sitemap.xml"
+    ]
+  },
+  "control": {
+    "service": "none"
+  },
+  "measurement": {
+    "gtm_web": "see GTM account 55322844",
+    "ga4": "530695424",
+    "events": [
+      "ee_page_context",
+      "ee_cta_click"
+    ]
+  },
+  "channels": {
+    "facebook_page": {
+      "status": "NOT CREATED — human step (Kyle: create LFMA Page + IG, grant to 'Kyles Facebook' Make connection)"
+    },
+    "instagram": {
+      "status": "NOT CREATED"
+    },
+    "linkedin": {
+      "status": "use Marketing Apes company page"
+    }
+  },
+  "comms": {
+    "email": "kyleg@marketingapes.com",
+    "phone": "(619) 736-0356 (office, on sites)",
+    "vapi": "none"
+  },
+  "lanes": {
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  },
+  "cta": {
+    "primary": "Order a campaign → marketingapes.com/order/",
+    "secondary": "Reply DEMO — Sofia calls you"
+  },
+  "drive": {
+    "root": "Evolution Engine Drive Old-Archive/Web/LawFirmMarketingApes/Web/Live/1.0/"
+  },
+  "human_todo": [
+    "create Facebook Page + IG for LFMA",
+    "DNS flip when ready"
+  ]
+}
