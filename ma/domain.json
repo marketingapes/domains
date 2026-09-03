@@ -1,0 +1,66 @@
+{
+  "$schema": "../DOMAINS.md",
+  "domain": "marketingapes.com",
+  "tenant_id": "MA",
+  "entity": "Marketing Apes — the Anti-Agency Agency. You don't need an agency. You need a system, a process, and AI.",
+  "job": "Sell the machine: take a prospect from 'show me' to paid — Sofia demo call in 60 seconds, then the 30-day trial payment.",
+  "does_it_by": ["demo: prospect enters a number -> Sofia DEMO calls -> qualifies -> warm-transfers to Kyle", "pricing page with the trial tiers and a pay link", "proof pulled from the live NIL system"],
+  "profit_path": "visit -> demo or pricing -> pay link (QuickBooks, Marketing Apes company) -> activation -> $/month per operating domain",
+  "offer": {
+    "trial_mva_geo": {"label": "MVA geo campaign, 30 days", "price_usd": 10000, "offer_id": "sofia-trial-30d"},
+    "trial_mass_tort": {"label": "Any mass tort / sex abuse at cost", "price_usd": 5000, "offer_id": "sofia-trial-30d-mt"},
+    "founding": {"label": "Founding customer — own the machine", "activation_usd": 7500, "monthly_usd": 1500, "unit": "per operating domain"}
+  },
+  "status": "preview — noindex + PREVIEW banner until DNS cutover",
+
+  "site": {
+    "repo": "marketingapes/domains",
+    "branch": "main",
+    "folder": "ma",
+    "render_service": "ma-site (srv-dacgejijnfac73cfuba0, static, publishPath ma, auto-deploy on commit)",
+    "preview_url": "https://ma-site-f6zf.onrender.com",
+    "live_url": "https://marketingapes.com",
+    "pages": ["/", "/pricing/", "/privacy/", "/404.html"],
+    "style": "KG/NIL house tokens, SVG only, no frameworks, single-file HTML",
+    "page_rules": [
+      "head: var EE_GTM_ID (single constant, currently GTM-PENDING) + EE_TENANT, then ee_page_context push, then guarded GTM loader — copy the block verbatim from index.html",
+      "every .cta pushes ee_cta_click; pay button (data-pay, data-offer-id, data-value) pushes ee_pay_redirect",
+      "while preview: keep noindex + .build-state banner; add new pages to sitemap.xml"
+    ]
+  },
+
+  "control": {"service": "none — MA bills through the Marketing Apes QuickBooks company; demo runs on Vapi + Zap; add an ma-control only if MA gets its own intake/MCP"},
+
+  "measurement": {
+    "gtm_web": "PENDING — Kyle to give the Marketing Apes container id (EE_GTM_ID)",
+    "gtm_server": "PENDING",
+    "ga4": "PENDING",
+    "events": ["ee_page_context", "ee_cta_click", "ee_pay_redirect"]
+  },
+
+  "channels": {
+    "facebook_page": {"status": "exists, verified in Business Manager", "publish_lane": "Zapier Facebook Pages auth is BROKEN (auth 65261527 not visible) — reconnect in Zapier, or use Graph via kg/ma control token"},
+    "instagram": {"status": "exists — business account 17841401184300725 'Marketing Apes'", "publish_lane": "Zapier instagram_for_business_publish_photo_s / publish_video — reachable now"},
+    "linkedin": {"status": "company page exists — manual"},
+    "tiktok": {"status": "unknown"},
+    "youtube": {"status": "unknown"}
+  },
+
+  "comms": {
+    "email": "kyleg@marketingapes.com (human inbox)",
+    "phone": "none dedicated yet",
+    "vapi": "Sofia – DEMO (602) 3f10ab95-f487-42ad-871b-7219440529f0 — transfer_to_firm -> Kyle's cell; queue sheet 'Sofia Demo Queue' 1wQtSZ57wH4sGZ6jGhzS1wZ9tM1YQ7lwbQ3DcPNvo5XQ; Zap spec in project doc demo-queue-zap-spec"
+  },
+
+  "cta": {"primary": "Talk to Sofia — she calls you in 60 seconds (demo)", "secondary": "Start the 30-day trial (pay link — mailto until QBO link exists)"},
+
+  "drive": {"root": "Evolution Engine / Domains / marketingapes.com (create if missing — mirror the KG tree)"},
+
+  "human_todo": [
+    "QuickBooks -> Payments -> Payment links -> multi-use $10,000 'Sofia Campaign 30-day trial' -> send URL",
+    "Marketing Apes GTM container id -> EE_GTM_ID",
+    "reconnect Facebook Pages in Zapier (auth 65261527 is dead)",
+    "build the demo-queue Zap (8 steps, spec in project) and test on yourself",
+    "DNS apex + www -> Render at cutover"
+  ]
+}
