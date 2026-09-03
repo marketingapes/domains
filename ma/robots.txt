@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Preview build. Replace with "Allow: /" and add the sitemap line at cutover:
+# Sitemap: https://marketingapes.com/sitemap.xml
