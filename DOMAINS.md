@@ -9,7 +9,9 @@ money, where its site deploys, what it measures, which channels it owns, and wha
 | NIL | nearestinjurylawyers.com | `nil/` (live site deploys from repo `marketingapes/nil-site`) | connect injured people with firms likely to take their claim — finds via ads, qualifies via Sofia, routes via warm transfer | LIVE |
 | MA | marketingapes.com | `ma/` | sell the machine — Sofia demo in 60s, then the 30-day trial payment | preview |
 | KG | kylegosselin.com | `kg/` | the builder's proof log — attention lands here, Marketing Apes converts it | preview |
-| BTL / DIHAC / LFMA | see folders | `btl/` `dihac/` `lfma/` | legacy packages — manifests to be added when each is retrofitted | partial |
+| BTL | besttortlawyers.com | `btl/` | the network brand firms market under — mass tort + specialty; portal | preview |
+| DIHAC | doihaveaclaim.ai | `dihac/` | AI legal directory — names the right lawyer type; NIL overflow destination | preview |
+| LFMA | lawfirmmarketingapes.com | `lfma/` | firm front door — order/demo → portal | preview |
 
 ## Prompt → action map
 
@@ -34,6 +36,16 @@ money, where its site deploys, what it measures, which channels it owns, and wha
 5. Receipt: write `{tenant_id, platform, post_id, url, ts}` to the domain's `Social/<channel>/Receipts` Drive folder + BigQuery.
 
 **"Add a channel / number / inbox to <domain>"** → follow `claude/domain-roadmap.md` stages 0–2. Update `domain.json` when it exists.
+
+## Wired lanes (Make — POST JSON, no AI inside)
+
+Every `domain.json` carries these under `lanes`. Any AI on any domain fires them the same way.
+
+- `social_post`: POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)
+- `email_as_sofia_nil`: POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)
+- `campaign_order`: POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/
+
+Every lane writes a row to OUTBOUND MESSAGE LEDGER (sheet 1bCw7-S6gfbXSurwWmMtn1ZaIkJHc_h6Lgy4h1mHqewU). Sheets = human-read; BigQuery = system-written (mirror to BigQuery as lanes mature).
 
 ## Rules that hold on every domain
 - `tenant_id` on every event, every row, every receipt — from the first one.
