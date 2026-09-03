@@ -39,6 +39,7 @@
     "pages": [
       "/",
       "/pricing/",
+      "/order/",
       "/privacy/",
       "/404.html"
     ],
@@ -98,5 +99,10 @@
     "Marketing Apes GTM container id -> EE_GTM_ID",
     "build the demo-queue Zap (8 steps, spec in project) and test on yourself",
     "DNS apex + www -> Render at cutover"
-  ]
+  ],
+  "lanes": {
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  }
 }
