@@ -1,0 +1,38 @@
+{
+  "$schema": "../DOMAINS.md",
+  "domain": "nearestinjurylawyers.com",
+  "tenant_id": "NIL",
+  "entity": "Nearest Injury Lawyers — a free attorney-matching service (not a law firm). Persona: Sofia, A.I. assistant.",
+  "job": "Connect injured people with firms likely to take their claim.",
+  "does_it_by": ["finds people through ads (Meta lead ads, NIL page identity, BTL ad account)", "qualifies them (instant SMS + Sofia call within ~1 minute)", "routes them (warm transfer to the buyer firm with the caller's real number; overflow -> DIHAC / catalog)"],
+  "profit_path": "ad spend -> lead -> Sofia qualified -> transferred to firm -> retainer sent -> SIGNED case (the scoreboard). CAPI-for-Leads feeds TransferredToFirm/SofiaQualified back to Meta.",
+  "status": "LIVE — reference implementation (domain #1)",
+
+  "site": {
+    "repo": "marketingapes/nil-site",
+    "branch": "main",
+    "folder": ".",
+    "render_service": "nil-site-staging (rename to nil-site-prod pending) — Render hosts the live domain",
+    "live_url": "https://nearestinjurylawyers.com",
+    "mirror_note": "nil/ in marketingapes/domains is an older package copy; the live site deploys from nil-site",
+    "pages": ["/", "/privacy", "/match", "/arizona-car-accident-phillips.html", "/car-accident-canopy.html", "/proof.html", "/ads/*"],
+    "page_rules": ["GTM-NKLD8KST on every page", "ee_* contract (cta_click, click_to_call, form_start, scroll_depth)", "LIVE = identical file in Drive Live + GitHub + public site"]
+  },
+
+  "control": {"service": "nil-intake (srv-da7rtmh5efls73eec010, repo marketingapes/nil-intake) — the control template every other domain is cloned from", "note": "leadgen_id must be accepted as string|number (Zapier sends a number)"},
+
+  "measurement": {"gtm_web": "GTM-NKLD8KST", "gtm_server": "GTM-PHFBF8D3", "ga4": "530695235 (G-9HSY1GEXZ6)", "meta_dataset": "1464576608376747 (canonical — retire 1434837438537088)", "bigquery": "lead_database.all_raw_leads_new (dedupe on leadgen_id / CallRail id) + lead_database.fb_leads_v"},
+
+  "channels": {
+    "facebook_page": {"status": "live — page 1275847145612714 (ad identity for the MVA campaign)"},
+    "instagram": {"status": "business account 17841441923245146 — link to Page still to confirm"},
+    "tiktok": {"status": "organic only — paid PI ads are banned on TikTok; advertiser 7672600493759168529"},
+    "youtube": {"status": "brand kit shipped; uploads via Make scenario"}
+  },
+
+  "comms": {"email": "sofia@nearestinjurylawyers.com", "phone": "+1 602-693-1461 (Twilio, dials + texts)", "vapi_outbound": "41ee29eb-1ea0-45b6-bd54-585e2fb91efa", "vapi_inbound": "57f80d14-772c-4ad3-a795-362390a6f556", "postal": "Nearest Injury Lawyers, a part of the Marketing Apes Network — 2020 Monte Vista Dr, Vista, CA 92083"},
+
+  "lead_lane": {"production": "Zapier 'nearestinjurylawyers.com - FB_Lead_Ads' v9 (ONE lane — never arm Make alongside)", "form": "Final_version 1788060815719671 (one form for all ads)", "buyer": "Phillips Law Group (602) 200-3976 via transfer_to_phillips v8, callerId={{customer.number}}", "overflow": "nil_recycle -> DIHAC (to wire)"},
+
+  "cta": {"primary": "Talk to Sofia / Free claim review (lead form)", "phone": "(602) 693-1461"}
+}
