@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
 
-# Preview build. Replace with "Allow: /" and add the sitemap line at cutover:
-# Sitemap: https://kylegosselin.com/sitemap.xml
+Sitemap: https://kylegosselin.com/sitemap.xml

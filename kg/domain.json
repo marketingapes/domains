@@ -2,7 +2,7 @@
   "$schema": "../DOMAINS.md",
   "domain": "kylegosselin.com",
   "tenant_id": "KG",
-  "entity": "Kyle Gosselin — founder-operator of Marketing Apes (The Builder)",
+  "entity": "Kyle Gosselin \u2014 founder-operator of Marketing Apes (The Builder)",
   "job": "Be the person behind Marketing Apes: publish the builder's proof log (what got built, what it did, what it cost) so attention lands here and Marketing Apes converts it.",
   "does_it_by": [
     "posting proof from the live system",
@@ -10,7 +10,7 @@
     "every link carries utm_source=kylegosselin.com back into BigQuery under tenant_id KG"
   ],
   "profit_path": "attention -> marketingapes.com/pricing (utm) -> Sofia demo -> trial payment (Marketing Apes QuickBooks)",
-  "status": "preview — noindex + PREVIEW banner until DNS cutover",
+  "status": "LIVE \u2014 cutover 2026-09-04 (Cloudflare CNAME -> kg-site.onrender.com; old SiteGround site retired)",
   "site": {
     "repo": "marketingapes/domains",
     "branch": "main",
@@ -20,6 +20,7 @@
     "live_url": "https://kylegosselin.com",
     "pages": [
       "/",
+      "/now/",
       "/privacy/",
       "/pay/",
       "/404.html"
@@ -29,20 +30,16 @@
       "head: dataLayer.push ee_page_context {tenant_id:'KG', domain, page_type} BEFORE the GTM snippet",
       "every .cta pushes ee_cta_click; pay button pushes ee_pay_redirect; socials push ee_social_click",
       "outbound links to marketingapes.com carry utm_source=kylegosselin.com&utm_medium=site&utm_campaign=kg-<page>",
-      "while preview: keep <meta name=robots content=noindex,nofollow> and the .build-state banner; add new pages to sitemap.xml"
+      "LIVE: no noindex, no build-state banner; add new pages to sitemap.xml"
     ]
   },
   "control": {
-    "service": "kg-control (srv-dacg0b15efls73ea8i50) — NIL control template, shadow mode, auto-deploy OFF",
-    "url": "https://kg-control.onrender.com",
-    "state": "kg-state (Render Key Value)",
-    "health": "/live ok; /health not_ready until secrets are entered (expected)",
-    "mcp": "POST /mcp once MCP_ACCESS_KEY is set"
+    "service": "kg-control (srv-dacg0b15efls73ea8i50, repo marketingapes/nil-intake) \u2014 MCP tools kg_create_page / kg_update_page / kg_unpublish_page / kg_restore_page / kg_list_live_pages; publishes to marketingapes/domains kg/ -> Render kg-site -> Drive Website/Live+Releases. index.html is protected: edit via git."
   },
   "measurement": {
     "gtm_web": "GTM-W3CTJQ (legacy tags to clean before cutover)",
     "gtm_server": "GTM-NMT76SV2",
-    "ga4": "TBD — create property for kylegosselin.com",
+    "ga4": "TBD \u2014 create property for kylegosselin.com",
     "events": [
       "ee_page_context",
       "ee_cta_click",
@@ -52,11 +49,11 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "NOT CREATED — human step",
+      "status": "NOT CREATED \u2014 human step",
       "handle": "@kylegosselin"
     },
     "instagram": {
-      "status": "NOT CREATED — link to the Page as business account",
+      "status": "NOT CREATED \u2014 link to the Page as business account",
       "handle": "@kylegosselin"
     },
     "tiktok": {
@@ -68,21 +65,21 @@
       "handle": "@kylegosselin"
     },
     "linkedin": {
-      "status": "exists (personal) — update bio + link"
+      "status": "exists (personal) \u2014 update bio + link"
     },
     "x": {
       "status": "NOT CREATED",
       "handle": "@kylegosselin"
     },
-    "publish_lane": "kg-control POST /social/publish (needs META_SYSTEM_USER_TOKEN + page ids) — until then, nothing to post to"
+    "publish_lane": "kg-control POST /social/publish (needs META_SYSTEM_USER_TOKEN + page ids) \u2014 until then, nothing to post to"
   },
   "comms": {
     "email": "none on-domain yet (SiteGround mail question open)",
     "phone": "none",
-    "vapi": "none — KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"
+    "vapi": "none \u2014 KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"
   },
   "cta": {
-    "primary": "Talk to Sofia (demo) — via marketingapes.com",
+    "primary": "Talk to Sofia (demo) \u2014 via marketingapes.com",
     "secondary": "See pricing",
     "pay": "/pay/ -> marketingapes.com/pricing until the MA pay link exists"
   },
@@ -94,13 +91,12 @@
   },
   "human_todo": [
     "create Facebook Page 'Kyle Gosselin' + link Instagram; send Page ID",
-    "enter kg-control secrets (see project doc kg-render-project-2026-09-03)",
-    "GTM-W3CTJQ legacy tag cleanup, then cutover commit (noindex off, banner off, robots Allow)",
-    "DNS apex + www -> Render; Search Console verify"
+    "Search Console verify kylegosselin.com",
+    "GA4 property for kylegosselin.com -> replace GTM-W3CTJQ legacy tags"
   ],
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   }
 }
