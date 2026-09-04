@@ -49,12 +49,12 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "NOT CREATED \u2014 human step",
-      "handle": "@kylegosselin"
+      "status": "exists \u2014 Page 257753357643105 (kylepractor) \u2014 rename to 'Kyle Gosselin' pending",
+      "publish_lane": "Make social_post lane with page_id=257753357643105"
     },
     "instagram": {
-      "status": "NOT CREATED \u2014 link to the Page as business account",
-      "handle": "@kylegosselin"
+      "status": "link business IG to the Page, then add ig_id here",
+      "publish_lane": "Make social_post lane, post_ig=yes once ig_id exists"
     },
     "tiktok": {
       "status": "NOT CREATED",
@@ -71,7 +71,7 @@
       "status": "NOT CREATED",
       "handle": "@kylegosselin"
     },
-    "publish_lane": "kg-control POST /social/publish (needs META_SYSTEM_USER_TOKEN + page ids) \u2014 until then, nothing to post to"
+    "publish_lane": "Make social_post lane (lanes.social_post); kg-control social tools need a Make adapter (not built)"
   },
   "comms": {
     "email": "none on-domain yet (SiteGround mail question open)",

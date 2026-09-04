@@ -2,7 +2,7 @@
   "$schema": "../DOMAINS.md",
   "domain": "nearestinjurylawyers.com",
   "tenant_id": "NIL",
-  "entity": "Nearest Injury Lawyers — a free attorney-matching service (not a law firm). Persona: Sofia, A.I. assistant.",
+  "entity": "Nearest Injury Lawyers \u2014 a free attorney-matching service (not a law firm). Persona: Sofia, A.I. assistant.",
   "job": "Connect injured people with firms likely to take their claim.",
   "does_it_by": [
     "finds people through ads (Meta lead ads, NIL page identity, BTL ad account)",
@@ -10,12 +10,12 @@
     "routes them (warm transfer to the buyer firm with the caller's real number; overflow -> DIHAC / catalog)"
   ],
   "profit_path": "ad spend -> lead -> Sofia qualified -> transferred to firm -> retainer sent -> SIGNED case (the scoreboard). CAPI-for-Leads feeds TransferredToFirm/SofiaQualified back to Meta.",
-  "status": "LIVE — reference implementation (domain #1)",
+  "status": "LIVE \u2014 reference implementation (domain #1)",
   "site": {
     "repo": "marketingapes/nil-site",
     "branch": "main",
     "folder": ".",
-    "render_service": "nil-site-staging (rename to nil-site-prod pending) — Render hosts the live domain",
+    "render_service": "nil-site-staging (rename to nil-site-prod pending) \u2014 Render hosts the live domain",
     "live_url": "https://nearestinjurylawyers.com",
     "mirror_note": "nil/ in marketingapes/domains is an older package copy; the live site deploys from nil-site",
     "pages": [
@@ -34,25 +34,27 @@
     ]
   },
   "control": {
-    "service": "nil-intake (srv-da7rtmh5efls73eec010, repo marketingapes/nil-intake) — the control template every other domain is cloned from",
-    "note": "leadgen_id must be accepted as string|number (Zapier sends a number)"
+    "service": "nil-intake (srv-da7rtmh5efls73eec010, repo marketingapes/nil-intake) \u2014 the control template every other domain is cloned from",
+    "note": "leadgen_id must be accepted as string|number (Zapier sends a number)",
+    "mcp": "nil-intake /mcp \u2014 tools nil_create_page / nil_update_page / nil_unpublish_page / nil_restore_page / nil_list_live_pages / nil_gtm_status / nil_intake_get_health / nil_intake_get_lead_timeline / nil_social_*; live site repo marketingapes/nil-site; index.html protected (git)"
   },
   "measurement": {
     "gtm_web": "GTM-NKLD8KST",
     "gtm_server": "GTM-PHFBF8D3",
-    "ga4": "530695235 (G-9HSY1GEXZ6)",
-    "meta_dataset": "1464576608376747 (canonical — retire 1434837438537088)",
-    "bigquery": "lead_database.all_raw_leads_new (dedupe on leadgen_id / CallRail id) + lead_database.fb_leads_v"
+    "ga4": "530695235 (G-00VYXSCGR8) \u2014 single stream; G-9HSY1GEXZ6 retired 2026-09-04",
+    "meta_dataset": "1464576608376747 (canonical \u2014 retire 1434837438537088)",
+    "bigquery": "lead_database.all_raw_leads_new (dedupe on leadgen_id / CallRail id) + lead_database.fb_leads_v",
+    "gtm_note": "web GTM-NKLD8KST: one Google tag + one ee_* passthrough GA4 event; server GTM-PHFBF8D3: GA4 forward + TikTok EAPI. Site pushes {tenant_id,brand,domain_id,page_type} before GTM on every page."
   },
   "channels": {
     "facebook_page": {
-      "status": "live — page 1275847145612714 (ad identity for the MVA campaign)"
+      "status": "live \u2014 page 1275847145612714 (ad identity for the MVA campaign)"
     },
     "instagram": {
-      "status": "business account 17841441923245146 — link to Page still to confirm"
+      "status": "business account 17841441923245146 \u2014 link to Page still to confirm"
     },
     "tiktok": {
-      "status": "organic only — paid PI ads are banned on TikTok; advertiser 7672600493759168529"
+      "status": "organic only \u2014 paid PI ads are banned on TikTok; advertiser 7672600493759168529"
     },
     "youtube": {
       "status": "brand kit shipped; uploads via Make scenario"
@@ -63,10 +65,10 @@
     "phone": "+1 602-693-1461 (Twilio, dials + texts)",
     "vapi_outbound": "41ee29eb-1ea0-45b6-bd54-585e2fb91efa",
     "vapi_inbound": "57f80d14-772c-4ad3-a795-362390a6f556",
-    "postal": "Nearest Injury Lawyers, a part of the Marketing Apes Network — 2020 Monte Vista Dr, Vista, CA 92083"
+    "postal": "Nearest Injury Lawyers, a part of the Marketing Apes Network \u2014 2020 Monte Vista Dr, Vista, CA 92083"
   },
   "lead_lane": {
-    "production": "Zapier 'nearestinjurylawyers.com - FB_Lead_Ads' v9 (ONE lane — never arm Make alongside)",
+    "production": "Zapier 'nearestinjurylawyers.com - FB_Lead_Ads' v9 (ONE lane \u2014 never arm Make alongside)",
     "form": "Final_version 1788060815719671 (one form for all ads)",
     "buyer": "Phillips Law Group (602) 200-3976 via transfer_to_phillips v8, callerId={{customer.number}}",
     "overflow": "nil_recycle -> DIHAC (to wire)"
@@ -76,8 +78,8 @@
     "phone": "(602) 693-1461"
   },
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   }
 }

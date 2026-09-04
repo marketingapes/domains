@@ -8,7 +8,7 @@ money, where its site deploys, what it measures, which channels it owns, and wha
 |---|---|---|---|---|
 | NIL | nearestinjurylawyers.com | `nil/` (live site deploys from repo `marketingapes/nil-site`) | connect injured people with firms likely to take their claim — finds via ads, qualifies via Sofia, routes via warm transfer | LIVE |
 | MA | marketingapes.com | `ma/` | sell the machine — Sofia demo in 60s, then the 30-day trial payment | preview |
-| KG | kylegosselin.com | `kg/` | the builder's proof log — attention lands here, Marketing Apes converts it | preview |
+| KG | kylegosselin.com | `kg/` | the builder's proof log — attention lands here, Marketing Apes converts it | LIVE (Render, 2026-09-04) |
 | BTL | besttortlawyers.com | `btl/` | the network brand firms market under — mass tort + specialty; portal | preview |
 | DIHAC | doihaveaclaim.ai | `dihac/` | AI legal directory — names the right lawyer type; NIL overflow destination | preview |
 | LFMA | lawfirmmarketingapes.com | `lfma/` | firm front door — order/demo → portal | preview |
@@ -22,8 +22,10 @@ money, where its site deploys, what it measures, which channels it owns, and wha
 3. Write the page as `<folder>/<slug>/index.html` (clean URL). Single file, inline CSS/JS, SVG only.
 4. Every button = `class="cta"` with `data-cta-id`. Links to other domains carry `utm_source=<domain>`.
 5. Add the URL to `<folder>/sitemap.xml`. Keep `noindex` + preview banner while `status` is preview.
-6. Commit to `main` (GitHub tool, one file per commit, message `<TENANT>: <what>`). Render auto-deploys
-   the static site for that folder (`publishPath = <folder>`). Verify: `curl -I <preview_url>/<slug>/` → 200.
+6. Publish through the domain's control service: `<prefix>_create_page` / `<prefix>_update_page` (nil_ / kg_ / ma_) with
+   `{action_id, approval_message, files:[{path, content}]}` — it commits to `main`, waits for the Render deploy, mirrors to
+   Drive Website/Live + Releases, and verifies the public URL. `index.html` is protected: change the homepage via git.
+   Fallback when a control service is down: GitHub tool commit, one file per commit, message `<TENANT>: <what>`.
 7. Append a line to the domain's Drive `Website/Releases` (or the project decisions log) — what shipped, commit, URL.
 
 **"Post across all channels for <domain>"**
@@ -31,8 +33,8 @@ money, where its site deploys, what it measures, which channels it owns, and wha
 2. Draft once, adapt per channel (FB long, IG caption ≤2,200 + hashtags, TikTok/YT title+desc, X ≤280, LinkedIn pro tone).
    Link = the domain's page with `utm_source=<platform>&utm_medium=social&utm_campaign=<tenant>-social`.
 3. Approval gate: manual approval first (standing rule). Show Kyle the drafts; publish on his go.
-4. Publish through the channel's `publish_lane` in the manifest (NIL/KG: `<tenant>-control POST /social/publish` once keys exist;
-   MA today: Zapier Instagram publish is reachable, Facebook Pages auth is dead — reconnect).
+4. Publish through the Make `social_post` lane (lanes.social_post) with the domain's `page_id` / `ig_id` from `channels`.
+   The control-service social tools (`<prefix>_publish_social_post`) need a Make adapter that speaks their contract — not built yet.
 5. Receipt: write `{tenant_id, platform, post_id, url, ts}` to the domain's `Social/<channel>/Receipts` Drive folder + BigQuery.
 
 **"Add a channel / number / inbox to <domain>"** → follow `claude/domain-roadmap.md` stages 0–2. Update `domain.json` when it exists.
@@ -46,6 +48,16 @@ Every `domain.json` carries these under `lanes`. Any AI on any domain fires them
 - `campaign_order`: POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/
 
 Every lane writes a row to OUTBOUND MESSAGE LEDGER (sheet 1bCw7-S6gfbXSurwWmMtn1ZaIkJHc_h6Lgy4h1mHqewU). Sheets = human-read; BigQuery = system-written (mirror to BigQuery as lanes mature).
+
+## Control services (one codebase, one per domain)
+
+| domain | service | tool prefix | site repo/folder |
+|---|---|---|---|
+| NIL | nil-intake | `nil_` | marketingapes/nil-site (root) |
+| KG | kg-control | `kg_` | marketingapes/domains `kg/` |
+| MA | ma-control | `ma_` | marketingapes/domains `ma/` |
+
+Env contract per service (names are literal, never rename): DOMAIN_ID, CANONICAL_DOMAIN, MCP_TOOL_PREFIX, WEBSITE_VERIFY_MARKER, WEBSITE_REPO_ROOT, WEBSITE_PUBLISH_KEY, MCP_ACCESS_KEY, NIL_GITHUB_OWNER/REPO/BRANCH/TOKEN, NIL_RENDER_SITE_SERVICE_ID, NIL_DRIVE_{LIVE,RELEASES,ARCHIVE}_FOLDER_ID, RENDER_API_KEY, REDIS_URL, GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/google-gtm.json (+ that secret file). Secrets live only in Render.
 
 ## Rules that hold on every domain
 - `tenant_id` on every event, every row, every receipt — from the first one.
