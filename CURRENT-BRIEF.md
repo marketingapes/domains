@@ -40,6 +40,16 @@ Scoring: 0 = CUT · 1 = PARK · 3 = RUN · 5 = ATTACK.
 
 No “I think.” No “should be.” No “probably live.” Built / verified / measured / reusable / revenue-connected — or it sits.
 
+## 1c. PASS billing (Drive owns process, QBO prints)
+
+We are not a SaaS company. We sell a **process as a software service**. Google Drive is the anti-SaaS source of truth. QuickBooks is the printer so the books look Fortune-5000.
+
+SKU catalog: Drive MONEY + sheet `PASS SKU CATALOG`.
+Items: LEE-SNAP $5k · LEE-CAMP $5k · LEE-PILOT-25/50 · LEE-SEAT-MO $2.5k (after a pilot) · MEDIA-FUND = liability 2200, never income.
+No discount line. Ads off our card. ACH on invoices > $2k. Do not rewrite 1238.
+
+Grok cannot write QBO (Intuit is on ChatGPT). ChatGPT applies the catalog. Kyle enables ACH.
+
 ## 2. Active offers
 
 Three levels. Do not invent a fourth.
