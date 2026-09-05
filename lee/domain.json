@@ -1,0 +1,27 @@
+{
+  "domain": "legalevolutionengine.com",
+  "tenant_id": "LEE",
+  "entity": "Legal Evolution Engine — named product offer. Not a consumer site. Not a law firm.",
+  "job": "Sell Snapshot → Pilot → Founder-led. Signed cases are the scoreboard.",
+  "status": "preview on Render lee-site-2rwl; DNS not registered/flipped; noindex until DNS",
+  "site": {
+    "repo": "marketingapes/domains",
+    "folder": "lee",
+    "preview_url": "https://lee-site-2rwl.onrender.com/",
+    "live_url": "https://legalevolutionengine.com/",
+    "pages": ["/"]
+  },
+  "cta": {
+    "primary": "Request a Legal Engine Snapshot",
+    "hook": "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi"
+  },
+  "measurement": {
+    "gtm_web": "GTM-NWVHNTVK (borrowed from LFMA until LEE has its own — measured fact, not ideal)",
+    "events": ["ee_page_context", "ee_cta_click", "ee_snapshot_request"]
+  },
+  "who": "law firms that can report outcomes",
+  "want": "signed cases, not more leads",
+  "action": "paid Snapshot request",
+  "money": "$5,000 invoice after fit",
+  "proves": "the engine is a product, not a chat"
+}

@@ -1,7 +1,7 @@
 # CURRENT-BRIEF.md
 
 Living file. Every AI reads this before touching anything.
-Updated: 2026-09-05 by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
+Updated: 2026-09-05 (boolean lock) by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
 
 ## 1. Mission
 
@@ -19,6 +19,26 @@ The bar we are digging toward (not pretending we are there today):
 Kyle’s direct time is not cheap. We still sell entry points. We do not act like the work is small.
 
 Every project must create at least one: case study, dashboard, campaign result, reusable playbook, buyer conversation, signed contract, or leverage asset. No random work.
+
+## 1b. Boolean law (operating OS)
+
+Right/wrong is not confidence. It is measurement.
+
+Hypothesis → Action → Measurement → Result → Adjustment → Repeat.
+
+Five gates. Every chat, plugin, schedule, site, domain, idea, campaign:
+
+| Gate | Question |
+|---|---|
+| MONEY | Does it create cash, a buyer, a proposal, a pilot, or a deal? |
+| PROOF | Does it make the engine more believable with a live URL, result, demo, or case? |
+| SYSTEM | Does it make tomorrow easier (template, wire, brief, reusable play)? |
+| TRACKABLE | Can we see an event with tenant_id + lead_id or a receipt? |
+| REPEATABLE | Can another AI run it from this file without guessing? |
+
+Scoring: 0 = CUT · 1 = PARK · 3 = RUN · 5 = ATTACK.
+
+No “I think.” No “should be.” No “probably live.” Built / verified / measured / reusable / revenue-connected — or it sits.
 
 ## 2. Active offers
 
@@ -39,7 +59,34 @@ Scarcity line:
 
 > I’m not trying to work with everyone. I’m building the Legal Evolution Engine with a small number of firms that can move fast, report outcomes, and understand that signed cases are the scoreboard.
 
-## 3. Active domains
+## 3. Boolean board (measured 2026-09-05)
+
+`curl` + git. Not belief.
+
+| Thing | M | P | S | T | R | Score | Call |
+|---|---|---|---|---|---|---|---|
+| NIL Sofia talk | T | T | T | T | T | 5 | ATTACK — live CF+Render |
+| LFMA `/engine/` Snapshot | T | T | T | T | T | 5 | ATTACK — [lfma-site.onrender.com/engine/](https://lfma-site.onrender.com/engine/) |
+| LEE preview | T | T | T | T* | T | 4 | RUN — [lee-site-2rwl.onrender.com](https://lee-site-2rwl.onrender.com/) noindex, borrowed LFMA GTM, DNS not live |
+| DIHAC Sofia | F | T | T | T | T | 4 | RUN — preview URL |
+| LFMA Sofia | T | T | T | T | T | 5 | ATTACK — demo on offer path |
+| MA `/order/` | T | T | T | T | T | 5 | ATTACK |
+| BTL site | T | T | T | ? | T | 3 | RUN — DNS last |
+| KG site | F | T | T | ? | T | 2–3 | RUN as founder brand, not legal cash |
+| NIL-intake PR #16 | T | T | T | T | T | 5 | ATTACK when Kyle merges — not production yet |
+| Make 6145362 Snapshot/order | T | T | T | T | T | 5 | ATTACK |
+| Make Sofia email 6144825 | T | T | T | T | T | 4 | RUN — human-gated send |
+| Cloudflare Workers/Wrangler | F | F | F | F | F | 0 | CUT until cutover stable |
+| LFMA HTML-Tools 01–10 | F | F | F | F | T | 1 | PARK |
+| TNT / Black Friday / 15% share | T | F | F | F | F | 1 | PARK — legal cash first |
+| AI Night League | F | F | F | F | F | 0 | CUT until a connected system exists |
+| $750K EOY | — | — | — | — | — | — | scoreboard, not a play |
+| Ads ON | F | F | F | F | F | 0 | CUT until Kyle says + qualify events live |
+| Invent `signed` event | F | F | F | F | F | 0 | CUT — no source of truth |
+
+\* LEE tracking is TRUE only as `ee_snapshot_request` into LFMA’s GTM. Own container = FALSE until assigned.
+
+## 3b. Active domains
 
 | tenant_id | domain | job | verified live |
 |---|---|---|---|
@@ -49,6 +96,7 @@ Scarcity line:
 | LFMA | lawfirmmarketingapes.com | firm front door, sells the engine | `lfma-site.onrender.com` + this repo `lfma/` |
 | MA | marketingapes.com | sell the machine / order | `/order/` live → Make 6145362 |
 | KG | kylegosselin.com | founder/operator brand | kg-site.onrender.com |
+| LEE | legalevolutionengine.com | named product / Snapshot | **preview** https://lee-site-2rwl.onrender.com/ — DNS not flipped, noindex |
 
 DNS cut order (do not skip): **DIHAC → NIL → LFMA → BTL last**.
 
@@ -67,9 +115,12 @@ Live demos:
 - Make wires (POST JSON, no AI inside): social 6145431, NIL Sofia email 6144825, campaign order 6145362
 - This file + LFMA `/engine/` Snapshot offer
 - Sofia copied onto DIHAC + LFMA faces in `marketingapes/domains` (same brain, brand GTM/canonical)
+- LEE standalone offer: `lee/index.html` commit `d781c4f` → https://lee-site-2rwl.onrender.com/ (200, tenant LEE, noindex, canonical legalevolutionengine.com)
+- nil-intake **PR #16 OPEN** (not merged): Vapi status-update start/end → 200 ignore; qualify/transfer still on same `lead_id`
 
-**Not shipped:**
-- Codex: Vapi start/end without structuredData + Make POST after `qualification.completed` on `marketingapes/nil-intake` (PR, not main)
+**Not shipped / not verified:**
+- Make POST after `qualification.completed` (still missing)
+- Cloudflare Workers / Wrangler — **do not add** until cutover is stable
 - Cloudflare Workers / Wrangler — **do not add** until cutover is stable
 - Meta spend, real lead contact, signed-case writeback from Phillips/Canopy
 - `$1M` as a buyable SKU
@@ -85,8 +136,10 @@ Not: clicks, likes, CPL vanity, “looks good”.
 | Qualified / transferred server events | Partial in nil-intake (end-of-call structured only) |
 | Signed event | **NONE** — do not invent |
 | Ads | **OFF** until Kyle says |
-| Snapshot offer page | `/engine/` on LFMA (this commit) |
-| Buyer conversation today | Snapshot request → BUYER BOARD + Kyle email |
+| Snapshot offer page | TRUE — LFMA `/engine/` and LEE preview |
+| Buyer conversation | Snapshot form → Make 6145362 (not re-tested tonight) |
+| Signed | FALSE |
+| Ads | FALSE |
 
 ## 6. Open blockers
 
@@ -112,16 +165,18 @@ Not: clicks, likes, CPL vanity, “looks good”.
 
 ## 8. Last verified state
 
-- 2026-09-05: `curl` NIL talk page → v7 adaptive intake, Cloudflare HIT, legal copy on DIHAC/LFMA skins
-- nil-intake Vapi callback exists: `POST /api/v1/nil/providers/vapi/callback` — qualify/transfer yes; start/end/signed no
-- Campaign order hook tested historically via marketingapes.com/order/
+- 2026-09-05 `curl`: NIL / DIHAC / LFMA talk pages 200 + `talk-v7-adaptive-intake`
+- 2026-09-05 `curl`: `https://lee-site-2rwl.onrender.com/` 200, title Snapshot, `tenant_id:'LEE'`, `noindex`, GTM-NWVHNTVK (LFMA container)
+- 2026-09-05 `curl`: `https://lfma-site.onrender.com/engine/` 200 Snapshot
+- 2026-09-05: `lawfirmmarketingapes.com/engine/` 404 (old nginx — DNS)
+- 2026-09-05: `gh pr view 16` marketingapes/nil-intake = **OPEN**, not merged
+- Claude overnight SMS to Joe/Deborah/623: **UNVERIFIED in this session**. Do not treat as evidence until Twilio receipts are re-read. Human-gated. Tuesday 623 call remains Kyle’s if that lead is real.
 
-## 9. Next play
+## 9. Next play (first attack)
 
-1. **Kyle:** paste Codex prompt (nil-intake Vapi start/end + Make after qualify). Do not push main.
-2. **Grok (this commit):** CURRENT-BRIEF + LFMA engine Snapshot page + homepage CTA alignment.
-3. After legal OK + Kyle go: copy Sofia shell onto DIHAC/LFMA faces.
-4. Film review: one money dent, one proof dent, one system dent, one lesson saved.
+Boolean 5/5 waiting on a human gate: **merge [nil-intake PR #16](https://github.com/marketingapes/nil-intake/pull/16)** so Sofia start/end stops 422-retrying. Then register `legalevolutionengine.com` so LEE leaves noindex.
+
+Do not: ads, signed events, Night League, TNT, Wrangler, second OS.
 
 ---
 
@@ -183,3 +238,5 @@ Film review: shipped / failed / changed / learned.
 Next brief: update this file so the next AI can pick up clean.
 
 The AI that produces evidence plays. The AI that guesses sits.
+
+Boolean everything. Measure truth. Compound the winners. Cut the rest.
