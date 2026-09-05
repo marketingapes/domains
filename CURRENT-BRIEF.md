@@ -1,7 +1,9 @@
 # CURRENT-BRIEF.md
 
 Living file. Every AI reads this before touching anything.
-Updated: 2026-09-05 (boolean lock) by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
+Updated: 2026-09-05 (Friday fail line + dummy charge) by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
+
+**Hard fail:** if Marketing Apes has not collected or contractually locked **≥$100,000 by Friday 2026-09-11**, this operator path has failed and Kyle takes a full-time job. No Night League, no TNT, no extra OS. Cash or it is over.
 
 ## 1. Mission
 
@@ -49,6 +51,21 @@ Items: LEE-SNAP $5k · LEE-CAMP $5k · LEE-PILOT-25/50 · LEE-SEAT-MO $2.5k (aft
 No discount line. Ads off our card. ACH on invoices > $2k. Do not rewrite 1238.
 
 Grok cannot write QBO (Intuit is on ChatGPT). ChatGPT applies the catalog. Kyle enables ACH.
+
+## 1d. Dummy charge (never again)
+
+A dummy charge is money paid because the platform understood the meter better than we did. OpenAI ~$300/3 days was ChatGPT Business credits + auto-reload, not “AI is bad.” Google Cloud, ads, Zapier tasks, Twilio auto-recharge, QBO card fees are the same pattern.
+
+Before any meter gets money:
+1. What triggers cost?
+2. What is the cap?
+3. What is the stop switch?
+4. What is the revenue path?
+5. What is the expected return?
+
+If any answer is false, we do not scale it.
+
+App chats (ChatGPT / Claude / Grok) = thinking. API = production only, capped, logged, revenue-tied. Claude fixing OG NIL is the right tool. Do not use OpenAI API as a thinking room. Auto-reload stays OFF.
 
 ## 2. Active offers
 
