@@ -52,8 +52,11 @@ Scarcity line:
 
 DNS cut order (do not skip): **DIHAC → NIL → LFMA → BTL last**.
 
-Sofia skins (same file, `?brand=`): NIL blue · DIHAC purple · LFMA gold.
-Live demo: https://nearestinjurylawyers.com/talk-to-sofia.html?brand=lfma
+Sofia skins (same file, hostname or `?brand=`): NIL blue · DIHAC purple · LFMA gold.
+Live demos:
+- NIL https://nearestinjurylawyers.com/talk-to-sofia.html
+- DIHAC https://dihac-site.onrender.com/talk-to-sofia.html
+- LFMA https://lfma-site.onrender.com/talk-to-sofia.html
 
 ## 4. Current build state
 
@@ -63,10 +66,10 @@ Live demo: https://nearestinjurylawyers.com/talk-to-sofia.html?brand=lfma
 - Page events: `ee_talk_view`, `ee_voice_start`, `ee_voice_connected`, `ee_voice_end`, `ee_call_click`, `ee_chat_click`, `ee_type_instead_click`
 - Make wires (POST JSON, no AI inside): social 6145431, NIL Sofia email 6144825, campaign order 6145362
 - This file + LFMA `/engine/` Snapshot offer
+- Sofia copied onto DIHAC + LFMA faces in `marketingapes/domains` (same brain, brand GTM/canonical)
 
 **Not shipped:**
 - Codex: Vapi start/end without structuredData + Make POST after `qualification.completed` on `marketingapes/nil-intake` (PR, not main)
-- Sofia copied onto DIHAC/LFMA Render faces (preview via `?brand=` only)
 - Cloudflare Workers / Wrangler — **do not add** until cutover is stable
 - Meta spend, real lead contact, signed-case writeback from Phillips/Canopy
 - `$1M` as a buyable SKU
