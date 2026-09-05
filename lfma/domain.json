@@ -20,6 +20,7 @@
     "live_url": "https://lawfirmmarketingapes.com",
     "pages": [
       "/",
+      "/engine/",
       "/about.html",
       "/contact.html",
       "/seo.html",
@@ -66,8 +67,8 @@
     "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   },
   "cta": {
-    "primary": "Order a campaign → marketingapes.com/order/",
-    "secondary": "Reply DEMO — Sofia calls you"
+    "primary": "Request a Legal Engine Snapshot → /engine/",
+    "secondary": "Talk to Sofia live demo → nearestinjurylawyers.com/talk-to-sofia.html?brand=lfma"
   },
   "drive": {
     "root": "Evolution Engine Drive Old-Archive/Web/LawFirmMarketingApes/Web/Live/1.0/"

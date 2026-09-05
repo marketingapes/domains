@@ -7,6 +7,8 @@
 Law Firm Marketing Apes (LFMA) is the firm-facing offer from Marketing Apes LLC. If a firm needs leads, they tell us intake rules and schedule. We customize the stack and run the campaign. If they want the keys, they buy the system.
 
 Canonical page: https://lawfirmmarketingapes.com/
+Offer page: https://lawfirmmarketingapes.com/engine/
+Primary CTA: Request a Legal Engine Snapshot (paid diagnostic, not a free call).
 
 ## What this site is not
 
