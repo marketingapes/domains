@@ -172,11 +172,22 @@ Not: clicks, likes, CPL vanity, “looks good”.
 - 2026-09-05: `gh pr view 16` marketingapes/nil-intake = **OPEN**, not merged
 - Claude overnight SMS to Joe/Deborah/623: **UNVERIFIED in this session**. Do not treat as evidence until Twilio receipts are re-read. Human-gated. Tuesday 623 call remains Kyle’s if that lead is real.
 
-## 9. Next play (first attack)
+## 9. Next play (winner out plays first)
 
-Boolean 5/5 waiting on a human gate: **merge [nil-intake PR #16](https://github.com/marketingapes/nil-intake/pull/16)** so Sofia start/end stops 422-retrying. Then register `legalevolutionengine.com` so LEE leaves noindex.
+Cash week. **≥$100k by EONW** or the week fails. Software cuts do not produce $100k. Named invoices do.
 
-Do not: ads, signed events, Night League, TNT, Wrangler, second OS.
+Batting order (do not skip):
+
+1. **Torticity / Jill** — already paid Inv 1239 $10k. Sofia live. Empty draft was sitting since Aug 25; Grok filled it (NOT sent). Kyle sends or calls. This is the one-close path if she still wants the larger seat.
+2. **Gordon** — unsent drafts rewritten to prepaid invoice (Robert + Gabe). Send if Kyle still wants that YES.
+3. **Collect** Inv 1240 $2,250 if it has not landed. One follow-up on 1238 only — no second invoice.
+4. **Phillips** — live paying buyer. Do not pitch a free demo. Expansion / mass-tort prepaid only after today’s Litify follow-up is clean. No invented `signed`.
+5. **HHK / Nadrich / LegalCalls / Canopy** — YES list. HHK + LegalCalls already got the Sep 3 demo mail. Next touch is invoice, not another “want to see it.”
+6. **Then** 20-min software cap: OpenAI auto-reload OFF, Zapier no upgrade, Twilio auto-recharge OFF, cancel Leonardo, pause Supermetrics, suspend dead Render. Cut list: Drive `GROK — CASH WEEK CUT LIST + $100K EONW`.
+
+Human-gated after money: merge [nil-intake PR #16](https://github.com/marketingapes/nil-intake/pull/16), then register `legalevolutionengine.com`. Domain is not the first at-bat.
+
+Do not: ads, signed events, Night League, TNT, Wrangler, second OS, Ibay, second 1238.
 
 ---
 
