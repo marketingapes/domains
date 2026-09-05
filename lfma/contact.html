@@ -269,8 +269,9 @@ document.getElementById('agency-contact-form').addEventListener('submit', functi
     EE.sendToWebhook('form_submit', 'agency_contact_form', data);
     EE.pushEvent('form_submit', {form_name: 'agency_contact_form'});
   }
-  fetch('https://hooks.zapier.com/hooks/catch/2296909/unfhmjw/', {
+  fetch('https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi', {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   }).catch(function(){});
   setTimeout(function() { window.location.href = 'thank-you.html'; }, 500);

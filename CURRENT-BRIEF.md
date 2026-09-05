@@ -68,10 +68,11 @@ Scarcity line:
 | NIL Sofia talk | T | T | T | T | T | 5 | ATTACK — live CF+Render |
 | LFMA `/engine/` Snapshot | T | T | T | T | T | 5 | ATTACK — [lfma-site.onrender.com/engine/](https://lfma-site.onrender.com/engine/) |
 | LEE preview | T | T | T | T* | T | 4 | RUN — [lee-site-2rwl.onrender.com](https://lee-site-2rwl.onrender.com/) noindex, borrowed LFMA GTM, DNS not live |
-| DIHAC Sofia | F | T | T | T | T | 4 | RUN — preview URL |
+| DIHAC Sofia | T | T | T | T | T | 5 | ATTACK — live `doihaveaclaim.ai` + Render skin |
 | LFMA Sofia | T | T | T | T | T | 5 | ATTACK — demo on offer path |
-| MA `/order/` | T | T | T | T | T | 5 | ATTACK |
-| BTL site | T | T | T | ? | T | 3 | RUN — DNS last |
+| MA `/order/` | T | F | T | T | T | 3 | RUN file exists `domains/ma/order/` — **canonical URLs 404** (`marketingapes.com/order/`, `ma-site.onrender.com/order/`). Snapshot money path is LFMA `/engine/` until MA publishes. |
+| ma-site.onrender.com stub | F | F | F | F | F | 0 | CUT — untitled login form, not the company site |
+| BTL site | T | T | T | ? | T | 4 | RUN — `besttortlawyers.com` **200** (DNS already live, not “last”) |
 | KG site | F | T | T | ? | T | 2–3 | RUN as founder brand, not legal cash |
 | NIL-intake PR #16 | T | T | T | T | T | 5 | ATTACK when Kyle merges — not production yet |
 | Make 6145362 Snapshot/order | T | T | T | T | T | 5 | ATTACK |
@@ -91,19 +92,19 @@ Scarcity line:
 | tenant_id | domain | job | verified live |
 |---|---|---|---|
 | NIL | nearestinjurylawyers.com | MVA qualifier ads front door | **YES** — Sofia Adaptive Intake at `/talk-to-sofia.html` behind Cloudflare, Render origin |
-| BTL | besttortlawyers.com | operating unit + network brand | Render static `btl-site`; DNS cut last |
-| DIHAC | doihaveaclaim.ai | national qualifier / test brand | `dihac-site.onrender.com` |
-| LFMA | lawfirmmarketingapes.com | firm front door, sells the engine | `lfma-site.onrender.com` + this repo `lfma/` |
-| MA | marketingapes.com | sell the machine / order | `/order/` live → Make 6145362 |
-| KG | kylegosselin.com | founder/operator brand | kg-site.onrender.com |
+| BTL | besttortlawyers.com | operating unit + network brand | **YES** — `besttortlawyers.com` 200 (already on the live face; do not treat as “DNS last”) |
+| DIHAC | doihaveaclaim.ai | national qualifier / test brand | **YES** — `doihaveaclaim.ai` 200 Talk with Sofia |
+| LFMA | lawfirmmarketingapes.com | firm front door, sells the engine | `lfma-site.onrender.com` 200; **apex `/engine/` 404** (old nginx) — use Render URL until DNS |
+| MA | marketingapes.com | sell the machine / order | apex 200 old EE page; **`/order/` 404**; `ma-site.onrender.com` is a stub. File lives in repo `ma/order/` |
+| KG | kylegosselin.com | founder/operator brand | **YES** — kylegosselin.com 200 |
 | LEE | legalevolutionengine.com | named product / Snapshot | **preview** https://lee-site-2rwl.onrender.com/ — DNS not flipped, noindex |
 
-DNS cut order (do not skip): **DIHAC → NIL → LFMA → BTL last**.
+DNS remaining: **LFMA apex `/engine/` still 404** (SiteGround nginx). LEE not registered. Do not add Workers. Do not unsuspend old evolutionengine.
 
 Sofia skins (same file, hostname or `?brand=`): NIL blue · DIHAC purple · LFMA gold.
 Live demos:
 - NIL https://nearestinjurylawyers.com/talk-to-sofia.html
-- DIHAC https://dihac-site.onrender.com/talk-to-sofia.html
+- DIHAC https://doihaveaclaim.ai/ (apex home is Sofia; `/talk-to-sofia.html` 404 on apex) · Render https://dihac-site.onrender.com/talk-to-sofia.html
 - LFMA https://lfma-site.onrender.com/talk-to-sofia.html
 
 ## 4. Current build state
