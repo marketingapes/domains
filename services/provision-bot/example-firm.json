@@ -1,0 +1,10 @@
+{
+  "firm_name": "Example Injury Law",
+  "buyer_id": "example",
+  "transfer_number": "+16025550100",
+  "states": ["Arizona", "Nevada"],
+  "accepted": ["car accident", "truck accident", "motorcycle accident", "slip and fall", "dog bite"],
+  "turned_down": ["medical malpractice", "workers compensation", "mass tort"],
+  "hours": "24/7",
+  "language": "both"
+}
