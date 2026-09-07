@@ -2,12 +2,12 @@
   "$schema": "../DOMAINS.md",
   "domain": "marketingapes.com",
   "tenant_id": "MA",
-  "entity": "Marketing Apes \u2014 the Anti-Agency Agency. You don't need an agency. You need a system, a process, and AI.",
-  "job": "Sell the machine: take a prospect from 'show me' to paid \u2014 Sofia demo call in 60 seconds, then the 30-day trial payment.",
+  "entity": "Marketing Apes \u2014 domain, campaign, and AI systems operator",
+  "job": "Operate client domains, ads, landing pages, lead response, follow-up, and reporting as members of the Marketing Apes network.",
   "does_it_by": [
-    "demo: prospect enters a number -> Sofia DEMO calls -> qualifies -> warm-transfers to Kyle",
-    "pricing page with the trial tiers and a pay link",
-    "proof pulled from the live NIL system"
+    "Guided system planner produces a useful downloadable 30-day outline",
+    "Client keeps its brand and domain; Marketing Apes operates the agreed growth workflow",
+    "Explicit email handoff to Kyle for scope and onboarding"
   ],
   "profit_path": "visit -> demo or pricing -> pay link (QuickBooks, Marketing Apes company) -> activation -> $/month per operating domain",
   "offer": {
@@ -28,7 +28,7 @@
       "unit": "per operating domain"
     }
   },
-  "status": "preview \u2014 noindex + PREVIEW banner until DNS cutover",
+  "status": "Production custom domain; network homepage release September 2026",
   "site": {
     "repo": "marketingapes/domains",
     "branch": "main",
@@ -44,11 +44,11 @@
       "/privacy/",
       "/404.html"
     ],
-    "style": "KG/NIL house tokens, SVG only, no frameworks, single-file HTML",
+    "style": "Warm paper, forest ink, lime; responsive HTML/CSS and JavaScript modules",
     "page_rules": [
-      "head: var EE_GTM_ID (single constant, currently GTM-PENDING) + EE_TENANT, then ee_page_context push, then guarded GTM loader \u2014 copy the block verbatim from index.html",
-      "every .cta pushes ee_cta_click; pay button (data-pay, data-offer-id, data-value) pushes ee_pay_redirect",
-      "while preview: keep noindex + .build-state banner; add new pages to sitemap.xml"
+      "Homepage assets under assets/network; preserve existing routes",
+      "Emit dataLayer events without implying a verified analytics destination",
+      "No simulated receipt or unverified live Sofia call"
     ]
   },
   "control": {
@@ -61,7 +61,11 @@
     "events": [
       "ee_page_context",
       "ee_cta_click",
-      "ee_pay_redirect"
+      "ee_pay_redirect",
+      "ee_plan_generated",
+      "ee_plan_download",
+      "ee_plan_copy",
+      "ee_call_click"
     ]
   },
   "channels": {
@@ -85,27 +89,35 @@
   },
   "comms": {
     "email": "kyleg@marketingapes.com (human inbox)",
-    "phone": "none dedicated yet",
+    "phone": "+16197360356",
     "vapi": "Sofia \u2013 DEMO (602) 3f10ab95-f487-42ad-871b-7219440529f0 \u2014 transfer_to_firm -> Kyle's cell; queue sheet 'Sofia Demo Queue' 1wQtSZ57wH4sGZ6jGhzS1wZ9tM1YQ7lwbQ3DcPNvo5XQ; Zap spec in project doc demo-queue-zap-spec"
   },
   "cta": {
-    "primary": "Talk to Sofia \u2014 she calls you in 60 seconds (demo)",
-    "secondary": "Start the 30-day trial (pay link \u2014 mailto until QBO link exists)"
+    "primary": "Build my system plan",
+    "secondary": "Request a Sofia demo by email"
   },
   "drive": {
-    "root": "Evolution Engine / Domains / marketingapes.com (create if missing \u2014 mirror the KG tree)"
+    "root_id": "12p_Wgz1yl26_MvgkuClyD0fIkZ_zwjLZ",
+    "website_id": "1GCZAyho5Ajw82HakQDohVTdkQHuFJCkE",
+    "dev_id": "1_Iyhkz4dM1KF16ZlfKpCcUle3-nvMNEf",
+    "live_id": "1f8gzQqTSQgBFqEKR5i04yALK-vMAVt6S",
+    "releases_id": "1RZ-Ml2Em5nIrA-tbKN4Jch80kCQY4Axb",
+    "archive_id": "1O77jtvo-qwpyiCPxeEOJX2xDNw9mCXwd"
   },
   "human_todo": [
     "QuickBooks -> Payments -> Payment links -> multi-use $10,000 'Sofia Campaign 30-day trial' -> send URL",
     "Marketing Apes GTM container id -> EE_GTM_ID",
     "build the demo-queue Zap (8 steps, spec in project) and test on yourself",
-    "DNS apex + www -> Render at cutover",
-    "ma-control secret file google-gtm.json (Drive receipts)",
-    "DNS cutover marketingapes.com -> Render ma-site (same play as KG: Render custom domain + Cloudflare CNAME, then flip CANONICAL_DOMAIN)"
+    "ma-control secret file google-gtm.json (Drive receipts)"
   ],
   "lanes": {
     "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
     "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
     "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
-  }
+  },
+  "homepage_limits": [
+    "Guided outline, not live AI analysis",
+    "Email client handoff; user sends the request",
+    "Live Sofia call flow requires MA configuration verification"
+  ]
 }
