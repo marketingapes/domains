@@ -25,7 +25,7 @@
       "/pay/",
       "/404.html"
     ],
-    "style": "NIL house tokens (navy dot-grid, red accent), SVG only, no frameworks, single-file HTML",
+    "style": "Social Node profile/feed layout, local template theme CSS, Marketing Apes imagery, responsive personal build journal",
     "page_rules": [
       "head: dataLayer.push ee_page_context {tenant_id:'KG', domain, page_type} BEFORE the GTM snippet",
       "every .cta pushes ee_cta_click; pay button pushes ee_pay_redirect; socials push ee_social_click",
@@ -53,7 +53,7 @@
       "publish_lane": "Make social_post lane with page_id=257753357643105"
     },
     "instagram": {
-      "status": "link business IG to the Page, then add ig_id here",
+      "status": "Excluded by Kyle",
       "publish_lane": "Make social_post lane, post_ig=yes once ig_id exists"
     },
     "tiktok": {
@@ -65,7 +65,7 @@
       "handle": "@kylegosselin"
     },
     "linkedin": {
-      "status": "exists (personal) \u2014 update bio + link"
+      "status": "Make OAuth connection pending; scoped to Kyle personal profile"
     },
     "x": {
       "status": "NOT CREATED",
