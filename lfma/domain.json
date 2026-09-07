@@ -2,15 +2,15 @@
   "$schema": "../DOMAINS.md",
   "domain": "lawfirmmarketingapes.com",
   "tenant_id": "LFMA",
-  "entity": "Law Firm Marketing Apes — the legal vertical's front door for firms; home of the firm portal / Intake Desk",
-  "job": "Acquire firms: show the machine, sell the campaign, host the firm's portal login. Legal pack of the Marketing Apes platform.",
+  "entity": "Law Firm Marketing Apes \u2014 the legal vertical's front door for firms; home of the firm portal / Intake Desk",
+  "job": "Public front door for the LFMA System Portal: firm marketing, campaign planning, Sofia intake, integrations and existing-client support.",
   "does_it_by": [
-    "firm-facing pages + 10 HTML tools (ROI calculator, cost-per-case estimator, funnel visualizer …)",
+    "firm-facing pages + 10 HTML tools (ROI calculator, cost-per-case estimator, funnel visualizer \u2026)",
     "portal / Prospective View for firms (to build on the engine)",
     "outreach landing for the Monday firm campaign"
   ],
-  "profit_path": "firm visits → order/demo → paid campaign on NIL/BTL → portal keeps them",
-  "status": "preview package on Render (lfma-site); DNS not flipped; no Facebook Page",
+  "profit_path": "firm visits \u2192 order/demo \u2192 paid campaign on NIL/BTL \u2192 portal keeps them",
+  "status": "System Portal website on Render; canonical SiteGround DNS cutover awaiting access",
   "site": {
     "repo": "marketingapes/domains",
     "branch": "main",
@@ -26,7 +26,8 @@
       "/contact.html",
       "/seo.html",
       "/google-ads.html",
-      "/HTML-Tools/01…10"
+      "/HTML-Tools/01\u202610",
+      "/portal/"
     ],
     "style": "LFMA brand (own tokens)",
     "page_rules": [
@@ -48,7 +49,7 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "NOT CREATED — human step (Kyle: create LFMA Page + IG, grant to 'Kyles Facebook' Make connection)"
+      "status": "NOT CREATED \u2014 human step (Kyle: create LFMA Page + IG, grant to 'Kyles Facebook' Make connection)"
     },
     "instagram": {
       "status": "NOT CREATED"
@@ -63,13 +64,13 @@
     "vapi": "none"
   },
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   },
   "cta": {
-    "primary": "Request a Legal Engine Snapshot → /engine/",
-    "secondary": "Talk to Sofia live demo → nearestinjurylawyers.com/talk-to-sofia.html?brand=lfma"
+    "primary": "Open System Portal \u2192 /portal/",
+    "secondary": "Existing-client help \u2192 /portal/#support"
   },
   "drive": {
     "root": "Evolution Engine Drive Old-Archive/Web/LawFirmMarketingApes/Web/Live/1.0/"
@@ -77,5 +78,10 @@
   "human_todo": [
     "create Facebook Page + IG for LFMA",
     "DNS flip when ready"
-  ]
+  ],
+  "portal": {
+    "type": "Public service and support chooser",
+    "authentication": "No private login implemented",
+    "contact": "Explicit email draft to Kyle; user sends in email client"
+  }
 }
