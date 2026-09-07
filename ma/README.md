@@ -1,57 +1,55 @@
-# ma-site — marketingapes.com (lite)
+# Marketing Apes — marketingapes.com
 
-One job: sell the Sofia 30-day trial and take the $10,000 payment. Static HTML, no build step,
-no frameworks, no external CSS/JS, no raster images (SVG only). Served by Render as a static site
-from the `ma/` folder of the `marketingapes/domains` repo with folder-style clean URLs.
+Static files served from the `ma/` folder of `marketingapes/domains`. The homepage
+preserves the Evolution Engine design and content captured from the live
+marketingapes.com site on September 6, 2026, with a canonical URL and an explicit
+email contact flow replacing the original nonfunctional demo form.
 
-## Tree
+## Demo requests
+
+Homepage demo buttons navigate to `#contact`. The contact section opens the
+visitor's email app with a message addressed to `kyleg@marketingapes.com` and the
+subject `Marketing Apes Demo Request`. Visitors must send that email themselves.
+The address is also visible so visitors can copy it into their preferred email
+service. Kyle handles requests manually; the homepage has no form endpoint,
+automatic call, CRM enrollment, or submission-success message.
+
+## Files and visibility
 
 | Path | Purpose |
 |---|---|
-| `index.html` | Front door — Evolution Engine pitch, how it works, two CTAs (pricing / DEMO) |
-| `pricing/index.html` | The Sofia Campaign — $10,000 / 30 days card, pay button (mailto until the QBO payment link exists), "own the machine" card, small print |
-| `privacy/index.html` | Plain-English privacy policy (effective 2026-09-03) |
-| `404.html` | Not-found page |
-| `robots.txt` | **Disallow: /** while in preview |
-| `sitemap.xml` | `/`, `/pricing/`, `/privacy/` |
-| `favicon.svg` | MA monogram (white on navy, red dot) |
-| `site.webmanifest` | PWA manifest |
+| `index.html` | Public Evolution Engine homepage with manual email demo requests |
+| `robots.txt` | Allows the homepage; excludes unfinished pricing, order, anti-agency, and privacy routes |
+| `sitemap.xml` | Lists only the public homepage |
+| `privacy/index.html` | Existing preview policy; still noindex and excluded from the sitemap pending review |
+| `pricing/index.html`, `order/index.html`, `anti-agency/index.html` | Existing unfinished pages; retain their noindex directives and remain outside the sitemap |
+| `404.html` | Existing not-found page |
+| `favicon.svg`, `site.webmanifest` | Existing supporting assets |
 
-Design base: the kylegosselin.com / Nearest Injury Lawyers house style (same `:root` tokens, dot-grid,
-header / eyebrow / steps / cta-block / footer patterns).
+The imported homepage uses Tailwind's CDN script, Google Fonts, inline styles,
+and inline JavaScript for visual effects. It has no build step. It does not
+include the preview pages' Evolution Engine tracking code or an active analytics
+integration. Existing preview pages still contain their guarded `GTM-PENDING`
+configuration.
 
-## Measurement (Evolution Engine)
+The live-source footer's placeholder links are preserved. The privacy policy
+still has a preview banner and describes analytics and demo communications that
+do not match the homepage's manual email flow; review it before promoting it or
+adding it to the sitemap. The preview pages remain reachable directly;
+robots.txt controls crawling, not access.
 
-Every HTML page, in `<head>`, in this order:
+## Render hosting
 
-1. `var EE_GTM_ID = 'GTM-PENDING';` — the **only** place the GTM container id lives.
-   `EE_TENANT = {tenant_id:'MA', domain:'marketingapes.com'}` sits next to it.
-2. `dataLayer.push({event:'ee_page_context', tenant_id:'MA', domain:'marketingapes.com', page_type:'home'|'pricing'|'privacy'|'404'})`.
-3. The standard GTM loader, reading `EE_GTM_ID`. It is guarded and **does not load while the id is `GTM-PENDING`**,
-   so the preview never 404s against googletagmanager.com. There is no `<noscript>` iframe on purpose (single source of truth).
+- Static site: `ma-site`, repository `marketingapes/domains`, branch `main`.
+- Build command: `echo "ma static"`; publish path: `ma`.
+- Folder index files provide clean URLs; `404.html` handles missing paths.
+- Public canonical URL: `https://marketingapes.com/`.
+- Custom-domain, DNS, and TLS status must be verified separately during cutover.
 
-Click events (footer script, shared by every page):
+## Static verification
 
-- Every element with class `cta` pushes `ee_cta_click` `{cta_id, cta_text, destination, tenant_id, domain, landing_page_url}`.
-- The pay button (`data-cta-id="pay-trial"`, `data-pay`) additionally pushes `ee_pay_redirect`
-  `{cta_id, destination, offer_id:'sofia-trial-30d', value:10000, currency:'USD', tenant_id, domain, landing_page_url}`.
-
-CTA ids: `hero_pricing`, `hero_demo`, `work_pricing`, `work_demo`, `pay-trial`, `pricing_demo`, `own_talk`, `404_home`, `404_pricing`.
-
-## Render setup
-
-- Static Site `ma-site` → repo `marketingapes/domains`, branch `main`, build command `echo "ma static"`, publish path `ma`.
-- Render serves `404.html` automatically for missing paths; folder index files give clean URLs.
-- Custom domain `marketingapes.com` (+ `www` redirect) at cutover.
-
-## Cutover checklist (preview → live)
-
-- [ ] **Payment link — still TBD.** QuickBooks multi-use payment-link creation errored via MCP on 2026-09-03, so the "Start the trial — $10,000" button currently opens a pre-filled `mailto:` to kyleg@marketingapes.com (subject "Start the Sofia trial ($10,000)", body asks for state / what you don't take / intake line) and the page promises the secure link by reply within the hour. Kyle creates the link in QBO → Payment links, then replace that `mailto:` href in `pricing/index.html` with the real checkout URL. Keep `data-pay`, `data-offer-id`, `data-value` so `ee_pay_redirect` keeps firing.
-- [ ] **GTM**: set `EE_GTM_ID` to the real container id in all four HTML files (`grep -rn "GTM-PENDING"` must return nothing). Publish the container with GA4 + Meta + TikTok tags reading `ee_page_context` / `ee_cta_click` / `ee_pay_redirect`.
-- [ ] Remove `<meta name="robots" content="noindex,nofollow">` from every page (or set to `index,follow`).
-- [ ] Remove / retext the `.build-state` banner (`PREVIEW BUILD · NOT YET LIVE`) in the header of every page.
-- [ ] `robots.txt`: `Disallow: /` → `Allow: /` and add `Sitemap: https://marketingapes.com/sitemap.xml`.
-- [ ] Verify events in GA4 DebugView and the Evolution Engine sheet / BigQuery sink; confirm `ee_pay_redirect` fires once per click.
-- [ ] **DNS**: point `marketingapes.com` A / `www` CNAME at Render; add the custom domain on the `ma-site` service; wait for TLS.
-- [ ] Google Search Console verification; submit sitemap.
-- [ ] Add OG image (SVG-only rule lifts at cutover if a raster is needed).
+Check inline JavaScript syntax, every nonempty local fragment target, the exact
+demo email URL, the canonical URL, sitemap XML, and crawler rules. Preserve the
+noindex directives on unfinished pages. Compare the homepage with the captured
+live source to confirm that changes stay limited to canonical metadata and the
+contact flow. Browser layout and Render/domain verification follow deployment.

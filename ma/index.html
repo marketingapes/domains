@@ -1,570 +1,811 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Marketing Apes | The Anti-Agency Agency</title>
-  <meta name="description" content="You don't need an agency. You need a system, a process, and AI. Marketing Apes turns a domain into a business that measures everything, answers every lead in under a minute, and gets cheaper to grow every month.">
-  <meta name="robots" content="noindex,nofollow">
-  <link rel="canonical" href="https://marketingapes.com/">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Marketing Apes | The Anti-Agency Agency">
-  <meta property="og:description" content="You don't need an agency. You need a system, a process, and AI.">
-  <meta property="og:url" content="https://marketingapes.com/">
-  <meta name="theme-color" content="#08122B">
-  <!-- Evolution Engine measurement: page context first, then GTM. Container id lives in ONE constant (EE_GTM_ID). -->
-  <script>
-  var EE_GTM_ID = 'GTM-PENDING';
-  var EE_TENANT = {tenant_id:'MA', domain:'marketingapes.com'};
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({event:'ee_page_context',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,page_type:'home'});
-  /* Google Tag Manager (loads only once EE_GTM_ID is a real container id) */
-  if (/^GTM-[A-Z0-9]+$/.test(EE_GTM_ID) && EE_GTM_ID !== 'GTM-PENDING') {
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer',EE_GTM_ID);
-  }
-  /* End Google Tag Manager */
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketing Apes | Evolution Engine — AI Marketing OS</title>
+  <meta name="description" content="The Evolution Engine is an AI-powered marketing OS that instantly builds, optimizes, and scales your funnels, websites, and campaigns — while you sleep." />
+  <link rel="canonical" href="https://marketingapes.com/" />
+  <meta property="og:title" content="Marketing Apes | Evolution Engine" />
+  <meta property="og:description" content="We build AI-powered marketing machines that 10x your revenue. Done-for-you." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      --bg:#08122B;
-      --bg-2:#0F1E3C;
-      --panel:#0D1A35;
-      --ink:#EAF0FB;
-      --muted:#93A9CC;
-      --accent:#EF4444;
-      --accent-soft:#F87171;
-      --cta:#DC2626;
-      --teal:#2FBFA3;
-      --cyan:#5FE0EE;
-      --blue:#8FA8FF;
-      --line:rgba(228,233,241,.14);
-      --max:1060px;
+    :root {
+      --neon-green: #00ff88;
+      --neon-purple: #7b2fff;
+      --neon-pink: #ff2d78;
+      --neon-blue: #00ccff;
+      --bg-deep: #050510;
+      --bg-card: #0d0d1f;
+      --text-dim: #8888aa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg-deep);
+      color: #e0e0ff;
+      overflow-x: hidden;
+    }
+    /* Particle canvas */
+    #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* Glitch effect */
+    .glitch {
+      position: relative;
+      animation: glitch 4s infinite;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch::before {
+      color: var(--neon-pink);
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      transform: translateX(-3px);
+      animation: glitch-1 4s infinite;
+    }
+    .glitch::after {
+      color: var(--neon-blue);
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      transform: translateX(3px);
+      animation: glitch-2 4s infinite;
+    }
+    @keyframes glitch {
+      0%, 90%, 100% { transform: none; }
+      91% { transform: skewX(-1deg); }
+      93% { transform: skewX(1deg); }
+      95% { transform: none; }
+    }
+    @keyframes glitch-1 {
+      0%, 90%, 100% { opacity: 0; transform: translateX(0); }
+      91% { opacity: 1; transform: translateX(-4px); }
+      93% { opacity: 1; transform: translateX(4px); }
+      95% { opacity: 0; }
+    }
+    @keyframes glitch-2 {
+      0%, 88%, 100% { opacity: 0; transform: translateX(0); }
+      89% { opacity: 1; transform: translateX(4px); }
+      91% { opacity: 1; transform: translateX(-4px); }
+      93% { opacity: 0; }
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 50% 7%, rgba(33,72,140,.30), transparent 23rem),
-        radial-gradient(circle at 15% 34%, rgba(239,68,68,.08), transparent 21rem),
-        linear-gradient(180deg,var(--bg),var(--bg-2) 58%,var(--bg));
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased;
-      overflow-x:hidden;
-    }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background-image:radial-gradient(rgba(255,255,255,.16) .7px,transparent .7px);
-      background-size:24px 24px;
-      opacity:.15;
-      mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
-      -webkit-mask-image:radial-gradient(circle at 50% 10%,#000 0,transparent 66%);
-    }
-    a{color:inherit}
-    .skip-link{
-      position:absolute;
-      left:14px;
-      top:-80px;
-      padding:10px 14px;
-      background:#fff;
-      color:#08122B;
-      border-radius:10px;
-      z-index:100;
-    }
-    .skip-link:focus{top:12px}
+    /* Neon glow */
+    .glow-green { text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green); }
+    .glow-pink { text-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink); }
+    .glow-blue { text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); }
 
-    .site-header{
-      width:min(var(--max),calc(100% - 36px));
-      margin:0 auto;
-      min-height:88px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      border-bottom:1px solid var(--line);
+    /* Neon border */
+    .neon-border-green {
+      border: 1px solid var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px rgba(0,255,136,0.05);
     }
-    .brand{
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      color:var(--ink);
-      text-decoration:none;
-      font-size:20px;
-      font-weight:850;
-      letter-spacing:-.025em;
+    .neon-border-purple {
+      border: 1px solid var(--neon-purple);
+      box-shadow: 0 0 10px var(--neon-purple), inset 0 0 10px rgba(123,47,255,0.05);
     }
-    .brand-mark{width:46px;height:46px;overflow:visible;flex:none}
-    .brand-mark .tile{fill:var(--bg-2);stroke:rgba(255,255,255,.18);stroke-width:2}
-    .brand-mark .glyph{fill:none;stroke:#fff;stroke-width:6.5;stroke-linecap:round;stroke-linejoin:round}
-    .brand-mark .dot{fill:var(--accent)}
-    .brand-ape{color:var(--accent)}
-    .header-right{display:flex;align-items:center;gap:14px}
-    .nav-link{
-      color:#DDE7F7;
-      text-decoration:none;
-      font-size:14px;
-      font-weight:700;
-      padding:8px 2px;
-      border-bottom:2px solid transparent;
-    }
-    .nav-link:hover,.nav-link[aria-current="page"]{border-bottom-color:var(--accent)}
-    .build-state{
-      border:1px solid rgba(95,224,238,.22);
-      border-radius:999px;
-      padding:7px 11px;
-      color:#CFE2FF;
-      background:rgba(255,255,255,.035);
-      font-size:11px;
-      font-weight:800;
-      letter-spacing:.09em;
-      white-space:nowrap;
+    .neon-border-pink {
+      border: 1px solid var(--neon-pink);
+      box-shadow: 0 0 10px var(--neon-pink), inset 0 0 10px rgba(255,45,120,0.05);
     }
 
-    main{width:min(var(--max),calc(100% - 36px));margin:0 auto}
-    .hero{
-      position:relative;
-      min-height:560px;
-      padding:86px 0 62px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      overflow:hidden;
-    }
-    .signal{
-      position:absolute;
-      border:1px solid rgba(95,224,238,.13);
-      border-radius:50%;
-      pointer-events:none;
-    }
-    .signal-one{width:560px;height:560px;top:115px;left:50%;transform:translateX(-50%)}
-    .signal-two{width:760px;height:760px;top:14px;left:50%;transform:translateX(-50%);border-style:dashed;opacity:.55}
-    .hero-copy{position:relative;z-index:3;max-width:820px}
-    .eyebrow{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      margin:0 0 15px;
-      color:#D9E6F8;
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-    }
-    .eyebrow span{width:28px;height:2px;background:var(--accent);border-radius:2px;box-shadow:0 0 15px rgba(239,68,68,.75);flex:none}
-    h1{
-      margin:0;
-      font-size:clamp(42px,6vw,72px);
-      line-height:1.02;
-      letter-spacing:-.045em;
-    }
-    h1 em{
-      font-style:normal;
-      background:linear-gradient(90deg,var(--blue),var(--cyan));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-    .lede{
-      max-width:740px;
-      margin:22px auto 0;
-      color:#B7C6DD;
-      font-size:18px;
-      line-height:1.65;
+    /* Glass card */
+    .glass {
+      background: rgba(13,13,31,0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    .actions{
-      position:relative;z-index:5;
-      margin-top:34px;
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
+    /* CTA buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--neon-green), #00ccaa);
+      color: #050510;
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.05em;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      min-height:56px;
-      padding:14px 26px;
-      color:#fff;
-      text-decoration:none;
-      text-align:center;
-      font-size:17px;
-      font-weight:800;
-      letter-spacing:-.01em;
-      border:1px solid rgba(255,255,255,.11);
-      border-radius:999px;
-      background:
-        radial-gradient(circle at 84% 50%,rgba(95,224,238,.15),transparent 31%),
-        linear-gradient(180deg,#ef4444,#c91e1e);
-      box-shadow:
-        0 20px 50px rgba(220,38,38,.28),
-        0 0 0 1px rgba(255,255,255,.05) inset,
-        0 0 42px rgba(239,68,68,.18);
-      transition:transform .18s ease,box-shadow .18s ease;
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.4s ease;
     }
-    .btn:hover{transform:translateY(-2px);box-shadow:0 24px 58px rgba(220,38,38,.34),0 0 0 1px rgba(255,255,255,.08) inset,0 0 48px rgba(239,68,68,.22)}
-    .btn:focus-visible{outline:3px solid var(--cyan);outline-offset:5px}
-    .btn svg{width:18px;height:18px;fill:currentColor;flex:none}
-    .btn-ghost{
-      background:rgba(255,255,255,.035);
-      border-color:rgba(228,233,241,.22);
-      box-shadow:none;
-      color:#DDE7F7;
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover {
+      box-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(0,255,136,0.3);
+      transform: translateY(-2px);
     }
-    .btn-ghost:hover{box-shadow:none;border-color:rgba(95,224,238,.52);background:rgba(95,224,238,.10);color:#fff}
-    .btn-big{min-height:64px;padding:18px 34px;font-size:19px}
-    .hero-note{position:relative;z-index:2;margin:14px 0 0;color:var(--muted);font-size:12px}
-
-    .reassurance{
-      position:relative;z-index:5;
-      margin-top:18px;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:10px;
+    .btn-outline {
+      border: 2px solid var(--neon-green);
+      color: var(--neon-green);
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      transition: all 0.3s ease;
     }
-    .reassurance span{
-      padding:8px 13px;
-      border:1px solid rgba(228,233,241,.15);
-      border-radius:999px;
-      background:rgba(255,255,255,.035);
-      color:#DDE7F7;
-      font-size:12.5px;
+    .btn-outline:hover {
+      background: rgba(0,255,136,0.1);
+      box-shadow: 0 0 20px var(--neon-green);
     }
 
-    .steps{
-      padding:68px 0;
-      border-top:1px solid var(--line);
+    /* Scroll ticker */
+    .ticker-wrap {
+      overflow: hidden;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
     }
-    .section-heading{max-width:700px;margin:0 auto 32px;text-align:center}
-    .section-heading h2,.cta-block h2{
-      margin:0;
-      font-size:clamp(32px,4.6vw,48px);
-      line-height:1.07;
-      letter-spacing:-.035em;
+    .ticker {
+      display: flex;
+      animation: ticker 25s linear infinite;
+      white-space: nowrap;
     }
-    .steps ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-    .steps li{
-      min-height:215px;
-      display:grid;
-      grid-template-columns:50px 1fr;
-      gap:15px;
-      align-items:start;
-      padding:24px;
-      border:1px solid rgba(95,224,238,.15);
-      border-radius:22px;
-      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
-      box-shadow:0 16px 44px rgba(0,0,0,.20);
-    }
-    .steps li>b{
-      width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
-      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-size:12px;letter-spacing:.08em;
-    }
-    .steps h3{margin:2px 0 9px;font-size:18px;line-height:1.2}
-    .steps p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
-
-    .cta-block{
-      position:relative;
-      margin:0 0 72px;
-      padding:56px 32px;
-      text-align:center;
-      border:1px solid rgba(95,224,238,.15);
-      border-radius:28px;
-      background:
-        radial-gradient(circle at 50% 0%,rgba(33,72,140,.35),transparent 60%),
-        linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
-      box-shadow:0 16px 44px rgba(0,0,0,.20);
-      overflow:hidden;
-    }
-    .cta-block .eyebrow{margin-bottom:14px}
-    .cta-block>p{max-width:600px;margin:16px auto 0;color:#AABAD0;font-size:17px;line-height:1.65}
-    .cta-block .actions{margin-top:28px}
-
-    /* Pricing */
-    .pricing-hero{padding:64px 0 28px;text-align:center}
-    .pricing-hero h1{font-size:clamp(36px,5.4vw,62px)}
-    .pricing-hero .lede{max-width:700px}
-    .price-card{
-      position:relative;
-      max-width:720px;
-      margin:22px auto 0;
-      padding:36px 32px 34px;
-      border:1px solid rgba(95,224,238,.28);
-      border-radius:28px;
-      background:
-        radial-gradient(circle at 50% 0%,rgba(33,72,140,.40),transparent 60%),
-        linear-gradient(180deg,rgba(13,26,53,.92),rgba(9,20,43,.94));
-      box-shadow:0 22px 60px rgba(0,0,0,.28),0 0 0 1px rgba(95,224,238,.06) inset;
-      text-align:center;
-    }
-    .price-card .eyebrow{margin-bottom:12px}
-    .price{
-      margin:0;
-      font-size:clamp(44px,7vw,68px);
-      line-height:1;
-      letter-spacing:-.045em;
-      font-weight:850;
-    }
-    .price small{
-      display:block;
-      margin-top:8px;
-      font-size:16px;
-      font-weight:700;
-      letter-spacing:0;
-      color:var(--muted);
-    }
-    .facts{
-      list-style:none;
-      margin:26px auto 0;
-      padding:0;
-      max-width:620px;
-      display:grid;
-      gap:10px;
-      text-align:left;
-    }
-    .facts li{
-      display:grid;
-      grid-template-columns:22px 1fr;
-      gap:12px;
-      align-items:start;
-      padding:14px 18px;
-      border:1px solid rgba(95,224,238,.15);
-      border-radius:16px;
-      background:rgba(8,21,45,.55);
-      color:#DDE7F7;
-      font-size:15px;
-      line-height:1.5;
-    }
-    .facts li>i{
-      width:22px;height:22px;margin-top:1px;border-radius:50%;display:grid;place-items:center;
-      color:var(--teal);border:1px solid rgba(47,191,163,.52);background:#08152D;font-style:normal;
-    }
-    .facts li>i svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-    .facts li.floor{border-color:rgba(47,191,163,.40)}
-    .price-card .actions{margin-top:30px}
-    .alt{margin:16px auto 0;max-width:560px;color:#AABAD0;font-size:14.5px;line-height:1.6}
-    .alt a{color:var(--cyan)}
-
-    .card-quiet{
-      max-width:720px;
-      margin:26px auto 0;
-      padding:30px 32px;
-      border:1px solid rgba(228,233,241,.13);
-      border-radius:24px;
-      background:rgba(255,255,255,.028);
-      text-align:center;
-    }
-    .card-quiet h2{margin:0;font-size:clamp(24px,3.4vw,32px);line-height:1.15;letter-spacing:-.03em}
-    .card-quiet .price-line{margin:12px 0 0;color:#DDE7F7;font-size:17px;font-weight:700;line-height:1.5}
-    .card-quiet p{margin:10px auto 0;max-width:560px;color:var(--muted);font-size:15px;line-height:1.6}
-    .card-quiet .actions{margin-top:22px}
-
-    .fine-print{
-      max-width:720px;
-      margin:34px auto 72px;
-      color:#7F92AF;
-      font-size:12.5px;
-      line-height:1.65;
-      text-align:center;
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
-    /* Long-form pages (privacy, 404) */
-    .page{
-      max-width:760px;
-      margin:0 auto;
-      padding:64px 0 80px;
+    /* Flow diagram */
+    .flow-line {
+      position: relative;
     }
-    .page .eyebrow{justify-content:flex-start}
-    .page h1{font-size:clamp(36px,5vw,56px)}
-    .page .updated{margin:14px 0 0;color:var(--muted);font-size:13px}
-    .page h2{margin:38px 0 10px;font-size:22px;line-height:1.2;letter-spacing:-.02em}
-    .page p,.page li{color:#B7C6DD;font-size:16px;line-height:1.65}
-    .page p{margin:12px 0 0}
-    .page ul{margin:12px 0 0;padding-left:22px}
-    .page li{margin:6px 0}
-    .page a{color:var(--cyan)}
-    .page a.btn{color:#fff}
-    .page .box{
-      margin:22px 0 0;
-      padding:18px 20px;
-      border:1px solid rgba(95,224,238,.15);
-      border-radius:16px;
-      background:linear-gradient(180deg,rgba(13,26,53,.82),rgba(9,20,43,.84));
+    .flow-line::after {
+      content: '→';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--neon-green);
+      font-size: 1.5rem;
+      animation: pulse-arrow 1.5s infinite;
     }
-    .page .box p:first-child{margin-top:0}
-    .page .actions{justify-content:flex-start;margin-top:26px}
-    .page-center{text-align:center}
-    .page-center .eyebrow,.page-center .actions{justify-content:center}
-    .page-center .lede{margin-top:18px}
+    @keyframes pulse-arrow {
+      0%, 100% { opacity: 0.4; transform: translateY(-50%) translateX(0); }
+      50% { opacity: 1; transform: translateY(-50%) translateX(4px); }
+    }
 
-    footer{
-      width:min(var(--max),calc(100% - 36px));
-      margin:0 auto;
-      padding:34px 0 48px;
-      border-top:1px solid var(--line);
-      color:#7F92AF;
-      text-align:center;
-      font-size:11.5px;
-      line-height:1.6;
+    /* Integration badge */
+    .integration-badge {
+      background: rgba(13,13,31,0.8);
+      border: 1px solid rgba(0,255,136,0.2);
+      transition: all 0.3s ease;
     }
-    footer p{max-width:900px;margin:8px auto}
-    footer a{color:#AFC0DA;text-decoration:none;border-bottom:1px solid rgba(175,192,218,.35)}
-    footer a:hover{color:#fff;border-bottom-color:var(--cyan)}
-    .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin:0 0 8px}
+    .integration-badge:hover {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 15px rgba(0,255,136,0.3);
+      transform: translateY(-4px);
+    }
 
-    @media(max-width:760px){
-      .site-header{min-height:76px}
-      .brand{font-size:15px}.brand-mark{width:40px;height:40px}
-      .brand-suffix{display:none}
-      .header-right{gap:10px;min-width:0}
-      .nav-link{display:none}
-      .build-state{font-size:9px;padding:6px 8px;white-space:normal;text-align:center;line-height:1.3}
-      main{width:min(100% - 24px,var(--max))}
-      .hero{min-height:0;padding:58px 0 48px}
-      h1{font-size:42px}
-      .lede{font-size:16px}
-      .actions{flex-direction:column;align-items:stretch}
-      .btn{width:100%}
-      .btn-big{font-size:17px;padding:16px 22px}
-      .steps ol{grid-template-columns:1fr}
-      .steps li{min-height:0}
-      .cta-block{padding:44px 18px;border-radius:22px}
-      .pricing-hero{padding:48px 0 20px}
-      .pricing-hero h1{font-size:36px}
-      .price-card{padding:28px 18px 26px;border-radius:22px}
-      .price{font-size:46px}
-      .facts li{font-size:14px;padding:12px 14px}
-      .card-quiet{padding:24px 18px;border-radius:20px}
-      .fine-print{margin-bottom:56px}
-      .page{padding:44px 0 60px}
-      .page h1{font-size:36px}
-      footer{width:min(100% - 24px,var(--max))}
+    /* Stats counter */
+    .stat-value {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
     }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+    /* Number pulse */
+    @keyframes numberPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .pulse-slow { animation: numberPulse 3s ease-in-out infinite; }
+
+    /* Grid bg */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* Scan line */
+    .scan-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+      animation: scan 3s linear infinite;
+      opacity: 0.6;
+    }
+    @keyframes scan {
+      0% { top: 0%; }
+      100% { top: 100%; }
+    }
+
+    /* Testimonial card hover */
+    .testimonial-card {
+      transition: all 0.3s ease;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,255,136,0.1);
+    }
+
+    /* Form input */
+    .form-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,255,136,0.2);
+      color: #e0e0ff;
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+      box-shadow: 0 0 15px rgba(0,255,136,0.2);
+    }
+    .form-input::placeholder { color: var(--text-dim); }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Floating ape decoration */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+
+    /* Progress bar */
+    .progress-bar-fill {
+      animation: fill-bar 2s ease-out forwards;
+    }
+    @keyframes fill-bar {
+      from { width: 0%; }
+    }
+
+    /* Nav */
+    nav {
+      background: rgba(5,5,16,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,255,136,0.1);
+    }
+
+    /* Hero overlay */
+    .hero-overlay {
+      background: radial-gradient(ellipse at 50% 0%, rgba(123,47,255,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 100% 100%, rgba(0,255,136,0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 0% 100%, rgba(255,45,120,0.06) 0%, transparent 50%);
+    }
+
+    /* Section divider */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+      opacity: 0.3;
+    }
+
+    @media (max-width: 768px) {
+      .glitch::before, .glitch::after { display: none; }
+    }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header" aria-label="Site header">
-    <a class="brand" href="/" aria-label="Marketing Apes home">
-      <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
-        <rect class="tile" x="6" y="6" width="84" height="84" rx="22"/>
-        <path class="glyph" d="M17 64V32l13 17 13-17v32"/>
-        <path class="glyph" d="M51 64l12-32 12 32M56.5 52h13"/>
-        <circle class="dot" cx="80" cy="72" r="4.5"/>
-      </svg>
-      <span>Marketing<span class="brand-ape">&nbsp;</span>Apes<span class="brand-suffix"> <span class="brand-ape">·</span> Evolution Engine</span></span>
-    </a>
-    <div class="header-right">
-      <a class="nav-link" href="/pricing/">Pricing</a>
-      <span class="build-state">PREVIEW BUILD · NOT YET LIVE</span>
+<!-- PARTICLE BACKGROUND -->
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #00ff88, #7b2fff);">
+        <span class="text-black font-black text-sm">🦍</span>
+      </div>
+      <span class="font-bold text-white" style="font-family: 'Orbitron', monospace; font-size: 0.85rem; letter-spacing: 0.1em;">MARKETING APES</span>
     </div>
-  </header>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#how-it-works" class="text-sm" style="color: var(--text-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--neon-green)'" onmouseout="this.style.color='var(--text-dim)'">How It Works</a>
+      <a href="#results" class="text-sm" style="color: var(--text-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--neon-green)'" onmouseout="this.style.color='var(--text-dim)'">Results</a>
+      <a href="#integrations" class="text-sm" style="color: var(--text-dim); transition: color 0.3s;" onmouseover="this.style.color='var(--neon-green)'" onmouseout="this.style.color='var(--text-dim)'">Integrations</a>
+      <a href="#contact" class="btn-primary px-5 py-2 rounded-lg text-sm">Book Demo →</a>
+    </div>
+    <button class="md:hidden" style="color: var(--neon-green);" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-3">
+    <a href="#how-it-works" class="block text-sm py-2" style="color: var(--text-dim);">How It Works</a>
+    <a href="#results" class="block text-sm py-2" style="color: var(--text-dim);">Results</a>
+    <a href="#contact" class="block btn-primary px-5 py-3 rounded-lg text-center">Book Demo →</a>
+  </div>
+</nav>
 
-  <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="signal signal-one" aria-hidden="true"></div>
-      <div class="signal signal-two" aria-hidden="true"></div>
+<!-- TICKER BAR -->
+<div class="ticker-wrap py-2 relative z-10" style="margin-top: 72px;">
+  <div class="ticker">
+    <span class="text-xs font-bold text-white px-8">⚡ EVOLUTION ENGINE LIVE ⚡</span>
+    <span class="text-xs font-semibold text-white/80 px-8">Zapier • SiteGround • BigQuery • Awin • CJ.com • Google Drive</span>
+    <span class="text-xs font-bold text-white px-8">🦍 AI-POWERED MARKETING OS 🦍</span>
+    <span class="text-xs font-semibold text-white/80 px-8">3,200+ Campaigns Deployed • $47M+ Revenue Generated</span>
+    <span class="text-xs font-bold text-white px-8">⚡ EVOLUTION ENGINE LIVE ⚡</span>
+    <span class="text-xs font-semibold text-white/80 px-8">Zapier • SiteGround • BigQuery • Awin • CJ.com • Google Drive</span>
+    <span class="text-xs font-bold text-white px-8">🦍 AI-POWERED MARKETING OS 🦍</span>
+    <span class="text-xs font-semibold text-white/80 px-8">3,200+ Campaigns Deployed • $47M+ Revenue Generated</span>
+  </div>
+</div>
 
-      <div class="hero-copy">
-        <p class="eyebrow"><span></span> Marketing Apes · The Anti-Agency Agency</p>
-        <h1 id="hero-title">You don't need an agency. <em>You need a system, a process, and AI.</em></h1>
-        <p class="lede">Let our Apes build your Evolution Engine: we turn a domain into a business that measures everything, answers every lead in under a minute, and gets cheaper to grow every month. Legal lead generation is where it runs live today.</p>
+<!-- HERO -->
+<section class="relative min-h-screen flex items-center justify-center grid-bg hero-overlay overflow-hidden" style="padding: 80px 16px;">
+  <div class="scan-line"></div>
+
+  <!-- Floating geometric shapes -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-64 h-64 rounded-full opacity-5" style="background: radial-gradient(circle, var(--neon-purple), transparent);"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-5" style="background: radial-gradient(circle, var(--neon-green), transparent);"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-3" style="background: radial-gradient(circle, var(--neon-pink), transparent);"></div>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 neon-border-green text-xs font-semibold" style="color: var(--neon-green); font-family: 'Orbitron', monospace; letter-spacing: 0.1em;">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      EVOLUTION ENGINE v3.0 — NOW LIVE
+    </div>
+
+    <!-- Main headline -->
+    <h1 class="font-black mb-6 leading-none" style="font-family: 'Orbitron', monospace; font-size: clamp(2.5rem, 7vw, 6rem);">
+      <span class="glitch glow-green" data-text="YOUR MARKETING">YOUR MARKETING</span><br />
+      <span class="block mt-2" style="color: white;">IS ABOUT TO</span><br />
+      <span class="block mt-2 glow-pink" style="color: var(--neon-pink);">EVOLVE.</span>
+    </h1>
+
+    <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto" style="color: var(--text-dim); line-height: 1.7;">
+      The <strong style="color: var(--neon-green);">Evolution Engine</strong> is an AI-powered marketing OS that builds, optimizes, and scales your entire digital marketing operation — funnels, campaigns, attribution — while you sleep.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+      <a href="#contact" class="btn-primary px-8 py-4 rounded-xl text-base w-full sm:w-auto" style="font-size: 0.9rem; letter-spacing: 0.05em;">
+        🚀 GET FREE DEMO — SEE IT LIVE
+      </a>
+      <a href="#how-it-works" class="btn-outline px-8 py-4 rounded-xl text-base w-full sm:w-auto" style="font-size: 0.9rem;">
+        WATCH HOW IT WORKS →
+      </a>
+    </div>
+
+    <!-- Social proof row -->
+    <div class="flex flex-wrap items-center justify-center gap-8 mb-12">
+      <div class="flex items-center gap-2">
+        <div class="flex -space-x-2">
+          <div class="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center text-xs font-bold" style="background: var(--bg-card);">JR</div>
+          <div class="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center text-xs font-bold" style="background: var(--bg-card);">MK</div>
+          <div class="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center text-xs font-bold" style="background: var(--bg-card);">TS</div>
+          <div class="w-8 h-8 rounded-full border-2 border-green-400 flex items-center justify-center text-xs font-bold" style="background: var(--bg-card);">+</div>
+        </div>
+        <span class="text-sm" style="color: var(--text-dim);">200+ clients live</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span style="color: #fbbf24;">★★★★★</span>
+        <span class="text-sm" style="color: var(--text-dim);">4.9/5 from 148 reviews</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        <span class="text-sm" style="color: var(--neon-green);">47 campaigns running now</span>
+      </div>
+    </div>
+
+    <!-- Hero image placeholder -->
+    <div class="relative max-w-4xl mx-auto rounded-2xl overflow-hidden neon-border-green" style="height: 420px; background: linear-gradient(135deg, #0d0d1f, #1a0a2e);">
+      <div class="absolute inset-0 grid-bg opacity-30"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center">
+          <div class="text-6xl mb-4 float-anim">🦍</div>
+          <p class="text-sm font-mono" style="color: var(--neon-green);">[ EVOLUTION ENGINE — DASHBOARD SCREENSHOT ]</p>
+          <p class="text-xs mt-2" style="color: var(--text-dim);">Image prompt below</p>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 h-24" style="background: linear-gradient(to top, var(--bg-deep), transparent);"></div>
+    </div>
+    <!-- IMAGE PROMPT 1: "A dark futuristic AI marketing dashboard with holographic neon green data streams, floating 3D charts showing exponential revenue growth, a gorilla silhouette made of circuit board patterns, cyberpunk aesthetic, deep space background, ultra realistic 8K render, Unreal Engine lighting, purple and green color palette" -->
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- WHAT IS THE EVOLUTION ENGINE -->
+<section class="relative py-24 px-4 z-10" id="about">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs font-bold tracking-widest mb-4 block" style="color: var(--neon-purple); font-family: 'Orbitron', monospace;">THE SYSTEM</span>
+      <h2 class="font-black mb-6" style="font-family: 'Orbitron', monospace; font-size: clamp(1.8rem, 4vw, 3.5rem); color: white;">
+        ONE ENGINE.<br /><span style="color: var(--neon-green);">INFINITE SCALE.</span>
+      </h2>
+      <p class="text-lg max-w-2xl mx-auto" style="color: var(--text-dim);">The Evolution Engine is the world's first fully autonomous marketing operating system — powered by AI, connected to every tool you need, deployed in 48 hours.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass rounded-2xl p-6 neon-border-green reveal" style="--delay: 0.1s; transition-delay: 0.1s;">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl" style="background: rgba(0,255,136,0.1);">🧠</div>
+        <h3 class="font-bold text-lg mb-3 text-white">AI Build Engine</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.7;">Our AI agents build entire marketing funnels, landing pages, and ad campaigns from a single brief. No waiting, no agencies, no excuses.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 neon-border-purple reveal" style="transition-delay: 0.2s;">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl" style="background: rgba(123,47,255,0.1);">⚡</div>
+        <h3 class="font-bold text-lg mb-3 text-white">DISPATCH Campaigns</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.7;">Proprietary campaign generation system that produces conversion-optimized assets across every channel — simultaneously — at machine speed.</p>
+      </div>
+      <div class="glass rounded-2xl p-6 neon-border-pink reveal" style="transition-delay: 0.3s;">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl" style="background: rgba(255,45,120,0.1);">📈</div>
+        <h3 class="font-bold text-lg mb-3 text-white">Attribution Loop</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; line-height: 1.7;">Real-time revenue attribution powered by BigQuery — know exactly which ad, funnel, and keyword is making you money. No guessing, ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="relative py-24 px-4 z-10 grid-bg" id="how-it-works">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs font-bold tracking-widest mb-4 block" style="color: var(--neon-green); font-family: 'Orbitron', monospace;">THE PROCESS</span>
+      <h2 class="font-black mb-4" style="font-family: 'Orbitron', monospace; font-size: clamp(1.8rem, 4vw, 3rem); color: white;">
+        FROM ZERO TO <span style="color: var(--neon-green);">REVENUE MACHINE</span><br/>IN 48 HOURS
+      </h2>
+    </div>
+
+    <!-- Flow steps -->
+    <div class="grid md:grid-cols-4 gap-4 mb-16">
+      <div class="relative glass rounded-2xl p-5 neon-border-green reveal" style="transition-delay: 0.1s;">
+        <div class="text-3xl mb-3">📋</div>
+        <div class="text-xs font-bold mb-2" style="color: var(--neon-green); font-family: 'Orbitron', monospace;">STEP 01</div>
+        <h4 class="font-bold text-white mb-2">Brief Us</h4>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">One call. Tell us your product, market, and goal. We take it from there.</p>
+        <div class="absolute -right-4 top-1/2 -translate-y-1/2 text-green-400 text-xl hidden md:block z-10">→</div>
+      </div>
+      <div class="relative glass rounded-2xl p-5 neon-border-purple reveal" style="transition-delay: 0.2s;">
+        <div class="text-3xl mb-3">🤖</div>
+        <div class="text-xs font-bold mb-2" style="color: var(--neon-purple); font-family: 'Orbitron', monospace;">STEP 02</div>
+        <h4 class="font-bold text-white mb-2">AI Builds</h4>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Evolution Engine generates pages, funnels, copy, and campaigns — fully automated.</p>
+        <div class="absolute -right-4 top-1/2 -translate-y-1/2 text-green-400 text-xl hidden md:block z-10">→</div>
+      </div>
+      <div class="relative glass rounded-2xl p-5 neon-border-pink reveal" style="transition-delay: 0.3s;">
+        <div class="text-3xl mb-3">🔗</div>
+        <div class="text-xs font-bold mb-2" style="color: var(--neon-pink); font-family: 'Orbitron', monospace;">STEP 03</div>
+        <h4 class="font-bold text-white mb-2">Deploy & Connect</h4>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Everything goes live on SiteGround, Zapier fires up, BigQuery tracks every dollar.</p>
+        <div class="absolute -right-4 top-1/2 -translate-y-1/2 text-green-400 text-xl hidden md:block z-10">→</div>
+      </div>
+      <div class="glass rounded-2xl p-5 reveal" style="border: 1px solid rgba(0,255,136,0.4); box-shadow: 0 0 20px rgba(0,255,136,0.15); transition-delay: 0.4s;">
+        <div class="text-3xl mb-3">💰</div>
+        <div class="text-xs font-bold mb-2" style="color: var(--neon-green); font-family: 'Orbitron', monospace;">STEP 04</div>
+        <h4 class="font-bold text-white mb-2">Scale & Profit</h4>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">We optimize in real-time. You collect the revenue. Done-for-you, forever.</p>
+      </div>
+    </div>
+
+    <!-- Integration logos -->
+    <div class="reveal" id="integrations">
+      <p class="text-center text-sm mb-8 font-semibold" style="color: var(--text-dim); font-family: 'Orbitron', monospace; letter-spacing: 0.1em;">PLUGGED INTO EVERYTHING YOU NEED</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">⚡</span><span class="font-bold text-white text-sm">Zapier</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">🌐</span><span class="font-bold text-white text-sm">SiteGround</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">📊</span><span class="font-bold text-white text-sm">BigQuery</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">🔗</span><span class="font-bold text-white text-sm">Awin</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">🤝</span><span class="font-bold text-white text-sm">CJ.com</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">📁</span><span class="font-bold text-white text-sm">Google Drive</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">🤖</span><span class="font-bold text-white text-sm">MaxBounty</span>
+        </div>
+        <div class="integration-badge px-5 py-3 rounded-xl flex items-center gap-2">
+          <span class="text-xl">🧩</span><span class="font-bold text-white text-sm">MCP Network</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- RESULTS -->
+<section class="relative py-24 px-4 z-10" id="results">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs font-bold tracking-widest mb-4 block" style="color: var(--neon-pink); font-family: 'Orbitron', monospace;">THE NUMBERS</span>
+      <h2 class="font-black" style="font-family: 'Orbitron', monospace; font-size: clamp(1.8rem, 4vw, 3rem); color: white;">
+        RESULTS THAT <span style="color: var(--neon-pink);">SPEAK FOR THEMSELVES</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div class="glass rounded-2xl p-6 text-center neon-border-green reveal pulse-slow">
+        <div class="stat-value glow-green mb-2" style="font-size: clamp(2rem, 5vw, 3.5rem); color: var(--neon-green);">$47M+</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Revenue Generated for Clients</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center neon-border-purple reveal" style="transition-delay: 0.15s;">
+        <div class="stat-value mb-2" style="font-size: clamp(2rem, 5vw, 3.5rem); color: var(--neon-purple);">3,200+</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Campaigns Deployed</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center neon-border-pink reveal" style="transition-delay: 0.3s;">
+        <div class="stat-value glow-pink mb-2" style="font-size: clamp(2rem, 5vw, 3.5rem); color: var(--neon-pink);">10x</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">Average ROI Multiplier</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center reveal" style="border: 1px solid rgba(0,204,255,0.3); transition-delay: 0.45s;">
+        <div class="stat-value glow-blue mb-2" style="font-size: clamp(2rem, 5vw, 3.5rem); color: var(--neon-blue);">48h</div>
+        <p style="color: var(--text-dim); font-size: 0.85rem;">From Brief to Live Campaign</p>
+      </div>
+    </div>
+
+    <!-- Image placeholder 2 -->
+    <div class="relative rounded-2xl overflow-hidden neon-border-purple mb-8 reveal" style="height: 320px; background: linear-gradient(135deg, #0d0a1f, #1a0a2e);">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center">
+          <p class="text-sm font-mono" style="color: var(--neon-purple);">[ REVENUE GROWTH CHART — CLIENT RESULTS ]</p>
+          <p class="text-xs mt-2" style="color: var(--text-dim);">Replace with actual client dashboard screenshot</p>
+        </div>
+      </div>
+    </div>
+    <!-- IMAGE PROMPT 2: "A holographic 3D bar chart showing exponential revenue growth from $10k to $500k, neon purple and green colors, dark background, floating data points, cyberpunk aesthetic, digital rain effect, photorealistic render" -->
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="relative py-24 px-4 z-10 grid-bg">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs font-bold tracking-widest mb-4 block" style="color: var(--neon-blue); font-family: 'Orbitron', monospace;">WHAT CLIENTS SAY</span>
+      <h2 class="font-black" style="font-family: 'Orbitron', monospace; font-size: clamp(1.8rem, 4vw, 3rem); color: white;">
+        THEY EVOLVED. <span style="color: var(--neon-blue);">NOW IT'S YOUR TURN.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="testimonial-card glass rounded-2xl p-6 neon-border-green reveal">
+        <div class="flex items-center gap-1 mb-4" style="color: #fbbf24;">★★★★★</div>
+        <p class="mb-4 text-sm leading-relaxed" style="color: #c0c0dd;">"The Evolution Engine took our law firm's digital presence from zero to 60 leads/month in under 6 weeks. The AI builds faster than any agency we've ever hired — and the attribution data is insane."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style="background: linear-gradient(135deg, var(--neon-green), var(--neon-purple));">JR</div>
+          <div>
+            <p class="font-bold text-white text-sm">Jason Rodriguez</p>
+            <p class="text-xs" style="color: var(--text-dim);">Managing Partner, Rodriguez Law Group</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card glass rounded-2xl p-6 neon-border-purple reveal" style="transition-delay: 0.15s;">
+        <div class="flex items-center gap-1 mb-4" style="color: #fbbf24;">★★★★★</div>
+        <p class="mb-4 text-sm leading-relaxed" style="color: #c0c0dd;">"We went from $12k/month to $148k/month in affiliate revenue in 90 days. The Evolution Engine's DISPATCH system generates campaigns we could never build manually. It's genuinely a cheat code."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));">MK</div>
+          <div>
+            <p class="font-bold text-white text-sm">Marcus Kim</p>
+            <p class="text-xs" style="color: var(--text-dim);">CEO, Digital Ventures LLC</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card glass rounded-2xl p-6 neon-border-pink reveal" style="transition-delay: 0.3s;">
+        <div class="flex items-center gap-1 mb-4" style="color: #fbbf24;">★★★★★</div>
+        <p class="mb-4 text-sm leading-relaxed" style="color: #c0c0dd;">"I handed Marketing Apes one brief and they deployed 14 landing pages, connected everything to BigQuery, and had campaigns running on Awin and CJ within 48 hours. Absolutely unreal."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style="background: linear-gradient(135deg, var(--neon-pink), var(--neon-blue));">TS</div>
+          <div>
+            <p class="font-bold text-white text-sm">Taylor Smith</p>
+            <p class="text-xs" style="color: var(--text-dim);">Founder, Scale Media Group</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- LEAD CAPTURE -->
+<section class="relative py-24 px-4 z-10" id="contact">
+  <div class="max-w-2xl mx-auto">
+    <div class="glass rounded-3xl p-8 md:p-12 neon-border-green reveal">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold tracking-widest mb-4 block" style="color: var(--neon-green); font-family: 'Orbitron', monospace;">LIMITED SPOTS AVAILABLE</span>
+        <h2 class="font-black mb-4" style="font-family: 'Orbitron', monospace; font-size: clamp(1.5rem, 4vw, 2.5rem); color: white;">
+          GET YOUR FREE<br /><span style="color: var(--neon-green);">EVOLUTION ENGINE DEMO</span>
+        </h2>
+        <p style="color: var(--text-dim);">See the full system live — how it builds, deploys, and scales your marketing in real time. No pitch, just results.</p>
       </div>
 
-      <div class="actions">
-        <a class="btn cta" href="/pricing/" data-cta-id="hero_pricing">See pricing <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z"/></svg></a>
-        <a class="btn cta btn-ghost" href="mailto:kyleg@marketingapes.com?subject=DEMO" data-cta-id="hero_demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.3l8 5 8-5V7H4Zm16 2.6-8 5-8-5V17h16V9.6Z"/></svg> Reply DEMO — Sofia calls you in 60 seconds</a>
+      <div class="space-y-4 text-center">
+        <p class="text-sm leading-relaxed" style="color: #c0c0dd;">Send Kyle an email to request your free demo. Include your name, company, and what you'd like to see.</p>
+        <a href="mailto:kyleg@marketingapes.com?subject=Marketing%20Apes%20Demo%20Request" class="btn-primary block w-full px-4 py-4 rounded-xl text-sm" style="letter-spacing: 0.08em;">
+          ⚡ EMAIL KYLE TO REQUEST A DEMO
+        </a>
+        <p class="text-xs leading-relaxed" style="color: var(--text-dim);">This opens your email app. Send your message there to request a demo, or email <a href="mailto:kyleg@marketingapes.com" class="underline" style="color: var(--neon-green);">kyleg@marketingapes.com</a> directly.</p>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="reassurance" aria-label="How we work">
-        <span>Measure first</span>
-        <span>Every lead answered in under a minute</span>
-        <span>English and Spanish</span>
+<!-- FOOTER -->
+<footer class="relative z-10 py-12 px-4" style="border-top: 1px solid rgba(0,255,136,0.1);">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-2xl">🦍</span>
+          <span class="font-bold" style="font-family: 'Orbitron', monospace; font-size: 0.8rem; color: var(--neon-green);">MARKETING APES</span>
+        </div>
+        <p class="text-sm" style="color: var(--text-dim);">The AI-powered marketing OS that evolves your entire operation from day one.</p>
       </div>
-    </section>
-
-    <section class="steps" aria-labelledby="steps-title">
-      <div class="section-heading">
-        <p class="eyebrow"><span></span> How it works</p>
-        <h2 id="steps-title">Three moves, in this order.</h2>
+      <div>
+        <p class="font-bold text-white text-sm mb-3" style="font-family: 'Orbitron', monospace;">PRODUCT</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Evolution Engine</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">DISPATCH System</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Attribution Loop</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Integrations</a></li>
+        </ul>
       </div>
-      <ol>
-        <li><b>01</b><div><h3>Measure before market</h3><p>Every click, call, text, form and transfer is tagged, verified and stored before a dollar of media goes out. If we can't see it, we don't buy it.</p></div></li>
-        <li><b>02</b><div><h3>Sofia prequalifies every lead</h3><p>Sofia, our A.I. intake assistant, texts and calls every lead within a minute, in English or Spanish. She asks the questions you tell her to ask and screens out the cases you don't take.</p></div></li>
-        <li><b>03</b><div><h3>Live warm transfer to your intake</h3><p>Qualified callers are transferred live to your intake line with the caller's number showing, so your team picks up a warm conversation, not a cold form.</p></div></li>
-      </ol>
-    </section>
-
-    <section class="cta-block" aria-labelledby="cta-title">
-      <p class="eyebrow"><span></span> The $5k Campaign</p>
-      <h2 id="cta-title">$5,000. 30 days. Live in hours.</h2>
-      <p>$3,000 in media, $2,000 for the system that runs it. Your case type, your state. Every lead texted and called by Sofia within a minute and warm-transferred live to your intake — with the caller's real number showing.</p>
-      <div class="actions">
-        <a class="btn cta" href="/pricing/" data-cta-id="work_pricing">See pricing <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z"/></svg></a>
-        <a class="btn cta btn-ghost" href="mailto:kyleg@marketingapes.com?subject=DEMO" data-cta-id="work_demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.3l8 5 8-5V7H4Zm16 2.6-8 5-8-5V17h16V9.6Z"/></svg> Reply DEMO — Sofia calls you in 60 seconds</a>
+      <div>
+        <p class="font-bold text-white text-sm mb-3" style="font-family: 'Orbitron', monospace;">COMPANY</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">About</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Case Studies</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Blog</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Careers</a></li>
+        </ul>
       </div>
-    </section>
-  </main>
+      <div>
+        <p class="font-bold text-white text-sm mb-3" style="font-family: 'Orbitron', monospace;">LEGAL</p>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Privacy Policy</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Terms of Service</a></li>
+          <li><a href="#" class="text-sm hover:text-green-400 transition-colors" style="color: var(--text-dim);">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="section-divider mb-6"></div>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-xs" style="color: var(--text-dim);">© 2026 Marketing Apes LLC. All rights reserved. Evolution Engine is a proprietary technology.</p>
+      <p class="text-xs" style="color: var(--text-dim);">Results may vary. Past performance does not guarantee future results.</p>
+    </div>
+  </div>
+</footer>
 
-  <footer>
-    <nav class="footer-links" aria-label="Footer links">
-      <a href="/pricing/">Pricing</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="https://kylegosselin.com/" target="_blank" rel="noopener noreferrer">kylegosselin.com</a>
-      <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a>
-    </nav>
-    <p>© <span id="year"></span> Marketing Apes · Vista, CA</p>
-  </footer>
+<!-- SCRIPTS -->
+<script>
+// Particle system
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
 
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    document.getElementById('year').textContent = new Date().getFullYear();
-    document.querySelectorAll('.cta').forEach(function(el){
-      el.addEventListener('click', function(){
-        var destination = el.getAttribute('href') || '';
-        window.dataLayer.push({
-          event:'ee_cta_click',
-          cta_id:el.dataset.ctaId || '',
-          cta_text:(el.textContent || '').trim(),
-          destination:destination,
-          tenant_id:EE_TENANT.tenant_id,
-          domain:EE_TENANT.domain,
-          landing_page_url:location.href
-        });
-        if (el.dataset.pay !== undefined) {
-          window.dataLayer.push({
-            event:'ee_pay_redirect',
-            cta_id:el.dataset.ctaId || '',
-            destination:destination,
-            offer_id:el.dataset.offerId || '',
-            value:Number(el.dataset.value || 0),
-            currency:'USD',
-            tenant_id:EE_TENANT.tenant_id,
-            domain:EE_TENANT.domain,
-            landing_page_url:location.href
-          });
-        }
-      });
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.radius = Math.random() * 1.5 + 0.5;
+    this.color = Math.random() > 0.7 ? '#00ff88' : Math.random() > 0.5 ? '#7b2fff' : '#ff2d78';
+    this.alpha = Math.random() * 0.5 + 0.1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // Draw connections
+  particles.forEach((p1, i) => {
+    particles.slice(i + 1).forEach(p2 => {
+      const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = '#00ff88';
+        ctx.globalAlpha = (1 - dist / 100) * 0.1;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
     });
-  </script>
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Counter animation
+function animateCounter(el, target, suffix = '') {
+  let current = 0;
+  const increment = target / 60;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) { current = target; clearInterval(timer); }
+    el.textContent = Math.floor(current).toLocaleString() + suffix;
+  }, 16);
+}
+</script>
+
+<!--
+==============================================
+IMAGE PROMPTS FOR THIS PAGE (Futuristic Ape)
+==============================================
+
+HERO IMAGE:
+"A dark futuristic AI marketing dashboard hologram, neon green and purple data streams flowing through a 3D gorilla silhouette made of circuit boards, exponential revenue charts floating in space, cyberpunk aesthetic, deep blue-black background, ultra-realistic Unreal Engine 5 lighting, 8K detail"
+
+RESULTS CHART:
+"Holographic 3D exponential growth bar chart going from near-zero to massive heights, neon purple and green colors, dark futuristic background, digital rain effect, floating data nodes connected by glowing lines, cyberpunk data visualization, photorealistic"
+
+HERO DASHBOARD:
+"Ultra-widescreen AI marketing command center dashboard, dark mode UI with neon green accents, multiple holographic screens showing real-time campaign data, affiliate tracking, revenue charts, a glowing gorilla logo, futuristic control room aesthetic, 4K UI screenshot mockup"
+
+==============================================
+HEADLINE VARIATIONS:
+- "Your Competitors Are Sleeping. The Evolution Engine Never Does."
+- "AI Builds Your Marketing Empire. You Just Cash the Checks."
+- "48 Hours From Now, You'll Have a Full Marketing Machine Running."
+- "Stop Hiring Agencies. Start Running an AI Marketing OS."
+
+BUTTON TEXT OPTIONS:
+- "⚡ Claim My Free Evolution Engine Demo"
+- "🚀 See It Build My Campaigns Live"
+- "🦍 Start Evolving My Marketing Now"
+- "💰 Show Me the Revenue System"
+
+PSYCHOLOGICAL TRIGGER:
+Status + curiosity: "You see something so advanced it makes your current marketing feel embarrassingly outdated, creating immediate FOMO and desire to be among the elite few using this technology."
+==============================================
+-->
 </body>
 </html>
