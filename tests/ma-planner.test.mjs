@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildPlan, exportPlan } from '../ma/assets/network/planner.mjs';
-for (const [goal,expected] of [['response','Sofia'],['campaigns','Campaign'],['operations','Workflow']]) {
+for (const [goal,expected] of [['response','Sofia'],['campaigns','Website'],['operations','AI integration']]) {
  test(`${goal} creates a distinct, complete 30-day starter plan`,()=>{
   const p=buildPlan({goal,industry:'services',stage:'manual'});
   assert.ok(p.title.includes(expected)); assert.equal(p.weeks.length,4);

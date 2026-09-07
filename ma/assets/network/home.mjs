@@ -1,9 +1,9 @@
-import { buildPlan, exportPlan } from './planner.mjs';
+import { buildPlan, exportPlan } from './planner.mjs?v=20260907-agency';
 const form=document.getElementById('plan-form');
 const status=document.getElementById('plan-status');
 let currentPlan;
 window.dataLayer=window.dataLayer||[];
-const track=(event,extra={})=>window.dataLayer.push({event,tenant_id:'MA',domain:'marketingapes.com',page_version:'ma-network-20260907',...extra});
+const track=(event,extra={})=>window.dataLayer.push({event,tenant_id:'MA',domain:'marketingapes.com',page_version:'ma-agency-20260907',...extra});
 track('ee_page_context');
 document.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
  if(a.dataset.goal){form.elements.goal.value=a.dataset.goal;}
@@ -19,7 +19,7 @@ form.addEventListener('submit',event=>{
  document.getElementById('plan-first').textContent=currentPlan.firstStep;
  populateList('plan-weeks',currentPlan.weeks);populateList('plan-metrics',currentPlan.metrics);
  const message=exportPlan(currentPlan);
- document.getElementById('email-plan').href='mailto:kyleg@marketingapes.com?subject='+encodeURIComponent('Marketing Apes — let’s discuss my domain operation')+'&body='+encodeURIComponent('Hi Kyle,\n\nMy business/domain: \nMy name: \nBest way to reach me: \n\nI’d like to discuss this starter plan:\n\n'+message);
+ document.getElementById('email-plan').href='mailto:kyleg@marketingapes.com?subject='+encodeURIComponent('Marketing Apes — let’s discuss my marketing and AI services')+'&body='+encodeURIComponent('Hi Kyle,\n\nMy business/domain: \nMy name: \nBest way to reach me: \n\nI’d like to discuss this starter plan:\n\n'+message);
  document.getElementById('plan-empty').hidden=true;const result=document.getElementById('plan-result');result.hidden=false;result.focus({preventScroll:true});
  status.textContent='Your plan is ready. Download it, copy it, or open an email to Kyle.';
  if(window.innerWidth<761)result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
