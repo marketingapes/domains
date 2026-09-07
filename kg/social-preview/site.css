@@ -18,3 +18,5 @@
 .google-partner-badge{display:flex;flex-direction:column;align-items:center;padding:18px 10px;border:1px solid #e1e6ee;border-radius:10px;margin:18px 0;background:white;text-align:center}.google-partner-badge img{width:160px;height:auto;max-width:100%}.google-partner-badge span{font-size:11px;color:#667895;margin-top:10px}.google-partner-badge strong{font-size:11px;color:#1264e8;margin-top:4px}
 
 .meta-partner-badge{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px 10px;border:1px solid #e1e6ee;border-radius:10px;margin:18px 0;background:white}.meta-partner-badge img{width:167px;height:auto;max-width:100%}.meta-partner-badge span{font-size:11px;color:#667895}
+
+.kmfg-logo{display:block;width:52px;height:52px;flex-shrink:0}.wordmark{gap:12px}@media(max-width:760px){.kmfg-logo{width:44px;height:44px}}
