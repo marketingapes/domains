@@ -1,13 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
-<title id="title">Kyle Gosselin — KMFG monogram</title>
-<desc id="desc">White K and G in a blue rounded square, with a bold lime M woven between the letters and an F inside the G.</desc>
-<defs><linearGradient id="blue" x2="1" y2="1"><stop stop-color="#1875ff"/><stop offset="1" stop-color="#0645c2"/></linearGradient></defs>
-<rect width="128" height="128" rx="27" fill="url(#blue)"/>
-<rect x="1.5" y="1.5" width="125" height="125" rx="25.5" fill="none" stroke="#ffffff30" stroke-width="3"/>
-<g fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path d="M22 31V96M46 31L22 63L46 96" stroke="#fff" stroke-width="10"/>
-<path d="M104 41C97 31 87 30 80 34C69 40 67 51 67 65C67 85 75 96 89 96C96 96 103 91 106 85V71H95" stroke="#fff" stroke-width="10"/>
-<path d="M43 60V43L52 53L61 43V60" stroke="#c5ff66" stroke-width="5"/>
-<path d="M82 82V53H99M82 65H93" stroke="#c5ff66" stroke-width="5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-labelledby="title desc">
+<title id="title">Kyle Gosselin — embedded KMFG monogram</title>
+<desc id="desc">A crisp white KG embedded across oversized blue MF letterforms, on a deep sapphire rounded square.</desc>
+<defs>
+<linearGradient id="base" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1264e8"/><stop offset="1" stop-color="#082969"/></linearGradient>
+<linearGradient id="back" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#5fb5ff"/><stop offset="1" stop-color="#2474dd"/></linearGradient>
+<linearGradient id="face" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#d5ecff"/></linearGradient>
+<path id="kg" d="M44 64V128M79 64L46 96L80 128M148 72C141 62 128 59 117 65C106 71 103 82 103 96C103 116 113 129 130 129C140 129 148 124 152 118V98H133"/>
+</defs>
+<rect width="192" height="192" rx="42" fill="url(#base)"/>
+<rect x="1" y="1" width="190" height="190" rx="41" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="2"/>
+<!-- Oversized MF is the structure behind the foreground monogram. -->
+<g fill="none" stroke="url(#back)" stroke-width="15" stroke-linejoin="miter" stroke-linecap="square">
+<path d="M26 152V38L59 74L92 38V152"/>
+<path d="M120 152V38H164M120 83H156"/>
 </g>
+<!-- A sapphire inset separates the white face from the structural letters. -->
+<use href="#kg" fill="none" stroke="#092f7d" stroke-opacity=".7" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 3)"/>
+<use href="#kg" fill="none" stroke="url(#face)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
