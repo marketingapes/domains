@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
 <title id="title">Kyle Gosselin — KMFG monogram</title>
-<desc id="desc">White K and G in a blue rounded square, with a small ice-blue M woven between the letters and an F inside the G.</desc>
-<rect width="128" height="128" rx="29" fill="#1264e8"/>
+<desc id="desc">White K and G in a blue rounded square, with a bold lime M woven between the letters and an F inside the G.</desc>
+<defs><linearGradient id="blue" x2="1" y2="1"><stop stop-color="#1875ff"/><stop offset="1" stop-color="#0645c2"/></linearGradient></defs>
+<rect width="128" height="128" rx="27" fill="url(#blue)"/>
+<rect x="1.5" y="1.5" width="125" height="125" rx="25.5" fill="none" stroke="#ffffff30" stroke-width="3"/>
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path d="M25 36V92M49 36L25 64L49 92" stroke="#fff" stroke-width="9"/>
-<path d="M102 44C96 36 89 33 81 36C69 40 65 50 65 64C65 82 72 93 86 93C94 93 100 89 103 84V67H87" stroke="#fff" stroke-width="9"/>
-<path d="M47 56V43L55 51L63 43V56" stroke="#91c5ff" stroke-width="3.5"/>
-<path d="M82 79V54H95M82 64H92" stroke="#91c5ff" stroke-width="3.5"/>
+<path d="M22 31V96M46 31L22 63L46 96" stroke="#fff" stroke-width="10"/>
+<path d="M104 41C97 31 87 30 80 34C69 40 67 51 67 65C67 85 75 96 89 96C96 96 103 91 106 85V71H95" stroke="#fff" stroke-width="10"/>
+<path d="M43 60V43L52 53L61 43V60" stroke="#c5ff66" stroke-width="5"/>
+<path d="M82 82V53H99M82 65H93" stroke="#c5ff66" stroke-width="5"/>
 </g>
 </svg>
