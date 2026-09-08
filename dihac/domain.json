@@ -2,16 +2,16 @@
   "$schema": "../DOMAINS.md",
   "domain": "doihaveaclaim.ai",
   "tenant_id": "DIHAC",
-  "entity": "Do I Have A Claim — the AI legal directory: a hurt person finds out what kind of lawyer they need; lawyers advertise to be found",
-  "job": "Point people to the right kind of lawyer (Sofia-DIHAC asks ≤5 questions, names the lawyer type, never says 'you have a case') and become the directory lawyers pay to appear in. Receives NIL's overflow.",
+  "entity": "Do I Have A Claim \u2014 the AI legal directory: a hurt person finds out what kind of lawyer they need; lawyers advertise to be found",
+  "job": "Point people to the right kind of lawyer (Sofia-DIHAC asks \u22645 questions, names the lawyer type, never says 'you have a case') and become the directory lawyers pay to appear in. Receives NIL's overflow.",
   "does_it_by": [
-    "Sofia – DIHAC Routing v3 (Vapi b6fe8ca6-…) — names the lawyer type, captures nothing by default",
+    "Sofia \u2013 DIHAC Routing v3 (Vapi b6fe8ca6-\u2026) \u2014 names the lawyer type, captures nothing by default",
     "pages: /, /about, /faq, /contact, /arizona-mva-thank-you",
     "overflow destination for nil_recycle (to wire)",
-    "directory listings for firms (to build — founding firms listed first)"
+    "directory listings for firms (to build \u2014 founding firms listed first)"
   ],
-  "profit_path": "traffic + NIL overflow → routed by lawyer type → listed firms pay to be the destination (directory) or per referral",
-  "status": "preview package on Render (dihac-site); phone is borrowed ('DIHAC (213) temp — was SmartLife'); monetization model OPEN",
+  "profit_path": "traffic + NIL overflow \u2192 routed by lawyer type \u2192 listed firms pay to be the destination (directory) or per referral",
+  "status": "preview package on Render (dihac-site); phone is borrowed ('DIHAC (213) temp \u2014 was SmartLife'); monetization model OPEN",
   "site": {
     "repo": "marketingapes/domains",
     "branch": "main",
@@ -35,7 +35,14 @@
       "copy the <head> measurement block + header/footer from the folder's index.html verbatim",
       "every button = class cta + data-cta-id; cross-domain links carry utm_source=<domain>",
       "add new pages to sitemap.xml"
-    ]
+    ],
+    "migration": {
+      "date": "2026-09-08",
+      "source": "Drive LIVE/web/aug25",
+      "homepage": "Current public Sofia call-only page preserved",
+      "dns": "pending",
+      "preserved_paths": "All existing Render pages retained; source config/app/styles copied with homepage"
+    }
   },
   "control": {
     "service": "none"
@@ -50,12 +57,12 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "live — Page 1145894278606476 'Doihaveaclaim.ai'",
-      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)"
+      "status": "live \u2014 Page 1145894278606476 'Doihaveaclaim.ai'",
+      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)"
     },
     "instagram": {
       "status": "business 17841434455967733 'Do I Have A Claim' (link to Page to confirm)",
-      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431) with post_ig=yes"
+      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431) with post_ig=yes"
     },
     "tiktok": {
       "status": "unknown"
@@ -65,14 +72,14 @@
     }
   },
   "comms": {
-    "phone": "(213) 513-7977 — borrowed from SmartLife; needs own number + A2P",
-    "vapi": "Sofia – DIHAC Routing v3 b6fe8ca6-… ; DIHAC-Call-Router destinations Phillips +16022003976 / Canopy +14803027684",
+    "phone": "(213) 513-7977 \u2014 borrowed from SmartLife; needs own number + A2P",
+    "vapi": "Sofia \u2013 DIHAC Routing v3 b6fe8ca6-\u2026 ; DIHAC-Call-Router destinations Phillips +16022003976 / Canopy +14803027684",
     "email": "none on-domain"
   },
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   },
   "cta": {
     "primary": "Find out what kind of lawyer you need"
@@ -81,7 +88,7 @@
     "root": "DoIhaveaclaim.ai Shared Drive /Web/"
   },
   "human_todo": [
-    "decide how DIHAC makes money (directory listing fee vs referral) — gates capture",
+    "decide how DIHAC makes money (directory listing fee vs referral) \u2014 gates capture",
     "own Twilio number + A2P",
     "DNS: DIHAC cuts first (cert rescue)"
   ],
