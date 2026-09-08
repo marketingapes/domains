@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "cgg",
+    "brand": "Crazy Golf Game",
+    "domain": "crazygolfgame.com",
+    "service": "cgg-site",
+    "publishPath": "cgg",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "ddm",
+    "brand": "Discount Deal Me",
+    "domain": "discountdealme.com",
+    "service": "ddm-site",
+    "publishPath": "ddm",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "fplb",
+    "brand": "For Pets Like Blue",
+    "domain": "forpetslikeblue.com",
+    "service": "fplb-site",
+    "publishPath": "fplb",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "px",
+    "brand": "Pillow Exchange",
+    "domain": "pillowexchange.com",
+    "service": "px-site",
+    "publishPath": "px",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "ri",
+    "brand": "Research Investigation",
+    "domain": "researchinvestigation.com",
+    "service": "ri-site",
+    "publishPath": "ri",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "sliq",
+    "brand": "Smart Life Insurance Quote",
+    "domain": "smartlifeinsurancequote.com",
+    "service": "sliq-site",
+    "publishPath": "sliq",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "tnt",
+    "brand": "Toned N Tasty",
+    "domain": "tonedntasty.com",
+    "service": "tnt-site",
+    "publishPath": "tnt",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  },
+  {
+    "slug": "toss",
+    "brand": "Toss Sports",
+    "domain": "tosssports.com",
+    "service": "toss-site",
+    "publishPath": "toss",
+    "status": "preview-foundation",
+    "customDomain": "not-migrated"
+  }
+]
