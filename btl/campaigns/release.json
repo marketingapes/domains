@@ -1,7 +1,7 @@
 {
-  "version": "2026-09-08.1",
+  "version": "2026-09-08.2",
   "brand": "btl",
-  "topics": 24,
+  "topics": 25,
   "status": "demo",
   "leadCollection": false,
   "indexing": false

@@ -1,4 +1,4 @@
-export const VERSION='2026-09-08.1';
+export const VERSION='2026-09-08.2';
 export const SOURCE='https://www.jpml.uscourts.gov/sites/jpml/files/Pending_MDL_Dockets_By_MDL_Type-September-1-2026.pdf';
 export const brands=[
  {id:'lfma',name:'Law Firm Marketing Apes',host:'lawfirmmarketingapes.com',url:'https://lawfirmmarketingapes.com',role:'agency',color:'#173f70'},
@@ -11,6 +11,7 @@ export const brands=[
 ];
 const rows=[
  ['mva','Motor vehicle accidents','Local injury',null,'Accident location, date, injury, treatment and representation status.'],
+ ['personal-injury','Personal injury','Local injury',null,'Incident type, date, location, injury, treatment and responsible-party information.'],
  ['sexual-abuse','Sexual abuse','Abuse',null,'Approved jurisdiction, institution and time period. Use a trauma-informed private intake.'],
  ['depo-provera','Depo-Provera','Medication',3140,'Product identification, treatment history and buyer-approved diagnosis criteria.'],
  ['talc','Talcum powder','Consumer product',2738,'Product and use history, relevant diagnosis and buyer-approved time periods.'],
@@ -36,3 +37,10 @@ const rows=[
  ['custom','Custom campaign','Custom',null,'Define the offer, audience, geography, acceptance criteria and delivery owner.']
 ];
 export const topics=rows.map(([id,name,category,mdl,review])=>({id,name,category,mdl,review,source:mdl?SOURCE:null,contentStatus:'template_review_required',acceptingClaimsVerified:false}));
+
+export const intakeModes=[
+ {mode:'prequalify',name:'Prequalification',description:'Structured questions against the campaign’s agreed acceptance criteria.'},
+ {mode:'open',name:'Open-ended · Form / Call',description:'Let the person explain what happened or choose a call.'},
+ {mode:'ai',name:'AI-assisted intake',description:'A conversational path for the same campaign and criteria.'}
+];
+export function defaultClass(topic){const t=topics.find(x=>x.id===topic);return topic==='mva'?'mva':topic==='personal-injury'?'personal_injury':t?.category==='Abuse'||topic==='custom'?'standard':'major_mass_tort';}

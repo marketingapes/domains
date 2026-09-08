@@ -1,6 +1,6 @@
 # Shared domain campaign studio
 
-Built September 8, 2026. One public, secret-free source produces seven branded campaign studios and 24 topic previews per brand. This is a working demo/planning release, not a live lead collection or autonomous advertising release.
+Built September 8, 2026. One public, secret-free source produces seven branded campaign studios and 25 topic previews per brand. This is a working demo/planning release, not a live lead collection or autonomous advertising release.
 
 ## Build and verify
 
@@ -13,7 +13,7 @@ Generated files are committed because several Render static services have no Nod
 
 ## What works
 
-Brand and topic selection, two media tiers, firm/location customization, editable 50-mile MVA planning radius, two page approaches, fourteen-day dates and cent-exact budgets, JSON download, standalone HTML demo download, shareable configuration links, and manual actual-spend pacing. No vendor order, invoice, payment, advertising budget, lead routing or consumer record is created by these actions.
+Brand and topic selection, campaign categories, firm/location customization, editable 50-mile MVA planning radius, three intake approaches (prequalification, open-ended form/call and AI), fourteen-day dates and cent-exact budgets, JSON download, standalone HTML demo download, shareable configuration links, and manual actual-spend pacing. No vendor order, invoice, payment, advertising budget, lead routing or consumer record is created by these actions.
 
 Existing vendor agreements and waivers override catalog pricing. $2,500 is monthly management, not a fee per 14-day sprint. Campaign IDs label draft exports and are not transaction identifiers.
 
@@ -34,3 +34,9 @@ For each new topic: edit catalog, regenerate, run tests, review pages and publis
 ## Signature log and QA
 
 Audience: Kyle and firm/agency buyers evaluating campaigns. Traffic: direct demo links. Conversion: download or share a plan, not a consumer inquiry. Built from existing domain mappings and structured offer. Homepage and provider code unchanged. Initial browser verification: seven brands, plan download, share/reload, manual pacing, edit invalidation, malicious text escaping, 390px overflow check and screenshots. Unit/integration tests cover totals, dates, tiers, radius validation and all generated pages. Retain release receipts separately with actual deployment verification.
+
+## Three-page release — September 8, 2026
+
+Campaign class sets the media budget: MVA, personal injury and major mass tort are $10,000; the retained standard tort/sex-abuse category is $5,000. Monthly management remains separate. Qualifications, disqualifications and excluded geography are explicit editable fields and are not treated as verified legal criteria. Switching topics clears qualifications/disqualifications. Shared links include these fields; the UI identifies this before copying.
+
+Every topic now has prequalify/, open/, and ai/ static templates. Customized previews use preview/ with a sandboxed iframe; each can also be downloaded as a standalone HTML page. AI interaction is expressly a scripted demo. Open-ended and call controls do not submit or place calls. None of the three paths is live claimant intake. The older variant property remains in exported plans for compatibility but no longer selects the three intake modes.

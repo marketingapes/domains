@@ -28,3 +28,17 @@ test('supports either structured media tier without confusing monthly fees',()=>
  assert.equal(p.mediaCents,1000000);assert.equal(p.tier,'major');
  assert.throws(()=>mod.createPlan({topic:'talc',brand:'ma',start:'2026-09-14',tier:'bogus'}));
 });
+test('keeps campaign criteria and separates the three intake approaches from pricing',()=>{
+ const p=mod.createPlan({topic:'talc',brand:'btl',start:'2026-09-14',campaignClass:'major_mass_tort',qualifies:'Confirmed product use\nBuyer-approved diagnosis',disqualifies:'Outside approved geography',excludedGeo:'Excluded state',location:'Approved states only'});
+ assert.equal(p.mediaCents,1000000);assert.equal(p.campaignClass,'major_mass_tort');
+ assert.deepEqual(p.criteria.qualifies,['Confirmed product use','Buyer-approved diagnosis']);
+ assert.deepEqual(p.criteria.disqualifies,['Outside approved geography']);
+ assert.equal(p.geo.excluded,'Excluded state');assert.equal(p.criteria.verified,false);
+ assert.deepEqual(p.pages.map(x=>x.mode),['prequalify','open','ai']);
+});
+test('MVA and PI have fixed 10k media even when an old link has the 5k tier',()=>{
+ for(const [topic,campaignClass] of [['mva','mva'],['personal-injury','personal_injury']]){
+ const p=mod.createPlan({topic,campaignClass,brand:'nil',start:'2026-09-14',tier:'standard'});assert.equal(p.mediaCents,1000000);
+ }
+ assert.throws(()=>mod.createPlan({topic:'talc',brand:'nil',start:'2026-09-14',campaignClass:'invalid'}));
+});
