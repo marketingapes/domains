@@ -2,7 +2,7 @@
   "$schema": "../DOMAINS.md",
   "domain": "kylegosselin.com",
   "tenant_id": "KG",
-  "entity": "Kyle Gosselin \u2014 founder-operator of Marketing Apes (The Builder)",
+  "entity": "Kyle Gosselin — founder-operator of Marketing Apes (The Builder)",
   "job": "Be the person behind Marketing Apes: publish the builder's proof log (what got built, what it did, what it cost) so attention lands here and Marketing Apes converts it.",
   "does_it_by": [
     "posting proof from the live system",
@@ -10,7 +10,7 @@
     "every link carries utm_source=kylegosselin.com back into BigQuery under tenant_id KG"
   ],
   "profit_path": "attention -> marketingapes.com/pricing (utm) -> Sofia demo -> trial payment (Marketing Apes QuickBooks)",
-  "status": "LIVE \u2014 cutover 2026-09-04 (Cloudflare CNAME -> kg-site.onrender.com; old SiteGround site retired)",
+  "status": "LIVE — cutover 2026-09-04 (Cloudflare CNAME -> kg-site.onrender.com; old SiteGround site retired)",
   "site": {
     "repo": "marketingapes/domains",
     "branch": "main",
@@ -34,12 +34,12 @@
     ]
   },
   "control": {
-    "service": "kg-control (srv-dacg0b15efls73ea8i50, repo marketingapes/nil-intake) \u2014 MCP tools kg_create_page / kg_update_page / kg_unpublish_page / kg_restore_page / kg_list_live_pages; publishes to marketingapes/domains kg/ -> Render kg-site -> Drive Website/Live+Releases. index.html is protected: edit via git."
+    "service": "kg-control (srv-dacg0b15efls73ea8i50, repo marketingapes/nil-intake) — MCP tools kg_create_page / kg_update_page / kg_unpublish_page / kg_restore_page / kg_list_live_pages; publishes to marketingapes/domains kg/ -> Render kg-site -> Drive Website/Live+Releases. index.html is protected: edit via git."
   },
   "measurement": {
     "gtm_web": "GTM-W3CTJQ (legacy tags to clean before cutover)",
     "gtm_server": "GTM-NMT76SV2",
-    "ga4": "TBD \u2014 create property for kylegosselin.com",
+    "ga4": "TBD — create property for kylegosselin.com",
     "events": [
       "ee_page_context",
       "ee_cta_click",
@@ -49,7 +49,7 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "exists \u2014 Page 257753357643105 (kylepractor) \u2014 rename to 'Kyle Gosselin' pending",
+      "status": "exists — Page 257753357643105 (kylepractor) — rename to 'Kyle Gosselin' pending",
       "publish_lane": "Make social_post lane with page_id=257753357643105"
     },
     "instagram": {
@@ -76,10 +76,10 @@
   "comms": {
     "email": "none on-domain yet (SiteGround mail question open)",
     "phone": "none",
-    "vapi": "none \u2014 KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"
+    "vapi": "none — KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"
   },
   "cta": {
-    "primary": "Talk to Sofia (demo) \u2014 via marketingapes.com",
+    "primary": "Talk to Sofia (demo) — via marketingapes.com",
     "secondary": "See pricing",
     "pay": "/pay/ -> marketingapes.com/pricing until the MA pay link exists"
   },
@@ -95,8 +95,17 @@
     "GA4 property for kylegosselin.com -> replace GTM-W3CTJQ legacy tags"
   ],
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  },
+  "campaign_studio": {
+    "path": "/campaigns/",
+    "version": "2026-09-08.1",
+    "source": "campaign-system/",
+    "status": "demo",
+    "topic_count": 24,
+    "lead_collection": false,
+    "organic_publication": "review_required"
   }
 }

@@ -79,5 +79,14 @@
   "human_todo": [
     "mirror /phillips-law/* into btl/ before any DNS change",
     "decide BTL's own Twilio number + A2P when comms move here"
-  ]
+  ],
+  "campaign_studio": {
+    "path": "/campaigns/",
+    "version": "2026-09-08.1",
+    "source": "campaign-system/",
+    "status": "demo",
+    "topic_count": 24,
+    "lead_collection": false,
+    "organic_publication": "review_required"
+  }
 }

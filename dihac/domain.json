@@ -84,5 +84,14 @@
     "decide how DIHAC makes money (directory listing fee vs referral) — gates capture",
     "own Twilio number + A2P",
     "DNS: DIHAC cuts first (cert rescue)"
-  ]
+  ],
+  "campaign_studio": {
+    "path": "/campaigns/",
+    "version": "2026-09-08.1",
+    "source": "campaign-system/",
+    "status": "demo",
+    "topic_count": 24,
+    "lead_collection": false,
+    "organic_publication": "review_required"
+  }
 }

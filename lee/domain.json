@@ -9,7 +9,9 @@
     "folder": "lee",
     "preview_url": "https://lee-site-2rwl.onrender.com/",
     "live_url": "https://legalevolutionengine.com/",
-    "pages": ["/"]
+    "pages": [
+      "/"
+    ]
   },
   "cta": {
     "primary": "Request a Legal Engine Snapshot",
@@ -17,11 +19,24 @@
   },
   "measurement": {
     "gtm_web": "GTM-NWVHNTVK (borrowed from LFMA until LEE has its own — measured fact, not ideal)",
-    "events": ["ee_page_context", "ee_cta_click", "ee_snapshot_request"]
+    "events": [
+      "ee_page_context",
+      "ee_cta_click",
+      "ee_snapshot_request"
+    ]
   },
   "who": "law firms that can report outcomes",
   "want": "signed cases, not more leads",
   "action": "paid Snapshot request",
   "money": "$5,000 invoice after fit",
-  "proves": "the engine is a product, not a chat"
+  "proves": "the engine is a product, not a chat",
+  "campaign_studio": {
+    "path": "/campaigns/",
+    "version": "2026-09-08.1",
+    "source": "campaign-system/",
+    "status": "demo",
+    "topic_count": 24,
+    "lead_collection": false,
+    "organic_publication": "review_required"
+  }
 }

@@ -2,7 +2,7 @@
   "$schema": "../DOMAINS.md",
   "domain": "marketingapes.com",
   "tenant_id": "MA",
-  "entity": "Marketing Apes \u2014 domain, campaign, and AI systems operator",
+  "entity": "Marketing Apes — domain, campaign, and AI systems operator",
   "job": "Operate client domains, ads, landing pages, lead response, follow-up, and reporting as members of the Marketing Apes network.",
   "does_it_by": [
     "Guided system planner produces a useful downloadable 30-day outline",
@@ -22,7 +22,7 @@
       "offer_id": "sofia-trial-30d-mt"
     },
     "founding": {
-      "label": "Founding customer \u2014 own the machine",
+      "label": "Founding customer — own the machine",
       "activation_usd": 7500,
       "monthly_usd": 1500,
       "unit": "per operating domain"
@@ -52,10 +52,10 @@
     ]
   },
   "control": {
-    "service": "ma-control (srv-dad3a5u7bikc739g541g, repo marketingapes/nil-intake) \u2014 MCP tools ma_create_page / ma_update_page / ma_unpublish_page / ma_restore_page / ma_list_live_pages; publishes to marketingapes/domains ma/ -> Render ma-site -> Drive Website/Live+Releases. index.html is protected: edit via git. Intake tools present but unused (no feeds)."
+    "service": "ma-control (srv-dad3a5u7bikc739g541g, repo marketingapes/nil-intake) — MCP tools ma_create_page / ma_update_page / ma_unpublish_page / ma_restore_page / ma_list_live_pages; publishes to marketingapes/domains ma/ -> Render ma-site -> Drive Website/Live+Releases. index.html is protected: edit via git. Intake tools present but unused (no feeds)."
   },
   "measurement": {
-    "gtm_web": "PENDING \u2014 Kyle to give the Marketing Apes container id (EE_GTM_ID)",
+    "gtm_web": "PENDING — Kyle to give the Marketing Apes container id (EE_GTM_ID)",
     "gtm_server": "PENDING",
     "ga4": "PENDING",
     "events": [
@@ -70,15 +70,15 @@
   },
   "channels": {
     "facebook_page": {
-      "status": "exists \u2014 Page 137455619624058 'Marketing Apes' (IG 17841401184300725 linked)",
+      "status": "exists — Page 137455619624058 'Marketing Apes' (IG 17841401184300725 linked)",
       "publish_lane": "Make social_post lane (see lanes.social_post) with page_id=137455619624058, ig_id=17841401184300725"
     },
     "instagram": {
-      "status": "exists \u2014 business account 17841401184300725 'Marketing Apes'",
+      "status": "exists — business account 17841401184300725 'Marketing Apes'",
       "publish_lane": "Make social_post lane, post_ig=yes"
     },
     "linkedin": {
-      "status": "company page exists \u2014 manual"
+      "status": "company page exists — manual"
     },
     "tiktok": {
       "status": "unknown"
@@ -90,7 +90,7 @@
   "comms": {
     "email": "kyleg@marketingapes.com (human inbox)",
     "phone": "+16197360356",
-    "vapi": "Sofia \u2013 DEMO (602) 3f10ab95-f487-42ad-871b-7219440529f0 \u2014 transfer_to_firm -> Kyle's cell; queue sheet 'Sofia Demo Queue' 1wQtSZ57wH4sGZ6jGhzS1wZ9tM1YQ7lwbQ3DcPNvo5XQ; Zap spec in project doc demo-queue-zap-spec"
+    "vapi": "Sofia – DEMO (602) 3f10ab95-f487-42ad-871b-7219440529f0 — transfer_to_firm -> Kyle's cell; queue sheet 'Sofia Demo Queue' 1wQtSZ57wH4sGZ6jGhzS1wZ9tM1YQ7lwbQ3DcPNvo5XQ; Zap spec in project doc demo-queue-zap-spec"
   },
   "cta": {
     "primary": "Build my system plan",
@@ -111,13 +111,22 @@
     "ma-control secret file google-gtm.json (Drive receipts)"
   ],
   "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
+    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
+    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
   },
   "homepage_limits": [
     "Guided outline, not live AI analysis",
     "Email client handoff; user sends the request",
     "Live Sofia call flow requires MA configuration verification"
-  ]
+  ],
+  "campaign_studio": {
+    "path": "/campaigns/",
+    "version": "2026-09-08.1",
+    "source": "campaign-system/",
+    "status": "demo",
+    "topic_count": 24,
+    "lead_collection": false,
+    "organic_publication": "review_required"
+  }
 }
