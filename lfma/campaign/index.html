@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request a Campaign | Law Firm Marketing Apes</title>
+<meta name="description" content="Tell us the campaign you need. We build the landing page, ads, intake and routing, then run a two-week sprint with reporting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--ground:#060D1F;--ground-2:#08122B;--panel:#0C1730;--panel-2:#101E3C;--rule:rgba(143,168,255,.15);--rule-bright:rgba(143,168,255,.34);--ink:#E8EFFB;--muted:#8FA3C6;--faint:#5E739A;--dim:#3D4F70;--pulse:#4DA3FF;--pulse-dim:rgba(77,163,255,.13);--live:#2FBFA3;--wait:#F0A83C;--measure:34rem;--board:38rem}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(120% 55% at 50% 0%,#0D1B39 0%,transparent 60%),linear-gradient(180deg,var(--ground) 0%,var(--ground-2) 55%,var(--ground) 100%);background-color:var(--ground);color:var(--ink);font-family:"Newsreader",Georgia,"Times New Roman",serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:100%;max-width:var(--board);margin-inline:auto;padding:0 20px 3rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:1.4rem 0 1.1rem;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.brand{font-family:"Archivo",system-ui,sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--pulse)}
+.step-of{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.72rem;color:var(--faint)}
+h1{font-family:"Archivo",system-ui,sans-serif;font-weight:700;font-size:clamp(1.7rem,6.6vw,2.35rem);line-height:1.06;letter-spacing:-.026em;margin:1.6rem 0 .55rem;text-wrap:balance}
+.lede{color:var(--muted);font-size:1.02rem;max-width:var(--measure)}
+.lede strong{color:var(--ink);font-weight:500}
+.flow{margin-top:1.5rem;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:11px;overflow:hidden}
+.fstep{background:var(--panel);padding:11px 14px;display:grid;grid-template-columns:1.4rem 1fr;gap:0 10px;align-items:baseline}
+.fn{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.72rem;font-weight:700;color:var(--pulse)}
+.ft{font-family:"Archivo",system-ui,sans-serif;font-size:.87rem;font-weight:500;color:var(--ink);line-height:1.4}
+.ft em{font-style:normal;color:var(--muted);font-weight:400}
+h2{font-family:"Archivo",system-ui,sans-serif;font-weight:600;font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);margin:2.4rem 0 .9rem}
+.field{margin-bottom:1.15rem;display:flex;flex-direction:column;gap:.35rem}
+label{font-family:"Archivo",system-ui,sans-serif;font-size:.88rem;font-weight:600;color:var(--ink);line-height:1.35}
+.hint{font-size:.84rem;color:var(--muted);line-height:1.45}
+input[type="text"],input[type="email"],select,textarea{width:100%;font-family:"Archivo",system-ui,sans-serif;font-size:.95rem;color:var(--ink);background:var(--panel);border:1px solid var(--rule-bright);border-radius:9px;padding:11px 12px;line-height:1.4}
+textarea{min-height:5.2rem;resize:vertical;font-family:"Newsreader",Georgia,serif;font-size:1rem}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pulse);outline-offset:1px;border-color:var(--pulse)}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 1.15rem,calc(100% - 13px) 1.15rem;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+.req{color:var(--wait);font-weight:400}
+.opts{display:grid;gap:9px;margin-top:.2rem}
+.opt{border:1px solid var(--rule);border-radius:10px;background:var(--panel);padding:12px 13px;display:grid;grid-template-columns:1.3rem 1fr;gap:0 10px;align-items:start;cursor:pointer;transition:border-color .18s ease,background .18s ease}
+.opt:hover{border-color:var(--rule-bright)}
+.opt:has(input:checked){border-color:var(--pulse);background:linear-gradient(180deg,#0E1B38,var(--panel))}
+.opt input{accent-color:var(--pulse);margin:3px 0 0;width:15px;height:15px}
+.opt-h{font-family:"Archivo",system-ui,sans-serif;font-size:.9rem;font-weight:600;color:var(--ink);line-height:1.3;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+.opt-d{display:block;font-family:"Newsreader",Georgia,serif;font-weight:400;font-size:.9rem;color:var(--muted);line-height:1.45;margin-top:4px}
+.tag{font-family:"Archivo",system-ui,sans-serif;font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.tag.up{color:var(--pulse)}
+.money{margin-top:1.6rem;border:1px solid var(--rule);border-left:3px solid var(--live);border-radius:10px;background:rgba(47,191,163,.05);padding:15px 16px;display:flex;flex-direction:column;gap:.6rem}
+.money-h{font-family:"Archivo",system-ui,sans-serif;font-size:.9rem;font-weight:600;color:var(--live)}
+.money p{margin:0;font-size:.89rem;color:var(--muted);line-height:1.5}
+.money strong{color:var(--ink);font-weight:500}
+.submit{margin-top:1.7rem;width:100%;font-family:"Archivo",system-ui,sans-serif;font-size:1rem;font-weight:600;color:#04101F;background:var(--pulse);border:0;border-radius:10px;padding:15px 22px;cursor:pointer;box-shadow:0 12px 30px -12px rgba(77,163,255,.75);transition:transform .16s ease}
+.submit:hover{transform:translateY(-1px)}
+.submit:disabled{opacity:.5;cursor:default;transform:none}
+.submit:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.after{margin-top:.7rem;font-size:.83rem;color:var(--faint);line-height:1.5;text-align:center}
+footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
+.disc{font-size:.75rem;line-height:1.6;color:var(--faint)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="brand">Law Firm Marketing Apes</span>
+    <span class="step-of">Step 1 of 3</span>
+  </div>
+
+  <h1>Tell us the campaign you need.</h1>
+  <p class="lede">
+    We build the landing page, the ads, the intake and the routing, then run it as a
+    <strong>two-week sprint</strong> with reporting throughout. Answer this once and
+    everything downstream is built from it.
+  </p>
+
+  <div class="flow">
+    <div class="fstep"><span class="fn">1</span><span class="ft">You send this brief <em>— five minutes</em></span></div>
+    <div class="fstep"><span class="fn">2</span><span class="ft">We send scope + invoice <em>— same day</em></span></div>
+    <div class="fstep"><span class="fn">3</span><span class="ft">You fund it <em>— payment starts the build</em></span></div>
+    <div class="fstep"><span class="fn">4</span><span class="ft">We build and test <em>— page, tracking, intake, a live test lead</em></span></div>
+    <div class="fstep"><span class="fn">5</span><span class="ft">Launch <em>— next available cycle</em></span></div>
+    <div class="fstep"><span class="fn">6</span><span class="ft">Two-week sprint <em>— reporting throughout, then we propose the next</em></span></div>
+  </div>
+
+  <form id="briefForm">
+
+    <h2>Who's asking</h2>
+
+    <div class="field">
+      <label for="firm">Firm <span class="req">· required</span></label>
+      <input type="text" id="firm" name="firm" required>
+    </div>
+
+    <div class="field">
+      <label for="name">Your name <span class="req">· required</span></label>
+      <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="field">
+      <label for="email">Email <span class="req">· required</span></label>
+      <input type="email" id="email" name="email" required>
+    </div>
+
+    <h2>The campaign</h2>
+
+    <div class="field">
+      <label for="tort">Case type <span class="req">· required</span></label>
+      <span class="hint">One per campaign. One case type, one state, is what makes a sprint measurable.</span>
+      <select id="tort" name="tort" required>
+        <option value="">Choose one…</option>
+        <option>Car accidents (MVA)</option>
+        <option>Rideshare / commercial vehicle</option>
+        <option>Slip &amp; fall / premises</option>
+        <option>General personal injury</option>
+        <option>Sexual / institutional abuse</option>
+        <option>Mass tort — other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="geo">States or metros <span class="req">· required</span></label>
+      <input type="text" id="geo" name="geo" placeholder="Arizona — statewide" required>
+    </div>
+
+    <div class="field">
+      <label for="no">What you <em>don't</em> take <span class="req">· required</span></label>
+      <span class="hint">The most valuable answer on this page. Anything you name here never reaches your desk.</span>
+      <textarea id="no" name="no" placeholder="No commercial trucking. Nothing over 2 years old. No cases already represented." required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="budget">Media budget for the sprint <span class="req">· required</span></label>
+      <span class="hint">This is ad spend, paid by you to the platform — separate from our fee. A $5,000 two-week sprint paces at roughly $357/day.</span>
+      <select id="budget" name="budget" required>
+        <option value="">Choose one…</option>
+        <option>$2,500 — two weeks</option>
+        <option>$5,000 — two weeks</option>
+        <option>$10,000 — two weeks</option>
+        <option>Not sure — recommend one</option>
+      </select>
+    </div>
+
+    <h2>How leads reach you</h2>
+
+    <div class="opts">
+      <label class="opt">
+        <input type="radio" name="intake" value="self">
+        <span>
+          <span class="opt-h">We run intake<span class="tag">Included</span></span>
+          <span class="opt-d">Leads land in the system and your team works them from there.</span>
+        </span>
+      </label>
+
+      <label class="opt">
+        <input type="radio" name="intake" value="deliver" checked>
+        <span>
+          <span class="opt-h">Deliver to our intake team<span class="tag">Included</span></span>
+          <span class="opt-d">Routed straight to your intake line during your hours, held or texted after close.</span>
+        </span>
+      </label>
+
+      <label class="opt">
+        <input type="radio" name="intake" value="ai">
+        <span>
+          <span class="opt-h">A.I. prequalifies first<span class="tag up">Add-on</span></span>
+          <span class="opt-d">Our assistant calls in about a minute, qualifies by claim type in English or Spanish, and only warm-transfers what matches your criteria.</span>
+        </span>
+      </label>
+    </div>
+
+    <div class="field" style="margin-top:1.15rem">
+      <label for="line">Your intake line for live transfers</label>
+      <input type="text" id="line" name="line" placeholder="(602) 555-0148">
+    </div>
+
+    <div class="field">
+      <label for="hours">Intake hours</label>
+      <span class="hint">Decides what happens to a lead that arrives after you close.</span>
+      <input type="text" id="hours" name="hours" placeholder="Mon–Fri 8am–6pm MST">
+    </div>
+
+    <div class="money">
+      <span class="money-h">How the money works</span>
+      <p><strong>Two numbers, never mixed.</strong> Media is yours — it runs in your own ad account and you pay the platform directly. We never mark it up and never front it.</p>
+      <p><strong>Our build and management fee is quoted separately</strong> on the scope we send back, and it's flat. Nothing we charge is contingent on a case outcome.</p>
+      <p><strong>Nothing is charged on this page.</strong> You'll get the scope and the invoice before anything is built.</p>
+    </div>
+
+    <button class="submit" type="submit">Send the brief</button>
+    <p class="after">Scope and invoice back the same day. Payment starts the build.</p>
+  </form>
+
+  <div id="sent" hidden>
+    <div class="money" style="border-left-color:var(--pulse);background:rgba(77,163,255,.06)">
+      <span class="money-h" style="color:var(--pulse)">Brief received</span>
+      <p>You'll have the scope and invoice back the same day, with the launch cycle and exactly what's still needed from you.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p class="disc">
+      Law Firm Marketing Apes is a marketing company, not a law firm, and does not give legal
+      advice. Flat marketing fees; nothing is contingent on case outcomes. Media runs in the
+      firm's own ad account. We deliver campaign build, management and reporting — not a
+      guaranteed number of leads or signed cases. Law firms are responsible for their own
+      advertising compliance.
+      <br><br>
+      Marketing Apes · 2020 Monte Vista Dr, Vista, CA 92083
+    </p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  /* Existing, active lane — the same hook marketingapes.com/order posts to.
+     One lane per event: do not add a second webhook for campaign briefs. */
+  var HOOK = "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi";
+
+  var DELIVERY = {
+    self:    "Firm runs intake in our system",
+    deliver: "Deliver to firm intake line",
+    ai:      "AI prequalify then warm transfer (add-on, quoted separately)"
+  };
+
+  var form = document.getElementById("briefForm");
+  var sent = document.getElementById("sent");
+  if(!form) return;
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var f = new FormData(form);
+    var intake = f.get("intake") || "deliver";
+    var budget = (f.get("budget") || "").toString();
+    var media  = (budget.match(/[0-9,]+/) || [""])[0].replace(/,/g,"");
+
+    var data = {
+      type:             "Law firm",
+      product:          "Campaign Sprint - build & management (14 days)",
+      buyer_name:       f.get("firm")  || "",
+      contact_name:     f.get("name")  || "",
+      email:            f.get("email") || "",
+      case_types:       f.get("tort")  || "",
+      states:           f.get("geo")   || "",
+      turn_downs:       f.get("no")    || "",
+      transfer_number:  f.get("line")  || "",
+      intake_hours:     f.get("hours") || "",
+      delivery:         DELIVERY[intake] || intake,
+      price_usd:        "2500",
+      media_budget_usd: media,
+      daily_cap:        media ? String(Math.round(Number(media)/14)) : "",
+      source:           "lawfirmmarketingapes.com/campaign",
+      notes:            "Campaign Sprint brief. Media " + (media ? "$" + media : "TBD") +
+                        " over 14 days, funded by the firm in its own ad account. " +
+                        "Fee $2,500 flat. AI prequalify: " +
+                        (intake === "ai" ? "REQUESTED - quote separately" : "no") + "."
+    };
+
+    var btn = form.querySelector(".submit");
+    if(btn){ btn.disabled = true; btn.textContent = "Sending…"; }
+
+    fetch(HOOK, {method:"POST", mode:"no-cors", body:new URLSearchParams(data)})
+      .catch(function(){})
+      .then(function(){
+        form.hidden = true;
+        sent.hidden = false;
+        sent.scrollIntoView({behavior:"smooth", block:"nearest"});
+      });
+  });
+})();
+</script>
+</body>
+</html>
