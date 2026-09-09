@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://marketingapes.com/schemas/domain.schema.json",
+  "title": "Marketing Apes Universal Domain Capability Contract",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["tenant_id", "domain", "brand", "status", "web", "comms", "social", "ads", "measurement", "data", "automation", "safety"],
+  "properties": {
+    "tenant_id": {"type": "string", "minLength": 2},
+    "domain": {"type": "string", "minLength": 3},
+    "brand": {"type": "string", "minLength": 1},
+    "entity": {"type": "string"},
+    "job": {"type": "string"},
+    "profit_path": {"type": "string"},
+    "status": {"type": "string"},
+    "compliance_profile": {"type": "string"},
+    "web": {
+      "type": "object",
+      "required": ["status", "repo", "branch", "folder", "render_service", "live_url", "dns"],
+      "properties": {
+        "status": {"type": "string"},
+        "repo": {"type": "string"},
+        "branch": {"type": "string"},
+        "folder": {"type": "string"},
+        "render_service": {"type": "object"},
+        "live_url": {"type": "string"},
+        "preview_url": {"type": "string"},
+        "dns": {"type": "object"},
+        "control": {"type": "object"},
+        "pages": {"type": "array"},
+        "rules": {"type": "array"}
+      }
+    },
+    "comms": {
+      "type": "object",
+      "required": ["email", "sms", "voice", "vapi"],
+      "properties": {
+        "email": {
+          "type": "object",
+          "required": ["human", "transactional", "bulk"],
+          "properties": {
+            "human": {"type": "object"},
+            "transactional": {"type": "object"},
+            "bulk": {"type": "object"}
+          }
+        },
+        "sms": {"type": "object"},
+        "voice": {"type": "object"},
+        "vapi": {"type": "object"}
+      }
+    },
+    "social": {
+      "type": "object",
+      "required": ["facebook", "instagram", "tiktok", "youtube", "linkedin", "x"],
+      "properties": {
+        "facebook": {"type": "object"},
+        "instagram": {"type": "object"},
+        "tiktok": {"type": "object"},
+        "youtube": {"type": "object"},
+        "linkedin": {"type": "object"},
+        "x": {"type": "object"},
+        "threads": {"type": "object"},
+        "pinterest": {"type": "object"}
+      }
+    },
+    "ads": {
+      "type": "object",
+      "required": ["meta", "google_ads", "tiktok_ads"],
+      "properties": {
+        "meta": {"type": "object"},
+        "google_ads": {"type": "object"},
+        "tiktok_ads": {"type": "object"},
+        "other": {"type": "object"}
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "required": ["ga4", "gtm_web", "gtm_server", "search_console", "bigquery", "events"],
+      "properties": {
+        "ga4": {"type": "object"},
+        "gtm_web": {"type": "object"},
+        "gtm_server": {"type": "object"},
+        "search_console": {"type": "object"},
+        "bigquery": {"type": "object"},
+        "meta_dataset": {"type": "object"},
+        "events": {"type": "array"}
+      }
+    },
+    "data": {
+      "type": "object",
+      "required": ["drive", "github", "bigquery"],
+      "properties": {
+        "drive": {"type": "object"},
+        "github": {"type": "object"},
+        "bigquery": {"type": "object"},
+        "crm": {"type": "object"}
+      }
+    },
+    "automation": {
+      "type": "object",
+      "required": ["mcp", "render", "make", "webhooks"],
+      "properties": {
+        "mcp": {"type": "object"},
+        "render": {"type": "object"},
+        "make": {"type": "object"},
+        "webhooks": {"type": "object"}
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": ["production_gates", "kill_switches", "consent", "secrets_policy"],
+      "properties": {
+        "production_gates": {"type": "object"},
+        "kill_switches": {"type": "object"},
+        "consent": {"type": "object"},
+        "secrets_policy": {"type": "string"}
+      }
+    },
+    "human_todo": {"type": "array"},
+    "last_verified": {"type": "string"}
+  }
+}
