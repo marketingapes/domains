@@ -1,0 +1,56 @@
+/* Native mobile UX v1. Load after campaign-polish-v1.css.
+   Scoped to the reviewed markup; no browser script, fixed bar or new image. */
+body:has(#briefForm) .wrap[data-lfma-mobile="v1"] {display: block;}
+body:has(#briefForm) [data-lfma-mobile] .brief-intro {margin-bottom: 28px; min-width: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-eyebrow {margin: 0 0 14px; color: #a9d4ff; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;}
+body:has(#briefForm) [data-lfma-mobile] .brief-start {display: inline-flex; align-items: center; justify-content: center; gap: 22px; min-height: 50px; margin-top: 24px; padding: 12px 20px; border: 1px solid #759bcc; border-radius: 12px; color: #f4f7fb; font-size: 15px; font-weight: 700; text-decoration: none;}
+body:has(#briefForm) [data-lfma-mobile] .brief-start:hover {background: #173352; border-color: #b5d7ff;}
+body:has(#briefForm) [data-lfma-mobile] .brief-reassurance {margin: 10px 0 0; color: #b9cbe2; font-size: 13px;}
+body:has(#briefForm) [data-lfma-mobile] #briefForm {display: block;}
+body:has(#briefForm) [data-lfma-mobile] .brief-section {border: 0; padding: 0; margin: 0 0 26px; min-inline-size: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-section legend {width: 100%; padding: 20px 0 18px; border-top: 1px solid #d8e2ed; color: #142237; font: 700 19px/1.4 "Archivo", system-ui, sans-serif; letter-spacing: -.025em;}
+body:has(#briefForm) [data-lfma-mobile] .brief-section:first-child legend {padding-top: 0; border: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-section-number {display: inline-block; margin-right: 8px; padding: 5px 8px; border: 1px solid #cadcf5; border-radius: 8px; color: #185bce; background: #edf4ff; font-size: 12px; vertical-align: 2px; letter-spacing: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-fields {display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 18px;}
+body:has(#briefForm) [data-lfma-mobile] .brief-fields > * {min-width: 0; grid-column: 1 / -1;}
+body:has(#briefForm) [data-lfma-mobile] .hint,
+body:has(#briefForm) [data-lfma-mobile] .opt-d {font-size: 14px; line-height: 1.6;}
+body:has(#briefForm) [data-lfma-mobile] .money p {font-size: 14px; line-height: 1.65;}
+body:has(#briefForm) [data-lfma-mobile] .after {font-size: 13px;}
+body:has(#briefForm) [data-lfma-mobile] .field:last-child {margin-bottom: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-process {margin-top: 28px; padding: 0 20px; border: 1px solid #486380; border-radius: 14px; background: #0e1d31; min-width: 0;}
+body:has(#briefForm) [data-lfma-mobile] .brief-process summary {cursor: pointer; min-height: 56px; padding: 16px 0; color: #d6e8ff; font-size: 15px; font-weight: 600;}
+body:has(#briefForm) [data-lfma-mobile] .brief-process summary::marker {color: #a9d4ff;}
+body:has(#briefForm) [data-lfma-mobile] .brief-process[open] summary {border-bottom: 1px solid #486380;}
+body:has(#briefForm) [data-lfma-mobile] .brief-process .flow {margin: 0 0 12px; grid-template-columns: 1fr;}
+body:has(#briefForm) [data-lfma-mobile] .brief-start:focus-visible,
+body:has(#briefForm) [data-lfma-mobile] summary:focus-visible {outline: 3px solid #a9d4ff; outline-offset: 5px; border-radius: 6px;}
+body:has(#briefForm) [data-lfma-mobile] #firm {scroll-margin-top: 24px;}
+body:has(#briefForm) [data-lfma-mobile] [hidden] {display: none !important;}
+@media (min-width: 640px) {
+  body:has(#briefForm) [data-lfma-mobile] #brief-section-1 .brief-fields {grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);}
+  body:has(#briefForm) [data-lfma-mobile] #brief-section-1 .field:has(#name),
+  body:has(#briefForm) [data-lfma-mobile] #brief-section-1 .field:has(#email) {grid-column: auto;}
+}
+@media (min-width: 1100px) {
+  body:has(#briefForm) .wrap[data-lfma-mobile="v1"] {display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: auto auto auto auto; gap: 0 64px;}
+  body:has(#briefForm) [data-lfma-mobile] .topbar {grid-area: 1 / 1 / 2 / 3;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-intro {grid-area: 2 / 1 / 3 / 2;}
+  body:has(#briefForm) [data-lfma-mobile] #briefForm,
+  body:has(#briefForm) [data-lfma-mobile] #sent {grid-area: 2 / 2 / 3 / 3;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-process {grid-area: 3 / 1 / 4 / 3;}
+  body:has(#briefForm) [data-lfma-mobile] footer {grid-area: 4 / 1 / 5 / 3;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-process .flow {grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 32px;}
+}
+@media (max-width: 560px) {
+  body:has(#briefForm) [data-lfma-mobile] .topbar {margin-bottom: 22px; padding-block: 18px;}
+  body:has(#briefForm) [data-lfma-mobile] h1 {font-size: clamp(32px, 8.7vw, 42px); max-width: 15ch; margin-bottom: 16px;}
+  body:has(#briefForm) [data-lfma-mobile] .lede {font-size: 16px; line-height: 1.6;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-start {width: 100%; margin-top: 20px;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-eyebrow {font-size: 11px; margin-bottom: 10px;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-section legend {font-size: 18px;}
+  body:has(#briefForm) [data-lfma-mobile] .brief-process {padding-inline: 16px;}
+}
+@media (forced-colors: active) {
+  body:has(#briefForm) [data-lfma-mobile] :is(.brief-start, .brief-process, .brief-section-number) {border-color: ButtonText;}
+}
