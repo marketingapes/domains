@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {addPolish, LINK} from '../tools/apply-lfma-polish.mjs';
+const before = '<html><head><title>Existing</title></head><body><form id="briefForm"><input name="email"></form><div id="sent" hidden></div><script>const HOOK="existing";window.marker=1;</script></body></html>';
+test('inserts one stylesheet', () => assert.equal(addPolish(before).split(LINK).length, 2));
+test('all existing bytes are preserved', () => assert.equal(addPolish(before).replace(LINK+'\n',''), before));
+test('repeat application is idempotent', () => assert.equal(addPolish(addPolish(before)), addPolish(before)));
+test('rejects another page', () => assert.throws(() => addPolish('<head></head>')));
+test('rejects missing head', () => assert.throws(() => addPolish(before.replace('</head>',''))));
+test('rejects ambiguous heads', () => assert.throws(() => addPolish(before.replace('</head>','</head></head>'))));
+test('rejects existing different layer', () => assert.throws(() => addPolish(before.replace('</head>','<link data-lfma-polish="v2"></head>'))));
+test('rejects duplicate layer', () => assert.throws(() => addPolish(before.replace('</head>',LINK+LINK+'</head>'))));
+test('CSS has no new network assets, fixed bars or hidden inputs', async () => {
+ const css=await readFile(new URL('../lfma/assets/campaign-polish-v1.css',import.meta.url),'utf8');
+ assert.doesNotMatch(css, /@import|url\(|position\s*:\s*(?:fixed|sticky)/i);
+ assert.match(css, /\[hidden\]\s*\{display: none !important;/);
+ assert.match(css, /prefers-reduced-motion/);
+ assert.match(css, /focus-visible/);
+});
