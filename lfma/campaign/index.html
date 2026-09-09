@@ -51,6 +51,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .submit:hover{transform:translateY(-1px)}
 .submit:disabled{opacity:.5;cursor:default;transform:none}
 .submit:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+#lfmaReceiptError{margin:1rem 0 0;padding:12px 14px;border:1px solid rgba(240,168,60,.45);border-left:3px solid var(--wait);border-radius:9px;background:rgba(240,168,60,.07);font-size:.9rem;line-height:1.5;color:var(--ink)}
 .after{margin-top:.7rem;font-size:.83rem;color:var(--faint);line-height:1.5;text-align:center}
 footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
 .disc{font-size:.75rem;line-height:1.6;color:var(--faint)}
@@ -217,55 +218,28 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
      One lane per event: do not add a second webhook for campaign briefs. */
   var HOOK = "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi";
 
-  var DELIVERY = {
-    self:    "Firm runs intake in our system",
-    deliver: "Deliver to firm intake line",
-    ai:      "AI prequalify then warm transfer (add-on, quoted separately)"
-  };
-
   var form = document.getElementById("briefForm");
   var sent = document.getElementById("sent");
-  if(!form) return;
-
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
-    var f = new FormData(form);
-    var intake = f.get("intake") || "deliver";
-    var budget = (f.get("budget") || "").toString();
-    var media  = (budget.match(/[0-9,]+/) || [""])[0].replace(/,/g,"");
-
-    var data = {
-      type:             "Law firm",
-      product:          "Campaign Sprint - build & management (14 days)",
-      buyer_name:       f.get("firm")  || "",
-      contact_name:     f.get("name")  || "",
-      email:            f.get("email") || "",
-      case_types:       f.get("tort")  || "",
-      states:           f.get("geo")   || "",
-      turn_downs:       f.get("no")    || "",
-      transfer_number:  f.get("line")  || "",
-      intake_hours:     f.get("hours") || "",
-      delivery:         DELIVERY[intake] || intake,
-      price_usd:        "2500",
-      media_budget_usd: media,
-      daily_cap:        media ? String(Math.round(Number(media)/14)) : "",
-      source:           "lawfirmmarketingapes.com/campaign",
-      notes:            "Campaign Sprint brief. Media " + (media ? "$" + media : "TBD") +
-                        " over 14 days, funded by the firm in its own ad account. " +
-                        "Fee $2,500 flat. AI prequalify: " +
-                        (intake === "ai" ? "REQUESTED - quote separately" : "no") + "."
-    };
-
-    var btn = form.querySelector(".submit");
-    if(btn){ btn.disabled = true; btn.textContent = "Sending…"; }
-
-    fetch(HOOK, {method:"POST", mode:"no-cors", body:new URLSearchParams(data)})
-      .catch(function(){})
-      .then(function(){
-        form.hidden = true;
-        sent.hidden = false;
-        sent.scrollIntoView({behavior:"smooth", block:"nearest"});
-      });
+  if (!form || !sent) return;
+  var button = form.querySelector('button[type="submit"]');
+  if (!button) return;
+  // Prevent native submission while the module loads or if loading fails.
+  function preventNative(event) { event.preventDefault(); }
+  form.addEventListener('submit', preventNative);
+  button.disabled = true;
+  import('../assets/lfma-brief-adapter.mjs').then(function(adapter) {
+    adapter.bindLfmaBrief({
+      form: form, sent: sent, endpoint: HOOK, sourceUrl: location.href,
+      dataLayer: window.dataLayer
+    });
+    form.removeEventListener('submit', preventNative);
+  }).catch(function() {
+    var errorBox = document.createElement('p');
+    errorBox.setAttribute('role', 'alert');
+    errorBox.textContent = 'The form could not load. Nothing was submitted by this form. Contact kyleg@marketingapes.com.';
+    form.append(errorBox);
+    button.disabled = true;
+    button.textContent = 'Form unavailable';
   });
 })();
 </script>
