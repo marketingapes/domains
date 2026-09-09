@@ -51,7 +51,7 @@
     },
     "social": {
       "type": "object",
-      "required": ["facebook", "instagram", "tiktok", "youtube", "linkedin", "x"],
+      "required": ["facebook", "instagram", "tiktok", "youtube", "linkedin", "x", "threads", "pinterest", "other"],
       "properties": {
         "facebook": {"type": "object"},
         "instagram": {"type": "object"},
@@ -60,12 +60,13 @@
         "linkedin": {"type": "object"},
         "x": {"type": "object"},
         "threads": {"type": "object"},
-        "pinterest": {"type": "object"}
+        "pinterest": {"type": "object"},
+        "other": {"type": "object"}
       }
     },
     "ads": {
       "type": "object",
-      "required": ["meta", "google_ads", "tiktok_ads"],
+      "required": ["meta", "google_ads", "tiktok_ads", "other"],
       "properties": {
         "meta": {"type": "object"},
         "google_ads": {"type": "object"},
