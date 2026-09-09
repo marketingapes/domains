@@ -1,0 +1,43 @@
+/* Layer after campaign-polish-v1.css. Native HTML UX; no runtime dependencies. */
+body[data-lfma-ux="v1"] {overflow-x: visible;}
+body[data-lfma-ux="v1"] .wrap {overflow-wrap: anywhere;}
+body[data-lfma-ux="v1"] #briefForm {scroll-margin-top: 24px;}
+body[data-lfma-ux="v1"] .brief-entry {margin: 22px 0 28px; align-self: start;}
+body[data-lfma-ux="v1"] .brief-entry a {display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 52px; padding: 12px 22px; border-radius: 12px; background: #dbeaff; color: #10243d; font-weight: 700; text-decoration: none; line-height: 1.45;}
+body[data-lfma-ux="v1"] .brief-entry > span {display: block; margin-top: 10px; color: #b9cbe2; font-size: 14px;}
+body[data-lfma-ux="v1"] #briefForm .lfma-form-group {display: block; border: 0; border-bottom: 1px solid #d8e2ed; padding: 0 0 12px; margin: 0 0 26px; min-width: 0;}
+body[data-lfma-ux="v1"] #briefForm legend {display: block; width: 100%; margin: 0 0 22px; padding: 0; color: #233c5b; font-size: 17px; font-weight: 700; line-height: 1.5; letter-spacing: -.015em;}
+body[data-lfma-ux="v1"] #briefForm .field {min-width: 0;}
+body[data-lfma-ux="v1"] .hint,
+body[data-lfma-ux="v1"] .opt-d,
+body[data-lfma-ux="v1"] .money p,
+body[data-lfma-ux="v1"] .after {font-size: 14px; line-height: 1.65;}
+body[data-lfma-ux="v1"] #briefForm :is(input[type="text"],input[type="email"],input[type="tel"],select,textarea) {font-size: 16px; min-height: 48px; width: 100%; max-width: 100%; box-sizing: border-box;}
+body[data-lfma-ux="v1"] #briefForm .opt {min-height: 64px;}
+body[data-lfma-ux="v1"] #briefForm .opt-h {font-size: 15px;}
+body[data-lfma-ux="v1"] .lfma-process {border: 1px solid #415673; border-radius: 16px; padding: 0 20px; margin-top: 28px; align-self: start; color: #f4f7fb; min-width: 0;}
+body[data-lfma-ux="v1"] .lfma-process summary {padding: 16px 0; min-height: 56px; font-weight: 600; font-size: 16px; line-height: 1.5; cursor: pointer;}
+body[data-lfma-ux="v1"] .lfma-process .flow {display: block; margin: 0 0 12px;}
+body[data-lfma-ux="v1"] :is(.brief-entry a, .lfma-process summary):focus-visible {outline: 3px solid #a9d4ff; outline-offset: 5px;}
+body[data-lfma-ux="v1"] #briefForm .opt:focus-within {outline: 3px solid #185bce; outline-offset: 3px;}
+body[data-lfma-ux="v1"] #briefForm:focus {outline: 3px solid #a9d4ff; outline-offset: 6px;}
+body[data-lfma-ux="v1"] [hidden] {display: none !important;}
+@media (min-width: 1100px) {
+ body[data-lfma-ux="v1"] .wrap {grid-template-rows: auto auto auto auto 1fr auto;}
+ body[data-lfma-ux="v1"] .brief-entry {grid-column: 1; grid-row: 4;}
+ body[data-lfma-ux="v1"] .lfma-process {grid-column: 1; grid-row: 5; margin-top: 0;}
+ body[data-lfma-ux="v1"] #briefForm,
+ body[data-lfma-ux="v1"] #sent {grid-column: 2; grid-row: 2 / 6;}
+ body[data-lfma-ux="v1"] footer {grid-row: 6;}
+}
+@media (max-width: 560px) {
+ body[data-lfma-ux="v1"] .wrap {padding-inline: 16px;}
+ body[data-lfma-ux="v1"] .topbar {margin-bottom: 22px; padding-block: 20px;}
+ body[data-lfma-ux="v1"] h1 {font-size: clamp(32px, 9vw, 40px); margin-bottom: 16px;}
+ body[data-lfma-ux="v1"] .brief-entry a {width: 100%; box-sizing: border-box;}
+ body[data-lfma-ux="v1"] #briefForm,
+ body[data-lfma-ux="v1"] #sent {padding: 24px 18px;}
+}
+@media (prefers-reduced-motion: reduce) {
+ body[data-lfma-ux="v1"] * {scroll-behavior: auto !important; transition: none !important;}
+}
