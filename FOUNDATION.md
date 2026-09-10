@@ -37,11 +37,16 @@ the wrapper — not the validator.**
   unauthenticated endpoint and is treated as a secret.
 - LEE is excluded from the portfolio. Its site folder stays; it simply is not a tenant.
 
-## Known conflict — read before running `campaign-system/build.mjs`
+## Campaign-build compatibility
 
-`campaign-system/build.mjs` line 20 **writes** a `campaign_studio` object into
-`<brand>/domain.json` for lfma, btl, nil, dihac, ma, kg, lee. Under v1.2 that key is
-invalid by shape. Running that script as-is will invalidate 6 of the 14 adopted
-manifests and fail `tools/verify-foundation.py` three ways over (hash drift, forbidden
-key, schema). It is **left untouched by this adoption** — the fix is a separate,
-reviewed change. See the adoption PR description.
+As of compatibility commit `60724e705f9c0aaae4eaed3b4bef615a7752c9eb`,
+`campaign-system/build.mjs` does **not** write campaign or runtime state into
+`<tenant>/domain.json`. Campaign build metadata remains in campaign artifacts such as
+`<tenant>/campaigns/release.json`.
+
+`tests/foundation-no-mutation.test.mjs` runs the real campaign build in a throwaway tree
+and fails if any `domain.json` changes or if a canonical manifest carries campaign/runtime
+keys. Run it with the normal test suite before accepting future campaign-system changes.
+
+Do not reintroduce writes from campaign tooling into the permanent Foundation v1.2
+manifests.
