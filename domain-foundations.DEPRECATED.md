@@ -11,8 +11,8 @@
 
 ## Why it is still here
 
-`domain-foundations.json` is a 6-record preview-era list (`slug`, `brand`, `domain`,
-`service`, `publishPath`, `status`, `customDomain`). It covers 6 of the 14 tenants and
+`domain-foundations.json` is an 8-record preview-era list (`slug`, `brand`, `domain`,
+`service`, `publishPath`, `status`, `customDomain`). It covers 8 of the 14 tenants and
 carries no capability, ownership, or activation state. Against v1.2 it is not wrong so
 much as *thin* — and a thin file that looks authoritative is exactly how a second truth
 survives.
