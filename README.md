@@ -24,3 +24,6 @@ DNS order when cutting: DIHAC first (cert rescue), NIL second (replaces bait pag
 LFMA whenever, BTL last.
 
 Map: `BOARDROOM/Grok/RENDER-MAP.md`.
+
+Stocking layer (all 14 canonical domains): `shared/ee/README.md`, report in `stocking/REPORT.md`.
+Regenerate with `node tools/stock-domains.mjs`; verify with `node --test tests/*.test.mjs` and `python3 tools/verify-foundation.py`.
