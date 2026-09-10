@@ -1,49 +1,49 @@
 {
   "schema": "marketingapes.domain.foundation/v1.2",
   "verified_on": "2026-09-09",
-  "tenant_id": "LFMA",
-  "domain_id": "lawfirmmarketingapes.com",
-  "brand_name": "Law Firm Marketing Apes",
+  "tenant_id": "RI",
+  "domain_id": "researchinvestigation.com",
+  "brand_name": "Research Investigation",
   "campaign_state": "NOT STORED HERE - campaigns are separate job objects referencing tenant_id/domain_id",
   "hostname": {
-    "intended_canonical_hostname": "lawfirmmarketingapes.com",
-    "intended_canonical_url_rule": "https://lawfirmmarketingapes.com/<path>",
+    "intended_canonical_hostname": "researchinvestigation.com",
+    "intended_canonical_url_rule": "https://researchinvestigation.com/<path>",
     "intended_hosting": "render",
-    "current_hosting_state": "render",
-    "current_hosting_matches_intent": true
+    "current_hosting_state": "down_502",
+    "current_hosting_matches_intent": false
   },
   "web": {
     "site": {
       "connection_status": "VERIFIED",
       "activation_state": "ON",
       "repo": "marketingapes/domains",
-      "folder": "lfma",
+      "folder": "ri",
       "branch": "main"
     },
     "render": {
       "connection_status": "VERIFIED",
       "activation_state": "ON",
-      "service": "lfma-site",
-      "preview_url": "https://lfma-site.onrender.com",
+      "service": "ri-site",
+      "preview_url": "https://ri-site.onrender.com",
       "autodeploy": "commit",
-      "build_filter": "lfma/**"
+      "build_filter": "ri/**"
     },
     "dns": {
-      "connection_status": "VERIFIED",
-      "activation_state": "ON",
-      "owner_tenant_id": "LFMA",
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "RI",
       "shared_with": [],
-      "provider": "cloudflare",
-      "cloudflare_zone_id": "77734809d83e72edef3995ed5b739bad",
+      "provider": "godaddy",
+      "cloudflare_zone_id": null,
       "root_www_mapping": "NOT_VERIFIED",
-      "ssl": "VERIFIED"
+      "ssl": "NOT_VERIFIED"
     }
   },
   "communications": {
     "email_human": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "address": null,
       "note": null
@@ -51,7 +51,7 @@
     "email_transactional": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "address": null,
       "provider": null
@@ -59,7 +59,7 @@
     "email_bulk": {
       "connection_status": "NEEDS_AUTH",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "address": null,
       "provider": null
@@ -67,7 +67,7 @@
     "phone": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "e164": null,
       "policy": "borrowing another tenant's number is prohibited"
@@ -75,7 +75,7 @@
     "sms": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "sms_identity": null,
       "provider": null
@@ -89,7 +89,7 @@
     "vapi": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "assistant_id": null,
       "policy": "borrowing another tenant's assistant is prohibited"
@@ -97,58 +97,58 @@
   },
   "social": {
     "facebook": {
-      "connection_status": "CURRENT",
-      "activation_state": "ON",
-      "owner_tenant_id": "MA",
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": null,
       "shared_with": [],
-      "page_id": "137455619624058"
+      "page_id": null
     },
     "instagram": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "account_id": null
     },
     "tiktok": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "account_id": null
     },
     "youtube": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "channel_id": null
     },
     "linkedin": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "page_id": null
     },
     "x": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "handle": null
     },
     "threads": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "handle": null
     },
     "pinterest": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "account_id": null
     },
@@ -162,28 +162,28 @@
     "meta_ad_account": {
       "connection_status": "NEEDS_AUTH",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "ad_account_id": null
     },
     "meta_dataset": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "dataset_id": null
     },
     "google_ads": {
       "connection_status": "NEEDS_AUTH",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "customer_id": null
     },
     "tiktok_ads": {
       "connection_status": "NEEDS_AUTH",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "advertiser_id": null
     },
@@ -195,52 +195,52 @@
   },
   "measurement": {
     "ga4_property": {
-      "connection_status": "VERIFIED",
-      "activation_state": "ON",
-      "owner_tenant_id": "LFMA",
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "RI",
       "shared_with": [],
-      "property_id": "530695424"
+      "property_id": null
     },
     "ga4_measurement": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "measurement_id": null
     },
     "gtm_web": {
-      "connection_status": "VERIFIED",
-      "activation_state": "ON",
-      "owner_tenant_id": "LFMA",
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "RI",
       "shared_with": [],
-      "container_id": "GTM-NWVHNTVK"
+      "container_id": null
     },
     "gtm_server": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "container_id": null
     },
     "search_console": {
       "connection_status": "NEEDS_AUTH",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "property": null
     },
     "bigquery": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "table": null
     },
     "canonical_events": {
-      "connection_status": "CURRENT",
-      "activation_state": "ON",
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
       "contract": "ee_*",
-      "note": "ee_* events observed in served bytes"
+      "note": "no ee_* contract verified on this domain"
     }
   },
   "data": {
@@ -254,12 +254,12 @@
       "connection_status": "VERIFIED",
       "activation_state": "ON",
       "repo": "marketingapes/domains",
-      "folder": "lfma"
+      "folder": "ri"
     },
     "bigquery": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "dataset": null
     },
@@ -286,14 +286,14 @@
     "make": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "scenario_id": null
     },
     "webhooks": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "hook_id": null,
       "policy": "hook IDs only. Hook URLs are unauthenticated endpoints and are treated as secrets - never stored here."
@@ -303,7 +303,7 @@
     "processor": {
       "connection_status": "MISSING",
       "activation_state": "OFF",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "RI",
       "shared_with": [],
       "provider": null,
       "account_id": null
@@ -311,9 +311,9 @@
   },
   "intake": {
     "forms": {
-      "connection_status": "CURRENT",
-      "activation_state": "ON",
-      "note": "a form on this domain posts to a verified live lane"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": null
     },
     "shared_lane": {
       "connection_status": "CURRENT",

@@ -1,111 +1,427 @@
 {
-  "$schema": "../DOMAINS.md",
-  "domain": "kylegosselin.com",
+  "schema": "marketingapes.domain.foundation/v1.2",
+  "verified_on": "2026-09-09",
   "tenant_id": "KG",
-  "entity": "Kyle Gosselin — founder-operator of Marketing Apes (The Builder)",
-  "job": "Be the person behind Marketing Apes: publish the builder's proof log (what got built, what it did, what it cost) so attention lands here and Marketing Apes converts it.",
-  "does_it_by": [
-    "posting proof from the live system",
-    "one principle post + one proof post + one offer post per week",
-    "every link carries utm_source=kylegosselin.com back into BigQuery under tenant_id KG"
-  ],
-  "profit_path": "attention -> marketingapes.com/pricing (utm) -> Sofia demo -> trial payment (Marketing Apes QuickBooks)",
-  "status": "LIVE — cutover 2026-09-04 (Cloudflare CNAME -> kg-site.onrender.com; old SiteGround site retired)",
-  "site": {
-    "repo": "marketingapes/domains",
-    "branch": "main",
-    "folder": "kg",
-    "render_service": "kg-site (srv-dacftmqfngtc73dbbocg, static, publishPath kg, auto-deploy on commit)",
-    "preview_url": "https://kg-site.onrender.com",
-    "live_url": "https://kylegosselin.com",
-    "pages": [
-      "/",
-      "/now/",
-      "/privacy/",
-      "/pay/",
-      "/404.html"
-    ],
-    "style": "Social Node profile/feed layout, local template theme CSS, Marketing Apes imagery, responsive personal build journal",
-    "page_rules": [
-      "head: dataLayer.push ee_page_context {tenant_id:'KG', domain, page_type} BEFORE the GTM snippet",
-      "every .cta pushes ee_cta_click; pay button pushes ee_pay_redirect; socials push ee_social_click",
-      "outbound links to marketingapes.com carry utm_source=kylegosselin.com&utm_medium=site&utm_campaign=kg-<page>",
-      "LIVE: no noindex, no build-state banner; add new pages to sitemap.xml"
-    ]
+  "domain_id": "kylegosselin.com",
+  "brand_name": "Kyle Gosselin",
+  "campaign_state": "NOT STORED HERE - campaigns are separate job objects referencing tenant_id/domain_id",
+  "hostname": {
+    "intended_canonical_hostname": "kylegosselin.com",
+    "intended_canonical_url_rule": "https://kylegosselin.com/<path>",
+    "intended_hosting": "render",
+    "current_hosting_state": "render",
+    "current_hosting_matches_intent": true
   },
-  "control": {
-    "service": "kg-control (srv-dacg0b15efls73ea8i50, repo marketingapes/nil-intake) — MCP tools kg_create_page / kg_update_page / kg_unpublish_page / kg_restore_page / kg_list_live_pages; publishes to marketingapes/domains kg/ -> Render kg-site -> Drive Website/Live+Releases. index.html is protected: edit via git."
+  "web": {
+    "site": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "kg",
+      "branch": "main"
+    },
+    "render": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "service": "kg-site",
+      "preview_url": "https://kg-site.onrender.com",
+      "autodeploy": "commit",
+      "build_filter": "kg/**"
+    },
+    "dns": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "provider": "cloudflare",
+      "cloudflare_zone_id": "bd6e537733f16a89bccac280cdc3727e",
+      "root_www_mapping": "NOT_VERIFIED",
+      "ssl": "VERIFIED"
+    }
   },
-  "measurement": {
-    "gtm_web": "GTM-W3CTJQ (legacy tags to clean before cutover)",
-    "gtm_server": "GTM-NMT76SV2",
-    "ga4": "TBD — create property for kylegosselin.com",
-    "events": [
-      "ee_page_context",
-      "ee_cta_click",
-      "ee_pay_redirect",
-      "ee_social_click"
-    ]
+  "communications": {
+    "email_human": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "address": null,
+      "note": null
+    },
+    "email_transactional": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "email_bulk": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "phone": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "e164": null,
+      "policy": "borrowing another tenant's number is prohibited"
+    },
+    "sms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "sms_identity": null,
+      "provider": null
+    },
+    "voice": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "provider": null,
+      "note": "voice surface distinct from the Vapi assistant identity"
+    },
+    "vapi": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "assistant_id": null,
+      "policy": "borrowing another tenant's assistant is prohibited"
+    }
   },
-  "channels": {
-    "facebook_page": {
-      "status": "exists — Page 257753357643105 (kylepractor) — rename to 'Kyle Gosselin' pending",
-      "publish_lane": "Make social_post lane with page_id=257753357643105"
+  "social": {
+    "facebook": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "page_id": "257753357643105"
     },
     "instagram": {
-      "status": "Excluded by Kyle",
-      "publish_lane": "Make social_post lane, post_ig=yes once ig_id exists"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "account_id": null
     },
     "tiktok": {
-      "status": "NOT CREATED",
-      "handle": "@kylegosselin"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "account_id": null
     },
     "youtube": {
-      "status": "NOT CREATED",
-      "handle": "@kylegosselin"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "channel_id": null
     },
     "linkedin": {
-      "status": "Make OAuth connection pending; scoped to Kyle personal profile"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "page_id": null
     },
     "x": {
-      "status": "NOT CREATED",
-      "handle": "@kylegosselin"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "handle": null
     },
-    "publish_lane": "Make social_post lane (lanes.social_post); kg-control social tools need a Make adapter (not built)"
+    "threads": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "handle": null
+    },
+    "pinterest": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "account_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional network declared"
+    }
   },
-  "comms": {
-    "email": "none on-domain yet (SiteGround mail question open)",
-    "phone": "none",
-    "vapi": "none — KG has no intake; demos run on the Marketing Apes Sofia DEMO assistant"
+  "paid_media": {
+    "meta_ad_account": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "ad_account_id": null
+    },
+    "meta_dataset": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "dataset_id": null
+    },
+    "google_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "customer_id": null
+    },
+    "tiktok_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "advertiser_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional paid channel declared"
+    }
   },
-  "cta": {
-    "primary": "Talk to Sofia (demo) — via marketingapes.com",
-    "secondary": "See pricing",
-    "pay": "/pay/ -> marketingapes.com/pricing until the MA pay link exists"
+  "measurement": {
+    "ga4_property": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "property_id": null
+    },
+    "ga4_measurement": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "measurement_id": null
+    },
+    "gtm_web": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "container_id": "GTM-W3CTJQ"
+    },
+    "gtm_server": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "container_id": "GTM-NMT76SV2"
+    },
+    "search_console": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "property": null
+    },
+    "bigquery": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "table": null
+    },
+    "canonical_events": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "contract": "ee_*",
+      "note": "ee_* events observed in served bytes"
+    }
   },
-  "drive": {
-    "root": "Evolution Engine / Domains / kylegosselin.com (1J-NPdeKpUWxcp0AX0gG0IYpaUxWI4ANb)",
-    "live": "Website/Live",
-    "releases": "Website/Releases",
-    "social_approved": "Social/<channel>/Approved"
+  "data": {
+    "drive": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "folder_id": null,
+      "note": "shared Evolution Engine drive exists; no verified per-tenant folder id"
+    },
+    "github": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "kg"
+    },
+    "bigquery": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "dataset": null
+    },
+    "crm": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "system": null,
+      "note": "no CRM verified for any tenant; buyer and pipeline data belong there, not here"
+    }
   },
-  "human_todo": [
-    "create Facebook Page 'Kyle Gosselin' + link Instagram; send Page ID",
-    "Search Console verify kylegosselin.com",
-    "GA4 property for kylegosselin.com -> replace GTM-W3CTJQ legacy tags"
-  ],
-  "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  "automation": {
+    "mcp": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "service": "kg-control",
+      "note": null
+    },
+    "render_control": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "service": "kg-control",
+      "note": "not_ready: awaiting human secret paste"
+    },
+    "make": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "scenario_id": null
+    },
+    "webhooks": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "hook_id": null,
+      "policy": "hook IDs only. Hook URLs are unauthenticated endpoints and are treated as secrets - never stored here."
+    }
   },
-  "campaign_studio": {
-    "path": "/campaigns/",
-    "version": "2026-09-08.2",
-    "source": "campaign-system/",
-    "status": "demo",
-    "topic_count": 25,
-    "lead_collection": false,
-    "organic_publication": "review_required"
+  "commerce": {
+    "processor": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "KG",
+      "shared_with": [],
+      "provider": null,
+      "account_id": null
+    }
+  },
+  "intake": {
+    "forms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": null
+    },
+    "shared_lane": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "lane": "Make INTAKE",
+      "note": "tenant-aware shared lane; not yet wired for this tenant"
+    }
+  },
+  "safety": {
+    "consent": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified consent-event store for this tenant"
+    },
+    "suppression": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified suppression list for this tenant"
+    },
+    "production_gates": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "gates": [
+        "dns_cutover",
+        "paid_activation",
+        "secret_paste",
+        "sending to a real person",
+        "production git push"
+      ]
+    },
+    "kill_switch": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified per-tenant kill switch"
+    },
+    "secrets_policy": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "rule": "no secret material of any kind is stored in this manifest",
+      "covers": [
+        "api_keys",
+        "tokens",
+        "webhook_urls",
+        "passwords",
+        "private_keys"
+      ]
+    }
+  },
+  "shared_infrastructure": {
+    "canonical_control_plane": "Evolution Engine / Universal Domain MCP",
+    "contract": "shared adapters MUST receive tenant_id + domain_id and resolve this manifest",
+    "runtime_adapters": [
+      {
+        "name": "Make INTAKE lane",
+        "tenant_aware": true,
+        "role": "shared adapter"
+      },
+      {
+        "name": "Make SOCIAL POST lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "71% failure rate at last measurement"
+      },
+      {
+        "name": "Make OUTBOUND EMAIL lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "56% failure rate at last measurement"
+      },
+      {
+        "name": "Shared Sofia talk template",
+        "tenant_aware": false,
+        "role": "shared adapter",
+        "debt": "all-brands-inline, one hardcoded campaign, one shared assistant"
+      }
+    ],
+    "specialized_runtime_adapters": [
+      {
+        "name": "nil-intake",
+        "scope": "NIL",
+        "role": "tenant-scoped runtime adapter fulfilling the MCP role for NIL",
+        "state": "ready"
+      },
+      {
+        "name": "ma-control",
+        "scope": "MA",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready"
+      },
+      {
+        "name": "kg-control",
+        "scope": "KG",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready; autoDeploy OFF"
+      }
+    ],
+    "legacy_services": [
+      {
+        "name": "evolution-engine-staging-u0kf",
+        "classification": "legacy/debt",
+        "note": "autoDeploy OFF, parked on a feature branch"
+      },
+      {
+        "name": "smartlife-engine",
+        "classification": "legacy/debt",
+        "note": "separate repo, outside the canonical 14"
+      }
+    ],
+    "note": "These are adapters and services, never separate canonical brains. One control plane."
   }
 }

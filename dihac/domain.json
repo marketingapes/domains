@@ -1,104 +1,427 @@
 {
-  "$schema": "../DOMAINS.md",
-  "domain": "doihaveaclaim.ai",
+  "schema": "marketingapes.domain.foundation/v1.2",
+  "verified_on": "2026-09-09",
   "tenant_id": "DIHAC",
-  "entity": "Do I Have A Claim \u2014 the AI legal directory: a hurt person finds out what kind of lawyer they need; lawyers advertise to be found",
-  "job": "Point people to the right kind of lawyer (Sofia-DIHAC asks \u22645 questions, names the lawyer type, never says 'you have a case') and become the directory lawyers pay to appear in. Receives NIL's overflow.",
-  "does_it_by": [
-    "Sofia \u2013 DIHAC Routing v3 (Vapi b6fe8ca6-\u2026) \u2014 names the lawyer type, captures nothing by default",
-    "pages: /, /about, /faq, /contact, /arizona-mva-thank-you",
-    "overflow destination for nil_recycle (to wire)",
-    "directory listings for firms (to build \u2014 founding firms listed first)"
-  ],
-  "profit_path": "traffic + NIL overflow \u2192 routed by lawyer type \u2192 listed firms pay to be the destination (directory) or per referral",
-  "status": "preview package on Render (dihac-site); phone is borrowed ('DIHAC (213) temp \u2014 was SmartLife'); monetization model OPEN",
-  "site": {
-    "repo": "marketingapes/domains",
-    "branch": "main",
-    "folder": "dihac",
-    "render_service": "dihac-site (srv-da5m27e417fc73fucj00, static, publishPath dihac, build sh build.sh)",
-    "preview_url": "https://dihac-site.onrender.com",
-    "live_url": "https://doihaveaclaim.ai",
-    "pages": [
-      "/",
-      "/talk-to-sofia.html",
-      "/about.html",
-      "/faq.html",
-      "/contact.html",
-      "/privacy.html",
-      "/terms.html",
-      "/thank-you.html",
-      "/arizona-mva-thank-you.html"
-    ],
-    "style": "DIHAC brand (own tokens); rule from Drive START-HERE: corrections append, do not rewrite the homepage",
-    "page_rules": [
-      "copy the <head> measurement block + header/footer from the folder's index.html verbatim",
-      "every button = class cta + data-cta-id; cross-domain links carry utm_source=<domain>",
-      "add new pages to sitemap.xml"
-    ],
-    "migration": {
-      "date": "2026-09-08",
-      "source": "Drive LIVE/web/aug25",
-      "homepage": "Current public Sofia call-only page preserved",
-      "dns": "pending",
-      "preserved_paths": "All existing Render pages retained; source config/app/styles copied with homepage"
+  "domain_id": "doihaveaclaim.ai",
+  "brand_name": "Do I Have A Claim",
+  "campaign_state": "NOT STORED HERE - campaigns are separate job objects referencing tenant_id/domain_id",
+  "hostname": {
+    "intended_canonical_hostname": "doihaveaclaim.ai",
+    "intended_canonical_url_rule": "https://doihaveaclaim.ai/<path>",
+    "intended_hosting": "render",
+    "current_hosting_state": "render",
+    "current_hosting_matches_intent": true
+  },
+  "web": {
+    "site": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "dihac",
+      "branch": "main"
+    },
+    "render": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "service": "dihac-site",
+      "preview_url": "https://dihac-site.onrender.com",
+      "autodeploy": "commit",
+      "build_filter": "dihac/**"
+    },
+    "dns": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "provider": "cloudflare",
+      "cloudflare_zone_id": "64843d5d30da625775389a2b5916640b",
+      "root_www_mapping": "NOT_VERIFIED",
+      "ssl": "VERIFIED"
     }
   },
-  "control": {
-    "service": "none"
+  "communications": {
+    "email_human": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "address": "ai@doihaveaclaim.ai",
+      "note": "Kyle-supplied via Domain Master; delivery not technically verified"
+    },
+    "email_transactional": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "email_bulk": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "phone": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "e164": null,
+      "policy": "borrowing another tenant's number is prohibited"
+    },
+    "sms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "sms_identity": null,
+      "provider": null
+    },
+    "voice": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "provider": null,
+      "note": "voice surface distinct from the Vapi assistant identity"
+    },
+    "vapi": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "assistant_id": null,
+      "policy": "borrowing another tenant's assistant is prohibited"
+    }
   },
-  "measurement": {
-    "gtm_web": "GTM-WJCZF46W",
-    "ga4": "529255120",
-    "events": [
-      "ee_page_context",
-      "ee_cta_click"
-    ]
-  },
-  "channels": {
-    "facebook_page": {
-      "status": "live \u2014 Page 1145894278606476 'Doihaveaclaim.ai'",
-      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)"
+  "social": {
+    "facebook": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": null,
+      "shared_with": [],
+      "page_id": null
     },
     "instagram": {
-      "status": "business 17841434455967733 'Do I Have A Claim' (link to Page to confirm)",
-      "publish_lane": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431) with post_ig=yes"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "account_id": null
     },
     "tiktok": {
-      "status": "unknown"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "account_id": null
     },
     "youtube": {
-      "status": "unknown"
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "channel_id": null
+    },
+    "linkedin": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "page_id": null
+    },
+    "x": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "handle": null
+    },
+    "threads": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "handle": null
+    },
+    "pinterest": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "account_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional network declared"
     }
   },
-  "comms": {
-    "phone": "(213) 513-7977 \u2014 borrowed from SmartLife; needs own number + A2P",
-    "vapi": "Sofia \u2013 DIHAC Routing v3 b6fe8ca6-\u2026 ; DIHAC-Call-Router destinations Phillips +16022003976 / Canopy +14803027684",
-    "email": "none on-domain"
+  "paid_media": {
+    "meta_ad_account": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "ad_account_id": null
+    },
+    "meta_dataset": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "dataset_id": null
+    },
+    "google_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "customer_id": null
+    },
+    "tiktok_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "advertiser_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional paid channel declared"
+    }
   },
-  "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} \u2192 FB Page (+IG) \u2192 OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} \u2192 sofia@nearestinjurylawyers.com \u2192 ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) \u2192 BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  "measurement": {
+    "ga4_property": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "property_id": "529255120"
+    },
+    "ga4_measurement": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "measurement_id": null
+    },
+    "gtm_web": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "container_id": "GTM-WJCZF46W"
+    },
+    "gtm_server": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "container_id": null
+    },
+    "search_console": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "property": null
+    },
+    "bigquery": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "table": null
+    },
+    "canonical_events": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "contract": "ee_*",
+      "note": "ee_* events observed in served bytes"
+    }
   },
-  "cta": {
-    "primary": "Find out what kind of lawyer you need"
+  "data": {
+    "drive": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "folder_id": null,
+      "note": "shared Evolution Engine drive exists; no verified per-tenant folder id"
+    },
+    "github": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "dihac"
+    },
+    "bigquery": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "dataset": null
+    },
+    "crm": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "system": null,
+      "note": "no CRM verified for any tenant; buyer and pipeline data belong there, not here"
+    }
   },
-  "drive": {
-    "root": "DoIhaveaclaim.ai Shared Drive /Web/"
+  "automation": {
+    "mcp": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "service": null,
+      "note": "no tenant-scoped MCP surface"
+    },
+    "render_control": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "service": null,
+      "note": null
+    },
+    "make": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "scenario_id": null
+    },
+    "webhooks": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "hook_id": null,
+      "policy": "hook IDs only. Hook URLs are unauthenticated endpoints and are treated as secrets - never stored here."
+    }
   },
-  "human_todo": [
-    "decide how DIHAC makes money (directory listing fee vs referral) \u2014 gates capture",
-    "own Twilio number + A2P",
-    "DNS: DIHAC cuts first (cert rescue)"
-  ],
-  "campaign_studio": {
-    "path": "/campaigns/",
-    "version": "2026-09-08.2",
-    "source": "campaign-system/",
-    "status": "demo",
-    "topic_count": 25,
-    "lead_collection": false,
-    "organic_publication": "review_required"
+  "commerce": {
+    "processor": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "DIHAC",
+      "shared_with": [],
+      "provider": null,
+      "account_id": null
+    }
+  },
+  "intake": {
+    "forms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": null
+    },
+    "shared_lane": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "lane": "Make INTAKE",
+      "note": "tenant-aware shared lane; not yet wired for this tenant"
+    }
+  },
+  "safety": {
+    "consent": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified consent-event store for this tenant"
+    },
+    "suppression": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified suppression list for this tenant"
+    },
+    "production_gates": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "gates": [
+        "dns_cutover",
+        "paid_activation",
+        "secret_paste",
+        "sending to a real person",
+        "production git push"
+      ]
+    },
+    "kill_switch": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified per-tenant kill switch"
+    },
+    "secrets_policy": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "rule": "no secret material of any kind is stored in this manifest",
+      "covers": [
+        "api_keys",
+        "tokens",
+        "webhook_urls",
+        "passwords",
+        "private_keys"
+      ]
+    }
+  },
+  "shared_infrastructure": {
+    "canonical_control_plane": "Evolution Engine / Universal Domain MCP",
+    "contract": "shared adapters MUST receive tenant_id + domain_id and resolve this manifest",
+    "runtime_adapters": [
+      {
+        "name": "Make INTAKE lane",
+        "tenant_aware": true,
+        "role": "shared adapter"
+      },
+      {
+        "name": "Make SOCIAL POST lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "71% failure rate at last measurement"
+      },
+      {
+        "name": "Make OUTBOUND EMAIL lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "56% failure rate at last measurement"
+      },
+      {
+        "name": "Shared Sofia talk template",
+        "tenant_aware": false,
+        "role": "shared adapter",
+        "debt": "all-brands-inline, one hardcoded campaign, one shared assistant"
+      }
+    ],
+    "specialized_runtime_adapters": [
+      {
+        "name": "nil-intake",
+        "scope": "NIL",
+        "role": "tenant-scoped runtime adapter fulfilling the MCP role for NIL",
+        "state": "ready"
+      },
+      {
+        "name": "ma-control",
+        "scope": "MA",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready"
+      },
+      {
+        "name": "kg-control",
+        "scope": "KG",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready; autoDeploy OFF"
+      }
+    ],
+    "legacy_services": [
+      {
+        "name": "evolution-engine-staging-u0kf",
+        "classification": "legacy/debt",
+        "note": "autoDeploy OFF, parked on a feature branch"
+      },
+      {
+        "name": "smartlife-engine",
+        "classification": "legacy/debt",
+        "note": "separate repo, outside the canonical 14"
+      }
+    ],
+    "note": "These are adapters and services, never separate canonical brains. One control plane."
   }
 }

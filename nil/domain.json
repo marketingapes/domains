@@ -1,94 +1,427 @@
 {
-  "$schema": "../DOMAINS.md",
-  "domain": "nearestinjurylawyers.com",
+  "schema": "marketingapes.domain.foundation/v1.2",
+  "verified_on": "2026-09-09",
   "tenant_id": "NIL",
-  "entity": "Nearest Injury Lawyers — a free attorney-matching service (not a law firm). Persona: Sofia, A.I. assistant.",
-  "job": "Connect injured people with firms likely to take their claim.",
-  "does_it_by": [
-    "finds people through ads (Meta lead ads, NIL page identity, BTL ad account)",
-    "qualifies them (instant SMS + Sofia call within ~1 minute)",
-    "routes them (warm transfer to the buyer firm with the caller's real number; overflow -> DIHAC / catalog)"
-  ],
-  "profit_path": "ad spend -> lead -> Sofia qualified -> transferred to firm -> retainer sent -> SIGNED case (the scoreboard). CAPI-for-Leads feeds TransferredToFirm/SofiaQualified back to Meta.",
-  "status": "LIVE — reference implementation (domain #1)",
-  "site": {
-    "repo": "marketingapes/nil-site",
-    "branch": "main",
-    "folder": ".",
-    "render_service": "nil-site-staging (rename to nil-site-prod pending) — Render hosts the live domain",
-    "live_url": "https://nearestinjurylawyers.com",
-    "mirror_note": "nil/ in marketingapes/domains is an older package copy; the live site deploys from nil-site",
-    "pages": [
-      "/",
-      "/privacy",
-      "/match",
-      "/arizona-car-accident-phillips.html",
-      "/car-accident-canopy.html",
-      "/proof.html",
-      "/ads/*"
-    ],
-    "page_rules": [
-      "GTM-NKLD8KST on every page",
-      "ee_* contract (cta_click, click_to_call, form_start, scroll_depth)",
-      "LIVE = identical file in Drive Live + GitHub + public site"
-    ]
+  "domain_id": "nearestinjurylawyers.com",
+  "brand_name": "Nearest Injury Lawyers",
+  "campaign_state": "NOT STORED HERE - campaigns are separate job objects referencing tenant_id/domain_id",
+  "hostname": {
+    "intended_canonical_hostname": "nearestinjurylawyers.com",
+    "intended_canonical_url_rule": "https://nearestinjurylawyers.com/<path>",
+    "intended_hosting": "render",
+    "current_hosting_state": "render",
+    "current_hosting_matches_intent": true
   },
-  "control": {
-    "service": "nil-intake (srv-da7rtmh5efls73eec010, repo marketingapes/nil-intake) — the control template every other domain is cloned from",
-    "note": "leadgen_id must be accepted as string|number (Zapier sends a number)",
-    "mcp": "nil-intake /mcp — tools nil_create_page / nil_update_page / nil_unpublish_page / nil_restore_page / nil_list_live_pages / nil_gtm_status / nil_intake_get_health / nil_intake_get_lead_timeline / nil_social_*; live site repo marketingapes/nil-site; index.html protected (git)"
-  },
-  "measurement": {
-    "gtm_web": "GTM-NKLD8KST",
-    "gtm_server": "GTM-PHFBF8D3",
-    "ga4": "530695235 (G-00VYXSCGR8) — single stream; G-9HSY1GEXZ6 retired 2026-09-04",
-    "meta_dataset": "1464576608376747 (canonical — retire 1434837438537088)",
-    "bigquery": "lead_database.all_raw_leads_new (dedupe on leadgen_id / CallRail id) + lead_database.fb_leads_v",
-    "gtm_note": "web GTM-NKLD8KST: one Google tag + one ee_* passthrough GA4 event; server GTM-PHFBF8D3: GA4 forward + TikTok EAPI. Site pushes {tenant_id,brand,domain_id,page_type} before GTM on every page."
-  },
-  "channels": {
-    "facebook_page": {
-      "status": "live — page 1275847145612714 (ad identity for the MVA campaign)"
+  "web": {
+    "site": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "nil",
+      "branch": "main"
     },
-    "instagram": {
-      "status": "business account 17841441923245146 — link to Page still to confirm"
+    "render": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "service": "nil-site-staging",
+      "preview_url": "https://nil-site-staging.onrender.com",
+      "autodeploy": "commit",
+      "build_filter": "nil/**"
     },
-    "tiktok": {
-      "status": "organic only — paid PI ads are banned on TikTok; advertiser 7672600493759168529"
-    },
-    "youtube": {
-      "status": "brand kit shipped; uploads via Make scenario"
+    "dns": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "provider": "cloudflare",
+      "cloudflare_zone_id": "025409db5bd841317673455f5bcaf927",
+      "root_www_mapping": "NOT_VERIFIED",
+      "ssl": "VERIFIED"
     }
   },
-  "comms": {
-    "email": "sofia@nearestinjurylawyers.com",
-    "phone": "+1 602-693-1461 (Twilio, dials + texts)",
-    "vapi_outbound": "41ee29eb-1ea0-45b6-bd54-585e2fb91efa",
-    "vapi_inbound": "57f80d14-772c-4ad3-a795-362390a6f556",
-    "postal": "Nearest Injury Lawyers, a part of the Marketing Apes Network — 2020 Monte Vista Dr, Vista, CA 92083"
+  "communications": {
+    "email_human": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "address": "sofia@nearestinjurylawyers.com",
+      "note": "Kyle-supplied via Domain Master; delivery not technically verified"
+    },
+    "email_transactional": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "email_bulk": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "address": null,
+      "provider": null
+    },
+    "phone": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "e164": "+16026931461",
+      "policy": "borrowing another tenant's number is prohibited"
+    },
+    "sms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "sms_identity": null,
+      "provider": null
+    },
+    "voice": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "provider": null,
+      "note": "voice surface distinct from the Vapi assistant identity"
+    },
+    "vapi": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "assistant_id": null,
+      "policy": "borrowing another tenant's assistant is prohibited"
+    }
   },
-  "lead_lane": {
-    "production": "Zapier 'nearestinjurylawyers.com - FB_Lead_Ads' v9 (ONE lane — never arm Make alongside)",
-    "form": "Final_version 1788060815719671 (one form for all ads)",
-    "buyer": "Phillips Law Group (602) 200-3976 via transfer_to_phillips v8, callerId={{customer.number}}",
-    "overflow": "nil_recycle -> DIHAC (to wire)"
+  "social": {
+    "facebook": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "page_id": "1275847145612714"
+    },
+    "instagram": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "account_id": "17841441923245146"
+    },
+    "tiktok": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "account_id": null
+    },
+    "youtube": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "channel_id": null
+    },
+    "linkedin": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "page_id": null
+    },
+    "x": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "handle": null
+    },
+    "threads": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "handle": null
+    },
+    "pinterest": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "account_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional network declared"
+    }
   },
-  "cta": {
-    "primary": "Talk to Sofia / Free claim review (lead form)",
-    "phone": "(602) 693-1461"
+  "paid_media": {
+    "meta_ad_account": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "ad_account_id": null
+    },
+    "meta_dataset": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "dataset_id": "1464576608376747"
+    },
+    "google_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "customer_id": null
+    },
+    "tiktok_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "advertiser_id": null
+    },
+    "other": {
+      "connection_status": "NOT_APPLICABLE",
+      "activation_state": "NOT_APPLICABLE",
+      "note": "no additional paid channel declared"
+    }
   },
-  "lanes": {
-    "social_post": "POST https://hook.us2.make.com/7nr6k0p9jz0m5yqj395apbfqueo170qz {tenant_id,page_id,ig_id,message,link,image_url,post_ig,template_id} → FB Page (+IG) → OUTBOUND MESSAGE LEDGER (Make 6145431)",
-    "email_as_sofia_nil": "POST https://hook.us2.make.com/iai2v43wxw2l4ojxzvt3pd32orolmisy {lead_uid,to,subject,body_html,template_id,tenant_id} → sofia@nearestinjurylawyers.com → ledger (Make 6144825)",
-    "campaign_order": "POST https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi (form fields) → BUYER BOARD row + email Kyle (Make 6145362); page marketingapes.com/order/"
+  "measurement": {
+    "ga4_property": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "property_id": "530695235"
+    },
+    "ga4_measurement": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "measurement_id": "G-00VYXSCGR8"
+    },
+    "gtm_web": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "container_id": "GTM-NKLD8KST"
+    },
+    "gtm_server": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "container_id": "GTM-PHFBF8D3"
+    },
+    "search_console": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "property": null
+    },
+    "bigquery": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "table": "lead_database.all_raw_leads_new"
+    },
+    "canonical_events": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "contract": "ee_*",
+      "note": "ee_* events observed in served bytes"
+    }
   },
-  "campaign_studio": {
-    "path": "/campaigns/",
-    "version": "2026-09-08.2",
-    "source": "campaign-system/",
-    "status": "demo",
-    "topic_count": 25,
-    "lead_collection": false,
-    "organic_publication": "review_required"
+  "data": {
+    "drive": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "folder_id": null,
+      "note": "shared Evolution Engine drive exists; no verified per-tenant folder id"
+    },
+    "github": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "repo": "marketingapes/domains",
+      "folder": "nil"
+    },
+    "bigquery": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "dataset": "lead_database"
+    },
+    "crm": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "system": null,
+      "note": "no CRM verified for any tenant; buyer and pipeline data belong there, not here"
+    }
+  },
+  "automation": {
+    "mcp": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "service": "nil-intake",
+      "note": null
+    },
+    "render_control": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "service": "nil-intake",
+      "note": null
+    },
+    "make": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "scenario_id": "6144825"
+    },
+    "webhooks": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "hook_id": "2770378",
+      "policy": "hook IDs only. Hook URLs are unauthenticated endpoints and are treated as secrets - never stored here."
+    }
+  },
+  "commerce": {
+    "processor": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "owner_tenant_id": "NIL",
+      "shared_with": [],
+      "provider": null,
+      "account_id": null
+    }
+  },
+  "intake": {
+    "forms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": null
+    },
+    "shared_lane": {
+      "connection_status": "CURRENT",
+      "activation_state": "OFF",
+      "lane": "Make INTAKE",
+      "note": "tenant-aware shared lane; not yet wired for this tenant"
+    }
+  },
+  "safety": {
+    "consent": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified consent-event store for this tenant"
+    },
+    "suppression": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified suppression list for this tenant"
+    },
+    "production_gates": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "gates": [
+        "dns_cutover",
+        "paid_activation",
+        "secret_paste",
+        "sending to a real person",
+        "production git push"
+      ]
+    },
+    "kill_switch": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "note": "no verified per-tenant kill switch"
+    },
+    "secrets_policy": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "rule": "no secret material of any kind is stored in this manifest",
+      "covers": [
+        "api_keys",
+        "tokens",
+        "webhook_urls",
+        "passwords",
+        "private_keys"
+      ]
+    }
+  },
+  "shared_infrastructure": {
+    "canonical_control_plane": "Evolution Engine / Universal Domain MCP",
+    "contract": "shared adapters MUST receive tenant_id + domain_id and resolve this manifest",
+    "runtime_adapters": [
+      {
+        "name": "Make INTAKE lane",
+        "tenant_aware": true,
+        "role": "shared adapter"
+      },
+      {
+        "name": "Make SOCIAL POST lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "71% failure rate at last measurement"
+      },
+      {
+        "name": "Make OUTBOUND EMAIL lane",
+        "tenant_aware": true,
+        "role": "shared adapter",
+        "health": "56% failure rate at last measurement"
+      },
+      {
+        "name": "Shared Sofia talk template",
+        "tenant_aware": false,
+        "role": "shared adapter",
+        "debt": "all-brands-inline, one hardcoded campaign, one shared assistant"
+      }
+    ],
+    "specialized_runtime_adapters": [
+      {
+        "name": "nil-intake",
+        "scope": "NIL",
+        "role": "tenant-scoped runtime adapter fulfilling the MCP role for NIL",
+        "state": "ready"
+      },
+      {
+        "name": "ma-control",
+        "scope": "MA",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready"
+      },
+      {
+        "name": "kg-control",
+        "scope": "KG",
+        "role": "tenant-scoped runtime adapter",
+        "state": "not_ready; autoDeploy OFF"
+      }
+    ],
+    "legacy_services": [
+      {
+        "name": "evolution-engine-staging-u0kf",
+        "classification": "legacy/debt",
+        "note": "autoDeploy OFF, parked on a feature branch"
+      },
+      {
+        "name": "smartlife-engine",
+        "classification": "legacy/debt",
+        "note": "separate repo, outside the canonical 14"
+      }
+    ],
+    "note": "These are adapters and services, never separate canonical brains. One control plane."
   }
 }

@@ -1,0 +1,26 @@
+{
+  "schema": "marketingapes.portfolio/v1.2",
+  "verified_on": "2026-09-09",
+  "canonical_count": 14,
+  "campaign_state": "NOT STORED HERE",
+  "excluded": {
+    "LEE": "legalevolutionengine.com - not in canonical 14 unless Kyle re-adds"
+  },
+  "control_plane": "Evolution Engine / Universal Domain MCP",
+  "tenants": [
+    "BTL",
+    "CGG",
+    "DDM",
+    "DIHAC",
+    "FPLB",
+    "KG",
+    "LFMA",
+    "MA",
+    "NIL",
+    "PX",
+    "RI",
+    "SLIQ",
+    "TNT",
+    "TOSS"
+  ]
+}

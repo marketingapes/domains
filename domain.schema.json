@@ -1,0 +1,3978 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "marketingapes.domain.foundation/v1.2",
+  "title": "Marketing Apes Domain Foundation",
+  "description": "One deterministic manifest per tenant covering the locked Universal Domain MCP capability surface. Campaign, job and runtime configuration are structurally invalid here: every object is closed (additionalProperties:false), so campaign_id, lead_lane, buyer, offer, budget, routing and similar cannot appear at any depth. Identity sharing is generic across all identity-bearing capabilities via owner_tenant_id + shared_with, never network-specific. No secret material of any kind is stored.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "verified_on",
+    "tenant_id",
+    "domain_id",
+    "brand_name",
+    "campaign_state",
+    "hostname",
+    "web",
+    "communications",
+    "social",
+    "paid_media",
+    "measurement",
+    "data",
+    "automation",
+    "commerce",
+    "intake",
+    "safety",
+    "shared_infrastructure"
+  ],
+  "properties": {
+    "schema": {
+      "const": "marketingapes.domain.foundation/v1.2"
+    },
+    "verified_on": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "tenant_id": {
+      "enum": [
+        "BTL",
+        "NIL",
+        "DIHAC",
+        "LFMA",
+        "MA",
+        "KG",
+        "SLIQ",
+        "CGG",
+        "DDM",
+        "FPLB",
+        "PX",
+        "RI",
+        "TNT",
+        "TOSS"
+      ]
+    },
+    "domain_id": {
+      "type": "string"
+    },
+    "brand_name": {
+      "type": "string"
+    },
+    "campaign_state": {
+      "type": "string",
+      "description": "literal declaration that campaigns are not stored here"
+    },
+    "hostname": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intended_canonical_hostname",
+        "intended_canonical_url_rule",
+        "intended_hosting",
+        "current_hosting_state",
+        "current_hosting_matches_intent"
+      ],
+      "properties": {
+        "intended_canonical_hostname": {
+          "type": "string"
+        },
+        "intended_canonical_url_rule": {
+          "type": "string"
+        },
+        "intended_hosting": {
+          "type": "string"
+        },
+        "current_hosting_state": {
+          "enum": [
+            "render",
+            "siteground_noindex",
+            "down_502"
+          ]
+        },
+        "current_hosting_matches_intent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "web": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "site",
+        "render",
+        "dns"
+      ],
+      "properties": {
+        "site": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "repo": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "folder": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "branch": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "render": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "service": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "preview_url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "autodeploy": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "build_filter": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "dns": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "provider": {
+              "enum": [
+                "cloudflare",
+                "siteground",
+                "godaddy",
+                "unresolved"
+              ]
+            },
+            "cloudflare_zone_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "root_www_mapping": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "ssl": {
+              "enum": [
+                "VERIFIED",
+                "NOT_VERIFIED"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "communications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "email_human",
+        "email_transactional",
+        "email_bulk",
+        "phone",
+        "sms",
+        "voice",
+        "vapi"
+      ],
+      "properties": {
+        "email_human": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "email_transactional": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "provider": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "email_bulk": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "address": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "provider": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "phone": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "e164": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "sms": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sms_identity": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "provider": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "voice": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "provider": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "vapi": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "assistant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "social": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facebook",
+        "instagram",
+        "tiktok",
+        "youtube",
+        "linkedin",
+        "x",
+        "threads",
+        "pinterest",
+        "other"
+      ],
+      "properties": {
+        "facebook": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "page_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "instagram": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "account_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "tiktok": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "account_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "youtube": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "channel_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "linkedin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "page_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "x": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "handle": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "threads": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "handle": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "pinterest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "account_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "other": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "paid_media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meta_ad_account",
+        "meta_dataset",
+        "google_ads",
+        "tiktok_ads",
+        "other"
+      ],
+      "properties": {
+        "meta_ad_account": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ad_account_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "meta_dataset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "dataset_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "google_ads": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "customer_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "tiktok_ads": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "advertiser_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "other": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ga4_property",
+        "ga4_measurement",
+        "gtm_web",
+        "gtm_server",
+        "search_console",
+        "bigquery",
+        "canonical_events"
+      ],
+      "properties": {
+        "ga4_property": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "property_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9]{6,12}$"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "ga4_measurement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "measurement_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^G-[A-Z0-9]{6,12}$"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "gtm_web": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "container_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^GTM-[A-Z0-9]{4,12}$"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "gtm_server": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "container_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^GTM-[A-Z0-9]{4,12}$"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "search_console": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "property": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "bigquery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "table": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "canonical_events": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "contract": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "drive",
+        "github",
+        "bigquery",
+        "crm"
+      ],
+      "properties": {
+        "drive": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "folder_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "github": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "repo": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "folder": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "bigquery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "dataset": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "crm": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "system": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "automation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mcp",
+        "render_control",
+        "make",
+        "webhooks"
+      ],
+      "properties": {
+        "mcp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "service": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "render_control": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "service": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "make": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "scenario_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "webhooks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "hook_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "commerce": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "processor"
+      ],
+      "properties": {
+        "processor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state",
+            "owner_tenant_id",
+            "shared_with"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "owner_tenant_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "shared_with": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "provider": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "account_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "intake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "forms",
+        "shared_lane"
+      ],
+      "properties": {
+        "forms": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "shared_lane": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "lane": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consent",
+        "suppression",
+        "production_gates",
+        "kill_switch",
+        "secrets_policy"
+      ],
+      "properties": {
+        "consent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "suppression": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "production_gates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "gates": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "kill_switch": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "secrets_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "connection_status",
+            "activation_state"
+          ],
+          "properties": {
+            "connection_status": {
+              "enum": [
+                "VERIFIED",
+                "CURRENT",
+                "MISSING",
+                "NEEDS_AUTH",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "activation_state": {
+              "enum": [
+                "ON",
+                "OFF",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "note": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "policy": {
+              "type": "string"
+            },
+            "rule": {
+              "type": "string"
+            },
+            "covers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "connection_status": {
+                    "enum": [
+                      "MISSING",
+                      "NEEDS_AUTH"
+                    ]
+                  }
+                },
+                "required": [
+                  "connection_status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "activation_state": {
+                    "enum": [
+                      "OFF",
+                      "NOT_APPLICABLE"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "shared_infrastructure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_control_plane",
+        "contract",
+        "runtime_adapters",
+        "specialized_runtime_adapters",
+        "legacy_services",
+        "note"
+      ],
+      "properties": {
+        "canonical_control_plane": {
+          "const": "Evolution Engine / Universal Domain MCP"
+        },
+        "contract": {
+          "type": "string"
+        },
+        "runtime_adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "tenant_aware",
+              "role"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "tenant_aware": {
+                "type": "boolean"
+              },
+              "role": {
+                "type": "string"
+              },
+              "health": {
+                "type": "string"
+              },
+              "debt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "specialized_runtime_adapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "scope",
+              "role",
+              "state"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "legacy_services": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "classification"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "classification": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
