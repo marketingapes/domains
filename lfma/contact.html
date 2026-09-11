@@ -247,44 +247,62 @@
 
 <script src="/assets/js/tracking.js"></script>
 <script>
-document.getElementById('agency-contact-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  var form = this;
-  var services = [];
-  form.querySelectorAll('input[name="services"]:checked').forEach(function(cb) {
-    services.push(cb.value);
+(function () {
+  var form = document.getElementById('agency-contact-form');
+  var button = form.querySelector('button[type="submit"]');
+  var original = button.textContent;
+  var status = document.createElement('p');
+  status.id = 'contactStatus'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+  status.hidden = true; status.style.cssText = 'margin-top:10px;font-size:.9rem;color:#b3261e';
+  form.appendChild(status);
+  // Submission lifecycle: idle -> sending -> sent | failed(idle again). Success UI happens ONLY after a confirmed send.
+  var phase = 'idle';
+  function fail(message) {
+    phase = 'idle';
+    status.textContent = message; status.hidden = false;
+    button.disabled = false; button.textContent = original;
+  }
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (phase !== 'idle') return;                       // in flight or already sent: never a second POST
+    if (!form.reportValidity()) return;
+    phase = 'sending';
+    button.disabled = true; button.textContent = 'Sending…'; status.hidden = true;
+    var services = [];
+    form.querySelectorAll('input[name="services"]:checked').forEach(function(cb) { services.push(cb.value); });
+    var data = {
+      firm_name: form.querySelector('#firm_name').value,
+      contact_name: form.querySelector('#contact_name').value,
+      email: form.querySelector('#email').value,
+      phone: form.querySelector('#phone').value,
+      website: form.querySelector('#website').value,
+      budget: form.querySelector('#budget').value,
+      services: services.join(', '),
+      message: form.querySelector('#message').value,
+      source: 'agency_contact_form',
+      page: window.location.href,
+      timestamp: new Date().toISOString()
+    };
+    var L = window.EE && (window.EE.legacy || window.EE);
+    if (L && typeof L.pushEvent === 'function') { L.pushEvent('form_submit', {form_name: 'agency_contact_form'}); }
+    /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER) through the outbound gate; never stored here. */
+    var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+    if (!ee) { fail('This form is not connected. Nothing was sent. Email kyleg@marketingapes.com.'); return; }
+    ee.safety.consent.record({ surface: 'lfma_contact_form', consent_text_id: 'LFMA_CONTACT_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
+    var hook = ee.hooks.url('order', { email: data.email, phone: data.phone });
+    if (!hook) { fail('This form is not connected yet (' + (ee.hooks.why('order') || 'blocked') + '). Nothing was sent. Email kyleg@marketingapes.com.'); return; }
+    fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        phase = 'sent';
+        if (L && typeof L.sendToWebhook === 'function') { try { L.sendToWebhook('form_submit', 'agency_contact_form', data); } catch (_) {} }
+        window.location.href = 'thank-you.html';
+      })
+      .catch(function () {
+        fail('We could not send your message. Please try again or email kyleg@marketingapes.com.');
+      });
   });
-  var data = {
-    firm_name: form.querySelector('#firm_name').value,
-    contact_name: form.querySelector('#contact_name').value,
-    email: form.querySelector('#email').value,
-    phone: form.querySelector('#phone').value,
-    website: form.querySelector('#website').value,
-    budget: form.querySelector('#budget').value,
-    services: services.join(', '),
-    message: form.querySelector('#message').value,
-    source: 'agency_contact_form',
-    page: window.location.href,
-    timestamp: new Date().toISOString()
-  };
-  var L = window.EE && (window.EE.legacy || window.EE);
-  if (L && typeof L.sendToWebhook === 'function') {
-    L.sendToWebhook('form_submit', 'agency_contact_form', data);
-    L.pushEvent('form_submit', {form_name: 'agency_contact_form'});
-  }
-  /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
-  var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
-  if (ee) ee.safety.consent.record({ surface: 'lfma_contact_form', consent_text_id: 'LFMA_CONTACT_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
-  var hook = ee ? ee.hooks.url('order', { email: data.email, phone: data.phone }) : null;
-  if (hook) {
-    fetch(hook, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).catch(function(){});
-  }
-  setTimeout(function() { window.location.href = 'thank-you.html'; }, 500);
-});
+})();
 </script>
 <!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="LFMA" hidden></div><!-- /ee:socket -->
 </body>

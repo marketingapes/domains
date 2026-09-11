@@ -104,14 +104,9 @@ test('LFMA pages load the GA4 stream of LFMA\'s own property (G-RQ8EWFTVSW), not
 });
 
 // ---------------------------------------------------------------- 4. no raw hook URLs
-test('no raw hook/webhook URL anywhere in the tracked repository', () => {
-  const HOOK = /hooks\.zapier\.com\/hooks\/catch\/|hook\.[a-z0-9-]+\.make\.com\/|hooks\.slack\.com\/services\//;
-  const offenders = [];
-  for (const f of tracked()) {
-    if (/\.(png|jpg|jpeg|webp|gif|ico|b64|pdf|woff2?)$/i.test(f)) continue;
-    if (HOOK.test(read(f))) offenders.push(f);
-  }
-  assert.deepEqual(offenders, []);
+test('no raw hook/webhook URL anywhere in the tracked repository (delegates to tools/scan-secrets.mjs)', async () => {
+  const { scan } = await import('../tools/scan-secrets.mjs');
+  assert.deepEqual(scan(ROOT).hits, []);
 });
 
 test('every former hook call site resolves its hook by name and fails closed when unconfigured', () => {
@@ -154,10 +149,11 @@ function browser({ site, runtime, dataLayer = [] }) {
   vm.runInContext(read('shared/ee/bootstrap.js'), ctx);
   return { EE: w.EE, dl: w.dataLayer, calls };
 }
-const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', consent_store: 'MISSING', suppression_source: 'MISSING' };
+// connected safety spine (simulated) — the only configuration in which the gate can open
+const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 
 test('EE.hooks resolves by name from EE_RUNTIME only (tenant-matched), through the outbound gate, and an unconfigured hook fails closed', async () => {
-  const consent = EE => EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' });
+  const consent = EE => { EE.safety.suppression.use(() => ({ suppressed: false })); return EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' }); };
   const none = browser({ site: SITE, runtime: undefined }); consent(none.EE);
   assert.equal(none.EE.hooks.url('intake'), null);
   assert.equal(none.EE.hooks.configured('intake'), false);

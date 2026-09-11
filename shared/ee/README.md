@@ -115,15 +115,22 @@ tenant's file. Non-https values are dropped. A tenant whose Render service does 
 (MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
 
 **There is no ungated path to a URL.** `EE.hooks.url()` itself runs `EE.outbound.allowed()` first, so a
-page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()`. The gate passes only when:
+page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()`. The gate passes only when
+**every** row holds. UNKNOWN DOES NOT MEAN BORROW, and MISSING DOES NOT MEAN SAFE.
 
-| truth | required state | unknown ⇒ |
+| truth | required state | anything else ⇒ |
 |---|---|---|
-| kill switch | `EE_SITE.kill_switch === 'OFF'` (a page may tighten with `<meta name="ee-kill-switch" content="ON">`; `EE.safety.killSwitch.trip()`) | fail closed (`UNKNOWN` = ON) |
-| production gate | `live` (derived from Foundation: hosting matches intent, site + render ON) | fail closed |
-| consent evidence | `EE.safety.consent.record({surface, consent_text_id, method})` called on this page view | fail closed |
-| suppression | `EE_SITE.suppression_source` present; if it is `VERIFIED`/`CURRENT` a checker registered with `EE.safety.suppression.use(fn)` must have run and not suppressed; `MISSING`/`NOT_APPLICABLE` is a *known* absence | fail closed |
-| runtime tenant | `window.EE_RUNTIME.tenant_id === EE_SITE.tenant_id` | fail closed (`ee_runtime_mismatch`) |
+| kill switch | `EE_SITE.kill_switch === 'OFF'` exactly (a page may tighten with `<meta name="ee-kill-switch" content="ON">` or `EE.safety.killSwitch.trip()`) | BLOCK (`UNKNOWN` = ON) |
+| production gate | `live` (Foundation: hosting matches intent, site + render ON) | BLOCK |
+| consent store | `EE_SITE.consent_store` is `VERIFIED` or `CURRENT` (the tenant's consent store is CONNECTED) | BLOCK — `MISSING`, `NEEDS_AUTH`, `NOT_APPLICABLE`, `UNKNOWN`, undefined all block |
+| consent evidence | `EE.safety.consent.record({surface, consent_text_id, method})` on this page view — **evidence only**; it never manufactures a connected store | BLOCK |
+| suppression source | `EE_SITE.suppression_source` is `VERIFIED` or `CURRENT` (an authoritative source is CONNECTED) | BLOCK — same list as above |
+| suppression check | a checker registered with `EE.safety.suppression.use(fn)` completed and returned not-suppressed | BLOCK |
+| runtime tenant | `window.EE_RUNTIME.tenant_id === EE_SITE.tenant_id` | BLOCK (`ee_runtime_mismatch`) |
+
+No operation-level exemption exists in this layer; `NOT_APPLICABLE` does not mean allow. Today every canonical
+tenant's consent store and suppression source are `MISSING` in Foundation v1.2, so **every form in this repo is
+intentionally fail-closed** until the real safety spine is connected and the manifests say so.
 
 Blocked resolutions emit `ee_outbound_blocked {hook, reason}`; an unconfigured hook emits `ee_hook_missing`.
 Every form in this repo records its consent evidence (the consent text it actually shows, by id) before it

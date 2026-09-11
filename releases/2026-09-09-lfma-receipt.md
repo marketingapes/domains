@@ -39,7 +39,7 @@ Also verified: single POST per submission (second attempt does not re-send), no 
 - Make scenario **6145362 already contains module 4 `gateway:WebhookRespond`** returning
   `{"ok":true}` with `Content-Type: application/json` and `Access-Control-Allow-Origin: *`.
   This is exactly what the adapter requires. **No Make change was needed or made.**
-- Hook preserved: `dwzmtn5xbkdrt6pjvli9jgy3auppobbi`, one occurrence, no second lane.
+- Hook preserved: the existing MA Order Intake lane (Make), one occurrence, no second lane. (Hook identifier redacted 2026-09-11: hook tokens are secrets and never live in this repo; pages now resolve the lane by name through `EE.hooks`.)
 - Bundle tests: **68/68 Node pass**, **8/8 offline DOM pass**, re-run after the regex change.
 
 ---

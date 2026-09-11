@@ -76,23 +76,41 @@ export function bindLfmaBrief({
   errorBox.id = 'lfmaReceiptError'; errorBox.setAttribute('role', 'status');
   errorBox.setAttribute('aria-live', 'polite'); errorBox.hidden = true;
   form.append(errorBox);
-  // `endpoint` may be a function: the gated hook URL is only resolvable at submit time (after consent evidence
-  // is recorded), so the submitter is created lazily on first submit. A null endpoint fails closed as INVALID_ENDPOINT.
-  let client = null;
-  const getClient = () => {
+  // Lifecycle: IDLE -> SUBMITTING -> ACKNOWLEDGED | UNKNOWN. `client` is created lazily on the first submit because
+  // `endpoint` may be a function that resolves the gated hook URL only after consent evidence is recorded.
+  // `client` may therefore be null at any time before the first submit: nothing below dereferences it unguarded.
+  let client = null, phase = 'IDLE', lastReference = null;
+  const idleState = Object.freeze({ status: 'IDLE', referenceId: null });
+  const state = () => (client ? client.getState() : idleState);
+  const resolveEndpoint = () => (typeof endpoint === 'function' ? endpoint() : endpoint);
+  const ensureClient = () => {
     if (client) return client;
-    const resolved = typeof endpoint === 'function' ? endpoint() : endpoint;
     client = createOrderSubmitter({
-      endpoint: resolved, tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
+      endpoint: resolveEndpoint(), tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
     });
     return client;
   };
+  const showBlocked = message => {
+    errorBox.textContent = message; errorBox.hidden = false;
+    button.disabled = false; button.textContent = original;
+  };
   const handler = async event => {
     event.preventDefault();
-    if ((client && client.getState().status !== 'IDLE') || !form.reportValidity()) return;
+    if (phase !== 'IDLE') return;                       // in flight, acknowledged or uncertain: never a second send
+    if (!form.reportValidity()) return;
+    phase = 'SUBMITTING';
     button.disabled = true; button.textContent = 'Sending...'; errorBox.hidden = true;
+    let submitter;
+    try { submitter = ensureClient(); }
+    catch (error) {
+      // No usable endpoint (gate blocked, hook missing, not configured): explicit failure, no send, retry allowed.
+      phase = 'IDLE'; client = null;
+      showBlocked(error instanceof IntakeError ? error.message : 'Order intake is not configured.');
+      return;
+    }
     try {
-      const raw = mapLfmaBrief(new FormData(form)), receipt = await getClient().submit(raw);
+      const raw = mapLfmaBrief(new FormData(form)), receipt = await submitter.submit(raw);
+      phase = 'ACKNOWLEDGED'; lastReference = receipt.referenceId;
       try { dataLayer?.push(acknowledgementEvent(receipt, {
         tenantId: 'LFMA', domain: 'lawfirmmarketingapes.com', product: 'campaign_sprint_scope'
       })); } catch { /* A blocked analytics tag must not erase an acknowledged submission. */ }
@@ -104,17 +122,23 @@ export function bindLfmaBrief({
       form.hidden = true; sent.hidden = false;
       sent.setAttribute('tabindex', '-1'); sent.focus();
     } catch (error) {
-      const state = client ? client.getState() : { status: 'IDLE' };
-      if (state.status === 'IDLE') {
-        errorBox.textContent = error instanceof IntakeError ? error.message : 'Please check the form.';
-        button.disabled = false; button.textContent = original;
+      const current = state();
+      if (current.status === 'IDLE') {
+        // Rejected before anything left the page (validation / payload): safe to retry.
+        phase = 'IDLE';
+        showBlocked(error instanceof IntakeError ? error.message : 'Please check the form.');
       } else {
-        errorBox.textContent = `Receipt could not be confirmed. The brief may already have arrived. Do not submit or pay again based on this message. Contact kyleg@marketingapes.com and quote ${state.referenceId}.`;
+        // The request left the page and its receipt is uncertain: never allow a second send.
+        phase = 'UNKNOWN'; lastReference = current.referenceId;
+        errorBox.textContent = `Receipt could not be confirmed. The brief may already have arrived. Do not submit or pay again based on this message. Contact kyleg@marketingapes.com and quote ${current.referenceId}.`;
         button.disabled = true; button.textContent = 'Receipt needs checking';
+        errorBox.hidden = false;
       }
-      errorBox.hidden = false;
     }
   };
   form.addEventListener('submit', handler); button.disabled = false;
-  return Object.freeze({ getState: client.getState, destroy: () => form.removeEventListener('submit', handler) });
+  return Object.freeze({
+    getState: () => Object.freeze({ phase, status: state().status, referenceId: state().referenceId || lastReference }),
+    destroy: () => form.removeEventListener('submit', handler)
+  });
 }

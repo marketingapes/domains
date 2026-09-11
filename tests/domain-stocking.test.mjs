@@ -116,8 +116,11 @@ test('kill switch ON blocks every dataLayer push and every outbound gate', () =>
   const ev = EE.track('ee_cta_click'); assert.equal(ev.ee_blocked, true); assert.equal(dl.length, 0);
   assert.equal(EE.experience.mount({ id: 'x', render() {} }).mounted, false);
   assert.equal(EE.outbound.allowed({}).reason, 'kill_switch ON');
-  const live = browser({ site: { ...SITE, production_gate: 'live' } });
+  // the gate can only open with a CONNECTED safety spine (consent store + suppression source) and a completed clear check
+  const live = browser({ site: { ...SITE, production_gate: 'live', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' } });
   live.EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' });
+  assert.equal(live.EE.outbound.allowed({}).allowed, false, 'no suppression check yet');
+  live.EE.safety.suppression.use(() => ({ suppressed: false }));
   assert.equal(live.EE.outbound.allowed({}).allowed, true);
   live.EE.safety.killSwitch.trip('test');
   assert.equal(live.EE.outbound.allowed({}).allowed, false);

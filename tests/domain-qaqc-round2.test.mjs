@@ -19,7 +19,9 @@ import { scan } from '../tools/scan-secrets.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
-const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', brand: 'Nearest Injury Lawyers', production_gate: 'live', kill_switch: 'OFF', kill_switch_source: 'MISSING', consent_store: 'MISSING', suppression_source: 'MISSING' };
+// A CONNECTED safety spine (consent store + suppression source VERIFIED) — the only configuration in which the gate can open.
+const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', brand: 'Nearest Injury Lawyers', production_gate: 'live', kill_switch: 'OFF', kill_switch_source: 'MISSING', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
+const clear = EE => EE.safety.suppression.use(() => ({ suppressed: false }));
 const HOOK = 'https://hooks.invalid.test/nil-intake';
 
 const NO_SITE = Symbol('no EE_SITE');
@@ -43,7 +45,7 @@ function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: H
   return { w, EE: w.EE, dl: w.dataLayer, calls, run: src => vm.runInContext(src, ctx) };
 }
 const stocked = opts => browser({ ...opts, scripts: ['shared/ee/bootstrap.js', ...(opts?.scripts || [])] });
-const consent = EE => EE.safety.consent.record({ surface: 'test', consent_text_id: 'T-1' });
+const consent = EE => { clear(EE); return EE.safety.consent.record({ surface: 'test', consent_text_id: 'T-1' }); };
 
 // ---------------------------------------------------------------- F6: the gate controls every send
 test('F6: hooks.url() is gated — no URL without live gate + consent + known suppression truth + kill switch OFF', () => {
@@ -53,12 +55,12 @@ test('F6: hooks.url() is gated — no URL without live gate + consent + known su
   assert.equal(b.EE.hooks.why('intake'), 'no consent evidence recorded');
   assert.equal(b.dl.at(-1).event, 'ee_outbound_blocked');
   consent(b.EE);
-  assert.equal(b.EE.hooks.url('intake'), HOOK, 'consent recorded + suppression declared MISSING => URL');
+  assert.equal(b.EE.hooks.url('intake'), HOOK, 'connected consent store + evidence recorded + connected suppression source + clear check => URL');
   const preview = stocked({ site: { ...SITE, production_gate: 'preview' } }); consent(preview.EE);
   assert.equal(preview.EE.hooks.url('intake'), null); assert.equal(preview.EE.hooks.why('intake'), 'production_gate preview');
   const unknownSupp = stocked({ site: { ...SITE, suppression_source: undefined } }); consent(unknownSupp.EE);
-  assert.equal(unknownSupp.EE.hooks.url('intake'), null); assert.equal(unknownSupp.EE.hooks.why('intake'), 'suppression truth unknown');
-  const declared = stocked({ site: { ...SITE, suppression_source: 'VERIFIED' } }); consent(declared.EE);
+  assert.equal(unknownSupp.EE.hooks.url('intake'), null); assert.equal(unknownSupp.EE.hooks.why('intake'), 'suppression source not connected: UNKNOWN');
+  const declared = stocked({ site: { ...SITE, suppression_source: 'VERIFIED' } }); declared.EE.safety.consent.record({ surface: 't', consent_text_id: 'T' });
   assert.equal(declared.EE.hooks.url('intake'), null, 'a VERIFIED suppression source with no check run fails closed');
   declared.EE.safety.suppression.use(() => ({ suppressed: false }));
   assert.equal(declared.EE.hooks.url('intake'), HOOK, 'check ran => allowed');

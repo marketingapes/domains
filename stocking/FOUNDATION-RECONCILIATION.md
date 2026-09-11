@@ -34,10 +34,13 @@ Render static site is a human production action and was **not** performed.
 | R2-4 | Production gate is `preview` for BTL and the eight preview tenants, so their forms cannot send from the Render face until hosting matches intent | by design; flipping the gate is a Foundation/DNS decision. |
 | R2-5 | Every form now fails closed until `EE_HOOK_<TENANT>_<NAME>` is set on the Render static site (and MA's build command becomes `sh build.sh`) | Render env is a human production action. |
 
-## SECURITY ROTATION/HISTORY CLEANUP REQUIRED
+## SECURITY ROTATION REQUIRED BEFORE REUSE (history cleanup optional)
 
-Raw hook URLs were committed to this public repository before commit `2593303` (they remain in git history
-and in any fork/clone). Removing them from the current tree does not revoke them. **Not done here** (no
+Raw hook URLs were committed to this public repository before commit `2593303`, and one bare Make hook token survived
+in `releases/2026-09-09-lfma-receipt.md` until round 3 (removed, not reproduced). All of them remain in git history and in
+any fork/clone; `tools/scan-secrets.mjs` now carries SHA-256 digests of the six exposed tokens so they can never re-enter
+the tree. Removing them from the current tree does not revoke them: **rotate every lane below before it is reused**
+as an `EE_HOOK_*` value. **Not done here** (no
 history rewrite, no credential rotation — human decisions):
 
 | lane | provider | where it lived (history) | action |
@@ -50,3 +53,10 @@ history rewrite, no credential rotation — human decisions):
 
 Optional after rotation: history rewrite (`git filter-repo`) + force-push + clone invalidation — only with Kyle's
 explicit go, since it rewrites `main` history for every collaborator and every Render deploy hook.
+
+## G4 consequence (round 3)
+
+The outbound gate now requires a CONNECTED consent store and a CONNECTED suppression source with a completed clear
+check. Every canonical manifest says both are `MISSING`, so every form in this repository is intentionally fail-closed.
+Connecting the safety spine is a Foundation change (flip the two `safety` leaves once the stores exist, re-run the
+verifier, update `foundation.sha256`) plus real checker wiring — not a code shortcut.

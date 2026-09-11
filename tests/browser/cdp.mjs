@@ -71,7 +71,8 @@ export async function launchBrowser() {
     const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     const s = (m, p) => send(m, p, sessionId);
-    const requests = [], errors = [], consoleErrors = [];
+    const requests = [], errors = [], consoleErrors = [], navigations = [];
+    on(sessionId, 'Page.frameNavigated', p => { if (!p.frame.parentId) navigations.push(p.frame.url); });
     on(sessionId, 'Runtime.exceptionThrown', p => errors.push(p.exceptionDetails?.exception?.description || p.exceptionDetails?.text || 'exception'));
     on(sessionId, 'Runtime.consoleAPICalled', p => { if (p.type === 'error') consoleErrors.push(p.args.map(a => a.value ?? a.description).join(' ')); });
     on(sessionId, 'Fetch.requestPaused', async p => {
@@ -83,14 +84,14 @@ export async function launchBrowser() {
         const cors = [{ name: 'Access-Control-Allow-Origin', value: '*' }, { name: 'Access-Control-Allow-Headers', value: '*' }, { name: 'Access-Control-Allow-Methods', value: 'POST, GET, OPTIONS' }];
         if (request.method === 'OPTIONS' && key) return await s('Fetch.fulfillRequest', { requestId, responseCode: 204, responseHeaders: cors, body: '' });
         requests.push({ url, method: request.method, body: request.postData || null, fulfilled: !!key });
-        if (key) return await s('Fetch.fulfillRequest', { requestId, responseCode: fulfill[key].status || 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }, ...cors], body: Buffer.from(fulfill[key].body || '{}').toString('base64') });
+        if (key) { const spec = typeof fulfill[key] === 'function' ? fulfill[key](request, requests.length) : fulfill[key]; return await s('Fetch.fulfillRequest', { requestId, responseCode: spec.status || 200, responseHeaders: [{ name: 'Content-Type', value: 'application/json' }, ...cors], body: Buffer.from(spec.body || '{}').toString('base64') }); }
         await s('Fetch.failRequest', { requestId, errorReason: 'BlockedByClient' });
       } catch { /* target gone */ }
     });
     await s('Page.enable'); await s('Runtime.enable'); await s('Fetch.enable', { patterns: [{ urlPattern: '*' }] });
     const loaded = () => new Promise(res => on(sessionId, 'Page.loadEventFired', res));
     return {
-      requests, errors, consoleErrors,
+      requests, errors, consoleErrors, navigations,
       async goto(url) { const p = loaded(); await s('Page.navigate', { url }); await p; await sleep(250); },
       async evaluate(expression) {
         const r = await s('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });

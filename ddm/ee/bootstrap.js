@@ -233,7 +233,7 @@
       },
       consent: {
         state: function () { return consentState; },
-        store: SITE.consent_store || 'MISSING',
+        store: (typeof SITE.consent_store === 'string' && SITE.consent_store) ? SITE.consent_store : 'UNKNOWN',
         record: function (evidence) {
           evidence = evidence || {};
           if (!evidence.surface || !evidence.consent_text_id) throw new Error('EE.safety.consent.record needs {surface, consent_text_id}');
@@ -254,19 +254,26 @@
       }
     },
     outbound: {
-      // The single gate every outbound action passes. Unknown truth fails closed (F6).
+      // The single gate every outbound action passes. UNKNOWN DOES NOT MEAN BORROW, and MISSING DOES NOT MEAN SAFE (G4):
+      //  - kill switch must be exactly OFF; production gate must be live; the runtime must be this tenant's (checked in hooks)
+      //  - the tenant's consent store must be CONNECTED (VERIFIED/CURRENT) AND consent evidence recorded on this page view.
+      //    A page-local consent.record() is evidence only; it never manufactures a connected store.
+      //  - the tenant's suppression source must be CONNECTED (VERIFIED/CURRENT) AND a completed check must have cleared.
+      //  - MISSING / NEEDS_AUTH / NOT_APPLICABLE / UNKNOWN / undefined all BLOCK. No operation-level exemption exists here.
       allowed: function (identity) {
         var deny = function (why) { return { allowed: false, reason: why }; };
+        var connected = function (v) { return v === 'VERIFIED' || v === 'CURRENT'; };
         if (killState !== 'OFF') return deny('kill_switch ' + killState);
         if (productionGate !== 'live') return deny('production_gate ' + productionGate);
+        var cstore = EE.safety.consent.store;
+        if (!connected(cstore)) return deny('consent store not connected: ' + cstore);
         if (consentState !== 'recorded') return deny('no consent evidence recorded');
         var src = EE.safety.suppression.source;
-        if (src === 'UNKNOWN') return deny('suppression truth unknown');
+        if (!connected(src)) return deny('suppression source not connected: ' + src);
         var s = EE.safety.suppression.check(identity);
+        if (!s.checked) return deny('suppression check did not complete');
         if (s.suppressed) return deny('suppressed');
-        var declaredAbsent = (src === 'MISSING' || src === 'NOT_APPLICABLE');
-        if (!s.checked && !declaredAbsent) return deny('suppression source ' + src + ' declared but no check ran');
-        return { allowed: true, reason: 'ok', suppression: s.checked ? 'checked' : 'not_connected:' + src };
+        return { allowed: true, reason: 'ok', consent_store: cstore, suppression: 'checked:' + src };
       }
     },
     hooks: {
