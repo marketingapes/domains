@@ -170,9 +170,14 @@ without pretending any capability exists. Read `shared/ee/README.md`.
 
 Regenerate + audit: `node tools/stock-domains.mjs` → `stocking/REPORT.md` / `stocking/report.json`.
 Drift gate: `node tools/stock-domains.mjs --check`. Never hand-edit `<tenant>/ee/*` or the injected blocks.
-- Hook URLs never live in the repo. Pages call `EE.hooks.url('<name>')`; `build.sh` writes
-  `<tenant>/ee/runtime.js` (gitignored) from Render env `EE_HOOK_<TENANT>_<NAME>`. Unconfigured = fails closed.
-- A hook URL is only ever obtained through `EE.hooks.url()`, which passes the outbound gate (kill switch OFF,
-  gate live, consent evidence recorded, suppression truth known, runtime tenant matches). Unknown ⇒ fail closed.
+- Provider hook URLs never live in the repo **and never reach the browser**. Pages call
+  `EE.hooks.post('<action>', payload, {identity})`; the only destination the page can produce is the Evolution
+  Engine's governed actions route `<EE_ACTIONS_<TENANT>_ENDPOINT>/<TENANT>/<action>`. `build.sh` writes
+  `<tenant>/ee/runtime.js` (gitignored, public) with action *names* + engine endpoints only; a legacy
+  `EE_HOOK_<TENANT>_<NAME>` value is discarded with a warning. The engine adapter holds the provider URL and
+  re-validates every request server-side. Unconfigured = fails closed.
+- Even the engine route is only handed out through the outbound gate (runtime tenant matches, kill switch OFF,
+  gate live, connected consent store + evidence recorded, connected suppression source + authoritative clear
+  check for the identity). Unknown ⇒ fail closed. The page-side gate is a pre-check, not the security boundary.
 - Complete suite: `npm test` (tests/*.test.mjs + campaign-system/test/*.test.mjs, browser tests included).
 

@@ -285,23 +285,21 @@
     };
     var L = window.EE && (window.EE.legacy || window.EE);
     if (L && typeof L.pushEvent === 'function') { L.pushEvent('form_submit', {form_name: 'agency_contact_form'}); }
-    /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER) through the outbound gate; never stored here. */
+    /* No provider URL exists on this page: 'order' is a governed Evolution Engine action (EE.hooks.post) behind the outbound gate. */
     var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
     if (!ee) { fail('This form is not connected. Nothing was sent. Email kyleg@marketingapes.com.'); return; }
     ee.safety.consent.record({ surface: 'lfma_contact_form', consent_text_id: 'LFMA_CONTACT_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
-    ee.hooks.resolve('order', { email: data.email, phone: data.phone }).then(function (hook) {
-      if (!hook) { fail('This form is not connected yet (' + (ee.hooks.why('order') || 'blocked') + '). Nothing was sent. Email kyleg@marketingapes.com.'); return; }
-      return fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-        .then(function (res) {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          phase = 'sent';
-          if (L && typeof L.sendToWebhook === 'function') { try { L.sendToWebhook('form_submit', 'agency_contact_form', data); } catch (_) {} }
-          window.location.href = 'thank-you.html';
-        })
-        .catch(function () {
-          fail('We could not send your message. Please try again or email kyleg@marketingapes.com.');
-        });
-    });
+    ee.hooks.post('order', data, { identity: { email: data.email, phone: data.phone } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        phase = 'sent';
+        if (L && typeof L.sendToWebhook === 'function') { try { L.sendToWebhook('form_submit', 'agency_contact_form', data); } catch (_) {} }
+        window.location.href = 'thank-you.html';
+      })
+      .catch(function (e) {
+        if (e && (e.name === 'OutboundBlocked' || e.name === 'HookMissing')) { fail('This form is not connected yet (' + (ee.hooks.why('order') || e.reason || 'blocked') + '). Nothing was sent. Email kyleg@marketingapes.com.'); return; }
+        fail('We could not send your message. Please try again or email kyleg@marketingapes.com.');
+      });
   });
 })();
 </script>

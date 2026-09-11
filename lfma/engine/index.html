@@ -188,7 +188,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
 </footer>
 <script>
 /* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
-function hookUrl(identity){var ee=(window.EE&&window.EE.__stocked)?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'lfma_snapshot_form',consent_text_id:'LFMA_SNAPSHOT_BY_SUBMIT_2026-09-11_V1',method:'by-clicking-submit'});return ee.hooks.resolve('order',identity)}
+function sendSnapshot(data,identity){var ee=(window.EE&&window.EE.__stocked)?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'lfma_snapshot_form',consent_text_id:'LFMA_SNAPSHOT_BY_SUBMIT_2026-09-11_V1',method:'by-clicking-submit'});return ee.hooks.post('order',data,{identity:identity})}
 window.dataLayer=window.dataLayer||[];
 document.querySelectorAll('.cta').forEach(function(el){
   el.addEventListener('click',function(){
@@ -207,9 +207,9 @@ document.getElementById('snapForm').addEventListener('submit',function(e){
   var btn=form.querySelector('button[type=submit]');
   btn.disabled=true; btn.textContent='Sending…';
   document.getElementById('err').style.display='none';
-  hookUrl({email:data.email,phone:data.phone}).then(function(hook){
-    if(!hook){ btn.disabled=false; btn.textContent='Request the $5,000 Snapshot'; document.getElementById('err').style.display='block'; return; }
-    return fetch(hook,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
+  sendSnapshot(data,{email:data.email,phone:data.phone}).then(function(res){
+    if(!res||!res.ok){ btn.disabled=false; btn.textContent='Request the $5,000 Snapshot'; document.getElementById('err').style.display='block'; return; }
+    return Promise.resolve(res)
     .then(function(){
       window.dataLayer.push({event:'ee_snapshot_request',tenant_id:'LFMA',product:'legal_engine_snapshot',value:5000,currency:'USD'});
       form.style.display='none';

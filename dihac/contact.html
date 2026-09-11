@@ -276,17 +276,9 @@
       function sendDirect(payload) {
         var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
         if (ee) ee.safety.consent.record({ surface: 'dihac_contact_form', consent_text_id: 'DIHAC_CONTACT_PRIVACY_BY_SUBMIT_V1', method: 'by-clicking-submit' });
-        Promise.resolve(ee ? ee.hooks.resolve('contact', { email: payload.email, phone: payload.phone }) : null).then(function (hook) {
-        if (!hook) {
-          btn.disabled = false;
-          btn.textContent = 'Send Message';
-          alert('This form is not connected yet. Please call us directly.');
-          return;
-        }
-        fetch(hook, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        }).then(function(res) {
+        var blocked = function () { btn.disabled = false; btn.textContent = 'Send Message'; alert('This form is not connected yet. Please call us directly.'); };
+        if (!ee) { blocked(); return; }
+        ee.hooks.post('contact', payload, { identity: { email: payload.email, phone: payload.phone } }).then(function(res) {
           if (res.ok) {
             window.location.href = 'thank-you.html';
           } else {
@@ -294,11 +286,11 @@
             btn.textContent = 'Send Message';
             alert('Something went wrong. Please try again or call us directly.');
           }
-        }).catch(function() {
+        }).catch(function(e) {
+          if (e && (e.name === 'OutboundBlocked' || e.name === 'HookMissing')) { blocked(); return; }
           btn.disabled = false;
           btn.textContent = 'Send Message';
           alert('Something went wrong. Please try again or call us directly.');
-        });
         });
       }
     })();

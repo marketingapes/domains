@@ -68,3 +68,23 @@ Outbound now requires an authoritative suppression lookup against `EE_RUNTIME.su
 answers `BLOCK — authoritative suppression check unavailable` by design. Connecting it = engine work + Render env +
 flipping the two `safety` leaves in Foundation once the stores are real. Non-blocking defense-in-depth residuals
 (scanner base64/9-layer heuristics etc.) are documented, not spent on, in this round.
+
+## Round 5 — provider destinations belong on the engine, not in `runtime.js`
+
+`EE_HOOK_<TENANT>_<NAME>` values must **not** be set on the static-site Render services any more: `build.sh` now
+discards their values (name kept, warning printed) and never emits a provider URL into the served tree. The rotation
+table above still stands — rotate every exposed lane — but the rotated URLs are configured on the **Evolution Engine
+governed actions adapter**, keyed by `<TENANT>/<action>`, never on a domain site. What the static sites need instead:
+
+| Render env (static site) | value | status today |
+|---|---|---|
+| `EE_ACTIONS_<TENANT>_ENDPOINT` | the engine's governed actions endpoint (https) | **does not exist** — every tenant fails closed with `governed actions endpoint unavailable` |
+| `EE_ACTIONS_<TENANT>_NAMES` | comma list of action names the engine accepts for that tenant (`intake`, `lead`, `campaign_request`, `contact`, `tracking`, `order`) | unset |
+| `EE_SUPPRESSION_<TENANT>_ENDPOINT` | the engine's authoritative suppression endpoint | unset (round 4) |
+
+Engine-side requirements for the adapter (not built here, not in this repository): accept
+`POST <actions_endpoint>/<TENANT>/<action>` with the bootstrap's envelope, re-validate tenant ↔ action ↔ origin, kill
+switch, production gate, consent evidence and suppression **server-side**, hold the provider URL per lane, forward,
+and answer JSON `{ok:true}`. The browser is not a trusted enforcement environment; nothing in the page is relied on to
+keep a provider secret because the page no longer has one. `EE.hooks.url()` still exists for the LFMA intake client and
+returns the engine route only.

@@ -17,14 +17,15 @@ import crypto from 'node:crypto';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
-const HOOK = 'https://hooks.invalid.test/nil-intake';
+const ACTIONS = 'https://engine.invalid.test/actions';
+const HOOK = ACTIONS + '/NIL/intake';        // the ONLY url hooks can ever produce: the engine actions route for this tenant
 const SUPP = 'https://engine.invalid.test/suppression';
 const ID = { email: 'qa@example.test', phone: '(401) 555-0100' };
 const CONNECTED = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 const jsonRes = body => ({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => body });
 
 // `answer(init)` decides what the AUTHORITATIVE endpoint does: return a Response-like, a Promise, or throw.
-function boot({ site = CONNECTED, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK }, suppression_endpoint: SUPP }, answer = () => jsonRes({ checked: true, suppressed: false, source: 'test-authority' }), abort = false } = {}) {
+function boot({ site = CONNECTED, runtime = { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP }, answer = () => jsonRes({ checked: true, suppressed: false, source: 'test-authority' }), abort = false } = {}) {
   const calls = [], lookups = [];
   const storage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
   class AbortController { constructor() { this.signal = { aborted: false }; } abort() { this.signal.aborted = true; if (this.onabort) this.onabort(); } }
@@ -111,14 +112,14 @@ test('async/failure: a timed-out lookup blocks', async () => {
 });
 
 test('no endpoint configured => BLOCK — authoritative suppression check unavailable (the state of every real tenant today)', async () => {
-  const b = boot({ runtime: { tenant_id: 'NIL', hooks: { intake: HOOK } } }); consent(b.EE);
+  const b = boot({ runtime: { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: ACTIONS } }); consent(b.EE);
   assert.equal(b.EE.safety.suppression.endpoint_configured, false);
   assert.equal(b.EE.outbound.allowed(ID).reason, 'authoritative suppression check unavailable');
   assert.equal((await b.EE.outbound.check(ID)).allowed, false);
   assert.equal(await b.EE.hooks.resolve('intake', ID), null);
   assert.equal(b.EE.hooks.why('intake'), 'authoritative suppression check unavailable');
   for (const ep of ['http://engine.invalid.test/s', 'javascript:alert(1)', '', 42, null]) {
-    const bad = boot({ runtime: { tenant_id: 'NIL', hooks: { intake: HOOK }, suppression_endpoint: ep } }); consent(bad.EE);
+    const bad = boot({ runtime: { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: ACTIONS, suppression_endpoint: ep } }); consent(bad.EE);
     assert.equal(bad.EE.safety.suppression.endpoint_configured, false, String(ep));
     assert.equal(await bad.EE.hooks.resolve('intake', ID), null);
   }
@@ -156,7 +157,7 @@ test('page-code bypass: hooks.url(name) with no identity, a junk identity, or a 
 });
 
 test('runtime validation: outbound.allowed() itself denies a missing or mismatched runtime, before any other check', async () => {
-  const mismatch = boot({ runtime: { tenant_id: 'LFMA', hooks: { intake: HOOK }, suppression_endpoint: SUPP } }); consent(mismatch.EE);
+  const mismatch = boot({ runtime: { tenant_id: 'LFMA', actions: ['intake'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP } }); consent(mismatch.EE);
   assert.equal(mismatch.EE.outbound.allowed(ID).allowed, false);
   assert.match(mismatch.EE.outbound.allowed(ID).reason, /^runtime tenant mismatch: LFMA/);
   assert.equal((await mismatch.EE.outbound.check(ID)).allowed, false);
@@ -184,7 +185,7 @@ test('build.sh carries EE_SUPPRESSION_<TENANT>_ENDPOINT into runtime.js and ever
   assert.match(read('build.sh'), /suppression_endpoint:%s/);
   for (const f of ['nil/index.html', 'btl/index.html', 'btl/rhode-island-abuse/index.html', 'btl/404.html', 'dihac/contact.html', 'lfma/contact.html', 'lfma/engine/index.html', 'lfma/campaign/index.html', 'ma/order/index.html', 'dihac/assets/js/tracking.js']) {
     const text = read(f);
-    assert.match(text, /hooks\.resolve\(/, `${f} uses the async authoritative path`);
+    assert.match(text, /hooks\.(resolve|post)\(/, `${f} uses the async authoritative path`);
     assert.doesNotMatch(text, /hooks\.url\(/, `${f} no longer calls the sync url() from page code`);
     assert.doesNotMatch(text, /suppression\.use\(/, `${f} registers no page checker`);
   }

@@ -16,7 +16,8 @@ import { bindLfmaBrief } from '../lfma/assets/lfma-brief-adapter.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
-const HOOK = 'https://hooks.invalid.test/nil-intake';
+const ACTIONS = 'https://engine.invalid.test/actions';
+const HOOK = ACTIONS + '/NIL/intake';        // the ONLY url hooks can ever produce: the engine actions route for this tenant
 const BASE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', kill_switch_source: 'MISSING' };
 const CONNECTED = { ...BASE, consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 const NOT_CONNECTED = ['MISSING', 'NEEDS_AUTH', 'UNKNOWN', 'NOT_APPLICABLE', undefined, null, '', 'verified', 'ON', 'true'];
@@ -25,7 +26,7 @@ const SUPP = 'https://engine.invalid.test/suppression';
 const ID = { email: 'qa@example.test', phone: '4015550100' };
 const jsonRes = body => ({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => body });
 // `supp` is what the AUTHORITATIVE endpoint answers: an object => JSON body; 'reject' => network failure; 'http500'; 'text'.
-function boot(site, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, order: HOOK }, suppression_endpoint: SUPP }, supp = { checked: true, suppressed: false, source: 'test-authority' }) {
+function boot(site, runtime = { tenant_id: 'NIL', actions: ['intake', 'order'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP }, supp = { checked: true, suppressed: false, source: 'test-authority' }) {
   const calls = [], lookups = [];
   const storage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
   const w = { EE_SITE: site, EE_RUNTIME: runtime, dataLayer: [], location: { href: 'https://x.test/', search: '', pathname: '/' }, sessionStorage: storage(), localStorage: storage(),
@@ -172,7 +173,7 @@ test('G1: a configured endpoint follows exactly one send/success path; a second 
   let release; const gate = new Promise(r => { release = r; });
   // the intake client only ACKNOWLEDGES a JSON {ok:true} response; anything else is an uncertain receipt
   const fetchImpl = async (url, init) => { sends.push({ url, init }); await gate; return { ok: true, status: 200, type: 'basic', headers: { get: () => 'application/json' }, json: async () => ({ ok: true }) }; };
-  const bound = bindLfmaBrief({ form: f.form, sent: f.sent, endpoint: () => 'https://hook.us2.make.com/' + 'a'.repeat(20), sourceUrl: 'https://x.test/campaign/', dataLayer: [], fetchImpl });
+  const bound = bindLfmaBrief({ form: f.form, sent: f.sent, endpoint: () => 'https://engine.invalid.test/actions/LFMA/order', sourceUrl: 'https://x.test/campaign/', dataLayer: [], fetchImpl });
   const p1 = f.submit(); await new Promise(r => setTimeout(r, 0));
   assert.equal(bound.getState().phase, 'SUBMITTING');
   await f.submit(); await f.submit();
@@ -202,10 +203,10 @@ test('G2: lfma/contact.html has real submission state: guard, in-flight lock, su
   assert.match(script, /phase = 'sent';\s*[\s\S]*?window\.location\.href = 'thank-you\.html';/);
   assert.doesNotMatch(script, /setTimeout\(function\(\) \{ window\.location\.href/, 'no timer-based fake success');
   assert.match(script, /function fail\(message\) \{\s*phase = 'idle';/);
-  assert.match(script, /\.catch\(function \(\) \{\s*fail\(/);
-  assert.match(script, /if \(!hook\) \{ fail\(/);
+  assert.match(script, /\.catch\(function \(e\) \{\s*if \(e && \(e\.name === 'OutboundBlocked' \|\| e\.name === 'HookMissing'\)\) \{ fail\(/);
   assert.match(script, /if \(!ee\) \{ fail\(/);
-  assert.equal((script.match(/fetch\(hook/g) || []).length, 1);
+  assert.equal((script.match(/hooks\.post\('order'/g) || []).length, 1);
+  assert.doesNotMatch(script, /fetch\(/, 'the page never fetches a URL of its own');
   assert.equal((html.match(/addEventListener\('submit'/g) || []).length, 1);
 });
 

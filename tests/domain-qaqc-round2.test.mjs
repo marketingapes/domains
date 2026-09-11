@@ -21,14 +21,16 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
 // A CONNECTED safety spine (consent store + suppression source VERIFIED) — the only configuration in which the gate can open.
 const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', brand: 'Nearest Injury Lawyers', production_gate: 'live', kill_switch: 'OFF', kill_switch_source: 'MISSING', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
-const HOOK = 'https://hooks.invalid.test/nil-intake';
+const ACTIONS = 'https://engine.invalid.test/actions';
+const HOOK = ACTIONS + '/NIL/intake';        // the ONLY url hooks can ever produce: the engine actions route for this tenant
+const TRACKING = ACTIONS + '/NIL/tracking';
 const SUPP = 'https://engine.invalid.test/suppression';
 const ID = { email: 'qa@example.test', phone: '4015550100' };
 const jsonRes = body => ({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => body });
 
 const NO_SITE = Symbol('no EE_SITE');
 const NO_RUNTIME = Symbol('no EE_RUNTIME');
-function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, tracking: HOOK }, suppression_endpoint: SUPP }, dataLayer = [], preEE = null, scripts = [], supp = { checked: true, suppressed: false, source: 'test-authority' } } = {}) {
+function browser({ site = SITE, runtime = { tenant_id: 'NIL', actions: ['intake', 'tracking'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP }, dataLayer = [], preEE = null, scripts = [], supp = { checked: true, suppressed: false, source: 'test-authority' } } = {}) {
   const calls = [];
   const storage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
   const w = {
@@ -95,7 +97,7 @@ test('F6: the legacy tracking helper cannot send without the gate (no bootstrap 
   both.EE.legacy.sendToWebhook('cta_click', '', {}, {}); await tick();
   assert.equal(both.calls.length, 0, 'no identity => no authoritative check => no send');
   both.EE.legacy.sendToWebhook('cta_click', '', ID, {}); await tick();
-  assert.equal(both.calls.length, 1); assert.equal(both.calls[0].url, HOOK);
+  assert.equal(both.calls.length, 1); assert.equal(both.calls[0].url, TRACKING);
 });
 
 // ---------------------------------------------------------------- F7: reserved context is immutable
@@ -124,7 +126,7 @@ test('F10: missing or invalid EE_SITE fails closed — nothing emitted, no hooks
 });
 
 test('F10: a runtime built for another tenant is never trusted; a missing runtime fails closed', async () => {
-  const b = stocked({ runtime: { tenant_id: 'LFMA', hooks: { intake: HOOK } } }); consent(b.EE);
+  const b = stocked({ runtime: { tenant_id: 'LFMA', actions: ['intake'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP } }); consent(b.EE);
   assert.equal(b.EE.hooks.configured('intake'), false);
   assert.equal(b.EE.hooks.url('intake'), null); assert.match(b.EE.hooks.why('intake'), /runtime tenant mismatch: LFMA/);
   assert.ok(b.dl.some(e => e.event === 'ee_runtime_mismatch' && e.runtime_tenant === 'LFMA'));
@@ -188,7 +190,7 @@ test('every form records consent evidence before resolving its gated hook, and n
     const text = read(f);
     assert.ok(text.includes(needle), `${f} records consent (${needle})`);
     assert.doesNotMatch(text, /track\('ee_hook_missing'/, `${f} leaves blocked/missing events to the bootstrap`);
-    assert.match(text, /hooks\.(resolve|url)\(/, `${f} resolves through the gate`);
+    assert.match(text, /hooks\.(resolve|post)\(/, `${f} resolves through the gate`);
   }
   for (const f of ['lfma/contact.html', 'lfma/engine/index.html', 'lfma/campaign/index.html', 'ma/order/index.html']) assert.match(read(f), /class="ee-consent-note"/, `${f} shows the consent text it records`);
 });

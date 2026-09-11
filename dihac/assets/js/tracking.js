@@ -9,7 +9,8 @@
 
   // Hook URL is a secret: only the stocked bootstrap can hand one out, and only through its outbound gate
   // (kill switch, production gate, consent evidence, suppression truth, runtime tenant match). No bootstrap => no send.
-  function hookUrl(identity) { var ee = window.EE; return (ee && ee.__stocked && ee.hooks) ? ee.hooks.resolve('tracking', identity || {}).then(function (u) { return u || ''; }) : Promise.resolve(''); }
+  // Outbound tracking goes through the governed engine action 'tracking' (EE.hooks.post); the page holds no provider URL.
+  function sendGoverned(payload, identity) { var ee = window.EE; if (!(ee && ee.__stocked && ee.hooks)) return Promise.resolve(false); return ee.hooks.post('tracking', payload, { identity: identity || {}, keepalive: true }).then(function () { return true; }, function () { return false; }); }
   const PHONE_NUMBER = '6197360356';
   const PHONE_DISPLAY = '(619) 736-0356';
   const PHONE_TEL = 'tel:+16197360356';
@@ -91,20 +92,7 @@
     );
 
     // Fire via navigator.sendBeacon for reliability, fallback to fetch
-    var json = JSON.stringify(payload);
-    hookUrl({ email: contactFields && contactFields.email, phone: contactFields && contactFields.phone }).then(function (WEBHOOK_URL) {
-      if (!WEBHOOK_URL) return;                       // gate blocked or hook missing: the bootstrap already emitted why
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(WEBHOOK_URL, new Blob([json], { type: 'application/json' }));
-      } else {
-        fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: json,
-          keepalive: true
-        }).catch(function () { });
-      }
-    });
+    sendGoverned(payload, { email: contactFields && contactFields.email, phone: contactFields && contactFields.phone }); // gate blocked or action missing: the bootstrap already emitted why
 
     return payload;
   }

@@ -356,7 +356,7 @@
 
   var SOFIA_PHONE='+16026931461';
   /* Hook URL is a secret resolved at submit time from /ee/runtime.js (EE_HOOK_BTL_LEAD); never stored in this page. */
-  function hookUrl(identity){var ee=window.EE&&window.EE.__stocked?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'btl_lead_form',consent_text_id:'BTL_TCPA_AI_BY_SUBMIT_2026-07-19',method:'by-clicking-submit'});return ee.hooks.resolve('lead',identity)}
+  function sendLead(data,identity){var ee=window.EE&&window.EE.__stocked?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'btl_lead_form',consent_text_id:'BTL_TCPA_AI_BY_SUBMIT_2026-07-19',method:'by-clicking-submit'});return ee.hooks.post('lead',data,{identity:identity})}
   var CAMPAIGN='btl-ri-abuse-2026'; // campaign landing page: this page IS a campaign attachment; the domain face carries none
 
   var qs=new URLSearchParams(location.search);
@@ -420,9 +420,9 @@
     data.consent_text='TCPA+AI-voice by-clicking-submit consent v2026-07-19'; data.consent_method='by-clicking-submit';
     data.page_url=location.href; data.ts=new Date().toISOString();
     document.getElementById('submitbtn').disabled=true;
-    hookUrl({phone:data.phone,email:data.email}).then(function(hook){
-      if(!hook){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; }
-      return fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    sendLead(data,{phone:data.phone,email:data.email}).then(function(r){
+      if(!r){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; }
+      return Promise.resolve(r)
       .then(function(r){if(!r.ok)throw 0; return r;})
       .then(function(){
         submitted=true; ev('ee_lead_submit_success',{claim_type:data.claim_type});
@@ -430,7 +430,7 @@
         if(window.ttq)ttq.track('SubmitForm',{content_name:'btl-ri-abuse'});
         window.dataLayer.push({event:'EEConvert',campaign_name:CAMPAIGN,lead_destination:'ee:hook:lead'});
         form.classList.add('hide'); document.getElementById('okmsg').classList.remove('hide');
-      }); })
+      }); }, function(e){ if(e&&(e.name==='OutboundBlocked'||e.name==='HookMissing')){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; } throw e; })
       .catch(function(){ ev('ee_lead_submit_error');
         document.getElementById('submitbtn').disabled=false;
         alert('Something hiccuped — please try again, or just call Sofia.');

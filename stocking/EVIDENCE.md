@@ -65,3 +65,27 @@ Connected-spine fixtures used for success-path proofs live only in the browser t
 | build | `EE_SUPPRESSION_<TENANT>_ENDPOINT` ⇒ `runtime.js` `suppression_endpoint` (https only, else `null`) | build test + browser fixtures |
 
 Connected-spine fixtures (test tree only) now simulate the engine adapter: the built `runtime.js` carries a suppression endpoint under the fake host and the interceptor answers it locally. No page-side clearance exists anywhere.
+
+## QA/QC round 5 — 2026-09-11 (provider isolation; rejected SHA `450fb05`)
+
+**Reproduced on `450fb05` before any change:** `build.sh` wrote every `EE_HOOK_<TENANT>_<NAME>` value verbatim into the
+publicly served `<tenant>/ee/runtime.js` as `window.EE_RUNTIME.hooks`. Any page script (or anyone loading
+`/ee/runtime.js`) could read the provider webhook URL and `fetch()` it directly, bypassing the kill switch, production
+gate, consent and suppression gates entirely. The page-side gate guarded `EE.hooks.url()`, not the destination. Round-4
+claims that hook URLs were "safely injected" into `runtime.js` were wrong and are withdrawn.
+
+| item | repair | evidence |
+|---|---|---|
+| contract | page → named action → Evolution Engine governed server-side adapter → provider. `runtime.js` carries `{tenant_id, actions:[names], actions_endpoint, suppression_endpoint}` only. The only URL `EE.hooks.*` can produce is `<actions_endpoint>/<TENANT>/<action>` (names validated `[a-z0-9_]{1,40}`, must be listed; endpoint https only, slashes normalised). The engine is the enforcement boundary; the browser is not trusted for it | round-5 unit (9 tests) + round-5 browser (4 tests); all prior suites re-run on the new shape |
+| build | `build.sh` reads `EE_ACTIONS_<TENANT>_ENDPOINT` / `EE_ACTIONS_<TENANT>_NAMES` / `EE_SUPPRESSION_<TENANT>_ENDPOINT`; a legacy `EE_HOOK_*` value contributes its name only and is discarded with a warning to stderr | build test: with a provider URL in env, no served file (find -type f over the built tree) contains it; NIL/LFMA/CGG runtime shapes asserted |
+| page holds nothing | browser: `/ee/runtime.js` text, page HTML, live DOM, `JSON.stringify(window.EE_RUNTIME)` and every string reachable from `window` (own property walk incl. function sources) contain no provider host, on NIL, LFMA, DIHAC and BTL pages, before and after full clearance | R5 browser tests 1–2; the fake provider host is never requested in any browser test (harness assertion) |
+| direct fetch impossible | there is no provider URL to fetch; a runtime carrying the rejected `hooks:{}` shape is ignored; `resolve`/`post` yield only the tenant's engine route; the engine receives the governed envelope (identity, consent evidence, suppression status, payload, `X-EE-Tenant`/`X-EE-Action`, `credentials:'omit'`) | unit: envelope asserted field by field; browser: 1 request to `…/actions/NIL/intake`, 0 to the provider |
+| gates in front of the route | tenant mismatch, no runtime, kill switch ON/UNKNOWN, preview, consent store not connected, no evidence, suppression source not connected, no suppression endpoint, suppressed:true, malformed lookup, no/junk identity, malformed or unlisted action name, non-https/missing actions endpoint ⇒ `post()` rejects, nothing sent | unit (round 5 gate matrix) + browser (mismatch, kill, preview on real BTL, real NIL config, no evidence, suppressed, no identity, 7 malformed names) |
+| fetch stub after load | `window.fetch` replaced by a clearing stub after load: stub never called, authoritative endpoint still asked, suppressed identity stays blocked, send still targets the engine route. Documented as defense in depth only | unit + browser |
+| pages | nil, btl (index, RI, 404), dihac contact + tracking.js, lfma contact/engine, ma order ⇒ `EE.hooks.post(action, …)`; lfma campaign keeps `EE.hooks.resolve('order')` feeding the intake client, whose `validateEndpoint` now accepts only `…/<TENANT>/order` and rejects provider hosts; tracking.js sends no beacon to any URL | round-5 static test; G1/G2/F1/F2/F6/H1 browser scenarios re-run |
+| docs | README §5, DOMAINS.md, this file and the reconciliation no longer claim hook URLs are injected into `runtime.js` | round-5 static test greps tracked html/js/mjs/md (tests excluded) |
+
+What this round does **not** claim: no engine actions endpoint exists yet, so on every real tenant `EE.hooks.post()`
+answers `HookMissing: governed actions endpoint unavailable` (after the consent-store block on the real manifests).
+The browser suite simulates the engine (`https://engine.invalid.test/actions/*` answered locally by the CDP
+interceptor); the real adapter — routing, provider forwarding, server-side re-validation — is engine work.

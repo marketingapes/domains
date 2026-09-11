@@ -224,7 +224,7 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
     var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
     if (!ee) return Promise.resolve(null);
     var em = form.querySelector("#email");
-    return ee.hooks.resolve("order", { email: em ? em.value : "" });
+    return ee.hooks.resolve("order", { email: em ? em.value : "" }); // governed engine action route, never a provider URL
   }
 
   var form = document.getElementById("briefForm");

@@ -111,16 +111,16 @@ test('no raw hook/webhook URL anywhere in the tracked repository (delegates to t
 
 test('every former hook call site resolves its hook by name and fails closed when unconfigured', () => {
   const expect = {
-    'nil/index.html': "hooks.resolve('intake'",
-    'btl/index.html': "hooks.resolve('lead'",
-    'btl/rhode-island-abuse/index.html': "hooks.resolve('lead'",
+    'nil/index.html': "hooks.post('intake'",
+    'btl/index.html': "hooks.post('lead'",
+    'btl/rhode-island-abuse/index.html': "hooks.post('lead'",
     'btl/404.html': "HOOK_NAME: 'campaign_request'",
-    'dihac/contact.html': "hooks.resolve('contact'",
-    'dihac/assets/js/tracking.js': "hooks.resolve('tracking'",
-    'lfma/engine/index.html': "hooks.resolve('order'",
+    'dihac/contact.html': "hooks.post('contact'",
+    'dihac/assets/js/tracking.js': "hooks.post('tracking'",
+    'lfma/engine/index.html': "hooks.post('order'",
     'lfma/campaign/index.html': 'hooks.resolve("order"',
-    'lfma/contact.html': "hooks.resolve('order'",
-    'ma/order/index.html': "hooks.resolve('order'",
+    'lfma/contact.html': "hooks.post('order'",
+    'ma/order/index.html': "hooks.post('order'",
     'lee/index.html': 'r.hooks.order'
   };
   for (const [f, needle] of Object.entries(expect)) {
@@ -153,7 +153,7 @@ function browser({ site, runtime, dataLayer = [] }) {
 const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 
 test('EE.hooks resolves by name from EE_RUNTIME only (tenant-matched), through the outbound gate, and an unconfigured hook fails closed', async () => {
-  const SUPP = 'https://engine.invalid.test/suppression', ID = { email: 'qa@example.test' };
+  const SUPP = 'https://engine.invalid.test/suppression', ACTIONS = 'https://engine.invalid.test/actions', ROUTE = ACTIONS + '/NIL/intake', ID = { email: 'qa@example.test' };
   const consent = EE => EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' });
   const none = browser({ site: SITE, runtime: undefined }); consent(none.EE);
   assert.equal(none.EE.hooks.url('intake', ID), null);
@@ -161,48 +161,52 @@ test('EE.hooks resolves by name from EE_RUNTIME only (tenant-matched), through t
   await assert.rejects(none.EE.hooks.post('intake', { a: 1 }, { identity: ID }), e => e.name === 'OutboundBlocked' && /runtime not loaded/.test(e.message));
   assert.equal(none.calls.length, 0, 'nothing was sent');
 
-  const empty = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: {}, suppression_endpoint: SUPP } }); consent(empty.EE);
+  const empty = browser({ site: SITE, runtime: { tenant_id: 'NIL', actions: [], actions_endpoint: ACTIONS, suppression_endpoint: SUPP } }); consent(empty.EE);
   await assert.rejects(empty.EE.hooks.post('intake', { a: 1 }, { identity: ID }), e => e.name === 'HookMissing');
   assert.equal(empty.dl.at(-1).event, 'ee_hook_missing'); assert.equal(empty.dl.at(-1).hook, 'intake');
 
-  const bad = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'http://insecure.example/x' }, suppression_endpoint: SUPP } }); consent(bad.EE);
-  assert.equal(await bad.EE.hooks.resolve('intake', ID), null, 'non-https hook is refused');
+  const bad = browser({ site: SITE, runtime: { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: 'http://insecure.example/actions', suppression_endpoint: SUPP } }); consent(bad.EE);
+  assert.equal(await bad.EE.hooks.resolve('intake', ID), null, 'non-https actions endpoint is refused');
+  assert.equal(bad.EE.hooks.why('intake'), 'governed actions endpoint unavailable');
 
-  const ok = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' }, suppression_endpoint: SUPP } });
+  const ok = browser({ site: SITE, runtime: { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: ACTIONS, suppression_endpoint: SUPP } });
   assert.equal(await ok.EE.hooks.resolve('intake', ID), null, 'no consent => gated');
   consent(ok.EE);
   assert.equal(ok.EE.hooks.url('intake', ID), null, 'sync url() before the authoritative check => gated');
-  assert.equal(await ok.EE.hooks.resolve('intake', ID), 'https://example.test/hook');
+  assert.equal(await ok.EE.hooks.resolve('intake', ID), ROUTE, 'the ONLY url ever produced is the engine actions route for this tenant');
   await ok.EE.hooks.post('intake', { lead_id: 'L1' }, { identity: ID });
   const sends = ok.calls.filter(c => c.url !== SUPP);
   assert.equal(sends.length, 1);
-  assert.equal(sends[0].url, 'https://example.test/hook');
+  assert.equal(sends[0].url, ROUTE);
   const body = JSON.parse(sends[0].init.body);
-  assert.equal(body.tenant_id, 'NIL'); assert.equal(body.domain_id, 'nearestinjurylawyers.com'); assert.equal(body.lead_id, 'L1');
-  assert.equal('campaign_id' in body, false, 'campaign stays absent when none exists');
+  assert.equal(body.tenant_id, 'NIL'); assert.equal(body.domain_id, 'nearestinjurylawyers.com'); assert.equal(body.action, 'intake'); assert.equal(body.payload.lead_id, 'L1');
+  assert.equal(body.campaign_id, null, 'campaign stays null when none exists');
   assert.equal(ok.EE.context.campaign_id, null);
 });
 
 test('kill switch ON blocks hook posts', async () => {
-  const b = browser({ site: { ...SITE, kill_switch: 'ON' }, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' }, suppression_endpoint: 'https://engine.invalid.test/suppression' } });
+  const b = browser({ site: { ...SITE, kill_switch: 'ON' }, runtime: { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: 'https://engine.invalid.test/actions', suppression_endpoint: 'https://engine.invalid.test/suppression' } });
   await assert.rejects(b.EE.hooks.post('intake', {}, { identity: { email: 'qa@example.test' } }), e => e.name === 'OutboundBlocked' && /kill_switch ON/.test(e.message));
   assert.equal(b.calls.length, 0);
 });
 
-test('build.sh writes runtime.js per tenant from EE_HOOK_<TENANT>_* env only, isolated by tenant, and the file is gitignored', () => {
+test('build.sh writes runtime.js per tenant from EE_ACTIONS_<TENANT>_* env only (names + engine endpoint, never a provider URL), isolated by tenant, and the file is gitignored', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'runtime-build-'));
   try {
     fs.cpSync(path.join(ROOT, 'build.sh'), path.join(tmp, 'build.sh'));
     for (const t of ['nil', 'cgg', 'lee']) fs.cpSync(path.join(ROOT, t), path.join(tmp, t), { recursive: true });
-    execFileSync('sh', ['build.sh'], { cwd: tmp, stdio: 'pipe', env: { ...process.env, EE_HOOK_NIL_INTAKE: 'https://hooks.example/nil"quoted', EE_HOOK_NIL_BAD: 'http://not-https.example/x', EE_HOOK_LEE_ORDER: 'https://hooks.example/lee' } });
+    const PROVIDER = 'https://hooks.provider-example.test/legacy-secret-path';
+    const r = spawnSync('sh', ['build.sh'], { cwd: tmp, encoding: 'utf8', env: { ...process.env, EE_ACTIONS_NIL_ENDPOINT: 'https://engine.example/actions"quoted', EE_ACTIONS_NIL_NAMES: 'intake,Contact,bad-name!,intake', EE_HOOK_NIL_INTAKE: PROVIDER, EE_ACTIONS_CGG_ENDPOINT: 'http://not-https.example/actions', EE_HOOK_LEE_ORDER: PROVIDER } });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stderr, /warn EE_HOOK_NIL_INTAKE: provider hook URLs are never emitted to the page/);
     const nil = fs.readFileSync(path.join(tmp, 'nil/ee/runtime.js'), 'utf8');
     const cgg = fs.readFileSync(path.join(tmp, 'cgg/ee/runtime.js'), 'utf8');
     const lee = fs.readFileSync(path.join(tmp, 'lee/ee/runtime.js'), 'utf8');
+    for (const src of [nil, cgg, lee]) { assert.doesNotMatch(src, /provider-example|legacy-secret|hooks:/, 'a provider URL never reaches runtime.js'); }
     const load = src => { const w = {}; vm.runInNewContext(src, { window: w, Object }); return JSON.parse(JSON.stringify(w.EE_RUNTIME)); };
-    assert.deepEqual(load(nil).hooks, { intake: 'https://hooks.example/nil"quoted' }, 'NIL gets its own hooks, quotes escaped, non-https dropped');
-    assert.equal(load(nil).tenant_id, 'NIL');
-    assert.deepEqual(load(cgg).hooks, {}, 'CGG never sees NIL hooks');
-    assert.deepEqual(load(lee).hooks, { order: 'https://hooks.example/lee' });
+    assert.deepEqual(load(nil), { tenant_id: 'NIL', actions: ['intake', 'contact', 'badname'], actions_endpoint: 'https://engine.example/actions"quoted', suppression_endpoint: null }, 'NIL gets its own action names (normalised, deduped) + engine endpoint; the legacy EE_HOOK value is discarded');
+    assert.deepEqual(load(cgg), { tenant_id: 'CGG', actions: [], actions_endpoint: null, suppression_endpoint: null }, 'CGG never sees NIL actions; non-https endpoint dropped');
+    assert.deepEqual(load(lee), { tenant_id: 'LEE', actions: ['order'], actions_endpoint: null, suppression_endpoint: null }, 'LEE keeps the action name only');
     assert.equal(fs.existsSync(path.join(tmp, 'nil/ee/site.json')), true);
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
   const ignored = spawnSync('git', ['check-ignore', '-q', 'nil/ee/runtime.js'], { cwd: ROOT });

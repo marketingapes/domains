@@ -147,15 +147,15 @@ export function buildOrderPayload(raw, {
   return payload;
 }
 
-function validateEndpoint(endpoint) {
+export function validateEndpoint(endpoint) {
   let url;
   try { url = new URL(endpoint); } catch { throw new IntakeError('INVALID_ENDPOINT', 'Order intake is not configured.'); }
-  // Preserve the observed route. Do not accept a destination from URL params
-  // or a form field. The owning page passes its EXISTING ORDER_HOOK constant.
-  if (url.protocol !== 'https:' || url.hostname !== 'hook.us2.make.com' ||
-      url.port || url.username || url.password || url.search || url.hash ||
-      !/^\/[a-z0-9]{16,128}$/.test(url.pathname)) {
-    throw new IntakeError('INVALID_ENDPOINT', 'Use the existing MA Order Intake endpoint.');
+  // The endpoint is the Evolution Engine's governed action route for this tenant's `order` action
+  // (…/actions/<TENANT>/order), handed out by EE.hooks.resolve() after the page-side gate passes. The provider
+  // webhook lives on the engine, never here. Do not accept a destination from URL params or a form field.
+  if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash ||
+      !/\/[A-Z][A-Z0-9]{1,11}\/order$/.test(url.pathname)) {
+    throw new IntakeError('INVALID_ENDPOINT', 'Use the governed Order Intake action route.');
   }
   return url.href;
 }

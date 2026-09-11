@@ -1,8 +1,10 @@
-// Real-browser reproductions of the QA/QC round-2 findings (F1, F2, F3, F6, F7, F10), driven over the Chrome
-// DevTools Protocol with NETWORK CAPTURE ONLY: every request is intercepted; the fake hook host is answered
-// locally; anything else off the local origin is blocked. No real hook is ever contacted.
+// Real-browser reproductions of the QA/QC findings (rounds 2-5), driven over the Chrome DevTools Protocol with
+// NETWORK CAPTURE ONLY: every request is intercepted; the fake ENGINE host (governed actions + authoritative
+// suppression) is answered locally; anything else off the local origin is blocked. No real hook is ever contacted.
+// The fake PROVIDER host is never answered and must never be requested: the page does not know it (round 5).
 //
-// A throwaway copy of the relevant tenant folders is built with `sh build.sh` and fake EE_HOOK_* env vars,
+// A throwaway copy of the relevant tenant folders is built with `sh build.sh` and fake EE_ACTIONS_* env vars
+// (plus one legacy EE_HOOK_* provider URL that build.sh must discard),
 // then served over HTTP. Fixture pages for F10 are derived from stocked pages. Every tenant's REAL config has
 // consent_store / suppression_source MISSING, so on real pages the gate must fail closed (G4). To exercise the
 // success paths (G1/G2/F1/F2/F6) the fixtures under /spine/ simulate a CONNECTED safety spine: EE_SITE carries
@@ -18,13 +20,14 @@ import { execFileSync } from 'node:child_process';
 import { findChrome, launchBrowser, serveStatic } from './browser/cdp.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const FAKE = 'https://hooks.invalid.test';
-// lfma/assets/order-intake-client.mjs pins the Make hook host, so the LFMA order lane fixture must use that host.
-// The token is synthetic (assembled at runtime), and the interceptor answers the request at the Fetch stage —
-// before DNS or any connection — so nothing is ever dispatched to the real host.
-const MAKE_HOST = 'https://hook.us2.make.com/';
-const LFMA_ORDER = MAKE_HOST + 'qatest'.repeat(5) + '00';
-const HOOK_HOSTS = [FAKE, MAKE_HOST];
+const ENGINE = 'https://engine.invalid.test';          // simulated Evolution Engine (governed actions + suppression)
+const ACTIONS = `${ENGINE}/actions`;                    // EE_ACTIONS_<TENANT>_ENDPOINT
+const FAKE = ENGINE;                                    // suppression endpoints live under `${FAKE}/suppression/<tenant>`
+const PROVIDER = 'https://provider-hooks.invalid.test'; // a provider destination: given to build.sh as a legacy EE_HOOK_* value, must NEVER reach a page
+const PROVIDER_SECRET = `${PROVIDER}/legacy/nil-intake-secret-path`;
+const route = (t, a) => `${ACTIONS}/${t}/${a}`;
+const LFMA_ORDER = route('LFMA', 'order');
+const HOOK_HOSTS = [ENGINE];
 const chrome = findChrome();
 // EE_REQUIRE_CHROME=1 turns a missing browser into a hard failure instead of a skip (used for the clean-tree proof).
 if (!chrome && process.env.EE_REQUIRE_CHROME) throw new Error('Chromium is required (EE_REQUIRE_CHROME=1) but none was found; set EE_CHROME');
@@ -36,11 +39,16 @@ test.before(async () => {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ee-browser-'));
   fs.cpSync(path.join(ROOT, 'build.sh'), path.join(tmp, 'build.sh'));
   for (const t of ['nil', 'lfma', 'dihac', 'btl']) fs.cpSync(path.join(ROOT, t), path.join(tmp, t), { recursive: true });
-  execFileSync('sh', ['build.sh'], { cwd: tmp, stdio: 'pipe', env: { ...process.env, EE_HOOK_NIL_INTAKE: `${FAKE}/nil-intake`, EE_HOOK_LFMA_ORDER: LFMA_ORDER, EE_HOOK_LFMA_TRACKING: `${FAKE}/lfma-tracking`, EE_HOOK_DIHAC_CONTACT: `${FAKE}/dihac-contact`, EE_HOOK_BTL_LEAD: `${FAKE}/btl-lead`, EE_SUPPRESSION_NIL_ENDPOINT: `${FAKE}/suppression/nil`, EE_SUPPRESSION_LFMA_ENDPOINT: `${FAKE}/suppression/lfma`, EE_SUPPRESSION_BTL_ENDPOINT: `${FAKE}/suppression/btl`, EE_SUPPRESSION_DIHAC_ENDPOINT: `${FAKE}/suppression/dihac` } });
+  execFileSync('sh', ['build.sh'], { cwd: tmp, stdio: 'pipe', env: { ...process.env,
+    EE_ACTIONS_NIL_ENDPOINT: ACTIONS, EE_ACTIONS_NIL_NAMES: 'intake', EE_HOOK_NIL_INTAKE: PROVIDER_SECRET,
+    EE_ACTIONS_LFMA_ENDPOINT: ACTIONS, EE_ACTIONS_LFMA_NAMES: 'order,tracking',
+    EE_ACTIONS_DIHAC_ENDPOINT: ACTIONS, EE_ACTIONS_DIHAC_NAMES: 'contact,tracking',
+    EE_ACTIONS_BTL_ENDPOINT: ACTIONS, EE_ACTIONS_BTL_NAMES: 'lead',
+    EE_SUPPRESSION_NIL_ENDPOINT: `${FAKE}/suppression/nil`, EE_SUPPRESSION_LFMA_ENDPOINT: `${FAKE}/suppression/lfma`, EE_SUPPRESSION_BTL_ENDPOINT: `${FAKE}/suppression/btl`, EE_SUPPRESSION_DIHAC_ENDPOINT: `${FAKE}/suppression/dihac` } });
   // fixtures
   const nilHome = fs.readFileSync(path.join(tmp, 'nil/index.html'), 'utf8');
   fs.writeFileSync(path.join(tmp, 'nil/f10-no-site.html'), nilHome.replace(/<script>window\.EE_SITE=Object\.freeze\(\{[^<]*\}\);<\/script>/, ''));
-  fs.writeFileSync(path.join(tmp, 'nil/f10-mismatch.html'), nilHome.replace('<script src="/ee/runtime.js" defer></script>', `<script>window.EE_RUNTIME={tenant_id:'LFMA',hooks:{intake:'${FAKE}/lfma-runtime'}};</script>`));
+  fs.writeFileSync(path.join(tmp, 'nil/f10-mismatch.html'), nilHome.replace('<script src="/ee/runtime.js" defer></script>', `<script>window.EE_RUNTIME={tenant_id:'LFMA',actions:['intake'],actions_endpoint:'${ACTIONS}',suppression_endpoint:'${FAKE}/suppression/lfma'};</script>`));
   fs.writeFileSync(path.join(tmp, 'nil/f10-kill.html'), nilHome.replace('"kill_switch":"OFF"', '"kill_switch":"ON"'));
   // connected-spine fixtures (simulated): same page bytes with the two safety leaves flipped to VERIFIED
   const spine = html => html.replace('"consent_store":"MISSING"', '"consent_store":"VERIFIED"').replace('"suppression_source":"MISSING"', '"suppression_source":"VERIFIED"');
@@ -60,10 +68,12 @@ test.after(async () => {
 
 const CLEAR = { status: 200, body: JSON.stringify({ checked: true, suppressed: false, source: 'test-authority' }) };
 const SUPPRESSED = { status: 200, body: JSON.stringify({ checked: true, suppressed: true, source: 'test-authority' }) };
-const open = async (t, p, suppression = CLEAR) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: suppression, [FAKE]: { status: 200, body: '{}' }, [MAKE_HOST]: { status: 200, body: '{"ok":true}' } } }); await page.goto(sites[t].origin + p); return page; };
+const ACK = { status: 200, body: '{"ok":true}' };
+const open = async (t, p, suppression = CLEAR) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: suppression, [`${ACTIONS}/`]: ACK } }); await page.goto(sites[t].origin + p); return page; };
 const suppressionLookups = page => page.requests.filter(r => r.url.startsWith(`${FAKE}/suppression/`));
 const ee = (page, expr) => page.evaluate(`(function(){ var EE = window.EE; return (${expr}); })()`);
 const hookRequests = page => page.requests.filter(r => HOOK_HOSTS.some(h => r.url.startsWith(h)) && !r.url.startsWith(`${FAKE}/suppression/`));
+const providerRequests = page => page.requests.filter(r => r.url.startsWith(PROVIDER));
 const QA_ID = "{email:'qa@example.test', phone:'4015550100'}";
 const connectSpine = page => ee(page, "EE.safety.suppression.source + '/' + EE.safety.consent.store + '/' + EE.safety.suppression.endpoint_configured");
 
@@ -116,7 +126,7 @@ test('F6 (browser, connected spine): NIL intake hook resolves only after consent
   assert.equal(await connectSpine(page), 'VERIFIED/VERIFIED/true');
   await ee(page, "EE.safety.consent.record({surface:'nil_sofia_form',consent_text_id:'NIL_TCPA_AI_2026-08-18_V1',method:'checkbox'})");
   assert.equal(await ee(page, `EE.hooks.url('intake', ${QA_ID})`), null, 'consent alone is not enough: the authoritative check has not been performed');
-  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), `${FAKE}/nil-intake`, 'authoritative clear => URL');
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), route('NIL', 'intake'), 'authoritative clear => the engine actions route (never a provider URL)');
   assert.equal(suppressionLookups(page).length, 1, 'exactly one authoritative lookup');
   assert.equal(JSON.parse(suppressionLookups(page)[0].body).identity.email, 'qa@example.test');
   await ee(page, `EE.hooks.post('intake',{lead_id:'L-1'}, {identity: ${QA_ID}})`);
@@ -176,7 +186,7 @@ test('F2 (browser, connected spine): BTL Rhode Island submit shows one success, 
     var s=q('f_state'); if(s&&s.tagName==='SELECT'){ for (var i=0;i<s.options.length;i++){ if(s.options[i].value==='RI'){ s.selectedIndex=i; break; } } if(s.selectedIndex<1) s.selectedIndex=Math.min(1,s.options.length-1); } else if (s) { s.value='RI'; }
     document.getElementById('leadform').dispatchEvent(new Event('submit',{cancelable:true,bubbles:true})); })()`);
   await page.wait(600);
-  const leads = hookRequests(page).filter(r => r.url === `${FAKE}/btl-lead`);
+  const leads = hookRequests(page).filter(r => r.url === route('BTL', 'lead'));
   assert.equal(leads.length, 1, `one lead request, got ${JSON.stringify(hookRequests(page))}`);
   assert.deepEqual(await page.evaluate('window.__alerts'), [], 'no alert on the success path');
   assert.equal(await page.evaluate("document.getElementById('okmsg').classList.contains('hide')"), false, 'success message shown');
@@ -188,7 +198,7 @@ test('F2 (browser, connected spine): BTL Rhode Island submit shows one success, 
 });
 
 // ================================================================= round 3 — G1 / G2
-const openWith = async (t, p, fulfil) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: CLEAR, [FAKE]: fulfil, [MAKE_HOST]: fulfil } }); await page.goto(sites[t].origin + p); return page; };
+const openWith = async (t, p, fulfil) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: CLEAR, [`${ACTIONS}/`]: fulfil } }); await page.goto(sites[t].origin + p); return page; };
 const fillBrief = `(function(){ var q=function(id){return document.getElementById(id)}; var setSel=function(el){ if(!el) return; if(el.tagName==='SELECT'){ for(var i=0;i<el.options.length;i++){ if(el.options[i].value){ el.selectedIndex=i; break; } } } else { el.value = el.value || 'test'; } };
   q('firm').value='Test Firm'; q('name').value='QA Bot'; q('email').value='qa@example.test'; setSel(q('tort')); setSel(q('geo')); setSel(q('no')); setSel(q('budget'));
   ['tort','geo','no','budget'].forEach(function(id){ var el=q(id); if(el && el.tagName!=='SELECT' && !el.value) el.value='test'; }); })()`;
@@ -260,7 +270,8 @@ test('G2 (browser, connected spine): a failed request shows failure and allows a
   assert.equal(await page.evaluate("document.querySelector('#agency-contact-form button[type=submit]').disabled"), false, 'retry allowed after genuine failure');
   await page.evaluate(clickSubmit('#agency-contact-form button[type=submit]'));
   await page.wait(900);
-  assert.equal(hookRequests(page).length, 2, 'retry sent exactly once more');
+  assert.equal(hookRequests(page).filter(r => r.url === LFMA_ORDER).length, 2, 'retry sent exactly once more');
+  assert.deepEqual(hookRequests(page).filter(r => r.url !== LFMA_ORDER).map(r => r.url), [route('LFMA', 'tracking')], "the legacy tracker's form_submit event is itself a governed action now (no beacon to a provider), sent once after the confirmed success");
   assert.ok(page.navigations.some(u => u.endsWith('/spine/thank-you.html')) || (await page.evaluate('location.pathname')).endsWith('thank-you.html'), 'redirect only after confirmed success');
   await page.close();
 });
@@ -300,7 +311,7 @@ test('H1 (browser): an authoritative suppressed:true answer blocks; a blocked/un
   assert.equal(hookRequests(hit).length, 0);
   await hit.close();
   // lookup endpoint unreachable: the interceptor fails it like a dead network
-  const down = await browser.page({ allow: [sites.nil.origin], fulfill: { [MAKE_HOST]: { status: 200, body: '{}' } } }); // FAKE host is NOT answered: every lookup and hook fails BlockedByClient
+  const down = await browser.page({ allow: [sites.nil.origin], fulfill: {} }); // ENGINE host is NOT answered: every lookup and action fails BlockedByClient
   await down.goto(sites.nil.origin + '/spine/index.html');
   await ee(down, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
   assert.equal(await ee(down, `EE.hooks.resolve('intake', ${QA_ID})`), null);
@@ -319,8 +330,8 @@ test('H1 (browser): an authoritative suppressed:true answer blocks; a blocked/un
 test('H1 (browser): replacing window.EE_RUNTIME after load cannot inject a clearing endpoint; outbound.allowed() validates the runtime tenant', { skip }, async () => {
   const page = await open('nil', '/spine/index.html');
   await ee(page, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
-  await ee(page, `(function(){ try { window.EE_RUNTIME = { tenant_id: 'NIL', hooks: { intake: '${FAKE}/evil' }, suppression_endpoint: '${FAKE}/suppression/evil' }; } catch (e) {} })()`);
-  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), `${FAKE}/nil-intake`, 'the runtime captured at init is the only one used');
+  await ee(page, `(function(){ try { window.EE_RUNTIME = { tenant_id: 'NIL', actions: ['intake'], actions_endpoint: '${PROVIDER}/evil', suppression_endpoint: '${FAKE}/suppression/evil' }; } catch (e) {} })()`);
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), route('NIL', 'intake'), 'the runtime captured at init is the only one used');
   assert.equal(suppressionLookups(page)[0].url, `${FAKE}/suppression/nil`);
   await page.close();
   const mismatch = await open('nil', '/f10-mismatch.html');
@@ -331,9 +342,96 @@ test('H1 (browser): replacing window.EE_RUNTIME after load cannot inject a clear
   await mismatch.close();
 });
 
+// ================================================================= round 5 — provider isolation (real browser)
+// The rejected candidate (450fb05) emitted raw provider hook URLs into /ee/runtime.js as window.EE_RUNTIME.hooks, so page
+// JS could fetch() the provider directly. These tests fail on that candidate and pass now.
+const PROVIDER_RE = new RegExp(PROVIDER.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'));
+// every string reachable from `root` (own enumerable props, 6 levels, arrays included), plus functions' source text
+const REACH_STRINGS = `(function(root){ var seen=[], out=[]; (function walk(v, depth){ if (depth>6 || v==null) return; var t=typeof v; if (t==='string'){ out.push(v); return; } if (t==='function'){ try { out.push(String(v)); } catch(e){} return; } if (t!=='object' || seen.indexOf(v)>=0) return; seen.push(v); var keys; try { keys = Object.getOwnPropertyNames(v); } catch(e){ return; } keys.forEach(function(k){ var d; try { d = Object.getOwnPropertyDescriptor(v,k); } catch(e){ return; } if (!d) return; if ('value' in d) walk(d.value, depth+1); }); })(root, 0); return out; })`;
+
+test('R5 (browser): the served page, /ee/runtime.js, window.EE_RUNTIME and every reachable window global contain no provider destination', { skip }, async () => {
+  for (const [t, p] of [['nil', '/'], ['lfma', '/contact.html'], ['dihac', '/contact.html'], ['btl', '/rhode-island-abuse/index.html']]) {
+    const page = await open(t, p);
+    const runtime = await page.evaluate(`fetch('/ee/runtime.js').then(function(r){ return r.text(); })`);
+    assert.doesNotMatch(runtime, PROVIDER_RE, `${t}: runtime.js carries no provider URL`);
+    assert.doesNotMatch(runtime, /hooks\s*:/, `${t}: runtime.js carries no hook map`);
+    assert.match(runtime, /actions_endpoint:"https:\/\/engine\.invalid\.test\/actions"/, `${t}: runtime.js carries the engine actions endpoint only`);
+    const html = await page.evaluate(`fetch(location.pathname).then(function(r){ return r.text(); })`);
+    assert.doesNotMatch(html, PROVIDER_RE, `${t}: page HTML carries no provider URL`);
+    assert.doesNotMatch(await page.evaluate('document.documentElement.outerHTML'), PROVIDER_RE, `${t}: live DOM carries no provider URL`);
+    const rt = await page.evaluate('JSON.stringify(window.EE_RUNTIME)');
+    assert.doesNotMatch(rt, PROVIDER_RE); assert.doesNotMatch(rt, /hooks/);
+    assert.deepEqual(JSON.parse(rt).actions_endpoint, ACTIONS);
+    const strings = await page.evaluate(`${REACH_STRINGS}(window)`);
+    assert.ok(strings.length > 50, 'walker actually walked the window');
+    assert.deepEqual(strings.filter(v => PROVIDER_RE.test(v)), [], `${t}: no window-reachable string names the provider`);
+    assert.equal(providerRequests(page).length, 0);
+    await page.close();
+  }
+});
+
+test('R5 (browser, connected spine): after full clearance the page still cannot discover a provider endpoint — resolve/post yield only the tenant\'s engine route, the engine receives the governed envelope, the provider receives nothing', { skip }, async () => {
+  const page = await open('nil', '/spine/index.html');
+  await ee(page, "EE.safety.consent.record({surface:'nil_sofia_form',consent_text_id:'NIL_TCPA_AI_2026-08-18_V1',method:'checkbox'})");
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), route('NIL', 'intake'));
+  assert.deepEqual(await ee(page, 'EE.hooks.actions()'), ['intake']);
+  assert.equal(await ee(page, `EE.hooks.post('intake', {lead_id:'L-5'}, {identity: ${QA_ID}}).then(function(r){ return r.status; })`), 200);
+  await page.wait(200);
+  const sent = hookRequests(page);
+  assert.equal(sent.length, 1); assert.equal(sent[0].url, route('NIL', 'intake'));
+  const env = JSON.parse(sent[0].body);
+  assert.equal(env.tenant_id, 'NIL'); assert.equal(env.action, 'intake'); assert.deepEqual(env.payload, { lead_id: 'L-5' });
+  assert.deepEqual(env.identity, { email: 'qa@example.test', phone: '4015550100' });
+  assert.equal(env.consent.consent_text_id, 'NIL_TCPA_AI_2026-08-18_V1'); assert.equal(env.suppression.state, 'clear');
+  // after clearance, nothing reachable from window or from the EE API names the provider
+  const strings = await page.evaluate(`${REACH_STRINGS}(window)`);
+  assert.deepEqual(strings.filter(v => PROVIDER_RE.test(v)), []);
+  assert.equal(providerRequests(page).length, 0, 'the provider was never contacted');
+  await page.close();
+});
+
+test('R5 (browser): stubbing window.fetch after load cannot clear a suppressed identity; the captured transport still asks the authoritative endpoint (defense in depth only — the engine is the boundary)', { skip }, async () => {
+  const page = await open('nil', '/spine/index.html', SUPPRESSED);
+  await ee(page, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await page.evaluate(`(function(){ window.__stubCalls = 0; window.fetch = function(){ window.__stubCalls++; return Promise.resolve(new Response(JSON.stringify({checked:true, suppressed:false}), {status:200, headers:{'Content-Type':'application/json'}})); }; })()`);
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), null);
+  assert.equal(await ee(page, "EE.hooks.why('intake')"), 'suppressed');
+  assert.equal(await page.evaluate('window.__stubCalls'), 0, 'the stub was never used');
+  assert.equal(suppressionLookups(page).length, 1, 'the real authoritative endpoint was asked');
+  assert.equal(await ee(page, `EE.hooks.post('intake', {}, {identity: ${QA_ID}}).then(function(){ return 'sent'; }, function(e){ return e.name; })`), 'OutboundBlocked');
+  assert.equal(hookRequests(page).length, 0); assert.equal(providerRequests(page).length, 0);
+  await page.close();
+});
+
+test('R5 (browser): tenant mismatch, kill switch, preview gate, missing consent, missing suppression, suppressed identity, no identity and malformed action names all block post(); nothing reaches the engine or a provider', { skip }, async () => {
+  const expectBlocked = async (page, why, label) => {
+    assert.equal(await ee(page, `EE.hooks.post('intake', {x:1}, {identity: ${QA_ID}}).then(function(){ return 'sent'; }, function(e){ return e.name; })`), 'OutboundBlocked', label);
+    assert.match(await ee(page, "EE.hooks.why('intake')"), why, label);
+    assert.equal(hookRequests(page).length, 0, label); assert.equal(providerRequests(page).length, 0, label);
+  };
+  const mismatch = await open('nil', '/f10-mismatch.html'); await ee(mismatch, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await expectBlocked(mismatch, /runtime tenant mismatch: LFMA/, 'tenant mismatch'); await mismatch.close();
+  const kill = await open('nil', '/f10-kill.html'); await expectBlocked(kill, /kill_switch ON/, 'kill switch'); await kill.close();
+  const preview = await open('btl', '/rhode-island-abuse/index.html'); await ee(preview, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await expectBlocked(preview, /production_gate preview/, 'preview gate'); await preview.close();
+  const real = await open('nil', '/'); await ee(real, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await expectBlocked(real, /consent store not connected: MISSING/, 'real config: consent store MISSING'); await real.close();
+  const noEvidence = await open('nil', '/spine/index.html'); await expectBlocked(noEvidence, /no consent evidence recorded/, 'no evidence'); await noEvidence.close();
+  const hit = await open('nil', '/spine/index.html', SUPPRESSED); await ee(hit, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await expectBlocked(hit, /^suppressed$/, 'suppressed:true'); await hit.close();
+  const page = await open('nil', '/spine/index.html'); await ee(page, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  assert.equal(await ee(page, "EE.hooks.post('intake', {}).then(function(){ return 'sent'; }, function(e){ return e.name; })"), 'OutboundBlocked', 'no identity');
+  for (const bad of ["'INTAKE'", "'intake/../LFMA/order'", "'../suppression/nil'", "''", 'null', '{}', "'order'"]) {
+    assert.equal(await ee(page, `EE.hooks.post(${bad}, {}, {identity: ${QA_ID}}).then(function(){ return 'sent'; }, function(e){ return e.name + ':' + e.reason; })`), 'HookMissing:action not configured', `malformed/unknown action ${bad}`);
+  }
+  assert.equal(hookRequests(page).length, 0); assert.equal(providerRequests(page).length, 0);
+  await page.close();
+});
+
 test('browser harness never contacted anything but the local origin and the intercepted hook hosts', { skip }, async () => {
   const page = await open('nil', '/');
   const offOrigin = page.requests.filter(r => !HOOK_HOSTS.some(h => r.url.startsWith(h)));
   for (const r of offOrigin) assert.equal(r.fulfilled, false, `${r.url} was blocked, not served`);
+  assert.equal(providerRequests(page).length, 0, 'the provider host was never even requested');
   await page.close();
 });

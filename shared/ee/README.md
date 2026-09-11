@@ -95,29 +95,47 @@ suppression, kill switch, production gate). Each carries the Foundation's two ax
 by `shared_from: <owner>` and never copied. Nothing in this layer is ever taken from NIL (or any
 other tenant) to make another tenant look complete.
 
-## 5. Hooks — `EE.hooks` (hook URLs never live in the repo, and are only ever handed out through the gate)
+## 5. Governed actions — `EE.hooks` (PROVIDER ISOLATION: the browser never receives a provider endpoint)
 
-A webhook URL is an unauthenticated endpoint and is treated as a secret (Foundation rule). Pages
-reference hooks **by name** and never carry a URL:
+A webhook URL is an unauthenticated endpoint and is treated as a secret (Foundation rule). **The page never
+has one.** A hook name is a governed *action*; the only destination the page can ever produce is the Evolution
+Engine's actions route for its own tenant:
 
-```js
-EE.hooks.configured('intake')          // runtime carries a hook for this tenant (no gate)
-EE.hooks.resolve('intake', identity)   // async: authoritative suppression lookup for the identity, then the gated URL or null (see .why)
-EE.hooks.url('intake', identity)       // sync: gated URL only if an authoritative clearance for this identity is already cached; else null
-EE.hooks.why('intake')                 // last block reason: 'no consent evidence recorded', 'kill_switch ON', ...
-EE.hooks.post('intake', payload, {identity})  // gated JSON POST via resolve(); rejects OutboundBlocked / HookMissing
+```
+page  →  EE.hooks.post('intake', payload, {identity})  →  <actions_endpoint>/<TENANT>/intake  →  engine adapter  →  provider
 ```
 
-`build.sh` writes `<tenant>/ee/runtime.js` (gitignored) at Render build time from env vars named
-`EE_HOOK_<TENANT>_<NAME>` — e.g. `EE_HOOK_NIL_INTAKE`, `EE_HOOK_BTL_LEAD`, `EE_HOOK_BTL_CAMPAIGN_REQUEST`,
-`EE_HOOK_DIHAC_CONTACT`, `EE_HOOK_DIHAC_LEAD`, `EE_HOOK_DIHAC_TRACKING`, `EE_HOOK_LFMA_ORDER`,
-`EE_HOOK_MA_ORDER`, `EE_HOOK_LEE_ORDER`. Only variables carrying a tenant's own prefix reach that
-tenant's file. Non-https values are dropped. A tenant whose Render service does not run `sh build.sh`
-(MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
+`/ee/runtime.js` is public, page-readable state and therefore carries **no provider destination and no credential**:
+`window.EE_RUNTIME = {tenant_id, actions:[names], actions_endpoint, suppression_endpoint}`. `build.sh` writes it
+(gitignored) at Render build time from `EE_ACTIONS_<TENANT>_ENDPOINT` (https, the engine), `EE_ACTIONS_<TENANT>_NAMES`
+(`intake,lead,...`) and `EE_SUPPRESSION_<TENANT>_ENDPOINT`. A legacy `EE_HOOK_<TENANT>_<NAME>` variable still set on a
+static site contributes its *name* only; its value is discarded with a build warning and never written into the served
+tree. Provider hook URLs belong on the engine (the governed server-side adapter), which re-validates tenant, kill
+switch, consent and suppression for every request before it forwards anything. **The engine is the enforcement
+boundary.** The page-side gate below is a fail-closed pre-check: it stops honest pages from sending, and it is not
+relied on (nor is `Object.freeze`, closure capture, naming, or any hidden global) to keep a secret, because there is no
+secret in the browser to keep.
 
-**There is no ungated path to a URL.** `EE.hooks.url()` itself runs `EE.outbound.allowed()` first, so a
-page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()`. The gate passes only when
-**every** row holds. UNKNOWN DOES NOT MEAN BORROW, and MISSING DOES NOT MEAN SAFE.
+```js
+EE.hooks.actions()                     // action names the engine accepts for this tenant (no gate)
+EE.hooks.configured('intake')          // this tenant's runtime names the action AND carries an engine actions endpoint
+EE.hooks.resolve('intake', identity)   // async: authoritative suppression lookup, then the gated ENGINE ROUTE or null (see .why)
+EE.hooks.url('intake', identity)       // sync: the engine route only if an authoritative clearance for this identity is cached
+EE.hooks.why('intake')                 // last block reason: 'no consent evidence recorded', 'kill_switch ON', 'action not configured', ...
+EE.hooks.post('intake', payload, {identity, signal, keepalive})  // gated POST of the governed envelope; rejects OutboundBlocked / HookMissing
+```
+
+`post()` sends a JSON envelope `{ee_system_id, ee_bootstrap_version, tenant_id, domain_id, session_id, page_view_id,
+action, campaign_id, variant_id, landing_page_url, page_url, identity:{email,phone}, consent, suppression, payload}`
+with `X-EE-Tenant` / `X-EE-Action` headers and `credentials: 'omit'`; `URLSearchParams`/`FormData` bodies pass through
+raw. The transport is captured once at init (`window.fetch` replacement after load has no effect) — defense in depth,
+not the boundary. No actions endpoint ⇒ `HookMissing: governed actions endpoint unavailable`; a name the runtime does
+not list, or any name outside `[a-z0-9_]{1,40}` ⇒ `HookMissing: action not configured`. A tenant whose Render service
+does not run `sh build.sh` (MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
+
+**There is no ungated path to a route, and no path at all to a provider.** `EE.hooks.url()` itself runs
+`EE.outbound.allowed()` first. The gate passes only when **every** row holds. UNKNOWN DOES NOT MEAN BORROW, and
+MISSING DOES NOT MEAN SAFE.
 
 | truth | required state | anything else ⇒ |
 |---|---|---|
@@ -132,11 +150,13 @@ page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()
 No operation-level exemption exists in this layer; `NOT_APPLICABLE` does not mean allow. **Browser/page JavaScript is
 never a suppression source**: there is no API to register a checker (`EE.safety.suppression.use()` throws), the sync
 `EE.hooks.url()` / `EE.outbound.allowed()` only read the cached authoritative result for that identity, and the runtime
-(hook map + endpoint) is captured once at init so a later `window.EE_RUNTIME` cannot inject a clearing endpoint.
-Today every canonical tenant's consent store and suppression source are `MISSING` and no suppression endpoint exists,
-so **every form in this repo is intentionally fail-closed** until the real safety spine is connected.
+(action names + engine endpoints) is captured once at init so a later `window.EE_RUNTIME` cannot inject a clearing
+endpoint. Today every canonical tenant's consent store and suppression source are `MISSING`, and neither an engine
+actions endpoint nor a suppression endpoint exists, so **every form in this repo is intentionally fail-closed** until
+the engine's governed adapter and the real safety spine are connected.
 
-Blocked resolutions emit `ee_outbound_blocked {hook, reason}`; an unconfigured hook emits `ee_hook_missing`.
+Blocked resolutions emit `ee_outbound_blocked {hook, reason}`; an unconfigured action or a missing actions endpoint
+emits `ee_hook_missing {hook, reason}`.
 Every form in this repo records its consent evidence (the consent text it actually shows, by id) before it
 asks for a hook. Legacy `tracking.js` beacons go through the same gate via `EE.legacy`.
 

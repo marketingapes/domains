@@ -1,5 +1,5 @@
 /*!
- * Evolution Engine — domain stocking bootstrap (v1.2, QA/QC round 4)
+ * Evolution Engine — domain stocking bootstrap (v1.3, governed actions)
  * Source of truth: shared/ee/bootstrap.js  (copied verbatim to <tenant>/ee/bootstrap.js by tools/stock-domains.mjs)
  *
  * One dependency-free script every canonical domain loads. It gives a site four things:
@@ -11,11 +11,19 @@
  *                                    <div id="ee-experience" data-ee-socket="primary" hidden>.
  *   3. Shared safety hooks        — window.EE.safety.{consent, suppression, killSwitch, productionGate}
  *                                    and window.EE.outbound.allowed(). Hooks exist on every domain.
- *   4. Gated hooks                — window.EE.hooks.resolve(name, identity) / .post(name, body, {identity}). A hook
- *                                    URL is only ever handed out when the outbound gate passes: tenant-matched runtime,
- *                                    kill switch exactly OFF, production gate live, CONNECTED consent store + evidence
- *                                    recorded, CONNECTED suppression source + an AUTHORITATIVE completed clear check for
- *                                    the exact identity being contacted. There is no ungated path to a URL.
+ *   4. Governed actions           — window.EE.hooks.resolve(name, identity) / .post(name, body, {identity}). A hook
+ *                                    name is a named ACTION. The only route this API can ever produce is the Evolution
+ *                                    Engine actions route for THIS tenant, and only when the page-side gate passes:
+ *                                    tenant-matched runtime, kill switch exactly OFF, production gate live, CONNECTED
+ *                                    consent store + evidence recorded, CONNECTED suppression source + an AUTHORITATIVE
+ *                                    completed clear check for the exact identity being contacted.
+ *
+ * PROVIDER ISOLATION: the browser NEVER receives a provider endpoint (Make/Zapier/CRM hook) or a provider credential.
+ * /ee/runtime.js (window.EE_RUNTIME) carries only {tenant_id, actions:[names], actions_endpoint, suppression_endpoint}.
+ * Page -> named action -> Evolution Engine governed server-side adapter -> provider. The engine is the enforcement
+ * boundary: it re-validates tenant, kill switch, consent and suppression server-side and alone knows the provider.
+ * The page-side gate below is a fail-closed PRE-CHECK, not a security boundary: nothing in the browser (freezing,
+ * closures, naming, hidden globals) is relied on to keep a secret, because the page holds none.
  *
  * AUTHORITATIVE SUPPRESSION (H1): browser/page JavaScript is never a suppression source. The only clearance the gate
  * accepts is a completed lookup against the engine's suppression endpoint (EE_RUNTIME.suppression_endpoint, provided
@@ -38,7 +46,7 @@
   'use strict';
   if (w.EE && w.EE.__stocked) return; // idempotent
 
-  var VERSION = 'stocking-v1.2';
+  var VERSION = 'stocking-v1.3';
   var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id'];
   var CLICK_KEYS = ['gclid', 'gbraid', 'wbraid', 'dclid', 'fbclid', 'ttclid', 'msclkid', 'li_fat_id', 'twclid', 'epik', 'rdt_cid'];
   // `ee_campaign` / `ee_variant` name an Evolution Engine campaign. A bare `?campaign_id=` on the URL is the
@@ -83,7 +91,7 @@
     install(freezeDeep({
       __stocked: false, __failed: reason, version: VERSION, context: Object.freeze({}), legacy: legacy || {},
       track: blocked, setCampaign: blocked, registerLegacy: function () { return false; },
-      hooks: { url: function () { return null; }, configured: function () { return false; }, why: function () { return reason; }, post: reject, resolve: function () { return Promise.resolve(null); } },
+      hooks: { actions: function () { return []; }, url: function () { return null; }, configured: function () { return false; }, why: function () { return reason; }, post: reject, resolve: function () { return Promise.resolve(null); } },
       safety: {
         killSwitch: { state: function () { return 'UNKNOWN'; }, trip: blocked, source: 'UNKNOWN' },
         productionGate: { state: function () { return 'preview'; }, isLive: function () { return false; }, gates: [] },
@@ -150,15 +158,19 @@
   // ---- safety state ------------------------------------------------------------------------------------
   var productionGate = String(SITE.production_gate || 'preview').toLowerCase() === 'live' ? 'live' : 'preview';
   var consentState = 'none';
-  var lastBlock = {};
-  // The runtime (hook map + suppression endpoint) is captured ONCE at init. Replacing window.EE_RUNTIME later has no effect.
+  var lastBlock = {};        // hook name -> last block reason (gate or configuration)
+  var lastMissing = {};      // hook name -> true when the last block was a configuration gap (HookMissing), not the gate
+  // The runtime (governed action names + engine endpoints) is captured ONCE at init. Replacing window.EE_RUNTIME
+  // later has no effect. It never contains a provider destination: only the engine's own https routes.
   var RUNTIME = (function (r) {
     if (!r || typeof r !== 'object') return null;
-    var hooks = {}; var src = (r.hooks && typeof r.hooks === 'object') ? r.hooks : {};
-    Object.keys(src).forEach(function (k) { if (typeof src[k] === 'string' && /^https:\/\//.test(src[k])) hooks[k] = src[k]; });
-    var ep = (typeof r.suppression_endpoint === 'string' && /^https:\/\//.test(r.suppression_endpoint)) ? r.suppression_endpoint : null;
-    return Object.freeze({ tenant_id: r.tenant_id, hooks: Object.freeze(hooks), suppression_endpoint: ep });
+    var httpsUrl = function (v) { return (typeof v === 'string' && /^https:\/\/[^\s"'<>]+$/.test(v)) ? v.replace(/\/+$/, '') : null; };
+    var actions = [];
+    (Array.isArray(r.actions) ? r.actions : []).forEach(function (n) { if (typeof n === 'string' && /^[a-z0-9_]{1,40}$/.test(n) && actions.indexOf(n) < 0) actions.push(n); });
+    return Object.freeze({ tenant_id: r.tenant_id, actions: Object.freeze(actions), actions_endpoint: httpsUrl(r.actions_endpoint), suppression_endpoint: httpsUrl(r.suppression_endpoint) });
   })(w.EE_RUNTIME);
+  // Transport captured at init (defense in depth only; the engine, not the page, is the boundary).
+  var FETCH = (typeof w.fetch === 'function') ? w.fetch.bind(w) : null;
   var SUPPRESSION_TTL_MS = 10 * 60 * 1000, SUPPRESSION_TIMEOUT_MS = 6000;
   var later = function (fn, ms) { var t = w.setTimeout || (typeof setTimeout === 'function' ? setTimeout : null); return t ? t(fn, ms) : null; };
   var cancel = function (h) { var c = w.clearTimeout || (typeof clearTimeout === 'function' ? clearTimeout : null); if (c && h != null) c(h); };
@@ -220,15 +232,22 @@
     return false;
   }
 
-  // ---- runtime (hook map) validation: built for THIS tenant or not trusted at all (F10) -----------------
+  // ---- runtime (governed actions) validation: built for THIS tenant or not trusted at all (F10) ---------
   var mismatchReported = false;
+  var NO_ACTIONS = Object.freeze([]);
   function runtime() {
-    if (!RUNTIME) return { ok: false, reason: 'runtime not loaded', hooks: {}, suppression_endpoint: null };
+    if (!RUNTIME) return { ok: false, reason: 'runtime not loaded', actions: NO_ACTIONS, actions_endpoint: null, suppression_endpoint: null };
     if (RUNTIME.tenant_id !== tenantId) {
       if (!mismatchReported) { mismatchReported = true; track('ee_runtime_mismatch', { runtime_tenant: clip(RUNTIME.tenant_id) }); }
-      return { ok: false, reason: 'runtime tenant mismatch: ' + clip(RUNTIME.tenant_id), hooks: {}, suppression_endpoint: null };
+      return { ok: false, reason: 'runtime tenant mismatch: ' + clip(RUNTIME.tenant_id), actions: NO_ACTIONS, actions_endpoint: null, suppression_endpoint: null };
     }
-    return { ok: true, hooks: RUNTIME.hooks, suppression_endpoint: RUNTIME.suppression_endpoint };
+    return { ok: true, reason: 'ok', actions: RUNTIME.actions, actions_endpoint: RUNTIME.actions_endpoint, suppression_endpoint: RUNTIME.suppression_endpoint };
+  }
+  // The ONLY URL shape hooks can produce: <engine actions endpoint>/<TENANT>/<action>. Never a provider.
+  function actionRoute(rt, name) {
+    if (!rt || !rt.ok || !rt.actions_endpoint) return null;
+    if (typeof name !== 'string' || !/^[a-z0-9_]{1,40}$/.test(name) || rt.actions.indexOf(name) < 0) return null;
+    return rt.actions_endpoint + '/' + encodeURIComponent(tenantId) + '/' + name;
   }
   // Authoritative suppression lookup. Only a completed engine response {checked:true, suppressed:false} is clearance.
   function suppressionLookup(identity) {
@@ -247,6 +266,7 @@
     var src = EE.safety.suppression.source;
     if (!(src === 'VERIFIED' || src === 'CURRENT')) return Promise.resolve(suppressionCache[fp] = fail('suppression source not connected: ' + src));
     if (!rt.suppression_endpoint) return Promise.resolve(suppressionCache[fp] = fail('authoritative suppression check unavailable'));
+    if (!FETCH) return Promise.resolve(suppressionCache[fp] = fail('authoritative suppression check unavailable (no fetch)'));
     var controller = (typeof w.AbortController === 'function') ? new w.AbortController() : null;
     var timer = later(function () { if (controller) controller.abort(); }, SUPPRESSION_TIMEOUT_MS);
     var email = (identity && typeof identity.email === 'string') ? identity.email.trim().toLowerCase() : '';
@@ -254,7 +274,7 @@
     var req = { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit', keepalive: false,
       body: JSON.stringify({ tenant_id: tenantId, domain_id: domainId, session_id: sessionId, identity: { email: email, phone: phone } }) };
     if (controller) req.signal = controller.signal;
-    return Promise.resolve().then(function () { return w.fetch(rt.suppression_endpoint, req); }).then(function (res) {
+    return Promise.resolve().then(function () { return FETCH(rt.suppression_endpoint, req); }).then(function (res) {
       if (!res || res.ok !== true) throw new Error('authoritative suppression check unavailable (HTTP ' + (res && res.status) + ')');
       var ct = (res.headers && typeof res.headers.get === 'function') ? (res.headers.get('content-type') || '') : '';
       if (ct && !/^application\/json/i.test(ct)) throw new Error('authoritative suppression check returned a non-JSON response');
@@ -359,35 +379,60 @@
       }
     },
     hooks: {
-      // Hook URLs are secrets. They never live in the repo: Render injects them at build time into
-      // /ee/runtime.js (window.EE_RUNTIME.hooks) from env vars named EE_HOOK_<TENANT>_<NAME>.
-      // url() is the ONLY way to obtain one, and it passes the outbound gate first - there is no bypass.
-      configured: function (name) { var rt = runtime(); var h = rt.ok && rt.hooks[name]; return typeof h === 'string' && /^https:\/\//.test(h); },
+      // PROVIDER ISOLATION: a hook name is a governed ACTION. url() returns the Evolution Engine actions route for
+      // this tenant (never a provider URL - the page does not have one) and only after the outbound gate passes.
+      // The engine re-validates every request server-side and forwards to the provider it alone knows.
+      actions: function () { return runtime().actions.slice(); },
+      configured: function (name) { return !!actionRoute(runtime(), name); },
       why: function (name) { return lastBlock[name] || null; },
       url: function (name, identity) {
         var rt = runtime();
+        lastMissing[name] = false;
         if (!rt.ok) { lastBlock[name] = rt.reason; track('ee_outbound_blocked', { hook: clip(name), reason: rt.reason }); return null; }
         var gate = EE.outbound.allowed(identity);
         if (!gate.allowed) { lastBlock[name] = gate.reason; track('ee_outbound_blocked', { hook: clip(name), reason: gate.reason }); return null; }
-        var h = rt.hooks[name];
-        if (!(typeof h === 'string' && /^https:\/\//.test(h))) { lastBlock[name] = 'hook not configured'; track('ee_hook_missing', { hook: clip(name) }); return null; }
+        if (!rt.actions_endpoint) { lastBlock[name] = 'governed actions endpoint unavailable'; lastMissing[name] = true; track('ee_hook_missing', { hook: clip(name), reason: lastBlock[name] }); return null; }
+        var route = actionRoute(rt, name);
+        if (!route) { lastBlock[name] = 'action not configured'; lastMissing[name] = true; track('ee_hook_missing', { hook: clip(name), reason: lastBlock[name] }); return null; }
         lastBlock[name] = null;
-        return h;
+        return route;
       },
-      // async: authoritative suppression lookup for the identity, then the gated URL (or null; see .why(name))
+      // async: authoritative suppression lookup for the identity, then the gated engine route (or null; see .why(name))
       resolve: function (name, identity) {
         return suppressionLookup(identity).then(function () { return EE.hooks.url(name, identity); });
       },
+      // Sends a governed action envelope to the engine route. Rejects HookMissing (not configured / unavailable) or
+      // OutboundBlocked (gate). The envelope carries identity + the page-side consent/suppression evidence so the
+      // engine can re-check them; the engine, not this code, decides whether anything reaches a provider.
       post: function (name, body, opts) {
         opts = opts || {};
-        return EE.hooks.resolve(name, opts.identity).then(function (url) {
-        if (!url) return Promise.reject(Object.assign(new Error(lastBlock[name] || 'blocked'), { name: /not configured/.test(lastBlock[name] || '') ? 'HookMissing' : 'OutboundBlocked', hook: name, reason: lastBlock[name] }));
-        var isForm = !!(w.URLSearchParams && body instanceof w.URLSearchParams) || !!(w.FormData && body instanceof w.FormData);
-        var payload = (body && typeof body === 'object' && !isForm) ? Object.assign({ tenant_id: tenantId, domain_id: domainId, session_id: sessionId }, body) : body;
-        var init = { method: 'POST', keepalive: true, body: (isForm || typeof payload === 'string') ? payload : JSON.stringify(payload) };
-        if (opts.mode) init.mode = opts.mode;
-        if (!isForm) init.headers = opts.headers || { 'Content-Type': opts.contentType || 'application/json' };
-        return (opts.fetch || w.fetch)(url, init);
+        return EE.hooks.resolve(name, opts.identity).then(function (route) {
+          if (!route) {
+            var why = lastBlock[name] || 'blocked';
+            return Promise.reject(Object.assign(new Error(why), { name: lastMissing[name] ? 'HookMissing' : 'OutboundBlocked', hook: name, reason: why }));
+          }
+          if (!FETCH) {
+            lastBlock[name] = 'governed actions transport unavailable (no fetch)'; lastMissing[name] = true;
+            return Promise.reject(Object.assign(new Error(lastBlock[name]), { name: 'HookMissing', hook: name, reason: lastBlock[name] }));
+          }
+          var identity = (opts.identity && typeof opts.identity === 'object') ? opts.identity : {};
+          var email = (typeof identity.email === 'string') ? identity.email.trim().toLowerCase() : '';
+          var phone = (identity.phone != null) ? String(identity.phone).replace(/[^0-9]/g, '') : '';
+          var consent = null; try { consent = JSON.parse(get('ee_consent_last') || 'null'); } catch (e) { consent = null; }
+          var isForm = !!(w.URLSearchParams && body instanceof w.URLSearchParams) || !!(w.FormData && body instanceof w.FormData);
+          var init = { method: 'POST', credentials: 'omit', keepalive: opts.keepalive !== false, headers: { 'X-EE-Tenant': tenantId, 'X-EE-Action': name } };
+          if (isForm) { init.body = body; }
+          else {
+            init.headers['Content-Type'] = 'application/json';
+            init.body = JSON.stringify({
+              ee_system_id: 'evolution_engine', ee_bootstrap_version: VERSION, tenant_id: tenantId, domain_id: domainId,
+              session_id: sessionId, page_view_id: pageViewId, action: name, campaign_id: context.campaign_id, variant_id: context.variant_id,
+              landing_page_url: landingPageUrl, page_url: w.location.href, identity: { email: email, phone: phone },
+              consent: consent, suppression: EE.safety.suppression.status(identity), payload: (body == null) ? {} : body
+            });
+          }
+          if (opts.signal) init.signal = opts.signal;
+          return FETCH(route, init);
         });
       }
     },
