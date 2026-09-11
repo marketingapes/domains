@@ -84,7 +84,7 @@
       .contact-form-wrap { min-width: 100%; }
     }
   </style>
-<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"DIHAC","domain_id":"doihaveaclaim.ai","brand":"Do I Have A Claim","canonical_url":"https://doihaveaclaim.ai/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"DIHAC","domain_id":"doihaveaclaim.ai","brand":"Do I Have A Claim","canonical_url":"https://doihaveaclaim.ai/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -195,7 +195,7 @@
       site: 'dihc',
       tort: 'multi',
       campaign_id: 'dihc_contact',
-      webhook_url: 'https://hooks.zapier.com/hooks/catch/2296909/unfhmjw/',
+      webhook_ref: 'ee:hook:contact', /* URL resolved from /ee/runtime.js (EE_HOOK_DIHAC_CONTACT); never stored here */
       thank_you_url: 'thank-you.html',
       phone: '(619) 736-0356'
     };
@@ -274,7 +274,15 @@
       });
 
       function sendDirect(payload) {
-        fetch('https://hooks.zapier.com/hooks/catch/2296909/unfhmjw/', {
+        var hook = (window.EE && window.EE.hooks) ? window.EE.hooks.url('contact') : null;
+        if (!hook) {
+          if (window.EE) window.EE.track('ee_hook_missing', { hook: 'contact' });
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+          alert('This form is not connected yet. Please call us directly.');
+          return;
+        }
+        fetch(hook, {
           method: 'POST',
           body: JSON.stringify(payload)
         }).then(function(res) {

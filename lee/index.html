@@ -67,6 +67,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
 .scarcity{padding:28px 0 8px;color:var(--g400);font-size:1.02rem;max-width:40rem}
 @media(max-width:768px){.grid,.form-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
+<script src="/ee/runtime.js"></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWVHNTVK" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -185,7 +186,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
   </div>
 </footer>
 <script>
-var HOOK='https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+/* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_LEE_ORDER); never stored here. LEE is not a stocked tenant, so it reads EE_RUNTIME directly. */
+function hookUrl(){var r=window.EE_RUNTIME;return (r&&r.hooks&&r.hooks.order)||null}
 window.dataLayer=window.dataLayer||[];
 document.querySelectorAll('.cta').forEach(function(el){
   el.addEventListener('click',function(){
@@ -204,7 +206,8 @@ document.getElementById('snapForm').addEventListener('submit',function(e){
   var btn=form.querySelector('button[type=submit]');
   btn.disabled=true; btn.textContent='Sending…';
   document.getElementById('err').style.display='none';
-  fetch(HOOK,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
+  var hook=hookUrl(); if(!hook){ btn.disabled=false; btn.textContent='Request the $5,000 Snapshot'; document.getElementById('err').style.display='block'; return; }
+  fetch(hook,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
     .then(function(){
       window.dataLayer.push({event:'ee_snapshot_request',tenant_id:'LEE',product:'legal_engine_snapshot',value:5000,currency:'USD'});
       form.style.display='none';

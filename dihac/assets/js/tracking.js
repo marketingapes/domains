@@ -7,7 +7,8 @@
 (function () {
   'use strict';
 
-  const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/2296909/unfhmjw/';
+  // Hook URL is a secret: resolved at send time from /ee/runtime.js (EE_HOOK_DIHAC_TRACKING), never stored here.
+  function hookUrl() { var r = window.EE_RUNTIME; var h = r && r.hooks && r.hooks.tracking; return (typeof h === 'string' && h.indexOf('https://') === 0) ? h : ''; }
   const PHONE_NUMBER = '6197360356';
   const PHONE_DISPLAY = '(619) 736-0356';
   const PHONE_TEL = 'tel:+16197360356';
@@ -90,7 +91,10 @@
 
     // Fire via navigator.sendBeacon for reliability, fallback to fetch
     var json = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
+    var WEBHOOK_URL = hookUrl();
+    if (!WEBHOOK_URL) {
+      pushEvent('ee_hook_missing', { hook: 'tracking' });
+    } else if (navigator.sendBeacon) {
       navigator.sendBeacon(WEBHOOK_URL, new Blob([json], { type: 'application/json' }));
     } else {
       fetch(WEBHOOK_URL, {
@@ -209,7 +213,7 @@
     PHONE_NUMBER: PHONE_NUMBER,
     PHONE_DISPLAY: PHONE_DISPLAY,
     PHONE_TEL: PHONE_TEL,
-    WEBHOOK_URL: WEBHOOK_URL,
+    WEBHOOK_REF: 'ee:hook:tracking',
     FOOTER_LINK: FOOTER_LINK
   };
 

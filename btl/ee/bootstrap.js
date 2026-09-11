@@ -25,8 +25,10 @@
   var VERSION = 'stocking-v1';
   var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id'];
   var CLICK_KEYS = ['gclid', 'gbraid', 'wbraid', 'dclid', 'fbclid', 'ttclid', 'msclkid', 'li_fat_id', 'twclid', 'epik', 'rdt_cid'];
-  var CAMPAIGN_KEYS = ['campaign_id', 'ee_campaign'];
-  var VARIANT_KEYS = ['variant_id', 'ee_variant'];
+  // `ee_campaign` / `ee_variant` name an Evolution Engine campaign. A bare `?campaign_id=` on the URL is the
+  // ad platform's campaign id (Meta/Google), which page code records as platform_campaign_id - never conflated.
+  var CAMPAIGN_KEYS = ['ee_campaign'];
+  var VARIANT_KEYS = ['ee_variant'];
 
   function id(prefix) {
     var rand;
@@ -179,6 +181,27 @@
           try { var r = suppressionChecker(identity || {}); return Object.assign({ checked: true, suppressed: false, source: 'page' }, r || {}); }
           catch (e) { return { checked: false, suppressed: true, source: 'error', reason: String(e && e.message || e) }; }
         }
+      }
+    },
+    hooks: {
+      // Hook URLs are secrets. They never live in the repo: Render injects them at build time into
+      // /ee/runtime.js (window.EE_RUNTIME.hooks) from env vars named EE_HOOK_<TENANT>_<NAME>. Page code
+      // asks for a hook by NAME; an unconfigured hook fails closed with an ee_hook_missing event.
+      url: function (name) {
+        var r = w.EE_RUNTIME, h = r && r.hooks && r.hooks[name];
+        return (typeof h === 'string' && /^https:\/\//.test(h)) ? h : null;
+      },
+      configured: function (name) { return !!EE.hooks.url(name); },
+      post: function (name, body, opts) {
+        opts = opts || {};
+        var url = EE.hooks.url(name);
+        if (killTripped) return Promise.reject(Object.assign(new Error('kill_switch ON'), { name: 'KillSwitch', hook: name }));
+        if (!url) { track('ee_hook_missing', { hook: clip(name) }); return Promise.reject(Object.assign(new Error('hook not configured: ' + name), { name: 'HookMissing', hook: name })); }
+        var payload = (body && typeof body === 'object' && !(body instanceof w.URLSearchParams || false)) ? Object.assign({ tenant_id: tenantId, domain_id: domainId, session_id: sessionId }, body) : body;
+        var init = { method: 'POST', keepalive: true, body: opts.form ? payload : JSON.stringify(payload) };
+        if (opts.mode) init.mode = opts.mode;
+        init.headers = opts.headers || (opts.form ? undefined : { 'Content-Type': opts.contentType || 'application/json' });
+        return (opts.fetch || w.fetch)(url, init);
       }
     },
     outbound: {

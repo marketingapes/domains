@@ -486,7 +486,7 @@
     @media(max-width:760px){.grid{grid-template-columns:1fr}.order{padding:24px 18px;border-radius:22px}.order .btn{width:100%}}
   </style>
 
-<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"MA","domain_id":"marketingapes.com","brand":"Marketing Apes","canonical_url":"https://marketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"MA","domain_id":"marketingapes.com","brand":"Marketing Apes","canonical_url":"https://marketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -586,7 +586,8 @@
   </footer>
 
   <script>
-    var ORDER_HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+    /* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_MA_ORDER); never stored here. */
+    function orderHook(){ return (window.EE && window.EE.hooks) ? window.EE.hooks.url('order') : null; }
     window.dataLayer = window.dataLayer || [];
     document.getElementById('year').textContent = new Date().getFullYear();
     document.querySelectorAll('.cta').forEach(function(el){
@@ -605,7 +606,8 @@
       data.tenant_id = EE_TENANT.tenant_id;
       var btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
       document.getElementById('err').style.display = 'none';
-      fetch(ORDER_HOOK, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
+      var hook = orderHook(); if (!hook) { if (window.EE) window.EE.track('ee_hook_missing', {hook:'order'}); btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; return; }
+      fetch(hook, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
         .then(function(){
           window.dataLayer.push({event:'ee_order_submit',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,product:data.product,value:Number(data.price_usd||0),currency:'USD',case_types:data.case_types,states:data.states,landing_page_url:location.href});
           form.style.display = 'none'; document.getElementById('thanks').style.display = 'block';

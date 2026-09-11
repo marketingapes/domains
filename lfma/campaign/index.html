@@ -58,7 +58,7 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <link rel="stylesheet" href="/assets/campaign-polish-v1.css" data-lfma-polish="v1">
-<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <div class="wrap">
@@ -218,7 +218,8 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   "use strict";
   /* Existing, active lane — the same hook marketingapes.com/order posts to.
      One lane per event: do not add a second webhook for campaign briefs. */
-  var HOOK = "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi";
+  /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
+  function hookUrl() { return (window.EE && window.EE.hooks) ? window.EE.hooks.url("order") : null; }
 
   var form = document.getElementById("briefForm");
   var sent = document.getElementById("sent");
@@ -230,8 +231,19 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   form.addEventListener('submit', preventNative);
   button.disabled = true;
   import('../assets/lfma-brief-adapter.mjs').then(function(adapter) {
+    var hook = hookUrl();
+    if (!hook) {
+      // fail closed: no hook configured for this tenant -> nothing can be submitted from this page
+      if (window.EE) window.EE.track('ee_hook_missing', { hook: 'order' });
+      var notConfigured = document.createElement('p');
+      notConfigured.setAttribute('role', 'alert');
+      notConfigured.textContent = 'This form is not connected yet. Nothing was submitted. Contact kyleg@marketingapes.com.';
+      form.append(notConfigured);
+      button.disabled = true; button.textContent = 'Form unavailable';
+      return;
+    }
     adapter.bindLfmaBrief({
-      form: form, sent: sent, endpoint: HOOK, sourceUrl: location.href,
+      form: form, sent: sent, endpoint: hook, sourceUrl: location.href,
       dataLayer: window.dataLayer
     });
     form.removeEventListener('submit', preventNative);

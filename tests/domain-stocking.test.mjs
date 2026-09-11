@@ -55,7 +55,7 @@ test('bootstrap emits ee_page_context with canonical fields; campaign stays opti
 });
 
 test('campaign_id / variant_id attach from the URL, a page override, or setCampaign — never from the site config', () => {
-  const a = browser({ site: SITE, url: 'https://x.test/lp?campaign_id=C-9&variant_id=B' });
+  const a = browser({ site: SITE, url: 'https://x.test/lp?ee_campaign=C-9&ee_variant=B' });
   assert.equal(a.dl[0].campaign_id, 'C-9'); assert.equal(a.dl[0].variant_id, 'B');
   const b = browser({ site: SITE, page: { campaign_id: 'PAGE-1' } });
   assert.equal(b.dl[0].campaign_id, 'PAGE-1');
@@ -150,7 +150,7 @@ test('14/14 canonical tenants are stocked; LEE is excluded and untouched', () =>
     assert.match(home, /<title>[^<]+<\/title>/i, `${t} title`);
     assert.ok(home.includes(`href="https://${manifest(t).hostname.intended_canonical_hostname}/"`), `${t} canonical`);
     assert.ok(home.includes(`<script>window.EE_SITE=Object.freeze({"tenant_id":"${t}","domain_id":"${manifest(t).domain_id}"`), `${t} EE_SITE block`);
-    assert.ok(home.includes('<script src="/ee/bootstrap.js" defer></script>'), `${t} bootstrap tag`);
+    assert.ok(home.includes('<script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script>'), `${t} runtime + bootstrap tags`);
     assert.ok(home.includes(`<div id="ee-experience" data-ee-socket="primary" data-tenant-id="${t}" hidden></div>`), `${t} socket`);
     assert.equal((home.match(/ee:stocking v1/g) || []).length, 1, `${t} injected exactly once`);
   }

@@ -93,6 +93,27 @@ suppression, kill switch, production gate). Each carries the Foundation's two ax
 by `shared_from: <owner>` and never copied. Nothing in this layer is ever taken from NIL (or any
 other tenant) to make another tenant look complete.
 
+## 5. Hooks — `EE.hooks` (hook URLs never live in the repo)
+
+A webhook URL is an unauthenticated endpoint and is treated as a secret (Foundation rule). Pages
+therefore reference hooks **by name** and never carry a URL:
+
+```js
+EE.hooks.url('intake')                 // -> https://... or null
+EE.hooks.post('intake', payload)       // JSON POST with tenant_id/domain_id/session_id; rejects HookMissing when unconfigured
+```
+
+`build.sh` writes `<tenant>/ee/runtime.js` (gitignored) at Render build time from env vars named
+`EE_HOOK_<TENANT>_<NAME>` — e.g. `EE_HOOK_NIL_INTAKE`, `EE_HOOK_BTL_LEAD`, `EE_HOOK_BTL_CAMPAIGN_REQUEST`,
+`EE_HOOK_DIHAC_CONTACT`, `EE_HOOK_DIHAC_LEAD`, `EE_HOOK_DIHAC_TRACKING`, `EE_HOOK_LFMA_ORDER`,
+`EE_HOOK_MA_ORDER`, `EE_HOOK_LEE_ORDER`. Only variables carrying a tenant's own prefix reach that
+tenant's file. Non-https values are dropped. An unconfigured hook fails closed: the page emits
+`ee_hook_missing`, shows its error state, and sends nothing. A tenant whose Render service does not
+run `sh build.sh` (MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
+
+Campaign identity on the URL is `?ee_campaign=` / `?ee_variant=`. A bare `?campaign_id=` is the ad
+platform's id and is never treated as an Evolution Engine campaign.
+
 ## Rules
 
 - Never edit `<tenant>/ee/*` or the injected blocks by hand — edit `shared/ee/bootstrap.js` or the page, then regenerate.

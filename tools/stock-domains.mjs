@@ -143,7 +143,7 @@ function pagesFor(t) {
   }
   return out.sort();
 }
-const headBlock = cfg => `${HEAD_START}<script>window.EE_SITE=Object.freeze(${JSON.stringify(cfg)});</script><script src="/ee/bootstrap.js" defer></script>${HEAD_END}`;
+const headBlock = cfg => `${HEAD_START}<script>window.EE_SITE=Object.freeze(${JSON.stringify(cfg)});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script>${HEAD_END}`;
 const socketBlock = t => `${SOCKET_START}<div id="ee-experience" data-ee-socket="primary" data-tenant-id="${t}" hidden></div>${SOCKET_END}`;
 function replaceBetween(html, start, end, block) {
   const a = html.indexOf(start), b = html.indexOf(end);
@@ -298,7 +298,7 @@ for (const t of TENANTS) {
   const campaignHits = [], campaignPages = [], hookHits = [], legacyCtx = [], placeholders = [];
   for (const rel of files) {
     const text = read(rel);
-    const c = text.match(/\bCAMPAIGN\s*=\s*['"][A-Za-z0-9_-]{3,}['"]/g);
+    const c = text.match(/\bCAMPAIGN\s*=\s*['"][A-Za-z0-9_-]{3,}['"]|\bcampaign_id\s*:\s*['"][A-Za-z0-9_-]{3,}['"]/g);
     if (c) (rel === `${dir}/index.html` ? campaignHits : campaignPages).push(`${rel}: ${c[0]}`);
     if (SECRET_PATTERNS.slice(0, 2).some(p => p.test(text))) hookHits.push(rel);
     if (/event\s*:\s*['"]ee_page_context['"]/.test(text) && !text.includes(HEAD_START + '<script>window.EE_SITE')) legacyCtx.push(rel);
@@ -312,6 +312,10 @@ for (const t of TENANTS) {
     if (l.length) r.notes.push(`legacy inline ee_page_context push present (bootstrap de-duplicates by emitting ee_context_update instead): ${l.join(', ')}`);
   }
   if (placeholders.length) r.notes.push(`GTM-PENDING placeholder in: ${placeholders.join(', ')}`);
+  const ownGtm = leaf(m, 'measurement.gtm_web');
+  if (ownGtm && ownGtm.connection_status === 'VERIFIED' && ownGtm.container_id && !home.includes(ownGtm.container_id)) {
+    r.notes.push(`homepage does not load its VERIFIED gtm_web container ${ownGtm.container_id} (no GTM on the face; ee_* events have no delivery path here)`);
+  }
 
   // 5. secrets scan on everything the stocking layer generates/injects
   const generated = [`${dir}/ee/bootstrap.js`, `${dir}/ee/site.json`];

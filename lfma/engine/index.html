@@ -67,7 +67,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
 .scarcity{padding:28px 0 8px;color:var(--g400);font-size:1.02rem;max-width:40rem}
 @media(max-width:768px){.grid,.form-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
-<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWVHNTVK" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -186,7 +186,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
   </div>
 </footer>
 <script>
-var HOOK='https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+/* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
+function hookUrl(){return (window.EE&&window.EE.hooks)?window.EE.hooks.url('order'):null}
 window.dataLayer=window.dataLayer||[];
 document.querySelectorAll('.cta').forEach(function(el){
   el.addEventListener('click',function(){
@@ -205,7 +206,8 @@ document.getElementById('snapForm').addEventListener('submit',function(e){
   var btn=form.querySelector('button[type=submit]');
   btn.disabled=true; btn.textContent='Sending…';
   document.getElementById('err').style.display='none';
-  fetch(HOOK,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
+  var hook=hookUrl(); if(!hook){ if(window.EE) window.EE.track('ee_hook_missing',{hook:'order'}); btn.disabled=false; btn.textContent='Request the $5,000 Snapshot'; document.getElementById('err').style.display='block'; return; }
+  fetch(hook,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
     .then(function(){
       window.dataLayer.push({event:'ee_snapshot_request',tenant_id:'LFMA',product:'legal_engine_snapshot',value:5000,currency:'USD'});
       form.style.display='none';

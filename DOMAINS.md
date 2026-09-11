@@ -170,3 +170,5 @@ without pretending any capability exists. Read `shared/ee/README.md`.
 
 Regenerate + audit: `node tools/stock-domains.mjs` → `stocking/REPORT.md` / `stocking/report.json`.
 Drift gate: `node tools/stock-domains.mjs --check`. Never hand-edit `<tenant>/ee/*` or the injected blocks.
+- Hook URLs never live in the repo. Pages call `EE.hooks.url('<name>')`; `build.sh` writes
+  `<tenant>/ee/runtime.js` (gitignored) from Render env `EE_HOOK_<TENANT>_<NAME>`. Unconfigured = fails closed.
