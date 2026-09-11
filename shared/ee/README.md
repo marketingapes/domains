@@ -45,8 +45,8 @@ Every event pushed to `window.dataLayer` carries: `tenant_id`, `domain_id`, `ses
 - Event names are `ee_snake_case` (matches `measurement.canonical_events.contract = "ee_*"`).
 - On load it emits `ee_page_context` (existing convention). If the page already pushed one inline,
   it emits `ee_context_update` instead — never a double.
-- **Campaign is optional.** `campaign_id`/`variant_id` come from `?campaign_id=`/`?ee_campaign=`,
-  `?variant_id=`/`?ee_variant=`, `<meta name="ee-campaign-id">`, a page-level `window.EE_PAGE = {campaign_id, variant_id}`
+- **Campaign is optional.** `campaign_id`/`variant_id` come from `?ee_campaign=` / `?ee_variant=`
+  (a bare `?campaign_id=` is the ad platform's id and is ignored here), `<meta name="ee-campaign-id">`, a page-level `window.EE_PAGE = {campaign_id, variant_id}`
   set before the bootstrap, or `EE.setCampaign(id, variant)`. They are never in `EE_SITE`: a campaign attaches to a domain, it never is the domain.
 - `page_type`: `<meta name="ee-page-type">` or derived from the path.
 - Delivery is whatever GTM/GA4 the page already loads. The bootstrap loads no tags, makes no network calls, stores no secrets.
