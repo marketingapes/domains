@@ -6,7 +6,8 @@
 // then served over HTTP. Fixture pages for F10 are derived from stocked pages. Every tenant's REAL config has
 // consent_store / suppression_source MISSING, so on real pages the gate must fail closed (G4). To exercise the
 // success paths (G1/G2/F1/F2/F6) the fixtures under /spine/ simulate a CONNECTED safety spine: EE_SITE carries
-// consent_store + suppression_source VERIFIED, and the test registers a clearing suppression checker before submit.
+// consent_store + suppression_source VERIFIED, and the built runtime carries an AUTHORITATIVE suppression endpoint that the
+// interceptor answers locally ({checked:true, suppressed:false}) — a simulated engine adapter, never page-side clearance.
 // BTL's Render face is `preview` per Foundation; its spine fixture is also flipped to `live`.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,6 +26,8 @@ const MAKE_HOST = 'https://hook.us2.make.com/';
 const LFMA_ORDER = MAKE_HOST + 'qatest'.repeat(5) + '00';
 const HOOK_HOSTS = [FAKE, MAKE_HOST];
 const chrome = findChrome();
+// EE_REQUIRE_CHROME=1 turns a missing browser into a hard failure instead of a skip (used for the clean-tree proof).
+if (!chrome && process.env.EE_REQUIRE_CHROME) throw new Error('Chromium is required (EE_REQUIRE_CHROME=1) but none was found; set EE_CHROME');
 const skip = chrome ? false : 'no Chromium available (set EE_CHROME)';
 
 let tmp, sites = {}, browser;
@@ -33,7 +36,7 @@ test.before(async () => {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ee-browser-'));
   fs.cpSync(path.join(ROOT, 'build.sh'), path.join(tmp, 'build.sh'));
   for (const t of ['nil', 'lfma', 'dihac', 'btl']) fs.cpSync(path.join(ROOT, t), path.join(tmp, t), { recursive: true });
-  execFileSync('sh', ['build.sh'], { cwd: tmp, stdio: 'pipe', env: { ...process.env, EE_HOOK_NIL_INTAKE: `${FAKE}/nil-intake`, EE_HOOK_LFMA_ORDER: LFMA_ORDER, EE_HOOK_LFMA_TRACKING: `${FAKE}/lfma-tracking`, EE_HOOK_DIHAC_CONTACT: `${FAKE}/dihac-contact`, EE_HOOK_BTL_LEAD: `${FAKE}/btl-lead` } });
+  execFileSync('sh', ['build.sh'], { cwd: tmp, stdio: 'pipe', env: { ...process.env, EE_HOOK_NIL_INTAKE: `${FAKE}/nil-intake`, EE_HOOK_LFMA_ORDER: LFMA_ORDER, EE_HOOK_LFMA_TRACKING: `${FAKE}/lfma-tracking`, EE_HOOK_DIHAC_CONTACT: `${FAKE}/dihac-contact`, EE_HOOK_BTL_LEAD: `${FAKE}/btl-lead`, EE_SUPPRESSION_NIL_ENDPOINT: `${FAKE}/suppression/nil`, EE_SUPPRESSION_LFMA_ENDPOINT: `${FAKE}/suppression/lfma`, EE_SUPPRESSION_BTL_ENDPOINT: `${FAKE}/suppression/btl`, EE_SUPPRESSION_DIHAC_ENDPOINT: `${FAKE}/suppression/dihac` } });
   // fixtures
   const nilHome = fs.readFileSync(path.join(tmp, 'nil/index.html'), 'utf8');
   fs.writeFileSync(path.join(tmp, 'nil/f10-no-site.html'), nilHome.replace(/<script>window\.EE_SITE=Object\.freeze\(\{[^<]*\}\);<\/script>/, ''));
@@ -55,10 +58,14 @@ test.after(async () => {
   if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
 });
 
-const open = async (t, p) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [FAKE]: { status: 200, body: '{}' }, [MAKE_HOST]: { status: 200, body: '{"ok":true}' } } }); await page.goto(sites[t].origin + p); return page; };
+const CLEAR = { status: 200, body: JSON.stringify({ checked: true, suppressed: false, source: 'test-authority' }) };
+const SUPPRESSED = { status: 200, body: JSON.stringify({ checked: true, suppressed: true, source: 'test-authority' }) };
+const open = async (t, p, suppression = CLEAR) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: suppression, [FAKE]: { status: 200, body: '{}' }, [MAKE_HOST]: { status: 200, body: '{"ok":true}' } } }); await page.goto(sites[t].origin + p); return page; };
+const suppressionLookups = page => page.requests.filter(r => r.url.startsWith(`${FAKE}/suppression/`));
 const ee = (page, expr) => page.evaluate(`(function(){ var EE = window.EE; return (${expr}); })()`);
-const hookRequests = page => page.requests.filter(r => HOOK_HOSTS.some(h => r.url.startsWith(h)));
-const connectSpine = page => ee(page, "(EE.safety.suppression.use(function(){ return { suppressed: false }; }), EE.safety.suppression.source + '/' + EE.safety.consent.store)");
+const hookRequests = page => page.requests.filter(r => HOOK_HOSTS.some(h => r.url.startsWith(h)) && !r.url.startsWith(`${FAKE}/suppression/`));
+const QA_ID = "{email:'qa@example.test', phone:'4015550100'}";
+const connectSpine = page => ee(page, "EE.safety.suppression.source + '/' + EE.safety.consent.store + '/' + EE.safety.suppression.endpoint_configured");
 
 test('F10 (browser): a page without EE_SITE fails closed', { skip }, async () => {
   const page = await open('nil', '/f10-no-site.html');
@@ -93,30 +100,32 @@ test('G4 (browser): on the REAL NIL page consent.record() by page JS cannot open
   const page = await open('nil', '/');
   assert.equal(await ee(page, "EE.hooks.configured('intake')"), true, 'hook is configured; the gate is what blocks');
   for (let i = 0; i < 3; i++) await ee(page, "EE.safety.consent.record({surface:'nil_sofia_form',consent_text_id:'NIL_TCPA_AI_2026-08-18_V1',method:'checkbox'})");
-  await ee(page, "EE.safety.suppression.use(function(){ return { suppressed: false }; })");
-  assert.equal(await ee(page, "EE.hooks.url('intake')"), null);
+  assert.equal(await ee(page, "(function(){ try { EE.safety.suppression.use(function(){ return { suppressed: false }; }); return 'accepted'; } catch (e) { return e.message; } })()"), 'page code is not an authoritative suppression source');
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID}).then(function(u){ return u; })`), null);
   assert.equal(await ee(page, "EE.hooks.why('intake')"), 'consent store not connected: MISSING');
-  assert.equal(await ee(page, "EE.hooks.post('intake',{}).then(function(){return 'sent'},function(e){return e.name})"), 'OutboundBlocked');
+  assert.equal(await ee(page, `EE.hooks.post('intake',{}, {identity: ${QA_ID}}).then(function(){return 'sent'},function(e){return e.name})`), 'OutboundBlocked');
   assert.equal(hookRequests(page).length, 0, 'nothing left the page');
   await page.close();
 });
 
 test('F6 (browser, connected spine): NIL intake hook resolves only after consent + clear suppression check, is blocked again when the switch trips, and direct fetch cannot bypass', { skip }, async () => {
   const page = await open('nil', '/spine/index.html');
-  assert.equal(await ee(page, "EE.hooks.url('intake')"), null);
+  assert.equal(await ee(page, `EE.hooks.url('intake', ${QA_ID})`), null);
   assert.equal(await ee(page, "EE.hooks.why('intake')"), 'no consent evidence recorded');
   assert.equal(await ee(page, "EE.hooks.configured('intake')"), true);
+  assert.equal(await connectSpine(page), 'VERIFIED/VERIFIED/true');
   await ee(page, "EE.safety.consent.record({surface:'nil_sofia_form',consent_text_id:'NIL_TCPA_AI_2026-08-18_V1',method:'checkbox'})");
-  assert.equal(await ee(page, "EE.hooks.url('intake')"), null, 'consent alone is not enough: suppression check has not completed');
-  assert.equal(await connectSpine(page), 'VERIFIED/VERIFIED');
-  assert.equal(await ee(page, "EE.hooks.url('intake')"), `${FAKE}/nil-intake`);
-  await ee(page, "EE.hooks.post('intake',{lead_id:'L-1'})");
+  assert.equal(await ee(page, `EE.hooks.url('intake', ${QA_ID})`), null, 'consent alone is not enough: the authoritative check has not been performed');
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), `${FAKE}/nil-intake`, 'authoritative clear => URL');
+  assert.equal(suppressionLookups(page).length, 1, 'exactly one authoritative lookup');
+  assert.equal(JSON.parse(suppressionLookups(page)[0].body).identity.email, 'qa@example.test');
+  await ee(page, `EE.hooks.post('intake',{lead_id:'L-1'}, {identity: ${QA_ID}})`);
   await page.wait(200);
   assert.equal(hookRequests(page).length, 1);
   assert.equal(JSON.parse(hookRequests(page)[0].body).tenant_id, 'NIL');
   await ee(page, "EE.safety.killSwitch.trip('browser-test')");
-  assert.equal(await ee(page, "EE.hooks.url('intake')"), null);
-  assert.equal(await ee(page, "EE.hooks.post('intake',{}).then(function(){return 'sent'},function(e){return e.name})"), 'OutboundBlocked');
+  assert.equal(await ee(page, `EE.hooks.url('intake', ${QA_ID})`), null);
+  assert.equal(await ee(page, `EE.hooks.post('intake',{}, {identity: ${QA_ID}}).then(function(){return 'sent'},function(e){return e.name})`), 'OutboundBlocked');
   assert.equal(hookRequests(page).length, 1, 'no second request');
   await page.close();
 });
@@ -179,7 +188,7 @@ test('F2 (browser, connected spine): BTL Rhode Island submit shows one success, 
 });
 
 // ================================================================= round 3 — G1 / G2
-const openWith = async (t, p, fulfil) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [FAKE]: fulfil, [MAKE_HOST]: fulfil } }); await page.goto(sites[t].origin + p); return page; };
+const openWith = async (t, p, fulfil) => { const page = await browser.page({ allow: [sites[t].origin], fulfill: { [`${FAKE}/suppression/`]: CLEAR, [FAKE]: fulfil, [MAKE_HOST]: fulfil } }); await page.goto(sites[t].origin + p); return page; };
 const fillBrief = `(function(){ var q=function(id){return document.getElementById(id)}; var setSel=function(el){ if(!el) return; if(el.tagName==='SELECT'){ for(var i=0;i<el.options.length;i++){ if(el.options[i].value){ el.selectedIndex=i; break; } } } else { el.value = el.value || 'test'; } };
   q('firm').value='Test Firm'; q('name').value='QA Bot'; q('email').value='qa@example.test'; setSel(q('tort')); setSel(q('geo')); setSel(q('no')); setSel(q('budget'));
   ['tort','geo','no','budget'].forEach(function(id){ var el=q(id); if(el && el.tagName!=='SELECT' && !el.value) el.value='test'; }); })()`;
@@ -267,6 +276,59 @@ test('G2 (browser, connected spine): kill switch tripped mid-session => zero red
   assert.equal(await page.evaluate('location.pathname'), '/spine/contact.html');
   assert.match(await page.evaluate("document.getElementById('contactStatus').textContent"), /kill_switch ON/);
   await page.close();
+});
+
+// ================================================================= round 4 — H1 authoritative suppression (real browser)
+test('H1 (browser): a fake page checker cannot clear suppression — use() throws and nothing changes', { skip }, async () => {
+  const page = await open('nil', '/spine/index.html');
+  await ee(page, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  for (const fake of ['function(){ return { suppressed: false }; }', 'function(){ return { checked: true, suppressed: false }; }', 'function(){ return {}; }', 'function(){ return null; }', 'function(){ return Promise.resolve({ suppressed: false }); }']) {
+    assert.equal(await ee(page, `(function(){ try { EE.safety.suppression.use(${fake}); return 'accepted'; } catch (e) { return e.message; } })()`), 'page code is not an authoritative suppression source');
+  }
+  assert.equal(await ee(page, `EE.hooks.url('intake', ${QA_ID})`), null, 'sync url() never clears by itself');
+  assert.equal(await ee(page, "EE.hooks.why('intake')"), 'authoritative suppression check not performed');
+  assert.equal(hookRequests(page).length, 0);
+  await page.close();
+});
+
+test('H1 (browser): an authoritative suppressed:true answer blocks; a blocked/unavailable lookup blocks; missing identity blocks', { skip }, async () => {
+  const hit = await open('nil', '/spine/index.html', SUPPRESSED);
+  await ee(hit, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  assert.equal(await ee(hit, `EE.hooks.resolve('intake', ${QA_ID})`), null);
+  assert.equal(await ee(hit, "EE.hooks.why('intake')"), 'suppressed');
+  assert.equal(await ee(hit, `EE.hooks.resolve('intake', ${QA_ID})`), null, 'cached suppressed result stays blocked');
+  assert.equal(hookRequests(hit).length, 0);
+  await hit.close();
+  // lookup endpoint unreachable: the interceptor fails it like a dead network
+  const down = await browser.page({ allow: [sites.nil.origin], fulfill: { [MAKE_HOST]: { status: 200, body: '{}' } } }); // FAKE host is NOT answered: every lookup and hook fails BlockedByClient
+  await down.goto(sites.nil.origin + '/spine/index.html');
+  await ee(down, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  assert.equal(await ee(down, `EE.hooks.resolve('intake', ${QA_ID})`), null);
+  assert.match(await ee(down, "EE.hooks.why('intake')"), /authoritative suppression check unavailable|Failed to fetch|timed out/);
+  assert.equal(hookRequests(down).filter(r => r.fulfilled).length, 0);
+  await down.close();
+  const noid = await open('nil', '/spine/index.html');
+  await ee(noid, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  assert.equal(await ee(noid, "EE.hooks.resolve('intake')"), null);
+  assert.equal(await ee(noid, "EE.hooks.why('intake')"), 'no identity for suppression check');
+  assert.equal(await ee(noid, "EE.hooks.resolve('intake', {email:'not-an-email', phone:'12'})"), null);
+  assert.equal(suppressionLookups(noid).length, 0, 'no lookup without a usable identity');
+  await noid.close();
+});
+
+test('H1 (browser): replacing window.EE_RUNTIME after load cannot inject a clearing endpoint; outbound.allowed() validates the runtime tenant', { skip }, async () => {
+  const page = await open('nil', '/spine/index.html');
+  await ee(page, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  await ee(page, `(function(){ try { window.EE_RUNTIME = { tenant_id: 'NIL', hooks: { intake: '${FAKE}/evil' }, suppression_endpoint: '${FAKE}/suppression/evil' }; } catch (e) {} })()`);
+  assert.equal(await ee(page, `EE.hooks.resolve('intake', ${QA_ID})`), `${FAKE}/nil-intake`, 'the runtime captured at init is the only one used');
+  assert.equal(suppressionLookups(page)[0].url, `${FAKE}/suppression/nil`);
+  await page.close();
+  const mismatch = await open('nil', '/f10-mismatch.html');
+  await ee(mismatch, "EE.safety.consent.record({surface:'t',consent_text_id:'T'})");
+  assert.match(await ee(mismatch, `EE.outbound.allowed(${QA_ID}).reason`), /runtime tenant mismatch: LFMA/);
+  assert.equal(await ee(mismatch, `EE.outbound.check(${QA_ID}).then(function(g){ return g.allowed; })`), false);
+  assert.equal(suppressionLookups(mismatch).length, 0, 'a mismatched runtime\'s endpoint is never called');
+  await mismatch.close();
 });
 
 test('browser harness never contacted anything but the local origin and the intercepted hook hosts', { skip }, async () => {

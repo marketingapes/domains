@@ -111,16 +111,16 @@ test('no raw hook/webhook URL anywhere in the tracked repository (delegates to t
 
 test('every former hook call site resolves its hook by name and fails closed when unconfigured', () => {
   const expect = {
-    'nil/index.html': "hooks.url('intake'",
-    'btl/index.html': "hooks.url('lead'",
-    'btl/rhode-island-abuse/index.html': "hooks.url('lead'",
+    'nil/index.html': "hooks.resolve('intake'",
+    'btl/index.html': "hooks.resolve('lead'",
+    'btl/rhode-island-abuse/index.html': "hooks.resolve('lead'",
     'btl/404.html': "HOOK_NAME: 'campaign_request'",
-    'dihac/contact.html': "hooks.url('contact'",
-    'dihac/assets/js/tracking.js': "hooks.url('tracking')",
-    'lfma/engine/index.html': "hooks.url('order'",
-    'lfma/campaign/index.html': 'hooks.url("order"',
-    'lfma/contact.html': "hooks.url('order'",
-    'ma/order/index.html': "hooks.url('order'",
+    'dihac/contact.html': "hooks.resolve('contact'",
+    'dihac/assets/js/tracking.js': "hooks.resolve('tracking'",
+    'lfma/engine/index.html': "hooks.resolve('order'",
+    'lfma/campaign/index.html': 'hooks.resolve("order"',
+    'lfma/contact.html': "hooks.resolve('order'",
+    'ma/order/index.html': "hooks.resolve('order'",
     'lee/index.html': 'r.hooks.order'
   };
   for (const [f, needle] of Object.entries(expect)) {
@@ -141,7 +141,7 @@ function browser({ site, runtime, dataLayer = [] }) {
     location: { href: 'https://x.test/', search: '', pathname: '/', hostname: 'x.test', origin: 'https://x.test' },
     sessionStorage: { getItem: () => null, setItem() {} }, localStorage: { getItem: () => null, setItem() {} },
     crypto: { randomUUID: () => crypto.randomUUID(), getRandomValues: a => crypto.getRandomValues(a) },
-    fetch: (url, init) => { calls.push({ url, init }); return Promise.resolve({ ok: true }); },
+    fetch: (url, init) => { calls.push({ url, init }); if (url === 'https://engine.invalid.test/suppression') return Promise.resolve({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => ({ checked: true, suppressed: false, source: 'test-authority' }) }); return Promise.resolve({ ok: true }); },
     URLSearchParams
   };
   const d = { referrer: '', querySelector: () => null, getElementById: () => null };
@@ -153,36 +153,39 @@ function browser({ site, runtime, dataLayer = [] }) {
 const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', production_gate: 'live', kill_switch: 'OFF', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 
 test('EE.hooks resolves by name from EE_RUNTIME only (tenant-matched), through the outbound gate, and an unconfigured hook fails closed', async () => {
-  const consent = EE => { EE.safety.suppression.use(() => ({ suppressed: false })); return EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' }); };
+  const SUPP = 'https://engine.invalid.test/suppression', ID = { email: 'qa@example.test' };
+  const consent = EE => EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' });
   const none = browser({ site: SITE, runtime: undefined }); consent(none.EE);
-  assert.equal(none.EE.hooks.url('intake'), null);
+  assert.equal(none.EE.hooks.url('intake', ID), null);
   assert.equal(none.EE.hooks.configured('intake'), false);
-  await assert.rejects(none.EE.hooks.post('intake', { a: 1 }), e => e.name === 'OutboundBlocked' && /runtime not loaded/.test(e.message));
+  await assert.rejects(none.EE.hooks.post('intake', { a: 1 }, { identity: ID }), e => e.name === 'OutboundBlocked' && /runtime not loaded/.test(e.message));
   assert.equal(none.calls.length, 0, 'nothing was sent');
 
-  const empty = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: {} } }); consent(empty.EE);
-  await assert.rejects(empty.EE.hooks.post('intake', { a: 1 }), e => e.name === 'HookMissing');
+  const empty = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: {}, suppression_endpoint: SUPP } }); consent(empty.EE);
+  await assert.rejects(empty.EE.hooks.post('intake', { a: 1 }, { identity: ID }), e => e.name === 'HookMissing');
   assert.equal(empty.dl.at(-1).event, 'ee_hook_missing'); assert.equal(empty.dl.at(-1).hook, 'intake');
 
-  const bad = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'http://insecure.example/x' } } }); consent(bad.EE);
-  assert.equal(bad.EE.hooks.url('intake'), null, 'non-https hook is refused');
+  const bad = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'http://insecure.example/x' }, suppression_endpoint: SUPP } }); consent(bad.EE);
+  assert.equal(await bad.EE.hooks.resolve('intake', ID), null, 'non-https hook is refused');
 
-  const ok = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' } } });
-  assert.equal(ok.EE.hooks.url('intake'), null, 'no consent => gated');
+  const ok = browser({ site: SITE, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' }, suppression_endpoint: SUPP } });
+  assert.equal(await ok.EE.hooks.resolve('intake', ID), null, 'no consent => gated');
   consent(ok.EE);
-  assert.equal(ok.EE.hooks.url('intake'), 'https://example.test/hook');
-  await ok.EE.hooks.post('intake', { lead_id: 'L1' });
-  assert.equal(ok.calls.length, 1);
-  assert.equal(ok.calls[0].url, 'https://example.test/hook');
-  const body = JSON.parse(ok.calls[0].init.body);
+  assert.equal(ok.EE.hooks.url('intake', ID), null, 'sync url() before the authoritative check => gated');
+  assert.equal(await ok.EE.hooks.resolve('intake', ID), 'https://example.test/hook');
+  await ok.EE.hooks.post('intake', { lead_id: 'L1' }, { identity: ID });
+  const sends = ok.calls.filter(c => c.url !== SUPP);
+  assert.equal(sends.length, 1);
+  assert.equal(sends[0].url, 'https://example.test/hook');
+  const body = JSON.parse(sends[0].init.body);
   assert.equal(body.tenant_id, 'NIL'); assert.equal(body.domain_id, 'nearestinjurylawyers.com'); assert.equal(body.lead_id, 'L1');
   assert.equal('campaign_id' in body, false, 'campaign stays absent when none exists');
   assert.equal(ok.EE.context.campaign_id, null);
 });
 
 test('kill switch ON blocks hook posts', async () => {
-  const b = browser({ site: { ...SITE, kill_switch: 'ON' }, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' } } });
-  await assert.rejects(b.EE.hooks.post('intake', {}), e => e.name === 'OutboundBlocked' && /kill_switch ON/.test(e.message));
+  const b = browser({ site: { ...SITE, kill_switch: 'ON' }, runtime: { tenant_id: 'NIL', hooks: { intake: 'https://example.test/hook' }, suppression_endpoint: 'https://engine.invalid.test/suppression' } });
+  await assert.rejects(b.EE.hooks.post('intake', {}, { identity: { email: 'qa@example.test' } }), e => e.name === 'OutboundBlocked' && /kill_switch ON/.test(e.message));
   assert.equal(b.calls.length, 0);
 });
 

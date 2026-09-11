@@ -21,92 +21,107 @@ const BASE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', producti
 const CONNECTED = { ...BASE, consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
 const NOT_CONNECTED = ['MISSING', 'NEEDS_AUTH', 'UNKNOWN', 'NOT_APPLICABLE', undefined, null, '', 'verified', 'ON', 'true'];
 
-function boot(site, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, order: HOOK } }) {
-  const calls = [];
+const SUPP = 'https://engine.invalid.test/suppression';
+const ID = { email: 'qa@example.test', phone: '4015550100' };
+const jsonRes = body => ({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => body });
+// `supp` is what the AUTHORITATIVE endpoint answers: an object => JSON body; 'reject' => network failure; 'http500'; 'text'.
+function boot(site, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, order: HOOK }, suppression_endpoint: SUPP }, supp = { checked: true, suppressed: false, source: 'test-authority' }) {
+  const calls = [], lookups = [];
   const storage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
   const w = { EE_SITE: site, EE_RUNTIME: runtime, dataLayer: [], location: { href: 'https://x.test/', search: '', pathname: '/' }, sessionStorage: storage(), localStorage: storage(),
-    console: { warn() {} }, crypto: { randomUUID: () => crypto.randomUUID(), getRandomValues: a => crypto.getRandomValues(a) }, fetch: (url, init) => { calls.push({ url, init }); return Promise.resolve({ ok: true }); }, URLSearchParams };
+    console: { warn() {} }, crypto: { randomUUID: () => crypto.randomUUID(), getRandomValues: a => crypto.getRandomValues(a) }, URLSearchParams,
+    fetch: (url, init) => {
+      if (url === SUPP) {
+        lookups.push(JSON.parse(init.body));
+        if (supp === 'reject') return Promise.reject(new Error('lookup failed'));
+        if (supp === 'http500') return Promise.resolve({ ok: false, status: 500, headers: { get: () => 'application/json' }, json: async () => ({}) });
+        if (supp === 'text') return Promise.resolve({ ok: true, status: 200, headers: { get: () => 'text/html' }, json: async () => { throw new Error('not json'); } });
+        return Promise.resolve(jsonRes(supp));
+      }
+      calls.push({ url, init }); return Promise.resolve({ ok: true });
+    } };
   const d = { referrer: '', querySelector: () => null, getElementById: () => null };
-  const ctx = vm.createContext({ window: w, document: d, Uint32Array, URLSearchParams, Date, Math, Object, String, Error, JSON, RegExp, Promise });
+  const ctx = vm.createContext({ window: w, document: d, Uint32Array, URLSearchParams, Date, Math, Object, String, Error, JSON, RegExp, Promise, setTimeout, clearTimeout });
   vm.runInContext(read('shared/ee/bootstrap.js'), ctx);
-  return { EE: w.EE, dl: w.dataLayer, calls, run: src => vm.runInContext(src, ctx) };
+  return { EE: w.EE, dl: w.dataLayer, calls, lookups, w, run: src => vm.runInContext(src, ctx) };
 }
 const record = EE => EE.safety.consent.record({ surface: 'form', consent_text_id: 'T-1', method: 'checkbox' });
 
-// ================================================================= G4 — fail-closed safety contract
-test('G4: with a CONNECTED consent store + suppression source, the gate opens only after evidence AND a completed clear check', () => {
+// ================================================================= G4 — fail-closed safety contract (authoritative suppression)
+test('G4: with CONNECTED stores, the gate opens only after evidence AND a completed AUTHORITATIVE clear check for the identity', async () => {
   const b = boot(CONNECTED);
-  assert.equal(b.EE.hooks.url('intake'), null); assert.equal(b.EE.hooks.why('intake'), 'no consent evidence recorded');
+  assert.equal(b.EE.hooks.url('intake', ID), null); assert.equal(b.EE.hooks.why('intake'), 'no consent evidence recorded');
   record(b.EE);
-  assert.equal(b.EE.hooks.url('intake'), null); assert.equal(b.EE.hooks.why('intake'), 'suppression check did not complete');
-  b.EE.safety.suppression.use(() => ({ suppressed: true }));
-  assert.equal(b.EE.hooks.url('intake'), null); assert.equal(b.EE.hooks.why('intake'), 'suppressed');
-  b.EE.safety.suppression.use(() => { throw new Error('source down'); });
-  assert.equal(b.EE.hooks.url('intake'), null, 'a failing suppression source fails closed');
-  b.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(b.EE.hooks.url('intake'), HOOK);
-  const g = b.EE.outbound.allowed({});
-  assert.equal(g.allowed, true); assert.equal(g.consent_store, 'VERIFIED'); assert.equal(g.suppression, 'checked:VERIFIED');
+  assert.equal(b.EE.hooks.url('intake', ID), null); assert.equal(b.EE.hooks.why('intake'), 'authoritative suppression check not performed');
+  assert.equal(await b.EE.hooks.resolve('intake', ID), HOOK);
+  assert.equal(b.lookups.length, 1); assert.equal(b.lookups[0].tenant_id, 'NIL'); assert.equal(b.lookups[0].identity.email, 'qa@example.test');
+  const g = b.EE.outbound.allowed(ID);
+  assert.equal(g.allowed, true); assert.equal(g.consent_store, 'VERIFIED'); assert.equal(g.suppression, 'authoritative:VERIFIED');
+  const hit = boot(CONNECTED, undefined, { checked: true, suppressed: true, source: 'test-authority' }); record(hit.EE);
+  assert.equal(await hit.EE.hooks.resolve('intake', ID), null); assert.equal(hit.EE.hooks.why('intake'), 'suppressed');
+  const down = boot(CONNECTED, undefined, 'reject'); record(down.EE);
+  assert.equal(await down.EE.hooks.resolve('intake', ID), null, 'a failing authoritative source fails closed');
 });
 
 for (const cs of NOT_CONNECTED) {
-  test(`G4 adversarial: consent_store=${JSON.stringify(cs)} — page JS calling consent.record() (repeatedly) never opens the gate`, () => {
+  test(`G4 adversarial: consent_store=${JSON.stringify(cs)} — page JS calling consent.record() (repeatedly) never opens the gate`, async () => {
     const b = boot({ ...CONNECTED, consent_store: cs });
-    b.EE.safety.suppression.use(() => ({ suppressed: false }));
     for (let i = 0; i < 5; i++) record(b.EE);
     assert.equal(b.EE.safety.consent.state(), 'recorded', 'evidence is recorded locally');
-    assert.equal(b.EE.hooks.url('intake'), null);
+    assert.equal(await b.EE.hooks.resolve('intake', ID), null);
     assert.match(b.EE.hooks.why('intake'), /^consent store not connected: /);
-    assert.equal(b.EE.outbound.allowed({}).allowed, false);
+    assert.equal(b.EE.outbound.allowed(ID).allowed, false);
     assert.equal(b.calls.length, 0);
   });
 }
 for (const ss of NOT_CONNECTED) {
-  test(`G4 adversarial: suppression_source=${JSON.stringify(ss)} — a page-registered clearing checker never opens the gate`, () => {
+  test(`G4 adversarial: suppression_source=${JSON.stringify(ss)} — even a clearing authoritative answer never opens the gate`, async () => {
     const b = boot({ ...CONNECTED, suppression_source: ss });
     record(b.EE);
-    b.EE.safety.suppression.use(() => ({ checked: true, suppressed: false, source: 'page-claims-authority' }));
-    assert.equal(b.EE.hooks.url('intake'), null);
+    assert.equal(await b.EE.hooks.resolve('intake', ID), null);
     assert.match(b.EE.hooks.why('intake'), /^suppression source not connected: /);
-    assert.equal(b.EE.outbound.allowed({}).allowed, false);
+    assert.equal(b.lookups.length, 0, 'no lookup is even attempted');
+    assert.equal(b.EE.outbound.allowed(ID).allowed, false);
   });
 }
 
-test('G4 adversarial: NOT_APPLICABLE is not an exemption for consent or suppression', () => {
-  const a = boot({ ...CONNECTED, consent_store: 'NOT_APPLICABLE' }); record(a.EE); a.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(a.EE.hooks.url('intake'), null); assert.equal(a.EE.hooks.why('intake'), 'consent store not connected: NOT_APPLICABLE');
-  const s = boot({ ...CONNECTED, suppression_source: 'NOT_APPLICABLE' }); record(s.EE); s.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(s.EE.hooks.url('intake'), null); assert.equal(s.EE.hooks.why('intake'), 'suppression source not connected: NOT_APPLICABLE');
+test('G4 adversarial: NOT_APPLICABLE is not an exemption for consent or suppression', async () => {
+  const a = boot({ ...CONNECTED, consent_store: 'NOT_APPLICABLE' }); record(a.EE);
+  assert.equal(await a.EE.hooks.resolve('intake', ID), null); assert.equal(a.EE.hooks.why('intake'), 'consent store not connected: NOT_APPLICABLE');
+  const s = boot({ ...CONNECTED, suppression_source: 'NOT_APPLICABLE' }); record(s.EE);
+  assert.equal(await s.EE.hooks.resolve('intake', ID), null); assert.equal(s.EE.hooks.why('intake'), 'suppression source not connected: NOT_APPLICABLE');
 });
 
-test('G4 adversarial: page JS cannot promote the store/source or forge the gate after load', () => {
+test('G4 adversarial: page JS cannot promote the store/source or forge the gate after load', async () => {
   const b = boot({ ...CONNECTED, consent_store: 'MISSING', suppression_source: 'MISSING' });
-  record(b.EE); b.EE.safety.suppression.use(() => ({ suppressed: false }));
+  record(b.EE);
   for (const attack of [
     "try { window.EE.safety.consent.store = 'VERIFIED'; } catch (e) {}",
     "try { window.EE.safety.suppression.source = 'VERIFIED'; } catch (e) {}",
     "try { window.EE.outbound.allowed = function(){ return { allowed: true }; }; } catch (e) {}",
     "try { window.EE.hooks.url = function(){ return 'https://evil.test/x'; }; } catch (e) {}",
+    "try { window.EE.hooks.resolve = function(){ return Promise.resolve('https://evil.test/x'); }; } catch (e) {}",
     "try { Object.defineProperty(window.EE.safety.consent, 'store', { value: 'VERIFIED' }); } catch (e) {}",
     "try { window.EE_SITE.consent_store = 'VERIFIED'; window.EE_SITE.suppression_source = 'VERIFIED'; } catch (e) {}",
     "try { window.EE = { hooks: { url: function(){ return 'https://evil.test/x'; } }, __stocked: true }; } catch (e) {}"
   ]) b.run(attack);
   assert.equal(b.EE.safety.consent.store, 'MISSING'); assert.equal(b.EE.safety.suppression.source, 'MISSING');
-  assert.equal(b.run("window.EE.hooks.url('intake')"), null);
-  assert.equal(b.run("window.EE.outbound.allowed({}).allowed"), false);
+  assert.equal(await b.run("window.EE.hooks.resolve('intake', {email:'qa@example.test'})"), null);
+  assert.equal(b.run("window.EE.outbound.allowed({email:'qa@example.test'}).allowed"), false);
   assert.equal(b.calls.length, 0);
 });
 
-test('G4: kill switch must be exactly OFF, gate live and runtime tenant-matched even with a connected spine', () => {
+test('G4: kill switch must be exactly OFF, gate live and runtime tenant-matched even with a connected spine', async () => {
   for (const site of [{ ...CONNECTED, kill_switch: 'ON' }, { ...CONNECTED, kill_switch: 'off ' }, { ...CONNECTED, kill_switch: undefined }, { ...CONNECTED, production_gate: 'preview' }]) {
-    const b = boot(site); record(b.EE); b.EE.safety.suppression.use(() => ({ suppressed: false }));
-    assert.equal(b.EE.hooks.url('intake'), null, JSON.stringify(site));
+    const b = boot(site); record(b.EE);
+    assert.equal(await b.EE.hooks.resolve('intake', ID), null, JSON.stringify(site));
   }
-  const rt = boot(CONNECTED, { tenant_id: 'LFMA', hooks: { intake: HOOK } }); record(rt.EE); rt.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(rt.EE.hooks.url('intake'), null); assert.match(rt.EE.hooks.why('intake'), /runtime tenant mismatch/);
+  const rt = boot(CONNECTED, { tenant_id: 'LFMA', hooks: { intake: HOOK }, suppression_endpoint: SUPP }); record(rt.EE);
+  assert.equal(await rt.EE.hooks.resolve('intake', ID), null); assert.match(rt.EE.hooks.why('intake'), /runtime tenant mismatch/);
+  assert.equal(rt.lookups.length, 0, 'a mismatched runtime\'s endpoint is never called');
 });
 
-test('G4: every REAL tenant config in this tree fails closed today (no connected safety spine anywhere)', () => {
+test('G4: every REAL tenant config in this tree fails closed today (no connected safety spine anywhere)', async () => {
   const report = JSON.parse(read('stocking/report.json'));
   for (const t of report.tenants.canonical) {
     const site = JSON.parse(read(`${t.toLowerCase()}/ee/site.json`));
@@ -114,9 +129,9 @@ test('G4: every REAL tenant config in this tree fails closed today (no connected
     assert.ok(!['VERIFIED', 'CURRENT'].includes(cs) || !['VERIFIED', 'CURRENT'].includes(ss), `${t} declares a connected spine`);
     const home = read(`${t.toLowerCase()}/index.html`);
     const cfg = JSON.parse(home.match(/window\.EE_SITE=Object\.freeze\((\{.*?\})\);<\/script>/)[1]);
-    const b = boot(cfg, { tenant_id: t, hooks: { intake: HOOK, order: HOOK, lead: HOOK, contact: HOOK } });
-    record(b.EE); b.EE.safety.suppression.use(() => ({ suppressed: false }));
-    for (const name of ['intake', 'order', 'lead', 'contact']) assert.equal(b.EE.hooks.url(name), null, `${t}/${name} must be blocked`);
+    const b = boot(cfg, { tenant_id: t, hooks: { intake: HOOK, order: HOOK, lead: HOOK, contact: HOOK }, suppression_endpoint: SUPP });
+    record(b.EE);
+    for (const name of ['intake', 'order', 'lead', 'contact']) assert.equal(await b.EE.hooks.resolve(name, ID), null, `${t}/${name} must be blocked`);
   }
 });
 

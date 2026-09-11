@@ -588,7 +588,7 @@
 
   <script>
     /* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_MA_ORDER); never stored here. */
-    function orderHook(identity){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return null; ee.safety.consent.record({ surface: 'ma_order_form', consent_text_id: 'MA_ORDER_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' }); return ee.hooks.url('order', identity); }
+    function orderHook(identity){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return Promise.resolve(null); ee.safety.consent.record({ surface: 'ma_order_form', consent_text_id: 'MA_ORDER_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' }); return ee.hooks.resolve('order', identity); }
     window.dataLayer = window.dataLayer || [];
     document.getElementById('year').textContent = new Date().getFullYear();
     document.querySelectorAll('.cta').forEach(function(el){
@@ -607,13 +607,14 @@
       data.tenant_id = EE_TENANT.tenant_id;
       var btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
       document.getElementById('err').style.display = 'none';
-      var hook = orderHook({ email: data.email, phone: data.phone }); if (!hook) { btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; return; }
-      fetch(hook, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
+      orderHook({ email: data.email, phone: data.phone }).then(function(hook){
+        if (!hook) { btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; return; }
+        return fetch(hook, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
         .then(function(){
           window.dataLayer.push({event:'ee_order_submit',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,product:data.product,value:Number(data.price_usd||0),currency:'USD',case_types:data.case_types,states:data.states,landing_page_url:location.href});
           form.style.display = 'none'; document.getElementById('thanks').style.display = 'block';
           document.getElementById('thanks').scrollIntoView({behavior:'smooth'});
-        })
+        }); })
         .catch(function(){ btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; });
     });
   </script>

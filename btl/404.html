@@ -270,8 +270,8 @@
       CENTER_CODE: 'btl_404'
     };
 
-    function cpHookUrl(){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return null; if (cpContactData.phone && ee.safety.consent.state() !== 'recorded') { ee.safety.consent.record({ surface: 'btl_404_chat', consent_text_id: 'BTL_404_BY_PROVIDING_NUMBER_V1', method: 'by-providing-number' }); } return ee.hooks.url(CONFIG.HOOK_NAME, { phone: cpContactData.phone, email: cpContactData.email }); }
-    function cpSend(payload){ var u=cpHookUrl(); if(!u){ return; } fetch(u, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload) }).catch(function(){}); }
+    function cpHookUrl(){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return null; if (cpContactData.phone && ee.safety.consent.state() !== 'recorded') { ee.safety.consent.record({ surface: 'btl_404_chat', consent_text_id: 'BTL_404_BY_PROVIDING_NUMBER_V1', method: 'by-providing-number' }); } return ee.hooks.resolve(CONFIG.HOOK_NAME, { phone: cpContactData.phone, email: cpContactData.email }); }
+    function cpSend(payload){ Promise.resolve(cpHookUrl()).then(function(u){ if(!u){ return; } return fetch(u, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload) }); }).catch(function(){}); }
 
     /* ── Utilities ── */
     function getUrlParams() {

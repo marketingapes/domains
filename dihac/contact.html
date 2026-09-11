@@ -276,7 +276,7 @@
       function sendDirect(payload) {
         var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
         if (ee) ee.safety.consent.record({ surface: 'dihac_contact_form', consent_text_id: 'DIHAC_CONTACT_PRIVACY_BY_SUBMIT_V1', method: 'by-clicking-submit' });
-        var hook = ee ? ee.hooks.url('contact', { email: payload.email, phone: payload.phone }) : null;
+        Promise.resolve(ee ? ee.hooks.resolve('contact', { email: payload.email, phone: payload.phone }) : null).then(function (hook) {
         if (!hook) {
           btn.disabled = false;
           btn.textContent = 'Send Message';
@@ -298,6 +298,7 @@
           btn.disabled = false;
           btn.textContent = 'Send Message';
           alert('Something went wrong. Please try again or call us directly.');
+        });
         });
       }
     })();

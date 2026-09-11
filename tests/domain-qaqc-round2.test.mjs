@@ -21,12 +21,14 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const read = p => fs.readFileSync(path.join(ROOT, p), 'utf8');
 // A CONNECTED safety spine (consent store + suppression source VERIFIED) — the only configuration in which the gate can open.
 const SITE = { tenant_id: 'NIL', domain_id: 'nearestinjurylawyers.com', brand: 'Nearest Injury Lawyers', production_gate: 'live', kill_switch: 'OFF', kill_switch_source: 'MISSING', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' };
-const clear = EE => EE.safety.suppression.use(() => ({ suppressed: false }));
 const HOOK = 'https://hooks.invalid.test/nil-intake';
+const SUPP = 'https://engine.invalid.test/suppression';
+const ID = { email: 'qa@example.test', phone: '4015550100' };
+const jsonRes = body => ({ ok: true, status: 200, headers: { get: () => 'application/json' }, json: async () => body });
 
 const NO_SITE = Symbol('no EE_SITE');
 const NO_RUNTIME = Symbol('no EE_RUNTIME');
-function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, tracking: HOOK } }, dataLayer = [], preEE = null, scripts = [] } = {}) {
+function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: HOOK, tracking: HOOK }, suppression_endpoint: SUPP }, dataLayer = [], preEE = null, scripts = [], supp = { checked: true, suppressed: false, source: 'test-authority' } } = {}) {
   const calls = [];
   const storage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)) }; };
   const w = {
@@ -34,7 +36,7 @@ function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: H
     sessionStorage: storage(), localStorage: storage(), navigator: { userAgent: 'test', language: 'en', sendBeacon: (u, b) => { calls.push({ url: u, beacon: true }); return true; } },
     screen: { width: 1, height: 1 }, console: { warn() {}, log() {} }, addEventListener() {}, removeEventListener() {}, pageYOffset: 0,
     crypto: { randomUUID: () => crypto.randomUUID(), getRandomValues: a => crypto.getRandomValues(a) },
-    fetch: (url, init) => { calls.push({ url, init }); return Promise.resolve({ ok: true }); }, URLSearchParams
+    fetch: (url, init) => { if (url === SUPP) return Promise.resolve(jsonRes(supp)); calls.push({ url, init }); return Promise.resolve({ ok: true }); }, URLSearchParams
   };
   if (site !== NO_SITE) w.EE_SITE = site;
   if (runtime !== NO_RUNTIME) w.EE_RUNTIME = runtime;
@@ -45,27 +47,25 @@ function browser({ site = SITE, runtime = { tenant_id: 'NIL', hooks: { intake: H
   return { w, EE: w.EE, dl: w.dataLayer, calls, run: src => vm.runInContext(src, ctx) };
 }
 const stocked = opts => browser({ ...opts, scripts: ['shared/ee/bootstrap.js', ...(opts?.scripts || [])] });
-const consent = EE => { clear(EE); return EE.safety.consent.record({ surface: 'test', consent_text_id: 'T-1' }); };
+const consent = EE => EE.safety.consent.record({ surface: 'test', consent_text_id: 'T-1' });
+const cleared = async EE => { consent(EE); await EE.outbound.check(ID); };
 
 // ---------------------------------------------------------------- F6: the gate controls every send
-test('F6: hooks.url() is gated — no URL without live gate + consent + known suppression truth + kill switch OFF', () => {
+test('F6: hooks.resolve() is gated — no URL without live gate + consent + AUTHORITATIVE clear suppression + kill switch OFF', async () => {
   const b = stocked();
   assert.equal(b.EE.hooks.configured('intake'), true, 'runtime carries the hook');
-  assert.equal(b.EE.hooks.url('intake'), null, 'no consent => no URL');
+  assert.equal(b.EE.hooks.url('intake', ID), null, 'no consent => no URL');
   assert.equal(b.EE.hooks.why('intake'), 'no consent evidence recorded');
   assert.equal(b.dl.at(-1).event, 'ee_outbound_blocked');
   consent(b.EE);
-  assert.equal(b.EE.hooks.url('intake'), HOOK, 'connected consent store + evidence recorded + connected suppression source + clear check => URL');
-  const preview = stocked({ site: { ...SITE, production_gate: 'preview' } }); consent(preview.EE);
-  assert.equal(preview.EE.hooks.url('intake'), null); assert.equal(preview.EE.hooks.why('intake'), 'production_gate preview');
-  const unknownSupp = stocked({ site: { ...SITE, suppression_source: undefined } }); consent(unknownSupp.EE);
-  assert.equal(unknownSupp.EE.hooks.url('intake'), null); assert.equal(unknownSupp.EE.hooks.why('intake'), 'suppression source not connected: UNKNOWN');
-  const declared = stocked({ site: { ...SITE, suppression_source: 'VERIFIED' } }); declared.EE.safety.consent.record({ surface: 't', consent_text_id: 'T' });
-  assert.equal(declared.EE.hooks.url('intake'), null, 'a VERIFIED suppression source with no check run fails closed');
-  declared.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(declared.EE.hooks.url('intake'), HOOK, 'check ran => allowed');
-  declared.EE.safety.suppression.use(() => ({ suppressed: true }));
-  assert.equal(declared.EE.hooks.url('intake'), null); assert.equal(declared.EE.hooks.why('intake'), 'suppressed');
+  assert.equal(b.EE.hooks.url('intake', ID), null, 'consent alone: the authoritative suppression check has not been performed');
+  assert.equal(await b.EE.hooks.resolve('intake', ID), HOOK, 'connected stores + evidence + authoritative clear => URL');
+  const preview = stocked({ site: { ...SITE, production_gate: 'preview' } }); await cleared(preview.EE);
+  assert.equal(preview.EE.hooks.url('intake', ID), null); assert.equal(preview.EE.hooks.why('intake'), 'production_gate preview');
+  const unknownSupp = stocked({ site: { ...SITE, suppression_source: undefined } }); await cleared(unknownSupp.EE);
+  assert.equal(unknownSupp.EE.hooks.url('intake', ID), null); assert.equal(unknownSupp.EE.hooks.why('intake'), 'suppression source not connected: UNKNOWN');
+  const hit = stocked({ supp: { checked: true, suppressed: true, source: 'test-authority' } }); await cleared(hit.EE);
+  assert.equal(hit.EE.hooks.url('intake', ID), null); assert.equal(hit.EE.hooks.why('intake'), 'suppressed');
 });
 
 test('F6: kill switch ON (canonical or tripped) blocks hooks.url(), hooks.post(), mounts and dataLayer pushes', async () => {
@@ -75,23 +75,26 @@ test('F6: kill switch ON (canonical or tripped) blocks hooks.url(), hooks.post()
   assert.equal(on.EE.hooks.url('intake'), null); assert.match(on.EE.hooks.why('intake'), /kill_switch ON/);
   await assert.rejects(on.EE.hooks.post('intake', { a: 1 }), e => e.name === 'OutboundBlocked');
   assert.equal(on.calls.length, 0);
-  const tripped = stocked(); consent(tripped.EE);
-  assert.equal(tripped.EE.hooks.url('intake'), HOOK);
+  const tripped = stocked(); await cleared(tripped.EE);
+  assert.equal(tripped.EE.hooks.url('intake', ID), HOOK);
   tripped.EE.safety.killSwitch.trip('incident');
-  assert.equal(tripped.EE.hooks.url('intake'), null); assert.equal(tripped.EE.experience.mount({ id: 'x', render() {} }).mounted, false);
+  assert.equal(tripped.EE.hooks.url('intake', ID), null); assert.equal(tripped.EE.experience.mount({ id: 'x', render() {} }).mounted, false);
   const unknown = stocked({ site: { ...SITE, kill_switch: 'maybe' } });
   assert.equal(unknown.EE.safety.killSwitch.state(), 'UNKNOWN'); assert.equal(unknown.dl.length, 0, 'unknown kill-switch truth fails closed');
 });
 
-test('F6: the legacy tracking helper cannot send without the gate (no bootstrap => no send; bootstrap => gated)', () => {
+test('F6: the legacy tracking helper cannot send without the gate (no bootstrap => no send; bootstrap => gated, identity required)', async () => {
+  const tick = () => new Promise(r => setTimeout(r, 5));
   const legacyOnly = browser({ scripts: ['dihac/assets/js/tracking.js'] });
-  legacyOnly.EE.sendToWebhook('cta_click', '', {}, {});
+  legacyOnly.EE.sendToWebhook('cta_click', '', ID, {}); await tick();
   assert.equal(legacyOnly.calls.length, 0, 'legacy-only page never sends');
   const both = stocked({ scripts: ['dihac/assets/js/tracking.js'] });
-  both.EE.legacy.sendToWebhook('cta_click', '', {}, {});
+  both.EE.legacy.sendToWebhook('cta_click', '', ID, {}); await tick();
   assert.equal(both.calls.length, 0, 'blocked before consent');
   consent(both.EE);
-  both.EE.legacy.sendToWebhook('cta_click', '', {}, {});
+  both.EE.legacy.sendToWebhook('cta_click', '', {}, {}); await tick();
+  assert.equal(both.calls.length, 0, 'no identity => no authoritative check => no send');
+  both.EE.legacy.sendToWebhook('cta_click', '', ID, {}); await tick();
   assert.equal(both.calls.length, 1); assert.equal(both.calls[0].url, HOOK);
 });
 
@@ -120,14 +123,14 @@ test('F10: missing or invalid EE_SITE fails closed — nothing emitted, no hooks
   }
 });
 
-test('F10: a runtime built for another tenant is never trusted; a missing runtime fails closed', () => {
+test('F10: a runtime built for another tenant is never trusted; a missing runtime fails closed', async () => {
   const b = stocked({ runtime: { tenant_id: 'LFMA', hooks: { intake: HOOK } } }); consent(b.EE);
   assert.equal(b.EE.hooks.configured('intake'), false);
   assert.equal(b.EE.hooks.url('intake'), null); assert.match(b.EE.hooks.why('intake'), /runtime tenant mismatch: LFMA/);
   assert.ok(b.dl.some(e => e.event === 'ee_runtime_mismatch' && e.runtime_tenant === 'LFMA'));
   const none = stocked({ runtime: NO_RUNTIME }); consent(none.EE);
   assert.equal(none.EE.hooks.url('intake'), null); assert.equal(none.EE.hooks.why('intake'), 'runtime not loaded');
-  const ok = stocked(); consent(ok.EE); assert.equal(ok.EE.hooks.url('intake'), HOOK);
+  const ok = stocked(); await cleared(ok.EE); assert.equal(ok.EE.hooks.url('intake', ID), HOOK);
 });
 
 // ---------------------------------------------------------------- F3 / F1: legacy API coexistence
@@ -157,7 +160,7 @@ test('F1: tracking.js loaded BEFORE the bootstrap (LFMA order) is preserved unde
 test('F1: the LFMA brief adapter resolves a function endpoint at submit and fails closed on null', async () => {
   const mod = await import('../lfma/assets/lfma-brief-adapter.mjs');
   const src = read('lfma/assets/lfma-brief-adapter.mjs');
-  assert.match(src, /typeof endpoint === 'function' \? endpoint\(\) : endpoint/);
+  assert.match(src, /typeof endpoint === 'function' \? await endpoint\(\) : endpoint/);
   assert.match(read('lfma/campaign/index.html'), /endpoint: hookUrl, sourceUrl/);
   assert.match(read('lfma/campaign/index.html'), /addEventListener\('submit', function \(\) \{[\s\S]*consent\.record\([\s\S]*\}, true\);/, 'consent recorded in capture phase');
   assert.equal(typeof mod.bindLfmaBrief, 'function');
@@ -185,7 +188,7 @@ test('every form records consent evidence before resolving its gated hook, and n
     const text = read(f);
     assert.ok(text.includes(needle), `${f} records consent (${needle})`);
     assert.doesNotMatch(text, /track\('ee_hook_missing'/, `${f} leaves blocked/missing events to the bootstrap`);
-    assert.match(text, /hooks\.url\(/, `${f} resolves through the gate`);
+    assert.match(text, /hooks\.(resolve|url)\(/, `${f} resolves through the gate`);
   }
   for (const f of ['lfma/contact.html', 'lfma/engine/index.html', 'lfma/campaign/index.html', 'ma/order/index.html']) assert.match(read(f), /class="ee-consent-note"/, `${f} shows the consent text it records`);
 });

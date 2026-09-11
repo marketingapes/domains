@@ -7,6 +7,7 @@
     "scan": "node tools/scan-secrets.mjs",
     "verify": "python3 tools/verify-foundation.py",
     "stock": "node tools/stock-domains.mjs",
-    "check": "node tools/stock-domains.mjs --check && node tools/scan-secrets.mjs && python3 tools/verify-foundation.py && npm test"
+    "check": "node tools/stock-domains.mjs --check && node tools/scan-secrets.mjs && python3 tools/verify-foundation.py && npm test",
+    "check:strict": "EE_REQUIRE_CHROME=1 npm run check"
   }
 }

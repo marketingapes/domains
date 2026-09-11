@@ -9,7 +9,7 @@
 
   // Hook URL is a secret: only the stocked bootstrap can hand one out, and only through its outbound gate
   // (kill switch, production gate, consent evidence, suppression truth, runtime tenant match). No bootstrap => no send.
-  function hookUrl() { var ee = window.EE; return (ee && ee.__stocked && ee.hooks) ? (ee.hooks.url('tracking') || '') : ''; }
+  function hookUrl(identity) { var ee = window.EE; return (ee && ee.__stocked && ee.hooks) ? ee.hooks.resolve('tracking', identity || {}).then(function (u) { return u || ''; }) : Promise.resolve(''); }
   const PHONE_NUMBER = '6197360356';
   const PHONE_DISPLAY = '(619) 736-0356';
   const PHONE_TEL = 'tel:+16197360356';
@@ -92,19 +92,19 @@
 
     // Fire via navigator.sendBeacon for reliability, fallback to fetch
     var json = JSON.stringify(payload);
-    var WEBHOOK_URL = hookUrl();
-    if (!WEBHOOK_URL) {
-      pushEvent('ee_hook_missing', { hook: 'tracking' });
-    } else if (navigator.sendBeacon) {
-      navigator.sendBeacon(WEBHOOK_URL, new Blob([json], { type: 'application/json' }));
-    } else {
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: json,
-        keepalive: true
-      }).catch(function () { });
-    }
+    hookUrl({ email: contactFields && contactFields.email, phone: contactFields && contactFields.phone }).then(function (WEBHOOK_URL) {
+      if (!WEBHOOK_URL) return;                       // gate blocked or hook missing: the bootstrap already emitted why
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(WEBHOOK_URL, new Blob([json], { type: 'application/json' }));
+      } else {
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: json,
+          keepalive: true
+        }).catch(function () { });
+      }
+    });
 
     return payload;
   }

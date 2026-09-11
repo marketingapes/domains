@@ -60,3 +60,11 @@ The outbound gate now requires a CONNECTED consent store and a CONNECTED suppres
 check. Every canonical manifest says both are `MISSING`, so every form in this repository is intentionally fail-closed.
 Connecting the safety spine is a Foundation change (flip the two `safety` leaves once the stores exist, re-run the
 verifier, update `foundation.sha256`) plus real checker wiring — not a code shortcut.
+
+## Round 4 — authoritative suppression is an engine adapter, not page code
+
+Outbound now requires an authoritative suppression lookup against `EE_RUNTIME.suppression_endpoint`
+(Render env `EE_SUPPRESSION_<TENANT>_ENDPOINT`, engine-provided). No such endpoint exists yet, so every real tenant
+answers `BLOCK — authoritative suppression check unavailable` by design. Connecting it = engine work + Render env +
+flipping the two `safety` leaves in Foundation once the stores are real. Non-blocking defense-in-depth residuals
+(scanner base64/9-layer heuristics etc.) are documented, not spent on, in this round.

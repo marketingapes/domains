@@ -25,7 +25,7 @@ function browser({ url = 'https://example.test/?utm_source=meta&utm_campaign=spr
   const socketEl = { hidden: true, innerHTML: '', attrs: {}, setAttribute(k, v) { this.attrs[k] = v; }, getAttribute(k) { return this.attrs[k] ?? null; }, removeAttribute(k) { delete this.attrs[k]; } };
   const u = new URL(url);
   const w = {
-    EE_SITE: site, EE_PAGE: page, dataLayer,
+    EE_SITE: site, EE_PAGE: page, dataLayer, EE_RUNTIME: { tenant_id: (site && site.tenant_id) || 'TNT', hooks: {} },
     location: { href: u.href, search: u.search, pathname: u.pathname, hostname: u.hostname, origin: u.origin },
     sessionStorage: storage(), localStorage: storage(),
     crypto: { randomUUID: () => crypto.randomUUID(), getRandomValues: a => crypto.getRandomValues(a) }
@@ -99,15 +99,16 @@ test('dynamic experience socket mounts, emits, and unmounts', () => {
 test('safety hooks exist on every domain and default OFF: consent, suppression, kill switch, production gate', () => {
   const { EE, dl } = browser({ site: SITE });
   assert.equal(EE.safety.consent.state(), 'none'); assert.equal(EE.safety.consent.store, 'MISSING');
-  assert.deepEqual(EE.safety.suppression.check({ email: 'a@b.c' }).checked, false);
+  assert.equal(EE.safety.suppression.status({ email: 'a@b.co' }).state, 'unchecked'); assert.throws(() => EE.safety.suppression.use(() => ({ suppressed: false })), /not an authoritative suppression source/);
   assert.equal(EE.safety.killSwitch.state(), 'OFF'); assert.equal(EE.safety.productionGate.state(), 'preview');
   assert.equal(EE.outbound.allowed({}).allowed, false, 'nothing outbound while preview / no consent');
   assert.throws(() => EE.safety.consent.record({}), /surface/);
   const rec = EE.safety.consent.record({ surface: 'form', consent_text_id: 'TCPA-1' });
   assert.equal(rec.event, 'ee_consent_evidence'); assert.equal(EE.safety.consent.state(), 'recorded');
   assert.equal(dl.at(-1).event, 'ee_consent_evidence');
-  EE.safety.suppression.use(() => ({ suppressed: true, source: 'test-list' }));
-  assert.equal(EE.safety.suppression.check({}).suppressed, true);
+  // page code is never an authoritative suppression source; without an engine endpoint the check fails closed
+  assert.throws(() => EE.safety.suppression.use(() => ({ suppressed: true, source: 'test-list' })), /not an authoritative suppression source/);
+  return EE.safety.suppression.check({ email: 'a@b.co' }).then(r => { assert.equal(r.state, 'failed'); assert.match(r.reason, /production_gate preview|consent store not connected|authoritative suppression check unavailable/); });
 });
 
 test('kill switch ON blocks every dataLayer push and every outbound gate', () => {
@@ -119,11 +120,11 @@ test('kill switch ON blocks every dataLayer push and every outbound gate', () =>
   // the gate can only open with a CONNECTED safety spine (consent store + suppression source) and a completed clear check
   const live = browser({ site: { ...SITE, production_gate: 'live', consent_store: 'VERIFIED', suppression_source: 'VERIFIED' } });
   live.EE.safety.consent.record({ surface: 'form', consent_text_id: 'T' });
-  assert.equal(live.EE.outbound.allowed({}).allowed, false, 'no suppression check yet');
-  live.EE.safety.suppression.use(() => ({ suppressed: false }));
-  assert.equal(live.EE.outbound.allowed({}).allowed, true);
+  assert.equal(live.EE.outbound.allowed({ email: 'qa@example.test' }).allowed, false);
+  assert.equal(live.EE.outbound.allowed({ email: 'qa@example.test' }).reason, 'authoritative suppression check unavailable', 'no engine endpoint => blocked by design');
+  assert.throws(() => live.EE.safety.suppression.use(() => ({ suppressed: false })), /not an authoritative suppression source/);
   live.EE.safety.killSwitch.trip('test');
-  assert.equal(live.EE.outbound.allowed({}).allowed, false);
+  assert.equal(live.EE.outbound.allowed({ email: 'qa@example.test' }).allowed, false);
 });
 
 // ------------------------------------------------------------------ generated outputs

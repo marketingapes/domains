@@ -82,11 +82,13 @@ export function bindLfmaBrief({
   let client = null, phase = 'IDLE', lastReference = null;
   const idleState = Object.freeze({ status: 'IDLE', referenceId: null });
   const state = () => (client ? client.getState() : idleState);
-  const resolveEndpoint = () => (typeof endpoint === 'function' ? endpoint() : endpoint);
-  const ensureClient = () => {
+  // `endpoint` may be a function returning a string OR a Promise (the gated hook is resolved through the
+  // authoritative async suppression path). It is awaited on submit; null / rejection fails closed.
+  const resolveEndpoint = async () => (typeof endpoint === 'function' ? await endpoint() : endpoint);
+  const ensureClient = async () => {
     if (client) return client;
     client = createOrderSubmitter({
-      endpoint: resolveEndpoint(), tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
+      endpoint: await resolveEndpoint(), tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
     });
     return client;
   };
@@ -101,7 +103,7 @@ export function bindLfmaBrief({
     phase = 'SUBMITTING';
     button.disabled = true; button.textContent = 'Sending...'; errorBox.hidden = true;
     let submitter;
-    try { submitter = ensureClient(); }
+    try { submitter = await ensureClient(); }
     catch (error) {
       // No usable endpoint (gate blocked, hook missing, not configured): explicit failure, no send, retry allowed.
       phase = 'IDLE'; client = null;

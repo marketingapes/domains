@@ -102,9 +102,10 @@ reference hooks **by name** and never carry a URL:
 
 ```js
 EE.hooks.configured('intake')          // runtime carries a hook for this tenant (no gate)
-EE.hooks.url('intake', identity)       // -> https://... ONLY if the outbound gate passes; else null (see .why)
+EE.hooks.resolve('intake', identity)   // async: authoritative suppression lookup for the identity, then the gated URL or null (see .why)
+EE.hooks.url('intake', identity)       // sync: gated URL only if an authoritative clearance for this identity is already cached; else null
 EE.hooks.why('intake')                 // last block reason: 'no consent evidence recorded', 'kill_switch ON', ...
-EE.hooks.post('intake', payload)       // gated JSON POST with tenant_id/domain_id/session_id; rejects OutboundBlocked / HookMissing
+EE.hooks.post('intake', payload, {identity})  // gated JSON POST via resolve(); rejects OutboundBlocked / HookMissing
 ```
 
 `build.sh` writes `<tenant>/ee/runtime.js` (gitignored) at Render build time from env vars named
@@ -125,12 +126,15 @@ page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()
 | consent store | `EE_SITE.consent_store` is `VERIFIED` or `CURRENT` (the tenant's consent store is CONNECTED) | BLOCK — `MISSING`, `NEEDS_AUTH`, `NOT_APPLICABLE`, `UNKNOWN`, undefined all block |
 | consent evidence | `EE.safety.consent.record({surface, consent_text_id, method})` on this page view — **evidence only**; it never manufactures a connected store | BLOCK |
 | suppression source | `EE_SITE.suppression_source` is `VERIFIED` or `CURRENT` (an authoritative source is CONNECTED) | BLOCK — same list as above |
-| suppression check | a checker registered with `EE.safety.suppression.use(fn)` completed and returned not-suppressed | BLOCK |
+| suppression check | an **authoritative** lookup against the engine endpoint (`EE_RUNTIME.suppression_endpoint`, from `EE_SUPPRESSION_<TENANT>_ENDPOINT`, captured once at init) completed for this exact identity and answered `{checked:true, suppressed:false}` — performed by `EE.hooks.resolve()` / `EE.outbound.check()` | BLOCK — no endpoint (`authoritative suppression check unavailable`), no identity, timeout, rejection, HTTP error, non-JSON, `{}`, `null`, `checked!==true`, `suppressed!==false`, `suppressed:true` |
 | runtime tenant | `window.EE_RUNTIME.tenant_id === EE_SITE.tenant_id` | BLOCK (`ee_runtime_mismatch`) |
 
-No operation-level exemption exists in this layer; `NOT_APPLICABLE` does not mean allow. Today every canonical
-tenant's consent store and suppression source are `MISSING` in Foundation v1.2, so **every form in this repo is
-intentionally fail-closed** until the real safety spine is connected and the manifests say so.
+No operation-level exemption exists in this layer; `NOT_APPLICABLE` does not mean allow. **Browser/page JavaScript is
+never a suppression source**: there is no API to register a checker (`EE.safety.suppression.use()` throws), the sync
+`EE.hooks.url()` / `EE.outbound.allowed()` only read the cached authoritative result for that identity, and the runtime
+(hook map + endpoint) is captured once at init so a later `window.EE_RUNTIME` cannot inject a clearing endpoint.
+Today every canonical tenant's consent store and suppression source are `MISSING` and no suppression endpoint exists,
+so **every form in this repo is intentionally fail-closed** until the real safety spine is connected.
 
 Blocked resolutions emit `ee_outbound_blocked {hook, reason}`; an unconfigured hook emits `ee_hook_missing`.
 Every form in this repo records its consent evidence (the consent text it actually shows, by id) before it
