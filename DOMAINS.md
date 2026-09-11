@@ -153,3 +153,31 @@ Secrets live only in Render env.
 or runtime state inside `domain.json`. They are gone. Page conventions live in the site
 folder; channel reality lives in `social`/`communications` with a two-axis status; automation
 lives in `automation` with hook IDs; campaign state lives with the campaign.
+
+## Stocking layer (v1) — how a site plugs into the engine
+
+Foundation says what a tenant **owns**. The stocking layer makes the site **able to use** the engine
+without pretending any capability exists. Read `shared/ee/README.md`.
+
+- `<tenant>/ee/bootstrap.js` (verbatim copy of `shared/ee/bootstrap.js`) — `window.EE.track()` emits
+  `ee_*` events with `tenant_id`, `domain_id`, `session_id`, `landing_page_url`, UTMs/click IDs, and
+  `campaign_id`/`variant_id` only when a campaign exists. Campaign stays optional.
+- `<div id="ee-experience" data-ee-socket="primary" hidden>` — the dynamic experience socket where
+  AI-generated tools/pages mount via `EE.experience.mount()`. One socket, fourteen domains, no rewrites.
+- `EE.safety.{consent, suppression, killSwitch, productionGate}` + `EE.outbound.allowed()` — hooks
+  exist on every domain and are OFF until the manifest says the capability is connected.
+- `<tenant>/ee/site.json` — the 27 capability sockets with the Foundation's two axes, statuses only.
+
+Regenerate + audit: `node tools/stock-domains.mjs` → `stocking/REPORT.md` / `stocking/report.json`.
+Drift gate: `node tools/stock-domains.mjs --check`. Never hand-edit `<tenant>/ee/*` or the injected blocks.
+- Provider hook URLs never live in the repo **and never reach the browser**. Pages call
+  `EE.hooks.post('<action>', payload, {identity})`; the only destination the page can produce is the Evolution
+  Engine's governed actions route `<EE_ACTIONS_<TENANT>_ENDPOINT>/<TENANT>/<action>`. `build.sh` writes
+  `<tenant>/ee/runtime.js` (gitignored, public) with action *names* + engine endpoints only; a legacy
+  `EE_HOOK_<TENANT>_<NAME>` value is discarded with a warning. The engine adapter holds the provider URL and
+  re-validates every request server-side. Unconfigured = fails closed.
+- Even the engine route is only handed out through the outbound gate (runtime tenant matches, kill switch OFF,
+  gate live, connected consent store + evidence recorded, connected suppression source + authoritative clear
+  check for the identity). Unknown ⇒ fail closed. The page-side gate is a pre-check, not the security boundary.
+- Complete suite: `npm test` (tests/*.test.mjs + campaign-system/test/*.test.mjs, browser tests included).
+

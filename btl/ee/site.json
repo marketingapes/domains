@@ -1,0 +1,297 @@
+{
+  "schema": "marketingapes.domain.stocking/v1",
+  "foundation": "marketingapes.domain.foundation/v1.2",
+  "derived_from": {
+    "file": "btl/domain.json",
+    "sha256": "d62ffb70870ccdd1af789d92fe4ebf39dafddedfcaf641d03f589b9546715beb"
+  },
+  "tenant_id": "BTL",
+  "domain_id": "besttortlawyers.com",
+  "brand": "Best Tort Lawyers",
+  "canonical_url": "https://besttortlawyers.com/",
+  "hosting": {
+    "intended": "render",
+    "current": "siteground_noindex",
+    "matches_intent": false,
+    "render_service": "btl-site"
+  },
+  "production_gate": "preview",
+  "kill_switch": {
+    "hook": "present",
+    "state": "OFF",
+    "connection_status": "MISSING"
+  },
+  "event_bootstrap": {
+    "script": "/ee/bootstrap.js",
+    "api": "window.EE.track(name, props)",
+    "load_event": "ee_page_context",
+    "contract": "ee_*",
+    "required_fields": [
+      "tenant_id",
+      "domain_id",
+      "session_id",
+      "landing_page_url"
+    ],
+    "optional_fields": [
+      "campaign_id",
+      "variant_id",
+      "utm_*",
+      "gclid",
+      "fbclid",
+      "ttclid",
+      "msclkid",
+      "wbraid",
+      "gbraid"
+    ],
+    "campaign_required": false
+  },
+  "experience_socket": {
+    "element": "#ee-experience",
+    "attribute": "data-ee-socket=\"primary\"",
+    "api": "window.EE.experience.mount({id, render})"
+  },
+  "sockets": {
+    "web_dynamic_experience": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "source": "web.site",
+      "hook": "present",
+      "socket": {
+        "element": "#ee-experience",
+        "attribute": "data-ee-socket=\"primary\"",
+        "api": "window.EE.experience.mount({id, render})"
+      }
+    },
+    "email_human": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "source": "communications.email_human",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "email_transactional": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "communications.email_transactional",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "email_bulk": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "source": "communications.email_bulk",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "sms": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "communications.sms",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "phone": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "communications.phone",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "vapi_sofia": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "communications.vapi",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "facebook": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "source": "social.facebook",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "instagram": {
+      "connection_status": "CURRENT",
+      "activation_state": "ON",
+      "source": "social.instagram",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "tiktok": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.tiktok",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "youtube": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.youtube",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "linkedin": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.linkedin",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "x": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.x",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "threads": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.threads",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "pinterest": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "social.pinterest",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "meta_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "source": "paid_media.meta_ad_account",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": [],
+      "also": [
+        {
+          "source": "paid_media.meta_dataset",
+          "connection_status": "MISSING",
+          "activation_state": "OFF"
+        }
+      ]
+    },
+    "google_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "source": "paid_media.google_ads",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "tiktok_ads": {
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
+      "source": "paid_media.tiktok_ads",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "affiliate_api_feeds": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": null,
+      "hook": "present",
+      "note": "no Foundation v1.2 leaf; socket declared by the stocking layer only"
+    },
+    "commerce": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "commerce.processor",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": []
+    },
+    "ga4_gtm": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "source": "measurement.gtm_web",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": [],
+      "also": [
+        {
+          "source": "measurement.ga4_measurement",
+          "connection_status": "MISSING",
+          "activation_state": "OFF"
+        },
+        {
+          "source": "measurement.gtm_server",
+          "connection_status": "MISSING",
+          "activation_state": "OFF"
+        }
+      ]
+    },
+    "bigquery": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "measurement.bigquery",
+      "hook": "present",
+      "owner_tenant_id": "BTL",
+      "shared_with": [],
+      "also": [
+        {
+          "source": "data.bigquery",
+          "connection_status": "MISSING",
+          "activation_state": "OFF"
+        }
+      ]
+    },
+    "drive": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "data.drive",
+      "hook": "present"
+    },
+    "consent": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "safety.consent",
+      "hook": "present"
+    },
+    "suppression": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "safety.suppression",
+      "hook": "present"
+    },
+    "kill_switch": {
+      "connection_status": "MISSING",
+      "activation_state": "OFF",
+      "source": "safety.kill_switch",
+      "hook": "present"
+    },
+    "production_gate": {
+      "connection_status": "VERIFIED",
+      "activation_state": "ON",
+      "source": "safety.production_gates",
+      "hook": "present",
+      "gates": [
+        "dns_cutover",
+        "paid_activation",
+        "secret_paste",
+        "sending to a real person",
+        "production git push"
+      ]
+    }
+  },
+  "policy": "UNKNOWN DOES NOT MEAN BORROW. Identifiers live in domain.json; this file carries statuses only."
+}

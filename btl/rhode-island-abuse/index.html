@@ -133,6 +133,7 @@
     .steps li b{color:var(--text)}
     @media(max-width:520px){.phone{margin-left:auto;margin-right:auto}}
   </style>
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"BTL","domain_id":"besttortlawyers.com","brand":"Best Tort Lawyers","canonical_url":"https://besttortlawyers.com/","production_gate":"preview","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <header>
@@ -351,11 +352,12 @@
 
 <script>
   window.EE_CONFIG={campaign_id:'btl-ri-abuse-2026',campaign_name:'btl-ri-abuse-2026',vertical:'abuse',
-    lead_destination:'https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35',domain:'besttortlawyers.com'};
+    lead_destination:'ee:hook:lead',domain:'besttortlawyers.com'};
 
   var SOFIA_PHONE='+16026931461';
-  var WEBHOOK_URL='https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35';
-  var CAMPAIGN='btl-ri-abuse-2026';
+  /* Hook URL is a secret resolved at submit time from /ee/runtime.js (EE_HOOK_BTL_LEAD); never stored in this page. */
+  function sendLead(data,identity){var ee=window.EE&&window.EE.__stocked?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'btl_lead_form',consent_text_id:'BTL_TCPA_AI_BY_SUBMIT_2026-07-19',method:'by-clicking-submit'});return ee.hooks.post('lead',data,{identity:identity})}
+  var CAMPAIGN='btl-ri-abuse-2026'; // campaign landing page: this page IS a campaign attachment; the domain face carries none
 
   var qs=new URLSearchParams(location.search);
   function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():''}
@@ -418,20 +420,23 @@
     data.consent_text='TCPA+AI-voice by-clicking-submit consent v2026-07-19'; data.consent_method='by-clicking-submit';
     data.page_url=location.href; data.ts=new Date().toISOString();
     document.getElementById('submitbtn').disabled=true;
-    fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    sendLead(data,{phone:data.phone,email:data.email}).then(function(r){
+      if(!r){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; }
+      return Promise.resolve(r)
       .then(function(r){if(!r.ok)throw 0; return r;})
       .then(function(){
         submitted=true; ev('ee_lead_submit_success',{claim_type:data.claim_type});
         fbq('track','Lead',{content_name:'btl-ri-abuse',content_category:data.claim_type});
         if(window.ttq)ttq.track('SubmitForm',{content_name:'btl-ri-abuse'});
-        window.dataLayer.push({event:'EEConvert',campaign_name:CAMPAIGN,lead_destination:WEBHOOK_URL});
+        window.dataLayer.push({event:'EEConvert',campaign_name:CAMPAIGN,lead_destination:'ee:hook:lead'});
         form.classList.add('hide'); document.getElementById('okmsg').classList.remove('hide');
-      })
+      }); }, function(e){ if(e&&(e.name==='OutboundBlocked'||e.name==='HookMissing')){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; } throw e; })
       .catch(function(){ ev('ee_lead_submit_error');
         document.getElementById('submitbtn').disabled=false;
         alert('Something hiccuped — please try again, or just call Sofia.');
       });
   });
 </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="BTL" hidden></div><!-- /ee:socket -->
 </body>
 </html>

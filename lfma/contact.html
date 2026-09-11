@@ -21,8 +21,8 @@
   <meta name="twitter:image" content="https://lawfirmmarketingapes.com/assets/images/contact/hero-canva.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9HSY1GEXZ6"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9HSY1GEXZ6');</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RQ8EWFTVSW"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RQ8EWFTVSW');</script>
   <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','PIXEL_ID_HERE');fbq('track','PageView');</script>
   <style>
     :root{--navy:#0a1628;--navy-light:#111d32;--blue:#2563eb;--blue-hover:#1d4ed8;--green:#10b981;--white:#ffffff;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-800:#1e293b;--radius:8px;--radius-lg:12px;}
@@ -53,6 +53,7 @@
     .checkbox-group input[type="checkbox"]{width:auto;padding:0;accent-color:var(--blue);}
     @media(max-width:768px){.checkbox-group{grid-template-columns:1fr;}}
   </style>
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -150,7 +151,8 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="4" placeholder="Tell us about your firm, your goals, and what you're looking for..."></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1.05rem;">Submit &amp; Book Your Call</button>
+          <p class="ee-consent-note" style="font-size:.8rem;line-height:1.5;color:#6b6b6b;margin:10px 0 6px">By submitting this form you agree that Law Firm Marketing Apes may contact you about this request by email or phone. Consent evidence is recorded with your submission. <a href="privacy.html">Privacy Policy</a>.</p>
+<button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1.05rem;">Submit &amp; Book Your Call</button>
           <p style="color:var(--gray-500);font-size:.8rem;text-align:center;margin-top:12px;">We respond within 24 hours. No spam, ever.</p>
         </form>
       </div>
@@ -243,39 +245,64 @@
   </div>
 </footer>
 
-<script src="https://lawfirmmarketingapes.com/assets/js/tracking.js"></script>
+<script src="/assets/js/tracking.js"></script>
 <script>
-document.getElementById('agency-contact-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  var form = this;
-  var services = [];
-  form.querySelectorAll('input[name="services"]:checked').forEach(function(cb) {
-    services.push(cb.value);
-  });
-  var data = {
-    firm_name: form.querySelector('#firm_name').value,
-    contact_name: form.querySelector('#contact_name').value,
-    email: form.querySelector('#email').value,
-    phone: form.querySelector('#phone').value,
-    website: form.querySelector('#website').value,
-    budget: form.querySelector('#budget').value,
-    services: services.join(', '),
-    message: form.querySelector('#message').value,
-    source: 'agency_contact_form',
-    page: window.location.href,
-    timestamp: new Date().toISOString()
-  };
-  if (window.EE) {
-    EE.sendToWebhook('form_submit', 'agency_contact_form', data);
-    EE.pushEvent('form_submit', {form_name: 'agency_contact_form'});
+(function () {
+  var form = document.getElementById('agency-contact-form');
+  var button = form.querySelector('button[type="submit"]');
+  var original = button.textContent;
+  var status = document.createElement('p');
+  status.id = 'contactStatus'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+  status.hidden = true; status.style.cssText = 'margin-top:10px;font-size:.9rem;color:#b3261e';
+  form.appendChild(status);
+  // Submission lifecycle: idle -> sending -> sent | failed(idle again). Success UI happens ONLY after a confirmed send.
+  var phase = 'idle';
+  function fail(message) {
+    phase = 'idle';
+    status.textContent = message; status.hidden = false;
+    button.disabled = false; button.textContent = original;
   }
-  fetch('https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  }).catch(function(){});
-  setTimeout(function() { window.location.href = 'thank-you.html'; }, 500);
-});
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (phase !== 'idle') return;                       // in flight or already sent: never a second POST
+    if (!form.reportValidity()) return;
+    phase = 'sending';
+    button.disabled = true; button.textContent = 'Sending…'; status.hidden = true;
+    var services = [];
+    form.querySelectorAll('input[name="services"]:checked').forEach(function(cb) { services.push(cb.value); });
+    var data = {
+      firm_name: form.querySelector('#firm_name').value,
+      contact_name: form.querySelector('#contact_name').value,
+      email: form.querySelector('#email').value,
+      phone: form.querySelector('#phone').value,
+      website: form.querySelector('#website').value,
+      budget: form.querySelector('#budget').value,
+      services: services.join(', '),
+      message: form.querySelector('#message').value,
+      source: 'agency_contact_form',
+      page: window.location.href,
+      timestamp: new Date().toISOString()
+    };
+    var L = window.EE && (window.EE.legacy || window.EE);
+    if (L && typeof L.pushEvent === 'function') { L.pushEvent('form_submit', {form_name: 'agency_contact_form'}); }
+    /* No provider URL exists on this page: 'order' is a governed Evolution Engine action (EE.hooks.post) behind the outbound gate. */
+    var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+    if (!ee) { fail('This form is not connected. Nothing was sent. Email kyleg@marketingapes.com.'); return; }
+    ee.safety.consent.record({ surface: 'lfma_contact_form', consent_text_id: 'LFMA_CONTACT_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
+    ee.hooks.post('order', data, { identity: { email: data.email, phone: data.phone } })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        phase = 'sent';
+        if (L && typeof L.sendToWebhook === 'function') { try { L.sendToWebhook('form_submit', 'agency_contact_form', data); } catch (_) {} }
+        window.location.href = 'thank-you.html';
+      })
+      .catch(function (e) {
+        if (e && (e.name === 'OutboundBlocked' || e.name === 'HookMissing')) { fail('This form is not connected yet (' + (ee.hooks.why('order') || e.reason || 'blocked') + '). Nothing was sent. Email kyleg@marketingapes.com.'); return; }
+        fail('We could not send your message. Please try again or email kyleg@marketingapes.com.');
+      });
+  });
+})();
 </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="LFMA" hidden></div><!-- /ee:socket -->
 </body>
 </html>

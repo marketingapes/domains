@@ -58,6 +58,7 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <link rel="stylesheet" href="/assets/campaign-polish-v1.css" data-lfma-polish="v1">
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <div class="wrap">
@@ -187,7 +188,8 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
       <p><strong>Nothing is charged on this page.</strong> You'll get the scope and the invoice before anything is built.</p>
     </div>
 
-    <button class="submit" type="submit">Send the brief</button>
+    <p class="ee-consent-note" style="font-size:.8rem;line-height:1.5;color:#6b6b6b;margin:10px 0 6px">By submitting this form you agree that Law Firm Marketing Apes may contact you about this request by email or phone. Consent evidence is recorded with your submission. <a href="/privacy.html">Privacy Policy</a>.</p>
+<button class="submit" type="submit">Send the brief</button>
     <p class="after">Scope and invoice back the same day. Payment starts the build.</p>
   </form>
 
@@ -217,7 +219,13 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   "use strict";
   /* Existing, active lane — the same hook marketingapes.com/order posts to.
      One lane per event: do not add a second webhook for campaign briefs. */
-  var HOOK = "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi";
+  /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
+  function hookUrl() {
+    var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+    if (!ee) return Promise.resolve(null);
+    var em = form.querySelector("#email");
+    return ee.hooks.resolve("order", { email: em ? em.value : "" }); // governed engine action route, never a provider URL
+  }
 
   var form = document.getElementById("briefForm");
   var sent = document.getElementById("sent");
@@ -228,9 +236,15 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   function preventNative(event) { event.preventDefault(); }
   form.addEventListener('submit', preventNative);
   button.disabled = true;
+  // Consent evidence is recorded in the capture phase, before the adapter's submit handler resolves the gated hook.
+  form.addEventListener('submit', function () {
+    var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+    if (ee) ee.safety.consent.record({ surface: 'lfma_campaign_brief', consent_text_id: 'LFMA_BRIEF_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
+  }, true);
   import('../assets/lfma-brief-adapter.mjs').then(function(adapter) {
+    // endpoint is a function: resolved through the async EE.hooks.resolve() at submit time; null fails closed inside the adapter
     adapter.bindLfmaBrief({
-      form: form, sent: sent, endpoint: HOOK, sourceUrl: location.href,
+      form: form, sent: sent, endpoint: hookUrl, sourceUrl: location.href,
       dataLayer: window.dataLayer
     });
     form.removeEventListener('submit', preventNative);
@@ -244,5 +258,6 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   });
 })();
 </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="LFMA" hidden></div><!-- /ee:socket -->
 </body>
 </html>

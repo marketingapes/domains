@@ -32,7 +32,7 @@
       site:             'btl',
       tort:             '404',
       trackingEndpoint: '/track/event',
-      webhookUrl:       'https://hooks.zapier.com/hooks/catch/2296909/u7v86k8/'
+      webhookRef:       'ee:hook:campaign_request' /* URL resolved from /ee/runtime.js (EE_HOOK_BTL_CAMPAIGN_REQUEST) */
     };
   </script>
   <script src="/pixel.js"></script>
@@ -185,6 +185,7 @@
       .error-code { font-size: 64px; }
     }
   </style>
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"BTL","domain_id":"besttortlawyers.com","brand":"Best Tort Lawyers","canonical_url":"https://besttortlawyers.com/","production_gate":"preview","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 
@@ -264,10 +265,13 @@
 
   <script>
     var CONFIG = {
-      ZAPIER_URL: 'https://hooks.zapier.com/hooks/catch/2296909/u7v86k8/',
+      HOOK_NAME: 'campaign_request', /* resolved at send time from /ee/runtime.js (EE_HOOK_BTL_CAMPAIGN_REQUEST) */
       VERTICAL:   '404-intake',
       CENTER_CODE: 'btl_404'
     };
+
+    function cpHookUrl(){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return null; if (cpContactData.phone && ee.safety.consent.state() !== 'recorded') { ee.safety.consent.record({ surface: 'btl_404_chat', consent_text_id: 'BTL_404_BY_PROVIDING_NUMBER_V1', method: 'by-providing-number' }); } return ee; }
+    function cpSend(payload){ var ee = cpHookUrl(); if (!ee) return; ee.hooks.post(CONFIG.HOOK_NAME, payload, { identity: { phone: cpContactData.phone, email: cpContactData.email } }).catch(function(){}); }
 
     /* ── Utilities ── */
     function getUrlParams() {
@@ -301,7 +305,7 @@
 
     function cpPushPartial() {
       var payload = cpBuildPayload('in_progress');
-      fetch(CONFIG.ZAPIER_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload) }).catch(function(){});
+      cpSend(payload);
     }
 
     function cpBuildPayload(status) {
@@ -677,7 +681,7 @@
       cpShowTyping(function() {
         cpAddBot('Submitting your information now...');
         var payload = cpBuildPayload('qualified');
-        fetch(CONFIG.ZAPIER_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload) }).catch(function(){});
+        cpSend(payload);
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'btl_404_lead', lead_id: cpLeadId, routing: cpAnswers.routing || 'general', ee_click_id: window.EETracker ? window.EETracker.getClickId() : '' });
         cpShowTyping(function() {
@@ -696,7 +700,7 @@
       clearTimeout(cpInactivityTimer);
       cpShowTyping(function() {
         var payload = cpBuildPayload('general_inquiry');
-        fetch(CONFIG.ZAPIER_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload) }).catch(function(){});
+        cpSend(payload);
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: 'btl_404_general', lead_id: cpLeadId });
         cpAddBot("✅ Got it — we've logged your message and email. If it's something we can help with, you'll hear from us within one business day. You can also reach us anytime at .");
@@ -716,5 +720,6 @@
     });
   </script>
 
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="BTL" hidden></div><!-- /ee:socket -->
 </body>
 </html>

@@ -15,7 +15,7 @@
   },
   "cta": {
     "primary": "Request a Legal Engine Snapshot",
-    "hook": "https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi"
+    "hook_ref": "EE_HOOK_LEE_ORDER (Render env; URL never stored in the repo)"
   },
   "measurement": {
     "gtm_web": "GTM-NWVHNTVK (borrowed from LFMA until LEE has its own — measured fact, not ideal)",

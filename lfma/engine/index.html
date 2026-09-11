@@ -67,6 +67,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
 .scarcity{padding:28px 0 8px;color:var(--g400);font-size:1.02rem;max-width:40rem}
 @media(max-width:768px){.grid,.form-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"LFMA","domain_id":"lawfirmmarketingapes.com","brand":"Law Firm Marketing Apes","canonical_url":"https://lawfirmmarketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWVHNTVK" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -168,7 +169,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
         <input type="hidden" name="sku" value="legal_engine_snapshot">
         <input type="hidden" name="price_usd" value="5000">
         <p class="err" id="err">Didn’t send. Email kyleg@marketingapes.com.</p>
-        <button class="btn btn-green btn-lg cta" style="width:100%;margin-top:16px" type="submit" data-cta-id="snapshot_submit">Request the $5,000 Snapshot</button>
+        <p class="ee-consent-note" style="font-size:.8rem;line-height:1.5;color:#6b6b6b;margin:10px 0 6px">By submitting this form you agree that Law Firm Marketing Apes may contact you about this request by email or phone. Consent evidence is recorded with your submission. <a href="/privacy.html">Privacy Policy</a>.</p>
+<button class="btn btn-green btn-lg cta" style="width:100%;margin-top:16px" type="submit" data-cta-id="snapshot_submit">Request the $5,000 Snapshot</button>
         <p class="note">Nothing is charged here. If we take the work, you get an invoice. If we don’t, you get a no. Marketing Apes is not a law firm. We do not promise case outcomes.</p>
       </form>
       <div class="ok" id="thanks">
@@ -185,7 +187,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
   </div>
 </footer>
 <script>
-var HOOK='https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+/* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
+function sendSnapshot(data,identity){var ee=(window.EE&&window.EE.__stocked)?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'lfma_snapshot_form',consent_text_id:'LFMA_SNAPSHOT_BY_SUBMIT_2026-09-11_V1',method:'by-clicking-submit'});return ee.hooks.post('order',data,{identity:identity})}
 window.dataLayer=window.dataLayer||[];
 document.querySelectorAll('.cta').forEach(function(el){
   el.addEventListener('click',function(){
@@ -204,17 +207,20 @@ document.getElementById('snapForm').addEventListener('submit',function(e){
   var btn=form.querySelector('button[type=submit]');
   btn.disabled=true; btn.textContent='Sending…';
   document.getElementById('err').style.display='none';
-  fetch(HOOK,{method:'POST',mode:'no-cors',body:new URLSearchParams(data)})
+  sendSnapshot(data,{email:data.email,phone:data.phone}).then(function(res){
+    if(!res||!res.ok){ btn.disabled=false; btn.textContent='Request the $5,000 Snapshot'; document.getElementById('err').style.display='block'; return; }
+    return Promise.resolve(res)
     .then(function(){
       window.dataLayer.push({event:'ee_snapshot_request',tenant_id:'LFMA',product:'legal_engine_snapshot',value:5000,currency:'USD'});
       form.style.display='none';
       document.getElementById('thanks').style.display='block';
-    })
+    }); })
     .catch(function(){
       btn.disabled=false; btn.textContent='Request the $5,000 Snapshot';
       document.getElementById('err').style.display='block';
     });
 });
 </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="LFMA" hidden></div><!-- /ee:socket -->
 </body>
 </html>

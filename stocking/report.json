@@ -1,0 +1,1244 @@
+{
+  "schema": "marketingapes.domain.stocking-report/v1",
+  "play": "SECOND PLAY — STOCK ALL 14 DOMAINS",
+  "foundation": {
+    "schema": "marketingapes.domain.foundation/v1.2",
+    "frozen_commit": "c8c04430efff970777c1ec8102cbbb4238a4b482",
+    "hashes_intact": true,
+    "mutated": []
+  },
+  "tenants": {
+    "canonical": [
+      "BTL",
+      "CGG",
+      "DDM",
+      "DIHAC",
+      "FPLB",
+      "KG",
+      "LFMA",
+      "MA",
+      "NIL",
+      "PX",
+      "RI",
+      "SLIQ",
+      "TNT",
+      "TOSS"
+    ],
+    "count": 14,
+    "excluded": [
+      "LEE"
+    ]
+  },
+  "shared_components": {
+    "added": [
+      "shared/ee/bootstrap.js (canonical event bootstrap + experience socket API + safety hooks)",
+      "tools/stock-domains.mjs (generator / injector / auditor)",
+      "tests/domain-stocking.test.mjs"
+    ],
+    "reused": [
+      "ee_page_context dataLayer convention (kg, lfma/engine, ma/order)",
+      "ee_* event contract (measurement.canonical_events)",
+      "sessionStorage ee_* attribution keys (dihac/assets/js/tracking.js)",
+      "data-cta-id CTA convention (DOMAINS.md)",
+      "campaign-system \"generated files are committed\" pattern",
+      "tools/verify-foundation.py + node --test tests/*.test.mjs"
+    ]
+  },
+  "summary": {
+    "STOCKED": 10,
+    "PARTIAL": 4,
+    "BLOCKED": 0
+  },
+  "results": [
+    {
+      "tenant_id": "BTL",
+      "domain_id": "besttortlawyers.com",
+      "brand": "Best Tort Lawyers",
+      "folder": "btl",
+      "status": "PARTIAL",
+      "structural_gaps": [
+        "borrowed identity in page code (not claimed from both ends): NIL.e164=+16026931461",
+        "homepage hardcodes a campaign (the domain face must not depend on one): btl/index.html: campaign_id:'btl-home-sofia'",
+        "deployed path diverged: live besttortlawyers.com is served from SiteGround; the Phillips funnel is not mirrored in this tree"
+      ],
+      "notes": [
+        "campaign landing pages carry their own campaign id (legitimate — a campaign attaches to the domain): btl/rhode-island-abuse/index.html: campaign_id:'btl-ri-abuse-2026'",
+        "homepage does not load its VERIFIED gtm_web container GTM-PHC7459M (no GTM on the face; ee_* events have no delivery path here)"
+      ],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "btl/404.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/index.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/privacy-policy.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/privacy-policy/index.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/rhode-island-abuse/index.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/sms-terms.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/terms-and-conditions.html",
+          "stocked": true
+        },
+        {
+          "file": "btl/terms/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [
+          {
+            "file": "btl/index.html",
+            "value": "+16026931461",
+            "key": "e164",
+            "owner": "NIL",
+            "path": "communications.phone"
+          },
+          {
+            "file": "btl/rhode-island-abuse/index.html",
+            "value": "+16026931461",
+            "key": "e164",
+            "owner": "NIL",
+            "path": "communications.phone"
+          }
+        ],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://besttortlawyers.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": false,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": false,
+      "deployed_path": "DIVERGED"
+    },
+    {
+      "tenant_id": "CGG",
+      "domain_id": "crazygolfgame.com",
+      "brand": "Crazy Golf Game",
+      "folder": "cgg",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "cgg/404.html",
+          "stocked": true
+        },
+        {
+          "file": "cgg/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://crazygolfgame.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "DDM",
+      "domain_id": "discountdealme.com",
+      "brand": "Discount Deal Me",
+      "folder": "ddm",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: down_502 -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "ddm/404.html",
+          "stocked": true
+        },
+        {
+          "file": "ddm/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://discountdealme.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "DIHAC",
+      "domain_id": "doihaveaclaim.ai",
+      "brand": "Do I Have A Claim",
+      "folder": "dihac",
+      "status": "PARTIAL",
+      "structural_gaps": [
+        "borrowed identity in page code (not claimed from both ends): MA.e164=+16197360356; NIL.e164=+16026931461"
+      ],
+      "notes": [
+        "campaign landing pages carry their own campaign id (legitimate — a campaign attaches to the domain): dihac/about.html: campaign_id: 'dihc_about'; dihac/arizona-mva-thank-you.html: campaign_id:'dihac_az_mva_meta_pilot_01'; dihac/contact.html: campaign_id: 'dihc_contact'; dihac/faq.html: campaign_id: 'dihc_faq'; dihac/privacy.html: campaign_id: 'dihc_privacy'; dihac/terms.html: campaign_id: 'dihc_terms'"
+      ],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING"
+      ],
+      "pages": [
+        {
+          "file": "dihac/about.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/arizona-mva-thank-you.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/contact.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/faq.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/index.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/privacy.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/talk-to-sofia.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/terms.html",
+          "stocked": true
+        },
+        {
+          "file": "dihac/thank-you.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [
+          {
+            "file": "dihac/about.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/contact.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/faq.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/privacy.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/talk-to-sofia.html",
+            "value": "+16026931461",
+            "key": "e164",
+            "owner": "NIL",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/terms.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "dihac/thank-you.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          }
+        ],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://doihaveaclaim.ai/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "live",
+      "noindex": true,
+      "deployed_path": "PROVEN"
+    },
+    {
+      "tenant_id": "FPLB",
+      "domain_id": "forpetslikeblue.com",
+      "brand": "For Pets Like Blue",
+      "folder": "fplb",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "fplb/404.html",
+          "stocked": true
+        },
+        {
+          "file": "fplb/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://forpetslikeblue.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "KG",
+      "domain_id": "kylegosselin.com",
+      "brand": "Kyle Gosselin",
+      "folder": "kg",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [
+        "outbound links to another tenant's social account (link only, not identity): MA.page_id"
+      ],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING"
+      ],
+      "pages": [
+        {
+          "file": "kg/404.html",
+          "stocked": true
+        },
+        {
+          "file": "kg/index.html",
+          "stocked": true
+        },
+        {
+          "file": "kg/now/index.html",
+          "stocked": true
+        },
+        {
+          "file": "kg/pay/index.html",
+          "stocked": true
+        },
+        {
+          "file": "kg/privacy/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": [
+          {
+            "file": "kg/index.html",
+            "value": "137455619624058",
+            "key": "page_id",
+            "owner": "MA",
+            "path": "social.facebook"
+          },
+          {
+            "file": "kg/index.html",
+            "value": "137455619624058",
+            "key": "page_id",
+            "owner": "MA",
+            "path": "social.facebook"
+          }
+        ]
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://kylegosselin.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": false,
+        "noindex": false,
+        "cross_brand": []
+      },
+      "production_gate": "live",
+      "noindex": false,
+      "deployed_path": "PROVEN"
+    },
+    {
+      "tenant_id": "LFMA",
+      "domain_id": "lawfirmmarketingapes.com",
+      "brand": "Law Firm Marketing Apes",
+      "folder": "lfma",
+      "status": "PARTIAL",
+      "structural_gaps": [
+        "borrowed identity in page code (not claimed from both ends): MA.e164=+16197360356; NIL.e164=+16026931461"
+      ],
+      "notes": [],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING"
+      ],
+      "pages": [
+        {
+          "file": "lfma/about.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/campaign/index.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/contact.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/engine/index.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/google-ads.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/index.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/privacy.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/seo.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/talk-to-sofia.html",
+          "stocked": true
+        },
+        {
+          "file": "lfma/terms.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [
+          {
+            "file": "lfma/about.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/contact.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/engine/index.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/google-ads.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/index.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/seo.html",
+            "value": "+16197360356",
+            "key": "e164",
+            "owner": "MA",
+            "path": "communications.phone"
+          },
+          {
+            "file": "lfma/talk-to-sofia.html",
+            "value": "+16026931461",
+            "key": "e164",
+            "owner": "NIL",
+            "path": "communications.phone"
+          }
+        ],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://lawfirmmarketingapes.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": false,
+        "cross_brand": []
+      },
+      "production_gate": "live",
+      "noindex": false,
+      "deployed_path": "PROVEN"
+    },
+    {
+      "tenant_id": "MA",
+      "domain_id": "marketingapes.com",
+      "brand": "Marketing Apes",
+      "folder": "ma",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [
+        "GTM-PENDING placeholder in: ma/404.html, ma/anti-agency/index.html, ma/order/index.html, ma/pricing/index.html, ma/privacy/index.html"
+      ],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "vapi_sofia: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "ma/404.html",
+          "stocked": true
+        },
+        {
+          "file": "ma/anti-agency/index.html",
+          "stocked": true
+        },
+        {
+          "file": "ma/index.html",
+          "stocked": true
+        },
+        {
+          "file": "ma/order/index.html",
+          "stocked": true
+        },
+        {
+          "file": "ma/pricing/index.html",
+          "stocked": true
+        },
+        {
+          "file": "ma/privacy/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://marketingapes.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": false,
+        "cross_brand": []
+      },
+      "production_gate": "live",
+      "noindex": false,
+      "deployed_path": "PROVEN"
+    },
+    {
+      "tenant_id": "NIL",
+      "domain_id": "nearestinjurylawyers.com",
+      "brand": "Nearest Injury Lawyers",
+      "folder": "nil",
+      "status": "PARTIAL",
+      "structural_gaps": [
+        "deployed path diverged: live nearestinjurylawyers.com is served from marketingapes/nil-site (root); this tree deploys nil-site-staging only"
+      ],
+      "notes": [
+        "campaign landing pages carry their own campaign id (legitimate — a campaign attaches to the domain): nil/arizona-mva-thank-you.html: campaign_id:'nil_az_mva_meta_pilot_01'"
+      ],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "vapi_sofia: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING"
+      ],
+      "pages": [
+        {
+          "file": "nil/arizona-mva-thank-you.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/index.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/kyle.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/privacy.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/proof.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/terms.html",
+          "stocked": true
+        },
+        {
+          "file": "nil/testing.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://nearestinjurylawyers.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": false,
+        "cross_brand": []
+      },
+      "production_gate": "live",
+      "noindex": false,
+      "deployed_path": "DIVERGED"
+    },
+    {
+      "tenant_id": "PX",
+      "domain_id": "pillowexchange.com",
+      "brand": "Pillow Exchange",
+      "folder": "px",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "px/404.html",
+          "stocked": true
+        },
+        {
+          "file": "px/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://pillowexchange.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "RI",
+      "domain_id": "researchinvestigation.com",
+      "brand": "Research Investigation",
+      "folder": "ri",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: down_502 -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "ri/404.html",
+          "stocked": true
+        },
+        {
+          "file": "ri/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://researchinvestigation.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "SLIQ",
+      "domain_id": "smartlifeinsurancequote.com",
+      "brand": "Smart Life Insurance Quote",
+      "folder": "sliq",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "sliq/404.html",
+          "stocked": true
+        },
+        {
+          "file": "sliq/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://smartlifeinsurancequote.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "TNT",
+      "domain_id": "tonedntasty.com",
+      "brand": "Toned N Tasty",
+      "folder": "tnt",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: siteground_noindex -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "tnt/404.html",
+          "stocked": true
+        },
+        {
+          "file": "tnt/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://tonedntasty.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    },
+    {
+      "tenant_id": "TOSS",
+      "domain_id": "tosssports.com",
+      "brand": "Toss Sports",
+      "folder": "toss",
+      "status": "STOCKED",
+      "structural_gaps": [],
+      "notes": [],
+      "missing_external": [
+        "email_human: MISSING",
+        "email_transactional: MISSING",
+        "email_bulk: NEEDS_AUTH",
+        "sms: MISSING",
+        "phone: MISSING",
+        "vapi_sofia: MISSING",
+        "facebook: MISSING",
+        "instagram: MISSING",
+        "tiktok: MISSING",
+        "youtube: MISSING",
+        "linkedin: MISSING",
+        "x: MISSING",
+        "threads: MISSING",
+        "pinterest: MISSING",
+        "meta_ads: NEEDS_AUTH",
+        "google_ads: NEEDS_AUTH",
+        "tiktok_ads: NEEDS_AUTH",
+        "affiliate_api_feeds: MISSING",
+        "commerce: MISSING",
+        "ga4_gtm: MISSING",
+        "bigquery: MISSING",
+        "drive: MISSING",
+        "consent: MISSING",
+        "suppression: MISSING",
+        "kill_switch: MISSING",
+        "dns_cutover: down_502 -> render (human, DNS)",
+        "canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)"
+      ],
+      "pages": [
+        {
+          "file": "toss/404.html",
+          "stocked": true
+        },
+        {
+          "file": "toss/index.html",
+          "stocked": true
+        }
+      ],
+      "identity": {
+        "borrowed": [],
+        "outbound_links": []
+      },
+      "web": {
+        "title": true,
+        "viewport": true,
+        "description": true,
+        "canonical": "https://tosssports.com/",
+        "canonical_ok": true,
+        "og_title": true,
+        "og_url": true,
+        "twitter_card": true,
+        "noindex": true,
+        "cross_brand": []
+      },
+      "production_gate": "preview",
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
+    }
+  ]
+}

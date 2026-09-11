@@ -11,7 +11,8 @@ Fails if:
   * any frozen artifact's SHA-256 differs from foundation.sha256
   * the canonical tenant set is not exactly the 14
   * the frozen validator exits non-zero
-  * (when jsonschema is installed) any manifest fails schema validation
+  * any manifest fails schema validation
+  * jsonschema is not installed (fails CLOSED - a skipped schema step is never a PASS)
 
 Usage:  python3 tools/verify-foundation.py
 """
@@ -117,7 +118,9 @@ def main():
             if ok != len(CANON):
                 rc = 1
         except ImportError:
-            print("  SKIPPED - jsonschema not installed (pip install jsonschema)")
+            # FAIL CLOSED. A verifier that skips schema validation must never report PASS.
+            rc = fail("jsonschema is not installed - schema validation could not run "
+                      "(pip install jsonschema). Refusing to report PASS without it.")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

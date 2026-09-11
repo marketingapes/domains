@@ -114,6 +114,7 @@
     .okmsg{background:#e9f8f0;border:1px solid #9adbbb;border-radius:12px;padding:18px;text-align:center;font-weight:700}
     .soft{background:var(--surface)}
   </style>
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"BTL","domain_id":"besttortlawyers.com","brand":"Best Tort Lawyers","canonical_url":"https://besttortlawyers.com/","production_gate":"preview","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
 <header>
@@ -357,7 +358,7 @@
 
 <script>
   window.EE_CONFIG={campaign_id:'btl-home-sofia',campaign_name:'btl-home-sofia',vertical:'legal',
-    lead_destination:'https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35',domain:'besttortlawyers.com'};
+    lead_destination:'ee:hook:lead',domain:'besttortlawyers.com'};
 
   var qs=new URLSearchParams(location.search);
   function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():''}
@@ -409,7 +410,8 @@
   var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){ev('ee_form_view');io.disconnect();}});
   io.observe(form);
 
-  var WEBHOOK_URL='https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35';
+  /* Hook URL is a secret resolved at submit time from /ee/runtime.js (EE_HOOK_BTL_LEAD); never stored in this page. */
+  function sendLead(data,identity){var ee=window.EE&&window.EE.__stocked?window.EE:null;if(!ee)return Promise.resolve(null);ee.safety.consent.record({surface:'btl_lead_form',consent_text_id:'BTL_TCPA_AI_BY_SUBMIT_2026-07-19',method:'by-clicking-submit'});return ee.hooks.post('lead',data,{identity:identity})}
 
   form.addEventListener('submit',function(e){
     e.preventDefault(); if(submitted)return;
@@ -419,7 +421,9 @@
     data.consent_text='TCPA+AI-voice by-clicking-submit consent v2026-07-19'; data.consent_method='by-clicking-submit';
     data.page_url=location.href; data.ts=new Date().toISOString();
     document.getElementById('submitbtn').disabled=true;
-    fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+    sendLead(data,{phone:data.phone,email:data.email}).then(function(r){
+      if(!r){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; }
+      return Promise.resolve(r)
       .then(function(r){if(!r.ok)throw 0; return r;})
       .then(function(){
         submitted=true; ev('ee_lead_submit_success',{claim_type:data.claim_type});
@@ -428,12 +432,13 @@
         if(typeof EETracker!=='undefined'&&EETracker.trackFormSubmit)EETracker.trackFormSubmit(data);
         window.dataLayer.push({event:'EEConvert',campaign_name:'btl-home-sofia',lead_destination:window.EE_CONFIG.lead_destination});
         form.classList.add('hide'); document.getElementById('okmsg').classList.remove('hide');
-      })
+      }); }, function(e){ if(e&&(e.name==='OutboundBlocked'||e.name==='HookMissing')){ document.getElementById('submitbtn').disabled=false; alert('This form is not connected yet — please call Sofia.'); return null; } throw e; })
       .catch(function(){ ev('ee_lead_submit_error');
         document.getElementById('submitbtn').disabled=false;
         alert('Something hiccuped — please try again, or just call Sofia.');
       });
   });
 </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="BTL" hidden></div><!-- /ee:socket -->
 </body>
 </html>

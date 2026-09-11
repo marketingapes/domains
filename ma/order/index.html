@@ -486,6 +486,7 @@
     @media(max-width:760px){.grid{grid-template-columns:1fr}.order{padding:24px 18px;border-radius:22px}.order .btn{width:100%}}
   </style>
 
+<!-- ee:stocking v1 --><script>window.EE_SITE=Object.freeze({"tenant_id":"MA","domain_id":"marketingapes.com","brand":"Marketing Apes","canonical_url":"https://marketingapes.com/","production_gate":"live","production_gates":["dns_cutover","paid_activation","secret_paste","sending to a real person","production git push"],"kill_switch":"OFF","kill_switch_source":"MISSING","consent_store":"MISSING","suppression_source":"MISSING","events_contract":"ee_*","stocking":"stocking-v1"});</script><script src="/ee/runtime.js" defer></script><script src="/ee/bootstrap.js" defer></script><!-- /ee:stocking -->
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -559,7 +560,8 @@
       </fieldset>
 
       <div class="actions">
-        <button class="btn cta btn-big" type="submit" data-cta-id="order_submit">Place the order <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z"/></svg></button>
+        <p class="ee-consent-note" style="font-size:.8rem;line-height:1.5;color:#6b6b6b;margin:10px 0 6px">By submitting this form you agree that Marketing Apes may contact you about this request by email or phone. Consent evidence is recorded with your submission. <a href="/privacy/">Privacy Policy</a>.</p>
+<button class="btn cta btn-big" type="submit" data-cta-id="order_submit">Place the order <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z"/></svg></button>
       </div>
       <p class="err" id="err">Something didn't send. Email <a href="mailto:kyleg@marketingapes.com" style="color:var(--cyan)">kyleg@marketingapes.com</a> and we'll take it from there.</p>
       <p class="form-note">Nothing is charged here. Kyle confirms the order within the hour, sends the secure payment link, and the campaign goes live once it's paid. Flat marketing fees; nothing is contingent on case outcomes.</p>
@@ -585,7 +587,8 @@
   </footer>
 
   <script>
-    var ORDER_HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+    /* Hook URL is a secret resolved at submit from /ee/runtime.js (EE_HOOK_MA_ORDER); never stored here. */
+    function sendOrder(data, identity){ var ee = (window.EE && window.EE.__stocked) ? window.EE : null; if (!ee) return Promise.resolve(null); ee.safety.consent.record({ surface: 'ma_order_form', consent_text_id: 'MA_ORDER_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' }); return ee.hooks.post('order', data, { identity: identity }); }
     window.dataLayer = window.dataLayer || [];
     document.getElementById('year').textContent = new Date().getFullYear();
     document.querySelectorAll('.cta').forEach(function(el){
@@ -604,14 +607,17 @@
       data.tenant_id = EE_TENANT.tenant_id;
       var btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Sending…';
       document.getElementById('err').style.display = 'none';
-      fetch(ORDER_HOOK, {method:'POST', mode:'no-cors', body: new URLSearchParams(data)})
+      sendOrder(data, { email: data.email, phone: data.phone }).then(function(res){
+        if (!res || !res.ok) { btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; return; }
+        return Promise.resolve(res)
         .then(function(){
           window.dataLayer.push({event:'ee_order_submit',tenant_id:EE_TENANT.tenant_id,domain:EE_TENANT.domain,product:data.product,value:Number(data.price_usd||0),currency:'USD',case_types:data.case_types,states:data.states,landing_page_url:location.href});
           form.style.display = 'none'; document.getElementById('thanks').style.display = 'block';
           document.getElementById('thanks').scrollIntoView({behavior:'smooth'});
-        })
+        }); })
         .catch(function(){ btn.disabled = false; btn.textContent = 'Place the order'; document.getElementById('err').style.display = 'block'; });
     });
   </script>
+<!-- ee:socket --><div id="ee-experience" data-ee-socket="primary" data-tenant-id="MA" hidden></div><!-- /ee:socket -->
 </body>
 </html>

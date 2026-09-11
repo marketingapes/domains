@@ -1,0 +1,2 @@
+# Build-time runtime config: hook URLs injected from Render env by build.sh. Never commit.
+*/ee/runtime.js

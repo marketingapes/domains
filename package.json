@@ -1,0 +1,13 @@
+{
+  "name": "marketingapes-domains",
+  "private": true,
+  "description": "Evolution Engine domain site packages. Static sites; no npm dependencies. `npm test` is the complete suite.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs campaign-system/test/*.test.mjs",
+    "scan": "node tools/scan-secrets.mjs",
+    "verify": "python3 tools/verify-foundation.py",
+    "stock": "node tools/stock-domains.mjs",
+    "check": "node tools/stock-domains.mjs --check && node tools/scan-secrets.mjs && python3 tools/verify-foundation.py && npm test",
+    "check:strict": "EE_REQUIRE_CHROME=1 npm run check"
+  }
+}
