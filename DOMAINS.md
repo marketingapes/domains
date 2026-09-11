@@ -172,3 +172,7 @@ Regenerate + audit: `node tools/stock-domains.mjs` → `stocking/REPORT.md` / `s
 Drift gate: `node tools/stock-domains.mjs --check`. Never hand-edit `<tenant>/ee/*` or the injected blocks.
 - Hook URLs never live in the repo. Pages call `EE.hooks.url('<name>')`; `build.sh` writes
   `<tenant>/ee/runtime.js` (gitignored) from Render env `EE_HOOK_<TENANT>_<NAME>`. Unconfigured = fails closed.
+- A hook URL is only ever obtained through `EE.hooks.url()`, which passes the outbound gate (kill switch OFF,
+  gate live, consent evidence recorded, suppression truth known, runtime tenant matches). Unknown ⇒ fail closed.
+- Complete suite: `npm test` (tests/*.test.mjs + campaign-system/test/*.test.mjs, browser tests included).
+

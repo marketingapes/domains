@@ -9,6 +9,8 @@ hooks — without pretending any provider capability exists.
 shared/ee/bootstrap.js        source of truth (copied verbatim into <tenant>/ee/bootstrap.js)
 tools/stock-domains.mjs       generator + injector + auditor  →  stocking/report.{json,md}
 tests/domain-stocking.test.mjs guard (drift, identity, secrets, build, Foundation hashes)
+tests/domain-qaqc-*.test.mjs  regression guards for QA/QC repairs; tests/domain-browser.test.mjs = real Chromium, network capture only
+tools/scan-secrets.mjs        hook/key scanner over the tracked tree (`npm run scan`)
 <tenant>/ee/site.json         per-tenant capability sockets — statuses only, derived from domain.json
 ```
 
@@ -93,30 +95,57 @@ suppression, kill switch, production gate). Each carries the Foundation's two ax
 by `shared_from: <owner>` and never copied. Nothing in this layer is ever taken from NIL (or any
 other tenant) to make another tenant look complete.
 
-## 5. Hooks — `EE.hooks` (hook URLs never live in the repo)
+## 5. Hooks — `EE.hooks` (hook URLs never live in the repo, and are only ever handed out through the gate)
 
 A webhook URL is an unauthenticated endpoint and is treated as a secret (Foundation rule). Pages
-therefore reference hooks **by name** and never carry a URL:
+reference hooks **by name** and never carry a URL:
 
 ```js
-EE.hooks.url('intake')                 // -> https://... or null
-EE.hooks.post('intake', payload)       // JSON POST with tenant_id/domain_id/session_id; rejects HookMissing when unconfigured
+EE.hooks.configured('intake')          // runtime carries a hook for this tenant (no gate)
+EE.hooks.url('intake', identity)       // -> https://... ONLY if the outbound gate passes; else null (see .why)
+EE.hooks.why('intake')                 // last block reason: 'no consent evidence recorded', 'kill_switch ON', ...
+EE.hooks.post('intake', payload)       // gated JSON POST with tenant_id/domain_id/session_id; rejects OutboundBlocked / HookMissing
 ```
 
 `build.sh` writes `<tenant>/ee/runtime.js` (gitignored) at Render build time from env vars named
 `EE_HOOK_<TENANT>_<NAME>` — e.g. `EE_HOOK_NIL_INTAKE`, `EE_HOOK_BTL_LEAD`, `EE_HOOK_BTL_CAMPAIGN_REQUEST`,
 `EE_HOOK_DIHAC_CONTACT`, `EE_HOOK_DIHAC_LEAD`, `EE_HOOK_DIHAC_TRACKING`, `EE_HOOK_LFMA_ORDER`,
 `EE_HOOK_MA_ORDER`, `EE_HOOK_LEE_ORDER`. Only variables carrying a tenant's own prefix reach that
-tenant's file. Non-https values are dropped. An unconfigured hook fails closed: the page emits
-`ee_hook_missing`, shows its error state, and sends nothing. A tenant whose Render service does not
-run `sh build.sh` (MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
+tenant's file. Non-https values are dropped. A tenant whose Render service does not run `sh build.sh`
+(MA uses `echo "ma static"`) has no `runtime.js` and its forms stay closed until it does.
 
-Campaign identity on the URL is `?ee_campaign=` / `?ee_variant=`. A bare `?campaign_id=` is the ad
-platform's id and is never treated as an Evolution Engine campaign.
+**There is no ungated path to a URL.** `EE.hooks.url()` itself runs `EE.outbound.allowed()` first, so a
+page that does `fetch(EE.hooks.url('x'))` is gated exactly like `EE.hooks.post()`. The gate passes only when:
+
+| truth | required state | unknown ⇒ |
+|---|---|---|
+| kill switch | `EE_SITE.kill_switch === 'OFF'` (a page may tighten with `<meta name="ee-kill-switch" content="ON">`; `EE.safety.killSwitch.trip()`) | fail closed (`UNKNOWN` = ON) |
+| production gate | `live` (derived from Foundation: hosting matches intent, site + render ON) | fail closed |
+| consent evidence | `EE.safety.consent.record({surface, consent_text_id, method})` called on this page view | fail closed |
+| suppression | `EE_SITE.suppression_source` present; if it is `VERIFIED`/`CURRENT` a checker registered with `EE.safety.suppression.use(fn)` must have run and not suppressed; `MISSING`/`NOT_APPLICABLE` is a *known* absence | fail closed |
+| runtime tenant | `window.EE_RUNTIME.tenant_id === EE_SITE.tenant_id` | fail closed (`ee_runtime_mismatch`) |
+
+Blocked resolutions emit `ee_outbound_blocked {hook, reason}`; an unconfigured hook emits `ee_hook_missing`.
+Every form in this repo records its consent evidence (the consent text it actually shows, by id) before it
+asks for a hook. Legacy `tracking.js` beacons go through the same gate via `EE.legacy`.
+
+## 6. Identity and immutability
+
+- **No `EE_SITE`, or an invalid one ⇒ fail closed.** `window.EE` still exists (`__stocked:false`, `__failed`),
+  but nothing is pushed to the dataLayer, no hook resolves, no experience mounts.
+- **Reserved fields are system-owned.** `EE.track(name, props)` drops `tenant_id`, `domain_id`, `session_id`,
+  `campaign_id`, `variant_id`, `consent_state`, `kill_switch`, `production_gate`, `event_id`, `event_ts`,
+  `landing_page_url`, `page_*` and the other canonical fields from `props` and lists them in
+  `ee_rejected_props`. `EE.context` is a frozen snapshot. `window.EE` is non-writable and deeply frozen.
+- **Legacy scripts coexist, never overwrite.** A script that defined `window.EE` before the bootstrap is kept
+  under `EE.legacy`; one that loads later calls `EE.registerLegacy(api)` (the shared `tracking.js` does).
+  Page code that needs the old helpers uses `var L = window.EE && (window.EE.legacy || window.EE)`.
+- Campaign identity on the URL is `?ee_campaign=` / `?ee_variant=`. A bare `?campaign_id=` is the ad
+  platform's id and is never treated as an Evolution Engine campaign. Campaign stays optional/null.
 
 ## Rules
 
 - Never edit `<tenant>/ee/*` or the injected blocks by hand — edit `shared/ee/bootstrap.js` or the page, then regenerate.
 - Never put an identifier, hook URL, key or campaign into `EE_SITE`.
 - Changing what a tenant *owns* is a Foundation change (manifest + `foundation.sha256` in one commit, verifier green), then regenerate so `site.json` follows.
-- `node tools/stock-domains.mjs --check` must print `no drift`; `node --test tests/*.test.mjs` and `python3 tools/verify-foundation.py` must pass before pushing.
+- `npm run check` (drift gate + secret scan + Foundation verifier + the complete `npm test` suite) must pass on the committed tree before pushing.

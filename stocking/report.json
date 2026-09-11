@@ -45,8 +45,8 @@
     ]
   },
   "summary": {
-    "STOCKED": 11,
-    "PARTIAL": 3,
+    "STOCKED": 10,
+    "PARTIAL": 4,
     "BLOCKED": 0
   },
   "results": [
@@ -58,7 +58,8 @@
       "status": "PARTIAL",
       "structural_gaps": [
         "borrowed identity in page code (not claimed from both ends): NIL.e164=+16026931461",
-        "homepage hardcodes a campaign (the domain face must not depend on one): btl/index.html: campaign_id:'btl-home-sofia'"
+        "homepage hardcodes a campaign (the domain face must not depend on one): btl/index.html: campaign_id:'btl-home-sofia'",
+        "deployed path diverged: live besttortlawyers.com is served from SiteGround; the Phillips funnel is not mirrored in this tree"
       ],
       "notes": [
         "campaign landing pages carry their own campaign id (legitimate — a campaign attaches to the domain): btl/rhode-island-abuse/index.html: campaign_id:'btl-ri-abuse-2026'",
@@ -155,7 +156,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": false
+      "noindex": false,
+      "deployed_path": "DIVERGED"
     },
     {
       "tenant_id": "CGG",
@@ -220,7 +222,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "DDM",
@@ -286,7 +289,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "DIHAC",
@@ -430,7 +434,8 @@
         "cross_brand": []
       },
       "production_gate": "live",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "PROVEN"
     },
     {
       "tenant_id": "FPLB",
@@ -495,7 +500,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "KG",
@@ -586,7 +592,8 @@
         "cross_brand": []
       },
       "production_gate": "live",
-      "noindex": false
+      "noindex": false,
+      "deployed_path": "PROVEN"
     },
     {
       "tenant_id": "LFMA",
@@ -732,7 +739,8 @@
         "cross_brand": []
       },
       "production_gate": "live",
-      "noindex": false
+      "noindex": false,
+      "deployed_path": "PROVEN"
     },
     {
       "tenant_id": "MA",
@@ -813,15 +821,18 @@
         "cross_brand": []
       },
       "production_gate": "live",
-      "noindex": false
+      "noindex": false,
+      "deployed_path": "PROVEN"
     },
     {
       "tenant_id": "NIL",
       "domain_id": "nearestinjurylawyers.com",
       "brand": "Nearest Injury Lawyers",
       "folder": "nil",
-      "status": "STOCKED",
-      "structural_gaps": [],
+      "status": "PARTIAL",
+      "structural_gaps": [
+        "deployed path diverged: live nearestinjurylawyers.com is served from marketingapes/nil-site (root); this tree deploys nil-site-staging only"
+      ],
       "notes": [
         "campaign landing pages carry their own campaign id (legitimate — a campaign attaches to the domain): nil/arizona-mva-thank-you.html: campaign_id:'nil_az_mva_meta_pilot_01'"
       ],
@@ -893,7 +904,8 @@
         "cross_brand": []
       },
       "production_gate": "live",
-      "noindex": false
+      "noindex": false,
+      "deployed_path": "DIVERGED"
     },
     {
       "tenant_id": "PX",
@@ -959,7 +971,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "RI",
@@ -1025,7 +1038,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "SLIQ",
@@ -1090,7 +1104,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "TNT",
@@ -1155,7 +1170,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     },
     {
       "tenant_id": "TOSS",
@@ -1221,7 +1237,8 @@
         "cross_brand": []
       },
       "production_gate": "preview",
-      "noindex": true
+      "noindex": true,
+      "deployed_path": "UNPROVEN"
     }
   ]
 }

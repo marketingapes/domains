@@ -151,7 +151,8 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" rows="4" placeholder="Tell us about your firm, your goals, and what you're looking for..."></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1.05rem;">Submit &amp; Book Your Call</button>
+          <p class="ee-consent-note" style="font-size:.8rem;line-height:1.5;color:#6b6b6b;margin:10px 0 6px">By submitting this form you agree that Law Firm Marketing Apes may contact you about this request by email or phone. Consent evidence is recorded with your submission. <a href="privacy.html">Privacy Policy</a>.</p>
+<button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1.05rem;">Submit &amp; Book Your Call</button>
           <p style="color:var(--gray-500);font-size:.8rem;text-align:center;margin-top:12px;">We respond within 24 hours. No spam, ever.</p>
         </form>
       </div>
@@ -244,7 +245,7 @@
   </div>
 </footer>
 
-<script src="https://lawfirmmarketingapes.com/assets/js/tracking.js"></script>
+<script src="/assets/js/tracking.js"></script>
 <script>
 document.getElementById('agency-contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -266,19 +267,22 @@ document.getElementById('agency-contact-form').addEventListener('submit', functi
     page: window.location.href,
     timestamp: new Date().toISOString()
   };
-  if (window.EE) {
-    EE.sendToWebhook('form_submit', 'agency_contact_form', data);
-    EE.pushEvent('form_submit', {form_name: 'agency_contact_form'});
+  var L = window.EE && (window.EE.legacy || window.EE);
+  if (L && typeof L.sendToWebhook === 'function') {
+    L.sendToWebhook('form_submit', 'agency_contact_form', data);
+    L.pushEvent('form_submit', {form_name: 'agency_contact_form'});
   }
   /* Hook URL is a secret resolved from /ee/runtime.js (EE_HOOK_LFMA_ORDER); never stored here. */
-  var hook = (window.EE && window.EE.hooks) ? window.EE.hooks.url('order') : null;
+  var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+  if (ee) ee.safety.consent.record({ surface: 'lfma_contact_form', consent_text_id: 'LFMA_CONTACT_BY_SUBMIT_2026-09-11_V1', method: 'by-clicking-submit' });
+  var hook = ee ? ee.hooks.url('order', { email: data.email, phone: data.phone }) : null;
   if (hook) {
     fetch(hook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     }).catch(function(){});
-  } else if (window.EE) { window.EE.track('ee_hook_missing', {hook: 'order'}); }
+  }
   setTimeout(function() { window.location.href = 'thank-you.html'; }, 500);
 });
 </script>

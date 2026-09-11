@@ -76,15 +76,23 @@ export function bindLfmaBrief({
   errorBox.id = 'lfmaReceiptError'; errorBox.setAttribute('role', 'status');
   errorBox.setAttribute('aria-live', 'polite'); errorBox.hidden = true;
   form.append(errorBox);
-  const client = createOrderSubmitter({
-    endpoint, tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
-  });
+  // `endpoint` may be a function: the gated hook URL is only resolvable at submit time (after consent evidence
+  // is recorded), so the submitter is created lazily on first submit. A null endpoint fails closed as INVALID_ENDPOINT.
+  let client = null;
+  const getClient = () => {
+    if (client) return client;
+    const resolved = typeof endpoint === 'function' ? endpoint() : endpoint;
+    client = createOrderSubmitter({
+      endpoint: resolved, tenantId: 'LFMA', sourceUrl, pageVersion: LFMA_VERSION, requirePhone: false, fetchImpl
+    });
+    return client;
+  };
   const handler = async event => {
     event.preventDefault();
-    if (client.getState().status !== 'IDLE' || !form.reportValidity()) return;
+    if ((client && client.getState().status !== 'IDLE') || !form.reportValidity()) return;
     button.disabled = true; button.textContent = 'Sending...'; errorBox.hidden = true;
     try {
-      const raw = mapLfmaBrief(new FormData(form)), receipt = await client.submit(raw);
+      const raw = mapLfmaBrief(new FormData(form)), receipt = await getClient().submit(raw);
       try { dataLayer?.push(acknowledgementEvent(receipt, {
         tenantId: 'LFMA', domain: 'lawfirmmarketingapes.com', product: 'campaign_sprint_scope'
       })); } catch { /* A blocked analytics tag must not erase an acknowledged submission. */ }
@@ -96,7 +104,7 @@ export function bindLfmaBrief({
       form.hidden = true; sent.hidden = false;
       sent.setAttribute('tabindex', '-1'); sent.focus();
     } catch (error) {
-      const state = client.getState();
+      const state = client ? client.getState() : { status: 'IDLE' };
       if (state.status === 'IDLE') {
         errorBox.textContent = error instanceof IntakeError ? error.message : 'Please check the form.';
         button.disabled = false; button.textContent = original;

@@ -274,9 +274,10 @@
       });
 
       function sendDirect(payload) {
-        var hook = (window.EE && window.EE.hooks) ? window.EE.hooks.url('contact') : null;
+        var ee = (window.EE && window.EE.__stocked) ? window.EE : null;
+        if (ee) ee.safety.consent.record({ surface: 'dihac_contact_form', consent_text_id: 'DIHAC_CONTACT_PRIVACY_BY_SUBMIT_V1', method: 'by-clicking-submit' });
+        var hook = ee ? ee.hooks.url('contact', { email: payload.email, phone: payload.phone }) : null;
         if (!hook) {
-          if (window.EE) window.EE.track('ee_hook_missing', { hook: 'contact' });
           btn.disabled = false;
           btn.textContent = 'Send Message';
           alert('This form is not connected yet. Please call us directly.');

@@ -356,7 +356,7 @@
 
   var SOFIA_PHONE='+16026931461';
   /* Hook URL is a secret resolved at submit time from /ee/runtime.js (EE_HOOK_BTL_LEAD); never stored in this page. */
-  function hookUrl(){return (window.EE&&window.EE.hooks)?window.EE.hooks.url('lead'):null}
+  function hookUrl(identity){var ee=window.EE&&window.EE.__stocked?window.EE:null;if(!ee)return null;ee.safety.consent.record({surface:'btl_lead_form',consent_text_id:'BTL_TCPA_AI_BY_SUBMIT_2026-07-19',method:'by-clicking-submit'});return ee.hooks.url('lead',identity)}
   var CAMPAIGN='btl-ri-abuse-2026'; // campaign landing page: this page IS a campaign attachment; the domain face carries none
 
   var qs=new URLSearchParams(location.search);
@@ -419,7 +419,7 @@
     var data={}; new FormData(form).forEach(function(v,k){data[k]=v});
     data.consent_text='TCPA+AI-voice by-clicking-submit consent v2026-07-19'; data.consent_method='by-clicking-submit';
     data.page_url=location.href; data.ts=new Date().toISOString();
-    var hook=hookUrl(); if(!hook){ev('ee_hook_missing',{hook:'lead'}); alert('This form is not connected yet — please call Sofia.'); return;}
+    var hook=hookUrl({phone:data.phone,email:data.email}); if(!hook){alert('This form is not connected yet — please call Sofia.'); return;}
     document.getElementById('submitbtn').disabled=true;
     fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){if(!r.ok)throw 0; return r;})
@@ -427,7 +427,7 @@
         submitted=true; ev('ee_lead_submit_success',{claim_type:data.claim_type});
         fbq('track','Lead',{content_name:'btl-ri-abuse',content_category:data.claim_type});
         if(window.ttq)ttq.track('SubmitForm',{content_name:'btl-ri-abuse'});
-        window.dataLayer.push({event:'EEConvert',campaign_name:CAMPAIGN,lead_destination:WEBHOOK_URL});
+        window.dataLayer.push({event:'EEConvert',campaign_name:CAMPAIGN,lead_destination:'ee:hook:lead'});
         form.classList.add('hide'); document.getElementById('okmsg').classList.remove('hide');
       })
       .catch(function(){ ev('ee_lead_submit_error');

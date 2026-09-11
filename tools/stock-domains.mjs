@@ -242,6 +242,14 @@ function metaAudit(html, t) {
 
 // ---------------------------------------------------------------------------------------------- run
 const bootstrapSrc = read('shared/ee/bootstrap.js');
+// The older shared tracking helper is a legacy dependency of DIHAC and LFMA pages. DIHAC's copy is the source;
+// LFMA serves the same bytes locally instead of loading it cross-origin from the legacy host.
+const LEGACY_TRACKING = { source: 'dihac/assets/js/tracking.js', copies: ['lfma/assets/js/tracking.js'] };
+// F9: a tenant whose LIVE domain is served from a different source tree is not STOCKED until the deployed path converges.
+const LIVE_SOURCE_DIVERGENCE = {
+  NIL: 'live nearestinjurylawyers.com is served from marketingapes/nil-site (root); this tree deploys nil-site-staging only',
+  BTL: 'live besttortlawyers.com is served from SiteGround; the Phillips funnel is not mirrored in this tree'
+};
 const results = [], writes = [], drift = [];
 function emit(rel, content) {
   const abs = path.join(ROOT, rel);
@@ -251,6 +259,7 @@ function emit(rel, content) {
   else { fs.mkdirSync(path.dirname(abs), { recursive: true }); fs.writeFileSync(abs, content); writes.push(rel); }
 }
 
+for (const rel of LEGACY_TRACKING.copies) emit(rel, read(LEGACY_TRACKING.source));
 for (const t of TENANTS) {
   const dir = folder(t), m = manifests[t];
   const { config, site } = deriveSite(t);
@@ -331,6 +340,9 @@ for (const t of TENANTS) {
   if (!m.hostname.current_hosting_matches_intent) r.missing_external.push(`dns_cutover: ${m.hostname.current_hosting_state} -> ${m.hostname.intended_hosting} (human, DNS)`);
   if (leaf(m, 'measurement.canonical_events.connection_status') === 'MISSING') r.missing_external.push('canonical_events: MISSING in Foundation (bootstrap now emits ee_*; flip the leaf once observed in GA4/BigQuery)');
 
+  // F9: deployed path. PROVEN only when this tree is what the live domain serves; DIVERGED blocks STOCKED.
+  if (LIVE_SOURCE_DIVERGENCE[t]) { r.deployed_path = 'DIVERGED'; r.structural_gaps.push(`deployed path diverged: ${LIVE_SOURCE_DIVERGENCE[t]}`); }
+  else r.deployed_path = m.hostname.current_hosting_matches_intent ? 'PROVEN' : 'UNPROVEN';
   r.status = r.structural_gaps.length ? 'PARTIAL' : 'STOCKED';
   results.push(r);
 }
@@ -363,9 +375,9 @@ const report = {
 const md = [];
 md.push('# Domain stocking report — v1', '', `Foundation v1.2 frozen at \`${report.foundation.frozen_commit}\` — hashes intact: **${hashFileOk ? 'YES' : 'NO'}**. Tenants: ${TENANTS.length}/14 canonical, LEE excluded.`, '',
   `**STOCKED ${counts.STOCKED} · PARTIAL ${counts.PARTIAL} · BLOCKED ${counts.BLOCKED}**`, '',
-  'STOCKED = structurally ready (builds, identity, metadata, event bootstrap, experience socket, safety hooks). PARTIAL = a structural gap remains in existing page code that needs a content decision. BLOCKED = the site cannot serve. Missing *external* capabilities never block; they are listed per tenant.', '',
-  '| tenant | domain | status | gate | pages stocked | structural gaps | missing external |', '|---|---|---|---|---|---|---|');
-for (const r of results) md.push(`| ${r.tenant_id} | ${r.domain_id} | **${r.status}** | ${r.production_gate || '-'} | ${r.pages.filter(p => p.stocked).length}/${r.pages.length} | ${r.structural_gaps.length} | ${r.missing_external.length} |`);
+  'STOCKED = structurally ready (builds, identity, metadata, event bootstrap, experience socket, safety hooks) AND the deployed path is not diverged. PARTIAL = a structural gap remains in existing page code that needs a content decision, or the live domain is served from another source tree (deployed path DIVERGED). BLOCKED = the site cannot serve. Missing *external* capabilities never block; they are listed per tenant.', '',
+  '| tenant | domain | status | gate | deployed path | pages stocked | structural gaps | missing external |', '|---|---|---|---|---|---|---|---|');
+for (const r of results) md.push(`| ${r.tenant_id} | ${r.domain_id} | **${r.status}** | ${r.production_gate || '-'} | ${r.deployed_path || '-'} | ${r.pages.filter(p => p.stocked).length}/${r.pages.length} | ${r.structural_gaps.length} | ${r.missing_external.length} |`);
 for (const r of results) {
   md.push('', `## ${r.tenant_id} — ${r.brand} (${r.domain_id}) — ${r.status}`, '');
   md.push(`- production gate: \`${r.production_gate}\`${r.noindex ? ' (noindex)' : ''} · pages stocked: ${r.pages.filter(p => p.stocked).map(p => p.file.replace(`${r.folder}/`, '')).join(', ') || 'none'}`);

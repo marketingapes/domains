@@ -23,3 +23,30 @@ identity the provider proves belongs to another tenant (see `stocking/EVIDENCE.m
 Hook lanes (not Foundation, Render env): forms on NIL, BTL, DIHAC, LFMA, MA and LEE now resolve their
 webhook by name from `EE_HOOK_<TENANT>_<NAME>` and fail closed until set. Setting those env vars on each
 Render static site is a human production action and was **not** performed.
+
+## FOUNDATION/HUMAN RECONCILIATION REQUIRED — round 2 (F8, F9)
+
+| # | item | why it is not a build fix |
+|---|---|---|
+| R2-1 | BTL, DIHAC and LFMA pages present MA's number (`+16197360356`) and NIL's Sofia line (`+16026931461`) as their own; the owners' manifests carry `shared_with: []` and the users' manifests say `phone: MISSING` | ownership/sharing of a phone number is a Foundation claim that must be made from both ends (or numbers provisioned). Guessing would borrow identity. Left PARTIAL. |
+| R2-2 | NIL: live `nearestinjurylawyers.com` is served from `marketingapes/nil-site` (root), not from this tree (`nil-site-staging`) | readiness reported as PARTIAL (`deployed_path: DIVERGED`) until the deployed path converges on this tree or an adapter/integration proves it. |
+| R2-3 | BTL: live `besttortlawyers.com` is SiteGround; the Phillips funnel is not mirrored here | same rule: `deployed_path: DIVERGED`. |
+| R2-4 | Production gate is `preview` for BTL and the eight preview tenants, so their forms cannot send from the Render face until hosting matches intent | by design; flipping the gate is a Foundation/DNS decision. |
+| R2-5 | Every form now fails closed until `EE_HOOK_<TENANT>_<NAME>` is set on the Render static site (and MA's build command becomes `sh build.sh`) | Render env is a human production action. |
+
+## SECURITY ROTATION/HISTORY CLEANUP REQUIRED
+
+Raw hook URLs were committed to this public repository before commit `2593303` (they remain in git history
+and in any fork/clone). Removing them from the current tree does not revoke them. **Not done here** (no
+history rewrite, no credential rotation — human decisions):
+
+| lane | provider | where it lived (history) | action |
+|---|---|---|---|
+| NIL intake | Zapier catch hook (account 2296909) | `nil/index.html` | rotate the Zap's webhook URL, then set `EE_HOOK_NIL_INTAKE` |
+| BTL campaign request | Zapier catch hook (account 2296909) | `btl/404.html` | rotate, then `EE_HOOK_BTL_CAMPAIGN_REQUEST` |
+| DIHAC lead / contact / tracking | two Zapier catch hooks (account 2296909) | `dihac/*.html`, `dihac/assets/js/tracking.js` | rotate both, then `EE_HOOK_DIHAC_{LEAD,CONTACT,TRACKING}` |
+| BTL lead | Make custom webhook | `btl/index.html`, `btl/rhode-island-abuse/index.html` | regenerate the Make hook address, then `EE_HOOK_BTL_LEAD` |
+| MA/LFMA/LEE order lane | Make custom webhook | `ma/order/index.html`, `lfma/{engine,campaign,contact}`, `lee/index.html`, `lee/domain.json` | regenerate, then `EE_HOOK_{MA,LFMA,LEE}_ORDER` |
+
+Optional after rotation: history rewrite (`git filter-repo`) + force-push + clone invalidation — only with Kyle's
+explicit go, since it rewrites `main` history for every collaborator and every Render deploy hook.
