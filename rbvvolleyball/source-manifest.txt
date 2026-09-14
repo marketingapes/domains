@@ -1,0 +1,30 @@
+# RBV Volleyball zero-change migration manifest
+# Source of truth for this cutover is the current SiteGround origin.
+# The Render build snapshots these exact public paths without modifying content.
+
+index.html
+schedule.html
+forms.html
+parent-playbook.html
+gallery.html
+booster-club.html
+flyer.html
+request-changes.html
+robots.txt
+sitemap.xml
+css/style.css
+js/main.js
+js/calendar-live.js
+js/schedule-config.js
+js/schedule-parser.js
+images/american-legion-auxiliary.png
+images/flippin-pizza-logo.jpg
+images/founding-supporters-flyer.jpg
+images/hero-banner.jpg
+images/picture-day-flyer.jpg
+images/rbv-logo.png
+images/rbv-qr-code.png
+images/team-circle.jpg
+images/team-huddle-2.jpg
+images/team-huddle-3.jpg
+images/team-photo.jpg
