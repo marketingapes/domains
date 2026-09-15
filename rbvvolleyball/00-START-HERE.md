@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Page updated: index.html
+
+- Published approved page change.
+- Content commit: `9077a49827e588c99296dd2078b55b4ccb2dc646`.
+
+
 ## 2026-09-15 — Photo uploaded to RBV library
 
 - Asset: `images/amiyah-nieto-athlete-of-the-week-september-week--76bf1298c88c.png`.
