@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Prefer the public site pages
+Disallow: /request-changes.html
+Disallow: /flyer.html
+Disallow: /GTM-WTQSXG_cleaned.json
+
+Sitemap: https://rbvvolleyball.tonedntasty.com/sitemap.xml

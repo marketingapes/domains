@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join RBV Volleyball | Rancho Buena Vista High Longhorns</title>
+  <meta name="description" content="Join RBV Volleyball at Rancho Buena Vista High School. Tryouts, open gyms, and Longhorn girls volleyball info for the 2026 season.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px;
+      min-height: 100vh;
+    }
+
+    /* ===== SCREEN TOOLBAR ===== */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 660px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar span {
+      flex: 1;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .tool-btn {
+      background: #692530;
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .tool-btn:hover { background: #541e27; color: #fff; text-decoration: none; }
+    .tool-btn.secondary {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+    }
+    .tool-btn.secondary:hover { border-color: rgba(255,255,255,0.5); color: #fff; background: transparent; }
+
+    /* ===== FLYER SHELL ===== */
+    .flyer {
+      width: 660px;
+      background: #0d0305;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top maroon slash bar */
+    .flyer-top-bar {
+      background: #692530;
+      padding: 14px 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .flyer-top-bar img {
+      height: 34px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .flyer-top-bar span {
+      color: rgba(255,255,255,0.85);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Main body */
+    .flyer-body {
+      padding: 44px 48px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    /* Subtle diagonal accent */
+    .flyer-body::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle at top right, rgba(105,37,48,0.25) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Eyebrow */
+    .flyer-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #692530;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 18px;
+    }
+
+    /* Big headline */
+    .flyer-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 7.5rem;
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: #fff;
+      letter-spacing: -1px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .flyer-headline .accent { color: #692530; }
+
+    /* Tagline */
+    .flyer-tagline {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Divider */
+    .flyer-rule {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 36px;
+    }
+
+    /* Bottom row: QR left, info right */
+    .flyer-bottom {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .qr-wrap {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px;
+      flex-shrink: 0;
+    }
+
+    .qr-wrap img {
+      width: 150px;
+      height: 150px;
+      display: block;
+    }
+
+    .qr-wrap p {
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #692530;
+      margin-top: 8px;
+    }
+
+    .flyer-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .info-block {}
+
+    .info-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #692530;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.4;
+    }
+
+    .info-value.big {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    /* Bottom strip */
+    .flyer-footer-bar {
+      background: rgba(105,37,48,0.15);
+      border-top: 1px solid rgba(105,37,48,0.3);
+      padding: 12px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .flyer-footer-bar span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===== PRINT ===== */
+    @media print {
+      @page { size: letter; margin: 0.35in; }
+
+      body { background: none; padding: 0; display: block; }
+
+      .toolbar { display: none; }
+
+      .flyer {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .flyer { width: 100%; }
+      .flyer-headline { font-size: 5rem; }
+      .flyer-body { padding: 32px 28px 28px; }
+      .flyer-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .flyer-footer-bar { padding: 12px 28px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <span>RBV Volleyball Flyer &mdash; Print Ready</span>
+    <button class="tool-btn" onclick="window.print()">Print Flyer</button>
+    <a class="tool-btn secondary" href="index.html">&#8592; Back</a>
+  </div>
+
+  <div class="flyer">
+
+    <!-- Top bar -->
+    <div class="flyer-top-bar">
+      <img src="images/rbv-logo.png" alt="RBV Longhorns">
+      <span>Rancho Buena Vista High School &mdash; Volleyball</span>
+    </div>
+
+    <!-- Main body -->
+    <div class="flyer-body">
+
+      <p class="flyer-eyebrow">2026 Season &mdash; Now Recruiting</p>
+
+      <h1 class="flyer-headline">
+        Serve.<br>
+        Set.<br>
+        <span class="accent">Spike.</span>
+      </h1>
+
+      <p class="flyer-tagline">Think you got game? Come prove it.</p>
+
+      <div class="flyer-rule"></div>
+
+      <div class="flyer-bottom">
+
+        <div class="qr-wrap">
+          <img src="images/rbv-qr-code.png" alt="Scan for info">
+          <p>Scan for info</p>
+        </div>
+
+        <div class="flyer-info">
+          <div class="info-block">
+            <div class="info-label">Teams</div>
+            <div class="info-value big">Varsity &middot; JV &middot; Frosh</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">Follow</div>
+            <div class="info-value big">@rbvvolleyball</div>
+          </div>
+          <div class="info-block">
+            <div class="info-label">Website</div>
+            <div class="info-value">rbvvolleyball.tonedntasty.com</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer strip -->
+    <div class="flyer-footer-bar">
+      <span>RBV Longhorn Volleyball</span>
+      <span>rbvvolleyball.tonedntasty.com</span>
+    </div>
+
+  </div>
+
+</body>
+</html>
