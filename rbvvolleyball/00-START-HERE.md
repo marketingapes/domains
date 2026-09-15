@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Photo uploaded to RBV library
+
+- Asset: `images/rbv-vs-lcc-attack-at-net-dce425dd9ab8.jpg`.
+- Content commit: `303c0d42da61a4ef87d9cbca2dcd1c141d9d5545`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-15 — Page updated: booster-club.html
 
 - Published approved page change.
