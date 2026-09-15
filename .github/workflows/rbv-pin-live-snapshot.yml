@@ -1,0 +1,54 @@
+name: RBV Pin Live Snapshot
+
+on:
+  push:
+    branches:
+      - feat/rbv-volleyball-render-migration-20260914
+    paths:
+      - rbvvolleyball/snapshot-request.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rbv-pin-live-snapshot
+  cancel-in-progress: false
+
+jobs:
+  pin-live-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/rbv-volleyball-render-migration-20260914
+          fetch-depth: 0
+
+      - name: Snapshot current SiteGround production origin
+        run: bash rbvvolleyball/build.sh
+
+      - name: Pin snapshot as GitHub source of truth
+        run: |
+          set -euo pipefail
+          rm -rf rbvvolleyball/site
+          mkdir -p rbvvolleyball/site
+          cp -a rbvvolleyball/dist/. rbvvolleyball/site/
+          rm -f rbvvolleyball/site/.migration-sha256.txt
+          (
+            cd rbvvolleyball/site
+            find . -type f -print0 | sort -z | xargs -0 sha256sum > ../PINNED-SHA256.txt
+          )
+
+      - name: Commit pinned snapshot
+        run: |
+          set -euo pipefail
+          git config user.name "rbv-migration-bot"
+          git config user.email "rbv-migration-bot@users.noreply.github.com"
+          git add rbvvolleyball/site rbvvolleyball/PINNED-SHA256.txt
+          if git diff --cached --quiet; then
+            echo "Snapshot already pinned; no commit required."
+            exit 0
+          fi
+          git commit -m "RBV: pin live SiteGround snapshot [rbv-snapshot]"
+          git push origin HEAD:feat/rbv-volleyball-render-migration-20260914
