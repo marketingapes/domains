@@ -331,6 +331,13 @@ Append newest entries at the top of this section. Preserve prior entries.
 
 ## 2026-09-15 — Photo uploaded to RBV library
 
+- Asset: `images/rbv-team-selfie-8b078e99ce51.jpg`.
+- Content commit: `d40787e477eabaa775b65ca2fff1d3206f0a97b0`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
+## 2026-09-15 — Photo uploaded to RBV library
+
 - Asset: `images/rbv-senior-banners-8b2646986f0f.jpg`.
 - Content commit: `8c39c0b38f850d19f8855335cf83d9561cdfacbf`.
 - Photo is not automatically placed on a page or in the gallery.
