@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Photo uploaded to RBV library
+
+- Asset: `images/amiyah-nieto-athlete-of-the-week-september-week--76bf1298c88c.png`.
+- Content commit: `561d65ebf504ed912ed579865bf301246b14c7b0`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-15 — Page updated: booster-club.html
 
 - Published approved page change.
