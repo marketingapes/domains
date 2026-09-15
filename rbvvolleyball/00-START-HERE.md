@@ -331,6 +331,13 @@ Append newest entries at the top of this section. Preserve prior entries.
 
 ## 2026-09-15 — Photo uploaded to RBV library
 
+- Asset: `images/rbv-vs-lcc-volleyball-action-43d934139544.jpg`.
+- Content commit: `ee4ddf646cf14fb238299ccc17f8b541c312299f`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
+## 2026-09-15 — Photo uploaded to RBV library
+
 - Asset: `images/rbv-vs-lcc-jump-serve-71fd02b92c0c.jpg`.
 - Content commit: `4228c0321d79dba7d5bcd9619cc86f423501d757`.
 - Photo is not automatically placed on a page or in the gallery.
