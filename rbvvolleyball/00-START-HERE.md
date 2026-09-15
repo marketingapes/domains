@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Photo uploaded to RBV library
+
+- Asset: `images/mackenzie-ambacher-fundraiser-winner-5dd8fa865b4e.png`.
+- Content commit: `72cd0334a4751faddf5090ad2d3dbbc1436319b8`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-15 — First-read operating brief created
 
 - Created `rbvvolleyball/00-START-HERE.md` as the first file future RBV operators should read.
