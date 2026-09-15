@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Page updated: gallery.html
+
+- Published approved page change.
+- Content commit: `19c045347dfad6c26cb30ddf6282240c3e6cc7e0`.
+
+
 ## 2026-09-15 — Photo uploaded to RBV library
 
 - Asset: `images/rbv-glow-practice-group-two-162f62be4a41.jpg`.
