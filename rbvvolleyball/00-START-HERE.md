@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Photo uploaded to RBV library
+
+- Asset: `images/rbv-homepage-team-timeout-6223101901f4.jpg`.
+- Content commit: `6680e1d3b1d4de3c6a4e6f81ce9614ad9a70de7b`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-15 — Page updated: index.html
 
 - Published approved page change.
