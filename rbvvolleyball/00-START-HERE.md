@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-15 — Page updated: booster-club.html
+
+- Published approved page change.
+- Content commit: `13540391a6cb2a963f7e50c60a1412eecce3ea58`.
+
+
 ## 2026-09-15 — Photo uploaded to RBV library
 
 - Asset: `images/rbv-vs-lcc-team-celebration-f935cae25ed7.jpg`.
