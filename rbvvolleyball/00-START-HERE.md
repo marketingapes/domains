@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-16 — Page updated: forms.html
+
+- Published approved page change.
+- Content commit: `b6b9d37c0fa33c10cd71d8ef85d593c3716b3840`.
+
+
 ## 2026-09-16 — Photo uploaded to RBV library
 
 - Asset: `images/rbv-top-background-96956910bfe1.jpg`.
