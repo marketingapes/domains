@@ -9,14 +9,14 @@ const sitemap = await readFile(new URL('../ma/sitemap.xml', import.meta.url), 'u
 const css = await readFile(new URL('../ma/intro/intro.css', import.meta.url), 'utf8');
 
 const headlines = [
-  'Is your business',
-  'Site. Ads. Creative. Follow-up.',
-  'Websites + paid ads + creative + AI + automation',
-  'One priority. Four weeks. Real outcomes.',
-  'Meet Sofia. Your next',
-  'No invented clients. No invented revenue.',
-  'Your domain. Your brand. Your accounts.',
-  'Big plans? Let’s get to',
+  'You write the spend.',
+  'Click. Silence.',
+  'Landing. Creative.',
+  'Fix the path.',
+  'Meet Sofia. She’s on',
+  'No invented clients.',
+  'Your ad accounts.',
+  'Let’s look at the',
 ];
 
 test('intro has all eight locked headlines in HTML', () => {
@@ -34,6 +34,14 @@ test('intro does not invent proof, pixels, or unfinished routes', () => {
   assert.doesNotMatch(html, /vapi/i);
   assert.doesNotMatch(html, /GTM-PENDING|\$\d|GTM-[A-Z0-9]+/);
   assert.doesNotMatch(html, /\/pricing\/|\/order\/|\/anti-agency\//);
+});
+
+test('story is solopreneur media-buyer, not a fake agency org chart', () => {
+  assert.match(html, /media buyer/i);
+  assert.match(html, /You write the spend/);
+  assert.match(html, /Your ad accounts/);
+  assert.match(html, /without a twelve-person agency/);
+  assert.doesNotMatch(html, /ROAS of|guaranteed|case study/i);
 });
 
 test('homepage planner and contacts stay; nav points at /intro/', () => {
