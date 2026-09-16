@@ -46,6 +46,13 @@ test('story is Tex first-person: partner not a fake staff', () => {
   assert.doesNotMatch(html, /ROAS of|guaranteed|case study|layoff your/i);
 });
 
+test('intro pitch video is present with poster and no autoplay', () => {
+  assert.match(html, /src="\/intro\/tex-pitch\.mp4"/);
+  assert.match(html, /poster="\/intro\/tex-pitch\.jpg"/);
+  assert.match(html, /AI built this intro with Tex/);
+  assert.doesNotMatch(html, /autoplay/i);
+});
+
 test('homepage planner and contacts stay; nav points at /intro/', () => {
   assert.match(home, /id="planner"/);
   assert.match(home, /tel:\+16197360356/);

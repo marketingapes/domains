@@ -108,6 +108,21 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--paper)
   filter:saturate(1.05) contrast(1.05);
   mask-image:radial-gradient(circle at 50% 45%,#000 54%,transparent 78%);
 }
+.pitch{width:min(46vw,560px)}
+.pitch-video{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:14px;
+  background:#0b1612;
+  box-shadow:0 24px 60px -28px #000a;
+}
+.pitch figcaption{
+  margin-top:12px;
+  font-size:11px;
+  letter-spacing:.04em;
+  color:var(--muted);
+}
 .glow{
   position:absolute;
   width:55vw;
@@ -170,6 +185,7 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--paper)
   .slide{position:relative;grid-template-columns:1fr;padding:36px 20px 80px;min-height:calc(100dvh - 160px)}
   .slide[hidden]{display:none!important}
   .art{width:min(70vw,280px);justify-self:start;margin-top:20px}
+  .pitch{width:100%;max-width:560px}
   h1{font-size:clamp(34px,11vw,56px)}
   .slide-num{font-size:42vw;bottom:auto;top:18vh;opacity:.05}
   .deck-bar{height:84px;padding:0 16px}
