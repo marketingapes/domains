@@ -38,7 +38,7 @@ test('intro does not invent proof, pixels, or unfinished routes', () => {
 
 test('story is Tex first-person: partner not a fake staff', () => {
   assert.match(html, /Kyle “Tex” Gosselin/);
-  assert.match(html, /I write the spend/);
+  assert.match(html, /AI avatar built by AI and Kyle/);
   assert.match(html, /No fake staff/);
   assert.match(html, /J\/k/);
   assert.match(html, /AI as a partner/);
@@ -49,7 +49,7 @@ test('story is Tex first-person: partner not a fake staff', () => {
 test('intro pitch video is present with poster and no autoplay', () => {
   assert.match(html, /src="\/intro\/tex-pitch\.mp4"/);
   assert.match(html, /poster="\/intro\/tex-pitch\.jpg"/);
-  assert.match(html, /AI built this intro with Tex/);
+  assert.match(html, /AI avatar built by AI and Kyle/);
   assert.doesNotMatch(html, /autoplay/i);
 });
 
