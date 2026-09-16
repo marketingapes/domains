@@ -43,6 +43,24 @@
     <option value="owner">Business owner</option>
     <option value="curious">Just curious</option>
    </select>
+   <input type="hidden" name="utm_source" id="utm_source">
+   <input type="hidden" name="utm_medium" id="utm_medium">
+   <input type="hidden" name="utm_campaign" id="utm_campaign">
+   <input type="hidden" name="utm_content" id="utm_content">
+   <input type="hidden" name="utm_term" id="utm_term">
+   <input type="hidden" name="utm_id" id="utm_id">
+   <input type="hidden" name="gclid" id="gclid">
+   <input type="hidden" name="gbraid" id="gbraid">
+   <input type="hidden" name="wbraid" id="wbraid">
+   <input type="hidden" name="fbclid" id="fbclid">
+   <input type="hidden" name="ttclid" id="ttclid">
+   <input type="hidden" name="msclkid" id="msclkid">
+   <input type="hidden" name="landing_page" id="landing_page">
+   <input type="hidden" name="referrer" id="referrer">
+   <input type="hidden" name="ee_system_id" id="ee_system_id">
+   <input type="hidden" name="session_id" id="session_id">
+   <input type="hidden" name="fbp" id="fbp">
+   <input type="hidden" name="fbc" id="fbc">
    <button class="button" type="submit">Sign me up</button>
    <p class="note">Kyle will email you about the first digital launch. No Zapier. No auto-subscribe to ads.</p>
    <p class="err" id="tex-err" hidden>Didn’t send. Try again, or email kyleg@marketingapes.com.</p>
@@ -62,6 +80,34 @@
 </footer>
 <script>
 const TEX_HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+const ATTR = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','gclid','gbraid','wbraid','fbclid','ttclid','msclkid'];
+const qs = new URLSearchParams(location.search);
+function ck(n) {
+  const m = document.cookie.match('(?:^|; )' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)');
+  return m ? decodeURIComponent(m[1]) : '';
+}
+function setCk(n, v) {
+  if (!v) return;
+  document.cookie = n + '=' + encodeURIComponent(v) + ';path=/;max-age=7776000;SameSite=Lax';
+}
+const EE = ck('ee_id') || ('ee-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8));
+setCk('ee_id', EE);
+const SID = 's-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+ATTR.forEach(function (k) {
+  const fromQ = qs.get(k);
+  const val = fromQ || ck('ma_' + k) || '';
+  const el = document.getElementById(k);
+  if (el) el.value = val;
+  if (fromQ) setCk('ma_' + k, fromQ);
+});
+if (!ck('ma_landing')) setCk('ma_landing', location.href.split('#')[0]);
+document.getElementById('landing_page').value = ck('ma_landing') || location.href;
+document.getElementById('referrer').value = document.referrer || '';
+document.getElementById('ee_system_id').value = EE;
+document.getElementById('session_id').value = SID;
+document.getElementById('fbp').value = ck('_fbp');
+document.getElementById('fbc').value = ck('_fbc');
+
 const form = document.getElementById('want-more');
 const thanks = document.getElementById('tex-thanks');
 const err = document.getElementById('tex-err');
@@ -69,23 +115,37 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;
   const btn = form.querySelector('button[type=submit]');
-  const email = form.email.value.trim();
-  const role = form.role.value;
-  const body = new URLSearchParams({
-    tenant_id: 'MA',
-    product: 'tex-launch',
-    type: 'tex_launch',
-    email: email,
-    role: role,
-    notes: 'TEX LAUNCH LIST — not an order, not payment, not a campaign',
-    source_url: location.href,
-    buyer_name: 'Tex launch list',
-    contact_name: email
-  });
+  const data = {};
+  new FormData(form).forEach(function (v, k) { data[k] = v; });
+  data.tenant_id = 'MA';
+  data.product = 'tex-launch';
+  data.type = 'tex_launch';
+  data.buyer_name = 'Tex launch list';
+  data.contact_name = data.email;
+  data.notify_email = 'kyleg@marketingapes.com';
+  data.source_url = location.href;
+  data.current_url = location.href;
+  data.notes = [
+    'TEX LAUNCH LIST — not an order, not payment, not a campaign',
+    'email=' + data.email,
+    'role=' + data.role,
+    'utm_source=' + (data.utm_source || ''),
+    'utm_medium=' + (data.utm_medium || ''),
+    'utm_campaign=' + (data.utm_campaign || ''),
+    'utm_content=' + (data.utm_content || ''),
+    'utm_term=' + (data.utm_term || ''),
+    'gclid=' + (data.gclid || ''),
+    'fbclid=' + (data.fbclid || ''),
+    'ttclid=' + (data.ttclid || ''),
+    'landing=' + (data.landing_page || ''),
+    'referrer=' + (data.referrer || ''),
+    'ee_id=' + (data.ee_system_id || '')
+  ].join(' | ');
+  data.lead_summary = data.notes;
   btn.disabled = true;
   btn.textContent = 'Sending…';
   err.hidden = true;
-  fetch(TEX_HOOK, { method: 'POST', mode: 'no-cors', body: body })
+  fetch(TEX_HOOK, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
     .then(function () {
       form.hidden = true;
       thanks.hidden = false;

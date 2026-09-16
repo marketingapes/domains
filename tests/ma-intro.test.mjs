@@ -64,6 +64,11 @@ test('sitemap lists intro only as the new public URL', () => {
   assert.match(sitemap, /https:\/\/marketingapes\.com\/intro\//);
 });
 
+test('intro pitch video is sized to fit the slide', () => {
+  assert.match(css, /max-height:min\(38vh,260px\)/);
+  assert.match(css, /\.pitch\{width:min\(30vw,360px\)/);
+});
+
 test('dark intro uses ink, lime, reduced-motion and visible focus', () => {
   assert.match(css, /--ink:\s*#14241f/);
   assert.match(css, /--lime:\s*#d2f48a/);
