@@ -32,9 +32,9 @@
   <h1>Man, he went<br><em>ape-shit.</em></h1>
   <p class="lede">Hi. My name is Tex. I am the AI avatar built by Grok and Kyle. Then AI learned about Kyle — and man, he went ape-shit learning this stuff for you guys.</p>
   <p class="insight">Ready for the future? Sign up to receive his first digital launch. Watch out. There are fourteen behind it.</p>
-  <form class="optin" id="want-more" action="mailto:kyleg@marketingapes.com" method="get">
+  <form class="optin" id="want-more" method="post" action="#">
    <h2>Sign up for the first digital launch</h2>
-   <p>Leave a real email. Kyle reads it. No fake “you’re in” screen. This is interest — not a live product yet.</p>
+   <p>Leave a real email. This is a launch list — not an order, not a campaign, not collected money.</p>
    <label for="email">Email</label>
    <input id="email" name="email" type="email" required autocomplete="email" inputmode="email">
    <label for="role">What are you?</label>
@@ -43,9 +43,14 @@
     <option value="owner">Business owner</option>
     <option value="curious">Just curious</option>
    </select>
-   <button class="button" type="submit">Sign me up ↗</button>
-   <p class="note">Right now this opens your email app to kyleg@marketingapes.com. You hit send. That is not Make, not a CRM, not a delivered lead until Kyle receives that message. No ads. No auto-subscribe.</p>
+   <button class="button" type="submit">Sign me up</button>
+   <p class="note">Kyle will email you about the first digital launch. No Zapier. No auto-subscribe to ads.</p>
+   <p class="err" id="tex-err" hidden>Didn’t send. Try again, or email kyleg@marketingapes.com.</p>
   </form>
+  <div class="thanks" id="tex-thanks" hidden>
+   <h2>Got it.</h2>
+   <p>You’re on the Tex launch list. Watch out. There are fourteen behind it.</p>
+  </div>
  </div>
 </main>
 <footer>
@@ -56,15 +61,41 @@
  <span>Marketing Apes provides marketing and automation services. It is not a law firm.</span>
 </footer>
 <script>
+const TEX_HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
 const form = document.getElementById('want-more');
+const thanks = document.getElementById('tex-thanks');
+const err = document.getElementById('tex-err');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;
+  const btn = form.querySelector('button[type=submit]');
   const email = form.email.value.trim();
   const role = form.role.value;
-  const subject = encodeURIComponent('Tex — first digital launch');
-  const body = encodeURIComponent('Sign me up for the first digital launch.\n\nEmail: ' + email + '\nRole: ' + role + '\nPage: https://marketingapes.com/tex/\n');
-  window.location.href = 'mailto:kyleg@marketingapes.com?subject=' + subject + '&body=' + body;
+  const body = new URLSearchParams({
+    tenant_id: 'MA',
+    product: 'tex-launch',
+    type: 'tex_launch',
+    email: email,
+    role: role,
+    notes: 'TEX LAUNCH LIST — not an order, not payment, not a campaign',
+    source_url: location.href,
+    buyer_name: 'Tex launch list',
+    contact_name: email
+  });
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  err.hidden = true;
+  fetch(TEX_HOOK, { method: 'POST', mode: 'no-cors', body: body })
+    .then(function () {
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })
+    .catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Sign me up';
+      err.hidden = false;
+    });
 });
 </script>
 </body>
