@@ -1,0 +1,43 @@
+name: Domain release checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: domain-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  domain-release-checks:
+    name: Domain release checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install schema validation dependency
+        run: python3 -m pip install -r requirements-ci.txt
+      - name: Validate the build, foundation and existing tests
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tools/check-release.sh 2>&1 | tee release-checks.log
+      - name: Preserve validation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-checks-${{ github.sha }}
+          path: release-checks.log
+          if-no-files-found: warn
+          retention-days: 7
