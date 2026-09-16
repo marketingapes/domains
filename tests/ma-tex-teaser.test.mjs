@@ -19,8 +19,12 @@ test('teaser page keeps Tex identity and the Kyle insight', () => {
 test('opt-in emails Kyle and does not fake a list vendor', () => {
   assert.match(html, /type="email"/);
   assert.match(html, /id="email"/);
-  assert.match(html, /product: 'tex-launch'/);
+  assert.match(html, /product = 'tex-launch'/);
   assert.match(html, /hook\.us2\.make\.com/);
+  assert.match(html, /name="utm_source"/);
+  assert.match(html, /name="gclid"/);
+  assert.match(html, /name="fbclid"/);
+  assert.match(html, /notify_email = 'kyleg@marketingapes\.com'/);
   assert.doesNotMatch(html, /mailchimp|hubspot|GTM-PENDING|autoplay|\$\d|window\.location\.href = 'mailto:/i);
 });
 
