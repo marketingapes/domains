@@ -24,10 +24,9 @@ test('opt-in emails Kyle and does not fake a list vendor', () => {
 });
 
 test('teaser video is present with poster and no autoplay', () => {
-  assert.match(html, /src="\/tex\/tex-teaser\.mp4"/);
   assert.match(html, /src="\/tex\/tex-teaser-vertical\.mp4"/);
-  assert.match(html, /poster="\/tex\/tex-teaser\.jpg"/);
   assert.match(html, /poster="\/tex\/tex-teaser-vertical\.jpg"/);
+  assert.doesNotMatch(html, /tex-teaser\.mp4/);
   assert.doesNotMatch(html, /autoplay/i);
 });
 

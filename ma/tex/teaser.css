@@ -35,13 +35,13 @@ nav{display:flex;gap:28px;align-items:center;font-size:13px;font-weight:600}
 nav a:hover{color:var(--lime)}
 .nav-cta{border:1px solid var(--lime);color:var(--ink);background:var(--lime);padding:11px 18px;border-radius:4px;min-height:44px;display:inline-flex;align-items:center}
 .hero{
-  width:min(1180px,calc(100% - 8vw));
+  width:min(720px,calc(100% - 8vw));
   margin:0 auto;
-  padding:56px 0 72px;
+  padding:36px 0 72px;
   display:grid;
-  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
-  gap:56px;
-  align-items:center;
+  gap:36px;
+  justify-items:center;
+  text-align:left;
 }
 .eyebrow{font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--lime);margin-bottom:22px}
 .dot{display:inline-block;width:7px;height:7px;background:var(--lime);border-radius:50%;margin-right:10px;box-shadow:0 0 0 4px #d2f48a22}
@@ -52,9 +52,10 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--paper)
   margin-top:28px;padding:18px 20px;border-left:3px solid var(--lime);
   color:var(--paper);font-size:16px;line-height:1.65;max-width:38em;
 }
-.pitch-video{width:100%;height:auto;display:block;border-radius:14px;background:#0b1612;box-shadow:0 24px 60px -28px #000a}
-.pitch-video.portrait{display:none}
+.pitch-video{width:min(100%,420px);height:auto;display:block;margin:0 auto;border-radius:14px;background:#0b1612;box-shadow:0 24px 60px -28px #000a}
+figure{width:100%;margin:0}
 figcaption{margin-top:12px;font-size:11px;letter-spacing:.04em;color:var(--muted)}
+.hero > div{width:100%}
 .optin{
   margin-top:36px;padding:24px;border:1px solid var(--line);border-radius:10px;
   background:#101c18;max-width:460px;
@@ -76,10 +77,7 @@ input,select{
 footer{padding:28px 4vw 36px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:flex;gap:22px;flex-wrap:wrap}
 footer a:hover{color:var(--lime)}
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr;padding:36px 0 56px;gap:28px}
-  .hero figure{order:-1}
-  .pitch-video.landscape{display:none}
-  .pitch-video.portrait{display:block;width:min(100%,420px);margin:0 auto}
+  .hero{padding:28px 0 56px;gap:28px}
   nav{gap:12px}
   .nav-cta{padding:10px 12px;font-size:12px}
 }
