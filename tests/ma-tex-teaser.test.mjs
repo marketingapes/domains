@@ -8,11 +8,12 @@ const home = await readFile(new URL('../ma/index.html', import.meta.url), 'utf8'
 const sitemap = await readFile(new URL('../ma/sitemap.xml', import.meta.url), 'utf8');
 
 test('teaser page keeps Tex identity and the Kyle insight', () => {
-  assert.match(html, /AI avatar built by AI and Kyle/);
+  assert.match(html, /AI avatar built by Grok and Kyle/);
   assert.match(html, /THEN AI LEARNED ABOUT KYLE/);
-  assert.match(html, /understaffed than dishonest/);
-  assert.match(html, /click pretend/i);
-  assert.match(html, /Want more\?/);
+  assert.match(html, /ape-shit/);
+  assert.match(html, /first digital launch/);
+  assert.match(html, /fourteen behind it/);
+  assert.doesNotMatch(html, /\bRex\b/);
 });
 
 test('opt-in emails Kyle and does not fake a list vendor', () => {
@@ -24,7 +25,9 @@ test('opt-in emails Kyle and does not fake a list vendor', () => {
 
 test('teaser video is present with poster and no autoplay', () => {
   assert.match(html, /src="\/tex\/tex-teaser\.mp4"/);
+  assert.match(html, /src="\/tex\/tex-teaser-vertical\.mp4"/);
   assert.match(html, /poster="\/tex\/tex-teaser\.jpg"/);
+  assert.match(html, /poster="\/tex\/tex-teaser-vertical\.jpg"/);
   assert.doesNotMatch(html, /autoplay/i);
 });
 
