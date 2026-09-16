@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Want more? — Tex, Marketing Apes</title>
+<meta name="description" content="Tex is the AI avatar built by AI and Kyle. After AI learned about Kyle, it didn’t hire a team. It hired a rule. Want more?">
+<link rel="canonical" href="https://marketingapes.com/tex/">
+<meta property="og:title" content="Then AI learned about Kyle | Marketing Apes">
+<meta property="og:description" content="Twenty years of media. He’d rather be understaffed than dishonest. So they built Tex. Want more?">
+<meta property="og:type" content="website"><meta property="og:url" content="https://marketingapes.com/tex/">
+<meta property="og:image" content="https://marketingapes.com/tex/tex-teaser.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14241f">
+<link rel="icon" type="image/jpeg" href="/assets/network/ape-logo.jpg">
+<link rel="stylesheet" href="/tex/teaser.css">
+</head>
+<body>
+<a class="skip" href="#want-more">Skip to want more</a>
+<header class="site-header">
+ <a href="/" class="brand" aria-label="Marketing Apes home"><img class="ape-logo" src="/assets/network/ape-logo.jpg" width="44" height="44" alt=""><span>MARKETING APES<small>KYLE “TEX” GOSSELIN · CEO</small></span></a>
+ <nav aria-label="Main navigation"><a href="/intro/">Intro</a><a href="/#planner">Planner</a><a class="nav-cta" href="#want-more">Want more?</a></nav>
+</header>
+<main class="hero">
+ <div>
+  <p class="eyebrow"><span class="dot"></span> THEN AI LEARNED ABOUT KYLE.</p>
+  <h1>It didn’t hire a team.<br>It hired a <em>rule.</em></h1>
+  <p class="lede">Hi. My name is Tex. I am the AI avatar built by AI and Kyle. Same voice. Same ape. Then the training data got specific.</p>
+  <p class="insight">After AI learned about Kyle, it stopped asking for headcount. Twenty years of ROI-focused media. A staff of one. And a man who will not let a click pretend it’s money. So they built me — the only employee who can pass his honesty test.</p>
+  <form class="optin" id="want-more" action="mailto:kyleg@marketingapes.com" method="get">
+   <h2>Want more?</h2>
+   <p>If that landed, leave a real email. Kyle reads it. No fake “you’re in” screen.</p>
+   <label for="email">Email</label>
+   <input id="email" name="email" type="email" required autocomplete="email" inputmode="email">
+   <label for="role">What are you?</label>
+   <select id="role" name="role">
+    <option value="media-buyer">Media buyer / operator</option>
+    <option value="owner">Business owner</option>
+    <option value="curious">Just curious</option>
+   </select>
+   <button class="button" type="submit">Send it to Kyle ↗</button>
+   <p class="note">Opens your email app to kyleg@marketingapes.com with your address in the body. You hit send. That’s the opt-in. No new list vendor, no ads, no auto-subscribe.</p>
+  </form>
+ </div>
+ <figure>
+  <video class="pitch-video" poster="/tex/tex-teaser.jpg" controls playsinline preload="metadata" width="1280" height="720">
+   <source src="/tex/tex-teaser.mp4" type="video/mp4">
+  </video>
+  <figcaption>Then AI learned about Kyle. He’d rather be understaffed than dishonest. Sound on.</figcaption>
+ </figure>
+</main>
+<footer>
+ <span>© 2026 Marketing Apes</span>
+ <a href="/intro/">Full intro</a>
+ <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a>
+ <a href="tel:+16197360356">619-736-0356</a>
+ <span>Marketing Apes provides marketing and automation services. It is not a law firm.</span>
+</footer>
+<script>
+const form = document.getElementById('want-more');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  const email = form.email.value.trim();
+  const role = form.role.value;
+  const subject = encodeURIComponent('Tex teaser — want more');
+  const body = encodeURIComponent('I want more from Tex.\n\nEmail: ' + email + '\nRole: ' + role + '\nPage: https://marketingapes.com/tex/\n');
+  window.location.href = 'mailto:kyleg@marketingapes.com?subject=' + subject + '&body=' + body;
+});
+</script>
+</body>
+</html>
