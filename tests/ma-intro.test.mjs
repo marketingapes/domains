@@ -54,14 +54,14 @@ test('intro pitch video is present with poster and no autoplay', () => {
   assert.doesNotMatch(html, /autoplay/i);
 });
 
-test('homepage is the Tex deck with real GTM; planner lives at /plan/', () => {
+test('homepage is the Tex video + form, not the eight-slide deck', () => {
   assert.match(home, /GTM-W3CTJQ/);
   assert.doesNotMatch(home, /GTM-PENDING/);
   assert.match(home, /ee_page_context/);
-  assert.match(home, /class="slide"/);
-  assert.match(home, /tex-pitch\.mp4/);
+  assert.match(home, /tex-teaser-vertical\.mp4/);
+  assert.match(home, /id="want-more"/);
+  assert.doesNotMatch(home, /data-slide="/);
   assert.match(plan, /id="planner"/);
-  assert.match(plan, /tel:\+16197360356/);
   assert.match(plan, /GTM-W3CTJQ/);
   assert.doesNotMatch(home, /generate_lead/);
 });
