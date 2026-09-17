@@ -13,12 +13,18 @@
 <meta name="theme-color" content="#14241f">
 <link rel="icon" type="image/jpeg" href="/assets/network/ape-logo.jpg">
 <link rel="stylesheet" href="/tex/teaser.css">
+<script>
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketingapes.com',page_type:'tex_launch'});
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W3CTJQ');</script>
 </head>
 <body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3CTJQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="skip" href="#want-more">Skip to want more</a>
 <header class="site-header">
  <a href="/" class="brand" aria-label="Marketing Apes home"><img class="ape-logo" src="/assets/network/ape-logo.jpg" width="44" height="44" alt=""><span>MARKETING APES<small>KYLE “TEX” GOSSELIN · CEO</small></span></a>
- <nav aria-label="Main navigation"><a href="/intro/">Intro</a><a href="/#planner">Planner</a><a class="nav-cta" href="#want-more">Want more?</a></nav>
+ <nav aria-label="Main navigation"><a href="/">Home</a><a href="/plan/">Plan</a><a class="nav-cta" href="#want-more">Want more?</a></nav>
 </header>
 <main class="hero">
  <figure>
@@ -147,6 +153,8 @@ form.addEventListener('submit', (event) => {
   err.hidden = true;
   fetch(TEX_HOOK, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) })
     .then(function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event:'ee_form_submit',tenant_id:'MA',domain:'marketingapes.com',form_id:'tex-launch',product:'tex-launch'});
       form.hidden = true;
       thanks.hidden = false;
       thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });

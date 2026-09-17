@@ -38,6 +38,5 @@ test('teaser video is present with poster and no autoplay', () => {
 test('intro and home point at /tex/; sitemap lists it', () => {
   assert.match(intro, /href="\/tex\/"/);
   assert.match(home, /href="\/tex\/"/);
-  assert.match(home, /id="planner"/);
   assert.match(sitemap, /https:\/\/marketingapes\.com\/tex\//);
 });
