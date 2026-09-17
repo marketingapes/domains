@@ -1,5 +1,5 @@
 window.DIHAC_CONFIG = Object.freeze({
-  status: 'BUILT_NOT_LIVE',
+  status: 'LIVE',
   domainId: 'doihaveaclaim.ai',
   vapi: Object.freeze({
     publicKey: '28268245-4ca4-4fc2-8d3d-4d77a0d4c55b',
