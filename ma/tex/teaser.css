@@ -70,6 +70,14 @@ h1{
 h2{font-size:clamp(28px,4.4vw,48px)}
 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--paper)}
 .lede{margin-top:22px;color:var(--muted);max-width:34em;font-size:19px;line-height:1.7}
+.faces{margin-top:24px;display:flex;gap:16px;align-items:flex-end}
+.faces figure{width:min(100%,220px)}
+.faces img{
+  width:100%;height:auto;display:block;border-radius:16px;
+  box-shadow:0 0 0 2px #d2f48a66, 0 18px 40px -18px #000;
+  object-fit:cover;aspect-ratio:1
+}
+.faces figcaption{margin-top:10px;text-align:left;letter-spacing:.06em;color:var(--lime);font-weight:700}
 .insight{
   margin-top:22px;padding:16px 18px;border-left:3px solid var(--lime);
   max-width:38em;font-size:16px;line-height:1.65
