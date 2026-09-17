@@ -5,6 +5,7 @@ import {clamp, parseHash} from '../ma/intro/intro.mjs';
 
 const html = await readFile(new URL('../ma/intro/index.html', import.meta.url), 'utf8');
 const home = await readFile(new URL('../ma/index.html', import.meta.url), 'utf8');
+const plan = await readFile(new URL('../ma/plan/index.html', import.meta.url), 'utf8');
 const sitemap = await readFile(new URL('../ma/sitemap.xml', import.meta.url), 'utf8');
 const css = await readFile(new URL('../ma/intro/intro.css', import.meta.url), 'utf8');
 
@@ -26,13 +27,13 @@ test('intro has all eight locked headlines in HTML', () => {
 
 test('slide 8 CTAs are exact live contacts', () => {
   assert.match(html, /href="tel:\+16197360356"/);
-  assert.match(html, /href="\/#planner"/);
+  assert.match(html, /href="\/plan\/#planner"/);
   assert.match(html, /href="mailto:kyleg@marketingapes\.com"/);
 });
 
 test('intro does not invent proof, pixels, or unfinished routes', () => {
   assert.doesNotMatch(html, /vapi/i);
-  assert.doesNotMatch(html, /GTM-PENDING|\$\d|GTM-[A-Z0-9]+/);
+  assert.doesNotMatch(html, /GTM-PENDING|\$\d/);
   assert.doesNotMatch(html, /\/pricing\/|\/order\/|\/anti-agency\//);
 });
 
@@ -53,11 +54,16 @@ test('intro pitch video is present with poster and no autoplay', () => {
   assert.doesNotMatch(html, /autoplay/i);
 });
 
-test('homepage planner and contacts stay; nav points at /intro/', () => {
-  assert.match(home, /id="planner"/);
-  assert.match(home, /tel:\+16197360356/);
-  assert.match(home, /mailto:kyleg@marketingapes\.com/);
-  assert.match(home, /href="\/intro\/"/);
+test('homepage is the Tex deck with real GTM; planner lives at /plan/', () => {
+  assert.match(home, /GTM-W3CTJQ/);
+  assert.doesNotMatch(home, /GTM-PENDING/);
+  assert.match(home, /ee_page_context/);
+  assert.match(home, /class="slide"/);
+  assert.match(home, /tex-pitch\.mp4/);
+  assert.match(plan, /id="planner"/);
+  assert.match(plan, /tel:\+16197360356/);
+  assert.match(plan, /GTM-W3CTJQ/);
+  assert.doesNotMatch(home, /generate_lead/);
 });
 
 test('sitemap lists intro only as the new public URL', () => {
