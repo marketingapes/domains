@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-17 — Page updated: forms.html
+
+- Published approved page change.
+- Content commit: `ab7d9d4527d0e9ba7f5f1356e26d9afb93ecaffd`.
+
+
 ## 2026-09-17 — Page updated: booster-club.html
 
 - Published approved page change.
