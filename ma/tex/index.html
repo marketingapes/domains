@@ -27,7 +27,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
 <header class="site-header">
   <a href="/" class="brand" aria-label="Marketing Apes home">
     <span class="logo-ring"><img class="ape-logo" src="/assets/network/ape-logo.jpg" width="72" height="72" alt="Marketing Apes"></span>
-    <span class="wordmark">MARKETING APES<small>KMFG · THE GARAGE CHAPTER IS OVER</small></span>
+    <span class="wordmark">MARKETING APES<small>LIVE TEST · KMFG</small></span>
   </a>
   <p class="clock" id="clock" aria-live="polite"></p>
 </header>
@@ -35,13 +35,16 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
 <main>
 <section class="stage">
   <figure class="stage-frame">
-    <video class="pitch-video" poster="/tex/tex-teaser-vertical.jpg" controls playsinline preload="metadata" width="720" height="1280">
+    <div class="yt-desk">
+      <iframe title="Tex — Marketing Apes" src="https://www.youtube.com/embed/tNiP_hg1X68?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <video class="pitch-video yt-mobile" poster="/tex/tex-teaser-vertical.jpg" controls playsinline preload="metadata" width="720" height="1280">
       <source src="/tex/tex-teaser-vertical.mp4" type="video/mp4">
     </video>
-    <figcaption>Sound on. This is Tex.</figcaption>
+    <figcaption>Sound on. Desktop is the wide cut. Phone is the vertical cut.</figcaption>
   </figure>
   <div class="stage-copy">
-    <p class="eyebrow"><span class="dot"></span> READY FOR THE FUTURE. OR NOT.</p>
+    <p class="eyebrow"><span class="dot"></span> LIVE TEST · RIGHT NOW</p>
     <h1>Keep paying more.<br><em>Or get ready.</em></h1>
     <p class="lede">You can keep hiring marketing, intake, and follow-up while the bill climbs. Or you get ready for the Jetsons version — one person already built the machine.</p>
     <div class="faces">
@@ -50,8 +53,11 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
         <figcaption>Kyle Gosselin. Built it.</figcaption>
       </figure>
     </div>
-    <p class="insight">This is not an agency pitch. It’s a fork in the road. Same URL Friday. We open the receipts.</p>
-    <a class="button" href="#want-more">Get ready</a>
+    <p class="insight">This is the test. Watch. Pick a door. Leave an email. Friday this same URL opens the receipts.</p>
+    <div class="cta-row">
+      <a class="button" href="#want-more">Get ready</a>
+      <a class="button ghost" href="https://www.youtube.com/watch?v=tNiP_hg1X68">Watch on YouTube</a>
+    </div>
   </div>
 </section>
 
@@ -89,8 +95,8 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
 </section>
 
 <section class="tomorrow">
-  <h2>Tomorrow we open the machine.</h2>
-  <p>Friday 8:00 AM Pacific. Same URL. What worked. What failed. What it cost.</p>
+  <h2>The test is live. Friday we open the receipts.</h2>
+  <p>Same URL. What worked. What failed. What it cost. 8:00 AM Pacific Friday.</p>
   <p class="count" id="countdown"></p>
 </section>
 
