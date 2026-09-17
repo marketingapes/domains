@@ -51,7 +51,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain_id:'marketi
 <section class="stage">
   <figure class="stage-frame">
     <div class="yt-desk">
-      <iframe title="Tex — Marketing Apes" src="https://www.youtube.com/embed/tNiP_hg1X68?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe title="Tex — Marketing Apes" src="https://www.youtube.com/embed/tNiP_hg1X68?rel=0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <video class="pitch-video yt-mobile" poster="/tex/tex-teaser-vertical.jpg" controls playsinline preload="metadata" width="720" height="1280">
       <source src="/tex/tex-teaser-vertical.mp4" type="video/mp4">
@@ -61,7 +61,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain_id:'marketi
   <div class="stage-copy">
     <p class="eyebrow"><span class="dot"></span> LIVE TEST · KYLE STOPPED TOUCHING THE BUTTONS</p>
     <h1>Hi. I’m Kyle’s AI.<br><em>Hey — watch this.</em></h1>
-    <p class="lede">For three years Kyle has been connecting campaigns, pages, intake, follow-up, billing and outcome data. Tonight he stopped being the human router. We’re finding out how much of a real marketing launch the connected system can actually run without him.</p>
+    <p class="lede">For three years Kyle has been connecting campaigns, pages, intake, follow-up, billing and outcome data. The first working proof started in legal. Today he stopped being the human router so we can find out how much of a real marketing launch the connected system can actually run without him.</p>
     <p class="insight">This page is part of the test. So are the posts, the tracking, the questions, the failures and whatever makes it back as a receipt. Tomorrow we show what worked, what broke and what still needed a human.</p>
     <div class="cta-row">
       <a class="button" href="#question">Give the machine one answer</a>
@@ -103,7 +103,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain_id:'marketi
   <div class="offer">
     <p class="eyebrow">WANT THE FOLLOW-UP?</p>
     <h3>Tell Kyle’s AI to send you the receipts.</h3>
-    <p>We removed the old browser-side automation hook from this test. Until the governed server-side action is certified, email goes straight to Kyle instead of pretending the machine safely captured it.</p>
+    <p>This test does not expose a provider webhook in browser code. Until the governed server-side action is certified, the follow-up button opens your own email client.</p>
     <a class="button" id="email-cta" href="mailto:kyleg@marketingapes.com?subject=Show%20me%20the%20Marketing%20Apes%20receipts&body=I%20saw%20the%20live%20AI%20access%20test.%20Show%20me%20what%20happened.">Show me the receipts</a>
     <p class="note">No automatic signup from this button. You decide whether to send.</p>
   </div>
@@ -125,37 +125,14 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain_id:'marketi
   const allowed = new Set(['find-customers','follow-up','prove-money','move-budget']);
   if (vote && allowed.has(vote)) {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event:'ee_experiment_vote',
-      tenant_id:'MA',
-      domain_id:'marketingapes.com',
-      campaign_id:campaignId,
-      vote:vote,
-      utm_source:qs.get('utm_source') || '',
-      utm_medium:qs.get('utm_medium') || '',
-      utm_campaign:qs.get('utm_campaign') || campaignId,
-      utm_content:qs.get('utm_content') || vote
-    });
-    const labels = {
-      'find-customers':'Find more customers',
-      'follow-up':'Follow up every lead faster',
-      'prove-money':'Tell me what actually made money',
-      'move-budget':'Move budget toward what works'
-    };
+    window.dataLayer.push({event:'ee_experiment_vote',tenant_id:'MA',domain_id:'marketingapes.com',campaign_id:campaignId,vote:vote,utm_source:qs.get('utm_source') || '',utm_medium:qs.get('utm_medium') || '',utm_campaign:qs.get('utm_campaign') || campaignId,utm_content:qs.get('utm_content') || vote});
+    const labels = {'find-customers':'Find more customers','follow-up':'Follow up every lead faster','prove-money':'Tell me what actually made money','move-budget':'Move budget toward what works'};
     const el = document.getElementById('vote-result');
     el.textContent = 'Got it: “' + labels[vote] + '.” Your choice was sent into the page’s analytics event stream. Tomorrow we’ll report only what the receipts actually prove.';
     el.classList.add('show');
   }
-  document.querySelectorAll('.poll-choice').forEach(function(a){
-    a.addEventListener('click', function(){
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({event:'ee_experiment_vote_click',tenant_id:'MA',domain_id:'marketingapes.com',campaign_id:campaignId,vote:a.dataset.vote});
-    });
-  });
-  document.getElementById('email-cta').addEventListener('click', function(){
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({event:'ee_receipts_email_intent',tenant_id:'MA',domain_id:'marketingapes.com',campaign_id:campaignId});
-  });
+  document.querySelectorAll('.poll-choice').forEach(function(a){a.addEventListener('click',function(){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_experiment_vote_click',tenant_id:'MA',domain_id:'marketingapes.com',campaign_id:campaignId,vote:a.dataset.vote});});});
+  document.getElementById('email-cta').addEventListener('click',function(){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_receipts_email_intent',tenant_id:'MA',domain_id:'marketingapes.com',campaign_id:campaignId});});
 })();
 </script>
 </body>
