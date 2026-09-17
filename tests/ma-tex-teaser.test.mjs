@@ -8,12 +8,16 @@ const home = await readFile(new URL('../ma/index.html', import.meta.url), 'utf8'
 const sitemap = await readFile(new URL('../ma/sitemap.xml', import.meta.url), 'utf8');
 
 test('teaser page keeps Tex identity and the Kyle insight', () => {
-  assert.match(html, /AI avatar built by Grok and Kyle/);
-  assert.match(html, /THEN AI LEARNED ABOUT KYLE/);
-  assert.match(html, /ape-shit/);
+  assert.match(html, /READY FOR THE FUTURE/);
+  assert.match(html, /tool connected/);
+  assert.match(html, /started in legal/i);
+  assert.match(html, /Evolution/);
   assert.match(html, /first digital launch/);
-  assert.match(html, /fourteen behind it/);
   assert.doesNotMatch(html, /\bRex\b/);
+  assert.doesNotMatch(html, /aria-label="Main navigation"/);
+  const formAt = html.indexOf('id="want-more"');
+  const videoAt = html.indexOf('tex-teaser-vertical.mp4');
+  assert.ok(formAt > -1 && videoAt > formAt, 'form stacks above video');
 });
 
 test('opt-in emails Kyle and does not fake a list vendor', () => {

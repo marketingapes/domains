@@ -1,40 +1,38 @@
 # Tex network posts — paste for LinkedIn / Claude
-Canonical page: https://marketingapes.com/tex/
-Vertical (Stories/Reels): https://marketingapes.com/tex/tex-teaser-vertical.mp4
-Widescreen: https://marketingapes.com/tex/tex-teaser.mp4
-Do not spend. Do not auto-subscribe. Sign-up is interest, not a live product.
+Canonical: https://marketingapes.com/
+Vertical 30s: https://marketingapes.com/tex/tex-teaser-vertical.mp4
+Widescreen 30s: https://marketingapes.com/tex/tex-teaser.mp4
+Do not spend. Sign-up is interest, not a live product.
 
-## LinkedIn — Kyle Gosselin (personal)
-Meet Tex.
+## LinkedIn — Kyle Gosselin
+We started in legal.
 
-Hi. My name is Tex. I am the AI avatar built by Grok and Kyle. Then AI learned about Kyle, and man, he went ape-shit learning this stuff for you guys.
+Intake. Ads. The whole mess. Then we automated it.
 
-Ready for the future? Sign up for his first digital launch.
+Tex is the AI avatar built by Grok and Kyle. 30 seconds. Oddly honest.
 
-Watch out. There are fourteen behind it.
+Ready for the future? There’s a smarter way to run marketing and intake. A tool connected to your AI. Evolution’s coming.
 
-https://marketingapes.com/tex/
+If you actually want results — sign up.
 
-## LinkedIn — Marketing Apes (company)
-Tex is live.
+https://marketingapes.com/
 
-The AI avatar built by Grok and Kyle. Same ape. Same attitude. After AI learned about Kyle, it didn’t hire a team. It hired a rule: a click is not money.
+## LinkedIn — Marketing Apes
+We started in legal. Now it’s a system.
 
-First digital launch. Fourteen more in the stack.
+Tex. 30 seconds. Evolution’s coming.
 
-https://marketingapes.com/tex/
+https://marketingapes.com/
 
-## Facebook — Kyle or Marketing Apes
-Then AI learned about Kyle.
+## Facebook
+We started in legal. Kyle went ape-shit. Then he automated it.
 
-He went ape-shit learning this for you. Sign up for the first digital launch. Watch out — there are 14 behind it.
-
-https://marketingapes.com/tex/
+If you want results, not a screenshot — https://marketingapes.com/
 
 ## X
-AI studied Kyle. He went ape-shit. Sign up for the first digital launch. 14 behind it.
-https://marketingapes.com/tex/
+Started in legal. Automated the mess. Evolution’s coming.
+30 seconds of Tex. https://marketingapes.com/
 
 ## Stories / Reels
 Upload: https://marketingapes.com/tex/tex-teaser-vertical.mp4
-Sticker / caption: Tex. Built by Grok and Kyle. First digital launch. marketingapes.com/tex
+Caption: We started in legal. Evolution’s coming. marketingapes.com
