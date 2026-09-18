@@ -60,7 +60,8 @@ test('homepage is the Tex video + form, not the eight-slide deck', () => {
   assert.match(home, /ee_page_context/);
   assert.match(home, /tex-teaser-vertical\.mp4/);
   assert.match(home, /id="want-more"/);
-  assert.match(home, /spreadsheet/i);
+  assert.match(home, /Hi, I['’]m Tex/);
+  assert.match(home, /what can we build/i);
   assert.doesNotMatch(home, /data-slide="/);
   assert.doesNotMatch(home, /aria-label="Main navigation"/);
   assert.match(plan, /id="planner"/);
