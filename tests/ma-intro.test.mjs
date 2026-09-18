@@ -58,7 +58,7 @@ test('homepage is the Tex video + form, not the eight-slide deck', () => {
   assert.match(home, /GTM-W3CTJQ/);
   assert.doesNotMatch(home, /GTM-PENDING/);
   assert.match(home, /ee_page_context/);
-  assert.match(home, /tex-intro-voiced\.mp4/);
+  assert.match(home, /tex-intro-glitch\.mp4/);
   assert.match(home, /id="want-more"/);
   assert.match(home, /Hi, I['’]m Tex/);
   assert.match(home, /what can we build/i);
