@@ -7,39 +7,39 @@ const intro = await readFile(new URL('../ma/intro/index.html', import.meta.url),
 const home = await readFile(new URL('../ma/index.html', import.meta.url), 'utf8');
 const sitemap = await readFile(new URL('../ma/sitemap.xml', import.meta.url), 'utf8');
 
-test('teaser page keeps Tex identity and the Kyle insight', () => {
+test('teaser keeps Tex identity and the live access story', () => {
   assert.match(html, /READY FOR THE FUTURE/);
-  assert.match(html, /tool connected/);
+  assert.match(html, /tool connected/i);
   assert.match(html, /started in legal/i);
   assert.match(html, /Evolution/);
-  assert.match(html, /first digital launch/);
+  assert.match(html, /first digital launch/i);
+  assert.match(html, /AI AVATAR BUILT BY AI AND KYLE/i);
+  assert.match(html, /Kyle stopped touching the buttons/i);
+  assert.match(html, /MA_ACCESS_REACH_20260917/);
   assert.doesNotMatch(html, /\bRex\b/);
   assert.doesNotMatch(html, /aria-label="Main navigation"/);
-  const formAt = html.indexOf('id="want-more"');
-  const videoAt = html.indexOf('tex-teaser-vertical.mp4');
-  assert.ok(formAt > -1 && videoAt > formAt, 'form stacks above video');
 });
 
-test('opt-in emails Kyle and does not fake a list vendor', () => {
-  assert.match(html, /type="email"/);
-  assert.match(html, /id="email"/);
-  assert.match(html, /product = 'tex-launch'/);
-  assert.match(html, /hook\.us2\.make\.com/);
-  assert.match(html, /name="utm_source"/);
-  assert.match(html, /name="gclid"/);
-  assert.match(html, /name="fbclid"/);
-  assert.match(html, /notify_email = 'kyleg@marketingapes\.com'/);
-  assert.doesNotMatch(html, /mailchimp|hubspot|GTM-PENDING|autoplay|\$\d|window\.location\.href = 'mailto:/i);
+test('teaser follow-up is user-initiated and exposes no provider capability', () => {
+  assert.match(html, /mailto:kyleg@marketingapes\.com/);
+  assert.match(html, /No automatic signup/i);
+  assert.doesNotMatch(html, /hook\.us2\.make\.com|TEX_HOOK|mode:\s*['"]no-cors['"]|fetch\s*\(\s*TEX_HOOK/i);
+  assert.doesNotMatch(html, /mailchimp|hubspot|GTM-PENDING/i);
 });
 
-test('teaser video is present with poster and no autoplay', () => {
+test('teaser video is present with poster and no autoplay capability', () => {
   assert.match(html, /src="\/tex\/tex-teaser-vertical\.mp4"/);
   assert.match(html, /poster="\/tex\/tex-teaser-vertical\.jpg"/);
   assert.doesNotMatch(html, /tex-teaser\.mp4/);
-  assert.doesNotMatch(html, /autoplay/i);
+  assert.doesNotMatch(html, /\bautoplay\b/i);
 });
 
-test('intro and home point at /tex/; sitemap lists it', () => {
+test('teaser does not publish unverified economics or unfinished order routes', () => {
+  assert.doesNotMatch(html, /\$\d|\/order\//);
+  assert.match(html, /No invented proof/i);
+});
+
+test('intro and home point at the Tex asset family; sitemap lists it', () => {
   assert.match(intro, /href="\/tex\/"/);
   assert.match(home, /tex-teaser-vertical\.mp4/);
   assert.match(sitemap, /https:\/\/marketingapes\.com\/tex\//);
