@@ -11,7 +11,7 @@
 <meta property="og:description" content="Kyle’s lead engineer, AI business partner, and court-appointed emotional support algorithm. What can we build for ya today?">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marketingapes.com/">
-<meta property="og:image" content="https://marketingapes.com/tex/ape-future.png">
+<meta property="og:image" content="https://marketingapes.com/tex/tex-teaser-vertical.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#070e0c">
 <link rel="icon" type="image/jpeg" href="https://marketingapes.com/assets/network/ape-logo.jpg">
@@ -39,13 +39,13 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
   <video class="hero-video" id="tex" poster="/tex/tex-teaser-vertical.jpg" playsinline preload="metadata" width="720" height="1280">
     <source src="/tex/tex-teaser-vertical.mp4" type="video/mp4">
   </video>
-  <div class="hero-scrim" aria-hidden="true"></div>
-  <div class="hero-copy">
-    <p class="eyebrow"><span class="dot"></span> SOUND ON</p>
+  <button class="play" type="button" id="play">Play Tex</button>
+</section>
+<section class="intro-line">
+  <div class="wrap">
+    <p class="eyebrow"><span class="dot"></span> TEX</p>
     <h1>Hi, I’m Tex.<br><em>What can we build for ya today?</em></h1>
     <p class="lede">I’m Kyle’s lead engineer, AI business partner, and court-appointed emotional support algorithm. One of those jobs is significantly harder than the others.</p>
-    <button class="play" type="button" id="play">Play Tex</button>
-    <p class="sound">Hit Play Tex. That’s the original voice.</p>
   </div>
 </section>
 
@@ -286,10 +286,18 @@ const play = document.getElementById('play');
 play.addEventListener('click', function () {
   video.muted = false;
   video.controls = true;
+  document.getElementById('watch').classList.add('playing');
   video.play().catch(function () { video.controls = true; });
-  play.textContent = 'Playing';
 });
-video.addEventListener('play', function () { play.textContent = 'Playing'; });
+video.addEventListener('play', function () {
+  document.getElementById('watch').classList.add('playing');
+  if (video.textTracks) {
+    for (var i = 0; i < video.textTracks.length; i++) video.textTracks[i].mode = 'hidden';
+  }
+});
+video.addEventListener('pause', function () {
+  if (video.currentTime < 0.2) document.getElementById('watch').classList.remove('playing');
+});
 window.addEventListener('scroll', function () {
   const p = document.documentElement;
   const max = p.scrollHeight - p.clientHeight;
