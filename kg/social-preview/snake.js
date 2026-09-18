@@ -3,6 +3,7 @@
 const board=document.getElementById('snake-board');if(!board)return;
 const ctx=board.getContext('2d');if(!ctx)return;
 const start=document.getElementById('snake-start'),pause=document.getElementById('snake-pause'),message=document.getElementById('snake-message'),scoreEl=document.getElementById('snake-score'),bestEl=document.getElementById('snake-best');
+const play=document.getElementById('play'),fullscreen=document.getElementById('snake-fullscreen');
 const size=20,cell=20,vectors={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
 let snake,food,dir,next,score=0,best=0,state='ready',timer=null,queued=false;
 try{best=Math.max(0,Number(localStorage.getItem('kg-snake-best'))||0);}catch{}bestEl.textContent=best;
@@ -14,10 +15,16 @@ function finish(won=false){clearInterval(timer);state=won?'won':'over';pause.dis
 function tick(){dir=next;queued=false;const head=[snake[0][0]+dir[0],snake[0][1]+dir[1]];const eat=food&&head[0]===food[0]&&head[1]===food[1];const body=eat?snake:snake.slice(0,-1);if(head.some(n=>n<0||n>=size)||body.some(p=>p[0]===head[0]&&p[1]===head[1])){finish();return;}snake.unshift(head);if(eat){score+=10;scoreEl.textContent=score;if(score>best){best=score;bestEl.textContent=best;try{localStorage.setItem('kg-snake-best',String(best));}catch{}}food=placeFood();if(!food){finish(true);return;}}else snake.pop();draw();}
 function turn(key){if(state!=='running'||queued)return;const v=vectors[key];if(!v||v[0]===-dir[0]&&v[1]===-dir[1])return;next=v;queued=true;}
 function toggle(){if(state==='running'){state='paused';clearInterval(timer);pause.textContent='Resume';message.textContent='Paused. Take your time.';}else if(state==='paused'){state='running';pause.textContent='Pause';message.textContent='Collect orange squares. Avoid walls and your tail.';timer=setInterval(tick,140);}draw();}
+function nativeFullscreen(){return document.fullscreenElement===play||document.webkitFullscreenElement===play;}
+function fullscreenActive(){return nativeFullscreen()||play.classList.contains('snake-fullscreen-fallback');}
+function syncFullscreen(){const active=fullscreenActive();play.classList.toggle('snake-fullscreen-active',active);document.body.classList.toggle('snake-game-locked',play.classList.contains('snake-fullscreen-fallback'));if(fullscreen){fullscreen.textContent=active?'Exit full screen':'Full screen';fullscreen.setAttribute('aria-pressed',String(active));}}
+async function toggleFullscreen(){if(!fullscreen)return;if(!fullscreenActive()){const request=play.requestFullscreen||play.webkitRequestFullscreen;if(request){try{await request.call(play);}catch{play.classList.add('snake-fullscreen-fallback');}}else play.classList.add('snake-fullscreen-fallback');syncFullscreen();event('ee_game_fullscreen_enter');}else{if(nativeFullscreen()){const exit=document.exitFullscreen||document.webkitExitFullscreen;if(exit){try{await exit.call(document);}catch{}}}play.classList.remove('snake-fullscreen-fallback');syncFullscreen();event('ee_game_fullscreen_exit');}board.focus({preventScroll:true});}
 start.addEventListener('click',()=>{clearInterval(timer);reset();state='running';start.textContent='Restart';pause.disabled=false;pause.textContent='Pause';message.textContent='Collect orange squares. Avoid walls and your tail.';event('ee_game_start');draw();timer=setInterval(tick,140);board.focus({preventScroll:true});});
 pause.addEventListener('click',toggle);
+if(fullscreen)fullscreen.addEventListener('click',toggleFullscreen);
+document.addEventListener('fullscreenchange',syncFullscreen);document.addEventListener('webkitfullscreenchange',syncFullscreen);
 const keys={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
-document.getElementById('play').addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select,a'))return;if(keys[e.key]&&(state==='running'||state==='paused')){e.preventDefault();turn(keys[e.key]);}if(e.code==='Space'&&e.target===board){e.preventDefault();toggle();}});
+play.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select,a'))return;if(e.key==='Escape'&&play.classList.contains('snake-fullscreen-fallback')){e.preventDefault();play.classList.remove('snake-fullscreen-fallback');syncFullscreen();event('ee_game_fullscreen_exit');return;}if(keys[e.key]&&(state==='running'||state==='paused')){e.preventDefault();turn(keys[e.key]);}if(e.code==='Space'&&e.target===board){e.preventDefault();toggle();}});
 document.querySelectorAll('[data-direction]').forEach(b=>b.addEventListener('click',()=>turn(b.dataset.direction)));
 let touch=null;board.addEventListener('pointerdown',e=>{touch=[e.clientX,e.clientY];});board.addEventListener('pointerup',e=>{if(!touch)return;const x=e.clientX-touch[0],y=e.clientY-touch[1];touch=null;if(Math.max(Math.abs(x),Math.abs(y))<12)return;turn(Math.abs(x)>Math.abs(y)?x>0?'right':'left':y>0?'down':'up');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='running')toggle();});
