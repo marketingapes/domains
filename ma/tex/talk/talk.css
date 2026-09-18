@@ -1,0 +1,52 @@
+.talk-page{padding-bottom:24px}
+.sr{position:absolute;left:-999px;width:1px;height:1px;overflow:hidden}
+.stage{
+  width:min(1100px, calc(100% - 32px));
+  margin:24px auto 40px;
+  display:grid;
+  gap:28px;
+}
+.face{text-align:center}
+.face img{
+  width:min(320px, 80vw);
+  height:auto;
+  margin:0 auto 12px;
+  border-radius:24px;
+  box-shadow:0 0 0 1px #d2f48a55, 0 30px 80px -30px #000;
+  transition:transform .2s ease, filter .2s ease;
+}
+.face.speaking img{transform:scale(1.03);filter:drop-shadow(0 0 24px #d2f48a88)}
+.how{
+  margin:0 0 18px;
+  padding:18px 18px 18px 36px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--panel);
+  color:var(--muted);
+}
+.how li+li{margin-top:8px}
+.how strong{color:var(--paper)}
+.log{
+  min-height:220px;
+  max-height:48vh;
+  overflow:auto;
+  display:grid;
+  gap:10px;
+  padding:8px 0 16px;
+}
+.bubble{
+  max-width:92%;
+  padding:12px 14px;
+  border-radius:14px;
+  line-height:1.5;
+}
+.bubble.tex{background:var(--panel);border:1px solid #d2f48a44}
+.bubble.you{justify-self:end;background:#1a2a24;border:1px solid var(--line)}
+.bubble b{display:block;font-size:11px;letter-spacing:.12em;color:var(--lime);margin-bottom:6px}
+.composer{display:grid;grid-template-columns:1fr auto;gap:8px}
+.composer .button{margin:0}
+@media(min-width:900px){
+  .stage{grid-template-columns:.9fr 1.1fr;align-items:start;gap:40px}
+  .face{position:sticky;top:88px}
+  .face img{width:100%}
+}
