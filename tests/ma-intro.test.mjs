@@ -55,7 +55,8 @@ test('intro pitch video is present with poster and no autoplay', () => {
 });
 
 test('homepage is the Tex video + form, not the eight-slide deck', () => {
-  assert.match(home, /GTM-W3CTJQ/);
+  assert.equal((home.match(/GTM-NMVJ33/g) || []).length, 2);
+  assert.doesNotMatch(home, /GTM-W3CTJQ/);
   assert.doesNotMatch(home, /GTM-PENDING/);
   assert.match(home, /ee_page_context/);
   assert.match(home, /tex-new-script\.mp4/);
