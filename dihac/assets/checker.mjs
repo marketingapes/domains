@@ -191,8 +191,16 @@ function submit() {
   $('out').textContent = '';
   const ack = result.state === 'ACKNOWLEDGED';
   const v = verdict(ack ? 'ack' : 'hold',
-    ack ? 'Received — a person will review this' : 'We are holding this for a person to look at',
+    ack ? 'Next path identified' : 'We are holding this for a person to look at',
     result.routing.because + ' ' + result.disclaimer);
+  if (ack && result.destination) {
+    const next = document.createElement('a');
+    next.className = 'btn';
+    next.href = result.destination.url;
+    next.rel = 'noopener';
+    next.textContent = 'Continue to ' + result.destination.name;
+    v.append(document.createElement('br'), document.createElement('br'), next);
+  }
   const code = document.createElement('code');
   code.textContent = 'Reference ' + (result.referenceId || '—');
   v.append(document.createElement('br'), code);
