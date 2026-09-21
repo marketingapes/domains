@@ -3,28 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Talk with Sofia | DoIHaveAClaim.ai</title>
-  <meta name="description" content="Not sure whether you need a lawyer? Talk with Sofia first. Describe what happened and learn what kind of firm may handle matters like yours.">
+  <title>Do I have a claim? | DoIHaveAClaim.ai</title>
+  <meta name="description" content="Tell us what happened in your own words. We ask a few follow-up questions, structure it, and a person reviews it. We are not a law firm and we cannot tell you whether you have a legal claim.">
   <meta name="robots" content="noindex,nofollow">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Talk with Sofia | DoIHaveAClaim.ai">
-  <meta property="og:description" content="Tell Sofia what happened. She can help you understand the kind of firm that may handle matters like yours.">
+  <meta property="og:title" content="Do I have a claim? | DoIHaveAClaim.ai">
+  <meta property="og:description" content="Describe what happened. We structure it and a person reviews it. Not legal advice.">
   <meta name="theme-color" content="#071412">
-  <!-- Google Tag Manager — web container only -->
+  <!-- Google Tag Manager — DIHAC web container only -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-WJCZF46W');</script>
   <!-- End Google Tag Manager -->
+  <link rel="icon" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Claim checker. Text-first. Scoped so styles.css is untouched. */
+    .checker{max-width:44rem;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
+    .thread{display:flex;flex-direction:column;gap:.7rem;max-height:24rem;overflow-y:auto;overscroll-behavior:contain}
+    .turn{max-width:92%;padding:.65rem .85rem;border-radius:12px;font-size:1rem;line-height:1.5}
+    .turn.sys{background:var(--panel);border:1px solid var(--line);align-self:flex-start}
+    .turn.you{background:rgba(117,240,189,.12);border:1px solid rgba(117,240,189,.34);align-self:flex-end}
+    .turn b{display:block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.22rem;font-weight:700}
+    .ask{display:flex;flex-direction:column;gap:.6rem}
+    .ask label{font-weight:600;font-size:.95rem}
+    textarea,input[type=text]{width:100%;min-width:0;font:inherit;color:var(--cream);background:rgba(6,20,17,.72);
+      border:1px solid var(--line);border-radius:11px;padding:.8rem;line-height:1.45}
+    textarea{min-height:7rem;resize:vertical}
+    textarea:focus,input:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+    .row{display:flex;flex-wrap:wrap;gap:.55rem}
+    .btn{font:inherit;font-weight:700;color:#04100d;background:var(--mint);border:0;border-radius:11px;
+      padding:.85rem 1.2rem;min-height:48px;cursor:pointer}
+    .btn:hover{background:var(--mint-bright)}
+    .btn.quiet{background:transparent;color:var(--cream);border:1px solid var(--line)}
+    .btn.quiet:hover{border-color:var(--mint)}
+    .btn[disabled]{opacity:.45;cursor:not-allowed}
+    .chip{font:inherit;font-size:.92rem;font-weight:600;color:var(--cream);background:rgba(6,20,17,.72);
+      border:1px solid var(--line);border-radius:999px;padding:.6rem 1rem;min-height:44px;cursor:pointer}
+    .chip:hover{border-color:var(--mint)}
+    .progress{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .review{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:1rem}
+    .review dl{margin:0;display:grid;gap:.55rem}
+    .review .r{display:grid;grid-template-columns:9rem minmax(0,1fr) auto;gap:.6rem;align-items:baseline}
+    @media(max-width:560px){.review .r{grid-template-columns:minmax(0,1fr) auto}.review dt{grid-column:1/-1}}
+    .review dt{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+    .review dd{margin:0;font-size:.95rem;overflow-wrap:anywhere}
+    .edit{font:inherit;font-size:.78rem;font-weight:700;color:var(--mint);background:none;border:0;cursor:pointer;padding:4px 6px;min-height:32px}
+    .edit:hover{text-decoration:underline}
+    .verdict{border-radius:12px;padding:1rem;border:1px solid;margin-top:.9rem}
+    .verdict.ack{background:rgba(117,240,189,.1);border-color:rgba(117,240,189,.45)}
+    .verdict.hold{background:rgba(100,221,235,.09);border-color:rgba(100,221,235,.45)}
+    .verdict b{display:block;font-size:1.05rem;margin-bottom:.3rem}
+    .verdict code{font-size:.78rem;color:var(--muted)}
+    .legal{font-size:.82rem;color:var(--muted);line-height:1.5}
+    footer nav{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.6rem}
+    footer nav a{color:var(--mint)}
+    [hidden]{display:none!important}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+  </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) — web container only -->
+  <!-- Google Tag Manager (noscript) — DIHAC web container only -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJCZF46W"
   height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <a class="skip-link" href="#main">Skip to Sofia</a>
+  <a class="skip-link" href="#start">Skip to the form</a>
 
   <header class="site-header" aria-label="Site header">
     <a class="brand" href="#main" aria-label="Do I Have A Claim home">
@@ -35,72 +80,72 @@
       </svg>
       <span>DoIHaveAClaim<span class="brand-ai">.ai</span></span>
     </a>
-    <span class="build-state">PREVIEW · NOT LIVE</span>
   </header>
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="signal signal-one" aria-hidden="true"></div>
-      <div class="signal signal-two" aria-hidden="true"></div>
-
       <div class="hero-copy">
-        <p class="eyebrow"><span></span> AI legal directory</p>
-        <h1 id="hero-title">Not sure if you need a lawyer? <em>Talk with Sofia first.</em></h1>
-        <p class="lede">Tell her what happened in your own words. Sofia can explain what kind of firm typically handles situations like yours and whether a firm in our network is accepting similar matters.</p>
+        <p class="eyebrow"><span></span> National claim checker</p>
+        <h1 id="hero-title">Do I have a claim?</h1>
+        <p class="lede">Nobody can answer that from a website, and we are not going to pretend otherwise. What we can do is take what happened, ask the questions that matter, structure it properly, and put it in front of a person.</p>
       </div>
 
-      <div class="voice-stage">
-        <div class="orb-rings" aria-hidden="true"><i></i><i></i><i></i></div>
-        <a
-          class="sofia-button"
-          href="tel:+12135137977"
-          data-sofia-phone
-          aria-label="Call Sofia at 213-513-7977"
-          aria-describedby="sofia-status call-note"
-        >
-          <span class="mic-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M6.6 3.8 9.4 7c.5.6.5 1.4 0 2l-1.3 1.5a15.5 15.5 0 0 0 5.4 5.4l1.5-1.3c.6-.5 1.4-.5 2 0l3.2 2.8c.7.6.8 1.6.3 2.3l-1.1 1.5c-.5.7-1.4 1.1-2.3.9C9.6 20.9 3.1 14.4 1.9 6.9c-.2-.9.2-1.8.9-2.3l1.5-1.1c.7-.5 1.7-.4 2.3.3Z"/></svg>
-          </span>
-          <span class="button-copy"><strong>Call Sofia now</strong><small>Talk by phone — no microphone setup</small></span>
-          <span class="voice-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        </a>
-        <p class="call-status" id="sofia-status">Ready when you are.</p>
-        <p class="mic-note" id="call-note">Your phone app will open. Standard carrier rates may apply.</p>
-      </div>
+      <div class="checker" id="start">
+        <p class="progress" id="progress">Step 1 — tell us what happened</p>
+        <div class="thread" id="thread" role="log" aria-live="polite" aria-atomic="false"></div>
 
-      <div class="reassurance" aria-label="What to expect">
-        <span>Use your own words</span>
-        <span>No obligation</span>
-        <span>You choose whether to connect</span>
+        <form class="ask" id="ask" autocomplete="off">
+          <label for="entry" id="asklabel">Type what happened, in your own words.</label>
+          <div class="row" id="chips" hidden></div>
+          <textarea id="entry" name="entry" placeholder="You do not need legal words. Just tell us what happened." enterkeyhint="send"></textarea>
+          <div class="row">
+            <button class="btn" type="submit" id="send">Type what happened</button>
+            <button class="btn quiet" type="button" id="skip" hidden>Skip this one</button>
+          </div>
+        </form>
+
+        <div id="reviewPanel" hidden>
+          <div class="review">
+            <p class="progress">Step 3 — check this is right</p>
+            <dl id="reviewList"></dl>
+          </div>
+          <div class="row" style="margin-top:.9rem">
+            <button class="btn" type="button" id="submitClaim">Send this for review</button>
+            <button class="btn quiet" type="button" id="restart">Start over</button>
+          </div>
+        </div>
+
+        <div id="out" aria-live="polite"></div>
       </div>
     </section>
 
     <section class="steps" aria-labelledby="steps-title">
       <div class="section-heading">
-        <p class="eyebrow"><span></span> One conversation</p>
-        <h2 id="steps-title">Sofia helps you find the next direction.</h2>
+        <p class="eyebrow"><span></span> What happens</p>
+        <h2 id="steps-title">Three steps, no phone call.</h2>
       </div>
       <ol>
-        <li><b>01</b><div><h3>Tell Sofia what happened</h3><p>No legal terms or long forms. Just explain the situation.</p></div></li>
-        <li><b>02</b><div><h3>Understand the type of matter</h3><p>Sofia asks useful follow-ups and explains the kind of firm that usually handles it.</p></div></li>
-        <li><b>03</b><div><h3>Connect only when you are ready</h3><p>If a network firm is accepting similar matters, Sofia can explain the option and help connect you live.</p></div></li>
+        <li><b>01</b><div><h3>You describe it</h3><p>Plain words. No forms, no legal terms, no account.</p></div></li>
+        <li><b>02</b><div><h3>We ask what matters</h3><p>A few follow-ups based on what you described — when, where, who else, what you already have.</p></div></li>
+        <li><b>03</b><div><h3>A person reviews it</h3><p>We structure it and hand it to a human. If we cannot help, we say so instead of routing you anywhere.</p></div></li>
       </ol>
     </section>
 
     <section class="trust" aria-labelledby="trust-title">
-      <p class="eyebrow"><span></span> Your choice</p>
-      <h2 id="trust-title">We give you a direction—not a sales pitch.</h2>
-      <p>We do not sell your information to law firms. If you choose to connect with a firm, Sofia explains what will happen next and lets you decide.</p>
+      <p class="eyebrow"><span></span> Straight answer
+      </p>
+      <h2 id="trust-title">What this is not.</h2>
+      <p>We are not a law firm. We do not give legal advice, we cannot tell you whether you have a legal claim, and we will not promise that anyone will take your matter. Only an attorney can evaluate a claim. We do not sell your information.</p>
     </section>
   </main>
 
   <footer>
-    <p>Sofia is an informational AI assistant. DoIHaveAClaim.ai is not a law firm and does not provide legal advice. Sofia cannot determine that you have a legal claim, guarantee representation, or predict an outcome. Only an attorney can evaluate a legal claim.</p>
-    <p>Voice conversations may be processed by Vapi and its configured service providers. Production recording, retention, privacy, transfer, and tracking settings require approval before launch.</p>
-    <p>© <span id="year"></span> DoIHaveAClaim.ai · BUILT—NOT LIVE</p>
+    <p class="legal">DoIHaveAClaim.ai is not a law firm and does not provide legal advice. Nothing on this page determines whether you have a legal claim, and nothing here guarantees that a firm will take your matter. Timing can matter in legal matters — an attorney is the right person to ask about that.</p>
+    <p class="legal">© <span id="year"></span> DoIHaveAClaim.ai</p>
+    <nav aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav>
   </footer>
 
-  <script src="config.js?v=20260823-2"></script>
-  <script src="app.js?v=20260823-2"></script>
+  <script src="config.js?v=20260921"></script>
+  <script type="module" src="assets/checker.mjs?v=20260921"></script>
 </body>
 </html>

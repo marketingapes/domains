@@ -198,7 +198,9 @@
     // GA4 conversion
     if (typeof gtag === 'function') {
       gtag('event', 'generate_lead', { currency: 'USD', value: 0 });
-      gtag('event', 'conversion', { send_to: 'G-9HSY1GEXZ6' });
+      // Removed: send_to G-9HSY1GEXZ6 was a GA4 id shared across three brands
+      // (CURRENT-BRIEF.md rule 4 — blank beats wrong). DIHAC conversions run
+      // through its own container, GTM-WJCZF46W, until it owns a GA4 id.
     }
     // Meta Pixel Lead
     if (typeof fbq === 'function') {
