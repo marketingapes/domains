@@ -46,6 +46,15 @@ test('preview pages point at /offers/ with sponsored rel', () => {
   }
 });
 
+test('offer heroes exist', () => {
+  for (const slug of ['fplb', 'ddm', 'cgg']) {
+    assert.ok(fs.existsSync(path.join(ROOT, slug, 'offers/hero.jpg')));
+    const html = fs.readFileSync(path.join(ROOT, slug, 'offers/index.html'), 'utf8');
+    assert.match(html, /hero\.jpg/);
+    assert.match(html, /affiliate_click/);
+  }
+});
+
 test('robots allow /offers/ on FPLB, DDM and CGG', () => {
   for (const slug of ['fplb', 'ddm', 'cgg']) {
     const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
