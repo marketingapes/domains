@@ -1,0 +1,4 @@
+/preview/*.css
+  Cache-Control: public, max-age=86400
+/preview/*.js
+  Cache-Control: public, max-age=3600

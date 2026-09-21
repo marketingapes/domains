@@ -10,8 +10,17 @@ for (const slug of BRANDS) {
   test(`${slug} root sends visitors to preview`, () => {
     const html = fs.readFileSync(path.join(ROOT, slug, 'index.html'), 'utf8');
     assert.match(html, /\/preview\//);
-    assert.match(html, /location\.replace/);
-    assert.ok(fs.existsSync(path.join(ROOT, slug, 'contact.html')), `${slug}/contact.html keeps the old contact page`);
-    assert.ok(fs.existsSync(path.join(ROOT, slug, 'preview', 'index.html')));
+    assert.ok(fs.existsSync(path.join(ROOT, slug, 'contact.html')));
+    const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
+    assert.match(redir, /\/preview\/ 301/);
+  });
+  test(`${slug} preview is indexable and form can find an endpoint`, () => {
+    const html = fs.readFileSync(path.join(ROOT, slug, 'preview', 'index.html'), 'utf8');
+    assert.match(html, /index,follow/);
+    assert.doesNotMatch(html, /noindex,nofollow/);
+    const js = fs.readFileSync(path.join(ROOT, slug, 'preview', 'intake.js'), 'utf8');
+    assert.match(js, /INTAKE_ENDPOINT\|\|C\.ENDPOINT/);
+    const cfg = fs.readFileSync(path.join(ROOT, slug, 'preview', 'config.js'), 'utf8');
+    assert.match(cfg, /"ENDPOINT"\s*:\s*"https:\/\//);
   });
 }
