@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   STATES, TRANSITIONS, TERMINAL, canTransition, advance, ClaimCheckError,
-  CATEGORIES, categorise, questionsFor, nextQuestion, ROUTING_RULES, route, structure
+  CATEGORIES, categorise, questionsFor, nextQuestion, ROUTING_RULES, DESTINATIONS, destinationFor, route, structure
 } from '../dihac/assets/claim-check.mjs';
 
 const NOW = '2026-09-21T19:00:00.000Z';
@@ -100,9 +100,23 @@ test('a missing location or timeframe holds for review rather than guessing', ()
 });
 
 test('a complete answer set is acknowledged', () => {
-  const r = route({ when: 'March 2026', state: 'Arizona', lawyer: 'No' });
+  const r = route({ when: 'March 2026', state: 'Arizona', lawyer: 'No' }, 'vehicle');
   assert.equal(r.state, 'ACKNOWLEDGED');
   assert.equal(r.ruleId, 'complete');
+  assert.equal(r.destination.id, 'NIL');
+});
+
+test('vehicle matters choose NIL and non-vehicle matters choose BTL', () => {
+  assert.equal(destinationFor('vehicle'), DESTINATIONS.NIL);
+  for (const c of CATEGORIES.filter(c => c.id !== 'vehicle')) {
+    assert.equal(destinationFor(c.id), DESTINATIONS.BTL, c.id);
+  }
+});
+
+test('held matters never get a destination', () => {
+  const r = route({ when: 'March', state: 'AZ', lawyer: 'Yes, I have a lawyer' }, 'vehicle');
+  assert.equal(r.state, 'NEEDS_REVIEW');
+  assert.equal(r.destination, null);
 });
 
 test('every routing rule resolves to a declared state', () => {
