@@ -31,4 +31,10 @@ for (const slug of BRANDS) {
     assert.match(robots, /Allow: \/preview\//);
     assert.doesNotMatch(robots, /<<<<<<</);
   });
+  test(`${slug} declares existing AdSense publisher`, () => {
+    const ads = fs.readFileSync(path.join(ROOT, slug, 'ads.txt'), 'utf8');
+    assert.match(ads, /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
+    const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
+    assert.match(robots, /Allow: \/ads\.txt/);
+  });
 }
