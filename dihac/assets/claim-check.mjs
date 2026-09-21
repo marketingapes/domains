@@ -119,13 +119,36 @@ export const ROUTING_RULES = Object.freeze([
     because: 'We do not have a timeframe yet. Timing matters, and a person should check it with an attorney.' }
 ]);
 
-export function route(answers) {
+export const DESTINATIONS = Object.freeze({
+  NIL: Object.freeze({
+    id: 'NIL',
+    name: 'Nearest Injury Lawyers',
+    url: 'https://nearestinjurylawyers.com/',
+    because: 'You described a vehicle-related matter, so the next review path is Nearest Injury Lawyers.'
+  }),
+  BTL: Object.freeze({
+    id: 'BTL',
+    name: 'Best Tort Lawyers',
+    url: 'https://besttortlawyers.com/',
+    because: 'You described a non-vehicle matter, so the next review path is Best Tort Lawyers.'
+  })
+});
+
+export function destinationFor(category) {
+  return category === 'vehicle' ? DESTINATIONS.NIL : DESTINATIONS.BTL;
+}
+
+export function route(answers, category = 'other') {
   const a = answers ?? {};
   const hit = ROUTING_RULES.find(r => r.when(a));
-  return hit
-    ? Object.freeze({ state: hit.state, ruleId: hit.id, because: hit.because })
-    : Object.freeze({ state: 'ACKNOWLEDGED', ruleId: 'complete',
-        because: 'We have enough to pass this to a person for review.' });
+  if (hit) return Object.freeze({ state: hit.state, ruleId: hit.id, because: hit.because, destination: null });
+  const destination = destinationFor(category);
+  return Object.freeze({
+    state: 'ACKNOWLEDGED',
+    ruleId: 'complete',
+    because: 'We have enough to identify the next review path.',
+    destination
+  });
 }
 
 /* -------------------------------------------------------------- structure */
@@ -136,7 +159,7 @@ export function structure({ description, category, answers, nowIso, referenceId 
   if (typeof nowIso !== 'string' || !nowIso) throw new ClaimCheckError('INVALID_CLOCK', 'A timestamp must be supplied.');
   const cat = CATEGORIES.some(c => c.id === category) ? category : categorise(description);
   const a = answers ?? {};
-  const decision = route(a);
+  const decision = route(a, cat);
   return Object.freeze({
     version: CLAIM_CHECK_VERSION,
     referenceId: referenceId ?? null,
@@ -147,6 +170,7 @@ export function structure({ description, category, answers, nowIso, referenceId 
     answers: Object.freeze({ ...a }),
     state: decision.state,
     routing: decision,
+    destination: decision.destination,
     // Said on every single output, in every state.
     disclaimer: 'DoIHaveAClaim.ai is not a law firm and does not give legal advice. '
               + 'Nothing here says whether you have a legal claim — only an attorney can tell you that.'
