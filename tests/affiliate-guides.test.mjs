@@ -2,21 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
-function gitShow(rel) {
-  return execFileSync('git', ['show', `origin/main:${rel}`], { cwd: ROOT });
-}
+const CODEX_WORKSHEETS = {
+  'ddm/guides/checkout-comparison/index.html':
+    '1e621c789ea0470e43b0601f43fbc23243065dbf9b399e864f5bf83f8e306622',
+  'px/guides/pillow-cover-fit/index.html':
+    '85fbf42d6acbfdc9ac6f16e331399748cd8e2929d828ab276964203746af505a',
+};
 
-test('Codex worksheet paths are byte-identical to origin/main', () => {
-  for (const rel of [
-    'ddm/guides/checkout-comparison/index.html',
-    'px/guides/pillow-cover-fit/index.html',
-  ]) {
+test('Codex worksheet paths keep the PR 63 bytes', () => {
+  for (const [rel, expected] of Object.entries(CODEX_WORKSHEETS)) {
     const local = fs.readFileSync(path.join(ROOT, rel));
-    assert.deepEqual(local, gitShow(rel));
+    const sha = createHash('sha256').update(local).digest('hex');
+    assert.equal(sha, expected);
   }
 });
 
