@@ -13,6 +13,8 @@ test('FPLB offers page uses verified Awin publisher and Purr and Mutt merchant',
   assert.match(html, /rel="sponsored/);
   assert.match(html, /#ad/);
   assert.match(html, /awinmid=113600/);
+  assert.match(html, /awinmid=89689/);
+  assert.match(html, /awinmid=87939/);
 });
 
 test('DDM offers page uses verified Awin publisher and Tayst merchant', () => {
@@ -22,10 +24,21 @@ test('DDM offers page uses verified Awin publisher and Tayst merchant', () => {
   assert.match(html, /clickref=ddm-home/);
   assert.match(html, /rel="sponsored/);
   assert.match(html, /#ad/);
+  assert.match(html, /awinmid=62217/);
+  assert.match(html, /awinmid=60295/);
+  assert.match(html, /awinmid=111756/);
+});
+
+test('CGG offers page uses Flextail Awin tracking', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'cgg/offers/index.html'), 'utf8');
+  assert.match(html, /awinmid=60295/);
+  assert.match(html, /awinaffid=2572337/);
+  assert.match(html, /rel="sponsored/);
+  assert.match(html, /#ad/);
 });
 
 test('preview pages point at /offers/ with sponsored rel', () => {
-  for (const slug of ['fplb', 'ddm']) {
+  for (const slug of ['fplb', 'ddm', 'cgg']) {
     const html = fs.readFileSync(path.join(ROOT, slug, 'preview/index.html'), 'utf8');
     assert.match(html, /href="\/offers\/"/);
     assert.match(html, /rel="sponsored"/);
@@ -33,8 +46,8 @@ test('preview pages point at /offers/ with sponsored rel', () => {
   }
 });
 
-test('robots allow /offers/ on FPLB and DDM', () => {
-  for (const slug of ['fplb', 'ddm']) {
+test('robots allow /offers/ on FPLB, DDM and CGG', () => {
+  for (const slug of ['fplb', 'ddm', 'cgg']) {
     const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
     assert.match(robots, /Allow: \/offers\//);
   }
