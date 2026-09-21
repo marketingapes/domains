@@ -2,6 +2,7 @@ User-agent: *
 Allow: /ads.txt
 Allow: /preview/
 Allow: /pet-shopping-checklist/
+Allow: /offers/
 Disallow: /
 
 Sitemap: https://forpetslikeblue.com/sitemap.xml

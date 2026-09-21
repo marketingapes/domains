@@ -2,6 +2,7 @@ User-agent: *
 Allow: /ads.txt
 Allow: /preview/
 Allow: /deal-checklist/
+Allow: /offers/
 Disallow: /
 
 Sitemap: https://discountdealme.com/sitemap.xml
