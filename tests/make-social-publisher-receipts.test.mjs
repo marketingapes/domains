@@ -164,3 +164,82 @@ test('both models still fail closed: an unknown tenant publishes nothing', () =>
     assert.equal(postedTo(r, 'instagram'), false, `${name}: no IG post`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Defect 4 — no idempotency. Reproduces the 2026-09-21 incident.
+//
+// Make 6145431 ran 21 successful executions for 14 mapped tenants between
+// 03:35:31Z and 03:44:19Z. REAPES (638087342872731) and PX (326146494261183)
+// each received two posts minutes apart, verified against the Graph API. PX
+// had not posted since 2017.
+//
+// The re-fire sent IDENTICAL content to the same tenant, which is why the
+// patched key is derived from tenant + message + day rather than relying on a
+// caller-supplied request_id nobody sends today.
+// ---------------------------------------------------------------------------
+
+const REAPES = { tenant_id: 'REAPES', message: 'same copy, fired twice', dedupe_key: 'REAPES:abc123:2026-09-21' };
+
+test('CURRENT: an identical re-fire posts to the Page a second time', () => {
+  const store = {};
+  const a = runFlow(CURRENT, { input: REAPES, store });
+  const b = runFlow(CURRENT, { input: REAPES, store });
+
+  assert.ok(postedTo(a, 'facebook'), 'first post lands');
+  assert.ok(postedTo(b, 'facebook'), 'second post ALSO lands — this is the incident');
+  assert.equal(responseOf(b).body.ok, 'true', 'and the caller is told it succeeded again');
+});
+
+test('PATCHED: an identical re-fire publishes nothing the second time', () => {
+  const store = {};
+  const a = runFlow(PATCHED, { input: REAPES, store });
+  const b = runFlow(PATCHED, { input: REAPES, store });
+
+  assert.ok(postedTo(a, 'facebook'), 'first post lands');
+  assert.equal(postedTo(b, 'facebook'), false, 'second publishes NOTHING');
+  assert.equal(b.effects.filter((e) => e.type === 'send.ok').length, 0, 'no send of any kind');
+});
+
+test('PATCHED: the replay still answers the caller, and says it was a replay', () => {
+  const store = {};
+  runFlow(PATCHED, { input: REAPES, store });
+  const b = runFlow(PATCHED, { input: REAPES, store });
+
+  const res = responseOf(b);
+  assert.ok(res, 'caller is not left hanging');
+  assert.equal(res.body.replayed, 'true');
+  assert.equal(res.body.fb_status, 'already_published');
+  assert.equal(res.status, '200', 'a replay is not an error');
+});
+
+test('PATCHED: the receipt is written AFTER publishing, so a failed run retries', () => {
+  const store = {};
+  // Facebook fails on the first attempt.
+  const a = runFlow(PATCHED, { input: REAPES, store, fail: new Set(['2']) });
+  assert.equal(postedTo(a, 'facebook'), false, 'nothing published');
+  assert.equal(responseOf(a).body.ok, 'false', 'caller told it failed');
+
+  // Retry must be allowed — a failed publish must not lock the key.
+  const b = runFlow(PATCHED, { input: REAPES, store });
+  assert.ok(postedTo(b, 'facebook'), 'retry publishes');
+});
+
+test('PATCHED: different content to the same tenant is NOT suppressed', () => {
+  const store = {};
+  runFlow(PATCHED, { input: REAPES, store });
+  const other = runFlow(PATCHED, {
+    input: { ...REAPES, message: 'a genuinely different post', dedupe_key: 'REAPES:zzz999:2026-09-21' },
+    store,
+  });
+  assert.ok(postedTo(other, 'facebook'), 'a real second post still goes out');
+});
+
+test('PATCHED: the same content to a DIFFERENT tenant is not suppressed', () => {
+  const store = {};
+  runFlow(PATCHED, { input: REAPES, store });
+  const px = runFlow(PATCHED, {
+    input: { tenant_id: 'PX', message: 'same copy, fired twice', dedupe_key: 'PX:abc123:2026-09-21' },
+    store,
+  });
+  assert.ok(postedTo(px, 'facebook'), 'per-tenant key, not a global lock');
+});

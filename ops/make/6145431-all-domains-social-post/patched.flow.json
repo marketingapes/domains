@@ -1,64 +1,173 @@
 {
   "scenario": 6145431,
-  "name": "ALL DOMAINS — Social Post (webhook → FB Page + IG → ledger)",
+  "name": "ALL DOMAINS \u2014 Social Post (webhook \u2192 FB Page + IG \u2192 ledger)",
   "hook": 2770622,
-  "source": "proposed patch — NOT applied to Make",
+  "source": "proposed patch \u2014 NOT applied to Make",
   "design": [
-    "New module 7 resolves page_id / ig_account_id / eligibility ONCE, as roundtrip variables. Both the post modules and the ledger rows read the resolved values, so a ledger row records where the post actually went.",
-    "A router (module 8) replaces the straight line. Route 0 = Facebook, Route 1 = Instagram, Route 2 = respond. Routes run in order, so the response is emitted last.",
-    "Route 2 has no filter, so the caller always gets a reply even when a channel is skipped. That is why the response module cannot simply be moved after the filtered Instagram module — a false filter on the main line would swallow the reply entirely.",
-    "Both send modules get a resume handler; a channel failure becomes a status instead of aborting the execution before the reply.",
-    "The response carries a per-channel receipt. ok is true only when every requested channel reached 'posted'."
+    "IDEMPOTENCY (P0, was P2): on 2026-09-21 the batch fired 21 executions for 14 tenants and double-posted REAPES and PX on live Pages. The scenario has no dedup, so a re-fire is indistinguishable from a new request. Module 11 derives a dedup key and module 12 checks it BEFORE anything is published.",
+    "The key is derived from tenant + message + day, NOT from a caller-supplied request_id alone. That matters: the re-fire that caused the incident sent identical content to the same tenant, so a derived key catches it with zero changes to any caller. A caller-supplied request_id is honoured when present.",
+    "Module 7 resolves page_id / ig_account_id / eligibility ONCE as roundtrip variables, so the post modules and the ledger rows read the same resolved values and a ledger row can prove where a post went.",
+    "Router 8 replaces the straight line. Route 0 = replay short-circuit, Route 1 = Facebook, Route 2 = Instagram, Route 3 = receipt + respond. Routes run in order, so the response is emitted last.",
+    "Route 3 has no filter beyond the dedup gate, so the caller always gets a reply even when a channel is skipped. Moving the response to the end of the main line instead would let a false IG filter swallow the reply entirely.",
+    "Both send modules get a resume handler; a channel failure becomes a status instead of aborting before the reply.",
+    "The receipt write is GUARDED on a successful publish. An unguarded write would reproduce exactly the 6324097 defect this same branch fixes \u2014 marker before proof."
   ],
   "ledgerSheet": "1bCw7-S6gfbXSurwWmMtn1ZaIkJHc_h6Lgy4h1mHqewU",
-  "ledgerColumnsAdded": ["channel_status", "resolved_destination_id", "request_id"],
+  "ledgerColumnsAdded": [
+    "channel_status",
+    "resolved_destination_id",
+    "dedupe_key"
+  ],
+  "dedupeDatastore": "new \u2014 do not reuse 152269 (Phillips call outcomes)",
+  "dedupeKeyExpression": "post:{{ifempty(1.request_id; upper(1.tenant_id) + \":\" + sha256(1.message) + \":\" + formatDate(now; \"YYYY-MM-DD\"))}}",
   "steps": [
-    { "id": "1", "kind": "setvars", "label": "Webhook trigger" },
-    { "id": "7", "kind": "setvars", "label": "NEW — resolve page_id, ig_account_id, fb_eligible, ig_requested, ig_eligible (roundtrip)" },
+    {
+      "id": "1",
+      "kind": "setvars",
+      "label": "Webhook trigger"
+    },
+    {
+      "id": "7",
+      "kind": "setvars",
+      "label": "NEW \u2014 resolve page_id, ig_account_id, eligibility (roundtrip)"
+    },
+    {
+      "id": "11",
+      "kind": "setvars",
+      "label": "NEW \u2014 derive dedupe_key (caller request_id, else tenant+sha256(message)+day)"
+    },
+    {
+      "id": "12",
+      "kind": "store.exists",
+      "key": "post:{dedupe_key}",
+      "onerror": "ignore",
+      "label": "NEW \u2014 already published?"
+    },
     {
       "id": "8",
       "kind": "router",
-      "label": "NEW — router",
+      "label": "Router",
       "routes": [
         [
-          { "id": "f-fb", "kind": "filter", "expr": "input_in:tenant_id:NIL|MA|KG|BTL|DIHAC|SLIQ|RI|DDM|TNT|CGG|TOSS|FPLB|PX|REAPES", "label": "Route 0 — FB eligible" },
-          { "id": "2", "kind": "send", "channel": "facebook", "onerror": "resume", "label": "Facebook Page — CreatePost" },
-          { "id": "9", "kind": "setvars", "label": "NEW — fb_status / fb_post_id (roundtrip)" },
+          {
+            "id": "f-replay",
+            "kind": "filter",
+            "expr": "exists:12",
+            "label": "Route 0 \u2014 already published"
+          },
+          {
+            "id": "13",
+            "kind": "respond",
+            "status": "200",
+            "body": {
+              "ok": "true",
+              "replayed": "true",
+              "fb_status": "already_published",
+              "ig_status": "already_published"
+            },
+            "label": "NEW \u2014 replay short-circuit. Nothing is posted twice."
+          }
+        ],
+        [
+          {
+            "id": "f-fb",
+            "kind": "filter",
+            "expr": "not_exists:12",
+            "label": "Route 1 \u2014 first time"
+          },
+          {
+            "id": "f-fb2",
+            "kind": "filter",
+            "expr": "input_in:tenant_id:NIL|MA|KG|BTL|DIHAC|SLIQ|RI|DDM|TNT|CGG|TOSS|FPLB|PX|REAPES",
+            "label": "FB eligible"
+          },
+          {
+            "id": "2",
+            "kind": "send",
+            "channel": "facebook",
+            "onerror": "resume",
+            "label": "Facebook Page \u2014 CreatePost"
+          },
+          {
+            "id": "9",
+            "kind": "setvars",
+            "label": "fb_status / fb_post_id (roundtrip)"
+          },
           {
             "id": "4",
             "kind": "ledger",
             "channel": "facebook",
             "destination": "@7.page_id",
             "status": "?sent_ok:2|posted|failed",
-            "label": "FIXED — resolved Page id, real status"
+            "label": "FIXED \u2014 resolved Page id, real status"
           }
         ],
         [
-          { "id": "f-ig", "kind": "filter", "expr": "input_in:tenant_id:NIL|MA|BTL|DIHAC|SLIQ|DDM|TNT", "label": "Route 1 — IG eligible" },
-          { "id": "3", "kind": "send", "channel": "instagram", "onerror": "resume", "label": "Instagram — CreatePostPhoto" },
-          { "id": "10", "kind": "setvars", "label": "NEW — ig_status / ig_post_id (roundtrip)" },
+          {
+            "id": "f-ig",
+            "kind": "filter",
+            "expr": "not_exists:12",
+            "label": "Route 2 \u2014 first time"
+          },
+          {
+            "id": "f-ig2",
+            "kind": "filter",
+            "expr": "input_in:tenant_id:NIL|MA|BTL|DIHAC|SLIQ|DDM|TNT",
+            "label": "IG eligible"
+          },
+          {
+            "id": "3",
+            "kind": "send",
+            "channel": "instagram",
+            "onerror": "resume",
+            "label": "Instagram \u2014 CreatePostPhoto (needs instagram_content_publish on the app; currently returns OAuth #10)"
+          },
+          {
+            "id": "10",
+            "kind": "setvars",
+            "label": "ig_status / ig_post_id (roundtrip)"
+          },
           {
             "id": "6",
             "kind": "ledger",
             "channel": "instagram",
             "destination": "@7.ig_account_id",
             "status": "?sent_ok:3|posted|failed",
-            "label": "FIXED — resolved IG account id, real status"
+            "label": "FIXED \u2014 resolved IG account id, real status"
           }
         ],
         [
+          {
+            "id": "f-new",
+            "kind": "filter",
+            "expr": "not_exists:12",
+            "label": "Route 3 \u2014 first time"
+          },
+          {
+            "id": "14",
+            "kind": "store.put",
+            "key": "post:{dedupe_key}",
+            "value": {
+              "state": "published",
+              "tenant": "{tenant_id}"
+            },
+            "onerror": "ignore",
+            "label": "NEW \u2014 record the receipt only when Facebook actually published. Writing it unconditionally would repeat the Phillips mistake: a failed publish would lock the key and the retry would be suppressed. Every IG-mapped tenant is also FB-mapped, so \"FB posted\" is the right condition.",
+            "guard": "sent_ok:2"
+          },
           {
             "id": "5",
             "kind": "respond",
             "status": "?sent_ok:2|200|502",
             "body": {
               "ok": "?sent_ok:2|true|false",
+              "replayed": "false",
               "fb_post_id": "@2.id",
               "fb_status": "?sent_ok:2|posted|failed",
               "ig_post_id": "@3.id",
               "ig_status": "?sent_ok:3|posted|not_posted"
             },
-            "label": "Route 2 — unfiltered, runs last. Per-channel receipt."
+            "label": "Runs last. Per-channel receipt."
           }
         ]
       ]

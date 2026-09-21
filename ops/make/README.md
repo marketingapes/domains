@@ -179,10 +179,50 @@ true, "request_id": ...}` immediately and have callers read the ledger.
 Re-import the exported blueprint. The added sheet columns can stay; the old
 flow simply does not write them.
 
-### Not included — recommended next (P2)
+### Idempotency — P0, now included
 
-The publisher has **no idempotency key**. A caller retry after a network
-timeout double-posts publicly to Facebook and Instagram. Fix: accept a
-`request_id`, `ExistRecord post:{request_id}` on a datastore before route 0, and
-replay the stored receipt instead of posting. Kept out of this patch to hold
-the blast radius to the response/receipt problem that was actually assigned.
+Was scoped out as P2. It became P0 on **2026-09-21**, when the batch fired 21
+executions for 14 mapped tenants and double-posted two live Pages:
+
+| Page | Posts | Times (UTC) |
+|---|---|---|
+| REAPES `638087342872731` | 2 | 03:41:05, 03:44:03 |
+| PX `326146494261183` | 2 | 03:40:15, 03:44:09 |
+
+PX had not posted since 2017. Verified against the Graph API, not the ledger.
+
+Module 11 derives a dedup key; module 12 checks it before anything publishes;
+route 0 short-circuits to a `replayed: true` response.
+
+The key is **derived**, not caller-supplied:
+
+```
+post:{{ifempty(1.request_id; upper(1.tenant_id) + ":" + sha256(1.message) + ":" + formatDate(now; "YYYY-MM-DD"))}}
+```
+
+That choice is load-bearing. The re-fire sent *identical content to the same
+tenant*, so a derived key stops it **with no change to any caller**. A
+caller-supplied `request_id` is honoured when present, but nothing depends on
+callers being fixed first.
+
+Use a **new datastore**. Do not reuse 152269 — that is the Phillips call-outcome
+store and mixing publish receipts into it would make both harder to reason about.
+
+The receipt write (module 14) is **guarded on a successful publish**. An
+unguarded write would reproduce the exact 6324097 defect this same branch
+fixes — a marker written before proof, locking out the retry. A test pins it.
+
+### Instagram is failing on app permissions, separately
+
+Execution `56e047e134224bcbb0d0005eebd39700`, 2026-09-21 03:37:50Z:
+
+```
+(#10) Application does not have permission for this action (10, OAuthException)
+  module: CreatePostPhoto (instagram-business)
+```
+
+This is not the unmapped-tenant path — the tenant was mapped. The Meta app
+lacks `instagram_content_publish`. No Instagram post has succeeded. Because the
+current flow responds before Instagram runs, this failure still returned
+`ok:true`. Granting the permission is a human step and is not part of this
+patch.
