@@ -100,6 +100,24 @@ export function nextQuestion(category, answers) {
 
 /* ---------------------------------------------------------------- routing */
 /**
+ * Every category states its path explicitly. `other` is the categoriser's
+ * fallback for a description it could not classify, and an unclassified
+ * matter has no declared path — it holds for a person rather than being
+ * guessed into a named firm. Adding a category without adding it here means
+ * that category holds, which is the safe direction to fail in.
+ */
+export const CATEGORY_PATHS = Object.freeze({
+  vehicle:   'NIL',
+  medical:   'BTL',
+  product:   'BTL',
+  workplace: 'BTL',
+  property:  'BTL',
+  consumer:  'BTL',
+  housing:   'BTL',
+  other:     null
+});
+
+/**
  * Routing rules are OPERATIONAL, not legal. Each says where a submission goes
  * and why, in plain words. None of them decides whether a claim exists, and
  * none of them applies a limitation period.
@@ -116,7 +134,11 @@ export const ROUTING_RULES = Object.freeze([
   { id: 'no-timeframe',
     when: a => !String(a.when ?? '').trim(),
     state: 'NEEDS_REVIEW',
-    because: 'We do not have a timeframe yet. Timing matters, and a person should check it with an attorney.' }
+    because: 'We do not have a timeframe yet. Timing matters, and a person should check it with an attorney.' },
+  { id: 'no-declared-path',
+    when: (a, category) => !CATEGORY_PATHS[category],
+    state: 'NEEDS_REVIEW',
+    because: 'We could not tell from your description which review path fits, so a person will read it before it goes anywhere.' }
 ]);
 
 export const DESTINATIONS = Object.freeze({
@@ -134,13 +156,15 @@ export const DESTINATIONS = Object.freeze({
   })
 });
 
+
 export function destinationFor(category) {
-  return category === 'vehicle' ? DESTINATIONS.NIL : DESTINATIONS.BTL;
+  const id = CATEGORY_PATHS[category] ?? null;
+  return id ? DESTINATIONS[id] : null;
 }
 
 export function route(answers, category = 'other') {
   const a = answers ?? {};
-  const hit = ROUTING_RULES.find(r => r.when(a));
+  const hit = ROUTING_RULES.find(r => r.when(a, category));
   if (hit) return Object.freeze({ state: hit.state, ruleId: hit.id, because: hit.because, destination: null });
   const destination = destinationFor(category);
   return Object.freeze({

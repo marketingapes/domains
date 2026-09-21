@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   STATES, TRANSITIONS, TERMINAL, canTransition, advance, ClaimCheckError,
-  CATEGORIES, categorise, questionsFor, nextQuestion, ROUTING_RULES, DESTINATIONS, destinationFor, route, structure
+  CATEGORIES, categorise, questionsFor, nextQuestion, ROUTING_RULES, DESTINATIONS, CATEGORY_PATHS, destinationFor, route, structure
 } from '../dihac/assets/claim-check.mjs';
 
 const NOW = '2026-09-21T19:00:00.000Z';
@@ -106,11 +106,44 @@ test('a complete answer set is acknowledged', () => {
   assert.equal(r.destination.id, 'NIL');
 });
 
-test('vehicle matters choose NIL and non-vehicle matters choose BTL', () => {
+test('vehicle matters choose NIL and other classified matters choose BTL', () => {
   assert.equal(destinationFor('vehicle'), DESTINATIONS.NIL);
-  for (const c of CATEGORIES.filter(c => c.id !== 'vehicle')) {
+  for (const c of CATEGORIES.filter(c => c.id !== 'vehicle' && c.id !== 'other')) {
     assert.equal(destinationFor(c.id), DESTINATIONS.BTL, c.id);
   }
+});
+
+test('every category declares a path, and only the unclassified one declares none', () => {
+  for (const c of CATEGORIES) {
+    assert.ok(c.id in CATEGORY_PATHS, `${c.id} has no declared path`);
+    const id = CATEGORY_PATHS[c.id];
+    if (id !== null) assert.ok(DESTINATIONS[id], `${c.id} points at an undeclared destination`);
+  }
+  assert.equal(CATEGORY_PATHS.other, null);
+});
+
+test('a matter the categoriser could not classify is never guessed into a firm', () => {
+  const answered = { when: 'March 2026', state: 'Arizona', lawyer: 'No' };
+  const r = route(answered, 'other');
+  assert.equal(r.state, 'NEEDS_REVIEW');
+  assert.equal(r.ruleId, 'no-declared-path');
+  assert.equal(r.destination, null);
+
+  // and end to end, through the categoriser's own fallback
+  const s = structure({
+    description: 'my neighbour keeps parking across my driveway and the HOA will not act',
+    answers: answered, nowIso: NOW
+  });
+  assert.equal(s.category, 'other');
+  assert.equal(s.state, 'NEEDS_REVIEW');
+  assert.equal(s.destination, null);
+});
+
+test('an unknown category id holds rather than defaulting to a firm', () => {
+  assert.equal(destinationFor('completely-unknown-id'), null);
+  const r = route({ when: 'March 2026', state: 'Arizona', lawyer: 'No' }, 'completely-unknown-id');
+  assert.equal(r.state, 'NEEDS_REVIEW');
+  assert.equal(r.destination, null);
 });
 
 test('held matters never get a destination', () => {
