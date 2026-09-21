@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Best Tort Lawyers">
+  <rect width="64" height="64" rx="12" fill="#0d2b4e"/>
+  <g stroke="#f9c84a" stroke-width="3.5" stroke-linecap="round" fill="none">
+    <path d="M32 14v34"/>
+    <path d="M17 22h30"/>
+    <path d="M12 46h40"/>
+    <path d="M17 22 10 36h14zM47 22 40 36h14z"/>
+  </g>
+</svg>

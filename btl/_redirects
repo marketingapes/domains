@@ -1,0 +1,20 @@
+# BTL path parity for the Render candidate.
+#
+# Render serves this file the same way the other sites in this repo use theirs
+# (ri, toss, fplb, px, cgg). Everything here exists so a path that worked on the
+# SiteGround property does not become a 404 the day DNS moves.
+
+# Retired with the SiteGround property. The page is not in this repo, so this
+# is a holding redirect, not a replacement: if the content is exported it gets
+# its own folder here and this line comes out.
+/phillips-law/*  /  301
+
+# The tort shortcuts predate the /campaigns/ layout. They are still referenced
+# by 404.html and by anything linking to the old estate, so keep the old shapes
+# resolving instead of sending people from one 404 into another.
+/talc/*          /campaigns/talc/          301
+/hair-relaxer/*  /campaigns/hair-relaxer/  301
+/dupixent/*      /campaigns/dupixent/      301
+/depo-provera/*  /campaigns/depo-provera/  301
+/glp-1/*         /campaigns/glp-1/         301
+/sex-abuse/*     /campaigns/sexual-abuse/  301
