@@ -3,6 +3,7 @@ Allow: /ads.txt
 Allow: /preview/
 Allow: /pet-shopping-checklist/
 Allow: /offers/
+Allow: /guides/pet-portrait-selection/
 Disallow: /
 
 Sitemap: https://forpetslikeblue.com/sitemap.xml
