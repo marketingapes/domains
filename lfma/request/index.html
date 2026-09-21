@@ -174,11 +174,11 @@ input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid v
 
 <script type="module">
 import { priceCampaign, PRODUCTS, usd, SOFIA_CENTS } from '../assets/lfma-pricing.mjs';
-import { STATES, STATE_NOTE, idempotencyKey, createSubmissionGuard, toInvoiceDraft } from '../assets/lfma-order-state.mjs';
+import { STATES, STATE_NOTE, canSubmit, idempotencyKey, createSubmissionGuard, toInvoiceDraft } from '../assets/lfma-order-state.mjs';
 
 const $ = id => document.getElementById(id);
 const STORE = 'lfma-request-v1';
-const guard = createSubmissionGuard();
+let guard = createSubmissionGuard();
 
 const STEPS = [
   {k:'firm',    q:"Let's start simple. What's the firm called?", ph:'Firm name'},
@@ -210,7 +210,7 @@ const LABEL = {firm:'Firm',contact:'Contact',email:'Email',product:'Case work',t
 let data = {}, idx = 0, state = 'DRAFT', submitted = false;
 
 /* ---------- persistence (sessionStorage only; never the URL) ---------- */
-function save(){ try{ sessionStorage.setItem(STORE, JSON.stringify({data, idx, state})); }catch{} }
+function save(){ try{ sessionStorage.setItem(STORE, JSON.stringify({data, idx, state, keys:[...guard.seen]})); }catch{} }
 function load(){
   try{
     const raw = sessionStorage.getItem(STORE); if(!raw) return false;
@@ -219,6 +219,8 @@ function load(){
     data = p.data && typeof p.data === 'object' ? p.data : {};
     idx = Number.isInteger(p.idx) ? Math.min(Math.max(p.idx,0), STEPS.length) : 0;
     state = STATES.includes(p.state) ? p.state : 'DRAFT';
+    submitted = state !== 'DRAFT';
+    if (Array.isArray(p.keys)) guard = createSubmissionGuard(new Set(p.keys.filter(k => typeof k === 'string')));
     return true;
   }catch{ return false; }
 }
@@ -300,8 +302,12 @@ function answer(raw, shown){
 }
 
 function finish(){
-  state = 'DRAFT';   // stays DRAFT until the request is actually submitted
-  say('tex', "That's everything I need. Your request and pricing are on the right — edit anything, then submit it for review.");
+  // Only a brand-new run is a DRAFT. A reload of an already-submitted request
+  // must keep its state, or the duplicate guard is bypassed.
+  if (!STATES.includes(state)) state = 'DRAFT';
+  say('tex', submitted || state !== 'DRAFT'
+    ? 'This request is already in for review. Edit anything and it becomes a new request.'
+    : "That's everything I need. Your request and pricing are on the right — edit anything, then submit it for review.");
   render();
 }
 
@@ -357,7 +363,7 @@ function paintSummary(){
     btn.setAttribute('aria-label', `Edit ${LABEL[s.k]||s.k}`);
     btn.addEventListener('click', ()=>{
       idx = steps().findIndex(x=>x.k===s.k);
-      submitted=false; $('result').textContent='';
+      submitted=false; state='DRAFT'; $('result').textContent='';
       render(); ask();
       if(!current().chips) $('line').focus();
     });
@@ -391,6 +397,10 @@ $('submitReq').addEventListener('click', ()=>{
   const out = $('result'); out.textContent='';
   if(missing.length || !q){
     out.append(banner('bad','Not ready to submit', 'Still needed: ' + (missing.join(', ') || 'a priced campaign') + '.'));
+    return;
+  }
+  if(!canSubmit(state)){
+    out.append(banner('bad','Already submitted','This request is in for review. Edit a field if you meant to change it.'));
     return;
   }
   const key = idempotencyKey({firm:data.firm, email:data.email, product:q.product, markets:q.markets, total:q.totalCents});

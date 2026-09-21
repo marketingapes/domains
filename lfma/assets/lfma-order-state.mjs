@@ -99,7 +99,10 @@ export function canSubmit(state) {
  * This is a duplicate-submission guard, NOT a security primitive.
  */
 export function idempotencyKey(parts) {
-  const canonical = JSON.stringify(parts, Object.keys(parts ?? {}).sort());
+  if (!parts || typeof parts !== 'object' || Array.isArray(parts)) {
+    throw new OrderStateError('INVALID_KEY_PARTS', 'Idempotency parts must be an object.');
+  }
+  const canonical = JSON.stringify(parts, Object.keys(parts).sort()) ?? '';
   let h1 = 0x811c9dc5, h2 = 0x01000193;
   for (let i = 0; i < canonical.length; i++) {
     const c = canonical.charCodeAt(i);

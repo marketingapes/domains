@@ -217,3 +217,21 @@ test('invoice draft carries no raw PII in its idempotency key', () => {
   assert.doesNotMatch(draft.idempotencyKey, /pat|example|@/i);
   assert.match(draft.idempotencyKey, /^lfma-[0-9a-f]{16}$/);
 });
+
+test('idempotencyKey rejects non-objects with a typed error', () => {
+  for (const bad of [undefined, null, 'x', 7, ['a']]) {
+    assert.throws(() => idempotencyKey(bad),
+      e => e instanceof OrderStateError && e.code === 'INVALID_KEY_PARTS',
+      `${JSON.stringify(bad)} should raise INVALID_KEY_PARTS`);
+  }
+  assert.match(idempotencyKey({}), /^lfma-[0-9a-f]{16}$/);
+});
+
+test('a rehydrated guard still refuses keys it has already seen', () => {
+  const key = idempotencyKey({ firm: 'A', total: 1 });
+  const first = createSubmissionGuard();
+  assert.equal(first.claim(key), true);
+  const persisted = [...first.seen];
+  const restored = createSubmissionGuard(new Set(persisted));
+  assert.equal(restored.claim(key), false, 'a reload must not reopen a claimed key');
+});
