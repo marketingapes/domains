@@ -1,4 +1,5 @@
 User-agent: *
+Allow: /preview/
 Allow: /deal-checklist/
 Disallow: /
 
