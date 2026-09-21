@@ -1,2 +1,5 @@
 User-agent: *
+Allow: /game-day-checklist/
 Disallow: /
+
+Sitemap: https://tosssports.com/sitemap.xml
