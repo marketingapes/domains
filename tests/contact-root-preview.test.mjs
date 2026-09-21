@@ -24,3 +24,11 @@ for (const slug of BRANDS) {
     assert.match(cfg, /"ENDPOINT"\s*:\s*"https:\/\//);
   });
 }
+
+for (const slug of BRANDS) {
+  test(`${slug} robots allows preview`, () => {
+    const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
+    assert.match(robots, /Allow: \/preview\//);
+    assert.doesNotMatch(robots, /<<<<<<</);
+  });
+}

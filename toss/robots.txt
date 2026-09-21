@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /preview/
-Allow: /
-Disallow: /contact.html
+Allow: /game-day-checklist/
+Disallow: /
+
+Sitemap: https://tosssports.com/sitemap.xml

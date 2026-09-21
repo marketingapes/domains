@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /preview/
-Allow: /
-Disallow: /contact.html
+Allow: /deal-checklist/
+Disallow: /
+
+Sitemap: https://discountdealme.com/sitemap.xml

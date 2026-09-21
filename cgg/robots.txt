@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /preview/
-Allow: /
-Disallow: /contact.html
+Allow: /practice-session-planner/
+Disallow: /
+
+Sitemap: https://crazygolfgame.com/sitemap.xml

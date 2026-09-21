@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /preview/
-Allow: /
-Disallow: /contact.html
+Allow: /pillow-shopping-checklist/
+Disallow: /
+
+Sitemap: https://pillowexchange.com/sitemap.xml

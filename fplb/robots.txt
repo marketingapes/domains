@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /preview/
-Allow: /
-Disallow: /contact.html
+Allow: /pet-shopping-checklist/
+Disallow: /
+
+Sitemap: https://forpetslikeblue.com/sitemap.xml
