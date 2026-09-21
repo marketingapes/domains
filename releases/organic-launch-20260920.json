@@ -1,0 +1,82 @@
+[
+  {
+    "brand": "MA",
+    "domain": "marketingapes.com",
+    "path": "ma/workflow-review/index.html",
+    "url": "https://marketingapes.com/workflow-review/",
+    "title": "Make one business workflow easier to run.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "LFMA",
+    "domain": "lawfirmmarketingapes.com",
+    "path": "lfma/intake-workflow-review/index.html",
+    "url": "https://lawfirmmarketingapes.com/intake-workflow-review/",
+    "title": "See the handoff from inquiry to intake.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "DMA",
+    "domain": "digitalmarketingapes.com",
+    "path": "dma/campaign-handoff/index.html",
+    "url": "https://digitalmarketingapes.com/campaign-handoff/",
+    "title": "Give the next campaign a clear handoff.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "SEOAPES",
+    "domain": "seoapes.com",
+    "path": "seoapes/search-results-review/index.html",
+    "url": "https://seoapes.com/search-results-review/",
+    "title": "Start with the searches that matter.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "REAPES",
+    "domain": "realestateapes.com",
+    "path": "reapes/listing-workflow/index.html",
+    "url": "https://realestateapes.com/listing-workflow/",
+    "title": "Publish a listing with fewer loose ends.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "DDM",
+    "domain": "discountdealme.com",
+    "path": "ddm/deal-checklist/index.html",
+    "url": "https://discountdealme.com/deal-checklist/",
+    "title": "Check the deal before you check out.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "FPLB",
+    "domain": "forpetslikeblue.com",
+    "path": "fplb/pet-shopping-checklist/index.html",
+    "url": "https://forpetslikeblue.com/pet-shopping-checklist/",
+    "title": "A better brief for your next pet purchase.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "PX",
+    "domain": "pillowexchange.com",
+    "path": "px/pillow-shopping-checklist/index.html",
+    "url": "https://pillowexchange.com/pillow-shopping-checklist/",
+    "title": "Compare pillows without the guesswork.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "CGG",
+    "domain": "crazygolfgame.com",
+    "path": "cgg/practice-session-planner/index.html",
+    "url": "https://crazygolfgame.com/practice-session-planner/",
+    "title": "Give your next practice session a purpose.",
+    "affiliate_links": false
+  },
+  {
+    "brand": "TOSS",
+    "domain": "tosssports.com",
+    "path": "toss/game-day-checklist/index.html",
+    "url": "https://tosssports.com/game-day-checklist/",
+    "title": "Make the next game day easier to organize.",
+    "affiliate_links": false
+  }
+]
