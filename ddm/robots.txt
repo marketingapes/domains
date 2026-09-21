@@ -3,6 +3,7 @@ Allow: /ads.txt
 Allow: /preview/
 Allow: /deal-checklist/
 Allow: /offers/
+Allow: /guides/checkout-comparison/
 Disallow: /
 
 Sitemap: https://discountdealme.com/sitemap.xml
