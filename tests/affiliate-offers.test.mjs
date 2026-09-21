@@ -61,3 +61,15 @@ test('robots allow /offers/ on FPLB, DDM and CGG', () => {
     assert.match(robots, /Allow: \/offers\//);
   }
 });
+
+test('offer and portrait pages reuse existing brand GTM containers', () => {
+  const fplb = fs.readFileSync(path.join(ROOT, 'fplb/offers/index.html'), 'utf8');
+  const guide = fs.readFileSync(path.join(ROOT, 'fplb/guides/pet-portrait-selection/index.html'), 'utf8');
+  const ddm = fs.readFileSync(path.join(ROOT, 'ddm/offers/index.html'), 'utf8');
+  const cgg = fs.readFileSync(path.join(ROOT, 'cgg/offers/index.html'), 'utf8');
+  assert.match(fplb, /GTM-MV4SK9DN/);
+  assert.match(guide, /GTM-MV4SK9DN/);
+  assert.match(ddm, /GTM-W3D26R29/);
+  assert.match(cgg, /GTM-K8TXN9/);
+  assert.match(fplb, /affiliate_click/);
+});
