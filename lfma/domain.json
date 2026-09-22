@@ -105,12 +105,12 @@
       "note": "Law Firm Marketing Apes Page is owned by the Marketing Apes Meta business."
     },
     "instagram": {
-      "connection_status": "CURRENT",
+      "connection_status": "VERIFIED",
       "activation_state": "ON",
       "owner_tenant_id": "LFMA",
       "shared_with": [],
-      "account_id": null,
-      "note": "Public @lawfirmmarketingapes account exists; Meta Business/Page connection and Graph account ID still need verification."
+      "account_id": "17841421415686615",
+      "note": "@lawfirmmarketingapes is owned by Marketing Apes and is connected to the Law Firm Marketing Apes Facebook Page in Meta Business Settings."
     },
     "tiktok": {
       "connection_status": "MISSING",
@@ -189,7 +189,8 @@
       "activation_state": "OFF",
       "owner_tenant_id": "LFMA",
       "shared_with": [],
-      "advertiser_id": null
+      "advertiser_id": null,
+      "note": "LFMA TikTok Pixel D77KIJBC77UCAQSNEM4G is visible in TikTok Events Manager and receiving events. Advertiser/account ownership mapping remains to be recorded separately before paid activation."
     },
     "other": {
       "connection_status": "NOT_APPLICABLE",
