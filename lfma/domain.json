@@ -1,6 +1,6 @@
 {
   "schema": "marketingapes.domain.foundation/v1.2",
-  "verified_on": "2026-09-22",
+  "verified_on": "2026-09-09",
   "tenant_id": "LFMA",
   "domain_id": "lawfirmmarketingapes.com",
   "brand_name": "Law Firm Marketing Apes",
@@ -99,9 +99,9 @@
     "facebook": {
       "connection_status": "CURRENT",
       "activation_state": "ON",
-      "owner_tenant_id": "LFMA",
+      "owner_tenant_id": "MA",
       "shared_with": [],
-      "page_id": "272050765993898"
+      "page_id": "137455619624058"
     },
     "instagram": {
       "connection_status": "MISSING",
