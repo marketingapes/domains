@@ -4,14 +4,22 @@
 # (ri, toss, fplb, px, cgg). Everything here exists so a path that worked on the
 # SiteGround property does not become a 404 the day DNS moves.
 
-# Retired with the SiteGround property. The page is not in this repo, so this
-# is a holding redirect, not a replacement: if the content is exported it gets
-# its own folder here and this line comes out.
+# Retired with the SiteGround property. The content is not in this repo, so
+# this is a holding redirect, not a replacement: if it is exported it gets its
+# own folder here and this line comes out.
+#
+# This is not a small wildcard. Search Console reports 35 distinct URLs under
+# this prefix drawing impressions, including a full Spanish (/es/) set. Sending
+# all of them to the homepage is a deliberate, lossy holding measure — Google
+# reads a mass redirect to an unrelated page as a soft 404 and will drop them.
+# It beats 35 hard 404s and nothing else here beats it until the content exists.
 /phillips-law/*  /  301
 
 # The tort shortcuts predate the /campaigns/ layout. They are still referenced
 # by 404.html and by anything linking to the old estate, so keep the old shapes
-# resolving instead of sending people from one 404 into another.
+# resolving instead of sending people from one 404 into another. /dupixent/ is
+# not hypothetical: it is this property's best-performing URL (55 impressions,
+# 3 clicks, average position 8.4 over the six months to 2026-09-22).
 /talc/*          /campaigns/talc/          301
 /hair-relaxer/*  /campaigns/hair-relaxer/  301
 /dupixent/*      /campaigns/dupixent/      301

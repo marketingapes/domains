@@ -142,3 +142,77 @@ test('BTL uses no phone number another tenant owns', { todo:
   }
   assert.deepEqual([...new Set(hits)], [], hits.join('\n'));
 });
+
+/**
+ * What Google actually knows about this property, pulled from the Search
+ * Console URL Inspection and Search Analytics APIs on 2026-09-22 for
+ * sc-domain:besttortlawyers.com over the preceding six months. These are not
+ * guesses about which paths matter — they are the paths that drew impressions,
+ * so they are the ones a hosting swap can lose.
+ *
+ * Host is dropped on purpose: Google reports the same page under both the
+ * apex and www, and `_redirects` is matched on the path.
+ */
+const RANKING_PATHS = Object.freeze([
+  { path: '/',                           impressions: 78, position: 2.2 },
+  { path: '/dupixent/',                  impressions: 55, position: 8.4 },
+  { path: '/demo/',                      impressions: 37, position: 2.0 },
+  { path: '/texas-storm-damage-claims/', impressions: 35, position: 2.7 },
+  { path: '/privacy-policy.html',        impressions:  0, position: null }
+]);
+
+test('every BTL path Google ranks still resolves after the hosting swap', () => {
+  const lost = RANKING_PATHS
+    .filter(p => !resolves(p.path) && !redirected(p.path))
+    .map(p => `${p.path} (${p.impressions} impressions, avg position ${p.position})`);
+  // /demo/ and /texas-storm-damage-claims/ are expected to be listed here until
+  // their content is exported; the assertion below scopes this test to the rest
+  // so a regression on a covered path still turns the build red.
+  const KNOWN_GAPS = ['/demo/', '/texas-storm-damage-claims/'];
+  const regressions = lost.filter(l => !KNOWN_GAPS.some(g => l.startsWith(g)));
+  assert.deepEqual(regressions, [],
+    `these ranking paths would 404 on Render:\n${regressions.join('\n')}`);
+});
+
+test('the ranking paths with no home in this repo are exported before cutover', { todo:
+  '/demo/ (37 impressions, avg position 2.0) and /texas-storm-damage-claims/ '
+  + '(35 impressions, avg position 2.7) rank in Google\'s top three and exist '
+  + 'nowhere in this repo. Needs the content exported from SiteGround.' }, () => {
+  const homeless = ['/demo/', '/texas-storm-damage-claims/']
+    .filter(p => !resolves(p) && !redirected(p));
+  assert.deepEqual(homeless, [], homeless.join('\n'));
+});
+
+test('the phillips-law holding redirect covers the whole measured estate', () => {
+  // Search Console reports 35 distinct /phillips-law/arizona-injury-lawyers/
+  // URLs with impressions, including a full Spanish (/es/) set. The single
+  // wildcard below is what stands between all of them and a 404, so assert it
+  // is still there rather than trusting the file to stay unedited.
+  const rule = redirectRules().find(r => r.from === '/phillips-law/*');
+  assert.ok(rule, '/phillips-law/* redirect is gone; 35 ranking URLs would 404');
+  assert.equal(rule.code, '301', 'the phillips-law holding redirect must be a 301');
+});
+
+test('every BTL canonical points at the declared apex, never www', () => {
+  // Search Console (2026-09-22) reports the live SiteGround property split
+  // across both hosts: the apex is "Duplicate without user-selected canonical"
+  // and Google picked https://www.besttortlawyers.com/ for itself. The Render
+  // candidate resolves that by declaring the apex everywhere, which is also
+  // what domain.json's intended_canonical_hostname says. Keep it that way.
+  const declared = JSON.parse(fs.readFileSync(path.join(BTL, 'domain.json'), 'utf8'))
+    .hostname.intended_canonical_hostname;
+  const wrong = [];
+  for (const file of htmlFiles) {
+    for (const m of fs.readFileSync(file, 'utf8').matchAll(/rel="canonical"[^>]*href="([^"]+)"/g)) {
+      const host = new URL(m[1]).hostname;
+      if (host !== declared) wrong.push(`${path.relative(ROOT, file)} -> ${host}`);
+    }
+  }
+  assert.deepEqual(wrong, [], `canonicals off the declared hostname:\n${wrong.join('\n')}`);
+
+  const sitemap = fs.readFileSync(path.join(BTL, 'sitemap.xml'), 'utf8');
+  for (const m of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+    assert.equal(new URL(m[1]).hostname, declared,
+      `sitemap advertises ${m[1]} off the declared hostname`);
+  }
+});
