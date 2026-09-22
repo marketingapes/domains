@@ -222,6 +222,19 @@ test('NO OUTPUT ANYWHERE asserts a claim, promises representation, or gives advi
   }
 });
 
+test('the homepage declares the canonical DIHAC hostname and nothing else', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const here = new URL('../dihac/', import.meta.url);
+  const html = await readFile(new URL('index.html', here), 'utf8');
+  const declared = JSON.parse(await readFile(new URL('domain.json', here), 'utf8'))
+    .hostname.intended_canonical_hostname;
+
+  const found = [...html.matchAll(/rel="canonical"[^>]*href="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(found.length, 1, 'expected exactly one canonical link');
+  assert.equal(found[0], `https://${declared}/`,
+    'the canonical must be this tenant\'s own declared hostname');
+});
+
 test('the engine source contains no Vapi reference and no phone number', async () => {
   const { readFile } = await import('node:fs/promises');
   const src = await readFile(new URL('../dihac/assets/claim-check.mjs', import.meta.url), 'utf8');
