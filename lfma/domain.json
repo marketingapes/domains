@@ -120,12 +120,12 @@
       "account_id": null
     },
     "youtube": {
-      "connection_status": "CURRENT",
-      "activation_state": "ON",
+      "connection_status": "NEEDS_AUTH",
+      "activation_state": "OFF",
       "owner_tenant_id": "LFMA",
       "shared_with": [],
       "channel_id": null,
-      "note": "Public @LawFirmMarketingApes channel exists; provider channel ID and automation connection still need verification."
+      "note": "Public @LawFirmMarketingApes channel exists; provider channel ID and automation connection still need verification before this surface can be marked CURRENT/VERIFIED."
     },
     "linkedin": {
       "connection_status": "MISSING",
