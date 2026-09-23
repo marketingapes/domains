@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tell Tex what cases your firm wants | Law Firm Marketing Apes</title>
+<meta name="description" content="Tex is the AI campaign desk. Tell him the cases your firm wants and he builds a structured campaign request with transparent pricing you can edit before anything is submitted.">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--ground:#060D1F;--ground-2:#08122B;--panel:#0C1730;--panel-2:#101E3C;--rule:rgba(143,168,255,.15);--rule-bright:rgba(143,168,255,.34);--ink:#E8EFFB;--muted:#8FA3C6;--faint:#5E739A;--dim:#3D4F70;--pulse:#4DA3FF;--pulse-dim:rgba(77,163,255,.13);--live:#2FBFA3;--wait:#F0A83C;--stop:#FF7B7B;--measure:34rem}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0}
+body{background:radial-gradient(120% 55% at 50% 0%,#0D1B39 0%,transparent 60%),linear-gradient(180deg,var(--ground) 0%,var(--ground-2) 55%,var(--ground) 100%);background-color:var(--ground);color:var(--ink);font-family:"Newsreader",Georgia,"Times New Roman",serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:100%;max-width:70rem;margin-inline:auto;padding:0 20px 3rem}
+a{color:var(--pulse)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:1.4rem 0 1.1rem;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.brand{font-family:"Archivo",system-ui,sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--pulse);text-decoration:none}
+.step-of{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.72rem;color:var(--faint)}
+h1{font-family:"Archivo",system-ui,sans-serif;font-weight:700;font-size:clamp(1.75rem,6.4vw,2.6rem);line-height:1.05;letter-spacing:-.026em;margin:1.7rem 0 .6rem;text-wrap:balance}
+.lede{color:var(--muted);font-size:1.02rem;max-width:var(--measure)}
+.lede strong{color:var(--ink);font-weight:500}
+h2{font-family:"Archivo",system-ui,sans-serif;font-weight:600;font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);margin:0 0 .9rem}
+
+.deck{display:grid;grid-template-columns:minmax(0,1fr) 22rem;gap:1.6rem;align-items:start;margin-top:1.8rem}
+@media (max-width:860px){.deck{grid-template-columns:minmax(0,1fr)}}
+
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:1.1rem}
+.desk{min-height:22rem;display:flex;flex-direction:column;gap:.9rem}
+.log{display:flex;flex-direction:column;gap:.75rem;max-height:26rem;overflow-y:auto;overscroll-behavior:contain}
+.bub{max-width:90%;padding:.6rem .8rem;border-radius:11px;font-size:.98rem;line-height:1.5}
+.bub.tex{background:var(--panel-2);border:1px solid var(--rule);align-self:flex-start}
+.bub.you{background:var(--pulse-dim);border:1px solid var(--rule-bright);align-self:flex-end;text-align:right}
+.bub b{display:block;font-family:"Archivo",system-ui,sans-serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:.2rem;font-weight:600}
+.bub.you b{color:var(--pulse)}
+
+.composer{display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch}
+input[type=text],input[type=email],input[type=number],textarea,select{flex:1 1 12rem;min-width:0;font-family:"Archivo",system-ui,sans-serif;font-size:1rem;color:var(--ink);background:var(--panel-2);border:1px solid var(--rule-bright);border-radius:9px;padding:12px;line-height:1.4}
+textarea{min-height:4.5rem;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--pulse);outline-offset:1px}
+.btn{font-family:"Archivo",system-ui,sans-serif;font-size:.9rem;font-weight:600;color:var(--ink);background:var(--panel-2);border:1px solid var(--rule-bright);border-radius:9px;padding:12px 16px;cursor:pointer;min-height:46px}
+.btn:hover{border-color:var(--pulse)}
+.btn.go{background:var(--pulse);border-color:var(--pulse);color:#04142c}
+.btn.go:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:"Archivo",system-ui,sans-serif;font-size:.88rem;font-weight:600;color:var(--ink);background:var(--panel-2);border:1px solid var(--rule-bright);border-radius:100px;padding:10px 15px;cursor:pointer;min-height:44px}
+.chip:hover{border-color:var(--pulse)}
+.chip[aria-pressed=true]{background:var(--pulse);border-color:var(--pulse);color:#04142c}
+
+.mic{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.micnote{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.68rem;color:var(--faint)}
+.micnote.warn{color:var(--wait)}
+
+/* quote */
+.qline{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;padding:.5rem 0;border-top:1px solid var(--rule)}
+.qline:first-of-type{border-top:0}
+.qname{font-size:.9rem;color:var(--ink);min-width:0}
+.qname small{display:block;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.06em;color:var(--faint);text-transform:uppercase;margin-top:2px}
+.qamt{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.92rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.qamt.inc{color:var(--live)}
+.qtot{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--rule-bright)}
+.qtot span{font-family:"Archivo",system-ui,sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.qtot b{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.split{display:flex;gap:.5rem;margin-top:.6rem}
+.split div{flex:1;background:var(--panel-2);border:1px solid var(--rule);border-radius:8px;padding:.5rem .6rem}
+.split span{display:block;font-family:"Archivo",system-ui,sans-serif;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.split b{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.95rem;font-variant-numeric:tabular-nums}
+.note{font-size:.84rem;color:var(--muted);line-height:1.45;margin:.7rem 0 0}
+.note.tight{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.66rem;color:var(--faint);letter-spacing:.04em;line-height:1.5}
+
+/* summary */
+.sum{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:11px;overflow:hidden;margin-top:.6rem}
+.srow{background:var(--panel);padding:.6rem .8rem;display:grid;grid-template-columns:8.5rem minmax(0,1fr) auto;gap:.6rem;align-items:baseline}
+@media (max-width:520px){.srow{grid-template-columns:minmax(0,1fr) auto}.srow dt{grid-column:1/-1}}
+.srow dt{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);margin:0}
+.srow dd{margin:0;font-size:.95rem;overflow-wrap:anywhere}
+.srow dd.empty{color:var(--dim)}
+.edit{font-family:"Archivo",system-ui,sans-serif;font-size:.72rem;font-weight:600;color:var(--pulse);background:none;border:0;cursor:pointer;padding:4px 6px;min-height:32px}
+.edit:hover{text-decoration:underline}
+
+.state{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.st{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.6rem;letter-spacing:.08em;padding:4px 7px;border-radius:5px;background:var(--panel-2);color:var(--dim);border:1px solid var(--rule)}
+.st.on{background:var(--pulse-dim);color:var(--pulse);border-color:var(--rule-bright)}
+.st.done{color:var(--live);border-color:rgba(47,191,163,.4)}
+
+.banner{border-radius:10px;padding:.8rem 1rem;margin-top:1rem;font-size:.92rem;line-height:1.5;border:1px solid}
+.banner.ok{background:rgba(47,191,163,.1);border-color:rgba(47,191,163,.45)}
+.banner.bad{background:rgba(255,123,123,.1);border-color:rgba(255,123,123,.45)}
+.banner b{font-family:"Archivo",system-ui,sans-serif;display:block;margin-bottom:.2rem}
+.foot{margin-top:2.4rem;padding-top:1.1rem;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;justify-content:space-between}
+.foot p{margin:0;font-size:.82rem;color:var(--faint);max-width:44rem}
+.foot nav{display:flex;gap:1rem;font-size:.82rem}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <a class="brand" href="/">Law Firm Marketing Apes</a>
+    <span class="step-of" id="progress">STEP 1 / 16</span>
+  </header>
+
+  <h1>What cases does your firm want?</h1>
+  <p class="lede">Tex is the <strong>AI campaign desk</strong>. Answer his questions and he builds a structured campaign request with pricing you can see and edit. <strong>Nothing is charged and nothing runs</strong> until you review it and a human authorizes launch.</p>
+
+  <div class="deck">
+
+    <main class="card desk" aria-label="Campaign desk">
+      <h2>Talk to Tex</h2>
+      <div class="log" id="log" role="log" aria-live="polite" aria-atomic="false"></div>
+
+      <div id="answer">
+        <div class="chips" id="chips" hidden></div>
+        <form class="composer" id="composer" autocomplete="on">
+          <label class="sr" for="line" id="lineLabel">Your answer</label>
+          <input type="text" id="line" name="line" autocomplete="off" enterkeyhint="send">
+          <button class="btn go" type="submit" id="send">Send</button>
+          <button class="btn ghost" type="button" id="skip" hidden>Skip</button>
+        </form>
+        <div class="mic">
+          <button class="btn ghost" type="button" id="talk" hidden>🎙 Talk instead</button>
+          <span class="micnote" id="micnote"></span>
+        </div>
+      </div>
+
+      <div id="done" hidden>
+        <div class="banner ok" id="doneBanner">
+          <b>Campaign request ready</b>
+          Review the summary, edit anything, then submit. Submitting sends the brief for human review. It is not a payment and it does not start ads.
+        </div>
+        <div class="composer" style="margin-top:.9rem">
+          <button class="btn go" type="button" id="submitReq">Submit campaign request</button>
+          <button class="btn ghost" type="button" id="restart">Start over</button>
+        </div>
+      </div>
+    </main>
+
+    <aside style="display:grid;gap:1.1rem">
+      <section class="card" aria-label="Pricing">
+        <h2>Transparent pricing</h2>
+        <div id="quote"><p class="note" id="quoteEmpty">Pick a case type and Tex will price it here, line by line.</p></div>
+        <p class="note tight" id="mediaNote" hidden>Media is collected as a media liability and spent on the ad platforms. It is not agency income.</p>
+      </section>
+
+      <section class="card" aria-label="Order state">
+        <h2>Where this sits</h2>
+        <div class="state" id="states"></div>
+        <p class="note tight">Payment funds a campaign. It does not authorize launch. Setup, QA and a human authorization still apply.</p>
+      </section>
+    </aside>
+  </div>
+
+  <section style="margin-top:1.8rem">
+    <h2>Your campaign request</h2>
+    <dl class="sum" id="summary"></dl>
+  </section>
+
+  <div id="result"></div>
+
+  <footer class="foot">
+    <p>Tex gathers requirements and prices published packages. He does not give legal advice, quote case volumes, or promise results. Pricing shown is for the build and the media budget you choose.</p>
+    <nav><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/">Home</a></nav>
+  </footer>
+</div>
+
+<script type="module">
+import { priceCampaign, PRODUCTS, usd, SOFIA_CENTS } from '../assets/lfma-pricing.mjs';
+import { STATES, STATE_NOTE, canSubmit, idempotencyKey, createSubmissionGuard, toInvoiceDraft } from '../assets/lfma-order-state.mjs';
+
+const $ = id => document.getElementById(id);
+const STORE = 'lfma-request-v1';
+let guard = createSubmissionGuard();
+
+const STEPS = [
+  {k:'firm',    q:"Let's start simple. What's the firm called?", ph:'Firm name'},
+  {k:'contact', q:'And who am I speaking with?', ph:'Your name'},
+  {k:'email',   q:'Best email for the brief?', ph:'you@firm.com', type:'email'},
+  {k:'product', q:'What kind of case work do you want?', chips:[
+      {v:'tort', l:'Mass tort'}, {v:'mva', l:'MVA / personal injury'}]},
+  {k:'tort',    q:'Which case type specifically? Name the tort or the injury category.', ph:'e.g. talc, depo-provera, rideshare assault'},
+  {k:'geo',     q:'Where do you want these cases from?', ph:'States, metros or ZIP areas'},
+  {k:'markets', q:'How many 30-mile ZIP markets should we run? Each market is priced separately.', type:'number', only:'mva', min:1, max:25},
+  {k:'criteria',q:'What makes a case a yes for you?', ph:'Qualification criteria', long:true},
+  {k:'reject',  q:'And what makes it an automatic no?', ph:'Rejection criteria', long:true},
+  {k:'outcome', q:'What outcome are you measuring? Signed cases, retainers, something else?', ph:'Desired outcome'},
+  {k:'capacity',q:'How many new intakes a week can your team actually handle?', ph:'e.g. 20 a week'},
+  {k:'channel', q:'Any channel preference? If you are not sure, say no preference and we will recommend.', chips:[
+      {v:'No preference', l:'No preference'}, {v:'Search', l:'Search'}, {v:'Social', l:'Social'}, {v:'Both', l:'Both'}]},
+  {k:'timing',  q:'When do you want this live?', ph:'e.g. within two weeks'},
+  {k:'crm',     q:'Where should leads land? Name your intake system or CRM.', ph:'e.g. Litify, Filevine, our intake line'},
+  {k:'feedback',q:'Can you tell us later which leads actually signed? That is what lets the system learn.', chips:[
+      {v:'Yes', l:'Yes, we can report signings'}, {v:'Not yet', l:'Not yet'}]},
+  {k:'first',   q:'Is this your first campaign with us? Sofia, the AI intake desk, is included at no charge on a first campaign.', chips:[
+      {v:'yes', l:'Yes, first campaign'}, {v:'no', l:'No, we have run before'}]}
+];
+const OPTIONAL = new Set(['criteria','reject','outcome','capacity','timing','crm']);
+const LABEL = {firm:'Firm',contact:'Contact',email:'Email',product:'Case work',tort:'Case type',geo:'Geography',
+  markets:'Markets',criteria:'Qualifies',reject:'Rejects',outcome:'Outcome',capacity:'Intake capacity',
+  channel:'Channel',timing:'Timing',crm:'Leads land in',feedback:'Outcome feedback',first:'First campaign'};
+
+let data = {}, idx = 0, state = 'DRAFT', submitted = false;
+
+/* ---------- persistence (sessionStorage only; never the URL) ---------- */
+function save(){ try{ sessionStorage.setItem(STORE, JSON.stringify({data, idx, state, keys:[...guard.seen]})); }catch{} }
+function load(){
+  try{
+    const raw = sessionStorage.getItem(STORE); if(!raw) return false;
+    const p = JSON.parse(raw);
+    if(!p || typeof p !== 'object') return false;
+    data = p.data && typeof p.data === 'object' ? p.data : {};
+    idx = Number.isInteger(p.idx) ? Math.min(Math.max(p.idx,0), STEPS.length) : 0;
+    state = STATES.includes(p.state) ? p.state : 'DRAFT';
+    submitted = state !== 'DRAFT';
+    if (Array.isArray(p.keys)) guard = createSubmissionGuard(new Set(p.keys.filter(k => typeof k === 'string')));
+    return true;
+  }catch{ return false; }
+}
+
+/* ---------- step flow ---------- */
+function applies(s){ return !s.only || data.product === s.only; }
+function steps(){ return STEPS.filter(applies); }
+function current(){ const list = steps(); return idx < list.length ? list[idx] : null; }
+
+function say(who, text){
+  const el = document.createElement('div');
+  el.className = 'bub ' + (who === 'tex' ? 'tex' : 'you');
+  const b = document.createElement('b'); b.textContent = who === 'tex' ? 'Tex' : 'You';
+  el.append(b, document.createTextNode(text));
+  $('log').append(el);
+  $('log').scrollTop = $('log').scrollHeight;
+}
+
+function render(){
+  const list = steps(), s = current();
+  $('progress').textContent = s ? `STEP ${idx+1} / ${list.length}` : `${list.length} / ${list.length} COMPLETE`;
+  $('answer').hidden = !s;
+  $('done').hidden = !!s;
+  if(s){
+    $('chips').hidden = !s.chips;
+    $('chips').textContent = '';
+    if(s.chips){
+      for(const c of s.chips){
+        const b = document.createElement('button');
+        b.type='button'; b.className='chip'; b.textContent=c.l;
+        b.setAttribute('aria-pressed', String(data[s.k] === c.v));
+        b.addEventListener('click', ()=>answer(c.v, c.l));
+        $('chips').append(b);
+      }
+    }
+    const inp = $('line');
+    inp.hidden = !!s.chips;
+    $('send').hidden = !!s.chips;
+    $('skip').hidden = !OPTIONAL.has(s.k);
+    if(!s.chips){
+      inp.type = s.type === 'number' ? 'number' : (s.type || 'text');
+      if(s.type === 'number'){ inp.min = s.min; inp.max = s.max; }
+      inp.placeholder = s.ph || '';
+      inp.value = data[s.k] ?? '';
+      $('lineLabel').textContent = s.q;
+    }
+  }
+  paintQuote(); paintSummary(); paintStates();
+  save();
+}
+
+function ask(){ const s = current(); if(s) say('tex', s.q); }
+
+function answer(raw, shown){
+  const s = current(); if(!s) return;
+  let v = String(raw ?? '').trim();
+  if(s.type === 'number'){
+    const n = Number(v);
+    if(!Number.isInteger(n) || n < s.min || n > s.max){
+      say('tex', `That needs to be a whole number between ${s.min} and ${s.max}. Larger footprints we quote directly.`);
+      return;
+    }
+    v = String(n);
+  }
+  if(!v && !OPTIONAL.has(s.k)){ say('tex', 'I need that one to build the brief.'); return; }
+  if(s.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
+    say('tex', 'That email does not look right — mind checking it?'); return;
+  }
+  data[s.k] = v;
+  say('you', shown || v || '(skipped)');
+  if(s.k === 'product'){ delete data.markets; }
+  idx++;
+  const next = current();
+  render();
+  if(next) ask();
+  else finish();
+  $('line').value = '';
+  if(next && !next.chips) $('line').focus();
+}
+
+function finish(){
+  // Only a brand-new run is a DRAFT. A reload of an already-submitted request
+  // must keep its state, or the duplicate guard is bypassed.
+  if (!STATES.includes(state)) state = 'DRAFT';
+  say('tex', submitted || state !== 'DRAFT'
+    ? 'This request is already in for review. Edit anything and it becomes a new request.'
+    : "That's everything I need. Your request and pricing are on the right — edit anything, then submit it for review.");
+  render();
+}
+
+/* ---------- quote ---------- */
+function quote(){
+  if(!data.product) return null;
+  const markets = data.product === 'mva' ? Number(data.markets || 1) : 1;
+  if(!Number.isInteger(markets) || markets < 1) return null;
+  try{ return priceCampaign({ product:data.product, markets, sofia:true, firstCampaign: data.first !== 'no' }); }
+  catch{ return null; }
+}
+function paintQuote(){
+  const q = quote(), host = $('quote');
+  $('mediaNote').hidden = !q;
+  if(!q){ host.innerHTML = '<p class="note" id="quoteEmpty">Pick a case type and Tex will price it here, line by line.</p>'; return; }
+  host.textContent = '';
+  for(const l of q.lines){
+    const row = document.createElement('div'); row.className = 'qline';
+    const n = document.createElement('div'); n.className='qname';
+    n.append(document.createTextNode(l.label));
+    const small = document.createElement('small'); small.textContent = l.code + (l.liability ? ' · liability' : '');
+    n.append(small);
+    const a = document.createElement('div'); a.className='qamt' + (l.included ? ' inc':'');
+    a.textContent = l.included ? 'Included' : usd(l.amountCents);
+    row.append(n,a); host.append(row);
+  }
+  const tot = document.createElement('div'); tot.className='qtot';
+  const ts = document.createElement('span'); ts.textContent='Total';
+  const tb = document.createElement('b'); tb.textContent=q.total;
+  tot.append(ts,tb); host.append(tot);
+  const split = document.createElement('div'); split.className='split';
+  for(const [lab,val] of [['LFMA fees',q.fees],['Media budget',q.media]]){
+    const d = document.createElement('div');
+    const s = document.createElement('span'); s.textContent=lab;
+    const b = document.createElement('b'); b.textContent=val;
+    d.append(s,b); split.append(d);
+  }
+  host.append(split);
+}
+
+/* ---------- summary ---------- */
+function paintSummary(){
+  const host = $('summary'); host.textContent='';
+  for(const s of steps()){
+    if(!(s.k in data)) continue;
+    const row = document.createElement('div'); row.className='srow';
+    const dt = document.createElement('dt'); dt.textContent = LABEL[s.k] || s.k;
+    const dd = document.createElement('dd');
+    const shown = s.k==='product' ? (PRODUCTS[data[s.k]]?.label ?? data[s.k]) : data[s.k];
+    if(shown){ dd.textContent = shown; } else { dd.textContent='Not provided'; dd.className='empty'; }
+    const btn = document.createElement('button');
+    btn.type='button'; btn.className='edit'; btn.textContent='Edit';
+    btn.setAttribute('aria-label', `Edit ${LABEL[s.k]||s.k}`);
+    btn.addEventListener('click', ()=>{
+      idx = steps().findIndex(x=>x.k===s.k);
+      submitted=false; state='DRAFT'; $('result').textContent='';
+      render(); ask();
+      if(!current().chips) $('line').focus();
+    });
+    row.append(dt,dd,btn); host.append(row);
+  }
+  if(!host.children.length){
+    const p = document.createElement('p'); p.className='note';
+    p.textContent='Your answers appear here as you go. Everything stays editable.';
+    host.append(p);
+  }
+}
+
+/* ---------- states ---------- */
+function paintStates(){
+  const host = $('states'); host.textContent='';
+  const order = ['DRAFT','REQUESTED','PRICED','INVOICE_CREATED','PAID','SETUP_REQUIRED','QA','AUTHORIZED','LIVE'];
+  const at = order.indexOf(state);
+  order.forEach((s,i)=>{
+    const el = document.createElement('span');
+    el.className = 'st' + (i===at ? ' on' : i<at ? ' done' : '');
+    el.textContent = s.replace(/_/g,' ');
+    el.title = STATE_NOTE[s] || '';
+    host.append(el);
+  });
+}
+
+/* ---------- submit ---------- */
+$('submitReq').addEventListener('click', ()=>{
+  const q = quote();
+  const missing = steps().filter(s=>!OPTIONAL.has(s.k) && !String(data[s.k]??'').trim()).map(s=>LABEL[s.k]);
+  const out = $('result'); out.textContent='';
+  if(missing.length || !q){
+    out.append(banner('bad','Not ready to submit', 'Still needed: ' + (missing.join(', ') || 'a priced campaign') + '.'));
+    return;
+  }
+  if(!canSubmit(state)){
+    out.append(banner('bad','Already submitted','This request is in for review. Edit a field if you meant to change it.'));
+    return;
+  }
+  const key = idempotencyKey({firm:data.firm, email:data.email, product:q.product, markets:q.markets, total:q.totalCents});
+  if(!guard.claim(key)){
+    out.append(banner('bad','Already submitted','We have this exact request. Edit something if you meant to send a change.'));
+    return;
+  }
+  let draft;
+  try{
+    draft = toInvoiceDraft({
+      quote:q,
+      customer:{firm:data.firm, contact:data.contact, email:data.email},
+      campaign:{caseType:data.tort, geography:data.geo, markets:q.markets, qualifies:data.criteria,
+                rejects:data.reject, outcome:data.outcome, capacity:data.capacity, channel:data.channel,
+                timing:data.timing, intakeDestination:data.crm, outcomeFeedback:data.feedback},
+      nowIso: new Date().toISOString(), key
+    });
+  }catch(err){
+    out.append(banner('bad','Could not prepare the request', err.message || 'Please check your answers.'));
+    return;
+  }
+  state = 'REQUESTED';
+  submitted = true;
+  save(); paintStates();
+  say('tex','Request logged. Kyle reviews it and comes back with scope and an invoice. Nothing is charged yet.');
+  const b = banner('ok','Request ready for review',
+    `Reference ${draft.idempotencyKey}. Total ${usd(draft.totalCents)} — ${usd(draft.feesCents)} LFMA fees and ${usd(draft.mediaCents)} media budget. ` +
+    'This is an acknowledgement, not a payment, and it does not start ads.');
+  const pre = document.createElement('details');
+  const sm = document.createElement('summary'); sm.textContent='View the structured request'; sm.className='edit';
+  const code = document.createElement('pre');
+  code.style.cssText='overflow-x:auto;font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--muted);background:var(--panel);border:1px solid var(--rule);border-radius:9px;padding:.8rem;margin-top:.6rem';
+  code.textContent = JSON.stringify(draft, null, 2);
+  pre.append(sm, code);
+  b.append(pre);
+  out.append(b);
+  render();
+});
+
+function banner(kind, title, body){
+  const d = document.createElement('div'); d.className='banner '+kind;
+  const b = document.createElement('b'); b.textContent=title;
+  d.append(b, document.createTextNode(body));
+  return d;
+}
+
+$('restart').addEventListener('click', ()=>{
+  data={}; idx=0; state='DRAFT'; submitted=false;
+  try{ sessionStorage.removeItem(STORE); }catch{}
+  $('log').textContent=''; $('result').textContent='';
+  render(); ask();
+});
+
+$('composer').addEventListener('submit', e=>{ e.preventDefault(); answer($('line').value); });
+$('skip').addEventListener('click', ()=>answer(''));
+
+/* ---------- browser-native speech. No provider, no credential. ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if(SR){
+  $('talk').hidden = false;
+  $('micnote').textContent = 'or type — always available';
+  let rec = null, live = false;
+  $('talk').addEventListener('click', ()=>{
+    const s = current();
+    if(!s || s.chips){ $('micnote').textContent = 'Pick one of the options above.'; return; }
+    if(live && rec){ rec.stop(); return; }
+    try{
+      rec = new SR();
+      rec.lang = 'en-US'; rec.interimResults = false; rec.maxAlternatives = 1;
+      rec.onstart = ()=>{ live=true; $('talk').textContent='■ Stop'; $('micnote').className='micnote'; $('micnote').textContent='Listening…'; };
+      rec.onresult = e => { $('line').value = e.results[0][0].transcript; };
+      rec.onerror = e => {
+        live=false; $('talk').textContent='🎙 Talk instead';
+        $('micnote').className='micnote warn';
+        $('micnote').textContent = e.error === 'not-allowed' || e.error === 'service-not-allowed'
+          ? 'Microphone blocked — type your answer instead.'
+          : 'Voice did not work — type your answer instead.';
+      };
+      rec.onend = ()=>{ live=false; $('talk').textContent='🎙 Talk instead';
+        if($('micnote').className!=='micnote warn') $('micnote').textContent='or type — always available';
+        if($('line').value.trim()) $('line').focus(); };
+      rec.start();
+    }catch{
+      $('micnote').className='micnote warn';
+      $('micnote').textContent='Voice is unavailable here — type your answer instead.';
+    }
+  });
+} else {
+  $('micnote').textContent = 'Type your answers — voice input is not available in this browser.';
+}
+
+/* ---------- boot ---------- */
+if(load() && Object.keys(data).length){
+  say('tex', 'Picking up where we left off.');
+  for(const s of steps()){ if(s.k in data) say('you', s.k==='product' ? (PRODUCTS[data[s.k]]?.label ?? data[s.k]) : (data[s.k] || '(skipped)')); }
+  render();
+  if(current()) ask(); else finish();
+} else {
+  say('tex', "I'm Tex, the campaign desk. Tell me what cases your firm wants and I'll build the request and price it. I don't give legal advice and I don't promise case volumes.");
+  render(); ask();
+}
+</script>
+</body>
+</html>
