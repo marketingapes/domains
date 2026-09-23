@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="t d">
+<title id="t">Coin on a conveyor loop</title>
+<desc id="d">A dollar coin riding a looping conveyor belt past a warehouse, an invoice mailbox and a supplier truck.</desc>
+<rect width="1200" height="675" fill="#e2f2fa"/>
+
+<g transform="translate(1050 110) scale(0.8)"><path d="M-80 20 Q-80 -20 -40 -20 Q-30 -60 10 -55 Q50 -70 60 -25 Q100 -25 95 20 Z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M0 590 Q300.0 572 600.0 590 T1200 590 V675 H0Z" fill="#d9f2e8" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="170" y="170" width="860" height="330" rx="165" fill="none" stroke="#16202e" stroke-width="40"/>
+<rect x="170" y="170" width="860" height="330" rx="165" fill="none" stroke="#d4a72c" stroke-width="26" stroke-dasharray="30 18"/>
+<!-- warehouse -->
+<path d="M230 130 L320 80 L410 130 V240 H230Z" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="290" y="170" width="60" height="70" fill="#faf7ef" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<!-- mailbox -->
+<rect x="780" y="80" width="140" height="90" rx="40" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="840" y="170" width="20" height="70" fill="#16202e"/>
+<g transform="translate(810 50) rotate(-12)"><path d="M0 0 H36 L60 24 V70 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M36 0 V24 H60" fill="none" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="14" width="24" height="12" rx="4" fill="#d4a72c"/></g>
+<!-- truck -->
+<g transform="translate(440 600) scale(0.65)">
+<path d="M0 -150 H230 V-10 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M230 -110 H300 L340 -60 V-10 H230Z" fill="#2f9e78" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M245 -98 H292 L322 -62 H245Z" fill="#e2f2fa" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="115" y="-70" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#16202e">SUPPLIER</text>
+<circle cx="70" cy="-8" r="30" fill="#16202e"/><circle cx="70" cy="-8" r="12" fill="#ccc"/>
+<circle cx="280" cy="-8" r="30" fill="#16202e"/><circle cx="280" cy="-8" r="12" fill="#ccc"/>
+</g>
+<g transform="translate(600 170)"><circle r="40" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="27.2" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="14.4" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="42" fill="#16202e">$</text></g><g transform="translate(1030 340)"><circle r="30" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="20.4" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="10.8" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#16202e">$</text></g><g transform="translate(170 340)"><circle r="30" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="20.4" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="10.8" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#16202e">$</text></g>
+<path d="M640 150 l30 20 -30 20" fill="none" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="600" y="355" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="46" fill="#16202e">DIO + DSO − DPO</text>
+
+</svg>

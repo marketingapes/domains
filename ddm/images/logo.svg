@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t">
+<title id="t">Discount Deal Me logo</title>
+<g transform="rotate(-18 32 32)"><path d="M4 32 L18 14 H54 Q60 14 60 20 V44 Q60 50 54 50 H18 Z" fill="#f4511e" stroke="#22223b" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="19" cy="32" r="4.5" fill="#fff7ea" stroke="#22223b" stroke-width="3"/>
+<circle cx="34" cy="28" r="3.2" fill="#22223b"/><circle cx="46" cy="28" r="3.2" fill="#22223b"/>
+<path d="M33 37 Q40 43 47 37" stroke="#22223b" stroke-width="3.2" fill="none" stroke-linecap="round"/></g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="t d">
+<title id="t">Plant outgrowing its watering can</title>
+<desc id="d">A little sprouting plant drinking from a watering can labelled cash, growing faster than the can can be refilled.</desc>
+<rect width="1200" height="675" fill="#e2f2fa"/>
+
+<g transform="translate(200 110) scale(1)"><path d="M-80 20 Q-80 -20 -40 -20 Q-30 -60 10 -55 Q50 -70 60 -25 Q100 -25 95 20 Z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><path transform="translate(1090 90) scale(1)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#d4a72c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 590 Q300.0 572 600.0 590 T1200 590 V675 H0Z" fill="#d9f2e8" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M760 590 Q740 380 780 120" fill="none" stroke="#2f9e78" stroke-width="18" stroke-linecap="round"/>
+<path d="M770 540 Q860 510 870 560 Q820 565 770 540Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M770 470 Q700 440 690 490 Q740 495 770 470Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M770 400 Q860 370 870 420 Q820 425 770 400Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M770 330 Q700 300 690 350 Q740 355 770 330Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M770 260 Q860 230 870 280 Q820 285 770 260Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M770 190 Q700 160 690 210 Q740 215 770 190Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="780" cy="110" r="36" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><text x="780" y="124" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="38" fill="#16202e">$</text>
+<path d="M700 590 H860 L840 660 H720Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<!-- watering can -->
+<g transform="translate(300 420) rotate(-18)">
+<rect x="0" y="0" width="200" height="150" rx="24" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 40 L330 -30 L345 -10 L210 80" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M30 0 Q100 -80 170 0" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="12"/>
+<text x="100" y="95" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="40" fill="#16202e">CASH</text>
+</g>
+<path d="M620 300 q6 14 0 22 q-6 -8 0 -22z" fill="#8ecae6" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M642 314 q6 14 0 22 q-6 -8 0 -22z" fill="#8ecae6" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M664 328 q6 14 0 22 q-6 -8 0 -22z" fill="#8ecae6" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M686 342 q6 14 0 22 q-6 -8 0 -22z" fill="#8ecae6" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<g transform="translate(220 650) scale(0.6)">
+<rect x="-30" y="-80" width="24" height="80" rx="10" fill="#16202e"/><rect x="6" y="-80" width="24" height="80" rx="10" fill="#16202e"/>
+<ellipse cx="-20" cy="-2" rx="22" ry="9" fill="#16202e"/><ellipse cx="20" cy="-2" rx="22" ry="9" fill="#16202e"/>
+<g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/></g><g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/></g>
+<rect x="-46" y="-175" width="92" height="105" rx="30" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-230" r="40" fill="#f2c7a5" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-36 -250 Q-38 -292 0 -294 Q38 -292 36 -250 Q20 -270 -36 -250Z" fill="#c46a2f"/>
+<circle cx="-14" cy="-232" r="5" fill="#16202e"/><circle cx="14" cy="-232" r="5" fill="#16202e"/>
+<circle cx="-24" cy="-218" r="6" fill="#e8604c" opacity=".45"/><circle cx="24" cy="-218" r="6" fill="#e8604c" opacity=".45"/>
+<circle cx="0" cy="-214" r="6" fill="#16202e"/>
+</g>
+
+</svg>

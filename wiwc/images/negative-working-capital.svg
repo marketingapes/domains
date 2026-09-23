@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="t d">
+<title id="t">Café counter and supplier van</title>
+<desc id="d">A café counter where customers hand over coins while a supplier van waits outside with a long receipt.</desc>
+<rect width="1200" height="675" fill="#e2f2fa"/>
+
+<path transform="translate(1100 90) scale(0.9)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#d4a72c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="0" y="560" width="1200" height="115" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="80" y="120" width="620" height="440" fill="#faf7ef" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M60 120 H720 L690 60 H90Z" fill="#2f9e78" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="390" y="105" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#fff">CAFÉ</text>
+<rect x="120" y="400" width="540" height="160" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M200 360 h60 v40 h-60z M460 360 h60 v40 h-60z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M270 370 q20 0 20 15 q0 15 -20 15" fill="none" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M210 340 q10 -20 0 -40 M240 340 q10 -20 0 -40" fill="none" stroke="#16202e" stroke-width="4" opacity=".4"/>
+<g transform="translate(560 400) scale(0.7)">
+<rect x="-30" y="-80" width="24" height="80" rx="10" fill="#16202e"/><rect x="6" y="-80" width="24" height="80" rx="10" fill="#16202e"/>
+<ellipse cx="-20" cy="-2" rx="22" ry="9" fill="#16202e"/><ellipse cx="20" cy="-2" rx="22" ry="9" fill="#16202e"/>
+<g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/></g><g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#7a4b33" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#7a4b33" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/></g>
+<rect x="-46" y="-175" width="92" height="105" rx="30" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-230" r="40" fill="#7a4b33" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-38 -254 Q-36 -294 0 -294 Q36 -294 38 -254Z" fill="#e8604c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path d="M20 -256 H66" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/>
+<circle cx="-14" cy="-232" r="5" fill="#16202e"/><circle cx="14" cy="-232" r="5" fill="#16202e"/>
+<circle cx="-24" cy="-218" r="6" fill="#e8604c" opacity=".45"/><circle cx="24" cy="-218" r="6" fill="#e8604c" opacity=".45"/>
+<path d="M-12 -218 Q0 -206 12 -218" fill="none" stroke="#16202e" stroke-width="4" stroke-linecap="round"/>
+</g>
+<g transform="translate(770 640) scale(0.8)">
+<rect x="-30" y="-80" width="24" height="80" rx="10" fill="#16202e"/><rect x="6" y="-80" width="24" height="80" rx="10" fill="#16202e"/>
+<ellipse cx="-20" cy="-2" rx="22" ry="9" fill="#16202e"/><ellipse cx="20" cy="-2" rx="22" ry="9" fill="#16202e"/>
+<g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/></g><g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/></g>
+<rect x="-46" y="-175" width="92" height="105" rx="30" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-230" r="40" fill="#f2c7a5" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-40 -200 Q-46 -294 0 -294 Q46 -294 40 -200 L30 -200 Q34 -262 0 -266 Q-34 -262 -30 -200Z" fill="#c46a2f"/>
+<circle cx="-14" cy="-232" r="5" fill="#16202e"/><circle cx="14" cy="-232" r="5" fill="#16202e"/>
+<circle cx="-24" cy="-218" r="6" fill="#e8604c" opacity=".45"/><circle cx="24" cy="-218" r="6" fill="#e8604c" opacity=".45"/>
+<path d="M-12 -218 Q0 -206 12 -218" fill="none" stroke="#16202e" stroke-width="4" stroke-linecap="round"/>
+</g>
+<g transform="translate(720 360)"><circle r="24" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="16.3" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="8.6" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="25" fill="#16202e">$</text></g><g transform="translate(680 330)"><circle r="20" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="13.6" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="7.2" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="21" fill="#16202e">$</text></g>
+<g transform="translate(880 560) scale(0.75)">
+<path d="M0 -150 H230 V-10 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M230 -110 H300 L340 -60 V-10 H230Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M245 -98 H292 L322 -62 H245Z" fill="#e2f2fa" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="115" y="-70" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#16202e"></text>
+<circle cx="70" cy="-8" r="30" fill="#16202e"/><circle cx="70" cy="-8" r="12" fill="#ccc"/>
+<circle cx="280" cy="-8" r="30" fill="#16202e"/><circle cx="280" cy="-8" r="12" fill="#ccc"/>
+</g>
+<path d="M960 400 v-120 h90 v120" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<g><line x1="975" y1="300" x2="1035" y2="300" stroke="#16202e" stroke-width="4" opacity=".4"/><line x1="975" y1="318" x2="1035" y2="318" stroke="#16202e" stroke-width="4" opacity=".4"/><line x1="975" y1="336" x2="1035" y2="336" stroke="#16202e" stroke-width="4" opacity=".4"/><line x1="975" y1="354" x2="1035" y2="354" stroke="#16202e" stroke-width="4" opacity=".4"/><line x1="975" y1="372" x2="1035" y2="372" stroke="#16202e" stroke-width="4" opacity=".4"/></g>
+<text x="1005" y="270" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#16202e">due in 30</text>
+
+</svg>

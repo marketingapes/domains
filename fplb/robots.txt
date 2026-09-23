@@ -1,9 +1,12 @@
 User-agent: *
+Allow: /
 Allow: /ads.txt
-Allow: /preview/
-Allow: /pet-shopping-checklist/
 Allow: /offers/
 Allow: /guides/pet-portrait-selection/
-Disallow: /
+Allow: /pet-shopping-checklist/
+Disallow: /preview/
+
+User-agent: Mediapartners-Google
+Allow: /
 
 Sitemap: https://forpetslikeblue.com/sitemap.xml
