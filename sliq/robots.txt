@@ -1,8 +1,4 @@
 User-agent: *
-Allow: /
-Disallow: /preview/
-
-User-agent: Mediapartners-Google
-Allow: /
-
-Sitemap: https://smartlifeinsurancequote.com/sitemap.xml
+Allow: /ads.txt
+Allow: /preview/
+Disallow: /

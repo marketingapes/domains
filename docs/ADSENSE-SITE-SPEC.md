@@ -10,6 +10,8 @@ Enforced by `tests/adsense-sites.test.mjs`.
 
 ## Brands in scope
 
+**Held (built, not launched, owner decision 2026-09-23):** `tnt`, `sliq` — work is on branch `claude/adsense-tnt-sliq-held`.
+
 | slug | hostname | voice / angle | contact email |
 |---|---|---|---|
 | cgg | crazygolfgame.com | mini golf & fun golf: party games, backyard courses, trick shots, course design, gear for casual golfers | info@crazygolfgame.com |

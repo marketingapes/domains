@@ -8,11 +8,12 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const PUB = 'ca-pub-5194583669093303';
 const ADS_LINE = /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/;
 const HOSTS = {
-  cgg: 'crazygolfgame.com', tnt: 'tonedntasty.com', wiwc: 'whatisworkingcapital.com',
+  cgg: 'crazygolfgame.com', wiwc: 'whatisworkingcapital.com',
   fplb: 'forpetslikeblue.com', px: 'pillowexchange.com', ddm: 'discountdealme.com',
-  toss: 'tosssports.com', sliq: 'smartlifeinsurancequote.com', ri: 'researchinvestigation.com',
+  toss: 'tosssports.com', ri: 'researchinvestigation.com',
   tbrew: 'tossedbrew.com', h2m: 'hair2makeup.com', tnd: 'thenearestdentists.com',
 };
+// tnt and sliq are built but held by the owner (branch claude/adsense-tnt-sliq-held).
 const LEGAL = ['btl', 'dihac', 'nil', 'lfma', 'lee'];
 const BANNED = /we tested|hands-on test|our testing|our lab|example\.com|coming soon|website preview/i;
 // Allow selecting a subset while a brand is being built: ADSENSE_BRANDS=cgg,tnt

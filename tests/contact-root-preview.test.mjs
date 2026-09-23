@@ -4,7 +4,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const BRANDS = ['ddm','fplb','px','cgg','toss','ri','sliq'];
+const BRANDS = ['ddm','fplb','px','cgg','toss','ri'];
+// sliq still serves its preview root until the owner launches it.
+const PREVIEW_ROOT = ['sliq'];
+
+for (const slug of PREVIEW_ROOT) {
+  test(`${slug} root still sends visitors to preview`, () => {
+    const html = fs.readFileSync(path.join(ROOT, slug, 'index.html'), 'utf8');
+    assert.match(html, /\/preview\//);
+    const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
+    assert.match(redir, /\/preview\/ 301/);
+    const ads = fs.readFileSync(path.join(ROOT, slug, 'ads.txt'), 'utf8');
+    assert.match(ads, /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
+  });
+}
 
 for (const slug of BRANDS) {
   // Root is now the real content site (docs/ADSENSE-SITE-SPEC.md); /preview/ is retired.

@@ -1,8 +1,2 @@
 User-agent: *
-Allow: /
-Disallow: /preview/
-
-User-agent: Mediapartners-Google
-Allow: /
-
-Sitemap: https://tonedntasty.com/sitemap.xml
+Disallow: /
