@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">A computer screen showing a price-history line chart with a bell alert ringing at the lowest dip, as a price-tag character points to it</title>
+<desc id="d">A computer screen showing a price-history line chart with a bell alert ringing at the lowest dip, as a price-tag character points to it. Illustration by Discount Deal Me.</desc>
+<rect width="1200" height="675" fill="#fff7ea"/>
+<path d="M543 379 L546 385 L552 387 L546 389 L543 395 L540 389 L534 387 L540 385 Z" fill="#9ad1ff" opacity=".8"/>
+<circle cx="1105" cy="49" r="9" fill="#b8a1ff" opacity=".7"/>
+<rect x="126" y="180" width="14" height="6" rx="3" fill="#f4511e" opacity=".7" transform="rotate(120 126 180)"/>
+<circle cx="524" cy="409" r="8" fill="#ff8fab" opacity=".7"/>
+<circle cx="530" cy="33" r="7" fill="#9ad1ff" opacity=".7"/>
+<circle cx="592" cy="206" r="4" fill="#b8a1ff" opacity=".7"/>
+<rect x="304" y="652" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(32 304 652)"/>
+<circle cx="290" cy="21" r="5" fill="#f4511e" opacity=".7"/>
+<rect x="359" y="190" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(50 359 190)"/>
+<path d="M1124 221 L1127 227 L1133 229 L1127 231 L1124 237 L1121 231 L1115 229 L1121 227 Z" fill="#2ec4b6" opacity=".8"/>
+<circle cx="423" cy="412" r="6" fill="#ffd23f" opacity=".7"/>
+<rect x="869" y="189" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(16 869 189)"/>
+<path d="M699 320 L702 326 L708 328 L702 330 L699 336 L696 330 L690 328 L696 326 Z" fill="#ff8fab" opacity=".8"/>
+<path d="M26 622 L29 628 L35 630 L29 632 L26 638 L23 632 L17 630 L23 628 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="712" y="87" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(78 712 87)"/>
+<rect x="1004" y="343" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(120 1004 343)"/>
+<circle cx="380" cy="78" r="9" fill="#ffd23f" opacity=".7"/>
+<path d="M752 425 L755 431 L761 433 L755 435 L752 441 L749 435 L743 433 L749 431 Z" fill="#f4511e" opacity=".8"/>
+<path d="M0 590 Q300.0 560 600.0 590 T1200 590 V990 H0 Z" fill="#b8a1ff" opacity=".35"/>
+<rect x="360" y="90" width="620" height="400" rx="26" fill="#22223b"/>
+<rect x="385" y="115" width="570" height="340" rx="14" fill="#ffffff"/>
+<rect x="620" y="490" width="100" height="60" fill="#22223b"/><rect x="560" y="545" width="220" height="24" rx="12" fill="#22223b"/>
+<path d="M420 400 H930 M420 400 V150" stroke="#22223b" stroke-width="4" opacity=".3"/>
+<path d="M430 220 L500 240 L560 200 L620 300 L680 250 L740 370 L800 280 L860 230 L920 250" stroke="#f4511e" stroke-width="10" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="740" cy="370" r="16" fill="#2ec4b6" stroke="#22223b" stroke-width="5"/>
+<path d="M420 300 H930" stroke="#2ec4b6" stroke-width="4" stroke-dasharray="14 10"/>
+<g transform="translate(1040 150) rotate(15)"><path d="M-45 40 Q-45 -40 0 -45 Q45 -40 45 40 L58 55 H-58 Z" fill="#ffd23f" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/><circle cx="0" cy="68" r="12" fill="#22223b"/><circle cx="0" cy="-52" r="8" fill="#22223b"/></g>
+<path d="M1100 110 q20 20 0 40 M1120 90 q35 40 0 80" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+<g transform="translate(180 430) rotate(0) scale(1.2)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 5 L125 -5" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="130" cy="-6" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#f4511e" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+</svg>

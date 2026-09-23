@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /preview/
+
+User-agent: Mediapartners-Google
+Allow: /
+
+Sitemap: https://thenearestdentists.com/sitemap.xml

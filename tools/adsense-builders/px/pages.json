@@ -1,0 +1,7 @@
+[
+ {"file":"home.html","out":"index.html","path":"/","title":"Pillow guides by sleep position, fill and care","desc":"Pillow Exchange explains how to choose, trial and look after a pillow: guides by sleep position, fills explained, washing and care, when to replace, travel pillows and sleep habits."},
+ {"file":"about.html","out":"about/index.html","path":"/about/","title":"About us","desc":"Why Pillow Exchange exists, who writes it, how we research articles, and what we will and will not claim about pillows and sleep."},
+ {"file":"contact.html","out":"contact/index.html","path":"/contact/","title":"Contact","desc":"How to get in touch with the Pillow Exchange team: corrections, article suggestions, questions about our guides and business enquiries."},
+ {"file":"privacy.html","out":"privacy/index.html","path":"/privacy/","title":"Privacy policy","desc":"How Pillow Exchange handles data: advertising cookies including Google AdSense, analytics through Google Tag Manager, your opt-out choices, and how to contact us."},
+ {"file":"terms.html","out":"terms/index.html","path":"/terms/","title":"Terms of use","desc":"The terms for using the Pillow Exchange website: general information only, not medical advice, content ownership, links, advertising and liability."}
+]

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">An opened cardboard box revealing a laptop, surrounded by grade badges A, B and C and a warranty shield, with a price-tag character peeking in</title>
+<desc id="d">An opened cardboard box revealing a laptop, surrounded by grade badges A, B and C and a warranty shield, with a price-tag character peeking in. Illustration by Discount Deal Me.</desc>
+<rect width="1200" height="675" fill="#fff7ea"/>
+<path d="M550 309 L553 315 L559 317 L553 319 L550 325 L547 319 L541 317 L547 315 Z" fill="#9ad1ff" opacity=".8"/>
+<circle cx="400" cy="256" r="5" fill="#9ad1ff" opacity=".7"/>
+<path d="M403 145 L406 151 L412 153 L406 155 L403 161 L400 155 L394 153 L400 151 Z" fill="#f4511e" opacity=".8"/>
+<rect x="458" y="321" width="14" height="6" rx="3" fill="#f4511e" opacity=".7" transform="rotate(32 458 321)"/>
+<circle cx="49" cy="302" r="6" fill="#2ec4b6" opacity=".7"/>
+<rect x="943" y="467" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(91 943 467)"/>
+<path d="M499 510 L502 516 L508 518 L502 520 L499 526 L496 520 L490 518 L496 516 Z" fill="#ff8fab" opacity=".8"/>
+<path d="M899 384 L902 390 L908 392 L902 394 L899 400 L896 394 L890 392 L896 390 Z" fill="#b8a1ff" opacity=".8"/>
+<path d="M662 132 L665 138 L671 140 L665 142 L662 148 L659 142 L653 140 L659 138 Z" fill="#ffd23f" opacity=".8"/>
+<path d="M558 471 L561 477 L567 479 L561 481 L558 487 L555 481 L549 479 L555 477 Z" fill="#ff8fab" opacity=".8"/>
+<path d="M296 462 L299 468 L305 470 L299 472 L296 478 L293 472 L287 470 L293 468 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="928" y="568" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(51 928 568)"/>
+<rect x="387" y="555" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(95 387 555)"/>
+<rect x="960" y="288" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(101 960 288)"/>
+<path d="M287 603 L290 609 L296 611 L290 613 L287 619 L284 613 L278 611 L284 609 Z" fill="#b8a1ff" opacity=".8"/>
+<circle cx="502" cy="598" r="9" fill="#2ec4b6" opacity=".7"/>
+<rect x="770" y="154" width="14" height="6" rx="3" fill="#f4511e" opacity=".7" transform="rotate(166 770 154)"/>
+<path d="M969 411 L972 417 L978 419 L972 421 L969 427 L966 421 L960 419 L966 417 Z" fill="#f4511e" opacity=".8"/>
+<path d="M0 590 Q300.0 560 600.0 590 T1200 590 V990 H0 Z" fill="#9ad1ff" opacity=".35"/>
+<g transform="translate(420 300)">
+<path d="M0 0 H380 V260 H0 Z" fill="#d99a5b" stroke="#22223b" stroke-width="6"/>
+<path d="M0 0 L-70 -70 L300 -70 L380 0 Z" fill="#e8b27a" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M380 0 L450 -60 L440 60 L380 90 Z" fill="#c88745" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<g transform="translate(60 -150)"><rect x="0" y="0" width="260" height="170" rx="14" fill="#22223b"/><rect x="14" y="14" width="232" height="138" rx="6" fill="#2ec4b6"/><path d="M60 110 L110 60 L150 95 L190 50" stroke="#ffffff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+<rect x="0" y="40" width="380" height="36" fill="#ffd23f" opacity=".7"/>
+</g>
+<g transform="translate(960 180)"><circle r="46" fill="#2ec4b6" stroke="#22223b" stroke-width="6"/><text y="17" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="50" font-weight="800" text-anchor="middle" fill="#22223b">A</text></g><g transform="translate(1070 300)"><circle r="46" fill="#ffd23f" stroke="#22223b" stroke-width="6"/><text y="17" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="50" font-weight="800" text-anchor="middle" fill="#22223b">B</text></g><g transform="translate(980 420)"><circle r="46" fill="#ff8fab" stroke="#22223b" stroke-width="6"/><text y="17" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="50" font-weight="800" text-anchor="middle" fill="#22223b">C</text></g>
+<g transform="translate(250 190)"><path d="M0 -70 L60 -45 V10 Q60 60 0 85 Q-60 60 -60 10 V-45 Z" fill="#b8a1ff" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/><path d="M-25 5 L-5 28 L30 -15" stroke="#22223b" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g transform="translate(200 470) rotate(8) scale(0.85)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 5 L125 -5" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="130" cy="-6" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#f4511e" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+</svg>

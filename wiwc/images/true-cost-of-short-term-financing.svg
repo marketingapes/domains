@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="t d">
+<title id="t">Magnifier over a price tag</title>
+<desc id="d">A magnifying glass held over a price tag, revealing tiny extra fee tags hidden underneath.</desc>
+<rect width="1200" height="675" fill="#f6e7b8"/>
+
+<g transform="translate(1040 100) scale(0.8)"><path d="M-80 20 Q-80 -20 -40 -20 Q-30 -60 10 -55 Q50 -70 60 -25 Q100 -25 95 20 Z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><path transform="translate(160 110) scale(0.9)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#e8604c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<g transform="translate(260 180) rotate(-8)"><path d="M0 0 H360 L440 110 L360 220 H0Z" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="360" cy="110" r="18" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="170" y="135" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="80" fill="#16202e">1.30</text></g>
+<g transform="translate(330 470) rotate(8)"><path d="M0 0 H140 L170 40 L140 80 H0Z" fill="#fde2dc" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><text x="70" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="28" fill="#16202e">fee</text></g>
+<g transform="translate(520 490) rotate(-6)"><path d="M0 0 H140 L170 40 L140 80 H0Z" fill="#fde2dc" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><text x="70" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="28" fill="#16202e">fee</text></g>
+<g transform="translate(720 460) rotate(10)"><path d="M0 0 H140 L170 40 L140 80 H0Z" fill="#fde2dc" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><text x="70" y="52" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="28" fill="#16202e">daily</text></g>
+<circle cx="770" cy="330" r="150" fill="#fff" fill-opacity=".55" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="16"/>
+<path d="M875 440 L1010 590" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="34"/><path d="M875 440 L1010 590" stroke="#a8773f" stroke-width="20" stroke-linecap="round"/>
+<text x="770" y="355" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="64" fill="#e8604c">~110%</text>
+
+</svg>

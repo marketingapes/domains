@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+<title id="t">Discount Deal Me — offers worth the click</title>
+<rect width="1200" height="630" fill="#f4511e"/>
+<circle cx="1050" cy="120" r="200" fill="#ffd23f" opacity=".9"/>
+<path d="M0 520 Q300 470 600 520 T1200 520 V630 H0 Z" fill="#22223b"/>
+<path d="M683 89 L686 95 L692 97 L686 99 L683 105 L680 99 L674 97 L680 95 Z" fill="#b8a1ff" opacity=".8"/>
+<circle cx="118" cy="57" r="6" fill="#ff8fab" opacity=".7"/>
+<circle cx="138" cy="279" r="4" fill="#2ec4b6" opacity=".7"/>
+<circle cx="908" cy="234" r="4" fill="#f4511e" opacity=".7"/>
+<path d="M1148 229 L1151 235 L1157 237 L1151 239 L1148 245 L1145 239 L1139 237 L1145 235 Z" fill="#f4511e" opacity=".8"/>
+<path d="M273 126 L276 132 L282 134 L276 136 L273 142 L270 136 L264 134 L270 132 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="146" y="315" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(12 146 315)"/>
+<circle cx="472" cy="43" r="6" fill="#ff8fab" opacity=".7"/>
+<circle cx="878" cy="93" r="8" fill="#ff8fab" opacity=".7"/>
+<circle cx="651" cy="306" r="4" fill="#9ad1ff" opacity=".7"/>
+<path d="M404 202 L407 208 L413 210 L407 212 L404 218 L401 212 L395 210 L401 208 Z" fill="#f4511e" opacity=".8"/>
+<path d="M148 300 L151 306 L157 308 L151 310 L148 316 L145 310 L139 308 L145 306 Z" fill="#f4511e" opacity=".8"/>
+<path d="M441 266 L444 272 L450 274 L444 276 L441 282 L438 276 L432 274 L438 272 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="895" y="417" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(149 895 417)"/>
+<circle cx="948" cy="205" r="5" fill="#ffd23f" opacity=".7"/>
+<rect x="519" y="61" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(134 519 61)"/>
+<rect x="1033" y="195" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(73 1033 195)"/>
+<rect x="169" y="80" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(42 169 80)"/>
+<rect x="720" y="97" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(10 720 97)"/>
+<path d="M178 403 L181 409 L187 411 L181 413 L178 419 L175 413 L169 411 L175 409 Z" fill="#ff8fab" opacity=".8"/>
+<rect x="662" y="194" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(152 662 194)"/>
+<circle cx="1037" cy="316" r="4" fill="#b8a1ff" opacity=".7"/>
+<text x="70" y="230" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="104" font-weight="800" fill="#ffffff">Discount</text>
+<text x="70" y="340" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="104" font-weight="800" fill="#22223b">Deal Me</text>
+<text x="74" y="420" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="40" font-weight="700" fill="#ffffff">offers worth the click</text>
+<g transform="translate(900 330) rotate(6) scale(1.5)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 0 Q105 -20 112 -48" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="112" cy="-52" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#ffd23f" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+</svg>

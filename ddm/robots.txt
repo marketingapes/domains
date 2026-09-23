@@ -1,9 +1,12 @@
 User-agent: *
+Allow: /
 Allow: /ads.txt
-Allow: /preview/
-Allow: /deal-checklist/
 Allow: /offers/
-Allow: /guides/checkout-comparison/
-Disallow: /
+Allow: /guides/
+Allow: /deal-checklist/
+Disallow: /preview/
+
+User-agent: Mediapartners-Google
+Allow: /
 
 Sitemap: https://discountdealme.com/sitemap.xml

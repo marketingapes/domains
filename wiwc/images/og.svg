@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="t d">
+<title id="t">What Is Working Capital</title>
+<desc id="d">Share card: a coin, a box of stock and an invoice balanced on a see-saw under the site name.</desc>
+<rect width="1200" height="630" fill="#f6e7b8"/>
+
+<path transform="translate(1120 290) scale(1.1)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#d4a72c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path transform="translate(90 300) scale(0.8)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#e8604c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M0 520 Q300.0 502 600.0 520 T1200 520 V630 H0Z" fill="#d9f2e8" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M300 470 L900 390" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/>
+<path d="M600 430 L560 520 H640Z" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g transform="translate(380 400)"><circle r="50" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="34.0" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="18.0" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="52" fill="#16202e">$</text></g><g><rect x="470" y="348" width="110" height="90" rx="6" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="515.1" y="348" width="19.8" height="31.499999999999996" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(760 272) rotate(8)"><path d="M0 0 H76 L100 24 V125 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M76 0 V24 H100" fill="none" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="14" width="40" height="12" rx="4" fill="#d4a72c"/><line x1="16" y1="40" x2="84" y2="40" stroke="#16202e" stroke-width="4" opacity=".35"/><line x1="16" y1="60" x2="54" y2="60" stroke="#16202e" stroke-width="4" opacity=".35"/><line x1="16" y1="80" x2="84" y2="80" stroke="#16202e" stroke-width="4" opacity=".35"/></g>
+<text x="600" y="130" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="76" fill="#16202e">What Is Working Capital</text>
+<text x="600" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="#16202e">Small-business finance in plain English</text>
+
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">A cardboard parcel with a big U-turn arrow, a long receipt with a calendar, and a price-tag character holding an alarm clock</title>
+<desc id="d">A cardboard parcel with a big U-turn arrow, a long receipt with a calendar, and a price-tag character holding an alarm clock. Illustration by Discount Deal Me.</desc>
+<rect width="1200" height="675" fill="#fff7ea"/>
+<path d="M683 166 L686 172 L692 174 L686 176 L683 182 L680 176 L674 174 L680 172 Z" fill="#b8a1ff" opacity=".8"/>
+<circle cx="118" cy="94" r="6" fill="#ff8fab" opacity=".7"/>
+<circle cx="138" cy="539" r="4" fill="#2ec4b6" opacity=".7"/>
+<circle cx="908" cy="448" r="4" fill="#f4511e" opacity=".7"/>
+<path d="M1148 446 L1151 452 L1157 454 L1151 456 L1148 462 L1145 456 L1139 454 L1145 452 Z" fill="#f4511e" opacity=".8"/>
+<path d="M273 240 L276 246 L282 248 L276 250 L273 256 L270 250 L264 248 L270 246 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="146" y="610" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(12 146 610)"/>
+<circle cx="472" cy="67" r="6" fill="#ff8fab" opacity=".7"/>
+<circle cx="878" cy="167" r="8" fill="#ff8fab" opacity=".7"/>
+<circle cx="651" cy="593" r="4" fill="#9ad1ff" opacity=".7"/>
+<path d="M404 393 L407 399 L413 401 L407 403 L404 409 L401 403 L395 401 L401 399 Z" fill="#f4511e" opacity=".8"/>
+<path d="M148 589 L151 595 L157 597 L151 599 L148 605 L145 599 L139 597 L145 595 Z" fill="#f4511e" opacity=".8"/>
+<path d="M441 520 L444 526 L450 528 L444 530 L441 536 L438 530 L432 528 L438 526 Z" fill="#9ad1ff" opacity=".8"/>
+<path d="M895 333 L898 339 L904 341 L898 343 L895 349 L892 343 L886 341 L892 339 Z" fill="#b8a1ff" opacity=".8"/>
+<circle cx="948" cy="390" r="5" fill="#ffd23f" opacity=".7"/>
+<rect x="519" y="103" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(134 519 103)"/>
+<rect x="1033" y="371" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(73 1033 371)"/>
+<rect x="169" y="140" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(42 169 140)"/>
+<path d="M0 590 Q300.0 560 600.0 590 T1200 590 V990 H0 Z" fill="#9ad1ff" opacity=".35"/>
+<g transform="translate(470 250)">
+<path d="M0 60 L180 0 L360 60 L180 120 Z" fill="#e8b27a" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M0 60 V260 L180 330 V120 Z" fill="#d99a5b" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M360 60 V260 L180 330 V120 Z" fill="#c88745" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M90 30 L270 90 L270 150" stroke="#ffffff" stroke-width="18" fill="none" opacity=".7"/>
+<rect x="40" y="170" width="90" height="60" rx="6" fill="#ffffff" stroke="#22223b" stroke-width="4" transform="skewY(20)"/>
+</g>
+<path d="M880 170 Q1000 170 1000 280 Q1000 390 880 390 L840 390" stroke="#f4511e" stroke-width="26" fill="none" stroke-linecap="round"/>
+<path d="M860 350 L800 390 L860 430" stroke="#f4511e" stroke-width="26" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(130 110) rotate(-6)">
+<path d="M0 0 H200 V380 L180 395 L160 380 L140 395 L120 380 L100 395 L80 380 L60 395 L40 380 L20 395 L0 380 Z" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+<rect x="25" y="30" width="150" height="14" rx="7" fill="#22223b" opacity=".7"/>
+<rect x="25" y="70" width="110" height="10" rx="5" fill="#22223b" opacity=".3"/><rect x="25" y="95" width="130" height="10" rx="5" fill="#22223b" opacity=".3"/>
+<rect x="25" y="140" width="150" height="120" rx="10" fill="#fff7ea" stroke="#22223b" stroke-width="4"/>
+<rect x="25" y="140" width="150" height="32" rx="10" fill="#f4511e"/>
+<g fill="#22223b" opacity=".5"><rect x="38" y="185" width="16" height="14" rx="3"/><rect x="65" y="185" width="16" height="14" rx="3"/><rect x="92" y="185" width="16" height="14" rx="3"/><rect x="119" y="185" width="16" height="14" rx="3"/><rect x="146" y="185" width="16" height="14" rx="3"/><rect x="38" y="210" width="16" height="14" rx="3"/><rect x="65" y="210" width="16" height="14" rx="3"/><rect x="92" y="210" width="16" height="14" rx="3"/><rect x="119" y="210" width="16" height="14" rx="3"/><rect x="146" y="210" width="16" height="14" rx="3"/><rect x="38" y="235" width="16" height="14" rx="3"/><rect x="65" y="235" width="16" height="14" rx="3"/><rect x="92" y="235" width="16" height="14" rx="3"/><rect x="119" y="235" width="16" height="14" rx="3"/><rect x="146" y="235" width="16" height="14" rx="3"/></g>
+<circle cx="146" cy="242" r="16" fill="none" stroke="#2ec4b6" stroke-width="6"/>
+<rect x="25" y="290" width="150" height="10" rx="5" fill="#22223b" opacity=".3"/><rect x="25" y="315" width="90" height="10" rx="5" fill="#22223b" opacity=".3"/>
+</g>
+<g transform="translate(1030 520) rotate(5) scale(0.8)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 8 Q100 10 108 -8" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="110" cy="-12" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#f4511e" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+<g transform="translate(1130 470)"><circle r="34" fill="#ffd23f" stroke="#22223b" stroke-width="6"/><path d="M0 -18 V0 L14 10" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="-26" cy="-30" r="10" fill="#22223b"/><circle cx="26" cy="-30" r="10" fill="#22223b"/></g>
+
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">Discount Deal Me: a cheerful shopping street</title>
+<desc id="d">Two walking price-tag characters wave outside a striped-awning shop with a sign asking "Deals?", surrounded by floating coupons, coins and shopping bags.</desc>
+
+<rect width="1600" height="900" fill="#fff7ea"/>
+<circle cx="1350" cy="170" r="110" fill="#ffd23f"/>
+<g fill="#9ad1ff" opacity=".6"><rect x="60" y="320" width="140" height="380" rx="10"/><rect x="220" y="240" width="120" height="460" rx="10"/><rect x="1260" y="360" width="150" height="340" rx="10"/><rect x="1430" y="280" width="120" height="420" rx="10"/></g>
+<g fill="#ffffff" opacity=".8"><rect x="90" y="380" width="26" height="30" rx="4"/><rect x="90" y="450" width="26" height="30" rx="4"/><rect x="90" y="520" width="26" height="30" rx="4"/><rect x="140" y="380" width="26" height="30" rx="4"/><rect x="140" y="450" width="26" height="30" rx="4"/><rect x="140" y="520" width="26" height="30" rx="4"/><rect x="245" y="380" width="26" height="30" rx="4"/><rect x="245" y="450" width="26" height="30" rx="4"/><rect x="245" y="520" width="26" height="30" rx="4"/><rect x="295" y="380" width="26" height="30" rx="4"/><rect x="295" y="450" width="26" height="30" rx="4"/><rect x="295" y="520" width="26" height="30" rx="4"/><rect x="1290" y="380" width="26" height="30" rx="4"/><rect x="1290" y="450" width="26" height="30" rx="4"/><rect x="1290" y="520" width="26" height="30" rx="4"/><rect x="1350" y="380" width="26" height="30" rx="4"/><rect x="1350" y="450" width="26" height="30" rx="4"/><rect x="1350" y="520" width="26" height="30" rx="4"/><rect x="1455" y="380" width="26" height="30" rx="4"/><rect x="1455" y="450" width="26" height="30" rx="4"/><rect x="1455" y="520" width="26" height="30" rx="4"/><rect x="1505" y="380" width="26" height="30" rx="4"/><rect x="1505" y="450" width="26" height="30" rx="4"/><rect x="1505" y="520" width="26" height="30" rx="4"/></g>
+<path d="M0 700 Q400 640 800 700 T1600 700 V900 H0 Z" fill="#2ec4b6"/>
+<path d="M0 760 Q400 720 800 770 T1600 760 V900 H0 Z" fill="#22223b" opacity=".08"/>
+<g transform="translate(470 250)">
+<rect x="0" y="80" width="660" height="400" fill="#ffffff" stroke="#22223b" stroke-width="8"/>
+<path d="M-40 80 H700 L660 -10 H0 Z" fill="#f4511e" stroke="#22223b" stroke-width="8" stroke-linejoin="round"/>
+<path d="M-40 80 q37 55 74 0" fill="#f4511e" stroke="#22223b" stroke-width="6"/><path d="M34 80 q37 55 74 0" fill="#ffffff" stroke="#22223b" stroke-width="6"/><path d="M108 80 q37 55 74 0" fill="#f4511e" stroke="#22223b" stroke-width="6"/><path d="M182 80 q37 55 74 0" fill="#ffffff" stroke="#22223b" stroke-width="6"/><path d="M256 80 q37 55 74 0" fill="#f4511e" stroke="#22223b" stroke-width="6"/><path d="M330 80 q37 55 74 0" fill="#ffffff" stroke="#22223b" stroke-width="6"/><path d="M404 80 q37 55 74 0" fill="#f4511e" stroke="#22223b" stroke-width="6"/><path d="M478 80 q37 55 74 0" fill="#ffffff" stroke="#22223b" stroke-width="6"/><path d="M552 80 q37 55 74 0" fill="#f4511e" stroke="#22223b" stroke-width="6"/><path d="M626 80 q37 55 74 0" fill="#ffffff" stroke="#22223b" stroke-width="6"/>
+<rect x="200" y="-80" width="260" height="70" rx="16" fill="#ffd23f" stroke="#22223b" stroke-width="7"/>
+<text x="330" y="-32" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="40" font-weight="800" text-anchor="middle" fill="#22223b">DEALS?</text>
+<rect x="40" y="190" width="250" height="180" rx="10" fill="#9ad1ff" opacity=".5" stroke="#22223b" stroke-width="6"/>
+<rect x="370" y="190" width="250" height="180" rx="10" fill="#9ad1ff" opacity=".5" stroke="#22223b" stroke-width="6"/>
+<g transform="translate(165 280) rotate(-10) scale(0.9)"><path d="M-80 0 L-50 -40 L70 -40 Q80 -40 80 -30 L80 30 Q80 40 70 40 L-50 40 Z" fill="#ffd23f" stroke="#22223b" stroke-width="5" stroke-linejoin="round"/><circle cx="-48" cy="0" r="8" fill="#fff7ea" stroke="#22223b" stroke-width="4"/><text x="10" y="12" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="50" font-weight="800" fill="#22223b" text-anchor="middle">?</text></g><g transform="translate(495 280) rotate(8) scale(0.9)"><path d="M-80 0 L-50 -40 L70 -40 Q80 -40 80 -30 L80 30 Q80 40 70 40 L-50 40 Z" fill="#ff8fab" stroke="#22223b" stroke-width="5" stroke-linejoin="round"/><circle cx="-48" cy="0" r="8" fill="#fff7ea" stroke="#22223b" stroke-width="4"/><text x="10" y="12" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="50" font-weight="800" fill="#22223b" text-anchor="middle">%</text></g>
+<rect x="0" y="400" width="660" height="80" fill="#b8a1ff" stroke="#22223b" stroke-width="8"/>
+</g>
+<g transform="translate(340 660) rotate(-4) scale(1.6)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 0 Q105 -20 112 -48" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="112" cy="-52" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#f4511e" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+<g transform="translate(1250 650) rotate(6) scale(1.1)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 -5 Q95 -40 88 -70" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="87" cy="-75" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#2ec4b6" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+<g transform="translate(1100 620)"><path d="M-40 0 H80 L70 110 H-30 Z" fill="#ff8fab" stroke="#22223b" stroke-width="7" stroke-linejoin="round"/><path d="M-5 0 Q20 -50 45 0" stroke="#22223b" stroke-width="7" fill="none"/></g>
+<g transform="translate(1000 650)"><path d="M-40 0 H60 L55 90 H-35 Z" fill="#ffd23f" stroke="#22223b" stroke-width="7" stroke-linejoin="round"/><path d="M-10 0 Q10 -40 30 0" stroke="#22223b" stroke-width="7" fill="none"/></g>
+<g transform="translate(160 120) rotate(-12)"><rect x="0" y="0" width="220" height="100" rx="12" fill="#ffffff" stroke="#22223b" stroke-width="6" stroke-dasharray="16 10"/><text x="110" y="62" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="36" font-weight="800" text-anchor="middle" fill="#f4511e">COUPON</text></g>
+<g transform="translate(1180 330) rotate(10)"><rect x="0" y="0" width="200" height="90" rx="12" fill="#b8a1ff" stroke="#22223b" stroke-width="6" stroke-dasharray="16 10"/><text x="100" y="58" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="34" font-weight="800" text-anchor="middle" fill="#22223b">CASH BACK</text></g>
+<g><circle cx="1480" cy="560" r="34" fill="#ffd23f" stroke="#22223b" stroke-width="5"/><circle cx="1480" cy="560" r="21" fill="none" stroke="#22223b" stroke-width="3" opacity=".5"/><text x="1480" y="572" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="34" font-weight="800" text-anchor="middle" fill="#22223b">$</text></g><g><circle cx="420" cy="180" r="28" fill="#2ec4b6" stroke="#22223b" stroke-width="5"/><circle cx="420" cy="180" r="17" fill="none" stroke="#22223b" stroke-width="3" opacity=".5"/><text x="420" y="190" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle" fill="#22223b">$</text></g><g><circle cx="1180" cy="110" r="24" fill="#ff8fab" stroke="#22223b" stroke-width="5"/><circle cx="1180" cy="110" r="15" fill="none" stroke="#22223b" stroke-width="3" opacity=".5"/><text x="1180" y="118" font-family="'Bricolage Grotesque', 'Arial Rounded MT Bold', Arial, sans-serif" font-size="24" font-weight="800" text-anchor="middle" fill="#22223b">$</text></g>
+<path d="M847 401 L850 407 L856 409 L850 411 L847 417 L844 411 L838 409 L844 407 Z" fill="#2ec4b6" opacity=".8"/>
+<circle cx="386" cy="255" r="4" fill="#2ec4b6" opacity=".7"/>
+<path d="M534 404 L537 410 L543 412 L537 414 L534 420 L531 414 L525 412 L531 410 Z" fill="#ff8fab" opacity=".8"/>
+<path d="M1454 563 L1457 569 L1463 571 L1457 573 L1454 579 L1451 573 L1445 571 L1451 569 Z" fill="#f4511e" opacity=".8"/>
+<path d="M1022 216 L1025 222 L1031 224 L1025 226 L1022 232 L1019 226 L1013 224 L1019 222 Z" fill="#b8a1ff" opacity=".8"/>
+<rect x="1275" y="241" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(174 1275 241)"/>
+<path d="M455 167 L458 173 L464 175 L458 177 L455 183 L452 177 L446 175 L452 173 Z" fill="#b8a1ff" opacity=".8"/>
+<path d="M386 358 L389 364 L395 366 L389 368 L386 374 L383 368 L377 366 L383 364 Z" fill="#f4511e" opacity=".8"/>
+<rect x="1102" y="109" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(103 1102 109)"/>
+<circle cx="107" cy="295" r="7" fill="#ff8fab" opacity=".7"/>
+<circle cx="437" cy="391" r="7" fill="#ff8fab" opacity=".7"/>
+<rect x="1082" y="222" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(13 1082 222)"/>
+<path d="M752 144 L755 150 L761 152 L755 154 L752 160 L749 154 L743 152 L749 150 Z" fill="#2ec4b6" opacity=".8"/>
+<circle cx="349" cy="472" r="8" fill="#ff8fab" opacity=".7"/>
+<circle cx="1372" cy="200" r="4" fill="#f4511e" opacity=".7"/>
+<rect x="370" y="505" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(20 370 505)"/>
+<rect x="891" y="108" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(158 891 108)"/>
+<circle cx="31" cy="410" r="8" fill="#ffd23f" opacity=".7"/>
+<path d="M850 217 L853 223 L859 225 L853 227 L850 233 L847 227 L841 225 L847 223 Z" fill="#f4511e" opacity=".8"/>
+<path d="M453 465 L456 471 L462 473 L456 475 L453 481 L450 475 L444 473 L450 471 Z" fill="#ffd23f" opacity=".8"/>
+<path d="M847 141 L850 147 L856 149 L850 151 L847 157 L844 151 L838 149 L844 147 Z" fill="#ffd23f" opacity=".8"/>
+<path d="M995 69 L998 75 L1004 77 L998 79 L995 85 L992 79 L986 77 L992 75 Z" fill="#2ec4b6" opacity=".8"/>
+<rect x="1491" y="174" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(31 1491 174)"/>
+<rect x="217" y="141" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(44 217 141)"/>
+<circle cx="383" cy="439" r="8" fill="#2ec4b6" opacity=".7"/>
+<rect x="673" y="531" width="14" height="6" rx="3" fill="#2ec4b6" opacity=".7" transform="rotate(30 673 531)"/>
+<circle cx="760" cy="210" r="8" fill="#9ad1ff" opacity=".7"/>
+<circle cx="609" cy="31" r="6" fill="#ff8fab" opacity=".7"/>
+<rect x="463" y="406" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(102 463 406)"/>
+<path d="M810 436 L813 442 L819 444 L813 446 L810 452 L807 446 L801 444 L807 442 Z" fill="#ffd23f" opacity=".8"/>
+
+</svg>

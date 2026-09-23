@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">Two little shopfronts facing each other with matching price tags and an equals sign between them, while a price-tag character acts as referee</title>
+<desc id="d">Two little shopfronts facing each other with matching price tags and an equals sign between them, while a price-tag character acts as referee. Illustration by Discount Deal Me.</desc>
+<rect width="1200" height="675" fill="#fff7ea"/>
+<rect x="946" y="593" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(130 946 593)"/>
+<rect x="408" y="209" width="14" height="6" rx="3" fill="#ff8fab" opacity=".7" transform="rotate(161 408 209)"/>
+<rect x="401" y="116" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(36 401 116)"/>
+<path d="M205 563 L208 569 L214 571 L208 573 L205 579 L202 573 L196 571 L202 569 Z" fill="#9ad1ff" opacity=".8"/>
+<rect x="105" y="629" width="14" height="6" rx="3" fill="#b8a1ff" opacity=".7" transform="rotate(167 105 629)"/>
+<circle cx="342" cy="35" r="4" fill="#ff8fab" opacity=".7"/>
+<path d="M93 206 L96 212 L102 214 L96 216 L93 222 L90 216 L84 214 L90 212 Z" fill="#2ec4b6" opacity=".8"/>
+<rect x="81" y="495" width="14" height="6" rx="3" fill="#ffd23f" opacity=".7" transform="rotate(151 81 495)"/>
+<path d="M420 543 L423 549 L429 551 L423 553 L420 559 L417 553 L411 551 L417 549 Z" fill="#2ec4b6" opacity=".8"/>
+<path d="M622 523 L625 529 L631 531 L625 533 L622 539 L619 533 L613 531 L619 529 Z" fill="#f4511e" opacity=".8"/>
+<rect x="194" y="488" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(104 194 488)"/>
+<rect x="1148" y="105" width="14" height="6" rx="3" fill="#9ad1ff" opacity=".7" transform="rotate(80 1148 105)"/>
+<circle cx="490" cy="545" r="4" fill="#ffd23f" opacity=".7"/>
+<circle cx="1173" cy="130" r="6" fill="#b8a1ff" opacity=".7"/>
+<path d="M811 80 L814 86 L820 88 L814 90 L811 96 L808 90 L802 88 L808 86 Z" fill="#f4511e" opacity=".8"/>
+<circle cx="21" cy="238" r="7" fill="#2ec4b6" opacity=".7"/>
+<circle cx="788" cy="426" r="8" fill="#b8a1ff" opacity=".7"/>
+<circle cx="426" cy="296" r="6" fill="#ffd23f" opacity=".7"/>
+<path d="M0 600 Q300.0 570 600.0 600 T1200 600 V1000 H0 Z" fill="#2ec4b6" opacity=".35"/><g transform="translate(90 170)">
+<rect x="0" y="80" width="300" height="330" fill="#ffffff" stroke="#22223b" stroke-width="6"/>
+<path d="M-20 80 H320 L300 0 H0 Z" fill="#f4511e" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M20 80 q28 40 56 0" fill="#f4511e" stroke="#22223b" stroke-width="5"/><path d="M76 80 q28 40 56 0" fill="#ffffff" stroke="#22223b" stroke-width="5"/><path d="M132 80 q28 40 56 0" fill="#f4511e" stroke="#22223b" stroke-width="5"/><path d="M188 80 q28 40 56 0" fill="#ffffff" stroke="#22223b" stroke-width="5"/><path d="M244 80 q28 40 56 0" fill="#f4511e" stroke="#22223b" stroke-width="5"/>
+<rect x="40" y="170" width="220" height="130" rx="8" fill="#9ad1ff" opacity=".5" stroke="#22223b" stroke-width="5"/>
+<rect x="110" y="320" width="80" height="90" fill="#22223b" opacity=".85"/>
+</g><g transform="translate(810 170)">
+<rect x="0" y="80" width="300" height="330" fill="#ffffff" stroke="#22223b" stroke-width="6"/>
+<path d="M-20 80 H320 L300 0 H0 Z" fill="#b8a1ff" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+<path d="M20 80 q28 40 56 0" fill="#b8a1ff" stroke="#22223b" stroke-width="5"/><path d="M76 80 q28 40 56 0" fill="#ffffff" stroke="#22223b" stroke-width="5"/><path d="M132 80 q28 40 56 0" fill="#b8a1ff" stroke="#22223b" stroke-width="5"/><path d="M188 80 q28 40 56 0" fill="#ffffff" stroke="#22223b" stroke-width="5"/><path d="M244 80 q28 40 56 0" fill="#b8a1ff" stroke="#22223b" stroke-width="5"/>
+<rect x="40" y="170" width="220" height="130" rx="8" fill="#9ad1ff" opacity=".5" stroke="#22223b" stroke-width="5"/>
+<rect x="110" y="320" width="80" height="90" fill="#22223b" opacity=".85"/>
+</g><g transform="translate(240 250) rotate(-8) scale(0.9)"><path d="M-80 0 L-50 -40 L70 -40 Q80 -40 80 -30 L80 30 Q80 40 70 40 L-50 40 Z" fill="#ffd23f" stroke="#22223b" stroke-width="5" stroke-linejoin="round"/><circle cx="-48" cy="0" r="8" fill="#fff7ea" stroke="#22223b" stroke-width="4"/></g><g transform="translate(960 250) rotate(8) scale(0.9)"><path d="M-80 0 L-50 -40 L70 -40 Q80 -40 80 -30 L80 30 Q80 40 70 40 L-50 40 Z" fill="#ffd23f" stroke="#22223b" stroke-width="5" stroke-linejoin="round"/><circle cx="-48" cy="0" r="8" fill="#fff7ea" stroke="#22223b" stroke-width="4"/></g>
+<rect x="545" y="260" width="110" height="24" rx="12" fill="#22223b"/><rect x="545" y="305" width="110" height="24" rx="12" fill="#22223b"/>
+<g transform="translate(600 460) rotate(0) scale(0.9)">
+  <path d="M5 45 L0 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/><path d="M45 45 L50 85" stroke="#22223b" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="-6" cy="88" rx="16" ry="8" fill="#22223b"/><ellipse cx="56" cy="88" rx="16" ry="8" fill="#22223b"/>
+  <path d="M-62 20 Q-85 25 -92 45" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-94" cy="50" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M78 -5 Q95 -40 88 -70" stroke="#22223b" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="87" cy="-75" r="9" fill="#ffffff" stroke="#22223b" stroke-width="5"/>
+  <path d="M-95 0 L-58 -47 L70 -47 Q82 -47 82 -35 L82 35 Q82 47 70 47 L-58 47 Z" fill="#ffd23f" stroke="#22223b" stroke-width="6" stroke-linejoin="round"/>
+  <circle cx="-55" cy="0" r="10" fill="#fff7ea" stroke="#22223b" stroke-width="5"/>
+  <circle cx="5" cy="-10" r="11" fill="#ffffff"/><circle cx="40" cy="-10" r="11" fill="#ffffff"/>
+  <circle cx="8" cy="-8" r="6" fill="#22223b"/><circle cx="43" cy="-8" r="6" fill="#22223b"/>
+  <path d="M8 14 Q23 30 40 14" stroke="#22223b" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-12" cy="10" r="6" fill="#ff8fab" opacity=".8"/><circle cx="60" cy="10" r="6" fill="#ff8fab" opacity=".8"/>
+</g>
+</svg>

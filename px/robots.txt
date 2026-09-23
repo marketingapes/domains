@@ -1,8 +1,8 @@
 User-agent: *
-Allow: /ads.txt
-Allow: /preview/
-Allow: /pillow-shopping-checklist/
-Allow: /guides/pillow-cover-fit/
-Disallow: /
+Allow: /
+Disallow: /preview/
+
+User-agent: Mediapartners-Google
+Allow: /
 
 Sitemap: https://pillowexchange.com/sitemap.xml

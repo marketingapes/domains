@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t d">
+<title id="t">A busy little shop</title>
+<desc id="d">A shopkeeper waves from behind a counter while a customer hands over coins that fly into a jar, shelves hold boxes of stock, and a supply van waits outside with bills to be paid.</desc>
+<rect width="1600" height="900" fill="#e2f2fa"/>
+
+<g transform="translate(220 140) scale(1.1)"><path d="M-80 20 Q-80 -20 -40 -20 Q-30 -60 10 -55 Q50 -70 60 -25 Q100 -25 95 20 Z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(1280 110) scale(0.9)"><path d="M-80 20 Q-80 -20 -40 -20 Q-30 -60 10 -55 Q50 -70 60 -25 Q100 -25 95 20 Z" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><path transform="translate(760 90) scale(1.2)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#d4a72c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path transform="translate(1480 300) scale(0.8)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#e8604c" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><path transform="translate(120 360) scale(0.7)" d="M0 -22 L6 -6 L22 0 L6 6 L0 22 L-6 6 L-22 0 L-6 -6Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1420" cy="150" r="70" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M0 720 Q400.0 702 800.0 720 T1600 720 V900 H0Z" fill="#d9f2e8" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<!-- shop -->
+<g>
+<rect x="420" y="260" width="620" height="470" fill="#faf7ef" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M400 260 H1060 L1030 180 H430Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M430 260 v40 a37 37 0 0 0 74 0 v-40 M504 260 v40 a37 37 0 0 0 74 0 v-40 M578 260 v40 a37 37 0 0 0 74 0 v-40 M652 260 v40 a37 37 0 0 0 74 0 v-40 M726 260 v40 a37 37 0 0 0 74 0 v-40 M800 260 v40 a37 37 0 0 0 74 0 v-40 M874 260 v40 a37 37 0 0 0 74 0 v-40 M948 260 v40 a37 37 0 0 0 74 0 v-40" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="560" y="200" width="340" height="44" rx="10" fill="#fff" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="730" y="232" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="28" fill="#16202e">THE LITTLE SHOP</text>
+<rect x="460" y="360" width="230" height="240" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><line x1="460" y1="440.0" x2="690" y2="440.0" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><line x1="460" y1="520.0" x2="690" y2="520.0" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g><rect x="475" y="380" width="60" height="55" rx="6" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="499.6" y="380" width="10.799999999999999" height="19.25" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g><rect x="545" y="390" width="50" height="45" rx="6" fill="#2f9e78" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="565.5" y="390" width="9.0" height="15.749999999999998" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g><rect x="605" y="375" width="70" height="60" rx="6" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="633.7" y="375" width="12.6" height="21.0" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g><rect x="470" y="460" width="80" height="55" rx="6" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="502.8" y="460" width="14.399999999999999" height="19.25" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g><rect x="560" y="465" width="55" height="50" rx="6" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="582.55" y="465" width="9.9" height="17.5" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g><rect x="625" y="455" width="55" height="60" rx="6" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="647.55" y="455" width="9.9" height="21.0" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g><rect x="480" y="540" width="60" height="55" rx="6" fill="#c9965a" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="504.6" y="540" width="10.799999999999999" height="19.25" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g><g><rect x="560" y="545" width="110" height="50" rx="6" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><rect x="605.1" y="545" width="19.8" height="17.5" fill="#f6e7b8" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></g>
+<rect x="720" y="560" width="290" height="170" rx="10" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="760" y="510" width="90" height="60" rx="8" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="772" y="522" width="66" height="22" rx="4" fill="#d9f2e8"/>
+</g>
+<g transform="translate(900 560) scale(0.95)">
+<rect x="-30" y="-80" width="24" height="80" rx="10" fill="#16202e"/><rect x="6" y="-80" width="24" height="80" rx="10" fill="#16202e"/>
+<ellipse cx="-20" cy="-2" rx="22" ry="9" fill="#16202e"/><ellipse cx="20" cy="-2" rx="22" ry="9" fill="#16202e"/>
+<g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/><path d="M44 -150 Q90 -170 88 -230" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/></g><g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#b97a56" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/><path d="M44 -150 Q90 -170 88 -230" fill="none" stroke="#b97a56" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/></g>
+<rect x="-46" y="-175" width="92" height="105" rx="30" fill="#2f9e78" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-230" r="40" fill="#b97a56" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-298" r="16" fill="#16202e"/><path d="M-37 -245 Q-40 -290 0 -292 Q40 -290 37 -245 Q10 -272 -37 -245Z" fill="#16202e"/>
+<circle cx="-14" cy="-232" r="5" fill="#16202e"/><circle cx="14" cy="-232" r="5" fill="#16202e"/>
+<circle cx="-24" cy="-218" r="6" fill="#e8604c" opacity=".45"/><circle cx="24" cy="-218" r="6" fill="#e8604c" opacity=".45"/>
+<path d="M-12 -218 Q0 -206 12 -218" fill="none" stroke="#16202e" stroke-width="4" stroke-linecap="round"/>
+</g>
+<!-- jar of coins -->
+<path d="M740 480 Q736 420 760 410 H830 Q854 420 850 480 V560 H740Z" fill="#e2f2fa" opacity=".9" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g transform="translate(770 520)"><circle r="22" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="15.0" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="7.9" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="23" fill="#16202e">$</text></g><g transform="translate(815 530)"><circle r="22" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="15.0" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="7.9" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="23" fill="#16202e">$</text></g><g transform="translate(795 492)"><circle r="22" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="15.0" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="7.9" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="23" fill="#16202e">$</text></g>
+<!-- customer + coins flying -->
+<g transform="translate(250 830) scale(1.0)">
+<rect x="-30" y="-80" width="24" height="80" rx="10" fill="#3b4658"/><rect x="6" y="-80" width="24" height="80" rx="10" fill="#3b4658"/>
+<ellipse cx="-20" cy="-2" rx="22" ry="9" fill="#16202e"/><ellipse cx="20" cy="-2" rx="22" ry="9" fill="#16202e"/>
+<g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#16202e" stroke-linejoin="round" stroke-linecap="round" stroke-width="14"/></g><g><path d="M-44 -150 Q-70 -110 -62 -70" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/><path d="M44 -150 Q80 -130 110 -135" fill="none" stroke="#f2c7a5" stroke-linejoin="round" stroke-linecap="round" stroke-width="8"/></g>
+<rect x="-46" y="-175" width="92" height="105" rx="30" fill="#8ecae6" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="0" cy="-230" r="40" fill="#f2c7a5" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-40 -200 Q-46 -294 0 -294 Q46 -294 40 -200 L30 -200 Q34 -262 0 -266 Q-34 -262 -30 -200Z" fill="#7a4b33"/>
+<circle cx="-14" cy="-232" r="5" fill="#16202e"/><circle cx="14" cy="-232" r="5" fill="#16202e"/>
+<circle cx="-24" cy="-218" r="6" fill="#e8604c" opacity=".45"/><circle cx="24" cy="-218" r="6" fill="#e8604c" opacity=".45"/>
+<path d="M-12 -218 Q0 -206 12 -218" fill="none" stroke="#16202e" stroke-width="4" stroke-linecap="round"/>
+</g>
+<path d="M380 670 Q520 520 740 470" fill="none" stroke="#16202e" stroke-width="4" stroke-dasharray="4 16" stroke-linecap="round"/>
+<g transform="translate(460 580)"><circle r="26" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="17.7" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="9.4" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="27" fill="#16202e">$</text></g><g transform="translate(580 500)"><circle r="26" fill="#d4a72c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle r="17.7" fill="none" stroke="#16202e" stroke-width="3" opacity=".5"/><text y="9.4" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="27" fill="#16202e">$</text></g>
+<!-- van with bills -->
+<g transform="translate(1120 830) scale(1.1)">
+<path d="M0 -150 H230 V-10 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M230 -110 H300 L340 -60 V-10 H230Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M245 -98 H292 L322 -62 H245Z" fill="#e2f2fa" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="115" y="-70" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#16202e">SUPPLIES</text>
+<circle cx="70" cy="-8" r="30" fill="#16202e"/><circle cx="70" cy="-8" r="12" fill="#ccc"/>
+<circle cx="280" cy="-8" r="30" fill="#16202e"/><circle cx="280" cy="-8" r="12" fill="#ccc"/>
+</g>
+<g transform="translate(1180 560) rotate(-10)"><path d="M0 0 H66 L90 24 V110 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M66 0 V24 H90" fill="none" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="14" width="36" height="12" rx="4" fill="#d4a72c"/><line x1="16" y1="40" x2="74" y2="40" stroke="#16202e" stroke-width="4" opacity=".35"/><line x1="16" y1="60" x2="44" y2="60" stroke="#16202e" stroke-width="4" opacity=".35"/></g><g transform="translate(1290 540) rotate(8)"><path d="M0 0 H66 L90 24 V110 H0Z" fill="#fff" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M66 0 V24 H90" fill="none" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><rect x="16" y="14" width="36" height="12" rx="4" fill="#d4a72c"/><line x1="16" y1="40" x2="74" y2="40" stroke="#16202e" stroke-width="4" opacity=".35"/><line x1="16" y1="60" x2="44" y2="60" stroke="#16202e" stroke-width="4" opacity=".35"/></g>
+<path d="M1260 690 Q1150 640 1060 640" fill="none" stroke="#16202e" stroke-width="4" stroke-dasharray="4 16" stroke-linecap="round"/>
+<g transform="translate(120 830) scale(1.1)">
+<path d="M0 -60 Q-4 -120 0 -170" fill="none" stroke="#2f9e78" stroke-width="10" stroke-linecap="round"/>
+<path d="M0 -120 Q-60 -150 -70 -110 Q-30 -95 0 -120Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M0 -150 Q60 -190 72 -140 Q30 -125 0 -150Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-40 -60 H40 L30 0 H-30Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+</g><g transform="translate(1540 830) scale(0.8)">
+<path d="M0 -60 Q-4 -120 0 -170" fill="none" stroke="#2f9e78" stroke-width="10" stroke-linecap="round"/>
+<path d="M0 -120 Q-60 -150 -70 -110 Q-30 -95 0 -120Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M0 -150 Q60 -190 72 -140 Q30 -125 0 -150Z" fill="#2f9e78" stroke="#16202e" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M-40 -60 H40 L30 0 H-30Z" fill="#e8604c" stroke="#16202e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+</g>
+
+</svg>

@@ -4,20 +4,31 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const BRANDS = ['ddm','fplb','px','cgg','toss','ri','sliq'];
+const BRANDS = ['ddm','fplb','px','cgg','toss','ri'];
+// sliq still serves its preview root until the owner launches it.
+const PREVIEW_ROOT = ['sliq'];
 
-for (const slug of BRANDS) {
-  test(`${slug} root sends visitors to preview`, () => {
+for (const slug of PREVIEW_ROOT) {
+  test(`${slug} root still sends visitors to preview`, () => {
     const html = fs.readFileSync(path.join(ROOT, slug, 'index.html'), 'utf8');
     assert.match(html, /\/preview\//);
-    assert.ok(fs.existsSync(path.join(ROOT, slug, 'contact.html')));
     const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
     assert.match(redir, /\/preview\/ 301/);
+    const ads = fs.readFileSync(path.join(ROOT, slug, 'ads.txt'), 'utf8');
+    assert.match(ads, /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
   });
-  test(`${slug} preview is indexable and form can find an endpoint`, () => {
-    const html = fs.readFileSync(path.join(ROOT, slug, 'preview', 'index.html'), 'utf8');
-    assert.match(html, /index,follow/);
-    assert.doesNotMatch(html, /noindex,nofollow/);
+}
+
+for (const slug of BRANDS) {
+  // Root is now the real content site (docs/ADSENSE-SITE-SPEC.md); /preview/ is retired.
+  test(`${slug} root is the content site and retires preview`, () => {
+    const html = fs.readFileSync(path.join(ROOT, slug, 'index.html'), 'utf8');
+    assert.doesNotMatch(html, /location\.replace\("\/preview\/"\)/);
+    assert.ok(fs.existsSync(path.join(ROOT, slug, 'contact.html')));
+    const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
+    assert.match(redir, /\/preview\/\*\s+\/\s+301/);
+  });
+  test(`${slug} retained preview form can still find an endpoint`, () => {
     const js = fs.readFileSync(path.join(ROOT, slug, 'preview', 'intake.js'), 'utf8');
     assert.match(js, /INTAKE_ENDPOINT\|\|C\.ENDPOINT/);
     const cfg = fs.readFileSync(path.join(ROOT, slug, 'preview', 'config.js'), 'utf8');
@@ -26,15 +37,16 @@ for (const slug of BRANDS) {
 }
 
 for (const slug of BRANDS) {
-  test(`${slug} robots allows preview`, () => {
+  test(`${slug} robots allows the site and blocks retired preview`, () => {
     const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
-    assert.match(robots, /Allow: \/preview\//);
+    assert.match(robots, /^Allow: \/$/m);
+    assert.match(robots, /Disallow: \/preview\//);
     assert.doesNotMatch(robots, /<<<<<<</);
   });
   test(`${slug} declares existing AdSense publisher`, () => {
     const ads = fs.readFileSync(path.join(ROOT, slug, 'ads.txt'), 'utf8');
     assert.match(ads, /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
     const robots = fs.readFileSync(path.join(ROOT, slug, 'robots.txt'), 'utf8');
-    assert.match(robots, /Allow: \/ads\.txt/);
+    assert.match(robots, /^Allow: \/(ads\.txt)?$/m);
   });
 }
