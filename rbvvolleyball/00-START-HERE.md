@@ -329,6 +329,12 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-23 — Page updated: index.html
+
+- Published approved page change.
+- Content commit: `79448802b596928588787d0badcde6a4e3b3dcee`.
+
+
 ## 2026-09-23 — Photo uploaded to RBV library
 
 - Asset: `images/summer-raver-athlete-of-the-week-september-7-11-2ca8f591b3cf.png`.
