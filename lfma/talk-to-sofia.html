@@ -430,6 +430,16 @@
       return vapi; }
     btn.addEventListener('click',async function(){
       if(live){ try{ vapi.stop(); }catch(e){} return; }
+      // Tenant safety: this LFMA page currently carries NIL's consumer-intake assistant ID.
+      // Do not let an LFMA prospect enter the NIL/Phillips intake brain.
+      if(brand.id==='LFMA' && cfg.vapiAssistantId==='908118d7-f221-429f-8855-55dd1d72c193'){
+        face('idle'); setState('0');
+        status(ES?'La voz de Sofia para LFMA se está conectando. Usa la solicitud de campaña por ahora.':'LFMA Sofia voice is being connected. Use the campaign request form for now.',true);
+        var fallback=document.getElementById('type-instead');
+        if(fallback){ fallback.href='/engine/'; fallback.textContent=ES?'Solicitar campaña':'Request a campaign instead'; }
+        push('ee_voice_blocked_cross_tenant',{blocked_assistant_tenant:'NIL'});
+        return;
+      }
       setState('connecting'); face('connecting'); status(L.conn,true); push('ee_voice_start');
       try{ var v=await load(); await v.start(cfg.vapiAssistantId,{ firstMessage:L.first, metadata:Object.assign(meta(),{page_url:location.href,brand:brand.id}) }); }
       catch(e){ live=false; face('error'); setState('0'); status(/permission|NotAllowed|denied/i.test(String(e&&(e.message||e.name||e)))?L.mic:L.fail,true); push('ee_voice_error'); }
