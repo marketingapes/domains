@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-23 — Photo uploaded to RBV library
+
+- Asset: `images/summer-raver-athlete-of-the-week-september-7-11-2ca8f591b3cf.png`.
+- Content commit: `0ca2cc337892da71a7dd1e3b4965ba2d3ca122cf`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-17 — Page updated: booster-club.html
 
 - Published approved page change.
