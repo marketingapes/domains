@@ -31,7 +31,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
     <span class="logo-ring"><img class="ape-logo" src="https://marketingapes.com/assets/network/ape-logo.jpg" width="48" height="48" alt="Marketing Apes"></span>
     <span class="wordmark">MARKETING APES<small>TEX · TECHNOLOGY EXECUTION XIBITOR</small></span>
   </a>
-  <p class="clock" id="clock" aria-live="polite">FRIDAY 8:00 AM PT</p>
+  <p class="clock" id="clock" aria-live="polite">FRIDAY · MACHINE OPEN</p>
 </header>
 
 <main>
@@ -160,13 +160,6 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
   </div>
 </section>
 
-<section class="tomorrow">
-  <p class="kicker">FRIDAY 8:00 AM PT</p>
-  <h2>This URL changes. That’s why you act.</h2>
-  <p class="lede" style="margin:12px auto 0;text-align:center">Same page. What worked. What failed. What it cost. You only get that if you’re on the list.</p>
-  <p class="count" id="countdown"></p>
-</section>
-
 <section class="cta">
   <form class="optin" id="want-more" method="post" action="#">
     <h2>Anyway… what can we build for ya today?</h2>
@@ -209,7 +202,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
   </div>
 </section>
 
-<section class="friday" id="friday" hidden>
+<section class="friday" id="friday">
   <p class="eyebrow">FRIDAY · THE RECEIPTS</p>
   <h2>The tape was the hook.<br><em>The economics are why this matters.</em></h2>
   <article class="receipt">
@@ -224,7 +217,7 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
   </article>
   <article class="receipt">
     <h3>What we will not fake</h3>
-    <p>Phillips MVA first cohort: $3,880.68 spend, 39 leads, 0 signed. Cheap CPL is not a customer. Historical BTL: 19 signed matters on an older lane. Now we’re testing whether we can repeat it with the machine.</p>
+    <p>A first cohort in a new lane: leads came in, nothing signed. Cheap CPL is not a customer. An older lane did sign cases. Now we’re testing whether we can repeat that with the machine.</p>
   </article>
   <div class="offer">
     <p class="kicker">LIVE SKUS</p>
@@ -238,11 +231,6 @@ window.dataLayer.push({event:'ee_page_context',tenant_id:'MA',domain:'marketinga
   </div>
 </section>
 </main>
-
-<div class="dock" id="dock">
-  <a class="ghost" href="#watch">Replay</a>
-  <a class="button" href="#want-more">Get the receipts</a>
-</div>
 
 <footer>
   <a class="brand" href="/"><span class="logo-ring sm"><img class="ape-logo" src="https://marketingapes.com/assets/network/ape-logo.jpg" width="36" height="36" alt=""></span> MARKETING APES</a>
@@ -271,14 +259,11 @@ function tick(){
   const m = Math.floor((left % 3600000) / 60000);
   const s = Math.floor((left % 60000) / 1000);
   const clock = document.getElementById('clock');
-  const count = document.getElementById('countdown');
   if (isFriday()){
     clock.textContent = 'FRIDAY · MACHINE OPEN';
-    count.textContent = 'The machine is open.';
     document.getElementById('friday').hidden = false;
   } else {
     clock.textContent = h + 'h ' + m + 'm ' + s + 's';
-    count.textContent = h + 'h ' + m + 'm ' + s + 's';
   }
 }
 const video = document.getElementById('tex');
@@ -304,12 +289,6 @@ window.addEventListener('scroll', function () {
   document.getElementById('progress').style.width = (max ? (p.scrollTop / max) * 100 : 0) + '%';
 }, {passive:true});
 const formEl = document.getElementById('want-more');
-const dock = document.getElementById('dock');
-if ('IntersectionObserver' in window) {
-  new IntersectionObserver(function (entries) {
-    dock.classList.toggle('away', entries[0].isIntersecting);
-  }, {threshold: 0.35}).observe(formEl);
-}
 const EE = ck('ee_id') || ('ee-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8));
 setCk('ee_id', EE);
 const SID = 's-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -352,7 +331,6 @@ formEl.addEventListener('submit', (event) => {
       window.dataLayer.push({event:'ee_form_submit',tenant_id:'MA',domain:'marketingapes.com',form_id:'tex-launch',product:'tex-launch'});
       form.hidden = true;
       document.getElementById('tex-thanks').hidden = false;
-      dock.classList.add('away');
     })
     .catch(function () {
       btn.disabled = false;

@@ -21,7 +21,6 @@ body{
   color:var(--paper);
   font-family:var(--sans);
   line-height:1.55;
-  padding-bottom:88px;
 }
 a{color:inherit;text-decoration:none;cursor:pointer}
 button,input,select{font:inherit;color:inherit}
@@ -166,12 +165,6 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--paper)
   font-size:16px;line-height:1.65
 }
 
-.tomorrow{
-  text-align:center;padding:48px 16px;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line)
-}
-.count{margin-top:16px;font-family:var(--display);font-size:clamp(32px,10vw,56px);color:var(--lime)}
-
 .cta{padding:40px 16px 24px}
 .optin,.thanks,.offer{
   border:1px solid var(--line);border-radius:18px;padding:24px;background:var(--panel);max-width:560px;margin:0 auto
@@ -192,14 +185,6 @@ input,select{
 .receipt ul,.offer ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
 .receipt li+li,.offer li+li{margin-top:6px}
 
-.dock{
-  position:fixed;left:12px;right:12px;bottom:12px;z-index:40;
-  display:flex;gap:8px;padding:8px;border-radius:16px;
-  background:#0b1612ee;border:1px solid #d2f48a55;backdrop-filter:blur(12px)
-}
-.dock .button{flex:1;margin:0;min-height:48px}
-.dock.away{opacity:0;pointer-events:none}
-
 footer{
   padding:28px 16px 32px;border-top:1px solid var(--line);
   font-size:12px;color:var(--muted);display:grid;gap:12px
@@ -208,7 +193,6 @@ footer .brand{font-weight:800;letter-spacing:.08em;color:var(--paper)}
 footer a:hover{color:var(--lime)}
 
 @media(min-width:900px){
-  body{padding-bottom:0}
   .site-header{padding:12px 4vw}
   .wordmark{font-size:16px}
   .logo-ring{width:56px;height:56px}
@@ -231,7 +215,6 @@ footer a:hover{color:var(--lime)}
   .spine-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
   .doors{grid-template-columns:1fr 1fr;gap:20px}
   .founder{grid-template-columns:.85fr 1.15fr;align-items:center;gap:40px}
-  .dock{display:none}
   footer{display:flex;gap:22px;flex-wrap:wrap;align-items:center;padding:32px 4vw 44px}
 }
 @media(prefers-reduced-motion:reduce){
