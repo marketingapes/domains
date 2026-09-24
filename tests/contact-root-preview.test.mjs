@@ -28,11 +28,15 @@ for (const slug of BRANDS) {
     const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
     assert.match(redir, /\/preview\/\*\s+\/\s+301/);
   });
-  test(`${slug} retained preview form can still find an endpoint`, () => {
+  // 2026-09-24: the retired preview form no longer ships the public Make capture hook (LEG-1/AFF-6);
+  // with no endpoint the script refuses to send instead of POSTing to the page itself.
+  test(`${slug} retired preview form exposes no endpoint and fails closed`, () => {
     const js = fs.readFileSync(path.join(ROOT, slug, 'preview', 'intake.js'), 'utf8');
     assert.match(js, /INTAKE_ENDPOINT\|\|C\.ENDPOINT/);
+    assert.match(js, /if\(!HOOK\)\{const e=Error\('intake_disabled'\)/);
     const cfg = fs.readFileSync(path.join(ROOT, slug, 'preview', 'config.js'), 'utf8');
-    assert.match(cfg, /"ENDPOINT"\s*:\s*"https:\/\//);
+    assert.match(cfg, /"ENDPOINT"\s*:\s*""/);
+    assert.doesNotMatch(cfg, /hook\.us2\.make\.com/);
   });
 }
 

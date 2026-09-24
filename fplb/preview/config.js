@@ -7,7 +7,7 @@ window.DOMAIN_CONFIG={
   "PAGE_SLUG": "index",
   "CAMPAIGN_ID": "FPLB_V1",
   "LEAD_SOURCE": "site_form",
-  "ENDPOINT": "https://hook.us2.make.com/3simdd4xno0o9lh9jlsjdkc64570s3c4",
+  "ENDPOINT": "",
   "PHONE": "(619) 736-0356",
   "SUPPORT_EMAIL": "hello@forpetslikeblue.com",
   "VOICE_ENABLED": false,
