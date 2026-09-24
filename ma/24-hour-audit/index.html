@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>24-Hour Marketing Leak Audit — Marketing Apes</title>
+  <meta name="description" content="Find the marketing leaks draining your budget in 24 hours. Flat $295. Pick a weekday morning slot, then pay." />
+  <style>
+    :root {
+      --bg: #0b0f0c;
+      --panel: #121a14;
+      --ink: #f2f5f0;
+      --muted: #a3b3a6;
+      --accent: #b8ff3c;
+      --accent-ink: #0b0f0c;
+      --line: #243028;
+      --danger: #ff6b4a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, #1a2a18 0%, var(--bg) 55%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+    .brand { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.15; margin: 12px 0 16px; }
+    .sub { color: var(--muted); font-size: 1.05rem; margin-bottom: 28px; }
+    .price {
+      display: inline-flex; align-items: baseline; gap: 10px;
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 999px; padding: 8px 16px; margin-bottom: 28px;
+    }
+    .price strong { font-size: 1.35rem; color: var(--accent); }
+    .price span { color: var(--muted); font-size: 0.9rem; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .card h2 { margin: 0 0 12px; font-size: 1.1rem; }
+    ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+    li { margin: 8px 0; }
+    label { display: block; font-size: 0.85rem; margin: 14px 0 6px; color: var(--muted); }
+    input, select, textarea {
+      width: 100%;
+      background: #0b120e;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink);
+      padding: 12px 14px;
+      font: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .slot {
+      appearance: none;
+      background: #0b120e;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink);
+      padding: 10px 8px;
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      width: 100%;
+      margin: 0;
+    }
+    .slot[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+    .slot:disabled { opacity: 0.35; cursor: not-allowed; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+    button.cta {
+      margin-top: 20px;
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 14px 18px;
+      cursor: pointer;
+    }
+    button.cta:hover { filter: brightness(1.05); }
+    .fine { margin-top: 12px; font-size: 0.8rem; color: var(--muted); text-align: center; }
+    .err { color: var(--danger); font-size: 0.9rem; margin-top: 10px; display: none; }
+    footer { margin-top: 40px; color: var(--muted); font-size: 0.8rem; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">Marketing Apes</div>
+    <h1>Find the marketing leaks draining your budget — in 24 hours.</h1>
+    <p class="sub">Flat-fee leak map + three fixes ranked by cash impact. Pick a weekday morning debrief slot, then pay $295. Credited toward implementation if you move forward.</p>
+    <div class="price"><strong>$295</strong><span>one-time · 24-hour turnaround</span></div>
+
+    <section class="card">
+      <h2>What you get</h2>
+      <ul>
+        <li>Channel / spend / conversion leak map</li>
+        <li>Top 3 fixes ranked by expected cash impact</li>
+        <li>15-minute debrief in your chosen morning slot</li>
+        <li>$295 credited if you hire Marketing Apes for implementation</li>
+      </ul>
+    </section>
+
+    <section class="card" id="start">
+      <h2>Book + pay</h2>
+      <form id="leak-form" novalidate>
+        <label for="name">Name</label>
+        <input id="name" name="name" autocomplete="name" required placeholder="Your name" />
+
+        <label for="email">Work email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+
+        <label for="site">Website / landing URL</label>
+        <input id="site" name="site" type="url" required placeholder="https://" />
+
+        <label for="leak">Where do you think money is leaking?</label>
+        <textarea id="leak" name="leak" rows="3" required placeholder="Ads, landing page, CRM, tracking, offers…"></textarea>
+
+        <label for="day">Debrief day (weekdays only)</label>
+        <select id="day" name="day" required></select>
+
+        <label>Time (Pacific · 8:00am–11:30am · 30 min)</label>
+        <div class="slots" id="slots" role="group" aria-label="Available times"></div>
+        <input type="hidden" id="slot" name="slot" required />
+        <p class="hint">Times are America/Los_Angeles. We’ll confirm the calendar invite after payment.</p>
+
+        <p class="err" id="err">Please complete every field and pick a time slot.</p>
+        <button class="cta" type="submit">Pay $295 — lock my audit</button>
+        <p class="fine">You’ll pay securely via QuickBooks. Keep this tab’s details — we use your selected slot to schedule the debrief.</p>
+      </form>
+    </section>
+
+    <footer>
+      Marketing Apes LLC · <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a><br />
+      24-Hour Marketing Leak Audit
+    </footer>
+  </main>
+  <script>
+    (function () {
+      var PAY_URL = "https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-b84df3d143b04ba2a496b2e8abf05b310698e755be8c429c83fe7df5b6aba811ef92935d9ec6468c94ae2400ac1022f1-1?locale=EN_US&cta=saveandcopylink";
+      var TIMES = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30"];
+      var dayEl = document.getElementById("day");
+      var slotsEl = document.getElementById("slots");
+      var slotEl = document.getElementById("slot");
+      var form = document.getElementById("leak-form");
+      var err = document.getElementById("err");
+
+      function fmtLabel(isoDate, hm) {
+        var parts = isoDate.split("-").map(Number);
+        var d = new Date(parts[0], parts[1] - 1, parts[2], Number(hm.slice(0, 2)), Number(hm.slice(3, 5)));
+        return d.toLocaleString("en-US", {
+          timeZone: "America/Los_Angeles",
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        }) + " PT";
+      }
+
+      function nextWeekdays(count) {
+        var out = [];
+        var d = new Date();
+        // Walk in PT by using noon UTC-ish local; simple local calendar is fine for picker labels
+        for (var i = 0; out.length < count && i < 40; i++) {
+          var t = new Date(d.getFullYear(), d.getMonth(), d.getDate() + i);
+          var dow = t.getDay();
+          if (dow === 0 || dow === 6) continue;
+          // Skip today if after 11:30 PT roughly — keep simple: allow today
+          var y = t.getFullYear();
+          var m = String(t.getMonth() + 1).padStart(2, "0");
+          var day = String(t.getDate()).padStart(2, "0");
+          var iso = y + "-" + m + "-" + day;
+          var label = t.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "short",
+            day: "numeric"
+          });
+          out.push({ iso: iso, label: label });
+        }
+        return out;
+      }
+
+      function renderSlots() {
+        slotsEl.innerHTML = "";
+        slotEl.value = "";
+        var day = dayEl.value;
+        TIMES.forEach(function (hm) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "slot";
+          btn.setAttribute("aria-pressed", "false");
+          var h = Number(hm.slice(0, 2));
+          var mi = hm.slice(3);
+          var ampm = h >= 12 ? "pm" : "am";
+          var h12 = h % 12 || 12;
+          btn.textContent = h12 + ":" + mi + " " + ampm;
+          btn.addEventListener("click", function () {
+            Array.prototype.forEach.call(slotsEl.querySelectorAll(".slot"), function (b) {
+              b.setAttribute("aria-pressed", "false");
+            });
+            btn.setAttribute("aria-pressed", "true");
+            slotEl.value = day + "T" + hm + ":00";
+          });
+          slotsEl.appendChild(btn);
+        });
+      }
+
+      nextWeekdays(10).forEach(function (d, i) {
+        var opt = document.createElement("option");
+        opt.value = d.iso;
+        opt.textContent = d.label;
+        if (i === 0) opt.selected = true;
+        dayEl.appendChild(opt);
+      });
+      dayEl.addEventListener("change", renderSlots);
+      renderSlots();
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        err.style.display = "none";
+        if (!form.reportValidity() || !slotEl.value) {
+          err.style.display = "block";
+          return;
+        }
+        var hm = slotEl.value.slice(11, 16);
+        var payload = {
+          name: document.getElementById("name").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          site: document.getElementById("site").value.trim(),
+          leak: document.getElementById("leak").value.trim(),
+          slotLocal: slotEl.value,
+          slotLabel: fmtLabel(dayEl.value, hm),
+          timezone: "America/Los_Angeles",
+          product: "24-Hour Marketing Leak Audit",
+          amount: 295,
+          ts: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem("ma_leak_audit_lead", JSON.stringify(payload));
+        } catch (x) {}
+        window.location.href = PAY_URL;
+      });
+    })();
+  </script>
+</body>
+</html>
