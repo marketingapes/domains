@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>24-Hour Marketing Leak Audit — Marketing Apes</title>
-  <meta name="description" content="Find the marketing leaks draining your budget in 24 hours. Flat $295. Pick a weekday morning slot, then pay." />
+  <meta name="description" content="24-hour leak audit across Facebook, Google Ads, GMB, pages, tracking, CRM, and intake. Flat $295." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -85,7 +85,8 @@
     }
     .eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
-      font-size: 11px; font-weight: 800; letter-spacing: 0.2em;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--lime); margin-bottom: 14px;
     }
     .eyebrow i {
@@ -251,6 +252,69 @@
       font-size: 13px; color: var(--muted); min-height: 42px;
     }
     .selected strong { color: var(--lime); }
+
+    .pain {
+      border-left: 3px solid var(--lime);
+      padding: 12px 0 12px 16px;
+      margin: 0 0 22px;
+      color: var(--paper);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .pain strong { color: var(--lime); }
+    .channels {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin: 0 0 22px;
+    }
+    @media (min-width: 560px) {
+      .channels { grid-template-columns: 1fr 1fr; }
+    }
+    .ch {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+    .ch i {
+      width: 10px; height: 10px; margin-top: 5px; border-radius: 50%;
+      background: var(--live); box-shadow: 0 0 0 4px #9be36a22;
+    }
+    .ch b {
+      display: block; font-size: 13px; font-weight: 800;
+      letter-spacing: 0.02em; color: var(--paper); margin-bottom: 2px;
+    }
+    .ch span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+    .section-label {
+      font-family: var(--display); font-size: 15px; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--paper); margin: 0 0 12px;
+    }
+    .chan-pick {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    @media (max-width: 420px) {
+      .chan-pick { grid-template-columns: 1fr; }
+    }
+    .chan-pick label.chk {
+      display: flex; align-items: center; gap: 8px;
+      margin: 0; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: #0b1612; font-size: 12px; font-weight: 700;
+      cursor: pointer; color: var(--paper); letter-spacing: 0;
+    }
+    .chan-pick label.chk:has(input:checked) {
+      border-color: var(--lime); background: #d2f48a18;
+    }
+    .chan-pick input { width: auto; min-height: 0; margin: 0; accent-color: var(--lime); }
     footer.page-foot {
       width: min(1120px, calc(100% - 32px));
       margin: 0 auto 40px;
@@ -273,17 +337,32 @@
   <main class="shell">
     <section class="pitch">
       <div class="eyebrow"><i></i> Cash path · Flat fee</div>
-      <h1>Find the marketing leaks draining your budget — in 24 hours.</h1>
-      <p class="lede">Flat-fee leak map + three fixes ranked by cash impact. Pick a weekday morning debrief slot, then pay $295. Credited toward implementation if you move forward.</p>
+      <h1>Find where Facebook, Google, and GMB are leaking your budget — in 24 hours.</h1>
+      <p class="lede">Cheap CPL is not a customer. In 24 hours we map the leaks across your live channels and hand you the three fixes most likely to put cash back — then walk you through it in a 15-minute morning debrief.</p>
+      <p class="pain"><strong>The “oh no”:</strong> Ads look fine in the dashboard, pages get traffic, phones ring or forms fire — and you still can’t say which dollar made a customer. Staff burn mornings on leads that were never going to buy.</p>
       <div class="stats" aria-label="Offer highlights">
         <div class="stat"><b>$295</b><span>one-time</span></div>
         <div class="stat"><b>24h</b><span>turnaround</span></div>
         <div class="stat"><b>15 min</b><span>debrief</span></div>
       </div>
+
+      <h2 class="section-label">What we check</h2>
+      <div class="channels" aria-label="Audit channels">
+        <div class="ch"><i></i><div><b>Meta / Facebook & Instagram Ads</b><span>Spend, audiences, creative fatigue, landing match, pixel events</span></div></div>
+        <div class="ch"><i></i><div><b>Google Ads</b><span>Search, Performance Max, YouTube — waste, intent, conversion paths</span></div></div>
+        <div class="ch"><i></i><div><b>Google Business Profile (GMB)</b><span>Local pack visibility, reviews, posts, call / direction leaks</span></div></div>
+        <div class="ch"><i></i><div><b>Landing pages & site</b><span>Message match, speed, mobile, form friction, dead ends</span></div></div>
+        <div class="ch"><i></i><div><b>Tracking & attribution</b><span>Pixels, GA4, UTMs, call tracking — can you trust the numbers?</span></div></div>
+        <div class="ch"><i></i><div><b>CRM / email / SMS follow-up</b><span>Speed-to-lead, ghosted leads, sequences that never fire</span></div></div>
+        <div class="ch"><i></i><div><b>Calls & intake</b><span>Missed calls, after-hours, who answers while it’s hot</span></div></div>
+        <div class="ch"><i></i><div><b>Offer & creative</b><span>Promise vs proof — what’s actually converting</span></div></div>
+        <div class="ch"><i></i><div><b>Forms / chat / handoff</b><span>Where qualified demand dies between click and calendar</span></div></div>
+      </div>
+
       <div class="deliver">
         <h2>What you get</h2>
         <ul>
-          <li>Channel / spend / conversion leak map</li>
+          <li>Channel-by-channel leak map (the nine above — only what’s live for you)</li>
           <li>Top 3 fixes ranked by expected cash impact</li>
           <li>15-minute debrief in your chosen morning slot</li>
           <li>$295 credited if you hire Marketing Apes for implementation</li>
@@ -291,7 +370,7 @@
       </div>
     </section>
 
-    <section class="book" id="start">
+<section class="book" id="start">
       <div class="book-head">
         <h2>Book + pay</h2>
         <div class="price-tag">$295</div>
@@ -318,8 +397,20 @@
         <label for="site">Website / landing URL</label>
         <input id="site" name="site" type="url" required placeholder="https://" />
 
-        <label for="leak">Where do you think money is leaking?</label>
-        <textarea id="leak" name="leak" rows="3" required placeholder="Ads, landing page, CRM, tracking, offers…"></textarea>
+        <label id="chan-label">Which channels are live right now?</label>
+        <div class="chan-pick" id="chan-pick" role="group" aria-labelledby="chan-label">
+          <label class="chk"><input type="checkbox" name="channels" value="meta" /> Meta / Facebook Ads</label>
+          <label class="chk"><input type="checkbox" name="channels" value="google_ads" /> Google Ads</label>
+          <label class="chk"><input type="checkbox" name="channels" value="gmb" /> Google Business Profile</label>
+          <label class="chk"><input type="checkbox" name="channels" value="landing" /> Landing pages / site</label>
+          <label class="chk"><input type="checkbox" name="channels" value="tracking" /> Tracking / attribution</label>
+          <label class="chk"><input type="checkbox" name="channels" value="crm" /> CRM / email / SMS</label>
+          <label class="chk"><input type="checkbox" name="channels" value="calls" /> Calls / intake</label>
+          <label class="chk"><input type="checkbox" name="channels" value="creative" /> Offer / creative</label>
+          <label class="chk"><input type="checkbox" name="channels" value="forms" /> Forms / chat / handoff</label>
+        </div>
+        <label for="leak">Anything else we should know?</label>
+        <textarea id="leak" name="leak" rows="2" placeholder="Optional — biggest suspicion, monthly ad spend, tools you use…"></textarea>
 
         <label id="day-label">Debrief day (weekdays only)</label>
         <div class="day-pills" id="days" role="group" aria-labelledby="day-label"></div>
@@ -331,7 +422,7 @@
         <p class="selected" id="picked">Pick a day and time above.</p>
         <p class="hint">Times are America/Los_Angeles. We’ll confirm the calendar invite after payment.</p>
 
-        <p class="err" id="err">Please complete every field and pick a time slot.</p>
+        <p class="err" id="err">Pick at least one live channel, complete the fields, and choose a time slot.</p>
         <button class="cta" type="submit">Pay $295 — lock my audit</button>
         <p class="fine">You’ll pay securely via QuickBooks. We use your selected slot to schedule the debrief.</p>
       </form>
@@ -456,8 +547,12 @@
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         err.style.display = "none";
-        if (!form.reportValidity() || !dayEl.value || !slotEl.value) {
+        var chans = Array.prototype.map.call(document.querySelectorAll('input[name="channels"]:checked'), function (c) { return c.value; });
+        if (!form.reportValidity() || !dayEl.value || !slotEl.value || chans.length === 0) {
           err.style.display = "block";
+          err.textContent = chans.length === 0
+            ? "Pick at least one live channel, complete the fields, and choose a time slot."
+            : "Please complete every field and pick a time slot.";
           return;
         }
         var hm = slotEl.value.slice(11, 16);
@@ -465,6 +560,7 @@
           name: document.getElementById("name").value.trim(),
           email: document.getElementById("email").value.trim(),
           site: document.getElementById("site").value.trim(),
+          channels: chans,
           leak: document.getElementById("leak").value.trim(),
           slotLocal: slotEl.value,
           slotLabel: fmtLabel(dayEl.value, hm),
