@@ -5,212 +5,426 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Best Tort Lawyers — Mass Tort &amp; Abuse Claims | Talk with Sofia</title>
 <meta name="description" content="Harmed by a dangerous drug or device? Hurt by someone in power? Talk with Sofia — our AI assistant — and get connected with law firms actively taking mass tort and abuse claims. Free, 24/7.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#061229;--bg2:#0a1d45;--panel:#0b1a3d;--ink:#f3f7ff;--muted:#b7c4dc;--dim:#7d8ba6;--accent:#1e8bff;--accent-deep:#0d5fd6;--line:rgba(30,139,255,.28);--glow:rgba(30,139,255,.25);--ok:#2ee59d;--gold:#f0b23e}
+:root{
+  --bg0:#03060d; --bg1:#060c18;
+  --panel:rgba(13,22,41,.66); --panel2:rgba(17,28,54,.78);
+  --ink:#eef4ff; --muted:#a9b8d4; --dim:#6f7f9e;
+  --blue:#2f7bff; --cyan:#3ee0ff; --violet:#8b7bff;
+  --ok:#2ee59d; --gold:#f0b23e;
+  --line:rgba(120,160,255,.14); --line2:rgba(120,160,255,.22);
+  --grad:linear-gradient(120deg,#2f7bff 0%,#3ee0ff 100%);
+  --r:18px;
+  --font-d:"Space Grotesk",system-ui,sans-serif;
+  --font-b:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:radial-gradient(110% 50% at 50% 0%,#0c2254 0%,transparent 60%),linear-gradient(180deg,var(--bg) 0%,var(--bg2) 60%,var(--bg) 100%);background-color:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{width:100%;max-width:40rem;margin-inline:auto;padding:0 20px 3rem}
-.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:.8rem 20px;background:rgba(6,18,41,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.brand{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
-.brand small{display:block;font-size:.58rem;font-weight:600;letter-spacing:.1em;color:var(--muted);margin-top:2px}
-.callbtn{display:inline-flex;align-items:center;gap:.45rem;background:var(--accent);color:#fff;font-weight:700;font-size:.92rem;text-decoration:none;border-radius:999px;padding:.65rem 1.15rem;box-shadow:0 8px 26px -8px var(--glow);white-space:nowrap}
-.callbtn:active{transform:scale(.97)}
-.hero{padding:2.6rem 0 1.6rem;text-align:center}
-.eyebrow{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);border:1px solid rgba(46,229,157,.4);border-radius:999px;padding:.35rem .9rem;margin-bottom:1.1rem}
-h1{font-size:clamp(1.9rem,7.4vw,2.7rem);line-height:1.08;letter-spacing:-.02em;margin:0 0 .9rem;text-wrap:balance}
-.lede{color:var(--muted);font-size:1.04rem;max-width:32rem;margin:0 auto 1.6rem}
-.lede strong{color:var(--ink);font-weight:600}
-.bigcall{display:block;background:linear-gradient(180deg,var(--accent),var(--accent-deep));color:#fff;text-decoration:none;font-weight:800;font-size:1.25rem;border-radius:16px;padding:1.15rem 1.5rem;box-shadow:0 18px 44px -12px var(--glow);margin:0 0 .6rem}
-.bigcall small{display:block;font-weight:600;font-size:.85rem;opacity:.9;margin-top:.25rem}
-.tel{display:inline-block;color:var(--muted);text-decoration:none;font-size:1.02rem;font-weight:600;margin-bottom:1.4rem}
-.trust{display:flex;justify-content:center;gap:1.1rem;flex-wrap:wrap;color:var(--dim);font-size:.82rem}
-.trust span::before{content:"✓ ";color:var(--ok)}
-.doors{display:grid;gap:14px;margin:2.2rem 0}
-@media(min-width:560px){.doors{grid-template-columns:1fr 1fr}}
-.door{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.4rem 1.3rem;display:flex;flex-direction:column;gap:.7rem}
-.door h2{font-size:1.12rem;margin:0;letter-spacing:-.01em}
-.door p{margin:0;color:var(--muted);font-size:.93rem}
-.door .pick{margin-top:auto}
-.door .callbtn{width:100%;justify-content:center;font-size:.95rem}
-.door ul{margin:.2rem 0 0;padding-left:1.1rem;color:var(--muted);font-size:.9rem}
-.door ul li{margin:.15rem 0}
-.note{text-align:center;color:var(--dim);font-size:.88rem;margin:-.6rem 0 2rem}
-.steps{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1.3rem;margin:0 0 2rem}
-.steps h2{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 1rem}
-.step{display:grid;grid-template-columns:2rem 1fr;gap:.7rem;padding:.65rem 0;border-top:1px solid rgba(30,139,255,.14)}
-.step:first-of-type{border-top:0}
-.n{width:2rem;height:2rem;border-radius:50%;background:rgba(30,139,255,.16);color:var(--accent);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.95rem}
-.step p{margin:.15rem 0 0;color:var(--muted);font-size:.93rem}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg0);color:var(--ink);font-family:var(--font-b);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(900px 480px at 12% -4%,rgba(47,123,255,.20),transparent 60%),
+    radial-gradient(760px 420px at 88% 6%,rgba(62,224,255,.12),transparent 60%),
+    radial-gradient(1000px 700px at 50% 110%,rgba(139,123,255,.10),transparent 60%),
+    linear-gradient(180deg,#04070e 0%,#050a15 55%,#03060d 100%);}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(120,160,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(80% 60% at 50% 0%,#000 30%,transparent 100%);
+          mask-image:radial-gradient(80% 60% at 50% 0%,#000 30%,transparent 100%);}
+::selection{background:rgba(47,123,255,.4)}
+.wrap{width:100%;max-width:72rem;margin-inline:auto;padding:0 22px}
+h1,h2,h3{font-family:var(--font-d);letter-spacing:-.02em;line-height:1.12;margin:0}
+a{color:inherit}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);
+  border:1px solid rgba(62,224,255,.35);background:rgba(62,224,255,.07);border-radius:999px;padding:.42rem 1rem;margin-bottom:1.2rem}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(3,6,13,.72);border-bottom:1px solid var(--line)}
+.nav-in{max-width:72rem;margin:0 auto;padding:.85rem 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--font-d);font-weight:700;font-size:.95rem;letter-spacing:.06em;line-height:1.25}
+.brand small{display:block;font-family:var(--font-b);font-size:.62rem;font-weight:600;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-top:2px}
+.brand b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-weight:700;text-decoration:none;border-radius:999px;cursor:pointer;border:0;font-family:inherit}
+.btn-call{background:var(--grad);color:#04121f;font-size:.95rem;padding:.8rem 1.5rem;box-shadow:0 10px 34px -8px rgba(62,224,255,.55);transition:transform .15s,box-shadow .2s;white-space:nowrap}
+.btn-call:hover{transform:translateY(-2px);box-shadow:0 16px 40px -8px rgba(62,224,255,.7)}
+.btn-call:active{transform:scale(.97)}
+.btn-ghost{border:1px solid var(--line2);color:var(--ink);background:rgba(120,160,255,.06);padding:.8rem 1.5rem;font-size:.95rem;transition:border-color .2s,background .2s}
+.btn-ghost:hover{border-color:rgba(62,224,255,.5);background:rgba(62,224,255,.1)}
+
+/* HERO */
+.hero{padding:4.2rem 0 3rem;position:relative}
+.hero-grid{display:grid;gap:3rem;align-items:start}
+@media(min-width:960px){.hero-grid{grid-template-columns:1.04fr .96fr}}
+.hero h1{font-size:clamp(2.3rem,5.6vw,3.9rem);font-weight:700;margin-bottom:1.1rem;text-wrap:balance}
+.hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{color:var(--muted);font-size:1.1rem;max-width:34rem;margin:0 0 1.8rem}
+.lede strong{color:var(--ink)}
+.hero-ctas{display:flex;gap:.9rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.bigcall{font-size:1.12rem;padding:1.05rem 2rem}
+.tel-line{display:block;color:var(--muted);text-decoration:none;font-weight:600;font-size:1.02rem;margin-bottom:1.8rem}
+.tel-line b{color:var(--ink);font-size:1.15rem}
+.trust{display:flex;gap:1.4rem;flex-wrap:wrap;color:var(--dim);font-size:.88rem}
+.trust span{display:inline-flex;align-items:center;gap:.45rem}
+.trust i{font-style:normal;color:var(--ok);font-weight:800}
+
+/* FORM CARD */
+.formcard{position:relative;border-radius:22px;padding:2px;background:linear-gradient(150deg,rgba(62,224,255,.65),rgba(47,123,255,.25) 30%,rgba(139,123,255,.4) 70%,rgba(62,224,255,.55));
+  box-shadow:0 30px 80px -20px rgba(47,123,255,.45)}
+.formcard-in{background:linear-gradient(180deg,rgba(10,17,33,.96),rgba(7,12,24,.98));border-radius:20px;padding:1.9rem 1.7rem}
+.formcard h2{font-size:1.45rem;margin-bottom:.35rem}
+.formcard>p{color:var(--muted);font-size:.95rem;margin:0 0 1.4rem}
+.formcard>p b{color:var(--cyan)}
+.field{margin-bottom:1rem}
+label{display:block;font-size:.84rem;font-weight:600;margin-bottom:.35rem;color:var(--muted)}
+input,select{width:100%;font-size:1rem;color:var(--ink);background:rgba(4,9,20,.85);border:1px solid var(--line2);border-radius:12px;padding:.85rem .95rem;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(62,224,255,.18)}
+input::placeholder{color:var(--dim)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236f7f9e' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.4rem}
+select:invalid{color:var(--dim)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.submit{width:100%;background:var(--grad);color:#04121f;border:0;border-radius:14px;font-weight:800;font-size:1.08rem;padding:1.05rem;cursor:pointer;margin-top:.5rem;font-family:var(--font-d);letter-spacing:.01em;
+  box-shadow:0 14px 36px -10px rgba(62,224,255,.6);transition:transform .15s,box-shadow .2s}
+.submit:hover{transform:translateY(-2px);box-shadow:0 20px 44px -10px rgba(62,224,255,.75)}
+.submit:disabled{opacity:.55;cursor:default;transform:none}
+.fineprint{font-size:.8rem;color:var(--dim);text-align:center;margin:.9rem 0 0}
+#cbSent{border:1px solid rgba(46,229,157,.45);border-radius:14px;padding:1.3rem;background:rgba(46,229,157,.07);text-align:center}
+#cbSent strong{color:var(--ok);font-size:1.1rem;font-family:var(--font-d)}
+#cbSent p{margin:.5rem 0 0;color:var(--muted);font-size:.95rem}
+#cbSent a{color:var(--cyan);font-weight:700}
+.form-badges{display:flex;justify-content:center;gap:1.1rem;margin-top:1.1rem;color:var(--dim);font-size:.78rem;flex-wrap:wrap}
+.form-badges span::before{content:"🔒 ";}
+
+/* TICKER */
+.ticker{border-block:1px solid var(--line);background:rgba(6,11,22,.6);overflow:hidden;white-space:nowrap;margin:1rem 0 0}
+.ticker-in{display:inline-block;padding:.85rem 0;animation:tick 30s linear infinite;font-family:var(--font-d);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.ticker-in b{color:var(--cyan);font-weight:600}
+.ticker-in .sep{color:var(--blue);margin:0 1.4rem}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section.block{padding:4.5rem 0}
+.sec-head{max-width:44rem;margin:0 auto 2.8rem;text-align:center}
+.sec-head h2{font-size:clamp(1.8rem,4vw,2.7rem);margin:.9rem 0 .8rem}
+.sec-head p{color:var(--muted);font-size:1.05rem;margin:0}
+.kicker{font-size:.7rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:0}
+@media(max-width:640px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.6rem 1.4rem;text-align:center;backdrop-filter:blur(8px)}
+.stat .num{font-family:var(--font-d);font-size:2.4rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .lbl{color:var(--dim);font-size:.86rem;margin-top:.3rem}
+
+/* TORT GRID */
+.tgrid{display:grid;gap:1.1rem}
+@media(min-width:640px){.tgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.tgrid{grid-template-columns:repeat(3,1fr)}}
+.tcard{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.7rem 1.5rem;overflow:hidden;transition:transform .2s,border-color .25s,box-shadow .25s;backdrop-filter:blur(8px)}
+.tcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--grad);opacity:.85}
+.tcard:hover{transform:translateY(-5px);border-color:rgba(62,224,255,.4);box-shadow:0 24px 50px -18px rgba(47,123,255,.5)}
+.tcard .icon{font-size:1.7rem;margin-bottom:.7rem;display:block}
+.tcard h3{font-size:1.18rem;margin-bottom:.5rem}
+.tcard p{color:var(--muted);font-size:.93rem;margin:0 0 1.1rem}
+.tcard a.cta{font-weight:700;font-size:.92rem;color:var(--cyan);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+.tcard a.cta:hover{text-decoration:underline}
+.status{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ok);background:rgba(46,229,157,.1);border:1px solid rgba(46,229,157,.35);border-radius:999px;padding:.28rem .8rem;margin-bottom:.9rem}
+
+/* ABUSE */
+.abuse{background:linear-gradient(180deg,rgba(139,123,255,.07),transparent 40%);border-block:1px solid var(--line)}
+.abuse .sec-head .kicker{color:var(--violet)}
+.abuse-grid{display:grid;gap:1.1rem;margin-bottom:2.2rem}
+@media(min-width:760px){.abuse-grid{grid-template-columns:repeat(3,1fr)}}
+.acard{background:rgba(20,16,44,.6);border:1px solid rgba(139,123,255,.25);border-radius:var(--r);padding:1.7rem 1.5rem;transition:transform .2s,border-color .25s}
+.acard:hover{transform:translateY(-4px);border-color:rgba(139,123,255,.55)}
+.acard h3{font-size:1.12rem;margin-bottom:.5rem}
+.acard p{color:var(--muted);font-size:.92rem;margin:0}
+.abuse-note{max-width:46rem;margin:0 auto;text-align:center;color:var(--muted);font-size:1rem}
+.abuse-note strong{color:var(--ink)}
+.abuse-cta{text-align:center;margin-top:1.8rem}
+
+/* STEPS */
+.steps{display:grid;gap:1.1rem;counter-reset:step}
+@media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:1.9rem 1.6rem;position:relative;backdrop-filter:blur(8px)}
+.step .n{width:2.6rem;height:2.6rem;border-radius:14px;background:var(--grad);color:#04121f;font-family:var(--font-d);font-weight:700;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;box-shadow:0 8px 22px -6px rgba(62,224,255,.55)}
+.step h3{font-size:1.15rem;margin-bottom:.5rem}
+.step p{color:var(--muted);font-size:.94rem;margin:0}
 .step p strong{color:var(--ink)}
-.callback{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1.3rem;margin:0 0 2rem}
-.callback h2{margin:0 0 .4rem;font-size:1.2rem}
-.callback>p{color:var(--muted);font-size:.93rem;margin:0 0 1.1rem}
-.field{margin-bottom:.95rem}
-label{display:block;font-size:.86rem;font-weight:600;margin-bottom:.3rem}
-input,select{width:100%;font-size:1rem;color:var(--ink);background:#081426;border:1px solid var(--line);border-radius:10px;padding:.75rem .85rem;font-family:inherit}
-input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.submit{width:100%;background:var(--ok);color:#04140c;border:0;border-radius:12px;font-weight:800;font-size:1.05rem;padding:1rem;cursor:pointer;margin-top:.4rem}
-.submit:disabled{opacity:.55;cursor:default}
-.fineprint{font-size:.8rem;color:var(--dim);text-align:center;margin-top:.7rem}
-#cbSent{border:1px solid rgba(46,229,157,.45);border-radius:12px;padding:1.1rem 1.2rem;background:rgba(46,229,157,.07)}
-#cbSent strong{color:var(--ok)}
-.deadline{border-left:3px solid var(--gold);background:rgba(240,178,62,.06);border-radius:0 12px 12px 0;padding:1.1rem 1.2rem;margin:0 0 2rem}
-.deadline p{margin:0;color:var(--muted);font-size:.93rem}
-.deadline strong{color:var(--ink)}
-.qr{display:flex;gap:1rem;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.2rem;margin:0 0 2rem}
-.qr img{width:104px;height:104px;border-radius:8px;background:#fff;flex:none}
-.qr p{margin:0;color:var(--muted);font-size:.9rem}
-.qr strong{color:var(--ink)}
-footer{border-top:1px solid var(--line);padding-top:1.4rem}
-.disc{font-size:.74rem;line-height:1.65;color:var(--dim)}
+
+/* DEADLINE */
+.deadline{border-radius:22px;padding:2.6rem 2.2rem;background:linear-gradient(140deg,rgba(240,178,62,.12),rgba(240,178,62,.03));border:1px solid rgba(240,178,62,.35);text-align:center;position:relative;overflow:hidden}
+.deadline::before{content:"⏳";font-size:2.2rem;display:block;margin-bottom:.8rem}
+.deadline h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:.7rem}
+.deadline p{color:var(--muted);max-width:40rem;margin:0 auto 1.5rem}
+.deadline p strong{color:var(--ink)}
+.btn-gold{background:linear-gradient(120deg,#f0b23e,#ffcf6b);color:#231600;font-size:1.05rem;padding:1rem 2.2rem;box-shadow:0 14px 36px -10px rgba(240,178,62,.55);transition:transform .15s}
+.btn-gold:hover{transform:translateY(-2px)}
+
+/* FAQ */
+.faq{max-width:46rem;margin:0 auto}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:.8rem;overflow:hidden;backdrop-filter:blur(8px)}
+.faq summary{cursor:pointer;padding:1.15rem 1.4rem;font-weight:600;font-family:var(--font-d);font-size:1.02rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.4rem;color:var(--cyan);flex:none;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0;padding:0 1.4rem 1.3rem;color:var(--muted);font-size:.95rem}
+
+/* FINAL CTA */
+.final{border-radius:26px;padding:3.2rem 2.2rem;background:linear-gradient(150deg,rgba(47,123,255,.16),rgba(62,224,255,.05) 50%,rgba(139,123,255,.12));border:1px solid var(--line2);display:grid;gap:2rem;align-items:center;text-align:center}
+@media(min-width:820px){.final{grid-template-columns:1.2fr .8fr;text-align:left}}
+.final h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.8rem}
+.final p{color:var(--muted);margin:0 0 1.6rem}
+.qrbox{display:flex;gap:1.1rem;align-items:center;background:rgba(4,9,20,.7);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;justify-content:center}
+.qrbox img{width:104px;height:104px;border-radius:10px;background:#fff;flex:none}
+.qrbox p{margin:0;color:var(--muted);font-size:.88rem;text-align:left}
+.qrbox strong{color:var(--ink)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:2.6rem 0 3rem;margin-top:4rem}
+.disc{font-size:.76rem;line-height:1.7;color:var(--dim);max-width:64rem}
 .disc a{color:var(--muted)}
-.copy{font-size:.74rem;color:var(--dim);margin-top:1rem}
+.copy{font-size:.76rem;color:var(--dim);margin-top:1.2rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.ticker-in{animation:none}*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">Best Tort Lawyers<small>Mass Tort · Abuse Claims</small></div>
-  <a class="callbtn" href="tel:+16026931461">📞 Call Sofia</a>
+<nav class="nav">
+  <div class="nav-in">
+    <div class="brand"><b>BEST TORT LAWYERS</b><small>Mass Tort · Abuse Claims</small></div>
+    <a class="btn btn-call" href="tel:+16026931461">📞 Call Sofia</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="rv in">
+        <span class="eyebrow"><span class="dot"></span>Free claim review · 24/7 · No fee unless you win</span>
+        <h1>Harmed by a <span class="grad">dangerous drug?</span> Hurt by someone in power?</h1>
+        <p class="lede"><strong>Talk with Sofia</strong> — our AI assistant. Tell her what happened in your own words and she'll connect you with <strong>law firms actively taking mass tort and abuse claims</strong> right now. No hold music. No pressure. No judgment.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-call bigcall" href="tel:+16026931461">📞 Call Sofia Now</a>
+          <a class="btn btn-ghost" href="#how">How it works</a>
+        </div>
+        <a class="tel-line" href="tel:+16026931461"><b>(602) 693-1461</b> · Answered 24/7 — Sofia picks up in seconds</a>
+        <div class="trust">
+          <span><i>✓</i> Free</span><span><i>✓</i> No obligation</span><span><i>✓</i> No fee unless there is a recovery</span><span><i>✓</i> AI-assisted — she'll say so</span>
+        </div>
+      </div>
+      <div class="rv in">
+        <div class="formcard" id="callback">
+          <div class="formcard-in">
+            <h2>Have Sofia call you</h2>
+            <p>Drop your number — she usually calls back <b>within minutes</b>.</p>
+            <form id="leadform" novalidate>
+              <div class="field">
+                <label for="f_type">Claim type</label>
+                <select id="f_type" name="claim_type" required>
+                  <option value="" disabled selected>Choose one…</option>
+                  <option>Dangerous drug / device</option>
+                  <option>Abuse claim</option>
+                  <option>Not sure</option>
+                </select>
+              </div>
+              <div class="row2">
+                <div class="field">
+                  <label for="f_name">First name</label>
+                  <input id="f_name" name="full_name" autocomplete="name" placeholder="Jane" required>
+                </div>
+                <div class="field">
+                  <label for="f_phone">Phone</label>
+                  <input id="f_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 123-4567" required>
+                </div>
+              </div>
+              <div class="row2">
+                <div class="field">
+                  <label for="f_state">State</label>
+                  <input id="f_state" name="state" autocomplete="address-level1" placeholder="e.g. Arizona">
+                </div>
+                <div class="field">
+                  <label for="f_when">Best time to call</label>
+                  <select id="f_when" name="best_time">
+                    <option>As soon as possible</option>
+                    <option>Morning</option>
+                    <option>Afternoon</option>
+                    <option>Evening</option>
+                  </select>
+                </div>
+              </div>
+              <input type="hidden" name="ee_system_id" id="ee_system_id">
+              <input type="hidden" name="session_id" id="session_id">
+              <input type="hidden" name="utm_source" id="utm_source">
+              <input type="hidden" name="utm_medium" id="utm_medium">
+              <input type="hidden" name="utm_campaign" id="utm_campaign">
+              <input type="hidden" name="utm_content" id="utm_content">
+              <input type="hidden" name="utm_term" id="utm_term">
+              <input type="hidden" name="gclid" id="gclid">
+              <input type="hidden" name="fbclid" id="fbclid">
+              <input type="hidden" name="ttclid" id="ttclid">
+              <input type="hidden" name="fbp" id="fbp">
+              <input type="hidden" name="fbc" id="fbc">
+              <input type="hidden" name="vertical" value="multi-router">
+              <input type="hidden" name="campaign_id" value="btl-home-sofia">
+              <input type="hidden" name="lead_source" value="btl-homepage">
+              <button class="submit" type="submit">⚡ Have Sofia call me</button>
+              <p class="fineprint">Free · no obligation · we never sell your information.</p>
+            </form>
+            <div id="cbSent" hidden>
+              <strong>Got it.</strong>
+              <p>Sofia will call you shortly. Rather talk now? <a href="tel:+16026931461">Call (602) 693-1461</a>.</p>
+            </div>
+            <div class="form-badges"><span>Encrypted</span><span>Never sold</span><span>No spam</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-in" id="ticker"></div>
 </div>
 
-<div class="wrap">
-<main>
-
-  <section class="hero">
-    <span class="eyebrow">Free claim review · 24/7 · No fee unless you win</span>
-    <h1>Harmed by a dangerous drug? Hurt by someone in power?</h1>
-    <p class="lede"><strong>Talk with Sofia</strong> — our AI assistant. Tell her what happened in your own words. She'll go over the details and connect you with <strong>law firms actively taking mass tort and abuse claims</strong> right now.</p>
-    <a class="bigcall" href="tel:+16026931461">📞 Call Sofia Now<small>She picks up — no hold music, ever</small></a>
-    <a class="tel" href="tel:+16026931461">(602) 693-1461 · Answered 24/7</a>
-    <div class="trust"><span>Free</span><span>No obligation</span><span>No fee unless there is a recovery</span></div>
-  </section>
-
-  <section class="doors">
-    <div class="door">
-      <h2>💊 Dangerous drugs &amp; devices</h2>
-      <p>If a prescription drug or medical device harmed you — or someone you love — firms are actively reviewing these claims:</p>
-      <ul>
-        <li>Depo-Provera</li>
-        <li>Talcum powder</li>
-        <li>Hair relaxer</li>
-        <li>Ozempic / GLP-1 drugs</li>
-        <li>Other drugs &amp; devices</li>
-      </ul>
-      <div class="pick"><a class="callbtn" href="tel:+16026931461">Call about a drug / device claim</a></div>
+<section class="block">
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stat"><div class="num" data-count="24" data-suffix="/7">0</div><div class="lbl">Sofia answers around the clock — nights, weekends, holidays</div></div>
+      <div class="stat"><div class="num" data-count="60" data-suffix="s">0</div><div class="lbl">Typical time from tap to talking with Sofia</div></div>
+      <div class="stat"><div class="num" data-count="0" data-prefix="$" data-suffix="">$0</div><div class="lbl">Cost to talk — and no fee unless there is a recovery</div></div>
     </div>
-    <div class="door">
-      <h2>🛡️ Abuse by someone in power</h2>
-      <p>If someone in a position of trust harmed you — at a school, a church, in detention, at work — you deserve to be heard. <strong style="color:var(--ink)">What happened was not your fault.</strong> You don't have to give your name to ask whether firms are taking claims like yours.</p>
-      <ul>
-        <li>Schools &amp; churches</li>
-        <li>Juvenile detention</li>
-        <li>Workplaces &amp; institutions</li>
-      </ul>
-      <div class="pick"><a class="callbtn" href="tel:+16026931461">Call about an abuse claim</a></div>
+  </div>
+</section>
+
+<section class="block" id="torts" style="padding-top:1rem">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">Active investigations</div>
+      <h2>Dangerous drugs &amp; devices</h2>
+      <p>If a prescription drug or medical device harmed you — or someone you love — firms are actively reviewing these claims right now.</p>
     </div>
-  </section>
-  <p class="note">Not sure which one fits? Pick either — Sofia sorts the details on the call.</p>
-
-  <section class="steps">
-    <h2>How it works</h2>
-    <div class="step"><span class="n">1</span><p><strong>Tap to call.</strong> One tap — Sofia answers in seconds, day or night. She'll tell you she's an AI assistant.</p></div>
-    <div class="step"><span class="n">2</span><p><strong>Tell her what happened.</strong> A few quick questions — what happened, when, where. No selling, no pressure, no judgment.</p></div>
-    <div class="step"><span class="n">3</span><p><strong>Get connected — or get a straight answer.</strong> If firms are taking claims like yours, Sofia connects you — sometimes on the same call. If it's not a fit, she tells you that too.</p></div>
-  </section>
-
-  <section class="callback">
-    <h2>Rather not dial?</h2>
-    <p>Leave your number and Sofia will call you — usually within minutes.</p>
-    <form id="leadform" novalidate>
-      <div class="field">
-        <label for="f_type">Claim type</label>
-        <select id="f_type" name="claim_type" required>
-          <option value="">Choose one…</option>
-          <option>Dangerous drug / device</option>
-          <option>Abuse claim</option>
-          <option>Not sure</option>
-        </select>
+    <div class="tgrid">
+      <div class="tcard rv"><span class="status">Firms reviewing now</span><span class="icon">💊</span><h3>Depo-Provera</h3><p>Claims linking the contraceptive injection to brain tumors (meningioma) and other serious harm.</p><a class="cta" href="tel:+16026931461">Ask Sofia about Depo-Provera →</a></div>
+      <div class="tcard rv"><span class="status">Firms reviewing now</span><span class="icon">🧴</span><h3>Talcum powder</h3><p>Ovarian cancer and mesothelioma claims tied to long-term talc use.</p><a class="cta" href="tel:+16026931461">Ask Sofia about talcum powder →</a></div>
+      <div class="tcard rv"><span class="status">Firms reviewing now</span><span class="icon">💇</span><h3>Hair relaxer</h3><p>Uterine cancer, fibroids, and endometriosis claims linked to chemical straighteners.</p><a class="cta" href="tel:+16026931461">Ask Sofia about hair relaxer →</a></div>
+      <div class="tcard rv"><span class="status">Firms reviewing now</span><span class="icon">💉</span><h3>Ozempic / GLP-1 drugs</h3><p>Gastroparesis, intestinal blockage, and vision-loss claims tied to GLP-1 medications.</p><a class="cta" href="tel:+16026931461">Ask Sofia about Ozempic / GLP-1 →</a></div>
+      <div class="tcard rv"><span class="status">Firms reviewing now</span><span class="icon">⚕️</span><h3>Other drugs &amp; devices</h3><p>Hernia mesh, Roundup, AFFF firefighting foam, Paraquat, and more — if a product hurt you, ask.</p><a class="cta" href="tel:+16026931461">Ask Sofia about your product →</a></div>
+      <div class="tcard rv" style="display:flex;flex-direction:column;justify-content:center;background:linear-gradient(150deg,rgba(47,123,255,.18),rgba(62,224,255,.06))">
+        <h3 style="margin-bottom:.6rem">Not sure it qualifies?</h3>
+        <p>That's exactly what Sofia is for. Two minutes on the phone and you'll know whether firms are taking claims like yours.</p>
+        <div><a class="btn btn-call" href="tel:+16026931461" style="font-size:.95rem;padding:.75rem 1.4rem">📞 Ask Sofia</a></div>
       </div>
-      <div class="row2">
-        <div class="field">
-          <label for="f_name">First name</label>
-          <input id="f_name" name="full_name" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="f_phone">Phone</label>
-          <input id="f_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="field">
-          <label for="f_state">State</label>
-          <input id="f_state" name="state" autocomplete="address-level1" placeholder="e.g. Arizona">
-        </div>
-        <div class="field">
-          <label for="f_when">Best time to call</label>
-          <select id="f_when" name="best_time">
-            <option>As soon as possible</option>
-            <option>Morning</option>
-            <option>Afternoon</option>
-            <option>Evening</option>
-          </select>
-        </div>
-      </div>
-      <input type="hidden" name="ee_system_id" id="ee_system_id">
-      <input type="hidden" name="session_id" id="session_id">
-      <input type="hidden" name="utm_source" id="utm_source">
-      <input type="hidden" name="utm_medium" id="utm_medium">
-      <input type="hidden" name="utm_campaign" id="utm_campaign">
-      <input type="hidden" name="utm_content" id="utm_content">
-      <input type="hidden" name="utm_term" id="utm_term">
-      <input type="hidden" name="gclid" id="gclid">
-      <input type="hidden" name="fbclid" id="fbclid">
-      <input type="hidden" name="ttclid" id="ttclid">
-      <input type="hidden" name="fbp" id="fbp">
-      <input type="hidden" name="fbc" id="fbc">
-      <input type="hidden" name="vertical" value="multi-router">
-      <input type="hidden" name="campaign_id" value="btl-home-sofia">
-      <input type="hidden" name="lead_source" value="btl-homepage">
-      <button class="submit" type="submit">Have Sofia call me</button>
-      <p class="fineprint">Free · no obligation · we never sell your information.</p>
-    </form>
-    <div id="cbSent" hidden>
-      <strong>Got it.</strong>
-      <p style="margin:.4rem 0 0;color:var(--muted)">Sofia will call you shortly. If you'd rather talk now, <a href="tel:+16026931461" style="color:var(--ink)">call (602) 693-1461</a>.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="deadline">
-    <p><strong>⏳ Every claim has a legal deadline — and it's already running.</strong> Statutes of limitations vary by state and claim type, and some are as short as two years from the date of injury. Two minutes with Sofia tells you whether firms are taking claims like yours <strong>right now</strong>.</p>
-  </section>
+<section class="block abuse" id="abuse">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">You deserve to be heard</div>
+      <h2>Abuse by someone in power</h2>
+      <p>If someone in a position of trust harmed you, <strong style="color:var(--ink)">what happened was not your fault.</strong> You don't have to give your name to ask whether firms are taking claims like yours.</p>
+    </div>
+    <div class="abuse-grid">
+      <div class="acard rv"><h3>🏫 Schools &amp; churches</h3><p>Abuse by teachers, coaches, clergy, or staff — including claims from years ago. Many states have opened lookback windows.</p></div>
+      <div class="acard rv"><h3>🔒 Juvenile detention</h3><p>Abuse inside youth detention and correctional facilities. These claims are being filed across the country right now.</p></div>
+      <div class="acard rv"><h3>🏢 Workplaces &amp; institutions</h3><p>Abuse by employers, caregivers, medical staff, or others in institutional settings.</p></div>
+    </div>
+    <p class="abuse-note rv">Sofia is trained to listen without judgment. Share only what you're comfortable sharing — <strong>you stay in control</strong> of the conversation, always.</p>
+    <div class="abuse-cta rv"><a class="btn btn-call bigcall" href="tel:+16026931461">📞 Talk with Sofia — privately</a></div>
+  </div>
+</section>
 
-  <section class="qr">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=tel%3A%2B16026931461" alt="QR code — scan to call Sofia" loading="lazy">
-    <p><strong>Scan to call from your phone.</strong><br>Point your camera at the code to call Sofia directly: (602) 693-1461.</p>
-  </section>
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">Simple by design</div>
+      <h2>How it works</h2>
+      <p>Three steps. No paperwork up front, no waiting rooms, no legal jargon.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv"><div class="n">1</div><h3>Tap to call</h3><p><strong>One tap — Sofia answers in seconds,</strong> day or night. She'll tell you right away that she's an AI assistant.</p></div>
+      <div class="step rv"><div class="n">2</div><h3>Tell her what happened</h3><p>A few quick questions — <strong>what happened, when, where.</strong> In your own words. No selling, no pressure, no judgment.</p></div>
+      <div class="step rv"><div class="n">3</div><h3>Get connected — or a straight answer</h3><p>If firms are taking claims like yours, <strong>Sofia connects you — sometimes on the same call.</strong> If it's not a fit, she tells you that too.</p></div>
+    </div>
+  </div>
+</section>
 
-</main>
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="deadline rv">
+      <h2>Every claim has a legal deadline — and it's already running</h2>
+      <p>Statutes of limitations vary by state and claim type, and some are as <strong>short as two years</strong> from the date of injury. Two minutes with Sofia tells you whether firms are taking claims like yours <strong>right now</strong>.</p>
+      <a class="btn btn-gold" href="tel:+16026931461">📞 Don't wait — call Sofia</a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">Straight answers</div>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details class="rv"><summary>Is this really free?</summary><p>Yes. Talking with Sofia costs nothing, and there is no obligation. If a law firm takes your case, they work on contingency — meaning no fee unless there is a recovery.</p></details>
+      <details class="rv"><summary>Who is Sofia?</summary><p>Sofia is our AI intake assistant. She answers instantly, asks a few questions about what happened, and connects you with law firms actively taking claims like yours. She'll always tell you she's an AI.</p></details>
+      <details class="rv"><summary>Is Best Tort Lawyers a law firm?</summary><p>No. We're a free referral service — not a law firm, and we don't give legal advice. We match you with participating law firms that independently decide whether they can evaluate or accept your matter.</p></details>
+      <details class="rv"><summary>Do I have to give my name for an abuse claim?</summary><p>No. You can ask whether firms are taking claims like yours without identifying yourself. Share only what you're comfortable sharing — you stay in control.</p></details>
+      <details class="rv"><summary>What happens to my information?</summary><p>We never sell your information. It's used only to connect you with firms about your claim and to follow up. Voice conversations are recorded and processed for quality, compliance, and follow-up.</p></details>
+      <details class="rv"><summary>How fast will I hear back?</summary><p>If you call now, Sofia answers in seconds. If you leave your number, she usually calls back within minutes — 24/7, including nights and weekends.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="final rv">
+      <div>
+        <h2>Two minutes could change everything.</h2>
+        <p>Deadlines are running. Firms are reviewing claims today. The call is free, the review is free — and you'll know where you stand before you hang up.</p>
+        <div class="hero-ctas" style="margin-bottom:0">
+          <a class="btn btn-call bigcall" href="tel:+16026931461">📞 Call (602) 693-1461</a>
+          <a class="btn btn-ghost" href="#callback">Request a callback</a>
+        </div>
+      </div>
+      <div class="qrbox">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=tel%3A%2B16026931461" alt="QR code — scan to call Sofia" loading="lazy">
+        <p><strong>On your phone already?</strong><br>Tap call. On desktop? Scan this with your phone camera to call Sofia directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
-  <p class="disc">
-    Best Tort Lawyers is a free referral service, not a law firm, and does not give legal advice.
-    <strong>Attorney Advertising.</strong> Nothing here creates an attorney-client relationship.
-    Participating law firms independently decide whether they can evaluate or accept any matter;
-    any attorney-client relationship requires a firm's acceptance and a separate written agreement.
-    Firm availability varies by state. Results are not guaranteed. We deliver matching and
-    reporting — not a guaranteed outcome. By talking or calling, you agree to our
-    <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-and-conditions.html">Terms</a>.
-    Voice conversations are recorded and processed by our AI voice provider for quality, compliance
-    and follow-up. Sofia is an automated AI assistant and will say so. In an emergency call 911.
-    <br><br>
-    Marketing Apes · 2020 Monte Vista Dr, Vista, CA 92083
-  </p>
-  <p class="copy">© 2026 Best Tort Lawyers</p>
+  <div class="wrap">
+    <p class="disc">
+      Best Tort Lawyers is a free referral service, not a law firm, and does not give legal advice.
+      <strong>Attorney Advertising.</strong> Nothing here creates an attorney-client relationship.
+      Participating law firms independently decide whether they can evaluate or accept any matter;
+      any attorney-client relationship requires a firm's acceptance and a separate written agreement.
+      Firm availability varies by state. Results are not guaranteed. We deliver matching and
+      reporting — not a guaranteed outcome. By talking or calling, you agree to our
+      <a href="/privacy-policy.html">Privacy Policy</a> and <a href="/terms-and-conditions.html">Terms</a>.
+      Voice conversations are recorded and processed by our AI voice provider for quality, compliance
+      and follow-up. Sofia is an automated AI assistant and will say so. In an emergency call 911.
+      <br><br>
+      Marketing Apes · 2020 Monte Vista Dr, Vista, CA 92083
+    </p>
+    <div class="copy"><span>© <span id="yr">2026</span> Best Tort Lawyers</span><span>Mass Tort · Abuse Claims</span></div>
+  </div>
 </footer>
-</div>
 
 <script>
 (function(){
@@ -264,10 +478,37 @@ footer{border-top:1px solid var(--line);padding-top:1.4rem}
       if(window.fbq) fbq('track','Lead',{content_name:'btl-home-sofia-callback'});
       form.hidden=true; sent.hidden=false;
     }).catch(function(){
-      btn.disabled=false; btn.textContent='Have Sofia call me';
+      btn.disabled=false; btn.textContent='⚡ Have Sofia call me';
       alert('Something went wrong sending your request. Please call (602) 693-1461 directly.');
     });
   });
+
+  /* ---- page flair: ticker, counters, reveal ---- */
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  var torts=['Depo-Provera','Talcum Powder','Hair Relaxer','Ozempic / GLP-1','Hernia Mesh','Roundup','AFFF','Paraquat','Juvenile Detention Abuse','Church Abuse','School Abuse'];
+  var html=torts.map(function(t){return '<b>●</b> Now reviewing: '+t+' <span class="sep">///</span>'}).join('');
+  document.getElementById('ticker').innerHTML=html+html;
+
+  var counted=false;
+  function counters(){
+    if(counted) return; counted=true;
+    document.querySelectorAll('.stat .num').forEach(function(el){
+      var target=parseInt(el.getAttribute('data-count'),10)||0,
+          pre=el.getAttribute('data-prefix')||'', suf=el.getAttribute('data-suffix')||'',
+          t0=null, dur=1400;
+      if(!target){ el.textContent=pre+'0'+suf; return; }
+      function frame(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1),
+        e=1-Math.pow(1-p,3), v=Math.round(target*e);
+        el.textContent=pre+v+suf; if(p<1)requestAnimationFrame(frame); }
+      requestAnimationFrame(frame);
+    });
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);
+      if(e.target.querySelector&&e.target.querySelector('.stat .num')) counters(); }
+  })},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+  setTimeout(counters,2500);
 })();
 </script>
 </body>
