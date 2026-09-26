@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-26 — Photo uploaded to RBV library
+
+- Asset: `images/avery-dayus-athlete-of-the-week-september-14-19-e7ab0a3f10cd.png`.
+- Content commit: `78cb5cd282a0d757914db029a6326738bfe95409`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-24 — Page updated: parent-playbook.html
 
 - Published approved page change.
