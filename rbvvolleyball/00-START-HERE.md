@@ -331,6 +331,13 @@ Append newest entries at the top of this section. Preserve prior entries.
 
 ## 2026-09-26 — Photo uploaded to RBV library
 
+- Asset: `images/gio3138-rbv-serve-6844b746426c.jpg`.
+- Content commit: `5b4be0fc5de77d47f006d859bac5a09516ef1cd4`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
+## 2026-09-26 — Photo uploaded to RBV library
+
 - Asset: `images/gio3126-rbv-double-block-85cb2b147b2b.jpg`.
 - Content commit: `32ac1ad10b979da4fd18ad8ac37a60a1eb44a511`.
 - Photo is not automatically placed on a page or in the gallery.
