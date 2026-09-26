@@ -577,6 +577,8 @@ gtag('config', 'G-2KRKVE3Y3R');
         navigator.geolocation.getCurrentPosition(revealLocation, function (error) {
           if (error && error.code === 1) {
             showLocationFallback("You said no. The web respects that — this time.");
+            locationButton.disabled = false;
+            document.getElementById("location-button-label").textContent = "Try the dot again.";
             return;
           }
 
