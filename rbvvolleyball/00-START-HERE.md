@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-26 — Photo uploaded to RBV library
+
+- Asset: `images/gio3591-rbv-attack-at-net-4a8bf737b54f.jpg`.
+- Content commit: `17dc52e3f193f6949a86e4331346bf4daa63093e`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-26 — Page updated: gallery.html
 
 - Published approved page change.
