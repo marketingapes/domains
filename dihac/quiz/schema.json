@@ -1,0 +1,1193 @@
+{
+  "schema": "dihac.quiz/v0.2-shared",
+  "status": "DERIVED shared contract — first written 2026-09-25 because the Muse quiz-schema.md was never found (BOOTSTRAP_DOC_MISSING); edit schema.json, run build.mjs --mirror",
+  "tenant_id": "DIHAC",
+  "domain_id": "doihaveaclaim.ai",
+  "quiz_id": "dihac-quiz",
+  "version": "2026-09-25.2",
+  "entry": "intake",
+  "attribution_passthrough": [
+    "lead_id",
+    "claim_id",
+    "campaign_id",
+    "gclid",
+    "fbclid",
+    "ttclid"
+  ],
+  "outbound_utm": {
+    "utm_source": "doihaveaclaim.ai",
+    "utm_medium": "quiz",
+    "utm_campaign": "dihac-quiz"
+  },
+  "outcomes": {
+    "potentially_qualify": {
+      "title": "Your answers may be worth a lawyer's review.",
+      "body": "Based on what you told us, you may potentially qualify for a lawyer to review the facts. That is not a decision about your case. The next page belongs to a firm network that reviews this kind of matter.",
+      "note": "You will leave DoIHaveAClaim.ai and continue to <b>{{destination_host}}</b>. Nothing you answered here is sent with you except campaign tracking codes."
+    },
+    "potentially_qualify_sofia": {
+      "title": "Your answers may be worth a lawyer's review.",
+      "body": "Based on what you told us, you may potentially qualify for a lawyer to review the facts. That is not a decision about your case. A network firm does not have a dedicated page for this matter yet, so Sofia takes it from here: she can explain what kind of firm handles it and whether one is accepting it.",
+      "note": "Sofia is an AI assistant on this site. She cannot decide whether you have a claim, and she does not see your answers here."
+    },
+    "injury": {
+      "title": "This sounds like an injury matter.",
+      "body": "Injury cases are handled through Nearest Injury Lawyers. Their team can talk through what happened and whether a firm is accepting matters like yours.",
+      "note": "You will leave DoIHaveAClaim.ai and continue to <b>{{destination_host}}</b>. Nothing you answered here is sent with you except campaign tracking codes."
+    },
+    "no_match": {
+      "title": "This screen stopped here.",
+      "body": "One of your answers is a common reason a reviewer would not take this further right now. That is not a legal decision, and it does not mean you have no options. If you want a second look, talk it through with Sofia.",
+      "note": "Sofia is an AI assistant on this site. She cannot decide whether you have a claim."
+    },
+    "closed": {
+      "title": "A new claim is not open for this.",
+      "body": "The Navy's Camp Lejeune Justice Act deadline was August 10, 2024, and the Navy is not taking new claims. This screen cannot tell you a new claim is possible. If you believe a claim was filed for you or a family member before that date, Sofia can help you sort out where that file stands.",
+      "note": "The government never asks a claimant for money. A call or email that asks for payment is not part of any claim."
+    },
+    "unsure": {
+      "title": "Let's talk it through instead.",
+      "body": "This short screen is built for a few specific matters. Yours may need a conversation. Sofia can ask better follow-ups and explain what kind of firm usually handles situations like yours.",
+      "note": "Sofia is an AI assistant on this site. She cannot decide whether you have a claim."
+    }
+  },
+  "routes": {
+    "paraquat": {
+      "tenant_id": "BTL",
+      "tort": "paraquat",
+      "status": "live",
+      "url": "https://besttortlawyers.com/paraquat/",
+      "cta": "Continue to Best Tort Lawyers"
+    },
+    "injury": {
+      "tenant_id": "NIL",
+      "tort": "injury",
+      "status": "live",
+      "url": "https://nearestinjurylawyers.com/",
+      "cta": "Continue to Nearest Injury Lawyers"
+    },
+    "sofia": {
+      "tenant_id": "DIHAC",
+      "tort": null,
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia"
+    },
+    "afff_review": {
+      "tenant_id": "DIHAC",
+      "tort": "afff",
+      "status": "needs_buyer",
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia about AFFF"
+    },
+    "camp_lejeune_review": {
+      "tenant_id": "DIHAC",
+      "tort": "camp-lejeune",
+      "status": "needs_buyer",
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia about your Camp Lejeune file"
+    },
+    "roundup_review": {
+      "tenant_id": "DIHAC",
+      "tort": "roundup",
+      "status": "needs_buyer",
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia about Roundup"
+    },
+    "hernia_mesh_review": {
+      "tenant_id": "DIHAC",
+      "tort": "hernia-mesh",
+      "status": "needs_buyer",
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia about hernia mesh"
+    },
+    "talc_review": {
+      "tenant_id": "DIHAC",
+      "tort": "talc",
+      "status": "needs_buyer",
+      "intent": "claim",
+      "url": "/talk-to-sofia.html",
+      "cta": "Talk with Sofia about talc"
+    }
+  },
+  "stop_reasons": {
+    "no_occupational_exposure": "The screen looks for work around a restricted farm herbicide: spraying, mixing, loading, or working beside people who did.",
+    "no_parkinsons_diagnosis": "The screen looks for a Parkinson's disease diagnosis made by a doctor. A tremor without a diagnosis, or a different movement disorder, is not the same answer.",
+    "diagnosis_before_exposure": "The screen looks for a diagnosis that came after the exposure or use.",
+    "already_settled": "A claim that was already settled or released is normally not reviewed again.",
+    "afff_no_exposure": "The screen looks for real contact with the foam or contaminated drinking water as part of daily life: firefighting, training drills, or living and working where the water was affected. A brief visit or living somewhere near a base is a weak screen.",
+    "afff_no_listed_diagnosis": "The conditions that most often move an AFFF screen forward are kidney cancer, testicular cancer, thyroid cancer, thyroid disease, ulcerative colitis, and liver cancer, diagnosed by a doctor.",
+    "afff_property_only": "A water bill, a property, or a utility question is a different kind of case from a personal illness.",
+    "clja_not_filed": "The Navy's Camp Lejeune Justice Act deadline was August 10, 2024. A claim that was not filed by then cannot be started now.",
+    "clja_under_30_days": "The statute requires at least 30 days at Camp Lejeune or Marine Corps Air Station New River between August 1, 1953 and December 31, 1987.",
+    "clja_outside_window": "Time on base only outside August 1, 1953 through December 31, 1987 does not meet the screen.",
+    "clja_no_listed_diagnosis": "The government's Elective Option uses nine conditions: kidney cancer, liver cancer, non-Hodgkin lymphoma, leukemias, bladder cancer, multiple myeloma, Parkinson's disease, kidney disease (stage 4, stage 5, or end-stage), and systemic sclerosis.",
+    "clja_released": "A Camp Lejeune claim that was already settled and released is closed.",
+    "rd_single_use": "The screen looks for the person's own repeated use, or a job that put them in the spray again and again. A one-time spray, or a park where someone else once sprayed, is a weak screen.",
+    "rd_no_nhl": "The screen looks for a doctor's diagnosis of non-Hodgkin lymphoma or one of its subtypes. Hodgkin lymphoma and solid tumors are different diagnoses.",
+    "rd_prior_settlement": "Someone who already joined an earlier Roundup settlement and released this cancer is normally not reviewed again.",
+    "hm_no_mesh": "These cases are about a mesh patch. A hernia repaired with stitches only is not the same fact pattern.",
+    "hm_no_complication": "Firms usually want a complication tied to the mesh, most often another surgery, infection, obstruction, adhesions, a fistula, or erosion. Ordinary soreness or a hernia coming back, on its own, is a common weak screen.",
+    "hm_released": "A claim about this implant that was already settled or released is normally not reviewed again.",
+    "talc_brief_use": "The screen looks for regular talc use over a real stretch of years. Brief or occasional use is a weak screen.",
+    "talc_cornstarch_only": "Cornstarch powder is not the exposure this screen is about. Talc baby powder was no longer sold in the U.S. after 2020.",
+    "talc_no_diagnosis": "The screen looks for a doctor's diagnosis of ovarian cancer (including fallopian-tube or primary peritoneal cancer) or mesothelioma. A family history, a BRCA result, or a worry is not a diagnosis.",
+    "talc_asbestos_job": "When the main exposure was an asbestos job such as shipyards, insulation, or brake work, that may be an asbestos case, which is a different matter from talc.",
+    "talc_released": "A talc claim that was already settled, released, or filed by another firm is normally not reviewed again here."
+  },
+  "steps": [
+    {
+      "id": "intake",
+      "track": null,
+      "prompt": "What happened?",
+      "help": "Pick the closest fit. You can change your answer.",
+      "choices": [
+        {
+          "id": "exposure",
+          "label": "I used or worked around a chemical, product, or powder, or had an implant, and was later diagnosed with an illness",
+          "next": "product"
+        },
+        {
+          "id": "injury",
+          "label": "I was hurt in an accident — car, fall, work, or something similar",
+          "next": "injury_when",
+          "track": "injury"
+        },
+        {
+          "id": "other",
+          "label": "Something else, or I'm not sure",
+          "result": "unsure",
+          "route": "sofia"
+        }
+      ]
+    },
+    {
+      "id": "product",
+      "track": null,
+      "prompt": "Which product or exposure was it?",
+      "help": "Pick the one that fits best. Each has its own short set of questions.",
+      "choices": [
+        {
+          "id": "paraquat",
+          "label": "Paraquat or Gramoxone — a licensed farm herbicide",
+          "next": "pq_exposure",
+          "track": "paraquat"
+        },
+        {
+          "id": "roundup",
+          "label": "Roundup or another glyphosate weed killer",
+          "next": "rd_use",
+          "track": "roundup"
+        },
+        {
+          "id": "afff",
+          "label": "AFFF firefighting foam, or drinking water contaminated by it",
+          "next": "af_exposure",
+          "track": "afff"
+        },
+        {
+          "id": "camp_lejeune",
+          "label": "Camp Lejeune drinking water",
+          "next": "cl_presence",
+          "track": "camp-lejeune"
+        },
+        {
+          "id": "hernia_mesh",
+          "label": "Hernia mesh from a surgery",
+          "next": "hm_mesh",
+          "track": "hernia-mesh"
+        },
+        {
+          "id": "talc",
+          "label": "Talc baby powder (Johnson's, Shower to Shower, or similar)",
+          "next": "tc_use",
+          "track": "talc"
+        },
+        {
+          "id": "other_product",
+          "label": "A different product, or I don't know the name",
+          "result": "unsure",
+          "route": "sofia"
+        }
+      ]
+    },
+    {
+      "id": "pq_exposure",
+      "track": "paraquat",
+      "prompt": "Did your work include spraying, mixing, or loading a restricted farm herbicide, or working beside people who did?",
+      "help": "Farmers, farmworkers, licensed applicators, commercial landscapers, and some grounds crews are the usual fits.",
+      "choices": [
+        {
+          "id": "applied",
+          "label": "Yes — I sprayed, mixed, or loaded it",
+          "next": "pq_years"
+        },
+        {
+          "id": "nearby",
+          "label": "Yes — I worked in fields, orchards, groves, or grounds while others sprayed it",
+          "next": "pq_years"
+        },
+        {
+          "id": "was_roundup",
+          "label": "It was actually Roundup or a store-bought yard spray",
+          "next": "rd_use",
+          "track": "roundup"
+        },
+        {
+          "id": "no",
+          "label": "No",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "no_occupational_exposure"
+        }
+      ]
+    },
+    {
+      "id": "pq_years",
+      "track": "paraquat",
+      "prompt": "About what years were you around it?",
+      "help": "A rough answer is fine. A reviewer decides how much exposure is enough; this screen does not.",
+      "choices": [
+        {
+          "id": "before_1990",
+          "label": "Before 1990",
+          "next": "pq_frequency"
+        },
+        {
+          "id": "1990s",
+          "label": "The 1990s",
+          "next": "pq_frequency"
+        },
+        {
+          "id": "2000s",
+          "label": "The 2000s",
+          "next": "pq_frequency"
+        },
+        {
+          "id": "2010_later",
+          "label": "2010 or later",
+          "next": "pq_frequency"
+        },
+        {
+          "id": "several",
+          "label": "Across several of these",
+          "next": "pq_frequency"
+        }
+      ]
+    },
+    {
+      "id": "pq_frequency",
+      "track": "paraquat",
+      "prompt": "About how often were you around it?",
+      "help": "Think about a typical season of that work.",
+      "choices": [
+        {
+          "id": "daily",
+          "label": "Most working days",
+          "next": "pq_diagnosis"
+        },
+        {
+          "id": "weekly",
+          "label": "About weekly",
+          "next": "pq_diagnosis"
+        },
+        {
+          "id": "seasonal",
+          "label": "Seasonally — a few weeks a year",
+          "next": "pq_diagnosis"
+        },
+        {
+          "id": "rarely",
+          "label": "Rarely",
+          "next": "pq_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "pq_diagnosis",
+      "track": "paraquat",
+      "prompt": "Has a doctor diagnosed you with Parkinson's disease?",
+      "help": "This is not a medical exam. We only need to know whether a doctor made the diagnosis.",
+      "choices": [
+        {
+          "id": "neurologist",
+          "label": "Yes — a neurologist",
+          "next": "pq_timing"
+        },
+        {
+          "id": "doctor",
+          "label": "Yes — another doctor",
+          "next": "pq_timing"
+        },
+        {
+          "id": "symptoms",
+          "label": "I have a tremor or symptoms, but no diagnosis",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "no_parkinsons_diagnosis"
+        },
+        {
+          "id": "no",
+          "label": "No",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "no_parkinsons_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "pq_timing",
+      "track": "paraquat",
+      "prompt": "Was that diagnosis made after the work around the herbicide?",
+      "help": "",
+      "choices": [
+        {
+          "id": "after",
+          "label": "Yes — after the work",
+          "next": "pq_settled"
+        },
+        {
+          "id": "before",
+          "label": "No — before the work",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "diagnosis_before_exposure"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "pq_settled"
+        }
+      ]
+    },
+    {
+      "id": "pq_settled",
+      "track": "paraquat",
+      "prompt": "Have you already settled or released a paraquat claim?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "result": "potentially_qualify",
+          "route": "paraquat"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify",
+          "route": "paraquat"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "already_settled"
+        }
+      ]
+    },
+    {
+      "id": "rd_use",
+      "track": "roundup",
+      "prompt": "Did you personally spray or mix Roundup, or another glyphosate weed killer, more than once?",
+      "help": "",
+      "choices": [
+        {
+          "id": "repeated",
+          "label": "Yes — on a regular basis",
+          "next": "rd_where"
+        },
+        {
+          "id": "job",
+          "label": "Yes — it was part of my job",
+          "next": "rd_where"
+        },
+        {
+          "id": "once",
+          "label": "Once, or I was only near someone else's spraying",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "rd_single_use"
+        },
+        {
+          "id": "no",
+          "label": "No",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "rd_single_use"
+        }
+      ]
+    },
+    {
+      "id": "rd_where",
+      "track": "roundup",
+      "prompt": "Where was that?",
+      "help": "",
+      "choices": [
+        {
+          "id": "home",
+          "label": "At home, in the yard or garden",
+          "next": "rd_years"
+        },
+        {
+          "id": "farm",
+          "label": "On a farm",
+          "next": "rd_years"
+        },
+        {
+          "id": "work",
+          "label": "At a job such as landscaping, grounds, golf, or parks",
+          "next": "rd_years"
+        }
+      ]
+    },
+    {
+      "id": "rd_years",
+      "track": "roundup",
+      "prompt": "About what years did you use it?",
+      "help": "Use can run from the 1970s through recent years. A reviewer decides how much is enough.",
+      "choices": [
+        {
+          "id": "before_1990",
+          "label": "Before 1990",
+          "next": "rd_frequency"
+        },
+        {
+          "id": "1990s",
+          "label": "The 1990s",
+          "next": "rd_frequency"
+        },
+        {
+          "id": "2000s",
+          "label": "The 2000s",
+          "next": "rd_frequency"
+        },
+        {
+          "id": "2010_later",
+          "label": "2010 or later",
+          "next": "rd_frequency"
+        },
+        {
+          "id": "several",
+          "label": "Across several of these",
+          "next": "rd_frequency"
+        }
+      ]
+    },
+    {
+      "id": "rd_frequency",
+      "track": "roundup",
+      "prompt": "About how often?",
+      "help": "",
+      "choices": [
+        {
+          "id": "weekly",
+          "label": "Weekly or more in season",
+          "next": "rd_diagnosis"
+        },
+        {
+          "id": "monthly",
+          "label": "A few times a month in season",
+          "next": "rd_diagnosis"
+        },
+        {
+          "id": "few_year",
+          "label": "A few times a year",
+          "next": "rd_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "rd_diagnosis",
+      "track": "roundup",
+      "prompt": "Has a doctor diagnosed non-Hodgkin lymphoma, or a subtype of it?",
+      "help": "Subtypes include diffuse large B-cell, follicular, CLL/SLL, mantle cell, and marginal zone lymphoma.",
+      "choices": [
+        {
+          "id": "nhl",
+          "label": "Yes — non-Hodgkin lymphoma or a subtype",
+          "next": "rd_timing"
+        },
+        {
+          "id": "hodgkin",
+          "label": "Hodgkin lymphoma, or a different cancer",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "rd_no_nhl"
+        },
+        {
+          "id": "no",
+          "label": "No diagnosis",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "rd_no_nhl"
+        }
+      ]
+    },
+    {
+      "id": "rd_timing",
+      "track": "roundup",
+      "prompt": "Was that diagnosis made after you had been using the product?",
+      "help": "",
+      "choices": [
+        {
+          "id": "after",
+          "label": "Yes — after",
+          "next": "rd_settled"
+        },
+        {
+          "id": "before",
+          "label": "No — before",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "diagnosis_before_exposure"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "rd_settled"
+        }
+      ]
+    },
+    {
+      "id": "rd_settled",
+      "track": "roundup",
+      "prompt": "Were you already part of an earlier Roundup settlement?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "result": "potentially_qualify_sofia",
+          "route": "roundup_review"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify_sofia",
+          "route": "roundup_review"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "rd_prior_settlement"
+        }
+      ]
+    },
+    {
+      "id": "af_exposure",
+      "track": "afff",
+      "prompt": "How were you around AFFF foam?",
+      "help": "Firefighter cases and drinking-water cases are different fact patterns.",
+      "choices": [
+        {
+          "id": "firefighter",
+          "label": "I was a firefighter (career, volunteer, airport, industrial, or military) who trained with or sprayed it",
+          "next": "af_years"
+        },
+        {
+          "id": "military_drills",
+          "label": "I served in the military and took part in drills where it was used",
+          "next": "af_years"
+        },
+        {
+          "id": "water",
+          "label": "I lived or worked where drinking water was contaminated by the foam",
+          "next": "af_years"
+        },
+        {
+          "id": "brief",
+          "label": "A brief visit, or I lived somewhere near a base",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "afff_no_exposure"
+        },
+        {
+          "id": "property",
+          "label": "My question is about a water bill, a property, or a utility",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "afff_property_only"
+        }
+      ]
+    },
+    {
+      "id": "af_years",
+      "track": "afff",
+      "prompt": "About what years?",
+      "help": "AFFF with PFAS was used from about the 1960s into the 2000s, and in some places later.",
+      "choices": [
+        {
+          "id": "before_1980",
+          "label": "Before 1980",
+          "next": "af_diagnosis"
+        },
+        {
+          "id": "1980s_1990s",
+          "label": "The 1980s or 1990s",
+          "next": "af_diagnosis"
+        },
+        {
+          "id": "2000s_later",
+          "label": "2000 or later",
+          "next": "af_diagnosis"
+        },
+        {
+          "id": "several",
+          "label": "Across several of these",
+          "next": "af_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "af_diagnosis",
+      "track": "afff",
+      "prompt": "Has a doctor diagnosed one of these conditions?",
+      "help": "Kidney cancer, testicular cancer, thyroid cancer, thyroid disease, ulcerative colitis, or liver cancer.",
+      "choices": [
+        {
+          "id": "listed",
+          "label": "Yes — one of those",
+          "next": "af_timing"
+        },
+        {
+          "id": "other_cancer",
+          "label": "A different cancer or illness",
+          "next": "af_timing"
+        },
+        {
+          "id": "no",
+          "label": "No diagnosis",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "afff_no_listed_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "af_timing",
+      "track": "afff",
+      "prompt": "Was that diagnosis made after the exposure?",
+      "help": "",
+      "choices": [
+        {
+          "id": "after",
+          "label": "Yes — after",
+          "next": "af_settled"
+        },
+        {
+          "id": "before",
+          "label": "No — before",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "diagnosis_before_exposure"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "af_settled"
+        }
+      ]
+    },
+    {
+      "id": "af_settled",
+      "track": "afff",
+      "prompt": "Have you already settled a claim for this same illness?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "result": "potentially_qualify_sofia",
+          "route": "afff_review"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify_sofia",
+          "route": "afff_review"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "already_settled"
+        }
+      ]
+    },
+    {
+      "id": "cl_presence",
+      "track": "camp-lejeune",
+      "prompt": "Were you at Camp Lejeune or Marine Corps Air Station New River for at least 30 days between August 1, 1953 and December 31, 1987?",
+      "help": "Living there, working there, or in the womb while your mother did all count.",
+      "choices": [
+        {
+          "id": "yes",
+          "label": "Yes — at least 30 days in that window",
+          "next": "cl_diagnosis"
+        },
+        {
+          "id": "under_30",
+          "label": "Fewer than 30 days in total",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "clja_under_30_days"
+        },
+        {
+          "id": "outside",
+          "label": "Only outside those dates",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "clja_outside_window"
+        },
+        {
+          "id": "not_sure",
+          "label": "A different base, or I'm not sure",
+          "result": "unsure",
+          "route": "sofia"
+        }
+      ]
+    },
+    {
+      "id": "cl_diagnosis",
+      "track": "camp-lejeune",
+      "prompt": "Did you, or the person who died, receive a doctor's diagnosis of one of the nine listed conditions?",
+      "help": "Kidney cancer, liver cancer, non-Hodgkin lymphoma, leukemias, bladder cancer, multiple myeloma, Parkinson's disease, kidney disease (stage 4, 5, or end-stage), or systemic sclerosis.",
+      "choices": [
+        {
+          "id": "listed",
+          "label": "Yes — one of those",
+          "next": "cl_filed"
+        },
+        {
+          "id": "other",
+          "label": "A different illness",
+          "next": "cl_filed"
+        },
+        {
+          "id": "no",
+          "label": "No diagnosis",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "clja_no_listed_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "cl_filed",
+      "track": "camp-lejeune",
+      "prompt": "Was a Camp Lejeune Justice Act claim actually filed with the Navy by August 10, 2024?",
+      "help": "",
+      "choices": [
+        {
+          "id": "yes",
+          "label": "Yes — filed by that date",
+          "next": "cl_status"
+        },
+        {
+          "id": "no",
+          "label": "No — nothing was filed",
+          "result": "closed",
+          "route": "sofia",
+          "stop_reason": "clja_not_filed"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure — a lawyer or family member may have",
+          "next": "cl_status"
+        }
+      ]
+    },
+    {
+      "id": "cl_status",
+      "track": "camp-lejeune",
+      "prompt": "Where does that claim stand?",
+      "help": "",
+      "choices": [
+        {
+          "id": "open",
+          "label": "Still open",
+          "result": "potentially_qualify_sofia",
+          "route": "camp_lejeune_review"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify_sofia",
+          "route": "camp_lejeune_review"
+        },
+        {
+          "id": "settled",
+          "label": "Already settled and released",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "clja_released"
+        }
+      ]
+    },
+    {
+      "id": "hm_mesh",
+      "track": "hernia-mesh",
+      "prompt": "Did a surgeon repair your hernia with a mesh patch?",
+      "help": "",
+      "choices": [
+        {
+          "id": "yes",
+          "label": "Yes",
+          "next": "hm_records"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "hm_records"
+        },
+        {
+          "id": "stitches",
+          "label": "No — stitches only",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "hm_no_mesh"
+        }
+      ]
+    },
+    {
+      "id": "hm_records",
+      "track": "hernia-mesh",
+      "prompt": "Do you know the brand, or have an implant card or operative report?",
+      "help": "A reviewer needs the records. The brand cannot be guessed.",
+      "choices": [
+        {
+          "id": "brand",
+          "label": "I know the brand",
+          "next": "hm_complication"
+        },
+        {
+          "id": "records",
+          "label": "I have the implant card or operative report",
+          "next": "hm_complication"
+        },
+        {
+          "id": "neither",
+          "label": "Neither",
+          "next": "hm_complication"
+        }
+      ]
+    },
+    {
+      "id": "hm_complication",
+      "track": "hernia-mesh",
+      "prompt": "After that surgery, what happened?",
+      "help": "",
+      "choices": [
+        {
+          "id": "revision",
+          "label": "I had another operation to remove, replace, or revise the mesh",
+          "next": "hm_years"
+        },
+        {
+          "id": "finding",
+          "label": "A doctor found infection, bowel obstruction, adhesions, a fistula, or erosion tied to the mesh",
+          "next": "hm_years"
+        },
+        {
+          "id": "pain_only",
+          "label": "Pain or the hernia came back, but no revision and no doctor tying it to the mesh",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "hm_no_complication"
+        },
+        {
+          "id": "none",
+          "label": "No complication",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "hm_no_complication"
+        }
+      ]
+    },
+    {
+      "id": "hm_years",
+      "track": "hernia-mesh",
+      "prompt": "About what year was the mesh put in?",
+      "help": "",
+      "choices": [
+        {
+          "id": "before_2010",
+          "label": "Before 2010",
+          "next": "hm_settled"
+        },
+        {
+          "id": "2010s",
+          "label": "2010 to 2019",
+          "next": "hm_settled"
+        },
+        {
+          "id": "2020_later",
+          "label": "2020 or later",
+          "next": "hm_settled"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "hm_settled"
+        }
+      ]
+    },
+    {
+      "id": "hm_settled",
+      "track": "hernia-mesh",
+      "prompt": "Have you already settled a claim about this implant?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "result": "potentially_qualify_sofia",
+          "route": "hernia_mesh_review"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify_sofia",
+          "route": "hernia_mesh_review"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "hm_released"
+        }
+      ]
+    },
+    {
+      "id": "tc_use",
+      "track": "talc",
+      "prompt": "Did you use Johnson's baby powder, Shower to Shower, or another talc body powder on a regular basis for years?",
+      "help": "",
+      "choices": [
+        {
+          "id": "years",
+          "label": "Yes — regularly, for years",
+          "next": "tc_area"
+        },
+        {
+          "id": "brief",
+          "label": "Briefly or occasionally",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_brief_use"
+        },
+        {
+          "id": "no",
+          "label": "No",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_brief_use"
+        }
+      ]
+    },
+    {
+      "id": "tc_area",
+      "track": "talc",
+      "prompt": "How did you use it?",
+      "help": "",
+      "choices": [
+        {
+          "id": "genital",
+          "label": "In the genital area",
+          "next": "tc_formula"
+        },
+        {
+          "id": "body",
+          "label": "On the body generally",
+          "next": "tc_formula"
+        },
+        {
+          "id": "breathed",
+          "label": "Mostly breathed in during use",
+          "next": "tc_formula"
+        }
+      ]
+    },
+    {
+      "id": "tc_formula",
+      "track": "talc",
+      "prompt": "Was the powder a talc formula?",
+      "help": "Johnson & Johnson switched U.S. baby powder to cornstarch in 2020.",
+      "choices": [
+        {
+          "id": "talc",
+          "label": "Yes, talc — or my use was mostly before 2020",
+          "next": "tc_years"
+        },
+        {
+          "id": "cornstarch",
+          "label": "Cornstarch only, or use started after 2020",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_cornstarch_only"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "tc_years"
+        }
+      ]
+    },
+    {
+      "id": "tc_years",
+      "track": "talc",
+      "prompt": "About how many years?",
+      "help": "",
+      "choices": [
+        {
+          "id": "under_5",
+          "label": "Under 5 years",
+          "next": "tc_diagnosis"
+        },
+        {
+          "id": "5_15",
+          "label": "5 to 15 years",
+          "next": "tc_diagnosis"
+        },
+        {
+          "id": "over_15",
+          "label": "More than 15 years",
+          "next": "tc_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "tc_diagnosis",
+      "track": "talc",
+      "prompt": "Has a doctor diagnosed one of these?",
+      "help": "",
+      "choices": [
+        {
+          "id": "ovarian",
+          "label": "Ovarian, fallopian-tube, or primary peritoneal cancer",
+          "next": "tc_timing"
+        },
+        {
+          "id": "meso",
+          "label": "Mesothelioma",
+          "next": "tc_asbestos"
+        },
+        {
+          "id": "no",
+          "label": "No diagnosis — a worry, a family history, or a BRCA result only",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_no_diagnosis"
+        }
+      ]
+    },
+    {
+      "id": "tc_asbestos",
+      "track": "talc",
+      "prompt": "Was your main exposure an asbestos job, such as shipyards, insulation, or brake work?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "next": "tc_timing"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_asbestos_job"
+        }
+      ]
+    },
+    {
+      "id": "tc_timing",
+      "track": "talc",
+      "prompt": "Was that diagnosis made after the years of use?",
+      "help": "",
+      "choices": [
+        {
+          "id": "after",
+          "label": "Yes — after",
+          "next": "tc_settled"
+        },
+        {
+          "id": "before",
+          "label": "No — before",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "diagnosis_before_exposure"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "next": "tc_settled"
+        }
+      ]
+    },
+    {
+      "id": "tc_settled",
+      "track": "talc",
+      "prompt": "Have you already settled a talc claim, or did a law firm already file one for you?",
+      "help": "",
+      "choices": [
+        {
+          "id": "no",
+          "label": "No",
+          "result": "potentially_qualify_sofia",
+          "route": "talc_review"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "potentially_qualify_sofia",
+          "route": "talc_review"
+        },
+        {
+          "id": "yes",
+          "label": "Yes",
+          "result": "no_match",
+          "route": "sofia",
+          "stop_reason": "talc_released"
+        }
+      ]
+    },
+    {
+      "id": "injury_when",
+      "track": "injury",
+      "prompt": "When did the accident happen?",
+      "help": "Deadlines depend on your state. The next page can help with that.",
+      "choices": [
+        {
+          "id": "under_2y",
+          "label": "Within the last 2 years",
+          "result": "injury",
+          "route": "injury"
+        },
+        {
+          "id": "over_2y",
+          "label": "More than 2 years ago",
+          "result": "injury",
+          "route": "injury"
+        },
+        {
+          "id": "not_sure",
+          "label": "Not sure",
+          "result": "injury",
+          "route": "injury"
+        }
+      ]
+    }
+  ]
+}
