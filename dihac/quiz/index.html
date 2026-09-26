@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Do I Have A Claim? Quick screen | DoIHaveAClaim.ai</title>
+  <meta name="description" content="Answer a few questions about what happened. If your answers may fit a matter a network firm is reviewing, we point you to the right place. Not legal advice.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="ee-brand" content="doihaveaclaim.ai">
+  <meta name="ee-page-type" content="quiz">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Do I Have A Claim? Quick screen | DoIHaveAClaim.ai">
+  <meta property="og:description" content="A short screen. A matching answer means someone may potentially qualify for a lawyer to review the facts. It is not a decision about your case.">
+  <meta name="theme-color" content="#071412">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <!-- Google Tag Manager — web container only -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WJCZF46W');</script>
+  <!-- End Google Tag Manager -->
+  <style>
+    :root {
+      --night: #071412; --night-2: #0b201c; --panel: rgba(16, 43, 37, .66); --line: rgba(193, 255, 223, .15);
+      --mint: #75f0bd; --mint-bright: #b8ffdc; --aqua: #64ddeb; --cream: #f3f8f4; --muted: #a8bbb4;
+      --shadow: 0 28px 90px rgba(0, 0, 0, .45); --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--night); }
+    body {
+      margin: 0; min-width: 320px; color: var(--cream);
+      background: radial-gradient(circle at 50% 18%, rgba(83, 221, 170, .12), transparent 30rem), linear-gradient(155deg, #06110f 0%, #091a17 48%, #061210 100%);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.5;
+    }
+    button, a { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; cursor: pointer; }
+    .skip-link { position: fixed; left: 16px; top: -60px; z-index: 20; padding: 10px 14px; color: #04100d; background: var(--mint-bright); border-radius: 10px; }
+    .skip-link:focus { top: 12px; }
+    .site-header { display: flex; align-items: center; justify-content: space-between; width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 19px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--cream); text-decoration: none; font-weight: 760; letter-spacing: -.03em; }
+    .brand-ai { color: var(--mint); }
+    .brand-mark { width: 33px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .build-state { color: #87a49a; font-size: 10px; letter-spacing: .13em; }
+    main { width: min(760px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 64px; }
+    .eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; color: var(--mint); font-size: 11px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow span { width: 22px; height: 1px; background: currentColor; }
+    h1, h2, p { margin-top: 0; }
+    h1 { margin-bottom: 12px; font-size: clamp(1.7rem, 4.6vw, 2.6rem); line-height: 1.08; letter-spacing: -.04em; font-weight: 620; text-wrap: balance; }
+    .help { margin-bottom: 0; color: var(--muted); font-size: 1rem; }
+    .card { padding: clamp(22px, 4vw, 40px); border: 1px solid var(--line); border-radius: 26px; background: var(--panel); backdrop-filter: blur(12px); box-shadow: var(--shadow); }
+    .progress { display: flex; gap: 6px; margin: 0 0 26px; }
+    .progress i { flex: 1; height: 5px; border-radius: 4px; background: rgba(193, 255, 223, .12); }
+    .progress i.on { background: var(--mint); }
+    .choices { display: grid; gap: 10px; margin-top: 24px; }
+    .choice { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: rgba(7, 26, 22, .7); color: var(--cream); text-align: left; font-weight: 600; transition: border-color .15s, transform .15s; }
+    .choice:hover, .choice:focus-visible { border-color: var(--mint); transform: translateY(-1px); outline: none; }
+    .choice:focus-visible { box-shadow: 0 0 0 3px rgba(117, 240, 189, .35); }
+    .choice::after { content: "→"; color: var(--mint); flex: none; }
+    .nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; color: var(--muted); font-size: .85rem; }
+    .link { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+    .link:hover { color: var(--mint-bright); }
+    .cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 58px; padding: 14px 24px; color: #06130f; font-weight: 750; text-decoration: none; border: 1px solid rgba(255, 255, 255, .78); border-radius: 999px; background: linear-gradient(125deg, #d0ffe7, #7ef2bd 58%, #63dbe7); box-shadow: 0 0 0 8px rgba(117, 240, 189, .06), 0 20px 70px rgba(79, 238, 176, .25); }
+    .cta:hover { transform: translateY(-2px); }
+    .cta:focus-visible { outline: 3px solid white; outline-offset: 5px; }
+    .result-actions { display: grid; gap: 14px; margin-top: 26px; }
+    .result-note { margin: 0; color: var(--muted); font-size: .85rem; }
+    .result-note b { color: var(--cream); font-weight: 600; }
+    .stop-list { margin: 16px 0 0; padding-left: 18px; color: var(--muted); font-size: .92rem; }
+    .quiet { margin-top: 20px; color: #71877f; font-size: .78rem; }
+    .debug { margin-top: 18px; padding: 12px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; white-space: pre-wrap; }
+    .hidden { display: none !important; }
+    footer { width: min(1080px, calc(100% - 40px)); margin-inline: auto; padding: 40px 0 38px; color: #71877f; font-size: .72rem; text-align: center; }
+    footer p { max-width: 840px; margin: 0 auto 13px; }
+    @media (max-width: 520px) { .build-state { display: none; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) — web container only -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJCZF46W"
+  height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <a class="skip-link" href="#main">Skip to the questions</a>
+
+  <header class="site-header" aria-label="Site header">
+    <a class="brand" href="/" aria-label="Do I Have A Claim home">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M13 8h18a6 6 0 0 1 6 6v20a6 6 0 0 1-6 6H13a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6Z"/>
+        <path d="M17 19.5c.8-4 4.2-6.2 8.3-6.2 4.8 0 8 2.8 8 6.8 0 5-5.6 5.8-7.3 8.6"/>
+        <circle cx="25.4" cy="34.1" r="1.7"/>
+      </svg>
+      <span>DoIHaveAClaim<span class="brand-ai">.ai</span></span>
+    </a>
+    <span class="build-state">PREVIEW · NOT LIVE</span>
+  </header>
+
+  <main id="main">
+    <section class="card" id="quiz" aria-live="polite">
+      <div class="progress" id="progress" aria-label="Progress"></div>
+      <p class="eyebrow"><span></span> <span id="track-label">Quick screen</span></p>
+      <h1 id="prompt">Loading the questions…</h1>
+      <p class="help" id="help"></p>
+      <div class="choices" id="choices" role="group" aria-labelledby="prompt"></div>
+      <div class="nav">
+        <button type="button" class="link" id="back" hidden>← Back</button>
+        <span id="step-count"></span>
+      </div>
+    </section>
+
+    <section class="card hidden" id="result" aria-live="polite">
+      <p class="eyebrow"><span></span> <span id="result-eyebrow">Result</span></p>
+      <h1 id="result-title"></h1>
+      <p class="help" id="result-body"></p>
+      <ul class="stop-list hidden" id="result-list"></ul>
+      <div class="result-actions">
+        <a class="cta" id="result-cta" data-cta-id="quiz_route_primary" href="#">Continue</a>
+        <p class="result-note" id="result-note"></p>
+        <button type="button" class="link" id="restart">Start over</button>
+      </div>
+      <pre class="debug hidden" id="debug"></pre>
+      <p class="quiet">Answering these questions does not create a case, promise a review, or guarantee any payment. Only an attorney can evaluate a legal claim.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sofia is an informational AI assistant. DoIHaveAClaim.ai is not a law firm and does not provide legal advice. Sofia cannot determine that you have a legal claim, guarantee representation, or predict an outcome. Only an attorney can evaluate a legal claim.</p>
+    <p>This screen asks about facts a reviewer may look at. A matching answer means you may potentially qualify for a lawyer to review the facts. It does not mean you have a claim, a case, or any payment coming.</p>
+    <p>© <span id="year"></span> DoIHaveAClaim.ai · BUILT—NOT LIVE</p>
+  </footer>
+
+  <!-- QUIZ SCHEMA: source of truth for this page. Documented at ~/workspace/legal-lane/dihac-network/quiz-schema.md (DERIVED). -->
+  <script type="application/json" id="quiz-schema">
+{
+  "schema": "dihac.quiz/v0.1-derived",
+  "status": "DERIVED — canonical Muse quiz-schema.md not found on 2026-09-25; replace when it arrives",
+  "tenant_id": "DIHAC",
+  "domain_id": "doihaveaclaim.ai",
+  "quiz_id": "dihac-quiz",
+  "version": "2026-09-25.1",
+  "entry": "intake",
+  "attribution_passthrough": ["lead_id", "claim_id", "campaign_id", "gclid", "fbclid", "ttclid"],
+  "outbound_utm": { "utm_source": "doihaveaclaim.ai", "utm_medium": "quiz", "utm_campaign": "dihac-quiz" },
+  "outcomes": {
+    "potentially_qualify": {
+      "title": "Your answers may be worth a lawyer's review.",
+      "body": "Based on what you told us, you may potentially qualify for a lawyer to review the facts. That is not a decision about your case. The next page belongs to a firm network that reviews this kind of matter.",
+      "note": "You will leave DoIHaveAClaim.ai and continue to <b>{{destination_host}}</b>. Nothing you answered here is sent with you except campaign tracking codes."
+    },
+    "injury": {
+      "title": "This sounds like an injury matter.",
+      "body": "Injury cases are handled through Nearest Injury Lawyers. Their team can talk through what happened and whether a firm is accepting matters like yours.",
+      "note": "You will leave DoIHaveAClaim.ai and continue to <b>{{destination_host}}</b>. Nothing you answered here is sent with you except campaign tracking codes."
+    },
+    "no_match": {
+      "title": "This screen stopped here.",
+      "body": "One of your answers is a common reason a reviewer would not take this further right now. That is not a legal decision, and it does not mean you have no options. If you want a second look, talk it through with Sofia.",
+      "note": "Sofia is an AI assistant on this site. She cannot decide whether you have a claim."
+    },
+    "unsure": {
+      "title": "Let's talk it through instead.",
+      "body": "This short screen is built for a few specific matters. Yours may need a conversation. Sofia can ask better follow-ups and explain what kind of firm usually handles situations like yours.",
+      "note": "Sofia is an AI assistant on this site. She cannot decide whether you have a claim."
+    }
+  },
+  "routes": {
+    "paraquat": { "tenant_id": "BTL", "tort": "paraquat", "url": "https://besttortlawyers.com/paraquat/", "cta": "Continue to Best Tort Lawyers" },
+    "injury":   { "tenant_id": "NIL", "tort": "injury",   "url": "https://nearestinjurylawyers.com/", "cta": "Continue to Nearest Injury Lawyers" },
+    "sofia":    { "tenant_id": "DIHAC", "tort": null,     "url": "/talk-to-sofia.html", "cta": "Talk with Sofia" }
+  },
+  "stop_reasons": {
+    "home_weed_killer": "Home use of Roundup, other glyphosate products, or ordinary yard weed killer is not paraquat exposure.",
+    "no_occupational_exposure": "The screen looks for work around a restricted farm herbicide: spraying, mixing, loading, or working beside people who did.",
+    "no_parkinsons_diagnosis": "The screen looks for a Parkinson's disease diagnosis made by a doctor. A tremor without a diagnosis, or a different movement disorder, is not the same answer.",
+    "diagnosis_before_exposure": "The screen looks for a diagnosis that came after the work around the herbicide.",
+    "already_settled": "A paraquat claim that was already settled or released is normally not reviewed again."
+  },
+  "steps": [
+    {
+      "id": "intake", "track": null, "prompt": "What happened?",
+      "help": "Pick the closest fit. You can change your answer.",
+      "choices": [
+        { "id": "exposure", "label": "I worked around a chemical or product and was later diagnosed with an illness", "next": "product" },
+        { "id": "injury",   "label": "I was hurt in an accident — car, fall, work, or something similar", "next": "injury_when", "track": "injury" },
+        { "id": "other",    "label": "Something else, or I'm not sure", "result": "unsure", "route": "sofia" }
+      ]
+    },
+    {
+      "id": "product", "track": null, "prompt": "Which product were you around?",
+      "help": "Paraquat is a restricted farm herbicide for licensed applicators. It is not a bottle sold for home yards.",
+      "choices": [
+        { "id": "paraquat", "label": "Paraquat or Gramoxone, or the licensed herbicide used on a farm, orchard, or commercial grounds crew", "next": "pq_exposure", "track": "paraquat" },
+        { "id": "roundup",  "label": "Roundup, another glyphosate product, or a store-bought yard weed killer", "result": "no_match", "route": "sofia", "stop_reason": "home_weed_killer" },
+        { "id": "other_product", "label": "A different product, or I don't know the name", "result": "unsure", "route": "sofia" }
+      ]
+    },
+    {
+      "id": "pq_exposure", "track": "paraquat", "prompt": "Did your work include spraying, mixing, or loading a restricted farm herbicide, or working beside people who did?",
+      "help": "Farmers, farmworkers, licensed applicators, commercial landscapers, and some grounds crews are the usual fits.",
+      "choices": [
+        { "id": "applied", "label": "Yes — I sprayed, mixed, or loaded it", "next": "pq_years" },
+        { "id": "nearby",  "label": "Yes — I worked in fields, orchards, groves, or grounds while others sprayed it", "next": "pq_years" },
+        { "id": "no",      "label": "No", "result": "no_match", "route": "sofia", "stop_reason": "no_occupational_exposure" }
+      ]
+    },
+    {
+      "id": "pq_years", "track": "paraquat", "prompt": "About what years were you around it?",
+      "help": "A rough answer is fine. A reviewer decides how much exposure is enough; this screen does not.",
+      "choices": [
+        { "id": "before_1990", "label": "Before 1990", "next": "pq_frequency" },
+        { "id": "1990s",       "label": "The 1990s", "next": "pq_frequency" },
+        { "id": "2000s",       "label": "The 2000s", "next": "pq_frequency" },
+        { "id": "2010_later",  "label": "2010 or later", "next": "pq_frequency" },
+        { "id": "several",     "label": "Across several of these", "next": "pq_frequency" }
+      ]
+    },
+    {
+      "id": "pq_frequency", "track": "paraquat", "prompt": "About how often were you around it?",
+      "help": "Think about a typical season of that work.",
+      "choices": [
+        { "id": "daily",    "label": "Most working days", "next": "pq_diagnosis" },
+        { "id": "weekly",   "label": "About weekly", "next": "pq_diagnosis" },
+        { "id": "seasonal", "label": "Seasonally — a few weeks a year", "next": "pq_diagnosis" },
+        { "id": "rarely",   "label": "Rarely", "next": "pq_diagnosis" }
+      ]
+    },
+    {
+      "id": "pq_diagnosis", "track": "paraquat", "prompt": "Has a doctor diagnosed you with Parkinson's disease?",
+      "help": "This is not a medical exam. We only need to know whether a doctor made the diagnosis.",
+      "choices": [
+        { "id": "neurologist", "label": "Yes — a neurologist", "next": "pq_timing" },
+        { "id": "doctor",      "label": "Yes — another doctor", "next": "pq_timing" },
+        { "id": "symptoms",    "label": "I have a tremor or symptoms, but no diagnosis", "result": "no_match", "route": "sofia", "stop_reason": "no_parkinsons_diagnosis" },
+        { "id": "no",          "label": "No", "result": "no_match", "route": "sofia", "stop_reason": "no_parkinsons_diagnosis" }
+      ]
+    },
+    {
+      "id": "pq_timing", "track": "paraquat", "prompt": "Was that diagnosis made after the work around the herbicide?",
+      "help": "",
+      "choices": [
+        { "id": "after",    "label": "Yes — after the work", "next": "pq_settled" },
+        { "id": "before",   "label": "No — before the work", "result": "no_match", "route": "sofia", "stop_reason": "diagnosis_before_exposure" },
+        { "id": "not_sure", "label": "Not sure", "next": "pq_settled" }
+      ]
+    },
+    {
+      "id": "pq_settled", "track": "paraquat", "prompt": "Have you already settled or released a paraquat claim?",
+      "help": "",
+      "choices": [
+        { "id": "no",       "label": "No", "result": "potentially_qualify", "route": "paraquat" },
+        { "id": "not_sure", "label": "Not sure", "result": "potentially_qualify", "route": "paraquat" },
+        { "id": "yes",      "label": "Yes", "result": "no_match", "route": "sofia", "stop_reason": "already_settled" }
+      ]
+    },
+    {
+      "id": "injury_when", "track": "injury", "prompt": "When did the accident happen?",
+      "help": "Deadlines depend on your state. The next page can help with that.",
+      "choices": [
+        { "id": "under_2y", "label": "Within the last 2 years", "result": "injury", "route": "injury" },
+        { "id": "over_2y",  "label": "More than 2 years ago", "result": "injury", "route": "injury" },
+        { "id": "not_sure", "label": "Not sure", "result": "injury", "route": "injury" }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <!-- QUIZ ENGINE: pure functions, no DOM. tests/dihac-quiz.test.mjs runs this same block in node. -->
+  <script id="quiz-engine">
+  (function (root) {
+    'use strict';
+    function createEngine(schema) {
+      var stepsById = {};
+      schema.steps.forEach(function (s) { stepsById[s.id] = s; });
+
+      function step(id) {
+        var s = stepsById[id];
+        if (!s) throw new Error('unknown step: ' + id);
+        return s;
+      }
+      function choice(stepId, choiceId) {
+        var s = step(stepId);
+        for (var i = 0; i < s.choices.length; i++) if (s.choices[i].id === choiceId) return s.choices[i];
+        throw new Error('unknown choice ' + choiceId + ' on step ' + stepId);
+      }
+      // Longest number of steps still to answer from a step (schema is a DAG).
+      var memo = {};
+      function remaining(id) {
+        if (memo[id] !== undefined) return memo[id];
+        var best = 0;
+        step(id).choices.forEach(function (c) {
+          if (c.next) best = Math.max(best, 1 + remaining(c.next));
+        });
+        memo[id] = best;
+        return best;
+      }
+      function start(tort) {
+        if (tort) {
+          for (var i = 0; i < schema.steps.length; i++) if (schema.steps[i].track === tort) return schema.steps[i].id;
+        }
+        return schema.entry;
+      }
+      function apply(stepId, choiceId) {
+        var c = choice(stepId, choiceId);
+        if (c.result) {
+          if (!schema.routes[c.route]) throw new Error('unknown route ' + c.route);
+          return { done: true, result: c.result, route: c.route, stop_reason: c.stop_reason || null, track: c.track || null };
+        }
+        step(c.next);
+        return { done: false, next: c.next, track: c.track || null };
+      }
+      function walk(choiceIds, tort) {
+        var id = start(tort), track = tort || null, path = [];
+        for (var i = 0; i < choiceIds.length; i++) {
+          var out = apply(id, choiceIds[i]);
+          path.push(id + ':' + choiceIds[i]);
+          if (out.track) track = out.track;
+          if (out.done) return { result: out.result, route: out.route, stop_reason: out.stop_reason, track: track, path: path, tort: schema.routes[out.route].tort };
+          id = out.next;
+        }
+        return { result: null, route: null, stop_reason: null, track: track, path: path, at: id };
+      }
+      // Build the outbound URL. incoming = URLSearchParams-like (has .get) or plain object.
+      function destination(routeKey, opts) {
+        opts = opts || {};
+        var route = schema.routes[routeKey];
+        if (!route) throw new Error('unknown route ' + routeKey);
+        var origin = opts.origin || 'https://' + schema.domain_id;
+        var url = new URL(route.url, origin);
+        var get = function (k) {
+          var inc = opts.incoming;
+          if (!inc) return null;
+          return typeof inc.get === 'function' ? inc.get(k) : (inc[k] === undefined ? null : inc[k]);
+        };
+        if (route.tenant_id !== schema.tenant_id) {
+          if (route.tort) url.searchParams.set('tort', route.tort);
+          Object.keys(schema.outbound_utm).forEach(function (k) { url.searchParams.set(k, schema.outbound_utm[k]); });
+          if (opts.result) url.searchParams.set('utm_content', String(opts.result).slice(0, 60));
+          url.searchParams.set('quiz_id', schema.quiz_id);
+          url.searchParams.set('quiz_version', schema.version);
+          if (opts.session_id) url.searchParams.set('session_id', String(opts.session_id).slice(0, 80));
+          schema.attribution_passthrough.forEach(function (k) {
+            var v = get(k);
+            if (v) url.searchParams.set(k, String(v).slice(0, 300));
+          });
+        } else {
+          url.searchParams.set('from', schema.quiz_id);
+          if (opts.result) url.searchParams.set('result', String(opts.result).slice(0, 60));
+          if (route.tort) url.searchParams.set('tort', route.tort);
+        }
+        return url.href;
+      }
+      return { schema: schema, step: step, choice: choice, remaining: remaining, start: start, apply: apply, walk: walk, destination: destination };
+    }
+    root.DIHAC_QUIZ_ENGINE = { createEngine: createEngine };
+  })(typeof window !== 'undefined' ? window : globalThis);
+  </script>
+
+  <script>
+  (function () {
+    'use strict';
+    var schema = JSON.parse(document.getElementById('quiz-schema').textContent);
+    var engine = window.DIHAC_QUIZ_ENGINE.createEngine(schema);
+    var params = new URLSearchParams(window.location.search);
+    var attributionKeys = ['lead_id', 'claim_id', 'campaign_id', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'ttclid'];
+
+    function makeId(prefix) {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') return prefix + '_' + window.crypto.randomUUID();
+      var bytes = new Uint32Array(4); window.crypto.getRandomValues(bytes);
+      return prefix + '_' + Array.prototype.map.call(bytes, function (p) { return p.toString(16); }).join('');
+    }
+    function getSessionId() {
+      var key = 'dihac_session_id';
+      try { var v = window.sessionStorage.getItem(key); if (!v) { v = makeId('session'); window.sessionStorage.setItem(key, v); } return v; }
+      catch (_e) { return makeId('session'); }
+    }
+    function getStoredAttribution() {
+      var key = 'dihac_attribution', current = {};
+      attributionKeys.forEach(function (n) { var v = params.get(n); if (v) current[n] = v.slice(0, 300); });
+      try { var stored = JSON.parse(window.sessionStorage.getItem(key) || '{}'); var merged = Object.assign({}, stored, current); window.sessionStorage.setItem(key, JSON.stringify(merged)); return merged; }
+      catch (_e) { return current; }
+    }
+    var context = Object.freeze(Object.assign({ tenant_id: schema.tenant_id, domain_id: schema.domain_id, session_id: getSessionId() }, getStoredAttribution()));
+    // Events carry step ids and outcome codes only. Individual answers (health facts) never leave the page.
+    function pushEvent(name, details) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({}, context, {
+        event: name, event_id: makeId('event'), event_timestamp: new Date().toISOString(), consent_state: 'immediate',
+        page_type: 'quiz', quiz_id: schema.quiz_id, quiz_version: schema.version
+      }, details || {}));
+    }
+
+    var el = function (id) { return document.getElementById(id); };
+    var state = { current: null, history: [], track: null, started: false, done: null };
+    var debug = params.get('debug') === '1';
+
+    function escapeHtml(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function trackLabel(track) { return track === 'paraquat' ? 'Paraquat · Parkinson’s screen' : track === 'injury' ? 'Injury screen' : 'Quick screen'; }
+
+    function renderProgress() {
+      var done = state.history.length, left = engine.remaining(state.current) + 1, total = done + left, html = '';
+      for (var i = 0; i < total; i++) html += '<i class="' + (i < done ? 'on' : '') + '"></i>';
+      el('progress').innerHTML = html;
+      el('step-count').textContent = 'Question ' + (done + 1) + ' of ' + total;
+    }
+    function renderStep() {
+      var s = engine.step(state.current);
+      el('quiz').classList.remove('hidden'); el('result').classList.add('hidden');
+      el('track-label').textContent = trackLabel(state.track);
+      el('prompt').textContent = s.prompt;
+      el('help').textContent = s.help || '';
+      el('help').classList.toggle('hidden', !s.help);
+      var wrap = el('choices'); wrap.innerHTML = '';
+      s.choices.forEach(function (c) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'choice cta-choice'; b.setAttribute('data-choice', c.id); b.setAttribute('data-step', s.id);
+        b.textContent = c.label;
+        b.addEventListener('click', function () { choose(s.id, c.id); });
+        wrap.appendChild(b);
+      });
+      el('back').hidden = state.history.length === 0;
+      renderProgress();
+      el('prompt').focus && el('prompt').setAttribute('tabindex', '-1');
+      el('prompt').focus();
+    }
+    function choose(stepId, choiceId) {
+      if (!state.started) { state.started = true; pushEvent('ee_quiz_start', { step_id: stepId, track: state.track }); }
+      var out = engine.apply(stepId, choiceId);
+      state.history.push(stepId);
+      if (out.track) state.track = out.track;
+      pushEvent('ee_quiz_step', { step_id: stepId, step_index: state.history.length, track: state.track });
+      if (out.done) return finish(out);
+      state.current = out.next;
+      renderStep();
+    }
+    function finish(out) {
+      var route = schema.routes[out.route];
+      var outcome = schema.outcomes[out.result];
+      var href = engine.destination(out.route, { incoming: params, result: out.result, session_id: context.session_id, origin: window.location.origin });
+      var host = new URL(href).hostname;
+      state.done = { result: out.result, route: out.route, href: href };
+      pushEvent('ee_quiz_complete', { result: out.result, track: state.track, tort: route.tort, destination_tenant_id: route.tenant_id, destination_host: host });
+      el('quiz').classList.add('hidden'); el('result').classList.remove('hidden');
+      el('result-eyebrow').textContent = trackLabel(state.track) + ' · result';
+      el('result-title').textContent = outcome.title;
+      el('result-body').textContent = outcome.body;
+      var list = el('result-list'); list.innerHTML = '';
+      if (out.stop_reason && schema.stop_reasons[out.stop_reason]) {
+        var li = document.createElement('li'); li.textContent = schema.stop_reasons[out.stop_reason]; list.appendChild(li); list.classList.remove('hidden');
+      } else list.classList.add('hidden');
+      var cta = el('result-cta');
+      cta.href = href; cta.textContent = route.cta;
+      cta.setAttribute('data-cta-id', 'quiz_route_' + out.route);
+      cta.setAttribute('data-tenant-id', route.tenant_id);
+      cta.setAttribute('data-result', out.result);
+      if (route.tenant_id !== schema.tenant_id) cta.setAttribute('rel', 'noopener'); else cta.removeAttribute('rel');
+      el('result-note').innerHTML = outcome.note.replace('{{destination_host}}', escapeHtml(host));
+      el('debug').classList.toggle('hidden', !debug);
+      if (debug) el('debug').textContent = JSON.stringify({ result: out.result, route: out.route, stop_reason: out.stop_reason, track: state.track, href: href, history: state.history }, null, 2);
+      el('result-title').setAttribute('tabindex', '-1'); el('result-title').focus();
+    }
+    function back() {
+      if (!state.history.length) return;
+      state.current = state.history.pop();
+      var s = engine.step(state.current); state.track = s.track || (state.history.length ? state.track : null);
+      renderStep();
+    }
+    function restart() {
+      state.history = []; state.track = null; state.done = null; state.started = false;
+      state.current = engine.start(null);
+      pushEvent('ee_quiz_restart', {});
+      renderStep();
+    }
+
+    el('back').addEventListener('click', back);
+    el('restart').addEventListener('click', restart);
+    el('result-cta').addEventListener('click', function () {
+      var route = schema.routes[state.done.route];
+      pushEvent('ee_quiz_route', { cta_id: this.getAttribute('data-cta-id'), result: state.done.result, tort: route.tort, destination_tenant_id: route.tenant_id, destination_host: new URL(state.done.href).hostname });
+      if (route.tenant_id !== schema.tenant_id) pushEvent('ee_outbound_click', { link_domain: new URL(state.done.href).hostname, link_id: this.getAttribute('data-cta-id') });
+    });
+
+    var year = el('year'); if (year) year.textContent = new Date().getFullYear();
+    var tort = (params.get('tort') || '').toLowerCase();
+    state.current = engine.start(tort);
+    if (state.current !== schema.entry) state.track = tort;
+    pushEvent('ee_page_view', { page_path: window.location.pathname, track: state.track });
+    renderStep();
+    window.DIHAC_QUIZ = { schema: schema, engine: engine, state: state };
+  })();
+  </script>
+</body>
+</html>
