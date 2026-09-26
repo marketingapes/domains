@@ -1,0 +1,119 @@
+{
+  "tort": "afff",
+  "version": "2026-09-25.1",
+  "reviewStatus": "draft_requires_firm_review",
+  "mdl": 2873,
+  "source": "https://www.jpml.uscourts.gov/sites/jpml/files/Pending_MDL_Dockets_By_MDL_Type-September-1-2026.pdf",
+  "criteriaNote": "Draft screening points for discussion. Confirm against the responsible firm's current intake criteria before consumer publication. A docket listing does not establish liability or current intake availability.",
+  "eyebrow": "AFFF firefighting foam",
+  "title": "Could an AFFF exposure review be worth a conversation?",
+  "intro": "Five quick questions about exposure and health history. No contact details are collected here, and nothing you choose is shared with a firm.",
+  "notice": "This is a screening conversation starter, not a legal evaluation. Firms decide what they review; DoIHaveAClaim.ai only helps you understand which kind of firm to talk with.",
+  "lawyerType": {
+    "id": "mass_tort_afff",
+    "label": "Mass tort attorney handling AFFF firefighting foam (PFAS) exposure matters"
+  },
+  "questions": [
+    {
+      "id": "exposure",
+      "type": "single",
+      "prompt": "How were you exposed to AFFF firefighting foam?",
+      "help": "AFFF is the foam used to put out fuel fires at fire departments, military bases, airports and industrial sites.",
+      "options": [
+        { "value": "firefighter_civilian", "label": "Civilian or municipal firefighter who used or trained with the foam" },
+        { "value": "firefighter_military", "label": "Military firefighter or service member who handled the foam" },
+        { "value": "airport_industrial", "label": "Worked at an airport, refinery, chemical plant or other site that used the foam" },
+        { "value": "manufacturing", "label": "Worked where the foam or its PFAS chemicals were made" },
+        { "value": "base_resident", "label": "Lived or worked on or near a base or airport with reported PFAS contamination" },
+        { "value": "water", "label": "Drank water from a supply reported as PFAS-contaminated" },
+        { "value": "none", "label": "None of these, or not sure" }
+      ]
+    },
+    {
+      "id": "exposure_years",
+      "type": "single",
+      "prompt": "Roughly how long did the exposure last?",
+      "options": [
+        { "value": "under_1", "label": "Less than a year" },
+        { "value": "one_to_five", "label": "One to five years" },
+        { "value": "over_five", "label": "More than five years" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "type": "multi",
+      "prompt": "Has a doctor diagnosed you with any of the following?",
+      "help": "Choose everything that applies.",
+      "options": [
+        { "value": "kidney_cancer", "label": "Kidney cancer" },
+        { "value": "testicular_cancer", "label": "Testicular cancer" },
+        { "value": "thyroid_cancer", "label": "Thyroid cancer" },
+        { "value": "thyroid_disease", "label": "Thyroid disease (for example hypothyroidism)" },
+        { "value": "ulcerative_colitis", "label": "Ulcerative colitis" },
+        { "value": "liver_cancer", "label": "Liver cancer" },
+        { "value": "other_cancer", "label": "Another cancer (for example bladder, prostate or pancreatic)" },
+        { "value": "none", "label": "None of these" }
+      ]
+    },
+    {
+      "id": "diagnosis_year",
+      "type": "single",
+      "prompt": "When was the diagnosis?",
+      "options": [
+        { "value": "within_2", "label": "Within the last two years" },
+        { "value": "two_to_five", "label": "Two to five years ago" },
+        { "value": "over_five", "label": "More than five years ago" },
+        { "value": "no_diagnosis", "label": "There is no diagnosis" }
+      ]
+    },
+    {
+      "id": "represented",
+      "type": "single",
+      "prompt": "Have you already signed with a lawyer about this?",
+      "options": [
+        { "value": "no", "label": "No" },
+        { "value": "yes", "label": "Yes" },
+        { "value": "unsure", "label": "Not sure" }
+      ]
+    }
+  ],
+  "scoring": {
+    "disqualify": [
+      { "when": { "question": "exposure", "is": "none" }, "reason": "Firms reviewing AFFF matters look for direct exposure to the foam or to PFAS-contaminated water." },
+      { "when": { "question": "diagnosis", "is": "none" }, "reason": "Firms reviewing AFFF matters generally look for a diagnosed condition." },
+      { "when": { "question": "diagnosis_year", "is": "no_diagnosis" }, "reason": "Firms reviewing AFFF matters generally look for a diagnosed condition." },
+      { "when": { "question": "represented", "is": "yes" }, "reason": "You already have a lawyer for this. Your current lawyer is the right person to talk with." }
+    ],
+    "required": [
+      { "when": { "question": "exposure_years", "in": ["one_to_five", "over_five"] }, "reason": "Firms often look for a sustained exposure period. A shorter or uncertain exposure needs a closer look." },
+      { "when": { "question": "represented", "is": "no" }, "reason": "Whether you already have a lawyer needs to be confirmed." }
+    ],
+    "points": [
+      { "when": { "question": "exposure", "in": ["firefighter_civilian", "firefighter_military", "airport_industrial", "manufacturing"] }, "points": 3, "reason": "Occupational exposure to the foam." },
+      { "when": { "question": "exposure", "in": ["base_resident", "water"] }, "points": 1, "reason": "Environmental or drinking-water exposure." },
+      { "when": { "question": "diagnosis", "in": ["kidney_cancer", "testicular_cancer"] }, "points": 4, "reason": "A diagnosis firms most commonly screen for." },
+      { "when": { "question": "diagnosis", "in": ["thyroid_cancer", "thyroid_disease", "ulcerative_colitis", "liver_cancer"] }, "points": 3, "reason": "A diagnosis some firms screen for." },
+      { "when": { "question": "diagnosis", "is": "other_cancer" }, "points": 1, "reason": "A diagnosis that varies by firm." },
+      { "when": { "question": "exposure_years", "is": "over_five" }, "points": 1, "reason": "Long exposure period." }
+    ],
+    "thresholds": { "strong": 7, "possible": 4 }
+  },
+  "results": {
+    "strong": {
+      "headline": "You may potentially qualify for a review by an AFFF exposure attorney.",
+      "body": "Your answers line up with the screening points firms handling AFFF firefighting foam matters commonly look for. A firm would still need to review your records before deciding anything.",
+      "nextStep": "sofia_outreach"
+    },
+    "possible": {
+      "headline": "You may potentially qualify, and a few details need a closer look.",
+      "body": "Some answers match what AFFF firms look for and others need review. Sofia can walk through the details and explain what a firm would want to know.",
+      "nextStep": "sofia_outreach"
+    },
+    "unlikely": {
+      "headline": "Based on these answers, an AFFF review may not be the right fit.",
+      "body": "That is not a legal decision, and it does not mean nothing can be done. If something changes, or you want to talk through what happened, Sofia is available.",
+      "nextStep": "resources"
+    }
+  }
+}
