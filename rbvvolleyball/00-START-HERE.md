@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-26 — Photo uploaded to RBV library
+
+- Asset: `images/rbv-2026-team-photo-7788-1146cdaab861.jpg`.
+- Content commit: `2bbd55c883ee7f54887df10629ea968c5243ac8d`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-26 — Page updated: index.html
 
 - Published approved page change.
