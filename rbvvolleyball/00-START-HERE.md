@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-09-26 — Photo uploaded to RBV library
+
+- Asset: `images/rbv-volleyball-home-icon-43c3ef96af01.png`.
+- Content commit: `44e03c9a7abe1a94fd116cd8275eb9c5511b5d72`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-09-26 — Page updated: gallery.html
 
 - Published approved page change.
