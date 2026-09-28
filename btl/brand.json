@@ -6,9 +6,9 @@
     "phone_tel": "+12029329700"
   },
   "logo": {
-    "name": "btl-institutional-seal",
-    "asset": "assets/btl-mark.svg",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 160\"><defs><linearGradient id=\"btlg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop offset=\"0\" stop-color=\"#D7B56E\"/><stop offset=\"1\" stop-color=\"#A98137\"/></linearGradient></defs><circle cx=\"80\" cy=\"80\" r=\"70\" fill=\"#111827\"/><circle cx=\"80\" cy=\"80\" r=\"58\" fill=\"none\" stroke=\"url(#btlg)\" stroke-width=\"2.5\"/><path d=\"M46 48h35c17 0 29 9 29 23 0 8-4 15-11 19 10 4 16 12 16 22 0 18-14 29-35 29H46V48zm31 35c10 0 16-4 16-12s-6-12-16-12H62v24h15zm3 46c12 0 19-5 19-15s-7-15-19-15H62v30h18z\" fill=\"#F6F1E7\"/><path d=\"M111 48h7v93h-7z\" fill=\"url(#btlg)\"/><circle cx=\"80\" cy=\"22\" r=\"3.5\" fill=\"#D7B56E\"/><circle cx=\"80\" cy=\"138\" r=\"3.5\" fill=\"#D7B56E\"/></svg>"
+    "name": "btl-seal-ai-2026-09-28",
+    "asset": "assets/btl-seal.svg",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"#111827\"/><circle cx=\"32\" cy=\"32\" r=\"27.6\" fill=\"none\" stroke=\"#C6A15B\" stroke-width=\"1.3\"/><circle cx=\"32\" cy=\"32\" r=\"25.2\" fill=\"none\" stroke=\"#C6A15B\" stroke-width=\".5\" opacity=\".65\"/><text x=\"32\" y=\"37.6\" text-anchor=\"middle\" font-family=\"'Iowan Old Style','Baskerville','Palatino Linotype',Georgia,serif\" font-size=\"16.5\" letter-spacing=\"1.2\" fill=\"#F6F1E7\">BTL</text><path d=\"M22 42.6h20\" stroke=\"#C6A15B\" stroke-width=\".9\"/><circle cx=\"32\" cy=\"12.4\" r=\"1.3\" fill=\"#C6A15B\"/><circle cx=\"32\" cy=\"51.6\" r=\"1.3\" fill=\"#C6A15B\"/></svg>"
   },
   "name": "Best Tort Lawyers",
   "seo": {
@@ -45,8 +45,8 @@
     "muted": "#626B78",
     "soft": "#ECE7DE"
   },
-  "updated_at": "2026-09-28T12:35:00.000Z",
-  "version": "2026-09-28-institutional-v2",
+  "updated_at": "2026-09-28T22:30:00.000Z",
+  "version": "2026-09-28-seal-v3",
   "voice": "Quiet authority. Plain, direct, human.",
   "assistant": {
     "name": "Sofia",
@@ -65,5 +65,6 @@
     },
     "vapi_assistant_id": null
   },
-  "lead_destination": "https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35"
+  "lead_destination": "https://hook.us2.make.com/ebwg7f7a5refqpvc6nef14vjo74i1q35",
+  "tagline_logo": "AI-guided claim matching"
 }
