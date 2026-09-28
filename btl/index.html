@@ -186,6 +186,20 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   .whisper{text-align:center; font-size:.66rem; font-weight:400; color:var(--faint);
     padding:6px 34px 4px; line-height:1.5; letter-spacing:.03em;}
 
+
+  /* FIRST-FRAME STRIKE — one ambient bloom behind Sofia. Deep, slow, quiet.
+     Kyle: "people judge now so gotta hit them" — impact without clutter. */
+  .ambient{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(58% 34% at 50% 30%, rgba(38,110,230,.30), rgba(27,89,195,.10) 55%, transparent 72%),
+      radial-gradient(42% 22% at 50% 90%, rgba(27,89,195,.08), transparent 70%);
+    opacity:0; animation:bloom 1.8s var(--ease) .1s forwards;}
+  @keyframes bloom{to{opacity:1;}}
+  /* Sofia arrives — one cinematic settle, then she breathes */
+  .presence{animation:arrive 1.15s var(--ease) both;}
+  @keyframes arrive{from{opacity:0; transform:translateY(20px) scale(.95);}
+    to{opacity:1; transform:none;}}
+
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important;
       transition-duration:.01ms !important;}
@@ -194,6 +208,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
 </style>
 </head>
 <body>
+<div class="ambient" aria-hidden="true"></div>
 
 <div class="stage">
   <div class="topbar">
