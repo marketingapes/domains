@@ -37,3 +37,8 @@ BTL page loads zero third-party requests (no GTM, Meta, TikTok), uses no storage
 ## Update 2026-09-28 (PR 2) — cleaner page + Sofia firm screen
 - `btl/paraquat/index.html` redesigned: centered, single focused object (Sofia chat card), field photo as a soft hero backdrop, three-step row, FAQ, compact footer. Still zero third-party requests; submission still disabled and labelled. The page shows no qualification verdict (criteria are applied privately by Sofia / a person).
 - Sofia BTL Paraquat v4 staged: 976d64df-ca8d-4880-a983-7fcec3e786db (not phone-bound, no tools, structured-data outcome QUALIFIED / FIRM_REVIEW / NOT_A_FIT). Firm criteria are private and stored in the Evolution Engine Drive, not in this public repo.
+
+## Update 2026-09-28 (PR 3) — live Sofia chat + context sections
+- `btl/paraquat/index.html`: the scripted walkthrough is replaced by a live text chat with Sofia BTL Paraquat v4 (Vapi web chat, public key only; screening criteria stay server-side). Chats persist in Vapi for human review. Failure shows an honest "Sofia isn't responding" state with retry. Only third-party host: api.vapi.ai. No trackers, no browser storage.
+- New sections: how workers were around Paraquat (mixing, spraying, crop-duster flagging) and Parkinson's common signs (NIH/NINDS), with original illustrations.
+- Still not wired: human follow-up / transfer lane, Meta/Google conversion events.
