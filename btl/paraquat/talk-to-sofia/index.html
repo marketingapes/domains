@@ -13,7 +13,7 @@
 <meta property="og:title" content="Talk to Sofia about a potential Paraquat claim.">
 <meta property="og:description" content="Call Sofia or request a callback. Best Tort Lawyers is not a law firm. Sofia is AI.">
 <meta property="og:image" content="https://besttortlawyers.com/assets/og-btl.jpg">
-<link rel="icon" href="/assets/btl-mark.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
 <!-- Privacy: no advertising pixels, tag managers or third-party analytics on this page. -->
 <link rel="stylesheet" href="/paraquat/paraquat.css">
@@ -84,10 +84,7 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
 
 <div class="wrap">
 <header class="top">
-  <a class="brand" href="/" aria-label="Best Tort Lawyers home">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="8" width="84" height="84" rx="22" fill="#F6F1E7"/><path d="M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z" fill="#111827"/><path d="M70 31h8v56h-8z" fill="#C6A15B"/></svg>
-    <b>Best Tort Lawyers</b>
-  </a>
+  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></a>
   <span class="top-note">Matching service · not a law firm</span>
 </header>
 
@@ -107,7 +104,7 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
         <p class="desk-line" id="deskLine">Sofia’s line: <b>+1 (202) 932-9700</b></p>
         <button class="cb-button" type="button" id="openCb" aria-expanded="false" aria-controls="cbPanel">
           <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5v5.4l3.6 2.1-.8 1.4L11 13.2V7z"/></svg></span>
-          <span class="button-copy"><strong>Request a Callback</strong><small>Pick a time window. Sofia calls you.</small></span>
+          <span class="button-copy"><strong>Request a Callback</strong><small>Leave your name and number. Sofia calls you.</small></span>
           <span class="arrow" aria-hidden="true">›</span>
         </button>
         <p class="call-note" id="callNote">Calls with Sofia are recorded and processed by our AI voice provider. Sofia is AI, not an attorney.</p>
@@ -118,32 +115,11 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
           <div id="formBody">
             <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
             <h2 id="cbH">Request a callback from Sofia</h2>
-            <p class="hint">Just the basics. Sofia asks about Paraquat when she calls.</p>
+            <p class="hint">Just your name and number. Sofia asks about Paraquat when she calls.</p>
             <form id="leadForm" novalidate data-page-id="btl-paraquat-call-first" data-kind="callback">
               <div class="grid">
-                <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="60" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
-                <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="60" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e"></span></div>
-                <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
-                <div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
-                <div class="field"><label for="callback_window">Best time to call</label>
-                  <select id="callback_window" name="callback_window" required aria-describedby="callback_window-e">
-                    <option value="">Select…</option>
-                    <option value="asap">As soon as available</option>
-                    <option value="morning">Morning (9 am–12 pm)</option>
-                    <option value="afternoon">Afternoon (12–5 pm)</option>
-                    <option value="evening">Evening (5–8 pm)</option>
-                  </select><span class="ferr" id="callback_window-e"></span></div>
-                <div class="field"><label for="time_zone">Your time zone</label>
-                  <select id="time_zone" name="time_zone" required aria-describedby="time_zone-e">
-                    <option value="">Select…</option>
-                    <option value="America/New_York">Eastern</option>
-                    <option value="America/Chicago">Central</option>
-                    <option value="America/Denver">Mountain</option>
-                    <option value="America/Phoenix">Arizona</option>
-                    <option value="America/Los_Angeles">Pacific</option>
-                    <option value="America/Anchorage">Alaska</option>
-                    <option value="Pacific/Honolulu">Hawaii</option>
-                  </select><span class="ferr" id="time_zone-e"></span></div>
+                <div class="field full"><label for="full_name">Your name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div>
+                <div class="field full"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
                 <div class="consent full" id="consentBox"></div>
               </div>
               <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Request my callback</span></button>
@@ -165,9 +141,10 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
 <footer class="foot">
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><svg viewBox="0 0 100 100" aria-hidden="true"><rect x="8" y="8" width="84" height="84" rx="22" fill="#1f2937"/><path d="M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z" fill="#F6F1E7"/><path d="M70 31h8v56h-8z" fill="#C6A15B"/></svg><b>Best Tort Lawyers</b></div>
+      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></div>
       <nav class="f-links" aria-label="Footer">
-        <a href="/paraquat/">Prefer a form?</a>
+        <a href="/paraquat/">Paraquat overview</a>
+        <a href="/paraquat/quiz/">Take the quiz</a>
         <a href="/privacy-policy/">Privacy Policy</a>
         <a href="/terms-and-conditions/">Terms</a>
         <a href="/sms-terms/">SMS Terms</a>

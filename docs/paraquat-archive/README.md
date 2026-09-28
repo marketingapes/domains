@@ -1,12 +1,18 @@
 # PARAQUAT two-page build: signature log (2026-09-28)
 
-## Pages
+## Pages (Kyle's pick, 2026-09-28: three variants)
 | Variant | Route | page_id |
 |---|---|---|
-| A: form-first | `btl/paraquat/index.html` → `/paraquat/` | `btl-paraquat-form-first` |
-| B: call-first | `btl/paraquat/talk-to-sofia/index.html` → `/paraquat/talk-to-sofia/` (new; no earlier route existed) | `btl-paraquat-call-first` |
+| 1: Muse (PR #130, unchanged except the logo) | `btl/paraquat/index.html` → `/paraquat/` | its own live Sofia chat |
+| 2: Sofia call-first | `btl/paraquat/talk-to-sofia/index.html` → `/paraquat/talk-to-sofia/` | `btl-paraquat-call-first` |
+| 3: Quiz | `btl/paraquat/quiz/index.html` → `/paraquat/quiz/` | `btl-paraquat-quiz` |
 
-Shared: `btl/paraquat/paraquat.css` and `btl/paraquat/intake.js`. Sofia portrait: `btl/assets/sofia/sofia-portrait-440x784.jpg`, copied from the nil-site reference.
+- The callback form collects only name, mobile phone and the consent/legal copy. Call consent is required; texts are optional.
+- The quiz questions are adapted from the DIHAC quiz Paraquat track. Every factual question has "Not sure". No answer stops the quiz or shows "no match", because approved firm criteria aren't loaded; every path goes to human review.
+- New logo: `btl/assets/btl-seal.svg` plus a serif "Best Tort Lawyers / Claim matching service" wordmark, used on all three pages. `btl-mark.svg` and the homepage are untouched.
+- The form-first candidate (Page A) is archived as `candidate-form-first-page-a.html`.
+
+Shared: `btl/paraquat/paraquat.css` and `btl/paraquat/intake.js` (used by the Sofia and Quiz pages). Sofia portrait: `btl/assets/sofia/sofia-portrait-440x784.jpg`.
 
 ## Preserved versions (not served; kept outside `btl/`)
 - `2026-09-27-form-preview-1c51685.html`: the earlier form-first `/paraquat/`. Use its "Landing page" tab. The file also contains the campaign-plan and ad tabs.
@@ -42,7 +48,8 @@ The QA endpoint was a scratchpad-only stand-in on 127.0.0.1, never shipped. It i
 | Retry | same `Idempotency-Key`/`submission_id`; receipt shown with the reference id |
 | 200 without receipt id | treated as failure |
 | Callback without call consent | blocked |
-| Callback success | "Your callback request was received." with "Requested — time not yet scheduled" (no scheduler has confirmed a time) |
+| Callback (name + phone only) | a blank submit flags name, phone and call consent; success shows "Your callback request was received." with "Requested — time not yet scheduled" |
+| Quiz | 7 steps, recap, then contact; "Not sure" and "no diagnosis" continue to review with no stop; the payload carries the answers as `screening`; the dataLayer gets step_index only |
 | No endpoint (production default) | 0 network requests; upfront banner plus a plain notice on submit |
 | Browser analytics | `ee_page_view`, `ee_form_start`, `ee_lead_submit_attempt/success/error`, `ee_callback_open`, `ee_call_click` carry only page_id, campaign_id, tenant_id and a test flag. No PII or answers |
 | Third-party requests | none (no pixels or GTM) |

@@ -74,7 +74,7 @@
   // ---- States ----------------------------------------------------------------------------------
   var STATES = 'AL Alabama|AK Alaska|AZ Arizona|AR Arkansas|CA California|CO Colorado|CT Connecticut|DE Delaware|DC District of Columbia|FL Florida|GA Georgia|HI Hawaii|ID Idaho|IL Illinois|IN Indiana|IA Iowa|KS Kansas|KY Kentucky|LA Louisiana|ME Maine|MD Maryland|MA Massachusetts|MI Michigan|MN Minnesota|MS Mississippi|MO Missouri|MT Montana|NE Nebraska|NV Nevada|NH New Hampshire|NJ New Jersey|NM New Mexico|NY New York|NC North Carolina|ND North Dakota|OH Ohio|OK Oklahoma|OR Oregon|PA Pennsylvania|RI Rhode Island|SC South Carolina|SD South Dakota|TN Tennessee|TX Texas|UT Utah|VT Vermont|VA Virginia|WA Washington|WV West Virginia|WI Wisconsin|WY Wyoming';
   var sel = document.getElementById('state');
-  STATES.split('|').forEach(function (s) { var o = document.createElement('option'); o.value = s.slice(0, 2); o.textContent = s.slice(3); sel.appendChild(o); });
+  if (sel) STATES.split('|').forEach(function (s) { var o = document.createElement('option'); o.value = s.slice(0, 2); o.textContent = s.slice(3); sel.appendChild(o); });
 
   // ---- Call-first page: call + callback actions ------------------------------------------------
   var callBtn = document.getElementById('callSofia');
@@ -93,6 +93,7 @@
       callBtn.addEventListener('click', function (e) { e.preventDefault(); openCallback(); });
     }
   }
+  function firstField() { return form.querySelector('input:not([type=hidden]),select'); }
   var openCb = document.getElementById('openCb');
   var panel = document.getElementById('cbPanel');
   function openCallback() {
@@ -100,9 +101,9 @@
     panel.hidden = false;
     openCb.setAttribute('aria-expanded', 'true');
     track('ee_callback_open', true);
-    setTimeout(function () { document.getElementById('first_name').focus(); panel.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 30);
+    setTimeout(function () { firstField().focus(); panel.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 30);
   }
-  if (openCb) openCb.addEventListener('click', function () { panel.hidden ? openCallback() : document.getElementById('first_name').focus(); });
+  if (openCb) openCb.addEventListener('click', function () { panel.hidden ? openCallback() : firstField().focus(); });
   if (panel && params.get('callback') === '1') openCallback();
 
   // ---- Validation -------------------------------------------------------------------------------
@@ -121,16 +122,15 @@
 
   function validate() {
     var bad = [];
-    var v = {
-      first_name: clean(form.first_name.value), last_name: clean(form.last_name.value),
-      phone: normPhone(form.phone.value), state: form.state.value, email: clean(form.email ? form.email.value : '')
-    };
-    [['first_name', 'Enter your first name.'], ['last_name', 'Enter your last name.']].forEach(function (f) {
-      if (!v[f[0]]) { setErr(f[0], f[1]); bad.push(f[0]); } else setErr(f[0]);
-    });
+    var v = { phone: normPhone(form.phone.value) };
+    function need(id, msg) { var el = form[id]; if (!el) return; v[id] = clean(el.value); if (!v[id]) { setErr(id, msg); bad.push(id); } else setErr(id); }
+    need('full_name', 'Enter your name.');
+    need('first_name', 'Enter your first name.');
+    need('last_name', 'Enter your last name.');
     if (!v.phone) { setErr('phone', 'Enter a 10-digit US phone number.'); bad.push('phone'); } else setErr('phone');
-    if (!v.state) { setErr('state', 'Choose your state.'); bad.push('state'); } else setErr('state');
+    if (form.state) { v.state = form.state.value; if (!v.state) { setErr('state', 'Choose your state.'); bad.push('state'); } else setErr('state'); }
     if (form.email) {
+      v.email = clean(form.email.value);
       if (v.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) { setErr('email', 'Check the email address, or leave it blank.'); bad.push('email'); } else setErr('email');
     }
     if (KIND === 'inquiry') {
@@ -140,16 +140,12 @@
         if (!v[k]) { fs.setAttribute('aria-invalid', 'true'); e.textContent = 'Choose an answer — “Not sure” is fine.'; bad.push(k); }
         else { fs.removeAttribute('aria-invalid'); e.textContent = ''; }
       });
-    } else {
-      v.callback_window = form.callback_window.value; v.time_zone = form.time_zone.value;
-      if (!v.callback_window) { setErr('callback_window', 'Choose a time window.'); bad.push('callback_window'); } else setErr('callback_window');
-      if (!v.time_zone) { setErr('time_zone', 'Choose your time zone.'); bad.push('time_zone'); } else setErr('time_zone');
     }
     v.consent_calls = form.consent_calls.checked; v.consent_sms = form.consent_sms.checked;
     var ce = document.getElementById('consent-e');
     // A callback is a phone call: it needs call consent. The inquiry form needs at least one channel so we can reply.
     if (KIND === 'callback' && !v.consent_calls) { ce.textContent = 'To receive a callback, check the box agreeing to calls from Sofia.'; bad.push('consent_calls'); }
-    else if (KIND === 'inquiry' && !v.consent_calls && !v.consent_sms && !v.email) { ce.textContent = 'Choose at least one way we may contact you (call, text or add an email).'; bad.push('consent_calls'); }
+    else if (KIND !== 'callback' && !v.consent_calls && !v.consent_sms && !v.email) { ce.textContent = 'Choose at least one way we may contact you (call, text or add an email).'; bad.push('consent_calls'); }
     else ce.textContent = '';
     return { ok: !bad.length, v: v, first: bad[0] };
   }
@@ -192,16 +188,17 @@
       return;
     }
 
-    var fp = [PAGE_ID, v.phone, v.first_name.toLowerCase(), v.last_name.toLowerCase(), v.state].join('|');
+    var fp = [PAGE_ID, v.phone, (v.full_name || v.first_name + ' ' + v.last_name).toLowerCase(), v.state || ''].join('|');
     var payload = {
       schema: 'btl.intake.web/v1',
       submission_id: submissionId(fp),
       tenant_id: CONFIG.tenant_id, domain_id: CONFIG.domain_id,
       campaign_id: CONFIG.campaign_id, page_id: PAGE_ID,
-      request_type: KIND === 'callback' ? 'callback_request' : 'web_inquiry',
-      contact: { first_name: v.first_name, last_name: v.last_name, phone_e164: v.phone, email: v.email || null, state: v.state },
-      screening: KIND === 'inquiry' ? { parkinsons_diagnosis: v.diagnosis, paraquat_exposure: v.exposure, represented: v.represented } : null,
-      callback: KIND === 'callback' ? { window: v.callback_window, time_zone: v.time_zone } : null,
+      request_type: KIND === 'callback' ? 'callback_request' : KIND === 'quiz' ? 'quiz_inquiry' : 'web_inquiry',
+      contact: { full_name: v.full_name || null, first_name: v.first_name || null, last_name: v.last_name || null, phone_e164: v.phone, email: v.email || null, state: v.state || null },
+      screening: KIND === 'inquiry' ? { parkinsons_diagnosis: v.diagnosis, paraquat_exposure: v.exposure, represented: v.represented }
+        : KIND === 'quiz' && window.BTL_QUIZ ? window.BTL_QUIZ.answers() : null,
+      callback: KIND === 'callback' ? { window: null, time_zone: null } : null,
       consent: {
         version: CONFIG.consent_version, captured_at: new Date().toISOString(), page_url: location.origin + location.pathname,
         calls: { granted: v.consent_calls, text: CONSENT.calls },
@@ -242,7 +239,7 @@
     var body = document.getElementById('formBody');
     var sched = b.callback && b.callback.scheduled_for && b.callback.status === 'scheduled';
     var next = b.next_step_label || (KIND === 'callback'
-      ? 'Your request is in the callback queue for the window you chose. A call time isn’t confirmed until it’s scheduled, and we’ll contact you only through the channels you agreed to.'
+      ? 'Your request is in the callback queue. A call time isn’t confirmed until it’s scheduled, and we’ll contact you only through the channels you agreed to.'
       : 'We’ll follow up using the contact method you chose to review your inquiry.');
     body.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'receipt'; wrap.setAttribute('tabindex', '-1');

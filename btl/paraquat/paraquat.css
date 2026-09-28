@@ -102,3 +102,10 @@ button,input,select{font:inherit;color:inherit}
 }
 @media(max-width:350px){.grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* BTL seal + wordmark lockup (2026-09-28) */
+.brand img,.f-brand img{flex:none;display:block}
+.wm{display:flex;flex-direction:column;line-height:1.05}
+.wm b{font-family:var(--serif);font-weight:500;font-size:1.16rem;letter-spacing:.01em}
+.wm small{margin-top:4px;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.foot .wm small,.talk .wm small{color:var(--gold)}
