@@ -187,6 +187,30 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
   .footgrid{display:block}
   .footlinks{margin-top:22px}
 }
+
+/* Brand depth pass */
+.brandmark{filter:drop-shadow(0 6px 16px rgba(17,24,39,.16));transition:transform .35s ease,filter .35s ease}
+.brandlock:hover .brandmark{transform:translateY(-2px) scale(1.035);filter:drop-shadow(0 10px 22px rgba(17,24,39,.22))}
+.hero .sofia-card{transform:translateZ(0);animation:cardFloat 7s ease-in-out infinite}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.claim{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.claim:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(17,24,39,.08);border-color:#c8b98f}
+.step{transition:transform .25s ease}
+.step:hover{transform:translateY(-4px)}
+.brand-ribbon{overflow:hidden;border-top:1px solid rgba(17,24,39,.08);border-bottom:1px solid rgba(17,24,39,.08);background:#f1eadf}
+.brand-ribbon-track{display:flex;gap:46px;white-space:nowrap;padding:14px 0;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#7b6a4b;font-weight:800;animation:ribbonMove 28s linear infinite}
+@keyframes ribbonMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.footer-shell{display:grid;grid-template-columns:1.3fr .7fr .7fr .9fr;gap:42px}
+.footer-title{color:#f6f1e7;font-family:var(--serif);font-size:1.45rem;font-weight:400;margin:0 0 10px}
+.footer-copy{font-size:.82rem;line-height:1.7;color:#8f9aaa;max-width:330px}
+.footer-col h4{margin:0 0 13px;color:#e3cc9c;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase}
+.footer-col a{display:block;text-decoration:none;color:#bcc4cf;font-size:.82rem;margin:8px 0}
+.footer-col a:hover{color:#fff}
+.footer-contact{padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.025)}
+.footer-contact strong{display:block;color:#f6f1e7;margin-bottom:6px}
+@media(max-width:800px){.footer-shell{grid-template-columns:1fr 1fr}.hero .sofia-card{animation:none}}
+@media(max-width:520px){.footer-shell{grid-template-columns:1fr}.brand-ribbon-track{animation-duration:20s}}
+@media(prefers-reduced-motion:reduce){.hero .sofia-card,.brand-ribbon-track{animation:none}}
 </style>
 </head>
 <body>
@@ -329,6 +353,12 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
   </div>
 </section>
 
+<div class="brand-ribbon" aria-hidden="true">
+  <div class="brand-ribbon-track">
+    <span>Serious claims · clearer first steps</span><span>Human-centered intake</span><span>National matching network</span><span>Start with what happened</span>
+    <span>Serious claims · clearer first steps</span><span>Human-centered intake</span><span>National matching network</span><span>Start with what happened</span>
+  </div>
+</div>
 <section class="final">
   <div class="wrap final-box">
     <h2>Start with what happened. Sofia can help with the rest.</h2>
@@ -342,23 +372,41 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
 
 <footer>
   <div class="wrap">
-    <div class="footgrid">
-      <div class="footbrand">
-        <svg class="brandmark brand-logo" viewBox="0 0 100 100" aria-hidden="true">
-          <rect x="8" y="8" width="84" height="84" rx="22" fill="#111827"/>
-          <path d="M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z" fill="#F6F1E7"/>
-          <path d="M70 31h8v56h-8z" fill="#C6A15B"/>
-        </svg>
-        <strong>Best Tort Lawyers</strong>
+    <div class="footer-shell">
+      <div>
+        <div class="footbrand" style="margin-bottom:16px">
+          <svg class="brandmark brand-logo" viewBox="0 0 100 100" aria-hidden="true">
+            <rect x="8" y="8" width="84" height="84" rx="22" fill="#111827"/>
+            <path d="M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z" fill="#F6F1E7"/>
+            <path d="M70 31h8v56h-8z" fill="#C6A15B"/>
+          </svg>
+          <strong>Best Tort Lawyers</strong>
+        </div>
+        <h3 class="footer-title">A clearer first step for serious claims.</h3>
+        <p class="footer-copy">Best Tort Lawyers helps people begin the intake process, understand the likely claim category, and move toward the appropriate next review step.</p>
       </div>
-      <div class="footlinks">
-        <a href="privacy-policy/">Privacy</a>
+      <div class="footer-col">
+        <h4>Start here</h4>
+        <a href="#sofia">Talk to Sofia</a>
+        <a href="tel:+12029329700">Call Sofia</a>
+        <a href="#claims">Claim types</a>
+        <a href="#how">How it works</a>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <a href="#faq">FAQ</a>
+        <a href="privacy-policy/">Privacy Policy</a>
         <a href="terms-and-conditions/">Terms</a>
         <a href="sms-terms/">SMS Terms</a>
-        <a href="mailto:Sofia@besttortlawyers.com">Sofia@besttortlawyers.com</a>
+      </div>
+      <div class="footer-contact">
+        <h4 style="margin:0 0 12px;color:#e3cc9c;font-size:.68rem;letter-spacing:.13em;text-transform:uppercase">Contact</h4>
+        <strong>(202) 932-9700</strong>
+        <a href="mailto:Sofia@besttortlawyers.com" style="color:#bcc4cf;font-size:.8rem;text-decoration:none">Sofia@besttortlawyers.com</a>
+        <p style="font-size:.72rem;line-height:1.6;color:#7f8a9a;margin:16px 0 0">Sofia is an AI intake assistant, not a lawyer.</p>
       </div>
     </div>
-    <div class="disclaimer">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and intake service, not a law firm, and does not provide legal advice. Using this website or speaking with Sofia does not create an attorney-client relationship. Sofia is an artificial-intelligence assistant. Any independent law firm evaluates potential matters under its own criteria. No outcome, acceptance, representation, compensation, or recovery is guaranteed. © 2026 Best Tort Lawyers.</div>
+    <div class="disclaimer">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and intake service, not a law firm, and does not provide legal advice. Using this website or speaking with Sofia does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria. No outcome, acceptance, representation, compensation, or recovery is guaranteed. © 2026 Best Tort Lawyers.</div>
   </div>
 </footer>
 
