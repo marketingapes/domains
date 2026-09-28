@@ -211,6 +211,46 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   .ghostnum{display:inline-block; margin-top:14px; color:var(--blue);
     font-size:.9rem; font-weight:600; text-decoration:none; letter-spacing:.03em;}
 
+  /* callback — the third intake option. Chat, call, or request a callback. */
+  .cb-link{display:block; margin:14px auto 0; background:none; border:none; cursor:pointer;
+    color:var(--brass-light); font-size:.92rem; font-weight:600; font-family:var(--grotesk);
+    letter-spacing:.02em; text-decoration:underline; text-underline-offset:3px;
+    text-decoration-color:rgba(217,178,95,.5); padding:8px;}
+  .cb-link:active{color:var(--brass);}
+  .sheet-wrap{position:fixed; inset:0; z-index:50; display:flex; align-items:flex-end;
+    justify-content:center; background:rgba(14,23,38,.72);
+    opacity:0; pointer-events:none; transition:opacity .3s var(--ease);}
+  .sheet-wrap.open{opacity:1; pointer-events:auto;}
+  .sheet{position:relative; width:100%; max-width:520px; background:#101d31;
+    border-top:2px solid var(--brass); border-radius:18px 18px 0 0;
+    padding:26px 24px calc(30px + env(safe-area-inset-bottom));
+    transform:translateY(26px); transition:transform .38s var(--ease);}
+  .sheet-wrap.open .sheet{transform:none;}
+  .sheet h3{font-family:var(--serif); font-weight:400; font-size:1.85rem; line-height:1.2;
+    margin:0 0 6px; color:var(--paper); letter-spacing:0;}
+  .sheet .sub{color:var(--muted); font-size:.94rem; font-weight:400; margin:0 0 18px;}
+  .sheet label{display:block; font-size:.66rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--faint); margin:0 0 6px;}
+  .sheet input{display:block; width:100%; background:rgba(245,240,232,.06);
+    border:1px solid var(--line); border-radius:12px; color:var(--ink);
+    font-size:1rem; font-family:var(--grotesk); font-weight:500;
+    padding:14px 16px; margin:0 0 14px; outline:none;}
+  .sheet input:focus{border-color:rgba(47,107,255,.65);}
+  .sheet input::placeholder{color:var(--faint); font-weight:400;}
+  .sheet .consent{font-size:.72rem; line-height:1.65; color:var(--faint); font-weight:400; margin:2px 0 16px;}
+  .sheet .consent a{color:var(--muted); text-decoration:underline; text-underline-offset:2px;}
+  .sheet .go{width:100%; background:var(--brass); color:#0E1726; border:none; cursor:pointer;
+    font-weight:700; font-size:1.03rem; font-family:var(--grotesk); letter-spacing:.01em;
+    border-radius:999px; padding:16px; transition:transform .15s var(--ease), opacity .15s var(--ease);}
+  .sheet .go:active{transform:scale(.98); opacity:.94;}
+  .sheet .x{position:absolute; top:10px; right:10px; width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer;
+    font-size:1.05rem; line-height:1; display:flex; align-items:center; justify-content:center;}
+  .sheet .x:active{color:var(--ink);}
+  .sheet .done{display:none; text-align:center; padding:10px 0 4px;}
+  .sheet .done .big{font-family:var(--serif); font-size:1.7rem; color:var(--paper); margin:0 0 8px;}
+  .sheet .done p{color:var(--muted); font-size:.94rem; margin:0;}
+
   /* footer — the whole nine, whisper-weight. Stone on ink. Finished, not a link dump. */
   .footer{padding:2px 28px calc(6px + env(safe-area-inset-bottom)); text-align:center;}
   .footer .flinks{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
@@ -266,6 +306,9 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
       <button class="iconbtn" id="micBtn" aria-label="Talk to Sofia">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v4"/></svg>
       </button>
+      <button class="iconbtn" id="cbBtn" aria-label="Request a callback" title="Request a callback">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M15 3a8 8 0 0 1 7 7"/></svg>
+      </button>
       <button class="iconbtn" id="sendBtn" aria-label="Send">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
       </button>
@@ -283,6 +326,26 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
       © 2026 Best Tort Lawyers
     </div>
   </footer>
+</div>
+
+<div class="sheet-wrap" id="cbSheet" aria-hidden="true" role="dialog" aria-label="Request a callback">
+  <div class="sheet">
+    <button class="x" id="cbClose" aria-label="Close">&#10005;</button>
+    <form id="cbForm" novalidate>
+      <h3>Request a callback.</h3>
+      <p class="sub">Sofia will call you back &mdash; usually within minutes.</p>
+      <label for="cbName">Your name</label>
+      <input id="cbName" type="text" placeholder="Jane Appleseed" autocomplete="name">
+      <label for="cbPhone">Phone number</label>
+      <input id="cbPhone" type="tel" inputmode="tel" placeholder="(555) 123-4567" autocomplete="tel">
+      <p class="consent">By requesting a callback you agree to our <a href="privacy-policy/">Privacy Policy</a> and <a href="terms-and-conditions/">Terms</a>. Sofia is an automated assistant, not a lawyer &mdash; general information, not legal advice.</p>
+      <button class="go" id="cbSubmit" type="submit">Call me back</button>
+    </form>
+    <div class="done" id="cbDone">
+      <p class="big">Done.</p>
+      <p>Sofia will call you back at this number shortly.</p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -423,7 +486,9 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
         '<p>What you described may be a <b>'+tname+'</b> claim.'+extra+
         ' The next step is a short call with an intake team — <b>you decide</b> if a firm calls you back.</p>'+
         '<a class="callbtn" href="tel:+12029329700">'+PHONE_SVG+' Call now</a><br>'+
-        '<a class="ghostnum" href="tel:+12029329700">(202) 932-9700 · free, confidential</a></div>');
+        '<a class="ghostnum" href="tel:+12029329700">(202) 932-9700 · free, confidential</a><br>'+
+        '<button class="cb-link" id="cbBtn2">Or request a callback — Sofia will call you</button></div>');
+      var cb2=v.querySelector('#cbBtn2'); if(cb2) cb2.onclick=openSheet;
       chat.appendChild(v); scroll();
       setTimeout(function(){
         say('One call, about five minutes. No forms, no waiting rooms.');
@@ -503,6 +568,68 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({event:'ee_lead_submit', lead: payload});
       window.dataLayer.push({event:'ee_lead_submit_chat', lead: payload});
+      if(window.fbq) fbq('track','Lead');
+      if(window.ttq) ttq.track('SubmitForm');
+    }catch(e){}
+    resolveLeadDest(function(dest){
+      if(!dest) return;
+      try{
+        var body = JSON.stringify(payload);
+        if(navigator.sendBeacon){
+          var blob = new Blob([body], {type:'application/json'});
+          if(navigator.sendBeacon(dest, blob)) return;
+        }
+        fetch(dest, {method:'POST', headers:{'Content-Type':'application/json'},
+          body: body, keepalive:true, mode:'no-cors'}).catch(function(){});
+      }catch(e){}
+    });
+  }
+
+  /* ---------- callback: the third option. Chat, call, or request a callback. ---------- */
+  var cbBtn=document.getElementById('cbBtn'),
+      cbSheet=document.getElementById('cbSheet'),
+      cbForm=document.getElementById('cbForm'),
+      cbName=document.getElementById('cbName'),
+      cbPhone=document.getElementById('cbPhone'),
+      cbClose=document.getElementById('cbClose'),
+      cbDone=document.getElementById('cbDone');
+  function openSheet(){
+    cbForm.style.display=''; cbDone.style.display='none';
+    cbSheet.classList.add('open'); cbSheet.setAttribute('aria-hidden','false');
+    setTimeout(function(){ cbName.focus(); }, reduced ? 60 : 380);
+  }
+  function closeSheet(){
+    cbSheet.classList.remove('open'); cbSheet.setAttribute('aria-hidden','true');
+  }
+  cbBtn.onclick=openSheet;
+  cbClose.onclick=closeSheet;
+  cbSheet.addEventListener('click',function(e){ if(e.target===cbSheet) closeSheet(); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && cbSheet.classList.contains('open')) closeSheet();
+  });
+  cbForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=cbName.value.trim(), digits=cbPhone.value.replace(/\D/g,'');
+    if(!name){ cbName.focus(); return; }
+    if(digits.length<7){ cbPhone.focus(); return; }
+    postCallback(name, cbPhone.value.trim());
+    cbForm.style.display='none'; cbDone.style.display='block';
+  });
+
+  /* callback lead: same destination as chat leads, its own type + event.
+     Fire-and-forget — never blocks or breaks the UX. */
+  function postCallback(name, phone){
+    var payload = {
+      campaign_id: (window.EE_CONFIG && window.EE_CONFIG.campaign_id) || 'btl-sofia-chat',
+      type: 'callback_request',
+      name: name, phone: phone,
+      tort: answers.tort||'', when: answers.when||'', state: answers.state||'',
+      source: 'btl-sofia-chat', page_path: location.pathname,
+      submitted_at: new Date().toISOString()
+    };
+    try{
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event:'ee_callback_request', lead: payload});
       if(window.fbq) fbq('track','Lead');
       if(window.ttq) ttq.track('SubmitForm');
     }catch(e){}
