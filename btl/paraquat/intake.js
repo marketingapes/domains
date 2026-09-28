@@ -20,9 +20,9 @@
     // It dedupes on submission_id, writes the BigQuery intake row, emails LegalCalls and returns {status, receipt_id}.
     endpoint: 'https://hook.us2.make.com/f916v5eh4xccy9ytkancw7xa63g6v326',
     // Temporary inbound line (Kyle, 2026-09-28): the 213 Sofia line, forwarding to Kyle via transferCall.
-    // verified stays false until +12138787408 is bound to "Sofia BTL Paraquat v4" in Vapi
-    // (today it still answers as the firm-demo assistant). Flip to true after that binding is confirmed.
-    phone: { e164: '+12138787408', display: '(213) 878-7408', verified: false },
+    // Bound to "Sofia BTL Paraquat v4" (976d64df…) in Vapi on 2026-09-28; calls transfer via transferCall.
+    // To revert: set verified:false (button falls back to the callback form).
+    phone: { e164: '+12138787408', display: '(213) 878-7408', verified: true },
     consent_version: 'btl-paraquat-consent-2026-09-28-draft',
     timeout_ms: 15000
   };
