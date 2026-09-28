@@ -211,8 +211,16 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   .ghostnum{display:inline-block; margin-top:14px; color:var(--blue);
     font-size:.9rem; font-weight:600; text-decoration:none; letter-spacing:.03em;}
 
-  .whisper{text-align:center; font-size:.66rem; font-weight:400; color:var(--faint);
-    padding:6px 34px 4px; line-height:1.5; letter-spacing:.03em;}
+  /* footer — the whole nine, whisper-weight. Stone on ink. Finished, not a link dump. */
+  .footer{padding:2px 28px calc(6px + env(safe-area-inset-bottom)); text-align:center;}
+  .footer .flinks{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
+    font-size:.68rem; font-weight:500; letter-spacing:.05em;}
+  .footer .flinks a{color:var(--faint); text-decoration:none; padding:4px 2px;}
+  .footer .flinks a:active{color:var(--ink);}
+  .footer .fmeta{margin-top:4px; font-size:.62rem; font-weight:400; color:var(--faint);
+    letter-spacing:.04em; line-height:1.75;}
+  .footer .fmeta a{color:var(--faint); text-decoration:none;}
+  .footer .fmeta a:active{color:var(--ink);}
 
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important;
@@ -263,7 +271,18 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
       </button>
     </div>
   </div>
-  <div class="whisper">Not a law firm · Attorney advertising · Sofia is an automated assistant</div>
+  <footer class="footer">
+    <nav class="flinks" aria-label="Legal">
+      <a href="privacy-policy/">Privacy</a>
+      <a href="terms-and-conditions/">Terms</a>
+      <a href="sms-terms/">SMS Terms</a>
+    </nav>
+    <div class="fmeta">
+      <a href="mailto:Sofia@besttortlawyers.com">Sofia@besttortlawyers.com</a> · <a href="tel:+12029329700">(202) 932-9700</a><br>
+      Not a law firm · Attorney advertising · Sofia is an automated assistant<br>
+      © 2026 Best Tort Lawyers
+    </div>
+  </footer>
 </div>
 
 <script>
