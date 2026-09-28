@@ -10,7 +10,8 @@ Shared: `btl/paraquat/paraquat.css` and `btl/paraquat/intake.js`. Sofia portrait
 
 ## Preserved versions (not served; kept outside `btl/`)
 - `2026-09-27-form-preview-1c51685.html`: the earlier form-first `/paraquat/`. Use its "Landing page" tab. The file also contains the campaign-plan and ad tabs.
-- `2026-09-28-current-sofia-chat-74c26a4.html`: the version live at `/paraquat/` today (PR #129, Sofia chat).
+- `2026-09-28-current-sofia-chat-74c26a4.html`: PR #129, Sofia chat (was live when this build started).
+- `2026-09-28-live-chat-pr130-d884b76.html`: PR #130, merged to main during this build (live Sofia chat plus lawsuit and symptom sections). It conflicts with this PR; Kyle decides which /paraquat/ wins.
 - `2026-09-08-studio-prequalify-449318f.html`: the campaign-studio prequalify preview.
 
 ## Fail-closed state (why neither page can submit or dial yet)
