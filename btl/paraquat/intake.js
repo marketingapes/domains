@@ -16,8 +16,9 @@
     campaign_id: 'PARAQUAT-PILOT-001',
     tenant_id: 'BTL',
     domain_id: 'besttortlawyers.com',
-    // Protected BTL intake endpoint. null = not verified yet; the form fails closed.
-    endpoint: null,
+    // Dedicated Paraquat intake: Make scenario 6437227 "BTL — Paraquat Web Intake → LegalCalls" (hook 2868930).
+    // It dedupes on submission_id, writes the BigQuery intake row, emails LegalCalls and returns {status, receipt_id}.
+    endpoint: 'https://hook.us2.make.com/f916v5eh4xccy9ytkancw7xa63g6v326',
     // Temporary inbound line (Kyle, 2026-09-28): the 213 Sofia line, forwarding to Kyle via transferCall.
     // verified stays false until +12138787408 is bound to "Sofia BTL Paraquat v4" in Vapi
     // (today it still answers as the firm-demo assistant). Flip to true after that binding is confirmed.
@@ -217,8 +218,9 @@
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, CONFIG.timeout_ms);
     fetch(CONFIG.endpoint, {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': payload.submission_id },
-      body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined, credentials: 'omit'
+      // Form-encoded "simple" request: no CORS preflight (Make webhooks don't answer OPTIONS). Dedupe key is submission_id.
+      method: 'POST', body: new URLSearchParams({ payload: JSON.stringify(payload), submission_id: payload.submission_id }),
+      signal: ctl ? ctl.signal : undefined, credentials: 'omit'
     }).then(function (res) {
       return res.json().catch(function () { return null; }).then(function (body) { return { res: res, body: body }; });
     }).then(function (x) {
