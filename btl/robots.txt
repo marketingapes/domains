@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /campaigns/
+Disallow: /*test*
+Disallow: /*staging*
 
 Sitemap: https://besttortlawyers.com/sitemap.xml
