@@ -467,12 +467,18 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
     postSignal();
     pending='done';
   }
+  // PRIVACY: typed text stays in the browser. Only a broad lane, a year and a state code are ever sent.
+  var LANES={abuse:/abus|molest|assault|rape|groom|sexual|juvenile|detention|foster|church|priest|clergy|coach|teacher|school/i,drug:/drug|medic|pill|prescri|ozempic|wegovy|mounjaro|glp|implant|device|mesh|hip|recall/i,toxic:/toxic|chemic|pesticid|paraquat|roundup|pfas|water|exposur|benzene|asbestos/i,mva:/car|truck|crash|accident|collision|rideshare|uber|lyft|pedestrian|motorcycle|bike/i,product:/product|defect|explod|malfunction|burn|fire/i};
+  function laneOf(v){for(var k in LANES){if(LANES[k].test(v))return k;}return 'other';}
+  function yearOf(v){var m=String(v).match(/(19|20)\d\d/);return m?m[0]:'provided';}
+  var ST={alabama:'AL',alaska:'AK',arizona:'AZ',arkansas:'AR',california:'CA',colorado:'CO',connecticut:'CT',delaware:'DE',florida:'FL',georgia:'GA',hawaii:'HI',idaho:'ID',illinois:'IL',indiana:'IN',iowa:'IA',kansas:'KS',kentucky:'KY',louisiana:'LA',maine:'ME',maryland:'MD',massachusetts:'MA',michigan:'MI',minnesota:'MN',mississippi:'MS',missouri:'MO',montana:'MT',nebraska:'NE',nevada:'NV','new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY','north carolina':'NC','north dakota':'ND',ohio:'OH',oklahoma:'OK',oregon:'OR',pennsylvania:'PA','rhode island':'RI','south carolina':'SC','south dakota':'SD',tennessee:'TN',texas:'TX',utah:'UT',vermont:'VT',virginia:'VA',washington:'WA','west virginia':'WV',wisconsin:'WI',wyoming:'WY','district of columbia':'DC'};
+  function stateOf(v){var t=String(v).toLowerCase().trim();var best='';for(var n in ST){if(t.indexOf(n)>-1&&n.length>best.length)best=n;}if(best)return ST[best];var m=t.match(/\b([a-z]{2})\b/);if(m){var up=m[1].toUpperCase();for(var n2 in ST){if(ST[n2]===up)return up;}}return 'unknown';}
   function submitText(v){
     if(!v)return;
     add(v,'user');
-    if(pending==='lane'){answers.lane=v;clearChips();askWhen();}
-    else if(pending==='when'){answers.when=v;askState();}
-    else if(pending==='state'){answers.state=v;finish();}
+    if(pending==='lane'){answers.lane=laneOf(v);clearChips();askWhen();}
+    else if(pending==='when'){answers.when=yearOf(v);askState();}
+    else if(pending==='state'){answers.state=stateOf(v);finish();}
     else add('I have the basics. Use the call or callback option above if you want to continue the intake.');
   }
   chips.forEach(function(b){
@@ -491,12 +497,13 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
       .then(function(b){cb((b&&b.lead_destination)||(window.EE_CONFIG&&window.EE_CONFIG.lead_destination)||'');})
       .catch(function(){cb((window.EE_CONFIG&&window.EE_CONFIG.lead_destination)||'');});
   }
-  function emit(name,payload){
+  // Marketing events carry derived signals only (no name, phone or typed text).
+  // Pixel Lead/SubmitForm fire only when a real contact request is submitted.
+  function emit(name,payload,isContact){
     try{
       window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:name,lead:payload});
-      if(window.fbq)fbq('track','Lead');
-      if(window.ttq)ttq.track('SubmitForm');
+      window.dataLayer.push({event:name,campaign_id:payload.campaign_id,source:payload.source,lead_type:payload.type,practice_area:payload.lane||'other',state:payload.state||'unknown',page_path:payload.page_path});
+      if(isContact){if(window.fbq)fbq('track','Lead');if(window.ttq)ttq.track('SubmitForm');}
     }catch(e){}
   }
   function postSignal(){
@@ -523,7 +530,7 @@ footer{background:#0d1422;color:#b8c0cc;padding:48px 0 34px}
     var phone=document.getElementById('cbPhone').value.trim();
     if(!name||phone.replace(/\\D/g,'').length<7)return;
     var payload={campaign_id:'btl-sofia-home',type:'callback_request',name:name,phone:phone,lane:answers.lane||'',when:answers.when||'',state:answers.state||'',source:'btl-sofia-home',page_path:location.pathname,submitted_at:new Date().toISOString()};
-    emit('ee_callback_request',payload);
+    emit('ee_callback_request',payload,true);
     resolveDest(function(dest){
       if(dest){try{fetch(dest,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true,mode:'no-cors'}).catch(function(){});}catch(x){}}
     });
