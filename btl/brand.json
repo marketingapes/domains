@@ -1,0 +1,71 @@
+{
+  "brand_id": "btl",
+  "contact": {
+    "email": "Sofia@besttortlawyers.com",
+    "phone_display": "+1 (202) 932-9700",
+    "phone_tel": "+12029329700"
+  },
+  "logo": {
+    "gradient": [
+      "#3B8BF0",
+      "#1B59C3"
+    ],
+    "name": "momentum-shield",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><linearGradient id=\"btlg\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#3B8BF0\"/><stop offset=\"1\" stop-color=\"#1B59C3\"/></linearGradient></defs><path d=\"M50 5 L85 18 V50 C85 74 68 88 50 95 C32 88 15 74 15 50 V18 Z\" fill=\"url(#btlg)\"/><polygon points=\"50,26 68,52 59,52 59,80 41,80 41,52 32,52\" fill=\"#fff\"/></svg>"
+  },
+  "name": "Best Tort Lawyers",
+  "seo": {
+    "description": "Best Tort Lawyers: talk to Sofia now for a free, confidential case review. Answer a few quick questions and find out if you may potentially qualify. Call (202) 932-9700.",
+    "title": "Best Tort Lawyers — Free, Confidential Case Review | Talk to Sofia"
+  },
+  "social": {
+    "facebook": {
+      "bio": "Best Tort Lawyers connects people with law firm intake teams — for the big tort cases firms are actually taking right now. Free, confidential case review.",
+      "handle": "@besttortlawyers",
+      "url": "https://www.facebook.com/besttortlawyers"
+    },
+    "instagram": {
+      "bio": "Free, confidential case review. Talk to Sofia now — find out if you may potentially qualify. 👇",
+      "handle": "@besttortlawyers",
+      "url": "https://www.instagram.com/besttortlawyers"
+    },
+    "youtube": {
+      "bio": "Best Tort Lawyers — plain answers about mass tort cases, and a free confidential case review with Sofia.",
+      "handle": "@besttortlawyers",
+      "url": "https://www.youtube.com/@besttortlawyers"
+    }
+  },
+  "tagline": "Talk to Sofia now for a free, confidential case review.",
+  "tokens": {
+    "accent-soft": "#E9EFFB",
+    "bg": "#ffffff",
+    "brand": "#1B59C3",
+    "brand-deep": "#0F3D91",
+    "cta": "#1B59C3",
+    "cta-call": "#1d7a3d",
+    "ink": "#1c1c1c",
+    "line": "#e2e5ea",
+    "muted": "#5c5c5c",
+    "soft": "#f5f6f8"
+  },
+  "updated_at": "2026-09-28T03:28:04.960Z",
+  "version": "2026-09-27-rev3",
+  "voice": "Best Tort Lawyers. Plain, direct, human.",
+  "assistant": {
+    "name": "Sofia",
+    "role": "AI intake guide",
+    "greeting": "Hi, I'm Sofia — I can help you find out if you may potentially qualify for a free case review. What's going on?",
+    "persona_notes": "Plain, direct, human. Never promises outcomes, never gives legal advice, never cites win rates or dollar figures. 'Potentially qualify' — never 'you qualify.' Warm, unhurried, one question at a time. If the caller wants a human, offer the transfer.",
+    "voice_first_message": "Hi, this is Sofia with Best Tort Lawyers. I can help you find out if you may potentially qualify for a free case review. What happened?",
+    "chat_theme": {
+      "header-bg": "#1B59C3",
+      "header-text": "#ffffff",
+      "bubble-bot-bg": "#E9EFFB",
+      "bubble-bot-text": "#1c1c1c",
+      "bubble-user-bg": "#1B59C3",
+      "bubble-user-text": "#ffffff",
+      "fab-bg": "#1B59C3"
+    },
+    "vapi_assistant_id": null
+  }
+}
