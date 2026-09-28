@@ -5,7 +5,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5 L85 18 V50 C85 74 68 88 50 95 C32 88 15 74 15 50 V18 Z' fill='%231B59C3'/%3E%3Cpolygon points='50,26 68,52 59,52 59,80 41,80 41,52 32,52' fill='white'/%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Sofia — Best Tort Lawyers</title>
-<meta name="description" content="Talk to Sofia. A free, confidential case review — right here, right now.">
+<meta name="description" content="Talk to Sofia. Say it in your own words — find out if this may be a claim. Free, confidential, private by default.">
 
 <!-- dataLayer init (before GTM) -->
 <script>
@@ -61,15 +61,21 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
 <script src="./brand.js" defer></script>
 
 <style>
+  /* QUIET AUTHORITY — Kyle's brand sheet, 2026-09-27
+     Ink #0E1726 ground · Paper #F5F0E8 calm · Brass #B8893A brand (big type + key accents)
+     Sofia Blue #2F6BFF actions/interactive only · Stone #5B6472 body on light */
   :root{
-    --brand:#1B59C3; --brand-light:#3B8BF0; --brand-deep:#0F3D91;
-    --bg:#05080F; --surface:#0C1322;
-    --ink:#F4F7FC; --muted:#9AA3B8; --faint:#5F6878;
-    --line:rgba(255,255,255,.08);
+    --ink-ground:#0E1726;
+    --paper:#F5F0E8; --stone:#5B6472;
+    --brass:#B8893A; --brass-light:#D9B25F; --brass-deep:#8A6A24;
+    --blue:#2F6BFF;
+    --bg:#0E1726; --surface:#152336;
+    --ink:#F5F0E8; --muted:#AEB4BE; --faint:#707786;
+    --line:rgba(245,240,232,.10);
     --call:#2FD574;
     --ease:cubic-bezier(.22,1,.36,1);
     --grotesk:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    --serif:Georgia,"Times New Roman",serif;
+    --serif:"Fraunces",Georgia,Didot,"Bodoni MT","Times New Roman",serif;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -81,7 +87,22 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     overflow:hidden; overscroll-behavior:none;
     -webkit-font-smoothing:antialiased;
   }
-  /* the orb carries its own light — nothing else on the background */
+
+  /* CINEMATIC BACKGROUND — Quiet Authority art. Hits on first frame. */
+  .bg{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:var(--ink-ground) url('assets/bg-quiet-authority.jpg') center 38% / cover no-repeat;
+    animation:bgIn 2.4s var(--ease) both;}
+  @keyframes bgIn{from{opacity:0; transform:scale(1.05);} to{opacity:1; transform:scale(1);}}
+  /* the page deepens as the conversation progresses — one overlay per stage, body[data-step] */
+  .deepen{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:var(--ink-ground); opacity:0; transition:opacity 1.2s var(--ease);}
+  body[data-step="1"] .deepen{opacity:.30;}
+  body[data-step="2"] .deepen{opacity:.50;}
+  body[data-step="3"] .deepen{opacity:.68;}
+  /* legibility shade — constant, text always readable over the art */
+  .shade{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:linear-gradient(180deg, rgba(14,23,38,.52), rgba(14,23,38,.66) 55%, rgba(14,23,38,.86));}
+
   .stage{position:fixed; inset:0; z-index:1; display:flex; flex-direction:column;
     max-width:520px; margin:0 auto; padding:0 0 env(safe-area-inset-bottom);}
 
@@ -93,19 +114,22 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   .lockup .name{font-weight:600; font-size:.95rem; letter-spacing:.02em;}
   .staged{font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
     color:var(--muted); border:1px solid var(--line); border-radius:99px;
-    padding:5px 10px; background:rgba(255,255,255,.02);}
+    padding:5px 10px; background:rgba(14,23,38,.35);}
 
-  /* sofia presence — the orb is the interface */
+  /* sofia presence — the orb is the interface, brass now */
   .presence{display:flex; flex-direction:column; align-items:center;
-    padding:10px 0 0; gap:10px;}
+    padding:10px 0 0; gap:10px;
+    animation:arrive 1.15s var(--ease) .25s both;}
+  @keyframes arrive{from{opacity:0; transform:translateY(20px) scale(.95);}
+    to{opacity:1; transform:none;}}
   .orb{position:relative; width:124px; height:124px;}
   .orb .core{position:absolute; inset:26px; border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, var(--brand-light), var(--brand) 58%, var(--brand-deep));
-    box-shadow:0 0 30px rgba(59,139,240,.5), 0 0 80px rgba(27,89,195,.22);
+    background:radial-gradient(circle at 35% 30%, var(--brass-light), var(--brass) 58%, var(--brass-deep));
+    box-shadow:0 0 30px rgba(184,137,58,.45), 0 0 80px rgba(184,137,58,.18);
     animation:breathe 4s var(--ease) infinite;}
   @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
   .orb .halo{position:absolute; inset:0; border-radius:50%;
-    border:1px solid rgba(59,139,240,.3); animation:ring 4s var(--ease) infinite;}
+    border:1px solid rgba(184,137,58,.35); animation:ring 4s var(--ease) infinite;}
   @keyframes ring{0%{transform:scale(.6); opacity:0}35%{opacity:.7}100%{transform:scale(1.04); opacity:0}}
   /* states */
   .orb.is-listening .core{animation-duration:1.1s;}
@@ -113,13 +137,13 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   @keyframes surge{0%,100%{transform:scale(1.04)}50%{transform:scale(1.14)}}
   .who{font-size:.68rem; letter-spacing:.24em; text-transform:uppercase; color:var(--faint);
     min-height:1.2em; transition:color .3s;}
-  .who.live{color:var(--brand-light);}
+  .who.live{color:var(--brass-light);}
 
-  /* progress — a line, not dots */
+  /* progress — a brass line, not dots */
   .progress{display:flex; gap:6px; justify-content:center; padding:8px 0 0; width:120px; margin:0 auto;}
-  .progress i{flex:1; height:2px; border-radius:2px; background:rgba(255,255,255,.1);
+  .progress i{flex:1; height:2px; border-radius:2px; background:rgba(245,240,232,.14);
     transition:background .4s var(--ease), box-shadow .4s var(--ease);}
-  .progress i.on{background:var(--brand-light); box-shadow:0 0 8px rgba(59,139,240,.7);}
+  .progress i.on{background:var(--brass-light); box-shadow:0 0 8px rgba(217,178,95,.7);}
 
   /* chat */
   .chat{flex:1; overflow-y:auto; padding:14px 20px 8px; display:flex;
@@ -129,36 +153,40 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     opacity:0; animation:enter .45s var(--ease) forwards;}
   @keyframes enter{from{opacity:0; transform:translateY(14px); filter:blur(6px);}
     to{opacity:1; transform:none; filter:blur(0);}}
-  .msg.sofia{align-self:flex-start; background:var(--surface);
-    border:1px solid var(--line); border-radius:4px 14px 14px 14px; padding:15px 17px;}
-  .msg.sofia .serifline{font-family:var(--serif); font-size:1.5rem; line-height:1.3; letter-spacing:0;}
-  .msg.user{align-self:flex-end; background:var(--brand); color:#fff;
+  .msg.sofia{align-self:flex-start; background:rgba(21,35,54,.72);
+    border:1px solid var(--line); border-radius:4px 14px 14px 14px; padding:15px 17px;
+    backdrop-filter:blur(2px);}
+  .msg.sofia .serifline{font-family:var(--serif); font-size:2rem; line-height:1.25; letter-spacing:0; font-weight:400;}
+  .msg.user{align-self:flex-end; background:var(--blue); color:#fff;
     border-radius:14px 14px 4px 14px; padding:12px 16px; font-size:1rem;}
   .msg.sys{align-self:center; font-size:.72rem; color:var(--faint); letter-spacing:.06em;
     border:1px dashed var(--line); border-radius:99px; padding:7px 14px; max-width:100%;}
-  .msg.verdict{align-self:stretch; max-width:100%; background:var(--surface);
-    border:1px solid var(--line); border-top:2px solid var(--brand-light);
-    border-radius:16px; padding:26px 22px; text-align:center;}
-  .msg.verdict h3{font-family:var(--serif); font-weight:400; margin:0 0 10px;
-    font-size:2rem; line-height:1.15; letter-spacing:-0.01em;}
-  .msg.verdict p{margin:0 0 20px; color:var(--muted); font-size:.95rem; font-weight:400;}
-  .msg.verdict p b{color:var(--ink); font-weight:600;}
+  /* verdict — the paper card. Quiet Authority, on the page like a letter. */
+  .msg.verdict{align-self:stretch; max-width:100%; background:var(--paper);
+    border:1px solid rgba(14,23,38,.12); border-top:2px solid var(--brass);
+    border-radius:6px; padding:28px 24px; text-align:center; color:var(--ink-ground);}
+  .msg.verdict h3{font-family:var(--serif); font-weight:400; margin:0 0 12px;
+    font-size:2.1rem; line-height:1.15; letter-spacing:-0.01em; color:var(--ink-ground);}
+  .msg.verdict p{margin:0 0 22px; color:var(--stone); font-size:.98rem; font-weight:400;}
+  .msg.verdict p b{color:var(--ink-ground); font-weight:600;}
 
-  /* chips — text, hairline, staggered */
+  /* chips — lanes BTL owns; blue is for actions only */
   .chips{display:flex; flex-wrap:wrap; gap:9px; padding:6px 20px 0;}
-  .chip{border:1px solid rgba(255,255,255,.14); background:transparent;
+  .chips-label{width:100%; font-size:.66rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--faint); padding:2px 2px 0;}
+  .chip{border:1px solid rgba(245,240,232,.16); background:rgba(14,23,38,.35);
     color:var(--ink); border-radius:999px; padding:11px 18px; font-size:.92rem; font-weight:500;
     font-family:var(--grotesk); letter-spacing:.02em; cursor:pointer;
     opacity:0; animation:enter .4s var(--ease) forwards;
-    transition:opacity .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);}
-  .chip:active{background:rgba(27,89,195,.25); border-color:var(--brand-light);}
+    transition:border-color .2s var(--ease), background .2s var(--ease);}
+  .chip:active{background:rgba(47,107,255,.28); border-color:var(--blue);}
 
-  /* input — the composer */
+  /* input — the composer; free-text-first */
   .inputbar{display:flex; gap:10px; padding:12px 16px 12px; align-items:center;}
-  .composer{flex:1; display:flex; align-items:center; background:rgba(255,255,255,.045);
+  .composer{flex:1; display:flex; align-items:center; background:rgba(14,23,38,.45);
     border:1px solid var(--line); border-radius:999px; padding:4px 4px 4px 18px;
     transition:border-color .25s var(--ease);}
-  .composer:focus-within{border-color:rgba(59,139,240,.55);}
+  .composer:focus-within{border-color:rgba(47,107,255,.6);}
   .composer input{flex:1; background:none; border:none; color:var(--ink);
     font-size:.95rem; font-weight:500; font-family:var(--grotesk); outline:none; min-width:0;}
   .composer input::placeholder{color:var(--faint); font-weight:400;}
@@ -168,8 +196,8 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     transition:opacity .2s var(--ease), transform .2s var(--ease), border-color .2s var(--ease);}
   .iconbtn:active{transform:scale(.93);}
   .iconbtn svg{width:19px; height:19px;}
-  #micBtn.listening{border-color:var(--brand-light); color:var(--brand-light);}
-  #sendBtn{background:var(--brand-light); border:none; color:#fff;
+  #micBtn.listening{border-color:var(--blue); color:var(--blue);}
+  #sendBtn{background:var(--blue); border:none; color:#fff;
     opacity:0; transform:scale(.6); pointer-events:none;}
   #sendBtn.ready{opacity:1; transform:scale(1); pointer-events:auto;}
 
@@ -180,35 +208,24 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     transition:opacity .2s var(--ease), transform .2s var(--ease);}
   .callbtn:active{transform:scale(.97); opacity:.92;}
   .callbtn svg{width:18px; height:18px;}
-  .ghostnum{display:inline-block; margin-top:14px; color:var(--brand-light);
-    font-size:.9rem; font-weight:500; text-decoration:none; letter-spacing:.03em;}
+  .ghostnum{display:inline-block; margin-top:14px; color:var(--blue);
+    font-size:.9rem; font-weight:600; text-decoration:none; letter-spacing:.03em;}
 
   .whisper{text-align:center; font-size:.66rem; font-weight:400; color:var(--faint);
     padding:6px 34px 4px; line-height:1.5; letter-spacing:.03em;}
-
-
-  /* FIRST-FRAME STRIKE — one ambient bloom behind Sofia. Deep, slow, quiet.
-     Kyle: "people judge now so gotta hit them" — impact without clutter. */
-  .ambient{position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(58% 34% at 50% 30%, rgba(38,110,230,.30), rgba(27,89,195,.10) 55%, transparent 72%),
-      radial-gradient(42% 22% at 50% 90%, rgba(27,89,195,.08), transparent 70%);
-    opacity:0; animation:bloom 1.8s var(--ease) .1s forwards;}
-  @keyframes bloom{to{opacity:1;}}
-  /* Sofia arrives — one cinematic settle, then she breathes */
-  .presence{animation:arrive 1.15s var(--ease) both;}
-  @keyframes arrive{from{opacity:0; transform:translateY(20px) scale(.95);}
-    to{opacity:1; transform:none;}}
 
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important;
       transition-duration:.01ms !important;}
     .msg,.chip{opacity:1;}
+    .bg{opacity:1; transform:none;}
   }
 </style>
 </head>
-<body>
-<div class="ambient" aria-hidden="true"></div>
+<body data-step="0">
+<div class="bg" aria-hidden="true"></div>
+<div class="deepen" aria-hidden="true"></div>
+<div class="shade" aria-hidden="true"></div>
 
 <div class="stage">
   <div class="topbar">
@@ -237,7 +254,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
 
   <div class="inputbar">
     <div class="composer">
-      <input id="textIn" type="text" placeholder="Tell Sofia…" autocomplete="off" enterkeyhint="send" aria-label="Message Sofia">
+      <input id="textIn" type="text" placeholder="Say it in your own words…" autocomplete="off" enterkeyhint="send" aria-label="Message Sofia">
       <button class="iconbtn" id="micBtn" aria-label="Talk to Sofia">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v4"/></svg>
       </button>
@@ -246,7 +263,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
       </button>
     </div>
   </div>
-  <div class="whisper">Best Tort Lawyers connects you with law firm intake teams. Not a law firm. Not legal advice.</div>
+  <div class="whisper">Not a law firm · Attorney advertising · Sofia is an automated assistant</div>
 </div>
 
 <script>
@@ -291,15 +308,20 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     var i=0;
     (function next(){
       if(i>=lines.length){
-        if(opts.chips) showChips(opts.chips);
+        if(opts.chips) showChips(opts.chips, opts.chipsLabel);
         if(opts.done) opts.done();
         return;
       }
       typing(function(){ say(lines[i++]); setTimeout(next, reduced ? 60 : 480); }, 700+Math.random()*450);
     })();
   }
-  function showChips(list){
-    chipsEl.innerHTML=''; chipsEl.style.display='flex';
+  function showChips(list, label){
+    chipsEl.innerHTML='';
+    if(label){
+      var l=document.createElement('div'); l.className='chips-label'; l.textContent=label;
+      chipsEl.appendChild(l);
+    }
+    chipsEl.style.display='flex';
     list.forEach(function(c){
       var b=document.createElement('button'); b.className='chip'; b.textContent=c.label;
       b.onclick=function(){ choose(c); }; chipsEl.appendChild(b);
@@ -314,33 +336,37 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   }
   function setProgress(n){
     for(var i=0;i<prog.length;i++) prog[i].className = i<n ? 'on' : '';
+    /* the background deepens with the journey */
+    document.body.setAttribute('data-step', String(n));
   }
 
-  /* ---------- conversation ---------- */
+  /* ---------- conversation — Quiet Authority voice ----------
+     Plain, never pushy. One question at a time. Private by default.
+     No promises: "may be a claim," never "you have a case."
+     The person drives. They choose if a firm calls. */
   var TORTS={
-    car:{label:'Car injury', name:'vehicle injury'},
-    abuse:{label:'Sex abuse', name:'abuse case'},
-    drug:{label:'Drug / device injury', name:'drug or device injury'},
-    other:{label:'Something else', name:'case'}
+    abuse:{label:'Abuse & institutional', name:'abuse'},
+    mass:{label:'Mass tort', name:'mass tort'},
+    drug:{label:'Drug & device', name:'drug or device injury'},
+    toxic:{label:'Toxic exposure', name:'toxic exposure'},
+    mva:{label:'MVA / PI → NIL', name:'vehicle injury'}
   };
+  function laneChips(){
+    return Object.keys(TORTS).map(function(k){ return {label:TORTS[k].label, go:(function(key){return function(){qWhen(key);};})(k)}; });
+  }
 
   function start(){
     setProgress(0);
     ask([
-      '<span class="serifline">Hey — I\'m Sofia.</span>',
-      'I help people find out if they have a case firms are actually taking right now. About a minute.',
-      'So — <b>what happened?</b>'
-    ],{chips:[
-      {label:TORTS.car.label, go:function(){qWhen('car');}},
-      {label:TORTS.abuse.label, go:function(){qWhen('abuse');}},
-      {label:TORTS.drug.label, go:function(){qWhen('drug');}},
-      {label:TORTS.other.label, go:function(){qWhen('other');}}
-    ]});
+      '<span class="serifline">I\'m Sofia.</span>',
+      'I help people find out if this may be a claim — and the kind of firm that handles it. You can keep this general.',
+      'Say it in your own words.'
+    ],{chips:laneChips(), chipsLabel:'or choose a lane'});
   }
 
   function qWhen(key){
     answers.tort=key; setProgress(1);
-    ask(['Got it. <b>When</b> did it happen?'],{chips:[
+    ask(['When did this happen? Roughly is fine.'],{chips:[
       {label:'This year', go:function(){qState('recent');}},
       {label:'1–3 years ago', go:function(){qState('mid');}},
       {label:'Longer ago', go:function(){qState('old');}}
@@ -349,7 +375,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
 
   function qState(when){
     answers.when=when; setProgress(2);
-    ask(['Last one — <b>which state</b>?'],{chips:[
+    ask(['And which state?'],{chips:[
       {label:'California', go:function(){verdict('California');}},
       {label:'Arizona', go:function(){verdict('Arizona');}},
       {label:'Texas', go:function(){verdict('Texas');}},
@@ -359,7 +385,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
 
   function freeState(){
     hideChips();
-    say('Type your state below — I\'ll take it from there.');
+    say('Type it below — I\'ll take it from there.');
     textIn.focus();
     pendingState=true;
   }
@@ -370,9 +396,13 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
   function verdict(state){
     answers.state=state; setProgress(3); hideChips();
     var tname=TORTS[answers.tort].name;
+    var extra = answers.tort==='mva'
+      ? ' That\'s the injury team\'s lane — they\'re built for this.'
+      : '';
     typing(function(){
       var v=el('<div class="msg verdict"><h3>Here\'s where you stand.</h3>'+
-        '<p>A <b>'+tname+'</b> in <b>'+state+'</b> — this is the kind of case intake teams are reviewing right now.</p>'+
+        '<p>What you described may be a <b>'+tname+'</b> claim.'+extra+
+        ' The next step is a short call with an intake team — <b>you decide</b> if a firm calls you back.</p>'+
         '<a class="callbtn" href="tel:+12029329700">'+PHONE_SVG+' Call now</a><br>'+
         '<a class="ghostnum" href="tel:+12029329700">(202) 932-9700 · free, confidential</a></div>');
       chat.appendChild(v); scroll();
@@ -383,21 +413,33 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     postLead({tort:answers.tort, when:answers.when, state:answers.state});
   }
 
-  /* ---------- free text ---------- */
+  /* ---------- free text — first-class, keyword-routed ---------- */
   function route(text){
     var s=text.toLowerCase();
     if(pendingState){ pendingState=false; verdict(text.trim()||'your state'); return; }
     if(!answers.tort){
-      if(/car|auto|vehicle|crash|accident|truck|moto/.test(s)) return qWhen('car');
-      if(/abus|assault|molest/.test(s)) return qWhen('abuse');
-      if(/drug|pill|device|mesh|roundup|paraquat|talc/.test(s)) return qWhen('drug');
+      if(/abus|assault|molest|church|school|scout|priest|coach/.test(s)) return qWhen('abuse');
+      if(/toxic|expos|roundup|paraquat|talc|pfas|pesticide|chemical|asbestos|lead/.test(s)) return qWhen('toxic');
+      if(/drug|pill|device|mesh|implant|recall|ozempic|zantac/.test(s)) return qWhen('drug');
+      if(/car|auto|vehicle|crash|accident|truck|moto|uber|lyft|pedestrian/.test(s)) return qWhen('mva');
+      if(/mass|tort|class/.test(s)) return qWhen('mass');
       hideChips();
-      typing(function(){ say('Tell me a little more — a <b>vehicle</b>, a <b>drug or device</b>, or <b>something else</b>?'); },800);
+      typing(function(){
+        say('Tell me a little more — or choose a lane below.');
+        showChips(laneChips(), 'lanes BTL owns');
+      },800);
       return;
     }
     if(!answers.when){
       hideChips();
-      typing(function(){ say('Noted. <b>When</b> did it happen? Roughly is fine.'); },800);
+      typing(function(){
+        say('Noted. <b>When</b> did it happen? Roughly is fine.');
+        showChips([
+          {label:'This year', go:function(){qState('recent');}},
+          {label:'1–3 years ago', go:function(){qState('mid');}},
+          {label:'Longer ago', go:function(){qState('old');}}
+        ]);
+      },800);
       return;
     }
     if(!answers.state){ pendingState=true; verdict(text.trim()); return; }
@@ -482,7 +524,7 @@ ttq.load('CTCC4OJC77UF4MDQQOA0');ttq.page();}(window, document, 'ttq');
     }, reduced ? 400 : 2600);
   };
   /* HOOK: wire Vapi voice SDK here — assistant id from brand.json → assistant.voice.
-     Voice stays in the composer (P8): no separate mode, transcript streams into chat. */
+     Voice stays in the composer: no separate mode, transcript streams into chat. */
 
   start();
 })();
