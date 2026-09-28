@@ -18,12 +18,15 @@
     domain_id: 'besttortlawyers.com',
     // Protected BTL intake endpoint. null = not verified yet; the form fails closed.
     endpoint: null,
-    // BTL inbound line. Stays non-dialable until routing to BTL Sofia is verified.
-    phone: { e164: '+12029329700', display: '+1 (202) 932-9700', verified: false },
+    // Temporary inbound line (Kyle, 2026-09-28): the 213 Sofia line, forwarding to Kyle via transferCall.
+    // verified stays false until +12138787408 is bound to "Sofia BTL Paraquat v4" in Vapi
+    // (today it still answers as the firm-demo assistant). Flip to true after that binding is confirmed.
+    phone: { e164: '+12138787408', display: '(213) 878-7408', verified: false },
     consent_version: 'btl-paraquat-consent-2026-09-28-draft',
     timeout_ms: 15000
   };
 
+  window.BTL_PHONE = CONFIG.phone;
   var params = new URLSearchParams(location.search);
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || /\.(localhost|test)$/.test(location.hostname);
   // Synthetic QA mode: only honoured on local/preview hosts; marks the record test + suppresses all outbound.
@@ -85,6 +88,8 @@
       callBtn.removeAttribute('aria-disabled');
       callBtn.removeAttribute('role');
       callBtn.setAttribute('aria-label', 'Call Sofia now at ' + CONFIG.phone.display);
+      document.getElementById('callSub').textContent = CONFIG.phone.display;
+      var dln = document.getElementById('deskLine'); if (dln) dln.querySelector('b').textContent = CONFIG.phone.display;
       callBtn.addEventListener('click', function () { track('ee_call_click'); }); // a click is not a connected call
     } else {
       document.getElementById('callSub').textContent = 'Phone line opening soon — request a callback below';
@@ -249,7 +254,9 @@
     wrap.querySelector('.nx').textContent = next;
     var dl = wrap.querySelector('dl');
     function row(k, val) { var dt = document.createElement('dt'); dt.textContent = k; var dd = document.createElement('dd'); dd.textContent = val; dl.appendChild(dt); dl.appendChild(dd); }
-    row('Reference', String(receipt).slice(0, 40));
+    var dt0 = document.createElement('dt'); dt0.textContent = 'Reference'; var dd0 = document.createElement('dd');
+    var chip = document.createElement('span'); chip.className = 'ref-chip'; chip.textContent = 'BTL·PQ·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase();
+    dd0.appendChild(chip); dl.appendChild(dt0); dl.appendChild(dd0);
     if (KIND === 'callback') row('Callback', sched ? new Date(b.callback.scheduled_for).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) : 'Requested — time not yet scheduled');
     body.appendChild(wrap);
     wrap.focus();

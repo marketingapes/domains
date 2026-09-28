@@ -109,3 +109,35 @@ button,input,select{font:inherit;color:inherit}
 .wm b{font-family:var(--serif);font-weight:500;font-size:1.16rem;letter-spacing:.01em}
 .wm small{margin-top:4px;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
 .foot .wm small,.talk .wm small{color:var(--gold)}
+
+/* ---------- AI layer (2026-09-28): Sofia's signal color is used only on Sofia's elements ---------- */
+:root{--ai:#6b74f0;--ai-deep:#4f58d6;--ai-soft:#eef0ff;--ai-line:rgba(107,116,240,.35)}
+.seal{position:relative;display:block;flex:none}
+.seal img{display:block}
+.seal::after{content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:var(--ai);box-shadow:0 0 0 2px var(--paper),0 0 10px var(--ai);animation:aipulse 2.6s ease-in-out infinite}
+.talk .seal::after,.foot .seal::after{box-shadow:0 0 0 2px #0b1220,0 0 10px var(--ai)}
+@keyframes aipulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
+.ai-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border-radius:999px;background:var(--ai-soft);color:#2f3699;font-size:.78rem;font-weight:650;border:1px solid var(--ai-line)}
+.ai-badge i{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--ai),#9aa2ff);display:grid;place-items:center;color:#fff;font-style:normal;font-size:.62rem;font-weight:800}
+.talk .ai-badge{background:rgba(107,116,240,.14);color:#cfd3ff}
+.how-ai{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
+.how-ai li{padding:16px 16px 14px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card)}
+.how-ai b{display:flex;align-items:center;gap:8px;font-size:.95rem;margin-bottom:4px}
+.how-ai b:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ai);flex:none}
+.how-ai span{font-size:.88rem;color:var(--muted)}
+.talk .how-ai li{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
+.talk .how-ai span{color:var(--t-muted)}
+.ref-chip{display:inline-block;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86rem;letter-spacing:.04em;padding:4px 9px;border-radius:8px;background:var(--ai-soft);color:#2f3699;border:1px solid var(--ai-line)}
+/* Sofia speaking in the quiz */
+.sofia-line{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px}
+.sofia-line img{width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:2px solid var(--ai);flex:none}
+.sofia-line p{margin:0;padding:10px 14px;border-radius:16px 16px 16px 5px;background:var(--ai-soft);color:#262c73;font-size:.95rem;line-height:1.45;min-height:40px}
+.dots{display:inline-flex;gap:4px;align-items:center;height:18px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--ai);opacity:.35;animation:dot 1s ease-in-out infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.bar i{background:linear-gradient(90deg,var(--gold),var(--ai))!important}
+.summary{margin:0 0 14px;padding:14px 16px;border-radius:var(--r-md);background:var(--ai-soft);border:1px solid var(--ai-line)}
+.summary h3{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#2f3699}
+.summary p{margin:0;color:#262c73;font-size:.96rem}
+@media(max-width:760px){.how-ai{grid-template-columns:1fr}}

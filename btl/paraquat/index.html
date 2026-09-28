@@ -171,13 +171,17 @@ footer{background:var(--ink);color:#aeb6c2;padding:48px 0 32px;font-size:.86rem}
 .wm b{font-family:var(--serif);font-weight:500;font-size:1.16rem;letter-spacing:.01em}
 .wm small{margin-top:4px;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
 footer .wm small{color:var(--gold)}
+.seal{position:relative;display:block;flex:none}
+.seal::after{content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:#6b74f0;box-shadow:0 0 0 2px var(--paper),0 0 10px #6b74f0;animation:aipulse 2.6s ease-in-out infinite}
+@keyframes aipulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
+@media(prefers-reduced-motion:reduce){.seal::after{animation:none}}
 </style>
 </head>
 <body>
 <a class="skip" href="#sofia">Skip to Sofia</a>
 
 <header class="wrap top">
-  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></a>
+  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>Best Tort Lawyers</b><small>AI-guided claim matching</small></span></a>
   <nav aria-label="Page">
     <a href="#about">The lawsuits</a>
     <a href="#how">How it works</a>
@@ -264,7 +268,7 @@ footer .wm small{color:var(--gold)}
 <footer>
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></div>
+      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>AI-guided claim matching</small></span></div>
       <nav class="f-links" aria-label="Footer">
         <a href="/">Home</a>
         <a href="/privacy-policy/">Privacy Policy</a>
