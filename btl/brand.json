@@ -6,65 +6,61 @@
     "phone_tel": "+12029329700"
   },
   "logo": {
-    "gradient": [
-      "#3B8BF0",
-      "#1B59C3"
-    ],
-    "name": "momentum-shield",
-    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><linearGradient id=\"btlg\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#3B8BF0\"/><stop offset=\"1\" stop-color=\"#1B59C3\"/></linearGradient></defs><path d=\"M50 5 L85 18 V50 C85 74 68 88 50 95 C32 88 15 74 15 50 V18 Z\" fill=\"url(#btlg)\"/><polygon points=\"50,26 68,52 59,52 59,80 41,80 41,52 32,52\" fill=\"#fff\"/></svg>"
+    "name": "btl-monogram",
+    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect x=\"8\" y=\"8\" width=\"84\" height=\"84\" rx=\"22\" fill=\"#111827\"/><path d=\"M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z\" fill=\"#F6F1E7\"/><path d=\"M70 31h8v56h-8z\" fill=\"#C6A15B\"/></svg>"
   },
   "name": "Best Tort Lawyers",
   "seo": {
-    "description": "Best Tort Lawyers: talk to Sofia now for a free, confidential case review. Answer a few quick questions and find out if you may potentially qualify. Call (202) 932-9700.",
-    "title": "Best Tort Lawyers \u2014 Free, Confidential Case Review | Talk to Sofia"
+    "description": "Tell Sofia what happened in your own words. Best Tort Lawyers helps identify whether you may potentially qualify for further claim review and the type of legal team that may fit.",
+    "title": "Best Tort Lawyers — Start With Sofia"
   },
   "social": {
     "facebook": {
-      "bio": "Best Tort Lawyers connects people with law firm intake teams \u2014 for the big tort cases firms are actually taking right now. Free, confidential case review.",
+      "bio": "A clearer first step for serious claims. Tell Sofia what happened and find out whether you may potentially qualify for further review.",
       "handle": "@besttortlawyers",
       "url": "https://www.facebook.com/besttortlawyers"
     },
     "instagram": {
-      "bio": "Free, confidential case review. Talk to Sofia now \u2014 find out if you may potentially qualify. \ud83d\udc47",
+      "bio": "A clearer first step for serious claims. Start with Sofia.",
       "handle": "@besttortlawyers",
       "url": "https://www.instagram.com/besttortlawyers"
     },
     "youtube": {
-      "bio": "Best Tort Lawyers \u2014 plain answers about mass tort cases, and a free confidential case review with Sofia.",
+      "bio": "Best Tort Lawyers — clear information about serious tort claims and a guided first step with Sofia.",
       "handle": "@besttortlawyers",
       "url": "https://www.youtube.com/@besttortlawyers"
     }
   },
-  "tagline": "Talk to Sofia now for a free, confidential case review.",
+  "tagline": "A clearer first step for serious claims.",
   "tokens": {
-    "accent-soft": "#E9EFFB",
-    "bg": "#ffffff",
-    "brand": "#1B59C3",
-    "brand-deep": "#0F3D91",
-    "cta": "#1B59C3",
-    "cta-call": "#1d7a3d",
-    "ink": "#1c1c1c",
-    "line": "#e2e5ea",
-    "muted": "#5c5c5c",
-    "soft": "#f5f6f8"
+    "accent-soft": "#EEE7DA",
+    "bg": "#F6F1E7",
+    "brand": "#111827",
+    "brand-deep": "#0B1220",
+    "cta": "#2457E6",
+    "cta-call": "#17643A",
+    "ink": "#111827",
+    "line": "#D9D2C5",
+    "muted": "#626B78",
+    "soft": "#ECE7DE"
   },
-  "updated_at": "2026-09-28T03:28:04.960Z",
-  "version": "2026-09-27-rev3",
-  "voice": "Best Tort Lawyers. Plain, direct, human.",
+  "updated_at": "2026-09-28T11:55:00.000Z",
+  "version": "2026-09-28-premium-v1",
+  "voice": "Quiet authority. Plain, direct, human.",
   "assistant": {
     "name": "Sofia",
     "role": "AI intake guide",
-    "greeting": "Hi, I'm Sofia \u2014 I can help you find out if you may potentially qualify for a free case review. What's going on?",
-    "persona_notes": "Plain, direct, human. Never promises outcomes, never gives legal advice, never cites win rates or dollar figures. 'Potentially qualify' \u2014 never 'you qualify.' Warm, unhurried, one question at a time. If the caller wants a human, offer the transfer.",
-    "voice_first_message": "Hi, this is Sofia with Best Tort Lawyers. I can help you find out if you may potentially qualify for a free case review. What happened?",
+    "greeting": "Hi, I'm Sofia. Tell me what happened in your own words — you can keep it general.",
+    "persona_notes": "Plain, direct, human. Never promises outcomes, never gives legal advice, never cites win rates or dollar figures. Say 'potentially qualify' — never 'you qualify.' Warm, unhurried, one question at a time. If someone wants a human, offer the phone path.",
+    "voice_first_message": "Hi, this is Sofia with Best Tort Lawyers. Tell me what happened in your own words and I'll help identify the right next step.",
     "chat_theme": {
-      "header-bg": "#1B59C3",
-      "header-text": "#ffffff",
-      "bubble-bot-bg": "#E9EFFB",
-      "bubble-bot-text": "#1c1c1c",
-      "bubble-user-bg": "#1B59C3",
-      "bubble-user-text": "#ffffff",
-      "fab-bg": "#1B59C3"
+      "header-bg": "#111827",
+      "header-text": "#F6F1E7",
+      "bubble-bot-bg": "#F6F1E7",
+      "bubble-bot-text": "#111827",
+      "bubble-user-bg": "#2457E6",
+      "bubble-user-text": "#FFFFFF",
+      "fab-bg": "#2457E6"
     },
     "vapi_assistant_id": null
   },

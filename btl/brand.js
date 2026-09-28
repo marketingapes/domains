@@ -16,26 +16,26 @@
      approves a new brand; brand.update keeps this in sync. */
   var FALLBACK = {
     brand_id: 'btl',
-    version: '2026-09-27-rev3',
+    version: '2026-09-28-premium-v1',
     name: 'Best Tort Lawyers',
     tokens: {
-      'brand': '#1B59C3', 'brand-deep': '#0F3D91', 'accent-soft': '#E9EFFB',
-      'ink': '#1c1c1c', 'muted': '#5c5c5c', 'bg': '#ffffff',
-      'soft': '#f5f6f8', 'line': '#e2e5ea', 'cta': '#1B59C3',
-      'cta-call': '#1d7a3d'
+      'brand': '#111827', 'brand-deep': '#0B1220', 'accent-soft': '#EEE7DA',
+      'ink': '#111827', 'muted': '#626B78', 'bg': '#F6F1E7',
+      'soft': '#ECE7DE', 'line': '#D9D2C5', 'cta': '#2457E6',
+      'cta-call': '#17643A'
     },
     logo: {
-      name: 'momentum-shield',
-      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="btlg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B8BF0"/><stop offset="1" stop-color="#1B59C3"/></linearGradient></defs><path d="M50 5 L85 18 V50 C85 74 68 88 50 95 C32 88 15 74 15 50 V18 Z" fill="url(#btlg)"/><polygon points="50,26 68,52 59,52 59,80 41,80 41,52 32,52" fill="#fff"/></svg>'
+      name: 'btl-monogram',
+      svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="8" y="8" width="84" height="84" rx="22" fill="#111827"/><path d="M25 31h22c12 0 20 6 20 16 0 6-3 11-9 14 8 2 13 8 13 16 0 12-9 20-24 20H25V31zm20 25c7 0 11-3 11-8s-4-8-11-8H37v16h8zm2 31c8 0 12-4 12-10s-4-10-12-10H37v20h10z" fill="#F6F1E7"/><path d="M70 31h8v56h-8z" fill="#C6A15B"/></svg>'
     },
     seo: {
-      title: 'Best Tort Lawyers — Free, Confidential Case Review | Talk to Sofia',
-      description: 'Best Tort Lawyers: talk to Sofia now for a free, confidential case review. Answer a few quick questions and find out if you may potentially qualify. Call (202) 932-9700.'
+      title: 'Best Tort Lawyers — Start With Sofia',
+      description: 'Tell Sofia what happened in your own words. Best Tort Lawyers helps identify whether you may potentially qualify for further claim review and the type of legal team that may fit.'
     },
     assistant: {
       name: 'Sofia',
-      greeting: 'Hi, I\'m Sofia — I can help you find out if you may potentially qualify for a free case review. What\'s going on?',
-      voice_first_message: 'Hi, this is Sofia with Best Tort Lawyers. I can help you find out if you may potentially qualify for a free case review. What happened?',
+      greeting: 'Hi, I\'m Sofia. Tell me what happened in your own words — you can keep it general.',
+      voice_first_message: 'Hi, this is Sofia with Best Tort Lawyers. Tell me what happened in your own words and I\'ll help identify the right next step.',
       chat_theme: {
         'header-bg': '#1B59C3', 'header-text': '#ffffff',
         'bubble-bot-bg': '#E9EFFB', 'bubble-bot-text': '#1c1c1c',
