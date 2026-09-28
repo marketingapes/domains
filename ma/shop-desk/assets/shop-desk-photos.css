@@ -1,0 +1,102 @@
+.shell { width: min(1040px, calc(100% - 32px)); }
+footer.page-foot { width: min(1040px, calc(100% - 32px)); }
+
+.how-layout .how-steps { display: grid; gap: 12px; grid-template-columns: 1fr; }
+.hero-layout {
+display: grid;
+gap: 28px;
+align-items: center;
+}
+@media (min-width: 880px) {
+.hero-layout {
+grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+gap: 36px;
+}
+}
+.hero-copy { min-width: 0; }
+.hero-photo {
+margin: 0;
+border-radius: var(--radius);
+overflow: hidden;
+border: 1px solid var(--line);
+box-shadow: var(--shadow-elev);
+background: var(--panel-2);
+aspect-ratio: 4 / 3;
+}
+.hero-photo img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+@media (max-width: 879px) {
+.hero-photo { aspect-ratio: 16 / 10; order: -1; }
+.hero-layout { gap: 20px; }
+}
+
+.niche-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin: 18px 0 0;
+}
+@media (min-width: 640px) {
+.niche-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+}
+.niche-card {
+display: block;
+margin: 0;
+border-radius: var(--radius);
+overflow: hidden;
+border: 1px solid var(--line);
+background: var(--panel);
+box-shadow: var(--shadow-soft);
+transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.niche-card:hover {
+border-color: rgba(95, 138, 31, 0.45);
+box-shadow: var(--glow);
+}
+.niche-card .niche-img {
+display: block;
+width: 100%;
+aspect-ratio: 4 / 3;
+object-fit: cover;
+background: var(--panel-2);
+}
+.niche-card figcaption {
+font-size: 12px;
+font-weight: 800;
+letter-spacing: 0.04em;
+color: var(--ink);
+padding: 10px 12px 12px;
+background: var(--panel);
+}
+
+.how-layout {
+display: grid;
+gap: 18px;
+}
+@media (min-width: 760px) {
+.how-layout {
+grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+gap: 22px;
+align-items: stretch;
+}
+}
+.how-visual {
+margin: 0;
+border-radius: var(--radius);
+overflow: hidden;
+border: 1px solid var(--line);
+box-shadow: var(--shadow-soft);
+background: var(--panel-2);
+min-height: 220px;
+}
+.how-visual img {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: cover;
+min-height: 220px;
+}
