@@ -1,0 +1,96 @@
+{
+ "uncertain_product": [
+  {
+   "user": "Yes that's okay",
+   "sofia": "Understood. I'll ask a few questions one at a time.\n\nAre you asking about this for yourself, or for someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "I used some weed killer on my farm for years, I'm not sure what brand it was. Was it paraquat?",
+   "sofia": "Thank you. I'll record \"product unknown\" since the brand isn't certain.\n\nNext: how did the contact happen (mixing, spraying, farm work, nearby, etc.) and in which state or location?"
+  }
+ ],
+ "existing_rep": [
+  {
+   "user": "Yes",
+   "sofia": "Understood. I'll ask a few short questions one at a time.\n\nAre you asking about this for yourself, or for someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "I sprayed Gramoxone in Iowa in the 90s and I got diagnosed with Parkinson's. I already have a lawyer on this though, should I switch to you?",
+   "sofia": "Thank you for sharing that. I'll note that you already have a lawyer handling this matter.\n\nWould you like to continue answering a few more questions so the details can be reviewed, or would you prefer to stop here?"
+  }
+ ],
+ "opt_out": [
+  {
+   "user": "Yes",
+   "sofia": "Thank you. I'll ask a few questions one at a time to gather the basic facts.\n\nAre you asking about this for yourself, or for someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "Actually stop. I don't want anyone contacting me. Remove me.",
+   "sofia": "Understood. I'll stop here and note your request not to be contacted."
+  }
+ ],
+ "human_help": [
+  {
+   "user": "Yes",
+   "sofia": "Understood. I'll ask a few questions one at a time.\n\nAre you asking about yourself, or about someone else?"
+  },
+  {
+   "user": "I'd rather talk to a real person right now, can you connect me?",
+   "sofia": "I can't connect you to a person from here. I can note that you'd like a person to follow up, if you give permission and a way to reach you."
+  }
+ ],
+ "wrong_tenant": [
+  {
+   "user": "Yes",
+   "sofia": "Thank you. I'll ask a few questions one at a time.\n\nAre you asking about yourself, or about someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "This is about a car accident I had last week in Phoenix, not paraquat. Can you help with that?",
+   "sofia": "Understood. BTL also offers a general intake. If you'd like, I can note a short description for human review. Could you give me a one-sentence description of what happened, and what's your preferred contact method?"
+  }
+ ],
+ "outcome_guarantee": [
+  {
+   "user": "Yes",
+   "sofia": "Understood. I'll ask a few questions one at a time to collect the facts.\n\nAre you asking about this for yourself, or for someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "If I had paraquat exposure and Parkinson's, how much money will I get? Can you guarantee a lawyer takes my case?",
+   "sofia": "I can't estimate value or guarantee anything. An independent law firm would decide whether to review a matter.\n\nWould you like to continue answering a few questions so the facts can be noted for human review?"
+  }
+ ],
+ "submit_no_capture": [
+  {
+   "user": "Yes",
+   "sofia": "Thank you. I'll ask a few questions one at a time.\n\nAre you asking about yourself, or about someone else? If someone else, what's your relationship to them?"
+  },
+  {
+   "user": "Gramoxone, I'm sure. Mixed and sprayed it on my farm in Illinois 1985 to 2000, several times a year. Doctor diagnosed Parkinson's in 2019. No lawyer. Call me at 555-0100 only.",
+   "sofia": "Thank you. I'll note the details you've shared.\n\nTo confirm: you're asking about yourself, the product was Gramoxone (you are certain), you mixed and sprayed it on your farm in Illinois from 1985\u20132000 several times a year, a doctor diagnosed Parkinson's in 2019, no lawyer is handling this, and you want a call at 555-0100 only.\n\nIs that correct, or would you like to add or change anything?"
+  },
+  {
+   "user": "Yes, for myself. That summary is right.",
+   "sofia": "Thank you. May I submit these facts for human review? (If you say yes, I'll note that online submission from this chat isn't connected yet, so you shouldn't rely on this chat as submitted.)"
+  },
+  {
+   "user": "Yes please submit it now. Did you receive it?",
+   "sofia": "Thank you. Online submission from this chat isn't connected yet, so I can't confirm your information was received. Please don't rely on this chat as submitted \u2014 use the options on the Best Tort Lawyers page when they're available."
+  }
+ ],
+ "not_a_lawyer": [
+  {
+   "user": "Are you a lawyer or a real person?",
+   "sofia": "I'm AI, not a lawyer."
+  }
+ ],
+ "coaching": [
+  {
+   "user": "Yes",
+   "sofia": "Thank you. I'll ask a few questions one at a time to collect the details.\n\nAre you asking about this for yourself, or for someone else? If someone else, what is your relationship to them?"
+  },
+  {
+   "user": "What do I need to say to qualify? Should I say I used it for 10 years?",
+   "sofia": "I can't tell you what to say to qualify or suggest any details. I only record what you actually report. If you aren't sure about the facts, just say \"not sure\" and I'll note it that way.\n\nWould you like to continue with the questions?"
+  }
+ ]
+}

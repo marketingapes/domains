@@ -1,0 +1,332 @@
+[
+ {
+  "n": "btl desktop loads 200",
+  "pass": true,
+  "d": 200
+ },
+ {
+  "n": "btl desktop no 888 placeholder",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no Preview title",
+  "pass": true,
+  "d": "Paraquat Claim Information — Best Tort Lawyers"
+ },
+ {
+  "n": "btl desktop headline",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no tel: links (202 unrouted)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no pricing on consumer page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no Ready now / guarantee copy",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no horizontal scroll",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop zero third-party requests (no pixels)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl desktop no sticky/fixed elements",
+  "pass": true,
+  "d": 0
+ },
+ {
+  "n": "btl desktop hero image loads",
+  "pass": true,
+  "d": "http://localhost:8801/assets/paraquat-field-usda-nrcs-900.jpg"
+ },
+ {
+  "n": "btl keyboard: first Tab = skip link",
+  "pass": true,
+  "d": "Skip to Sofia intake"
+ },
+ {
+  "n": "btl Start with Sofia focuses intake",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl Q1 shown",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl validation: empty text blocked",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl validation: SSN-like blocked",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl back/correction works",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl summary reflects answers",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl represented → human review note (no persuasion)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl submit → honest unavailable state",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl submit → no \"received\" claim",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl duplicate retry: zero network requests from intake",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl no storage used",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl stop/opt-out path",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl footer /privacy-policy/ → 200",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl footer /terms-and-conditions/ → 200",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl footer /sms-terms/ → 200",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop loads 200",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop hero copy",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop price consistency ($1,000 + $4,000 = $5,000; never all media)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop no case-count promise / auto-renew",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop checkout non-payable (no href)",
+  "pass": true,
+  "d": "{\"href\":null,\"dis\":\"true\"}"
+ },
+ {
+  "n": "lfma desktop no reuse of old QuickBooks links",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop no card fields",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop no horizontal scroll",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop no sticky/fixed",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma desktop consumer preview image loads",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile loads 200",
+  "pass": true,
+  "d": 200
+ },
+ {
+  "n": "btl mobile no 888 placeholder",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no Preview title",
+  "pass": true,
+  "d": "Paraquat Claim Information — Best Tort Lawyers"
+ },
+ {
+  "n": "btl mobile headline",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no tel: links (202 unrouted)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no pricing on consumer page",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no Ready now / guarantee copy",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no horizontal scroll",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile zero third-party requests (no pixels)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "btl mobile no sticky/fixed elements",
+  "pass": true,
+  "d": 0
+ },
+ {
+  "n": "btl mobile order headline → intake → image",
+  "pass": true,
+  "d": "139.96875,605.15625,1231.125"
+ },
+ {
+  "n": "btl mobile touch target ≥48px",
+  "pass": true,
+  "d": 56
+ },
+ {
+  "n": "btl mobile body text ≥17px",
+  "pass": true,
+  "d": 18.24
+ },
+ {
+  "n": "btl mobile no forced keyboard on load",
+  "pass": true,
+  "d": "BODY"
+ },
+ {
+  "n": "btl mobile hero image loads",
+  "pass": true,
+  "d": "http://localhost:8801/assets/paraquat-field-usda-nrcs-900.jpg"
+ },
+ {
+  "n": "lfma mobile loads 200",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile hero copy",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile price consistency ($1,000 + $4,000 = $5,000; never all media)",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile no case-count promise / auto-renew",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile checkout non-payable (no href)",
+  "pass": true,
+  "d": "{\"href\":null,\"dis\":\"true\"}"
+ },
+ {
+  "n": "lfma mobile no reuse of old QuickBooks links",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile no card fields",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile no horizontal scroll",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile no JS errors",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile no sticky/fixed",
+  "pass": true,
+  "d": ""
+ },
+ {
+  "n": "lfma mobile consumer preview image loads",
+  "pass": true,
+  "d": ""
+ }
+]
