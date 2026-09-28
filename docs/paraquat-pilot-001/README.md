@@ -33,3 +33,7 @@ BTL page loads zero third-party requests (no GTM, Meta, TikTok), uses no storage
 3. Route +12029329700 (or chosen line) → verified BTL assistant before showing a call action (rebinding not in this batch).
 4. QuickBooks: create/confirm the matching reusable link (or named-firm invoice), read it back, set `CHECKOUT_URL`.
 5. Reviewed non-sensitive telemetry allowlist before adding any tags to the BTL page.
+
+## Update 2026-09-28 (PR 2) — cleaner page + Sofia firm screen
+- `btl/paraquat/index.html` redesigned: centered, single focused object (Sofia chat card), field photo as a soft hero backdrop, three-step row, FAQ, compact footer. Still zero third-party requests; submission still disabled and labelled. The page shows no qualification verdict (criteria are applied privately by Sofia / a person).
+- Sofia BTL Paraquat v4 staged: 976d64df-ca8d-4880-a983-7fcec3e786db (not phone-bound, no tools, structured-data outcome QUALIFIED / FIRM_REVIEW / NOT_A_FIT). Firm criteria are private and stored in the Evolution Engine Drive, not in this public repo.
