@@ -147,6 +147,12 @@
         else { fs.removeAttribute('aria-invalid'); e.textContent = ''; }
       });
     }
+    // Dropdown qualifier (/paraquat/): every visible qualifying select needs an answer ("Not sure" counts).
+    form.querySelectorAll('select[data-q]').forEach(function (sel) {
+      if (sel.closest('[hidden]')) return;
+      var id = sel.id;
+      if (!sel.value) { setErr(id, 'Choose an answer — “Not sure” is fine.'); bad.push(id); } else setErr(id);
+    });
     v.consent_calls = form.consent_calls.checked; v.consent_sms = form.consent_sms.checked;
     var ce = document.getElementById('consent-e');
     // A callback is a phone call: it needs call consent. The inquiry form needs at least one channel so we can reply.
@@ -185,7 +191,7 @@
     if (inFlight) return;
     form.setAttribute('data-tried', '1');
     var r = validate();
-    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = document.getElementById(r.first) || q(r.first); if (f) (f.querySelector ? (f.querySelector('input') || f) : f).focus(); return; }
+    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]') || document.getElementById(r.first) || q(r.first); if (f) (f.querySelector ? (f.querySelector('input') || f) : f).focus(); return; }
     var v = r.v;
     track('ee_lead_submit_attempt');
 
@@ -245,9 +251,9 @@
   function showReceipt(b, receipt) {
     var body = document.getElementById('formBody');
     var sched = b.callback && b.callback.scheduled_for && b.callback.status === 'scheduled';
-    var next = b.next_step_label || (KIND === 'callback'
+    var next = b.next_step_label || (window.BTL_QUIZ && window.BTL_QUIZ.resultText ? window.BTL_QUIZ.resultText() + ' We’ll contact you only through the channels you agreed to.' : (KIND === 'callback'
       ? 'Your request is in the callback queue. A call time isn’t confirmed until it’s scheduled, and we’ll contact you only through the channels you agreed to.'
-      : 'We’ll follow up using the contact method you chose to review your inquiry.');
+      : 'We’ll follow up using the contact method you chose to review your inquiry.'));
     body.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'receipt'; wrap.setAttribute('tabindex', '-1');
     wrap.innerHTML = '<div class="tick" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>' +

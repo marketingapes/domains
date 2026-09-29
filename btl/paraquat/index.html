@@ -26,6 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/paraquat/paraquat.css?v=20260928c">
 <style>
 :root{
   --ink:#111827;--ink-2:#374151;--muted:#6b7280;--paper:#f6f1e7;--paper-2:#efe8db;--card:#fffdf8;
@@ -182,6 +183,16 @@ footer .wm small{color:var(--gold)}
 .seal::after{content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:#6b74f0;box-shadow:0 0 0 2px var(--paper),0 0 10px #6b74f0;animation:aipulse 2.6s ease-in-out infinite}
 @keyframes aipulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
 @media(prefers-reduced-motion:reduce){.seal::after{animation:none}}
+/* dropdown qualifier inside Muse's Sofia card */
+.q-body{padding:18px 18px 8px}
+.q-body .grid{gap:12px 12px}
+.q-sep{grid-column:1/-1;margin:10px 0 0;padding-top:14px;border-top:1px solid var(--line);font-weight:700;font-size:.95rem}
+.pill.live{color:#2f3699;background:#eef0ff}.pill.live:before{background:#6b74f0}
+.pq-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px auto 0;max-width:560px}
+.pq-call,.pq-cb{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 22px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.98rem}
+.pq-call{background:#17643a;color:#fff}.pq-call:hover{background:#0f4d2b}
+.pq-cb{border:1.5px solid var(--line-2);color:var(--ink);background:#fff}
+@media(max-width:760px){.q-body{padding:16px 14px 6px}.pq-call,.pq-cb{width:100%;justify-content:center}}
 </style>
 </head>
 <body>
@@ -194,7 +205,7 @@ footer .wm small{color:var(--gold)}
     <a href="#about">The lawsuits</a>
     <a href="#how">How it works</a>
     <a href="#faq">Questions</a>
-    <a class="keep" href="#sofia">Start with Sofia</a>
+    <a class="keep" href="#sofia">Check if you qualify</a>
   </nav>
 </header>
 
@@ -210,13 +221,31 @@ footer .wm small{color:var(--gold)}
       <div class="s-head">
         <div class="s-av" aria-hidden="true">S</div>
         <div class="s-id"><b>Sofia</b><span>AI intake guide · not a lawyer</span></div>
-        <span class="pill" id="pill">Live AI chat</span>
+        <span class="pill live" id="pill">Paraquat prequalifier</span>
       </div>
-      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
-      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with Sofia"></div>
-      <div class="dock" id="dock"></div>
-      <p class="s-foot">Sofia is AI. Your messages are processed by our AI intake provider and kept so a person can review them. Don't enter Social Security numbers, payment details or medical records.</p>
+      <div class="q-body" id="formBody">
+        <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
+        <form id="leadForm" novalidate data-page-id="btl-paraquat-main-dropdown" data-kind="quiz">
+          <div class="grid">
+            <div class="field full" id="w-who"><label for="who">Who is this inquiry about?</label><select id="who" data-q="who" aria-describedby="who-e"><option value="">Select…</option><option value="self">Me</option><option value="family_living">A family member</option><option value="family_deceased">A family member who has passed away</option></select><span class="ferr" id="who-e"></span></div><div class="field full" id="w-passed" hidden><label for="passed">About when did they pass away?</label><select id="passed" data-q="passed" aria-describedby="passed-e"><option value="">Select…</option><option value="under_1y">Less than a year ago</option><option value="1_2y">1–2 years ago</option><option value="2_3y">2–3 years ago</option><option value="over3y">More than 3 years ago</option><option value="not_sure">Not sure</option></select><span class="ferr" id="passed-e"></span></div><div class="field full" id="w-diagnosis"><label for="diagnosis">Has a doctor diagnosed Parkinson’s disease?</label><select id="diagnosis" data-q="diagnosis" aria-describedby="diagnosis-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="diagnosis-e"></span></div><div class="field full" id="w-lawyer"><label for="lawyer">Is a lawyer already handling this, or has anyone signed with a lawyer about it?</label><select id="lawyer" data-q="lawyer" aria-describedby="lawyer-e"><option value="">Select…</option><option value="no">No</option><option value="handling">Yes — a lawyer is handling it</option><option value="signed">Signed with a lawyer before</option><option value="not_sure">Not sure</option></select><span class="ferr" id="lawyer-e"></span></div><div class="field full" id="w-job"><label for="job">Was the exposure at a job?</label><select id="job" data-q="job" aria-describedby="job-e"><option value="">Select…</option><option value="job">Yes, at a job (incl. work while incarcerated)</option><option value="home">No — home, garden or hobby use</option><option value="not_sure">Not sure</option></select><span class="ferr" id="job-e"></span></div><div class="field full" id="w-role"><label for="role">What did the work involve?</label><select id="role" data-q="role" aria-describedby="role-e"><option value="">Select…</option><option value="mixed">Mixed or loaded it</option><option value="applied">Applied or sprayed it</option><option value="flagger">Flagged for a crop duster</option><option value="sprayed_on">Was sprayed directly</option><option value="other">None of these — just nearby</option><option value="not_sure">Not sure</option></select><span class="ferr" id="role-e"></span></div><div class="field full" id="w-product"><label for="product">Was it mixed with water, and where did it come from?</label><p class="q-hint">Paraquat is also sold as Gramoxone.</p><select id="product" data-q="product" aria-describedby="product-e"><option value="">Select…</option><option value="supplier">Mixed with water — from a farm or ag supplier</option><option value="retail">Store-bought (Home Depot, Lowe’s) or ready to use</option><option value="not_sure">Not sure</option></select><span class="ferr" id="product-e"></span></div><div class="field full" id="w-years"><label for="years">When did the exposure start?</label><select id="years" data-q="years" aria-describedby="years-e"><option value="">Select…</option><option value="pre1964">All of it was before 1964</option><option value="1964_2010">Between 1964 and 2010</option><option value="2011_on">2011 or later</option><option value="not_sure">Not sure</option></select><span class="ferr" id="years-e"></span></div><div class="field full" id="w-age"><label for="age">Age when it started</label><select id="age" data-q="age" aria-describedby="age-e"><option value="">Select…</option><option value="18plus">18 or older</option><option value="13_17">13 to 17</option><option value="12under">12 or younger</option><option value="not_sure">Not sure</option></select><span class="ferr" id="age-e"></span></div><div class="field full" id="w-cont13" hidden><label for="cont13">Did it continue at age 13 or older?</label><select id="cont13" data-q="cont13" aria-describedby="cont13-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="cont13-e"></span></div><div class="field full" id="w-season" hidden><label for="season">Worked there at least one full season?</label><select id="season" data-q="season" aria-describedby="season-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="season-e"></span></div><div class="field full" id="w-acres"><label for="acres">Size of the farm or area</label><select id="acres" data-q="acres" aria-describedby="acres-e"><option value="">Select…</option><option value="over3">More than about 3 acres</option><option value="under3">Less than about 3 acres</option><option value="not_sure">Not sure</option></select><span class="ferr" id="acres-e"></span></div><div class="field full" id="w-meth"><label for="meth">The firm asks everyone: ever used methamphetamine?</label><select id="meth" data-q="meth" aria-describedby="meth-e"><option value="">Select…</option><option value="no">No</option><option value="yes">Yes</option><option value="prefer_not">Prefer not to say</option></select><span class="ferr" id="meth-e"></span></div>
+            <p class="q-sep">Your contact details</p>
+            <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="60" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
+            <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="60" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e"></span></div>
+            <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
+            <div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
+            <div class="field full"><label for="email">Email <span class="opt">(optional)</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="email-e"><span class="ferr" id="email-e"></span></div>
+            <div class="consent full" id="consentBox"></div>
+          </div>
+          <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Submit my inquiry</span></button>
+          <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <p class="s-foot">Answers go only to Best Tort Lawyers’ intake and, when you submit, to the independent legal team that reviews Paraquat inquiries. Don’t enter Social Security numbers, payment details or medical records.</p>
     </section>
+    <div class="pq-cta">
+      <a class="pq-call" href="tel:+12138787408"><span aria-hidden="true">☎</span> Rather talk? Call Sofia · (213) 878-7408</a>
+      <a class="pq-cb" href="/paraquat/talk-to-sofia/?callback=1">Request a callback</a>
+    </div>
   </div>
 </section>
 
@@ -285,79 +314,11 @@ footer .wm small{color:var(--gold)}
         <a href="mailto:Sofia@besttortlawyers.com">Sofia@besttortlawyers.com</a>
       </nav>
     </div>
-    <p class="f-legal">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and directory service, not a law firm, and does not provide legal advice. Using this website or speaking with Sofia does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria. No review, acceptance, representation, compensation or recovery is guaranteed. Prior results do not guarantee a similar outcome. Phone intake for this page is not available yet.<br>Background photo: USDA NRCS, soybean field (public domain, <a href="https://commons.wikimedia.org/wiki/File:Seidenstricker_Farms-Reservoir-Irrigation-Precision_Land_leveled_fields_(20190625-NRCS-LSC-0447).jpg" rel="noopener">source</a>). Context only; it does not depict any claimant or exposure.</p>
+    <p class="f-legal">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and directory service, not a law firm, and does not provide legal advice. Using this website or speaking with Sofia does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria. No review, acceptance, representation, compensation or recovery is guaranteed. Prior results do not guarantee a similar outcome. Call Sofia, our AI intake guide, at (213) 878-7408.<br>Background photo: USDA NRCS, soybean field (public domain, <a href="https://commons.wikimedia.org/wiki/File:Seidenstricker_Farms-Reservoir-Irrigation-Precision_Land_leveled_fields_(20190625-NRCS-LSC-0447).jpg" rel="noopener">source</a>). Context only; it does not depict any claimant or exposure.</p>
   </div>
 </footer>
 
-<script>
-(function(){
-  'use strict';
-  // PARAQUAT-PILOT-001 — live Sofia text chat (Vapi web chat, public key, staged BTL Paraquat assistant).
-  // No trackers, no browser storage. Screening criteria live server-side in the assistant, never in this page.
-  var VAPI_PUBLIC_KEY='28268245-4ca4-4fc2-8d3d-4d77a0d4c55b';
-  var ASSISTANT_ID='976d64df-ca8d-4880-a983-7fcec3e786db';
-  var ENDPOINT='https://api.vapi.ai/chat/web';
-  var thread=document.getElementById('thread'), dock=document.getElementById('dock'), meter=document.getElementById('meter'), pill=document.getElementById('pill');
-  var sessionId=null, busy=false, live=false, turns=0, started=false;
-
-  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
-  function say(txt,who){var b=el('div','b '+(who||'s'),txt);thread.appendChild(b);if(live){var r=b.getBoundingClientRect();if(r.bottom>window.innerHeight-24||r.top<0)b.scrollIntoView({block:'nearest',behavior:'smooth'});}return b;}
-  function clearDock(){while(dock.firstChild)dock.removeChild(dock.firstChild);}
-  function chip(label,cls,fn){var c=el('button','chip'+(cls?' '+cls:''),label);c.type='button';c.onclick=function(){live=true;fn();};return c;}
-  function focusDock(){var f=dock.querySelector('input,button');if(f)f.focus({preventScroll:true});}
-  function setPill(ok){pill.textContent=ok?'Live AI chat':'Chat unavailable';pill.classList.toggle('live',ok);}
-
-  function intro(){
-    thread.innerHTML='';sessionId=null;turns=0;started=false;meter.style.width='0%';
-    say('Hi, I’m Sofia, Best Tort Lawyers’ AI intake guide. I’m not a lawyer. I can ask a few questions to help organize whether you may potentially qualify for further review. Is that okay?');
-    clearDock();var w=el('div','chips');
-    w.appendChild(chip('Yes, let’s start','primary',function(){send('Yes, that’s okay.');}));
-    w.appendChild(chip('Not now','',function(){say('Not now','u');clearDock();say('Understood. I’ll stop here.');var x=el('div','chips');x.appendChild(chip('Start over','ghost',intro));dock.appendChild(x);focusDock();}));
-    dock.appendChild(w);
-  }
-  function inputDock(){
-    clearDock();
-    var r=el('div','row'),inp=el('input');inp.type='text';inp.id='sofiaInput';inp.maxLength=600;inp.placeholder='Type your answer…';inp.autocomplete='off';inp.setAttribute('aria-label','Your message to Sofia');inp.setAttribute('enterkeyhint','send');
-    var s=el('button','send');s.type='button';s.setAttribute('aria-label','Send');s.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-    var err=el('p','err');err.id='sofiaErr';err.setAttribute('aria-live','polite');
-    function go(){var v=inp.value.replace(/[\u0000-\u001f<>]/g,' ').trim();if(!v){err.textContent='Type a message, or tap “Not sure”.';inp.focus();return;}
-      if(/\b\d{3}-?\d{2}-?\d{4}\b/.test(v)){err.textContent='Please don’t send Social Security or account numbers.';return;}
-      inp.value='';err.textContent='';send(v);}
-    s.onclick=function(){live=true;go();};inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();live=true;go();}});
-    r.appendChild(inp);r.appendChild(s);dock.appendChild(r);dock.appendChild(err);
-    var w=el('div','chips');w.style.marginTop='6px';
-    w.appendChild(chip('Not sure','',function(){send('Not sure.');}));
-    w.appendChild(chip('Stop','ghost',function(){send('Please stop. I don’t want to continue.');}));
-    w.appendChild(chip('Start over','ghost',intro));
-    dock.appendChild(w);
-  }
-  function send(text){
-    if(busy)return;busy=true;live=true;say(text,'u');
-    var t=el('div','typing');t.setAttribute('aria-label','Sofia is typing');t.innerHTML='<i></i><i></i><i></i>';thread.appendChild(t);
-    clearDock();
-    var body={assistantId:ASSISTANT_ID,input:text};if(sessionId)body.sessionId=sessionId;
-    var ctl=('AbortController' in window)?new AbortController():null;var to=setTimeout(function(){if(ctl)ctl.abort();},45000);
-    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+VAPI_PUBLIC_KEY},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
-      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-      .then(function(d){
-        clearTimeout(to);t.remove();busy=false;setPill(true);
-        if(d.sessionId)sessionId=d.sessionId;
-        var out=(d.output||[]).filter(function(o){return o.role==='assistant'&&o.content;}).map(function(o){return o.content;}).join('\n\n');
-        if(!out)throw new Error('empty');
-        say(out);turns++;meter.style.width=Math.min(100,turns*9)+'%';
-        inputDock();focusDock();
-      })
-      .catch(function(){
-        clearTimeout(to);if(t.parentNode)t.remove();busy=false;setPill(false);
-        say('Sofia isn’t responding right now, so your last message didn’t go through. Nothing was lost on your side — you can try again.','note');
-        clearDock();var w=el('div','chips');
-        w.appendChild(chip('Try again','primary',function(){thread.removeChild(thread.lastChild);thread.removeChild(thread.lastChild);send(text);}));
-        w.appendChild(chip('Start over','ghost',intro));dock.appendChild(w);focusDock();
-      });
-  }
-  document.querySelectorAll('a[href="#sofia"]').forEach(function(a){a.addEventListener('click',function(){setTimeout(focusDock,400);});});
-  setPill(true);intro();
-})();
-</script>
+<script src="/paraquat/qualifier.js?v=20260928c" defer></script>
+<script src="/paraquat/intake.js?v=20260928c" defer></script>
 </body>
 </html>
