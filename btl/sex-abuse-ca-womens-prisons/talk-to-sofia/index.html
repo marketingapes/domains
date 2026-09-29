@@ -41,8 +41,9 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
 <!-- TikTok pixel slot: inert until EE_LANE.tiktok_pixel is set. -->
 <script>(function(L){if(!L||!L.tiktok_pixel)return;
 !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load(L.tiktok_pixel);ttq.page()}(window,document,'ttq');})(window.EE_LANE);</script>
+<link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/sex-abuse-ca-womens-prisons/lane.css?v=20260929d">
+<link rel="stylesheet" href="/sex-abuse-ca-womens-prisons/lane.css?v=20260929v2">
 </head>
 <body class="talk">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -57,10 +58,10 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
 <main>
   <section class="t-hero" aria-labelledby="heroH">
     <div class="t-copy">
-      <h1 id="heroH">Talk to Sofia about staff misconduct at a <span class="st">California women’s facility</span> — privately.</h1>
+      <h1 id="heroH">Talk to Sofia about a <span class="st">California women’s prison</span> — privately.</h1>
       <div class="rule" aria-hidden="true"></div>
       <p style="margin:0 0 12px"><span class="ai-badge"><i>AI</i>Sofia is AI · a person reviews every inquiry</span></p>
-      <p class="lede"><b>You don’t need to describe what happened.</b> Sofia, Best Tort Lawyers’ AI intake guide, asks a few short questions to help identify whether you may potentially qualify for a free, confidential review by an independent law firm.</p>
+      <p class="lede"><b>You don’t need to describe what happened.</b> Sofia, Best Tort Lawyers’ AI intake guide, can ask a few short questions to help identify whether you may potentially qualify for a free, confidential review by an independent law firm.</p>
       <ul class="reassure">
         <li>Skip any question — “Prefer not to say” is always fine.</li>
         <li>You can stop at any time, or ask for a person.</li>
@@ -72,6 +73,7 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
           <span class="button-copy"><strong>Call Sofia Now</strong><small data-ee-phone-text>(888) 888-8888</small></span>
           <span class="arrow" aria-hidden="true">›</span>
         </a>
+        <p class="desk-line">Sofia’s line: <b data-ee-phone-text>(888) 888-8888</b></p>
         <button class="cb-button" type="button" id="openCb" aria-expanded="false" aria-controls="cbPanel" data-ee-sofia>
           <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5v5.4l3.6 2.1-.8 1.4L11 13.2V7z"/></svg></span>
           <span class="button-copy"><strong>Request a Callback</strong><small>Leave a name and number. Sofia calls you.</small></span>
@@ -81,28 +83,28 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
       </div>
 
       <div class="cb-panel" id="cbPanel" hidden>
-        <section class="form-card" aria-labelledby="cbH" tabindex="-1" id="cbCard">
-          <h2 id="cbH">Request a private callback</h2>
-          <p class="hint">Just a name and number. Sofia won’t ask what happened.</p>
-          <form id="talkCb" data-ee-callback data-done="talkDone" novalidate>
+        <section class="card form-card" aria-labelledby="cbH" tabindex="-1" id="cbCard">
+          <h2 id="cbH" data-hide-on-done>Request a private callback</h2>
+          <p class="hint" data-hide-on-done>Just a name and number. Sofia won’t ask what happened.</p>
+          <form id="talkCb" data-ee-form="callback" data-done="talkDone" novalidate>
             <div class="grid">
-              <div class="field"><label for="cb_name">Name <span class="opt">(a first name is fine)</span></label><input id="cb_name" name="cb_name" autocomplete="given-name" maxlength="100" required aria-describedby="cb_name-e"><span class="ferr" id="cb_name-e"></span></div>
-              <div class="field"><label for="cb_phone">Mobile phone</label><input id="cb_phone" name="cb_phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="cb_phone-e"><span class="ferr" id="cb_phone-e"></span></div>
-              
-              <div class="consent">
-                <label class="chk" for="cb_consent"><input type="checkbox" id="cb_consent" name="cb_consent" aria-describedby="cb_consent-e"><span>I agree that Best Tort Lawyers — including Sofia, its AI assistant — and the independent law firm intake team it connects me with may call and text me at the number above about my potential claim, including with automated technology and artificial, prerecorded or AI voice. Consent is not a condition of any purchase or service. Calls may be recorded. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/terms-and-conditions/" target="_blank" rel="noopener">Terms</a> and <a href="/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>.</span></label>
+              <div class="field full"><label for="first_name">Your name <span class="opt">(a first name is fine)</span></label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="100" required data-msg="Please enter a name we can use. A first name is fine." aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
+              <div class="field full"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="100" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
+              <div class="consent full">
+                <label class="chk" for="cb_consent"><input type="checkbox" id="cb_consent" name="cb_consent" required aria-describedby="cb_consent-e"><span>I agree that Best Tort Lawyers — including Sofia, its AI assistant — and the independent law firm intake team it connects me with may call and text me at the number above about my potential claim, including with automated technology and artificial, prerecorded or AI voice. Consent is not a condition of any purchase or service. Calls may be recorded. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help. See our <a href="/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>, <a href="/terms-and-conditions/" target="_blank" rel="noopener">Terms</a> and <a href="/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>.</span></label>
                 <span class="ferr" id="cb_consent-e"></span>
               </div>
             </div>
-            <button class="submit" type="submit">Request my callback</button>
+            <button class="submit" type="submit"><span class="lbl">Request my callback</span></button>
             <p class="status" role="status" aria-live="polite"></p>
           </form>
           <div class="receipt" id="talkDone" hidden>
             <div class="tick" aria-hidden="true">✓</div>
-            <h3 tabindex="-1">Thank you.</h3>
-            <p class="preview-flag">Candidate page — callback delivery isn’t connected yet, so nothing was sent. Please use the phone line below.</p>
-            <p>If you’d rather not wait, you can reach Sofia’s line directly. You never need to describe what happened, and you can stop at any time.</p>
-            <a class="btn btn-call" data-ee-tel href="tel:+18888888888"><span aria-hidden="true">☎</span> Call Sofia · <span data-ee-phone-text>(888) 888-8888</span></a>
+            <h3 tabindex="-1">You’re all set for now.</h3>
+            <p>Sofia will use the number you gave. If you’d rather not wait, you can reach her line directly.</p>
+            <p class="preview-flag">Candidate page — callback delivery isn’t connected yet, so nothing was sent or saved. Please use Sofia’s line below.</p>
+            <a class="next" data-ee-tel href="tel:+18888888888"><span><span aria-hidden="true">☎&nbsp;</span>Call Sofia · <span data-ee-phone-text>(888) 888-8888</span></span></a>
+            <p class="rainn">Support is available any time: RAINN’s National Sexual Assault Hotline, <a href="tel:+18006564673">1-800-656-4673</a> — free, confidential, 24/7 (not affiliated with Best Tort Lawyers).</p>
           </div>
         </section>
       </div>
@@ -113,16 +115,16 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
       <div class="badge"><small>Hi, I’m</small><b>Sofia</b><em>AI intake guide</em></div>
     </div>
   </section>
-  <ul class="how-ai"><li><b>One question at a time</b><span>Basics only — never what happened.</span></li><li><b>Checked against preliminary criteria</b><span>Sofia screens; an independent firm decides.</span></li><li><b>A person, whenever you want</b><span>Ask Sofia for a person at any point.</span></li></ul>
+  <ul class="how-ai" style="margin:0 0 28px"><li><b>Sofia asks, one question at a time</b><span>Basics only — never what happened. “Prefer not to say” is fine.</span></li><li><b>Checked against preliminary criteria</b><span>Sofia screens; an independent firm decides.</span></li><li><b>A person, whenever you want</b><span>Ask Sofia for a person at any point.</span></li></ul>
   <aside class="support" aria-label="Support resources">If you’d like support right now, the RAINN National Sexual Assault Hotline is free, confidential and open 24/7: <a href="tel:+18006564673">1-800-656-4673</a>. RAINN is not affiliated with Best Tort Lawyers. In an emergency, call 911.</aside>
-  <p class="call-note" style="margin:-24px 0 36px">Prefer to answer on screen? <a href="../quiz/" style="color:var(--t-ink)">Take the private check</a> · <a href="../" style="color:var(--t-ink)">Overview</a></p>
+  <p class="call-note alt-links">Prefer to answer on screen? <a href="../quiz/">Take the private check</a> · <a href="../">Overview</a></p>
 </main>
 </div>
 
-<footer>
+<footer class="foot">
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Matching service · not a law firm</small></span></div>
+      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></div>
       <nav class="f-links" aria-label="Footer">
         <a href="/sex-abuse-ca-womens-prisons/">Overview</a>
         <a href="/sex-abuse-ca-womens-prisons/quiz/">Private check</a>
@@ -135,7 +137,7 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
     <p class="f-legal"><strong>ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and directory service, not a law firm, and does not provide legal advice.</strong> Sofia is an AI intake assistant, not a person and not an attorney; she cannot determine legal eligibility. Using this website, calling, requesting a callback or speaking with Sofia does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria; any attorney-client relationship requires that firm’s acceptance and a separate written agreement. Talking with Sofia and requesting a review are free. No review, acceptance, representation, compensation or outcome is guaranteed. Prior results do not guarantee a similar outcome. Laws and time limits vary. Voice conversations may be recorded and processed by our AI voice provider. Support: RAINN 1-800-656-4673 (not affiliated). In an emergency, call 911. © 2026 Best Tort Lawyers</p>
   </div>
 </footer>
-<!-- EE status — lane: btl-sex-abuse-ca-womens-prisons | page: sofia | criteria_status: assumed | disclaimer_status: pending-attorney-review | phone_status: placeholder | intake_endpoint: null (blocker) -->
-<script src="/sex-abuse-ca-womens-prisons/lane.js?v=20260929d" defer></script>
+<!-- EE status — lane: btl-sex-abuse-ca-womens-prisons | page: sofia | criteria_status: assumed | disclaimer_status: pending-attorney-review | phone_status: placeholder | intake_endpoint: null (blocker) | imagery: placeholders pending Leonardo -->
+<script src="/sex-abuse-ca-womens-prisons/lane.js?v=20260929v2" defer></script>
 </body>
 </html>
