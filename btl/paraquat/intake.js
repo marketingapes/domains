@@ -67,6 +67,8 @@
     calls: 'Calls: I agree to receive calls at the number above about my potential claim from Best Tort Lawyers — including Sofia, its AI assistant — and the law firm intake team it connects me with, including by automatic telephone dialing systems or prerecorded/artificial voice. Calls may be recorded. Consent is not a condition of any purchase or service.',
     sms: 'Texts: I agree to receive text messages at the number above about my potential claim from Best Tort Lawyers and the law firm intake team it connects me with, which may be sent using automated technology. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See the SMS Terms.'
   };
+  var NO_AI = form.getAttribute('data-consent') === 'no-ai';
+  if (NO_AI) CONSENT.calls = 'Calls: I agree to receive calls at the number above about my potential claim from Best Tort Lawyers and the law firm intake team it connects me with, including by automatic telephone dialing systems or prerecorded/artificial voice. Calls may be recorded. Consent is not a condition of any purchase or service.';
   var consentBox = document.getElementById('consentBox');
   consentBox.innerHTML =
     '<p class="c-title" id="consentT">How may we contact you?</p>' +
@@ -257,7 +259,7 @@
     body.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'receipt'; wrap.setAttribute('tabindex', '-1');
     wrap.innerHTML = '<div class="tick" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>' +
-      '<h2></h2><p class="nx"></p><p class="small" style="font-size:.86rem;color:var(--muted)">' + (KIND === 'callback' ? 'A callback request' : 'Receiving an inquiry') + ' is not a review decision. An independent law firm decides under its own criteria. You can opt out at any time by replying STOP to texts or telling Sofia.</p><dl></dl>';
+      '<h2></h2><p class="nx"></p><p class="small" style="font-size:.86rem;color:var(--muted)">' + (KIND === 'callback' ? 'A callback request' : 'Receiving an inquiry') + ' is not a review decision. An independent law firm decides under its own criteria. You can opt out at any time by replying STOP to texts or ' + (NO_AI ? 'telling us' : 'telling Sofia') + '.</p><dl></dl>';
     wrap.querySelector('h2').textContent = KIND === 'callback' ? 'Your callback request was received.' : 'Your inquiry was received.';
     wrap.querySelector('.nx').textContent = next;
     var dl = wrap.querySelector('dl');
