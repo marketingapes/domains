@@ -44,3 +44,17 @@ This file is the entire memory of the operation. Nothing else carries over.
 ## Log
 
 _(Seats append timestamped notes below. Newest at the bottom.)_
+
+## 2026-09-28 20:10 PDT — Muse (coordinator)
+
+Saw: Paraquat pilot live end to end (3 pages, 213 line, quiz intake, GTM). PR #139 (tap-to-call restore) open, awaiting Kyle's merge word. Mac build seat ready: fresh claude-code + codex, repo at ~/build-seat/domains. Render: 40 services active, evolution-mcp live. All 4 legal domains serving 200.
+
+Did: Issued tonight's build tasks (below). Seats build on branches, open PRs, never merge.
+
+Next: TONIGHT'S BUILD — LFMA Campaign Request Tool ("Campaign Blaze Request"), demo to Phillips tomorrow AM.
+- New LFMA page: firm picks a tort from the arsenal, enters target area + contact info.
+- On submit: generate the campaign package — 3 pages per tort (chat-to-call, call-AI-now, old-school form), tracking stamped at print time (GTM/GA4/Meta/TikTok), Sofia intake wiring, per-tort/per-area tracking number.
+- Output: GitHub branch + PR with the pages. Receipt to the firm: live links + build summary.
+- Include the channel launch checklist: FB Lead Ads, FB Conversion, retargeting, Google exact-match Search, Performance Max (YouTube/Display), TikTok, organic — one tort x one area x every channel.
+- Split: Claude Code = request page + form-to-package generator. Codex = printer wiring + channel checklist + receipt. Coordinate in this doc.
+- Hard rules stand: no merges, no spend, no DNS, no billing without Kyle. Every build ends with a receipt.
