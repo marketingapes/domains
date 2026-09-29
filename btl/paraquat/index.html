@@ -26,7 +26,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/paraquat/paraquat.css">
 <style>
 :root{
   --ink:#111827;--ink-2:#374151;--muted:#6b7280;--paper:#f6f1e7;--paper-2:#efe8db;--card:#fffdf8;
@@ -173,7 +172,7 @@ footer{background:var(--ink);color:#aeb6c2;padding:48px 0 32px;font-size:.86rem}
   .step,.step+.step{padding:20px 0;border-left:0;border-top:1px solid var(--line-2)}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-/* BTL seal + wordmark lockup (2026-09-28) */
+/* BTL seal + wordmark lockup */
 .brand img,.f-brand img{flex:none;display:block}
 .wm{display:flex;flex-direction:column;line-height:1.05}
 .wm b{font-family:var(--serif);font-weight:500;font-size:1.16rem;letter-spacing:.01em}
@@ -183,31 +182,11 @@ footer .wm small{color:var(--gold)}
 .seal::after{content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:#6b74f0;box-shadow:0 0 0 2px var(--paper),0 0 10px #6b74f0;animation:aipulse 2.6s ease-in-out infinite}
 @keyframes aipulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
 @media(prefers-reduced-motion:reduce){.seal::after{animation:none}}
-/* 2026-09-28: prequalifier card replaces the free chat (the chat could not deliver leads) */
-.pq-card-wrap{max-width:640px;margin:30px auto 0;text-align:left}
-.pq-card-wrap .quiz{padding:24px 26px 22px}
-.q-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
-.q-count{font-size:.8rem;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink)}
-.q-back{border:0;background:none;color:var(--muted);font-size:.9rem;cursor:pointer;padding:8px 4px;min-height:44px;text-decoration:underline}
-.bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin:0 0 20px}.bar i{display:block;height:100%;width:0;transition:width .25s ease}
-.q-help{margin:0 0 16px;color:var(--muted);font-size:.92rem}
-.choices{display:grid;gap:10px}
-.choice{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;border:1.5px solid var(--line-2);border-radius:16px;background:#fff;text-align:left;cursor:pointer;font-size:1rem;font-weight:550;line-height:1.35}
-.choice:hover{border-color:var(--ink)}.choice[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
-.choice .k{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;font-size:.78rem;color:var(--muted)}
-.next{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border:0;border-radius:999px;background:var(--cta,#2457e6);color:#fff;font-weight:750;font-size:1.05rem;cursor:pointer}
-#contactStep h2{font-family:var(--serif);font-weight:400;font-size:1.55rem;margin:0 0 4px}
-.pq-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px auto 0;max-width:640px}
-.pq-call,.pq-cb{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 22px;border-radius:999px;text-decoration:none;font-weight:700}
-.pq-call{background:#17643a;color:#fff}.pq-call:hover{background:#0f4d2b}
-.pq-cb{border:1.5px solid var(--line-2);color:var(--ink);background:#fff}
-.pq-how{max-width:880px;margin:26px auto 0;text-align:left}
-@media(max-width:760px){.pq-card-wrap .quiz{padding:20px 16px 18px}.pq-call,.pq-cb{width:100%;justify-content:center}}
 </style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-<a class="skip" href="#quiz">Skip to Sofia</a>
+<a class="skip" href="#sofia">Skip to Sofia</a>
 
 <header class="wrap top">
   <a class="brand" href="/" aria-label="Best Tort Lawyers home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>Best Tort Lawyers</b><small>AI-guided claim matching</small></span></a>
@@ -215,61 +194,29 @@ footer .wm small{color:var(--gold)}
     <a href="#about">The lawsuits</a>
     <a href="#how">How it works</a>
     <a href="#faq">Questions</a>
-    <a class="keep" href="#quiz">Check with Sofia</a>
+    <a class="keep" href="#sofia">Start with Sofia</a>
   </nav>
 </header>
 
 <main>
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">Paraquat claim information</span> <span class="ai-badge"><i>AI</i>Guided by Sofia · reviewed by people</span>
+    <span class="eyebrow">Paraquat claim information</span>
     <h1>Paraquat questions. <em>A clearer first step.</em></h1>
-    <p class="lede">Sofia, Best Tort Lawyers’ AI intake guide, asks about a dozen short questions and checks your answers against the receiving firm’s Paraquat criteria — so you can see whether you may potentially qualify for further review by an independent law firm.</p>
+    <p class="lede">Start with Sofia, Best Tort Lawyers' AI intake guide. Share a few basics about the product and your history to help identify whether you may potentially qualify for further review by an independent law firm.</p>
     <p class="fine">BTL is a matching/directory service, not a law firm. Sofia is AI, not an attorney. No legal advice or attorney-client relationship is created.</p>
 
-    <div class="pq-card-wrap"><section class="card quiz" id="quiz" aria-live="polite" tabindex="-1">
-      <div id="qStep">
-        <div class="q-top"><span class="q-count" id="qCount"></span><button type="button" class="q-back" id="qBack" hidden>Back</button></div>
-        <div class="bar" aria-hidden="true"><i id="qBar"></i></div>
-        <div class="sofia-line"><img src="/assets/sofia/sofia-portrait-440x784.jpg" alt="" width="36" height="36"><p id="qSay" aria-live="polite"></p></div>
-        <h2 class="sr" id="qPrompt"></h2>
-        <p class="q-help" id="qHelp"></p>
-        <div class="choices" id="qChoices" role="group" aria-labelledby="qPrompt"></div>
+    <section class="sofia" id="sofia" aria-label="Sofia, Paraquat intake">
+      <div class="s-head">
+        <div class="s-av" aria-hidden="true">S</div>
+        <div class="s-id"><b>Sofia</b><span>AI intake guide · not a lawyer</span></div>
+        <span class="pill" id="pill">Live AI chat</span>
       </div>
-
-      <div id="resultStep" hidden>
-        <div class="q-top"><span class="q-count" id="rCount">Sofia’s read</span><button type="button" class="q-back" id="rBack">Change an answer</button></div>
-        <div class="bar" aria-hidden="true"><i style="width:100%"></i></div>
-        <div class="sofia-line"><img src="/assets/sofia/sofia-portrait-440x784.jpg" alt="" width="36" height="36"><p id="rSay"></p></div>
-        <div class="summary" id="rSummary" hidden><h3><span class="ai-badge" style="padding:3px 8px 3px 4px"><i>AI</i>Sofia’s summary</span></h3><p id="rSummaryText"></p></div>
-        <div class="choices" id="rActions"></div>
-      </div>
-
-      <div id="contactStep" hidden>
-        <div id="formBody">
-          <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
-          <h2>Where can we reach you?</h2>
-          <p class="hint">All fields are required unless marked optional.</p>
-          <form id="leadForm" novalidate data-page-id="btl-paraquat-quiz" data-kind="quiz">
-            <div class="grid">
-              <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="60" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
-              <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="60" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e"></span></div>
-              <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
-              <div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
-              <div class="field full"><label for="email">Email <span class="opt">(optional)</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="email-e"><span class="ferr" id="email-e"></span></div>
-              <div class="consent full" id="consentBox"></div>
-            </div>
-            <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Submit my inquiry</span></button>
-            <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </div>
-    </section></div>
-    <div class="pq-cta">
-      <a class="pq-call" id="pqCall" href="tel:+12138787408"><span aria-hidden="true">☎</span> Call Sofia now · (213) 878-7408</a>
-      <a class="pq-cb" href="/paraquat/talk-to-sofia/?callback=1">Request a callback</a>
-    </div>
-    <ul class="how-ai pq-how"><li><b>One question at a time</b><span>Plain questions. “Not sure” is always fine.</span></li><li><b>Checked against firm criteria</b><span>Sofia screens; an independent firm decides.</span></li><li><b>People review every inquiry</b><span>Ask for a person anytime.</span></li></ul>
+      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with Sofia"></div>
+      <div class="dock" id="dock"></div>
+      <p class="s-foot">Sofia is AI. Your messages are processed by our AI intake provider and kept so a person can review them. Don't enter Social Security numbers, payment details or medical records.</p>
+    </section>
   </div>
 </section>
 
@@ -320,7 +267,7 @@ footer .wm small{color:var(--gold)}
       <details><summary>Is Sofia a person?</summary><p>No. Sofia is an AI intake guide, not a person and not an attorney. She organizes what you share; she can't tell you whether you have a claim.</p></details>
       <details><summary>I'm not sure the product was Paraquat.</summary><p>That's fine — choose “Not sure.” Sofia never assumes a weed killer was Paraquat.</p></details>
       <details><summary>Can Sofia tell me what a case is worth?</summary><p>No. Sofia doesn't estimate value or promise review, acceptance, compensation or timing.</p></details>
-      <details><summary>Where do my answers go?</summary><p>Only to Best Tort Lawyers’ intake and, when you submit your details, to the independent legal team that reviews Paraquat inquiries. They are not sold. This page uses Google Tag Manager to measure visits and completed inquiries; your answers and contact details are never sent to it.</p></details>
+      <details><summary>Where do my answers go?</summary><p>Your messages go to Sofia, which runs on our AI intake provider, and are kept so a person can review them. They are not sold, and this page loads no advertising or analytics trackers. Sofia will tell you before anything is shared with a law firm.</p></details>
     </div>
   </div>
 </section>
@@ -342,7 +289,75 @@ footer .wm small{color:var(--gold)}
   </div>
 </footer>
 
-<script src="/paraquat/prequal.js" defer></script>
-<script src="/paraquat/intake.js" defer></script>
+<script>
+(function(){
+  'use strict';
+  // PARAQUAT-PILOT-001 — live Sofia text chat (Vapi web chat, public key, staged BTL Paraquat assistant).
+  // No trackers, no browser storage. Screening criteria live server-side in the assistant, never in this page.
+  var VAPI_PUBLIC_KEY='28268245-4ca4-4fc2-8d3d-4d77a0d4c55b';
+  var ASSISTANT_ID='976d64df-ca8d-4880-a983-7fcec3e786db';
+  var ENDPOINT='https://api.vapi.ai/chat/web';
+  var thread=document.getElementById('thread'), dock=document.getElementById('dock'), meter=document.getElementById('meter'), pill=document.getElementById('pill');
+  var sessionId=null, busy=false, live=false, turns=0, started=false;
+
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+  function say(txt,who){var b=el('div','b '+(who||'s'),txt);thread.appendChild(b);if(live){var r=b.getBoundingClientRect();if(r.bottom>window.innerHeight-24||r.top<0)b.scrollIntoView({block:'nearest',behavior:'smooth'});}return b;}
+  function clearDock(){while(dock.firstChild)dock.removeChild(dock.firstChild);}
+  function chip(label,cls,fn){var c=el('button','chip'+(cls?' '+cls:''),label);c.type='button';c.onclick=function(){live=true;fn();};return c;}
+  function focusDock(){var f=dock.querySelector('input,button');if(f)f.focus({preventScroll:true});}
+  function setPill(ok){pill.textContent=ok?'Live AI chat':'Chat unavailable';pill.classList.toggle('live',ok);}
+
+  function intro(){
+    thread.innerHTML='';sessionId=null;turns=0;started=false;meter.style.width='0%';
+    say('Hi, I’m Sofia, Best Tort Lawyers’ AI intake guide. I’m not a lawyer. I can ask a few questions to help organize whether you may potentially qualify for further review. Is that okay?');
+    clearDock();var w=el('div','chips');
+    w.appendChild(chip('Yes, let’s start','primary',function(){send('Yes, that’s okay.');}));
+    w.appendChild(chip('Not now','',function(){say('Not now','u');clearDock();say('Understood. I’ll stop here.');var x=el('div','chips');x.appendChild(chip('Start over','ghost',intro));dock.appendChild(x);focusDock();}));
+    dock.appendChild(w);
+  }
+  function inputDock(){
+    clearDock();
+    var r=el('div','row'),inp=el('input');inp.type='text';inp.id='sofiaInput';inp.maxLength=600;inp.placeholder='Type your answer…';inp.autocomplete='off';inp.setAttribute('aria-label','Your message to Sofia');inp.setAttribute('enterkeyhint','send');
+    var s=el('button','send');s.type='button';s.setAttribute('aria-label','Send');s.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+    var err=el('p','err');err.id='sofiaErr';err.setAttribute('aria-live','polite');
+    function go(){var v=inp.value.replace(/[\u0000-\u001f<>]/g,' ').trim();if(!v){err.textContent='Type a message, or tap “Not sure”.';inp.focus();return;}
+      if(/\b\d{3}-?\d{2}-?\d{4}\b/.test(v)){err.textContent='Please don’t send Social Security or account numbers.';return;}
+      inp.value='';err.textContent='';send(v);}
+    s.onclick=function(){live=true;go();};inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();live=true;go();}});
+    r.appendChild(inp);r.appendChild(s);dock.appendChild(r);dock.appendChild(err);
+    var w=el('div','chips');w.style.marginTop='6px';
+    w.appendChild(chip('Not sure','',function(){send('Not sure.');}));
+    w.appendChild(chip('Stop','ghost',function(){send('Please stop. I don’t want to continue.');}));
+    w.appendChild(chip('Start over','ghost',intro));
+    dock.appendChild(w);
+  }
+  function send(text){
+    if(busy)return;busy=true;live=true;say(text,'u');
+    var t=el('div','typing');t.setAttribute('aria-label','Sofia is typing');t.innerHTML='<i></i><i></i><i></i>';thread.appendChild(t);
+    clearDock();
+    var body={assistantId:ASSISTANT_ID,input:text};if(sessionId)body.sessionId=sessionId;
+    var ctl=('AbortController' in window)?new AbortController():null;var to=setTimeout(function(){if(ctl)ctl.abort();},45000);
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+VAPI_PUBLIC_KEY},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
+      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+      .then(function(d){
+        clearTimeout(to);t.remove();busy=false;setPill(true);
+        if(d.sessionId)sessionId=d.sessionId;
+        var out=(d.output||[]).filter(function(o){return o.role==='assistant'&&o.content;}).map(function(o){return o.content;}).join('\n\n');
+        if(!out)throw new Error('empty');
+        say(out);turns++;meter.style.width=Math.min(100,turns*9)+'%';
+        inputDock();focusDock();
+      })
+      .catch(function(){
+        clearTimeout(to);if(t.parentNode)t.remove();busy=false;setPill(false);
+        say('Sofia isn’t responding right now, so your last message didn’t go through. Nothing was lost on your side — you can try again.','note');
+        clearDock();var w=el('div','chips');
+        w.appendChild(chip('Try again','primary',function(){thread.removeChild(thread.lastChild);thread.removeChild(thread.lastChild);send(text);}));
+        w.appendChild(chip('Start over','ghost',intro));dock.appendChild(w);focusDock();
+      });
+  }
+  document.querySelectorAll('a[href="#sofia"]').forEach(function(a){a.addEventListener('click',function(){setTimeout(focusDock,400);});});
+  setPill(true);intro();
+})();
+</script>
 </body>
 </html>
