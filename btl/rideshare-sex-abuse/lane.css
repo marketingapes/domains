@@ -385,3 +385,10 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
   .cb-panel .form-card{padding:20px 16px 18px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* v3: visible hero photo (Kyle: more imagery) */
+@media(max-width:899px){
+  .lp .hero{padding-top:262px}
+  .lp .hero:before{height:330px;background:linear-gradient(180deg,rgba(246,241,231,0) 0,rgba(246,241,231,0) 170px,rgba(246,241,231,.82) 262px,var(--paper) 330px),url(/assets/lanes/rideshare-sex-abuse/hero-900.jpg) center 35%/cover no-repeat}
+}
+@media(min-width:900px){.lp .hero:before{background-image:linear-gradient(180deg,rgba(246,241,231,.34) 0%,rgba(246,241,231,.66) 46%,rgba(246,241,231,.92) 78%,var(--paper) 100%),url(/assets/lanes/rideshare-sex-abuse/hero.jpg)}}

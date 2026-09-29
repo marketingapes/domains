@@ -3,13 +3,13 @@
     "status": "DRAFT — not created in Vapi (seat key rejected 401). Apply with POST https://api.vapi.ai/assistant using the PRIVATE key.",
     "tenant": "NIL",
     "lanes": ["nil-mva-pi", "nil-rideshare-sex-abuse"],
-    "why_new_assistant": "The live NIL Sofia (41ee29eb-1ea0-45b6-bd54-585e2fb91efa on +1 602-693-1461, per ops notes — unverified this session) is outbound-first AZ MVA. This 2-lane inbound assistant is a separate draft so the live one is not changed. Repointing 602 to it is a Kyle gate.",
+    "why_new_assistant": "The live NIL Sofia (57f80d14-772c-4ad3-a795-362390a6f556 \"NIL — INBOUND — Sofia\" on +1 602-693-1461, verified 2026-09-29) is the live inbound assistant. This 2-lane inbound assistant is a separate draft so the live one is not changed. Repointing 602 to it is a Kyle gate.",
     "phone_binding": "NONE until Kyle approves. Confirm first which assistantId +1 (602) 693-1461 points at.",
     "transfer_destination": "DRAFT placeholder +18888888888 — Phillips transfer lines awaiting Michael. Existing tool transfer_to_phillips (417084ad-…) routes to (602) 200-3976 and is NOT attached here.",
     "criteria_status": "assumed",
-    "copy_from_live": "Before POST, GET 41ee29eb-… and copy model.provider, model.model, transcriber, serverUrl; voice = 11labs kVp3G6YINMUwOL7ROfIF."
+    "copy_from_live": "Before POST, GET 57f80d14-… (live NIL inbound) and copy model.provider, model.model, transcriber, serverUrl; voice = 11labs kVp3G6YINMUwOL7ROfIF."
   },
-  "name": "NIL Sofia — Phillips 5L MVA + Rideshare (DRAFT)",
+  "name": "NIL Sofia — Phillips 5L (DRAFT)",
   "firstMessage": "Hi, this is Sofia with Nearest Injury Lawyers. I'm an AI intake guide, and this call is recorded. I can ask a few quick questions to see whether you may potentially qualify for a free review by an independent law firm. Is now an okay time?",
   "firstMessageMode": "assistant-speaks-first",
   "voicemailMessage": "",

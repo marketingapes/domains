@@ -310,3 +310,12 @@ body.talk{background:radial-gradient(120% 80% at 85% 0%,#123a4a 0%,#0c1a35 38%,v
   .cta{max-width:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* v3: visible hero photo (Kyle: more imagery) */
+@media(max-width:899px){
+  .hero{padding-top:262px}
+  .hero-media{height:340px}
+  .hero-media img{object-position:center 35%}
+  .hero-media:after{background:linear-gradient(180deg,#08122b00 0,#08122b14 150px,#08122bcc 262px,var(--n) 340px)}
+}
+@media(min-width:900px){.hero-media:after{background:linear-gradient(90deg,#08122bf0 0%,#08122bbf 40%,#08122b40 100%),linear-gradient(180deg,transparent 72%,var(--n) 100%)}}

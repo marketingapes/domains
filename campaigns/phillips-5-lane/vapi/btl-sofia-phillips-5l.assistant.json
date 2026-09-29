@@ -8,7 +8,7 @@
     "criteria_status": "assumed",
     "copy_from_live": "Before POST, GET the live BTL Paraquat Sofia v4 assistant and copy its model.provider, model.model, voice, transcriber and serverUrl into this payload. Do not edit the live assistant."
   },
-  "name": "BTL Sofia — Phillips 5L survivor lanes (DRAFT)",
+  "name": "BTL Sofia — Phillips 5L (DRAFT)",
   "firstMessage": "Hi, this is Sofia with Best Tort Lawyers. I'm an AI intake guide, and this call is recorded. You don't need to describe what happened — I'll just ask a few short questions, and you can skip any of them or stop at any time. Is now a safe time to talk?",
   "firstMessageMode": "assistant-speaks-first",
   "voicemailMessage": "",

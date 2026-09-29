@@ -1,15 +1,31 @@
 # Phillips 5-Lane — Vapi / Sofia wiring (DRAFT)
 
-Status: **BLOCKED on access.** The `VAPI_API_KEY` in the build seat returns `401 Invalid Key`
-(likely the public key, not the private key). No assistant was read, created or changed.
-No number was bound. No calls were placed.
+Status (2026-09-29, private key from Kyle): **both draft assistants CREATED, nothing bound.**
+No live assistant was edited. No number was bound or repointed. No calls were placed.
+Rollback/inventory note: `inventory-2026-09-29.json` (IDs and names only). Script: `apply_vapi.py`.
+
+| Created | ID | Model (copied from) | Transfer tool | Bound number |
+|---|---|---|---|---|
+| BTL Sofia — Phillips 5L (DRAFT) | `c45499e0-c61e-47ac-ab4f-6f3e4c52e7a3` | xai grok-4.3 (from `976d64df` Sofia BTL Paraquat v4) | `7bd31747-…` → +1 888-888-8888 placeholder | **none** |
+| NIL Sofia — Phillips 5L (DRAFT) | `82d628a7-a751-4bae-b93d-fb645cafb1bc` | openai gpt-4o (from `57f80d14` NIL — INBOUND — Sofia) | `95a22d87-…` → +1 888-888-8888 placeholder | **none** |
+
+Verified numbers (read-only):
+
+| Number | Points at | Notes |
+|---|---|---|
+| +1 602-693-1461 | `57f80d14` **NIL — INBOUND — Sofia** (live) | NOT `41ee29eb` (that is NIL — OUTBOUND — Sofia); ops notes were stale |
+| +1 202-932-9700 | **no assistant** | **Twilio: OWNED** by our account (friendly name "Sofia Haze - Best Tort Lawyers", voice webhook → api.vapi.ai). Bind to `c45499e0` only on Kyle's "bind it". |
+| +1 213-878-7408 | `976d64df` Sofia BTL Paraquat v4 | unchanged |
+
+Cleanup for Kyle (no deletions by seats): spare unattached tool `b63a9b9d-c36a-41c4-ab95-575661f37f1b`
+(`transfer_btl_phillips_5l`, duplicate from a retried run) can be deleted in the Vapi dashboard.
 
 ## Map
 
 | Assistant | Lanes | Number | Binding |
 |---|---|---|---|
 | BTL Sofia — Phillips 5L (draft: `btl-sofia-phillips-5l.assistant.json`) | LA County · CA Women's Prison · BTL Rideshare (targeted) | +1 (202) 932-9700 (BTL canonical) | **Not bound.** Verify Twilio ownership first; bind only on Kyle's "bind it". |
-| NIL Sofia — Phillips 5L (draft: `nil-sofia-phillips-5l.assistant.json`) | NIL MVA/PI · NIL Rideshare (open) | +1 (602) 693-1461 | **Not changed.** Ops notes say it points at live NIL Sofia `41ee29eb-…` (outbound AZ MVA) — confirm with GET before any repoint. |
+| NIL Sofia — Phillips 5L (draft: `nil-sofia-phillips-5l.assistant.json`) | NIL MVA/PI · NIL Rideshare (open) | +1 (602) 693-1461 | **Not changed.** Verified: points at live `57f80d14` NIL — INBOUND — Sofia. Repointing to `82d628a7` is a Kyle decision. |
 
 Per-assistant checklist (in the draft JSON):
 

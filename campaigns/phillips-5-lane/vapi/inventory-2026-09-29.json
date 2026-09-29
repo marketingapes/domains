@@ -1,0 +1,324 @@
+{
+ "at": "2026-09-29T15:49:43",
+ "phones": [
+  {
+   "number": "+12138787408",
+   "id": "b2194a7a-717e-45fc-a432-7b257026d781",
+   "provider": "vapi",
+   "assistantId": "976d64df-ca8d-4880-a983-7fcec3e786db",
+   "assistantName": "Sofia BTL Paraquat v4 (STAGED)",
+   "label": "BTL Paraquat (temp)"
+  },
+  {
+   "number": "+16163830204",
+   "id": "fffe9e63-7691-4263-89f6-0bd697af9bd4",
+   "provider": "vapi",
+   "assistantId": "f98ae41a-4e53-48d0-9a4d-e595b04dee4e",
+   "assistantName": "TEST ACTOR - intake operator",
+   "label": null
+  },
+  {
+   "number": "+16614713263",
+   "id": "6fdeb5a3-d36d-4b6f-bbb7-4f9e20a1bebc",
+   "provider": "vapi",
+   "assistantId": "a54e3d6b-db1f-4891-9669-3540cfc3068b",
+   "assistantName": "TEST ACTOR - claimant (lane proof)",
+   "label": null
+  },
+  {
+   "number": "+16026931461",
+   "id": "4d07e1e8-cfe4-4ed8-b18b-f71dc01f19fd",
+   "provider": "twilio",
+   "assistantId": "57f80d14-772c-4ad3-a795-362390a6f556",
+   "assistantName": "NIL \u2014 INBOUND \u2014 Sofia",
+   "label": "NIL"
+  },
+  {
+   "number": "+12135137977",
+   "id": "912c226b-31e5-4131-98de-7eb956b5860a",
+   "provider": "twilio",
+   "assistantId": "d0b25fbf-0a8e-482e-bd25-d5b62b42b154",
+   "assistantName": "Tex \u2014 MA/LFMA B2B Inbound v1",
+   "label": null
+  },
+  {
+   "number": "+12029329700",
+   "id": "9118e295-67e9-49c3-99b2-f84730eba422",
+   "provider": "twilio",
+   "assistantId": null,
+   "assistantName": null,
+   "label": "BTL canonical",
+   "twilio": "OWNED (friendly_name='Sofia Haze - Best Tort Lawyers', voice_url host=api.vapi.ai)"
+  }
+ ],
+ "assistants": [
+  {
+   "id": "6f2034ef-2d71-43c2-95ad-1bdde10c5391",
+   "name": "[DRAFT] Sofia \u2014 Phillips Rideshare-SA",
+   "updatedAt": "2026-09-29T04:07:51.225Z",
+   "toolIds": []
+  },
+  {
+   "id": "5d7ac634-3414-4229-85f1-83003d146d3d",
+   "name": "[DRAFT] Sofia \u2014 Phillips MVA-PI",
+   "updatedAt": "2026-09-29T04:07:49.718Z",
+   "toolIds": []
+  },
+  {
+   "id": "9c8104a5-4b16-459e-af2a-c0d992923489",
+   "name": "[DRAFT] Sofia \u2014 Phillips CA-Prison-Abuse",
+   "updatedAt": "2026-09-29T04:07:48.241Z",
+   "toolIds": []
+  },
+  {
+   "id": "da0c2660-37ea-49b1-94aa-e7edff7d5452",
+   "name": "[DRAFT] Sofia \u2014 Phillips LA-Sex-Abuse",
+   "updatedAt": "2026-09-29T04:07:46.704Z",
+   "toolIds": []
+  },
+  {
+   "id": "ee897c9d-4020-46ec-8906-78966f293dad",
+   "name": "[DRAFT] Sofia \u2014 Phillips NEC",
+   "updatedAt": "2026-09-29T04:07:45.266Z",
+   "toolIds": []
+  },
+  {
+   "id": "9fee800d-e490-4d64-aff1-62249ce73547",
+   "name": "[DRAFT] Sofia \u2014 Phillips Benzene",
+   "updatedAt": "2026-09-29T04:07:43.675Z",
+   "toolIds": []
+  },
+  {
+   "id": "910dc270-2ec6-4abb-b3ec-e5a366c1ac9c",
+   "name": "[DRAFT] Sofia \u2014 Phillips AFFF",
+   "updatedAt": "2026-09-29T04:07:24.043Z",
+   "toolIds": []
+  },
+  {
+   "id": "22216e18-eab6-453b-9a21-5db308755f32",
+   "name": "[DRAFT] Sofia \u2014 Phillips Mesh",
+   "updatedAt": "2026-09-29T04:07:22.641Z",
+   "toolIds": []
+  },
+  {
+   "id": "354ea4cf-b5cc-4b65-8ad3-ce872096ad6f",
+   "name": "[DRAFT] Sofia \u2014 Phillips Lejeune",
+   "updatedAt": "2026-09-29T04:07:21.324Z",
+   "toolIds": []
+  },
+  {
+   "id": "e45cd576-4272-4f27-bf2c-bf6ab748b35c",
+   "name": "[DRAFT] Sofia \u2014 Phillips Zantac",
+   "updatedAt": "2026-09-29T04:07:19.888Z",
+   "toolIds": []
+  },
+  {
+   "id": "b6e58508-c6d9-42b4-97d1-47fe87e2069b",
+   "name": "[DRAFT] Sofia \u2014 Phillips Talcum",
+   "updatedAt": "2026-09-29T04:07:18.383Z",
+   "toolIds": []
+  },
+  {
+   "id": "e1863816-5798-4fca-ad3f-a452c8a24500",
+   "name": "[DRAFT] Sofia \u2014 Phillips Roundup",
+   "updatedAt": "2026-09-29T04:07:16.997Z",
+   "toolIds": []
+  },
+  {
+   "id": "abc58afb-0cbd-43a1-b53c-68454f48ac38",
+   "name": "[DRAFT] Sofia \u2014 Phillips Paraquat",
+   "updatedAt": "2026-09-29T04:07:14.502Z",
+   "toolIds": []
+  },
+  {
+   "id": "976d64df-ca8d-4880-a983-7fcec3e786db",
+   "name": "Sofia BTL Paraquat v4 (STAGED)",
+   "updatedAt": "2026-09-28T21:53:34.713Z",
+   "toolIds": []
+  },
+  {
+   "id": "9a8b5b2b-eb75-4fdc-bc05-7f93b7d25fc4",
+   "name": "Sofia - BTL Paraquat v3 SCREEN (STAGED)",
+   "updatedAt": "2026-09-28T20:26:04.368Z",
+   "toolIds": []
+  },
+  {
+   "id": "2cb7dd4d-a64d-44b4-98fd-ce00372a3ff7",
+   "name": "Sofia - BTL Paraquat v2 (STAGED)",
+   "updatedAt": "2026-09-28T19:56:34.368Z",
+   "toolIds": []
+  },
+  {
+   "id": "f6e04965-6c4f-4b43-a15f-8a45551c0749",
+   "name": "Sofia - BTL Paraquat v1 (STAGED)",
+   "updatedAt": "2026-09-28T19:28:56.161Z",
+   "toolIds": []
+  },
+  {
+   "id": "e0e28f65-d9de-4f23-95c6-0ee0963eb8c4",
+   "name": "Sofia \u2014 DEMO Inbound (firm demos)",
+   "updatedAt": "2026-09-29T03:56:30.364Z",
+   "toolIds": [
+    "fe1a10b9-838b-431e-8d3a-e5e9b30cfbe7"
+   ]
+  },
+  {
+   "id": "d0b25fbf-0a8e-482e-bd25-d5b62b42b154",
+   "name": "Tex \u2014 MA/LFMA B2B Inbound v1",
+   "updatedAt": "2026-09-22T05:16:24.564Z",
+   "toolIds": []
+  },
+  {
+   "id": "f98ae41a-4e53-48d0-9a4d-e595b04dee4e",
+   "name": "TEST ACTOR - intake operator",
+   "updatedAt": "2026-09-17T16:59:47.654Z",
+   "toolIds": []
+  },
+  {
+   "id": "a54e3d6b-db1f-4891-9669-3540cfc3068b",
+   "name": "TEST ACTOR - claimant (lane proof)",
+   "updatedAt": "2026-09-17T16:59:16.948Z",
+   "toolIds": []
+  },
+  {
+   "id": "2ebf612c-cbb1-404b-adcf-240b1faa7cf8",
+   "name": "NIL \u2014 Phillips Router \u2014 Render v1",
+   "updatedAt": "2026-09-23T15:56:14.739Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "773cf252-9901-49b8-90a2-f298af7de205",
+    "0953fb39-250c-47cc-8d41-11f9d27cd560"
+   ]
+  },
+  {
+   "id": "a058ae66-c7d4-458f-b978-1e139d727aee",
+   "name": "NIL \u2014 OUTBOUND \u2014 Sofia \u2014 CA SEX ABUSE v1",
+   "updatedAt": "2026-09-20T00:19:51.094Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "9e8e10c3-a633-4352-b734-de7ac9004902"
+   ]
+  },
+  {
+   "id": "9c4d3fae-d679-4ec3-8fc4-6eaa8e04ac82",
+   "name": "Kyle AI | KG MA LFMA",
+   "updatedAt": "2026-09-07T23:33:42.926Z",
+   "toolIds": []
+  },
+  {
+   "id": "908118d7-f221-429f-8855-55dd1d72c193",
+   "name": "Sofia \u2013 NIL Inbound (web + phone) v1",
+   "updatedAt": "2026-09-07T00:51:39.426Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "417084ad-5e43-4573-968d-e2dc1314cb30",
+    "1e605c3b-1c3a-4622-a9a5-53216d00d041"
+   ]
+  },
+  {
+   "id": "3f10ab95-f487-42ad-871b-7219440529f0",
+   "name": "Sofia \u2013 DEMO (602)",
+   "updatedAt": "2026-09-03T05:20:21.367Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "fe1a10b9-838b-431e-8d3a-e5e9b30cfbe7"
+   ]
+  },
+  {
+   "id": "ef5c499b-fca0-474e-8d68-e7e2f558ee85",
+   "name": "Sofia \u2013 NIL Outbound ES (602)",
+   "updatedAt": "2026-09-20T00:19:57.012Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "417084ad-5e43-4573-968d-e2dc1314cb30"
+   ]
+  },
+  {
+   "id": "57f80d14-772c-4ad3-a795-362390a6f556",
+   "name": "NIL \u2014 INBOUND \u2014 Sofia",
+   "updatedAt": "2026-09-23T18:04:15.752Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "773cf252-9901-49b8-90a2-f298af7de205",
+    "70651b38-1d26-4822-98c6-202032095e9b"
+   ]
+  },
+  {
+   "id": "b6fe8ca6-db50-49bb-a6c1-59a3507a87f8",
+   "name": "Sofia \u2013 DIHAC Routing v3 (spec)",
+   "updatedAt": "2026-08-23T21:52:00.881Z",
+   "toolIds": []
+  },
+  {
+   "id": "146102be-7919-4b6d-b992-a06ccfc5ba14",
+   "name": "Sofia \u2013 SmartLife Inbound v1",
+   "updatedAt": "2026-08-12T18:39:52.379Z",
+   "toolIds": [
+    "450de6af-4073-4a2a-9e6a-e6aaf4e4fe01"
+   ]
+  },
+  {
+   "id": "1143e258-3dd2-4097-96ed-b437f9090c62",
+   "name": "Sofia \u2013 SmartLife FE Outbound v1",
+   "updatedAt": "2026-08-14T16:04:53.855Z",
+   "toolIds": []
+  },
+  {
+   "id": "8ca6394b-fe1c-431a-8f5f-47587ac6ee14",
+   "name": "Sofia \u2013 Canopy After-Hours Intake v1",
+   "updatedAt": "2026-08-23T04:59:14.700Z",
+   "toolIds": []
+  },
+  {
+   "id": "41ee29eb-1ea0-45b6-bd54-585e2fb91efa",
+   "name": "NIL \u2014 OUTBOUND \u2014 Sofia",
+   "updatedAt": "2026-09-22T15:26:16.347Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74",
+    "773cf252-9901-49b8-90a2-f298af7de205",
+    "0953fb39-250c-47cc-8d41-11f9d27cd560"
+   ]
+  },
+  {
+   "id": "fce08c17-ca04-419e-bc5b-cf93daa1178e",
+   "name": "Sofia \u2013 BTL Outbound Callback v1",
+   "updatedAt": "2026-08-23T04:59:04.856Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "e42a650d-b70c-4a25-9110-6b790ccdd712",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74"
+   ]
+  },
+  {
+   "id": "5ee926d7-2a58-454c-8150-641b20218fbc",
+   "name": "Sofia \u2013 BTL Pre-Qual \u2192 Phillips v2",
+   "updatedAt": "2026-08-23T04:58:36.418Z",
+   "toolIds": [
+    "e113c583-479d-4954-8122-012335e87126",
+    "e42a650d-b70c-4a25-9110-6b790ccdd712",
+    "ea3af3f0-7095-4f96-b88b-7b737cb56fcf",
+    "0d27bc40-af81-4288-a746-f1536090e132",
+    "dbcb8295-34d1-42fc-a29b-fb41a1a67c74"
+   ]
+  }
+ ]
+}

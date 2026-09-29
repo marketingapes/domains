@@ -1,8 +1,8 @@
 # PHILLIPS 5 LANE GO-LIVE RECEIPT
 
 **Status: BLOCKED**
-**Reason:** build complete and verified, but live gates remain open: Vapi assistants can't be
-created (seat key rejected), no phone bound, no intake endpoint, attorney review of disclaimers
+**Reason:** build complete and verified, but live gates remain open: Vapi drafts created but
+not bound (Kyle: "bind it"), Phillips transfer lines pending, no phone bound, no intake endpoint, attorney review of disclaimers
 and criteria pending, NIL has no Google Ads account, GTM `ee_qualified → Lead` mapping not published,
 and nothing is merged or deployed.
 
@@ -17,13 +17,24 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 | Mobile QA on all 15 | ✅ | 390px renders in `screens/{btl,nil}/*-mobile.png`; no horizontal overflow, tap targets ≥44px |
 | Pages responding **live** | ⛔ not deployed | Kyle gate: merge → Render deploy |
 
+## Imagery (v2, Kyle feedback: Paraquat parity + more imagery)
+
+| Check | Result |
+|---|---|
+| Paraquat-parity structure (landing / quiz pre-qual→qualify→contact / Sofia tort-switched) | ✅ all 15 pages |
+| Lane photos generated (Leonardo Lucid Realism) | ✅ 31 of 31 — 6 slots × 5 lanes + NIL Sofia portrait; 646 API tokens used |
+| Human review of every image | ✅ no text, logos, car badges, injuries, distress or menace. NIL batch 1 rejected as too dark → regenerated in daylight; MVA mobile hero swapped to 2nd candidate (curb stain) |
+| No placeholders ship | ✅ every slot holds a reviewed photo |
+| Hero photo visible on mobile | ✅ unobscured photo banner fading into the headline (was washed out by the scrim) |
+| Screenshots | `docs/phillips-5-lane/screens/*-mobile.png` (top of each page, 390px) |
+
 ## Connected
 
 | Check | Result | Notes |
 |---|---|---|
 | GTM on every page | ✅ in markup | BTL `GTM-PHC7459M`, NIL `GTM-NKLD8KST` (+ noscript). Loads in headless Chrome (`gtm.uniqueEventId` seen on NIL). Live firing = after deploy. |
 | Meta pixel on every page | ✅ slot + ID | BTL `673552078259404`, NIL `1464576608376747`, delivered via GTM (`meta_pixel_direct:false` to avoid double count) |
-| TikTok slot on every page | ✅ | `tiktok_pixel:null`, inert until Kyle supplies the ID |
+| TikTok slot on every page | ✅ slot / ⛔ ID | `tiktok_pixel:null` on all 15 — **no TikTok pixel IDs supplied yet** |
 | GA4 per lane | ✅ / ⚠️ | NIL `530695235` / `G-00VYXSCGR8`. BTL property `423835322`, **measurement ID missing** (fires via GTM) |
 | Sofia CTA → talk-to-sofia | ✅ | test: every landing links `./talk-to-sofia/` and `./quiz/` |
 
@@ -31,9 +42,9 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 
 | Check | Result | Notes |
 |---|---|---|
-| BTL Sofia covers 3 lanes | ⚠️ drafted, not created | `vapi/btl-sofia-phillips-5l.assistant.json` |
-| NIL Sofia covers 2 lanes | ⚠️ drafted, not created | `vapi/nil-sofia-phillips-5l.assistant.json`; live NIL Sofia untouched |
-| No unverified number bound | ✅ | nothing bound. 202-932-9700 Twilio ownership **not verified** (no Twilio access). 602 mapping **not confirmed** (Vapi 401). |
+| BTL Sofia covers 3 lanes | ✅ created (draft, unbound) | `c45499e0-c61e-47ac-ab4f-6f3e4c52e7a3` |
+| NIL Sofia covers 2 lanes | ✅ created (draft, unbound) | `82d628a7-a751-4bae-b93d-fb645cafb1bc`; live NIL Sofia untouched |
+| No unverified number bound | ✅ | nothing bound. **202-932-9700: Twilio OWNED**, Vapi assistant = none. **602-693-1461 → `57f80d14` NIL — INBOUND — Sofia** (live, unchanged). |
 
 ## Criteria
 
@@ -75,7 +86,7 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 
 ## Gates for Kyle
 
-1. Vapi **private** key to a seat (or apply drafts yourself) → then "bind it" for 202-932-9700 after Twilio check.
+1. "bind it" — 202-932-9700 (Twilio-verified) → BTL Sofia `c45499e0`; decide whether 602 moves from live NIL inbound `57f80d14` to NIL 5L `82d628a7`. Web-test both first (vapi/README.md test plan).
 2. Phillips transfer numbers (awaiting Michael).
 3. Attorney review: disclaimers, criteria, "Laws in California changed", naming the firm.
 4. NIL Google Ads account (create/link under MCC) — or approve Meta-only for lanes 1 & 5.

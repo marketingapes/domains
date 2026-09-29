@@ -9,7 +9,7 @@ import base64, datetime, json, os, sys, urllib.parse, urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 API = 'https://api.vapi.ai'
-LIVE_NIL = '41ee29eb-1ea0-45b6-bd54-585e2fb91efa'
+LIVE_NIL = '57f80d14-772c-4ad3-a795-362390a6f556'  # 'NIL — INBOUND — Sofia', bound to +1 602-693-1461 (verified 2026-09-29)
 NUMBERS = {'+12029329700': 'BTL canonical', '+16026931461': 'NIL', '+12138787408': 'BTL Paraquat (temp)'}
 PLACEHOLDER = '+18888888888'
 
@@ -17,9 +17,12 @@ PLACEHOLDER = '+18888888888'
 def vapi(method, path, body=None):
     req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
                                  headers={'Authorization': 'Bearer ' + os.environ['VAPI_PRIVATE_KEY'],
-                                          'Content-Type': 'application/json'})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.load(r)
+                                          'Content-Type': 'application/json', 'User-Agent': 'curl/8.7.1'})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f'{method} {path} -> {e.code}: {e.read().decode()[:600]}') from None
 
 
 def twilio_owns(number):
@@ -27,7 +30,7 @@ def twilio_owns(number):
     if not (sid and tok):
         return 'NOT CHECKED (no Twilio creds)'
     url = f'https://api.twilio.com/2010-04-01/Accounts/{sid}/IncomingPhoneNumbers.json?' + urllib.parse.urlencode({'PhoneNumber': number})
-    req = urllib.request.Request(url, headers={'Authorization': 'Basic ' + base64.b64encode(f'{sid}:{tok}'.encode()).decode()})
+    req = urllib.request.Request(url, headers={'User-Agent': 'curl/8.7.1', 'Authorization': 'Basic ' + base64.b64encode(f'{sid}:{tok}'.encode()).decode()})
     with urllib.request.urlopen(req, timeout=30) as r:
         found = json.load(r).get('incoming_phone_numbers', [])
     if not found:
@@ -80,6 +83,9 @@ def draft(fn, src):
 
 
 def transfer_tool(name, description):
+    for t in vapi('GET', '/tool?limit=200'):
+        if (t.get('function') or {}).get('name') == name:
+            return t['id']  # reuse — never create duplicates on re-run
     return vapi('POST', '/tool', {'type': 'transferCall', 'function': {'name': name, 'description': description},
                                   'destinations': [{'type': 'number', 'number': PLACEHOLDER,
                                                     'message': 'Connecting you now. Please hold.',

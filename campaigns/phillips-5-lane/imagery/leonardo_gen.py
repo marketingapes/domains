@@ -11,6 +11,7 @@ import json, os, subprocess, sys, time, urllib.request
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 OUT = os.path.join(os.path.dirname(__file__), 'out')
 API = 'https://cloud.leonardo.ai/api/rest/v1'
+UA = 'curl/8.7.1'  # default Python UA is blocked by the edge firewall
 MODEL = '05ce0082-2d80-4a2d-8653-4d1c85e2418e'  # Lucid Realism
 NEG = ('blood, gore, injury, bruise, graphic, violence, distress, crying, fear, menace, handcuffs, prison bars, '
        'text, words, letters, watermark, logo, brand badge, car badge, uber, lyft, cartoon, illustration, '
@@ -21,7 +22,7 @@ SIZES = {'hero': (1472, 832, 1600, 900), 'hero-900': (832, 1120, 900, 1200), 'ca
          'card-2': (1024, 768, 800, 600), 'card-3': (1024, 768, 800, 600), 'band': (1536, 672, 1600, 700)}
 
 BTL = 'warm golden-hour light, cream and soft gold tones, gentle film grain, calm, dignified, shallow depth of field, photoreal editorial photography'
-NIL = 'cool navy blue dusk tones with subtle teal accents, clean modern, calm, photoreal editorial photography'
+NIL = 'bright natural daylight, airy and open, clean modern look, cool blue and soft teal color grade, calm and reassuring, well exposed, photoreal editorial photography'
 
 RIDE = {
   'hero': 'a confident woman walking on a bright city sidewalk seen from behind, morning light, open space, hopeful',
@@ -29,7 +30,7 @@ RIDE = {
   'card-1': 'close-up of hands holding a smartphone showing a generic street map, daylight city street softly blurred behind',
   'card-2': 'a calm apartment window at morning with sheer curtains and a plant, soft light, peaceful',
   'card-3': 'two women having a supportive conversation at a cafe table, faces soft and turned away, warm and kind',
-  'band': 'a quiet tree-lined city street in morning light, wide and peaceful, no cars in focus',
+  'band': 'a quiet tree-lined city street in bright morning light, wide and peaceful, no cars in focus',
 }
 LANES = {
   'btl/sex-abuse-la-county': (BTL, {
@@ -51,12 +52,12 @@ LANES = {
   'btl/rideshare-sex-abuse': (BTL, RIDE),
   'nil/rideshare-sex-abuse': (NIL, RIDE),
   'nil/mva-pi': (NIL, {
-    'hero': 'a calm city intersection at dusk with soft headlight bokeh, blue hour, no damaged vehicles',
-    'hero-900': 'a composed person on a phone call standing beside a parked car at a roadside at dusk, unhurt, vertical composition',
-    'card-1': 'a composed adult on the phone beside a parked car on a quiet street, unhurt, early evening',
-    'card-2': 'a physical therapy session in a bright clinic, therapist guiding a patient stretch, hopeful',
+    'hero': 'a clean, calm city intersection in clear morning light, blue sky, orderly traffic, no damaged vehicles',
+    'hero-900': 'a composed woman on a phone call standing beside her parked car on a sunny suburban street, unhurt and calm, vertical composition',
+    'card-1': 'a composed man on the phone beside his parked car on a quiet tree-lined street in daylight, unhurt, relaxed posture',
+    'card-2': 'a bright modern physical therapy clinic, smiling therapist guiding a patient through a gentle stretch, hopeful, lots of daylight',
     'card-3': 'paperwork and a smartphone on a kitchen table in morning light, organized, calm',
-    'band': 'a highway curving through hills at blue hour with light trails, wide and calm',
+    'band': 'a highway curving through green hills under a clear blue sky, wide and calm, light traffic',
   }),
 }
 EXTRA = {'nil/assets/sofia/sofia-nil-portrait.jpg': (NIL, 'professional portrait of a friendly woman in her early thirties, '
@@ -66,7 +67,7 @@ EXTRA = {'nil/assets/sofia/sofia-nil-portrait.jpg': (NIL, 'professional portrait
 def call(method, path, body=None):
     req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
                                  headers={'Authorization': 'Bearer ' + os.environ['LEONARDO_API_KEY'],
-                                          'Content-Type': 'application/json', 'Accept': 'application/json'})
+                                          'Content-Type': 'application/json', 'Accept': 'application/json', 'User-Agent': UA})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
 
@@ -89,7 +90,8 @@ def place(urls, stem, dest, fw, fh):
     cands = []
     for i, u in enumerate(urls):
         p = f'{stem}-{i}.jpg'
-        urllib.request.urlretrieve(u, p)
+        with urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': UA}), timeout=120) as r, open(p, 'wb') as f:
+            f.write(r.read())
         cands.append(p)
     tmp = stem + '-final.jpg'
     subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '78', '--resampleHeightWidthMax',
