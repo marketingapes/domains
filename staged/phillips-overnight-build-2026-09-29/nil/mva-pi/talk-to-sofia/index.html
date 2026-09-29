@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speak with Sofia | Phillips Law Group — Motor Vehicle Accident</title>
+<meta name="description" content="Speak with Sofia, the Phillips Law Group intake assistant, about your motor vehicle accident case. Free, confidential.">
+<!-- TRACKING: GA4 / GTM / Meta / TikTok pixels bind here at go-live on Kyle's word. No live tracking in staged build. -->
+<style>
+  :root { --ink:#1a1a1a; --muted:#5a5a5a; --accent:#1d5c3f; --bg:#ffffff; --soft:#f4f6f4; --line:#e3e6e3; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 20px; }
+  header.top { border-bottom:1px solid var(--line); padding:14px 0; position:sticky; top:0; background:#fff; z-index:10; }
+  header.top .wrap { display:flex; align-items:center; justify-content:space-between; }
+  .brand { font-weight:700; font-size:1.15rem; }
+  .call-cta { display:inline-block; background:var(--accent); color:#fff; text-decoration:none; font-weight:700; padding:12px 22px; border-radius:8px; }
+  .call-cta:hover { opacity:.92; }
+  .staged-tag { font-size:.72rem; color:#8a6d1a; background:#fdf3d7; border:1px solid #e8d48a; border-radius:6px; padding:4px 10px; display:inline-block; margin-bottom:12px; font-weight:600; }
+  .hero { background:var(--soft); padding:48px 0 40px; text-align:center; }
+  .hero h1 { font-size:2rem; line-height:1.25; margin-bottom:14px; }
+  .hero p.lede { font-size:1.1rem; color:var(--muted); max-width:620px; margin:0 auto 26px; }
+  .bigcall { text-align:center; padding:40px 0 8px; }
+  .bigcall .call-cta { font-size:1.35rem; padding:20px 44px; }
+  .bigcall p { margin-top:14px; color:var(--muted); }
+  section { padding:32px 0; }
+  section h2 { font-size:1.45rem; margin-bottom:16px; }
+  .steps { display:grid; gap:16px; }
+  .step { background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:18px; }
+  .step .n { font-weight:800; color:var(--accent); margin-right:8px; }
+  form.intake { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .field { margin-bottom:16px; }
+  .field label { display:block; font-weight:600; margin-bottom:6px; }
+  .field input, .field select { width:100%; padding:12px; font-size:1rem; border:1px solid #c9cdc9; border-radius:8px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .consent { display:flex; gap:10px; align-items:flex-start; font-size:.92rem; color:var(--muted); }
+  .consent input { margin-top:5px; }
+  button.submit { width:100%; background:var(--accent); color:#fff; border:0; font-size:1.1rem; font-weight:700; padding:16px; border-radius:8px; cursor:pointer; }
+  .fine { font-size:.82rem; color:var(--muted); margin-top:14px; }
+  .plg-compliance { background:#fafafa; border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin:32px 0; font-size:.85rem; color:var(--muted); }
+  .plg-compliance p { margin-bottom:8px; }
+  footer { border-top:1px solid var(--line); padding:28px 0 48px; font-size:.85rem; color:var(--muted); }
+  @media (max-width:560px){ .row2{grid-template-columns:1fr;} .hero h1{font-size:1.6rem;} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Phillips Law Group</div>
+    <a class="call-cta" href="tel:8888888888">Call (888) 888-8888</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="staged-tag">STAGED BUILD — not live · voice intake binds at go-live</span>
+    <h1>Speak with Sofia</h1>
+    <p class="lede">Sofia is our intake assistant. She'll ask a few quick questions about your accident and connect you with the intake team — free and confidential, a couple of minutes.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="bigcall">
+    <a class="call-cta" href="tel:8888888888">Call (888) 888-8888</a>
+    <p>Tap to call now — or request a callback below and Sofia will reach out.</p>
+  </div>
+
+  <section>
+    <div class="steps">
+      <div class="step"><span class="n">1.</span>Call the number above, or leave your details below for a callback.</div>
+      <div class="step"><span class="n">2.</span>Sofia asks about what happened and where you were treated.</div>
+      <div class="step"><span class="n">3.</span>If you potentially qualify, you're connected with the intake team — with your permission.</div>
+    </div>
+  </section>
+
+  <section id="callback">
+    <h2>Request a callback</h2>
+    <form class="intake" id="sofiaForm" action="#" method="POST" novalidate>
+      <!-- STAGED: callback queue binds at go-live on Kyle's word. No calls connect from this page yet. -->
+      <div class="row2">
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="first_name" type="text" autocomplete="given-name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="bestTime">Best time to reach you?</label>
+          <select id="bestTime" name="best_time">
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="contactVia">Contact me by</label>
+          <select id="contactVia" name="contact_via">
+            <option value="call">Phone call</option>
+            <option value="text">Text message</option>
+          </select>
+        </div>
+      </div>
+      <div class="field consent">
+        <input id="consent" name="consent" type="checkbox" required>
+        <label for="consent" style="font-weight:400;">I agree that Phillips Law Group may contact me by call, text, or email about my potential claim, including with automated technology. I understand this is not legal advice and no outcome is promised. Consent is not a condition of any service.</label>
+      </div>
+      <button class="submit" type="submit">Request My Callback</button>
+      <p class="fine">Your information stays confidential and is only shared with the Phillips Law Group intake team with your permission.</p>
+    </form>
+  </section>
+
+  <!-- COMPLIANCE SNIPPET — nationwide variant (staged, pending legal review) -->
+  <div class="plg-compliance" data-variant="nationwide">
+    <p><strong>Attorney Advertising.</strong> This page is an advertisement for legal services.</p>
+    <p>Phillips Law Group is responsible for the content of this advertisement. Prior results do not guarantee a similar outcome. Laws vary by state; time limits apply and missing a deadline can bar your claim.</p>
+    <p>Contacting us does not create an attorney-client relationship. No attorney-client relationship is formed until a written agreement is signed.</p>
+    <p>Free confidential case review. You pay nothing unless we win your case.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Phillips Law Group · <a href="tel:8888888888">(888) 888-8888</a></p>
+    <p class="fine">Attorney advertising. This page is for information only — it is not legal advice, and nothing here promises any outcome. Submitting this form does not create an attorney-client relationship.</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('sofiaForm').addEventListener('submit', function(e){
+  // STAGED BUILD: no live submission. Voice/callback binding happens at go-live on Kyle's word.
+  e.preventDefault();
+  var required = this.querySelectorAll('[required]');
+  for (var i = 0; i < required.length; i++) {
+    var el = required[i];
+    if ((el.type === 'checkbox' && !el.checked) || (el.type !== 'checkbox' && !el.value)) {
+      el.focus();
+      alert('Please complete all required fields before submitting.');
+      return;
+    }
+  }
+  alert('Staged build: this request does not go anywhere yet. Voice intake binding happens at go-live on Kyle\'s word.');
+});
+</script>
+</body>
+</html>
