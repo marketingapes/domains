@@ -7,11 +7,11 @@
   var form = document.getElementById('leadForm');
   if (!form) return;
   var DQ = {
-    diagnosis: ['no'], lawyer: ['handling', 'signed'], job: ['home'], role: ['other'], product: ['retail'],
+    diagnosis: ['no'], contact: ['no'], lawyer: ['handling', 'signed'], job: ['home'], role: ['other'], product: ['retail'],
     years: ['pre1964'], cont13: ['no'], season: ['no'], meth: ['yes']
   };
   var RV = {
-    diagnosis: ['not_sure'], lawyer: ['not_sure'], job: ['not_sure'], role: ['sprayed_on', 'not_sure'], product: ['not_sure'],
+    diagnosis: ['not_sure'], contact: ['not_sure'], lawyer: ['not_sure'], job: ['not_sure'], role: ['sprayed_on', 'not_sure'], product: ['not_sure'],
     years: ['2011_on', 'not_sure'], age: ['not_sure'], cont13: ['not_sure'], season: ['not_sure'], acres: ['under3', 'not_sure'],
     meth: ['prefer_not'], passed: ['1_2y', '2_3y', 'over3y', 'not_sure']
   };

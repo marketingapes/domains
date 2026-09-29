@@ -67,10 +67,15 @@
     calls: 'Calls: I agree to receive calls at the number above about my potential claim from Best Tort Lawyers — including Sofia, its AI assistant — and the law firm intake team it connects me with, including by automatic telephone dialing systems or prerecorded/artificial voice. Calls may be recorded. Consent is not a condition of any purchase or service.',
     sms: 'Texts: I agree to receive text messages at the number above about my potential claim from Best Tort Lawyers and the law firm intake team it connects me with, which may be sent using automated technology. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See the SMS Terms.'
   };
-  var NO_AI = form.getAttribute('data-consent') === 'no-ai';
+  var SUBMIT_CONSENT = form.getAttribute('data-consent') === 'submit';
+  var NO_AI = form.getAttribute('data-consent') === 'no-ai' || SUBMIT_CONSENT;
   if (NO_AI) CONSENT.calls = 'I agree to be called at the number above about my potential claim by Best Tort Lawyers and the law firm intake team it connects me with, including calls made using automated technology and artificial or prerecorded voice. Calls may be recorded. Consent is not a condition of any purchase or service.';
   var consentBox = document.getElementById('consentBox');
-  consentBox.innerHTML =
+  if (SUBMIT_CONSENT) CONSENT.calls = 'By submitting, I agree to be called at the number above about my potential claim by Best Tort Lawyers and the law firm intake team it connects me with, including calls made using automated technology and artificial or prerecorded voice. Calls may be recorded. Consent is not a condition of any purchase or service.';
+  if (SUBMIT_CONSENT) consentBox.innerHTML =
+    '<input type="checkbox" name="consent_calls" id="consent_calls" checked hidden><input type="hidden" name="consent_sms" id="consent_sms" value="">' +
+    '<p class="legal-sm" id="consentT" style="margin-top:0">' + CONSENT.calls + ' You also agree to our <a href="/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms-and-conditions/" target="_blank" rel="noopener">Terms</a>. Best Tort Lawyers is not a law firm; submitting does not create an attorney-client relationship.</p><span class="ferr" id="consent-e"></span>';
+  else consentBox.innerHTML =
     '<p class="c-title" id="consentT">' + (NO_AI ? 'Consent to be called' : 'How may we contact you?') + '</p>' +
     '<label class="chk"><input type="checkbox" name="consent_calls" id="consent_calls" aria-describedby="consentT consent-e"><span>' + CONSENT.calls + '</span></label>' +
     (NO_AI ? '<input type="hidden" name="consent_sms" id="consent_sms" value="">' : '<label class="chk"><input type="checkbox" name="consent_sms" id="consent_sms" aria-describedby="consentT"><span>' + CONSENT.sms.replace('SMS Terms', '<a href="/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>') + '</span></label>') +
@@ -215,6 +220,7 @@
       callback: KIND === 'callback' ? { window: null, time_zone: null } : null,
       consent: {
         version: CONFIG.consent_version, captured_at: new Date().toISOString(), page_url: location.origin + location.pathname,
+        method: SUBMIT_CONSENT ? 'submit_button_disclosure' : 'checkbox',
         calls: { granted: v.consent_calls, text: CONSENT.calls },
         sms: { granted: v.consent_sms, text: NO_AI ? null : CONSENT.sms }
       },
