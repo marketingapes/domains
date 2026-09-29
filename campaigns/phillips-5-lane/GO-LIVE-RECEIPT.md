@@ -34,7 +34,7 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 |---|---|---|
 | GTM on every page | ✅ in markup | BTL `GTM-PHC7459M`, NIL `GTM-NKLD8KST` (+ noscript). Loads in headless Chrome (`gtm.uniqueEventId` seen on NIL). Live firing = after deploy. |
 | Meta pixel on every page | ✅ slot + ID | BTL `673552078259404`, NIL `1464576608376747`, delivered via GTM (`meta_pixel_direct:false` to avoid double count) |
-| TikTok slot on every page | ✅ slot / ⛔ ID | `tiktok_pixel:null` on all 15 — **no TikTok pixel IDs supplied yet** |
+| TikTok pixel on every page | ✅ | BTL `CTCC4OJC77UF4MDQQOA0` (9 pages), NIL `D77KL3RC77U88469GTT0` (6 pages); loads directly from the page. Verified in Chrome: `events.js?sdkid=<id>` + `ttq.page()` on BTL landing/quiz and NIL landing/Sofia; test enforces correct ID per tenant and no cross-tenant ID. ⚠️ `events.js` requested twice on the two landing pages — check in GTM Preview / TikTok Pixel Helper whether GTM also fires TikTok (double count); if so keep one. |
 | GA4 per lane | ✅ / ⚠️ | NIL `530695235` / `G-00VYXSCGR8`. BTL property `423835322`, **measurement ID missing** (fires via GTM) |
 | Sofia CTA → talk-to-sofia | ✅ | test: every landing links `./talk-to-sofia/` and `./quiz/` |
 
@@ -91,6 +91,5 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 3. Attorney review: disclaimers, criteria, "Laws in California changed", naming the firm.
 4. NIL Google Ads account (create/link under MCC) — or approve Meta-only for lanes 1 & 5.
 5. GTM: map `ee_qualified` → Meta `Lead` + GA4 in both containers; BTL GA4 measurement ID.
-6. TikTok pixel ID(s).
 7. Intake endpoint for the 5 lanes (Make scenario like Paraquat's).
 8. Merge → deploy → Muse verification → GO-LIVE per lane → unpause.

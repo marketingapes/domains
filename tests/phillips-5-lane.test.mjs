@@ -13,8 +13,8 @@ const LANES = [
 ];
 const PAGES = ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html'];
 const ID = {
-  BTL: {gtm: 'GTM-PHC7459M', ga4: '423835322', pixel: '673552078259404', brand: 'Best Tort Lawyers'},
-  NIL: {gtm: 'GTM-NKLD8KST', ga4: '530695235', pixel: '1464576608376747', brand: 'Nearest Injury Lawyers'},
+  BTL: {gtm: 'GTM-PHC7459M', ga4: '423835322', pixel: '673552078259404', tiktok: 'CTCC4OJC77UF4MDQQOA0', brand: 'Best Tort Lawyers'},
+  NIL: {gtm: 'GTM-NKLD8KST', ga4: '530695235', pixel: '1464576608376747', tiktok: 'D77KL3RC77U88469GTT0', brand: 'Nearest Injury Lawyers'},
 };
 const OTHER = {BTL: 'NIL', NIL: 'BTL'};
 // Real numbers that must never appear until Kyle binds them.
@@ -44,7 +44,7 @@ test('BTL/NIL identity separation — no cross-tenant IDs, brand names or assets
     const other = ID[OTHER[l.tenant]];
     for (const f of laneFiles(l.dir)) {
       const s = read(f);
-      for (const v of [other.gtm, other.ga4, other.pixel, other.brand]) assert.ok(!s.includes(v), `${f} contains ${v}`);
+      for (const v of [other.gtm, other.ga4, other.pixel, other.tiktok, other.brand]) assert.ok(!s.includes(v), `${f} contains ${v}`);
       if (l.tenant === 'NIL') assert.ok(!/btl-seal|\/paraquat\//.test(s), `${f} references BTL assets`);
       if (l.tenant === 'BTL') assert.ok(!/\.\.\/nil\/|nil\/assets/.test(s), `${f} references NIL assets`);
     }
@@ -66,7 +66,8 @@ test('tracking contract on every page', () => {
     assert.match(s, new RegExp(`tenant\\s*:\\s*["']${l.tenant}["']`), `${f} tenant`);
     assert.ok(s.includes(id.ga4), `${f} GA4 property`);
     assert.ok(s.includes(id.pixel), `${f} Meta pixel slot`);
-    assert.match(s, /tiktok_pixel\s*:/, `${f} TikTok slot`);
+    assert.match(s, new RegExp(`tiktok_pixel\\s*:\\s*["']${id.tiktok}["']`), `${f} TikTok pixel`);
+    assert.ok(s.includes('ttq.load(L.tiktok_pixel)'), `${f} TikTok loader`);
     assert.match(s, /<meta name="ee-disclaimer-status" content="pending-attorney-review">/, `${f} disclaimer status`);
     assert.match(s, /<meta name="ee-state-disclaimer-status" content="pending-attorney-review">/, `${f} state disclaimer status`);
     assert.match(s, /ATTORNEY ADVERTISING/i, `${f} attorney advertising`);
