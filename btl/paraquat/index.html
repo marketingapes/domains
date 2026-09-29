@@ -26,7 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/paraquat/paraquat.css">
+<link rel="stylesheet" href="/paraquat/paraquat.css?v=20260928e">
 <style>
 :root{
   --ink:#111827;--ink-2:#374151;--muted:#6b7280;--paper:#f6f1e7;--paper-2:#efe8db;--card:#fffdf8;
@@ -173,103 +173,74 @@ footer{background:var(--ink);color:#aeb6c2;padding:48px 0 32px;font-size:.86rem}
   .step,.step+.step{padding:20px 0;border-left:0;border-top:1px solid var(--line-2)}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-/* BTL seal + wordmark lockup (2026-09-28) */
+/* BTL seal + wordmark lockup */
 .brand img,.f-brand img{flex:none;display:block}
 .wm{display:flex;flex-direction:column;line-height:1.05}
 .wm b{font-family:var(--serif);font-weight:500;font-size:1.16rem;letter-spacing:.01em}
 .wm small{margin-top:4px;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
 footer .wm small{color:var(--gold)}
 .seal{position:relative;display:block;flex:none}
-.seal::after{content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:#6b74f0;box-shadow:0 0 0 2px var(--paper),0 0 10px #6b74f0;animation:aipulse 2.6s ease-in-out infinite}
+.seal::after{display:none;content:"";position:absolute;right:0;top:1px;width:10px;height:10px;border-radius:50%;background:#6b74f0;box-shadow:0 0 0 2px var(--paper),0 0 10px #6b74f0;animation:aipulse 2.6s ease-in-out infinite}
 @keyframes aipulse{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.05)}}
 @media(prefers-reduced-motion:reduce){.seal::after{animation:none}}
-/* 2026-09-28: prequalifier card replaces the free chat (the chat could not deliver leads) */
-.pq-card-wrap{max-width:640px;margin:30px auto 0;text-align:left}
-.pq-card-wrap .quiz{padding:24px 26px 22px}
-.q-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
-.q-count{font-size:.8rem;font-weight:650;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink)}
-.q-back{border:0;background:none;color:var(--muted);font-size:.9rem;cursor:pointer;padding:8px 4px;min-height:44px;text-decoration:underline}
-.bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin:0 0 20px}.bar i{display:block;height:100%;width:0;transition:width .25s ease}
-.q-help{margin:0 0 16px;color:var(--muted);font-size:.92rem}
-.choices{display:grid;gap:10px}
-.choice{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 16px;border:1.5px solid var(--line-2);border-radius:16px;background:#fff;text-align:left;cursor:pointer;font-size:1rem;font-weight:550;line-height:1.35}
-.choice:hover{border-color:var(--ink)}.choice[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
-.choice .k{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;font-size:.78rem;color:var(--muted)}
-.next{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;border:0;border-radius:999px;background:var(--cta,#2457e6);color:#fff;font-weight:750;font-size:1.05rem;cursor:pointer}
-#contactStep h2{font-family:var(--serif);font-weight:400;font-size:1.55rem;margin:0 0 4px}
-.pq-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px auto 0;max-width:640px}
-.pq-call,.pq-cb{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 22px;border-radius:999px;text-decoration:none;font-weight:700}
+/* dropdown qualifier inside Muse's Sofia card */
+.q-body{padding:18px 18px 8px}
+.q-body .grid{gap:12px 12px}
+.q-sep{grid-column:1/-1;margin:10px 0 0;padding-top:14px;border-top:1px solid var(--line);font-weight:700;font-size:.95rem}
+.pill.live{color:#2f3699;background:#eef0ff}.pill.live:before{background:#6b74f0}
+.pq-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px auto 0;max-width:560px}
+.pq-call,.pq-cb{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 22px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.98rem}
 .pq-call{background:#17643a;color:#fff}.pq-call:hover{background:#0f4d2b}
 .pq-cb{border:1.5px solid var(--line-2);color:var(--ink);background:#fff}
-.pq-how{max-width:880px;margin:26px auto 0;text-align:left}
-@media(max-width:760px){.pq-card-wrap .quiz{padding:20px 16px 18px}.pq-call,.pq-cb{width:100%;justify-content:center}}
+@media(max-width:760px){.q-body{padding:16px 14px 6px}.pq-call,.pq-cb{width:100%;justify-content:center}}
 </style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-<a class="skip" href="#quiz">Skip to Sofia</a>
+<a class="skip" href="#sofia">Skip to the form</a>
 
 <header class="wrap top">
-  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>Best Tort Lawyers</b><small>AI-guided claim matching</small></span></a>
+  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></a>
   <nav aria-label="Page">
     <a href="#about">The lawsuits</a>
     <a href="#how">How it works</a>
     <a href="#faq">Questions</a>
-    <a class="keep" href="#quiz">Check with Sofia</a>
+    <a class="keep" href="#sofia">Check if you qualify</a>
   </nav>
 </header>
 
 <main>
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">Paraquat claim information</span> <span class="ai-badge"><i>AI</i>Guided by Sofia · reviewed by people</span>
+    <span class="eyebrow">Paraquat claim information</span>
     <h1>Paraquat questions. <em>A clearer first step.</em></h1>
-    <p class="lede">Sofia, Best Tort Lawyers’ AI intake guide, asks about a dozen short questions and checks your answers against the receiving firm’s Paraquat criteria — so you can see whether you may potentially qualify for further review by an independent law firm.</p>
-    <p class="fine">BTL is a matching/directory service, not a law firm. Sofia is AI, not an attorney. No legal advice or attorney-client relationship is created.</p>
+    <p class="lede">Answer a few quick questions and share your contact details to help identify whether you may potentially qualify for further review by an independent law firm.</p>
+    <p class="fine">BTL is a matching/directory service, not a law firm. No legal advice or attorney-client relationship is created.</p>
 
-    <div class="pq-card-wrap"><section class="card quiz" id="quiz" aria-live="polite" tabindex="-1">
-      <div id="qStep">
-        <div class="q-top"><span class="q-count" id="qCount"></span><button type="button" class="q-back" id="qBack" hidden>Back</button></div>
-        <div class="bar" aria-hidden="true"><i id="qBar"></i></div>
-        <div class="sofia-line"><img src="/assets/sofia/sofia-portrait-440x784.jpg" alt="" width="36" height="36"><p id="qSay" aria-live="polite"></p></div>
-        <h2 class="sr" id="qPrompt"></h2>
-        <p class="q-help" id="qHelp"></p>
-        <div class="choices" id="qChoices" role="group" aria-labelledby="qPrompt"></div>
+    <section class="sofia" id="sofia" aria-label="Paraquat case review form">
+      <div class="s-head">
+        <div class="s-av" aria-hidden="true">✓</div><div class="s-id"><b>Paraquat case review</b><span>A few short questions, then your contact details</span></div>
+        <span class="pill live" id="pill">No cost to submit</span>
       </div>
-
-      <div id="resultStep" hidden>
-        <div class="q-top"><span class="q-count" id="rCount">Sofia’s read</span><button type="button" class="q-back" id="rBack">Change an answer</button></div>
-        <div class="bar" aria-hidden="true"><i style="width:100%"></i></div>
-        <div class="sofia-line"><img src="/assets/sofia/sofia-portrait-440x784.jpg" alt="" width="36" height="36"><p id="rSay"></p></div>
-        <div class="summary" id="rSummary" hidden><h3><span class="ai-badge" style="padding:3px 8px 3px 4px"><i>AI</i>Sofia’s summary</span></h3><p id="rSummaryText"></p></div>
-        <div class="choices" id="rActions"></div>
+      <div class="q-body" id="formBody">
+        <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
+        <form id="leadForm" novalidate data-page-id="btl-paraquat-main-dropdown" data-kind="quiz" data-consent="no-ai">
+          <div class="grid">
+            <div class="field full" id="w-who"><label for="who">Who is this inquiry about?</label><select id="who" data-q="who" aria-describedby="who-e"><option value="">Select…</option><option value="self">Me</option><option value="family_living">A family member</option><option value="family_deceased">A family member who has passed away</option></select><span class="ferr" id="who-e"></span></div><div class="field full" id="w-passed" hidden><label for="passed">About when did they pass away?</label><select id="passed" data-q="passed" aria-describedby="passed-e"><option value="">Select…</option><option value="under_1y">Less than a year ago</option><option value="1_2y">1–2 years ago</option><option value="2_3y">2–3 years ago</option><option value="over3y">More than 3 years ago</option><option value="not_sure">Not sure</option></select><span class="ferr" id="passed-e"></span></div><div class="field full" id="w-diagnosis"><label for="diagnosis">Has a doctor diagnosed Parkinson’s disease?</label><select id="diagnosis" data-q="diagnosis" aria-describedby="diagnosis-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="diagnosis-e"></span></div><div class="field full" id="w-lawyer"><label for="lawyer">Is a lawyer already handling this, or has anyone signed with a lawyer about it?</label><select id="lawyer" data-q="lawyer" aria-describedby="lawyer-e"><option value="">Select…</option><option value="no">No</option><option value="handling">Yes — a lawyer is handling it</option><option value="signed">Signed with a lawyer before</option><option value="not_sure">Not sure</option></select><span class="ferr" id="lawyer-e"></span></div><div class="field full" id="w-job"><label for="job">Was the exposure at a job?</label><select id="job" data-q="job" aria-describedby="job-e"><option value="">Select…</option><option value="job">Yes, at a job (incl. work while incarcerated)</option><option value="home">No — home, garden or hobby use</option><option value="not_sure">Not sure</option></select><span class="ferr" id="job-e"></span></div><div class="field full" id="w-role"><label for="role">What did the work involve?</label><select id="role" data-q="role" aria-describedby="role-e"><option value="">Select…</option><option value="mixed">Mixed or loaded it</option><option value="applied">Applied or sprayed it</option><option value="flagger">Flagged for a crop duster</option><option value="sprayed_on">Was sprayed directly</option><option value="other">None of these — just nearby</option><option value="not_sure">Not sure</option></select><span class="ferr" id="role-e"></span></div><div class="field full" id="w-product"><label for="product">Was it mixed with water, and where did it come from?</label><p class="q-hint">Paraquat is also sold as Gramoxone.</p><select id="product" data-q="product" aria-describedby="product-e"><option value="">Select…</option><option value="supplier">Mixed with water — from a farm or ag supplier</option><option value="retail">Store-bought (Home Depot, Lowe’s) or ready to use</option><option value="not_sure">Not sure</option></select><span class="ferr" id="product-e"></span></div><div class="field full" id="w-years"><label for="years">When did the exposure start?</label><select id="years" data-q="years" aria-describedby="years-e"><option value="">Select…</option><option value="pre1964">All of it was before 1964</option><option value="1964_2010">Between 1964 and 2010</option><option value="2011_on">2011 or later</option><option value="not_sure">Not sure</option></select><span class="ferr" id="years-e"></span></div><div class="field full" id="w-age"><label for="age">Age when it started</label><select id="age" data-q="age" aria-describedby="age-e"><option value="">Select…</option><option value="18plus">18 or older</option><option value="13_17">13 to 17</option><option value="12under">12 or younger</option><option value="not_sure">Not sure</option></select><span class="ferr" id="age-e"></span></div><div class="field full" id="w-cont13" hidden><label for="cont13">Did it continue at age 13 or older?</label><select id="cont13" data-q="cont13" aria-describedby="cont13-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="cont13-e"></span></div><div class="field full" id="w-season" hidden><label for="season">Worked there at least one full season?</label><select id="season" data-q="season" aria-describedby="season-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="season-e"></span></div><div class="field full" id="w-acres"><label for="acres">Size of the farm or area</label><select id="acres" data-q="acres" aria-describedby="acres-e"><option value="">Select…</option><option value="over3">More than about 3 acres</option><option value="under3">Less than about 3 acres</option><option value="not_sure">Not sure</option></select><span class="ferr" id="acres-e"></span></div><div class="field full" id="w-meth"><label for="meth">The firm asks everyone: ever used methamphetamine?</label><select id="meth" data-q="meth" aria-describedby="meth-e"><option value="">Select…</option><option value="no">No</option><option value="yes">Yes</option><option value="prefer_not">Prefer not to say</option></select><span class="ferr" id="meth-e"></span></div>
+            <p class="q-sep">Your contact details</p>
+            <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="60" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
+            <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="60" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e"></span></div>
+            <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
+            <div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
+            <div class="field full"><label for="email">Email <span class="opt">(optional)</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="email-e"><span class="ferr" id="email-e"></span></div>
+            <div class="consent full" id="consentBox"></div>
+          </div>
+          <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Submit my inquiry</span></button>
+          <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
       </div>
-
-      <div id="contactStep" hidden>
-        <div id="formBody">
-          <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
-          <h2>Where can we reach you?</h2>
-          <p class="hint">All fields are required unless marked optional.</p>
-          <form id="leadForm" novalidate data-page-id="btl-paraquat-quiz" data-kind="quiz">
-            <div class="grid">
-              <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="60" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e"></span></div>
-              <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="60" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e"></span></div>
-              <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
-              <div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
-              <div class="field full"><label for="email">Email <span class="opt">(optional)</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="120" aria-describedby="email-e"><span class="ferr" id="email-e"></span></div>
-              <div class="consent full" id="consentBox"></div>
-            </div>
-            <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Submit my inquiry</span></button>
-            <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-          </form>
-        </div>
-      </div>
-    </section></div>
-    <div class="pq-cta">
-      <a class="pq-call" id="pqCall" href="tel:+12138787408"><span aria-hidden="true">☎</span> Call Sofia now · (213) 878-7408</a>
-      <a class="pq-cb" href="/paraquat/talk-to-sofia/?callback=1">Request a callback</a>
-    </div>
-    <ul class="how-ai pq-how"><li><b>One question at a time</b><span>Plain questions. “Not sure” is always fine.</span></li><li><b>Checked against firm criteria</b><span>Sofia screens; an independent firm decides.</span></li><li><b>People review every inquiry</b><span>Ask for a person anytime.</span></li></ul>
+      <p class="s-foot">Answers go only to Best Tort Lawyers’ intake and, when you submit, to the independent legal team that reviews Paraquat inquiries. Don’t enter Social Security numbers, payment details or medical records.</p>
+    </section>
   </div>
 </section>
 
@@ -316,11 +287,10 @@ footer .wm small{color:var(--gold)}
   <div class="wrap">
     <h2>Before you start</h2>
     <div class="list">
-      <details><summary>Is Best Tort Lawyers a law firm?</summary><p>No. Best Tort Lawyers is a matching and directory service. It does not give legal advice, and using this page or talking with Sofia does not create an attorney-client relationship.</p></details>
-      <details><summary>Is Sofia a person?</summary><p>No. Sofia is an AI intake guide, not a person and not an attorney. She organizes what you share; she can't tell you whether you have a claim.</p></details>
-      <details><summary>I'm not sure the product was Paraquat.</summary><p>That's fine — choose “Not sure.” Sofia never assumes a weed killer was Paraquat.</p></details>
-      <details><summary>Can Sofia tell me what a case is worth?</summary><p>No. Sofia doesn't estimate value or promise review, acceptance, compensation or timing.</p></details>
-      <details><summary>Where do my answers go?</summary><p>Only to Best Tort Lawyers’ intake and, when you submit your details, to the independent legal team that reviews Paraquat inquiries. They are not sold. This page uses Google Tag Manager to measure visits and completed inquiries; your answers and contact details are never sent to it.</p></details>
+      <details><summary>Is Best Tort Lawyers a law firm?</summary><p>No. Best Tort Lawyers is a matching and directory service. It does not give legal advice, and using this page does not create an attorney-client relationship.</p></details>
+      <details><summary>I'm not sure the product was Paraquat.</summary><p>That's fine — choose “Not sure.” We never assume a weed killer was Paraquat.</p></details>
+      <details><summary>Can you tell me what a case is worth?</summary><p>No. We don't estimate value or promise review, acceptance, compensation or timing. Any independent law firm decides under its own criteria.</p></details>
+      <details><summary>Where do my answers go?</summary><p>Only to Best Tort Lawyers’ intake and, when you submit, to the independent legal team that reviews Paraquat inquiries. They are not sold.</p></details>
     </div>
   </div>
 </section>
@@ -329,7 +299,7 @@ footer .wm small{color:var(--gold)}
 <footer>
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>AI-guided claim matching</small></span></div>
+      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Claim matching service</small></span></div>
       <nav class="f-links" aria-label="Footer">
         <a href="/">Home</a>
         <a href="/privacy-policy/">Privacy Policy</a>
@@ -338,11 +308,11 @@ footer .wm small{color:var(--gold)}
         <a href="mailto:Sofia@besttortlawyers.com">Sofia@besttortlawyers.com</a>
       </nav>
     </div>
-    <p class="f-legal">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and directory service, not a law firm, and does not provide legal advice. Using this website or speaking with Sofia does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria. No review, acceptance, representation, compensation or recovery is guaranteed. Prior results do not guarantee a similar outcome. Phone intake for this page is not available yet.<br>Background photo: USDA NRCS, soybean field (public domain, <a href="https://commons.wikimedia.org/wiki/File:Seidenstricker_Farms-Reservoir-Irrigation-Precision_Land_leveled_fields_(20190625-NRCS-LSC-0447).jpg" rel="noopener">source</a>). Context only; it does not depict any claimant or exposure.</p>
+    <p class="f-legal">ATTORNEY ADVERTISING. Best Tort Lawyers is a matching and directory service, not a law firm, and does not provide legal advice. Using this website or submitting this form does not create an attorney-client relationship. Any independent law firm evaluates potential matters under its own criteria. No review, acceptance, representation, compensation or recovery is guaranteed. Prior results do not guarantee a similar outcome.<br>Background photo: USDA NRCS, soybean field (public domain, <a href="https://commons.wikimedia.org/wiki/File:Seidenstricker_Farms-Reservoir-Irrigation-Precision_Land_leveled_fields_(20190625-NRCS-LSC-0447).jpg" rel="noopener">source</a>). Context only; it does not depict any claimant or exposure.</p>
   </div>
 </footer>
 
-<script src="/paraquat/prequal.js" defer></script>
-<script src="/paraquat/intake.js" defer></script>
+<script src="/paraquat/qualifier.js?v=20260928e" defer></script>
+<script src="/paraquat/intake.js?v=20260928e" defer></script>
 </body>
 </html>

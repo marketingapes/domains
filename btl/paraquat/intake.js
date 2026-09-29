@@ -67,11 +67,13 @@
     calls: 'Calls: I agree to receive calls at the number above about my potential claim from Best Tort Lawyers — including Sofia, its AI assistant — and the law firm intake team it connects me with, including by automatic telephone dialing systems or prerecorded/artificial voice. Calls may be recorded. Consent is not a condition of any purchase or service.',
     sms: 'Texts: I agree to receive text messages at the number above about my potential claim from Best Tort Lawyers and the law firm intake team it connects me with, which may be sent using automated technology. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See the SMS Terms.'
   };
+  var NO_AI = form.getAttribute('data-consent') === 'no-ai';
+  if (NO_AI) CONSENT.calls = 'I agree to be called at the number above about my potential claim by Best Tort Lawyers and the law firm intake team it connects me with, including calls made using automated technology and artificial or prerecorded voice. Calls may be recorded. Consent is not a condition of any purchase or service.';
   var consentBox = document.getElementById('consentBox');
   consentBox.innerHTML =
-    '<p class="c-title" id="consentT">How may we contact you?</p>' +
+    '<p class="c-title" id="consentT">' + (NO_AI ? 'Consent to be called' : 'How may we contact you?') + '</p>' +
     '<label class="chk"><input type="checkbox" name="consent_calls" id="consent_calls" aria-describedby="consentT consent-e"><span>' + CONSENT.calls + '</span></label>' +
-    '<label class="chk"><input type="checkbox" name="consent_sms" id="consent_sms" aria-describedby="consentT"><span>' + CONSENT.sms.replace('SMS Terms', '<a href="/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>') + '</span></label>' +
+    (NO_AI ? '<input type="hidden" name="consent_sms" id="consent_sms" value="">' : '<label class="chk"><input type="checkbox" name="consent_sms" id="consent_sms" aria-describedby="consentT"><span>' + CONSENT.sms.replace('SMS Terms', '<a href="/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>') + '</span></label>') +
     '<span class="ferr" id="consent-e"></span>' +
     '<p class="legal-sm">By submitting, you agree to our <a href="/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms-and-conditions/" target="_blank" rel="noopener">Terms</a>. Best Tort Lawyers is not a law firm; submitting does not create an attorney-client relationship. Don’t include Social Security numbers, medical records or payment details.</p>';
 
@@ -147,10 +149,16 @@
         else { fs.removeAttribute('aria-invalid'); e.textContent = ''; }
       });
     }
-    v.consent_calls = form.consent_calls.checked; v.consent_sms = form.consent_sms.checked;
+    // Dropdown qualifier (/paraquat/): every visible qualifying select needs an answer ("Not sure" counts).
+    form.querySelectorAll('select[data-q]').forEach(function (sel) {
+      if (sel.closest('[hidden]')) return;
+      var id = sel.id;
+      if (!sel.value) { setErr(id, 'Choose an answer — “Not sure” is fine.'); bad.push(id); } else setErr(id);
+    });
+    v.consent_calls = form.consent_calls.checked; v.consent_sms = form.consent_sms.type === 'checkbox' ? form.consent_sms.checked : false;
     var ce = document.getElementById('consent-e');
     // A callback is a phone call: it needs call consent. The inquiry form needs at least one channel so we can reply.
-    if (KIND === 'callback' && !v.consent_calls) { ce.textContent = 'To receive a callback, check the box agreeing to calls from Sofia.'; bad.push('consent_calls'); }
+    if ((KIND === 'callback' || NO_AI) && !v.consent_calls) { ce.textContent = (NO_AI ? 'Check the box agreeing to be called so the review team can reach you.' : 'To receive a callback, check the box agreeing to calls from Sofia.'); bad.push('consent_calls'); }
     else if (KIND !== 'callback' && !v.consent_calls && !v.consent_sms && !v.email) { ce.textContent = 'Choose at least one way we may contact you (call, text or add an email).'; bad.push('consent_calls'); }
     else ce.textContent = '';
     return { ok: !bad.length, v: v, first: bad[0] };
@@ -185,7 +193,7 @@
     if (inFlight) return;
     form.setAttribute('data-tried', '1');
     var r = validate();
-    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = document.getElementById(r.first) || q(r.first); if (f) (f.querySelector ? (f.querySelector('input') || f) : f).focus(); return; }
+    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]') || document.getElementById(r.first) || q(r.first); if (f) (f.querySelector ? (f.querySelector('input') || f) : f).focus(); return; }
     var v = r.v;
     track('ee_lead_submit_attempt');
 
@@ -208,7 +216,7 @@
       consent: {
         version: CONFIG.consent_version, captured_at: new Date().toISOString(), page_url: location.origin + location.pathname,
         calls: { granted: v.consent_calls, text: CONSENT.calls },
-        sms: { granted: v.consent_sms, text: CONSENT.sms }
+        sms: { granted: v.consent_sms, text: NO_AI ? null : CONSENT.sms }
       },
       attribution: attribution(),
       test: SYNTHETIC ? { synthetic: true, suppress: ['outbound_calls', 'sms', 'email', 'buyer_delivery', 'ad_events'] } : undefined
@@ -245,13 +253,13 @@
   function showReceipt(b, receipt) {
     var body = document.getElementById('formBody');
     var sched = b.callback && b.callback.scheduled_for && b.callback.status === 'scheduled';
-    var next = b.next_step_label || (KIND === 'callback'
+    var next = b.next_step_label || (window.BTL_QUIZ && window.BTL_QUIZ.resultText ? window.BTL_QUIZ.resultText() + ' We’ll contact you only through the channels you agreed to.' : (KIND === 'callback'
       ? 'Your request is in the callback queue. A call time isn’t confirmed until it’s scheduled, and we’ll contact you only through the channels you agreed to.'
-      : 'We’ll follow up using the contact method you chose to review your inquiry.');
+      : 'We’ll follow up using the contact method you chose to review your inquiry.'));
     body.innerHTML = '';
     var wrap = document.createElement('div'); wrap.className = 'receipt'; wrap.setAttribute('tabindex', '-1');
     wrap.innerHTML = '<div class="tick" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>' +
-      '<h2></h2><p class="nx"></p><p class="small" style="font-size:.86rem;color:var(--muted)">' + (KIND === 'callback' ? 'A callback request' : 'Receiving an inquiry') + ' is not a review decision. An independent law firm decides under its own criteria. You can opt out at any time by replying STOP to texts or telling Sofia.</p><dl></dl>';
+      '<h2></h2><p class="nx"></p><p class="small" style="font-size:.86rem;color:var(--muted)">' + (KIND === 'callback' ? 'A callback request' : 'Receiving an inquiry') + ' is not a review decision. An independent law firm decides under its own criteria. You can opt out at any time by replying STOP to texts or ' + (NO_AI ? 'telling us' : 'telling Sofia') + '.</p><dl></dl>';
     wrap.querySelector('h2').textContent = KIND === 'callback' ? 'Your callback request was received.' : 'Your inquiry was received.';
     wrap.querySelector('.nx').textContent = next;
     var dl = wrap.querySelector('dl');
