@@ -1,33 +1,36 @@
-Campaign,Campaign Status,Campaign Type,Networks,Budget,Budget type,Bid Strategy Type,Location,Language,Ad Group,Ad Group Status,Keyword,Criterion Type,Final URL,Status
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,Paused,Search,Google search,100.00,Daily,Maximize conversions,United States,en,,,,,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,Paused,,,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident attorney,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident attorney,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,auto accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,auto accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car crash lawyer near me,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car crash lawyer near me,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,hurt in a car accident,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,hurt in a car accident,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,Paused,,,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,truck accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,truck accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,semi truck accident attorney,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,semi truck accident attorney,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,motorcycle accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,motorcycle accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,Paused,,,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,personal injury lawyer car accident,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,personal injury lawyer car accident,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,injured in car accident what to do,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,injured in car accident what to do,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,car accident injury claim,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,car accident injury claim,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,jobs,Campaign Negative Phrase,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,salary,Campaign Negative Phrase,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,school,Campaign Negative Phrase,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,free template,Campaign Negative Phrase,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,insurance quote,Campaign Negative Phrase,,
-PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,dmv,Campaign Negative Phrase,,
+Campaign,Campaign Status,Campaign Type,Networks,Budget,Budget type,Bid Strategy Type,Location,Language,Ad Group,Ad Group Status,Keyword,Criterion Type,Final URL,Status,Ad type,Headline 1,Headline 2,Headline 3,Headline 4,Headline 5,Headline 6,Headline 7,Headline 8,Headline 9,Headline 10,Headline 11,Headline 12,Headline 13,Headline 14,Headline 15,Description 1,Description 2,Description 3,Description 4
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,Paused,Search,Google search,100.00,Daily,Maximize conversions,United States,en,,,,,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,Paused,,,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident attorney,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car accident attorney,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,auto accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,auto accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car crash lawyer near me,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,car crash lawyer near me,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,hurt in a car accident,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,hurt in a car accident,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,Paused,,,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,truck accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,truck accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,semi truck accident attorney,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,semi truck accident attorney,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,motorcycle accident lawyer,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,motorcycle accident lawyer,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,Paused,,,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,personal injury lawyer car accident,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,personal injury lawyer car accident,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,injured in car accident what to do,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,injured in car accident what to do,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,car accident injury claim,Phrase,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,car accident injury claim,Exact,https://nearestinjurylawyers.com/mva-pi/,Paused,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,jobs,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,salary,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,school,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,free template,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,insurance quote,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,,,dmv,Campaign Negative Phrase,,,,,,,,,,,,,,,,,,,,,,
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Car Accident Lawyer,,,,Final URL,Paused,Responsive search ad,Hurt in a Car Accident?,Check Your Options Today,Takes About 2 Minutes,Available in All 50 States,"Free, Private First Step","Start With Sofia, AI Intake","Car, Truck or Motorcycle Crash",No Cost to Check Your Options,Deadlines Vary by State,Nearest Injury Lawyers,,,,,,Answer a few short questions to see if you may potentially qualify for review.,"Car, truck, motorcycle, rideshare or pedestrian accidents. In any of the 50 states.","Sofia, our AI intake guide, helps identify a next step. Free. About 2 minutes.","Attorney advertising. Matching service, not a law firm. No legal advice or guarantee."
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Truck & Motorcycle,,,,Final URL,Paused,Responsive search ad,Hurt in a Car Accident?,Check Your Options Today,Takes About 2 Minutes,Available in All 50 States,"Free, Private First Step","Start With Sofia, AI Intake","Car, Truck or Motorcycle Crash",No Cost to Check Your Options,Deadlines Vary by State,Nearest Injury Lawyers,,,,,,Answer a few short questions to see if you may potentially qualify for review.,"Car, truck, motorcycle, rideshare or pedestrian accidents. In any of the 50 states.","Sofia, our AI intake guide, helps identify a next step. Free. About 2 minutes.","Attorney advertising. Matching service, not a law firm. No legal advice or guarantee."
+PHILLIPS-5L | L1 NIL MVA-PI Nationwide | Search,,,,,,,,,Injury Claim,,,,Final URL,Paused,Responsive search ad,Hurt in a Car Accident?,Check Your Options Today,Takes About 2 Minutes,Available in All 50 States,"Free, Private First Step","Start With Sofia, AI Intake","Car, Truck or Motorcycle Crash",No Cost to Check Your Options,Deadlines Vary by State,Nearest Injury Lawyers,,,,,,Answer a few short questions to see if you may potentially qualify for review.,"Car, truck, motorcycle, rideshare or pedestrian accidents. In any of the 50 states.","Sofia, our AI intake guide, helps identify a next step. Free. About 2 minutes.","Attorney advertising. Matching service, not a law firm. No legal advice or guarantee."
