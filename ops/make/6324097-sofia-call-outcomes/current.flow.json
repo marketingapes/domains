@@ -1,0 +1,44 @@
+{
+  "scenario": 6324097,
+  "name": "EE — Sofia Call Outcomes → Phillips desk + Meta CAPI (LIVE)",
+  "route": "A — transfer confirmation (router 20, first route)",
+  "source": "read-only Make blueprint read 2026-09-20; scenario lastEdit 2026-09-18T19:33:33.547Z",
+  "note": "Hand-extracted structural model. Faithful for module order, filters, onerror handlers and side effects. Email HTML bodies and variable expressions are intentionally omitted — they do not affect the ordering invariants under test.",
+  "trigger": {
+    "module": 1,
+    "app": "vapi:makeApiCall2",
+    "windowMinutes": 25,
+    "limit": 50,
+    "intervalSeconds": 900
+  },
+  "datastore": 152269,
+  "steps": [
+    { "id": "3", "kind": "store.exists", "key": "xfer:{call_id}", "onerror": "ignore", "label": "Already confirmed?" },
+    { "id": "f-notconfirmed", "kind": "filter", "expr": "not_exists:3", "label": "Not yet confirmed" },
+    { "id": "5", "kind": "setvars", "label": "Call facts" },
+    { "id": "6", "kind": "setvars", "label": "Desk + lead facts" },
+
+    {
+      "id": "4",
+      "kind": "store.put",
+      "key": "xfer:{call_id}",
+      "value": { "outcome": "transfer_confirmation_sent", "marker": "claimed-before-send" },
+      "onerror": "ignore",
+      "label": "Mark confirmed — DEFECT: written before any email is attempted"
+    },
+
+    { "id": "7", "kind": "query", "onerror": "resume", "label": "Ad lookup (BigQuery)" },
+    { "id": "8", "kind": "setvars", "label": "Ad id" },
+    { "id": "9", "kind": "setvars", "label": "Ad card" },
+    { "id": "10", "kind": "router", "label": "Desk router" },
+
+    {
+      "id": "11",
+      "kind": "send",
+      "channel": "email",
+      "to": "consultation@phillipslaw.com",
+      "onerror": null,
+      "label": "PI/MVA desk — no error handler"
+    }
+  ]
+}
