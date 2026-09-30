@@ -186,8 +186,8 @@
     ev('ee_qualification_complete', true);
     ev(o === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified', true);
   }
-  var TEXT_OK = 'Thank you. Based on what you’ve shared, you may potentially qualify for a free, confidential review by an independent law firm. A person there would decide whether to review it — nothing is guaranteed. You still don’t need to describe what happened.';
-  var TEXT_NO = 'Thank you for trusting us with this. Based on what you’ve shared, we may not be able to match you through this page right now. That isn’t a judgment about you or about what happened, and it isn’t a legal opinion. You can still call and talk it through, and support is always available.';
+  var TEXT_OK = 'Thank you. Based on what you’ve shared, you may potentially qualify for a free, confidential review by Phillips Law Group. The firm’s attorneys would decide whether to review it — nothing is guaranteed. You still don’t need to describe what happened.';
+  var TEXT_NO = 'Thank you for trusting us with this. Based on what you’ve shared, we may not be able to help through this page right now. That isn’t a judgment about you or about what happened, and it isn’t a legal opinion. You can still call and talk it through, and support is always available.';
 
   // ---- contact / callback forms (validate, fire ee_call_request, calm confirmation; nothing is sent) ----
   function setErr(el, msg) {
