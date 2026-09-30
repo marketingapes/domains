@@ -17,9 +17,12 @@ const ID = {
   NIL: {gtm: 'GTM-NKLD8KST', ga4: '530695235', pixel: '1464576608376747', tiktok: 'D77KL3RC77U88469GTT0', brand: 'Nearest Injury Lawyers'},
 };
 const OTHER = {BTL: 'NIL', NIL: 'BTL'};
-// Real numbers that must never appear until Kyle binds them.
-const LIVE_NUMBERS = [/202\D{0,3}932\D?9700/, /602\D{0,3}693\D?1461/, /213\D{0,3}878\D?7408/, /213\D{0,3}513\D?7977/, /602\D{0,3}200\D?3976/];
-const FORBIDDEN_COPY = [/Phillips Law Group/i, /signed matters/i, /segment conversion/i, /hook\.us2\.make\.com/i, /you qualify\b/i];
+// Bound public numbers per tenant (Kyle-authorized 2026-09-29). The other tenant's
+// number, the MA/LFMA line, Phillips transfer lines, and the old 888 placeholder
+// must never appear in a lane's files.
+const TENANT_PHONE = {BTL: /202\D{0,3}932\D?9700/, NIL: /602\D{0,3}693\D?1461/};
+const FORBIDDEN_NUMBERS = [/213\D{0,3}878\D?7408/, /213\D{0,3}513\D?7977/, /602\D{0,3}200\D?39(60|76)/, /888\D{0,3}888\D?8888/];
+const FORBIDDEN_COPY = [/signed matters/i, /segment conversion/i, /hook\.us2\.make\.com/i, /you qualify\b/i];
 
 // Everything a lane folder ships: pages plus any lane-local css/js.
 function laneFiles(dir) {
@@ -90,12 +93,19 @@ test('landing pages route to Sofia and the quiz', () => {
   }
 });
 
-test('placeholder phones only; no live numbers, no live intake endpoint, no internal copy', () => {
-  for (const l of LANES) for (const f of laneFiles(l.dir)) {
-    const s = read(f);
-    for (const re of LIVE_NUMBERS) assert.ok(!re.test(s), `${f} contains a live number ${re}`);
-    for (const re of FORBIDDEN_COPY) assert.ok(!re.test(s), `${f} contains forbidden copy ${re}`);
-    assert.ok(!/fetch\(\s*["']https?:/.test(s), `${f} posts to a hard-coded URL`);
+test('bound tenant phones; no wrong-tenant, internal, or placeholder numbers', () => {
+  for (const l of LANES) {
+    for (const p of PAGES) {
+      const f = `${l.dir}/${p}`, s = read(f);
+      assert.ok(TENANT_PHONE[l.tenant].test(s), `${f} missing bound ${l.tenant} number`);
+      assert.ok(!TENANT_PHONE[OTHER[l.tenant]].test(s), `${f} contains the other tenant's number`);
+    }
+    for (const f of laneFiles(l.dir)) {
+      const s = read(f);
+      for (const re of FORBIDDEN_NUMBERS) assert.ok(!re.test(s), `${f} contains forbidden number ${re}`);
+      for (const re of FORBIDDEN_COPY) assert.ok(!re.test(s), `${f} contains forbidden copy ${re}`);
+      assert.ok(!/fetch\(\s*["']https?:/.test(s), `${f} posts to a hard-coded URL`);
+    }
   }
 });
 
