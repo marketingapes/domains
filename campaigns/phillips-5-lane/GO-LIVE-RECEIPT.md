@@ -84,6 +84,17 @@ Branch `claude/phillips-5-lane-v5` (built on PR #143's branch) · manifest v5.0 
 | transfer | server-side (Vapi analysisPlan) | ⛔ blocked on Vapi |
 | signed_case | server-side (Phillips outcome feed) | ⛔ blocked |
 
+## Phillips B-leg (Litify)
+
+| Check | Status |
+|---|---|
+| Adapter: qualified lead → Litify `intake/create`, `External_ID = lead_uid`, full Q&A in `description` | ✅ built — marketingapes/nil-intake#35 (7/7 tests, mocked; **nothing sent**) |
+| QUALIFIED only, consent required, dry-run by default (`PHILLIPS_LITIFY_LIVE` off) | ✅ enforced by tests |
+| caseType per lane | LA County ✅ `Sexual Assault LA County` · other 4 lanes ⛔ need Phillips' exact strings |
+| intakeStatus / Marketing_Source | ⛔ copy exact values from the live zap (`phillips-engine/intake/` doc not in any seat repo) |
+| Page → ingest → qualify → Litify wiring | ⛔ not wired (Kyle gate) |
+| Transfer lines already on file in nil-intake `config/phillips-lane/routes.json` | PI/MVA (602) 200-3976 · complex tort/LA (602) 200-3960 (Michael Blom emails) — Sofia 5L drafts still point at the placeholder until Kyle says so |
+
 ## Gates for Kyle
 
 1. "bind it" — 202-932-9700 (Twilio-verified) → BTL Sofia `c45499e0`; decide whether 602 moves from live NIL inbound `57f80d14` to NIL 5L `82d628a7`. Web-test both first (vapi/README.md test plan).
