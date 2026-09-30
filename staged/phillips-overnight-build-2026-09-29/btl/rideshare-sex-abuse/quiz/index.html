@@ -1,0 +1,170 @@
+<!-- BTL RIDESHARE LANE — deploys to BTL site only. Buyer: Phillips Law Group. Do NOT merge with the NIL rideshare lane (separate branding, pixels, phones). Tracking: BTL measurement stack binds here at go-live on Kyle's word ({{BTL_GTM}} / {{BTL_GA4}} / {{BTL_META_PIXEL}}). Phone: {{BTL_PHONE}} (202) binds at go-live. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Check | Phillips Law Group — Rideshare Assault</title>
+<meta name="description" content="A few private questions to see if your rideshare assault case may potentially qualify. Free, completely confidential. Phillips Law Group.">
+<!-- TRACKING (BTL): BTL GA4/GTM/Meta/TikTok pixels bind here at go-live on Kyle's word. Separate from NIL lane — no shared pixels. No live tracking in staged build. -->
+<style>
+  :root { --ink:#1a1a1a; --muted:#5a5a5a; --accent:#1d5c3f; --bg:#ffffff; --soft:#f4f6f4; --line:#e3e6e3; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 20px; }
+  header.top { border-bottom:1px solid var(--line); padding:14px 0; position:sticky; top:0; background:#fff; z-index:10; }
+  header.top .wrap { display:flex; align-items:center; justify-content:space-between; }
+  .brand { font-weight:700; font-size:1.15rem; }
+  .call-cta { display:inline-block; background:var(--accent); color:#fff; text-decoration:none; font-weight:700; padding:12px 22px; border-radius:8px; }
+  .call-cta:hover { opacity:.92; }
+  .staged-tag { font-size:.72rem; color:#8a6d1a; background:#fdf3d7; border:1px solid #e8d48a; border-radius:6px; padding:4px 10px; display:inline-block; margin-bottom:12px; font-weight:600; }
+  .hero { background:var(--soft); padding:48px 0 40px; text-align:center; }
+  .hero h1 { font-size:1.9rem; line-height:1.25; margin-bottom:14px; }
+  .hero p.lede { font-size:1.05rem; color:var(--muted); max-width:620px; margin:0 auto; }
+  .quiz-box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:32px; margin:40px auto; max-width:640px; box-shadow:0 2px 12px rgba(0,0,0,.05); }
+  .progress { height:8px; background:var(--line); border-radius:4px; margin-bottom:24px; overflow:hidden; }
+  .progress .bar { height:100%; background:var(--accent); width:0%; transition:width .3s; }
+  .q { display:none; }
+  .q.active { display:block; }
+  .q h3 { font-size:1.25rem; margin-bottom:18px; }
+  .q .opts { display:grid; gap:10px; }
+  .q button.opt { text-align:left; padding:14px 16px; border:2px solid var(--line); border-radius:8px; background:#fff; font-size:1rem; cursor:pointer; font-family:inherit; }
+  .q button.opt:hover { border-color:var(--accent); }
+  .result { display:none; text-align:center; }
+  .result h3 { font-size:1.4rem; margin-bottom:12px; }
+  .result p { color:var(--muted); margin-bottom:22px; }
+  .result .btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn-outline { display:inline-block; border:2px solid var(--accent); color:var(--accent); text-decoration:none; font-weight:700; padding:10px 22px; border-radius:8px; }
+  .back { text-align:center; margin-top:24px; }
+  .back a { color:var(--muted); font-size:.9rem; }
+  .plg-compliance { background:#fafafa; border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin:32px 0; font-size:.85rem; color:var(--muted); }
+  .plg-compliance p { margin-bottom:8px; }
+  footer { border-top:1px solid var(--line); padding:28px 0 48px; font-size:.85rem; color:var(--muted); }
+  @media (max-width:560px){ .hero h1{font-size:1.55rem;} .quiz-box{padding:22px;} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Phillips Law Group</div>
+    <a class="call-cta" href="tel:8888888888">Call (888) 888-8888</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="staged-tag">STAGED BUILD — BTL lane · not live · calls bind at go-live</span>
+    <h1>A Quick, Private Check</h1>
+    <p class="lede">A few questions to see if your case may potentially qualify. Share only what you're comfortable with — everything stays confidential, and you can stop at any time.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="quiz-box">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <div class="q active" data-q="0">
+      <h3>Did the incident happen during an Uber or Lyft trip?</h3>
+      <div class="opts">
+        <button class="opt" type="button">Yes</button>
+        <button class="opt" type="button">No</button>
+        <button class="opt" type="button">I'd rather not say</button>
+      </div>
+    </div>
+
+    <div class="q" data-q="1">
+      <h3>Was the driver the person who assaulted you?</h3>
+      <div class="opts">
+        <button class="opt" type="button">Yes</button>
+        <button class="opt" type="button">No</button>
+        <button class="opt" type="button">I'd rather not say</button>
+      </div>
+    </div>
+
+    <div class="q" data-q="2">
+      <h3>Did it happen in 2022 or more recently?</h3>
+      <div class="opts">
+        <button class="opt" type="button">Yes</button>
+        <button class="opt" type="button">No</button>
+        <button class="opt" type="button">Not sure</button>
+      </div>
+    </div>
+
+    <div class="q" data-q="3">
+      <h3>Did you report it — to the company, police, a therapist, or someone you trust?</h3>
+      <div class="opts">
+        <button class="opt" type="button">Yes</button>
+        <button class="opt" type="button">No</button>
+        <button class="opt" type="button">I'd rather not say</button>
+      </div>
+    </div>
+
+    <div class="q" data-q="4">
+      <h3>Can you forward the ride receipt from the app via email?</h3>
+      <div class="opts">
+        <button class="opt" type="button">Yes</button>
+        <button class="opt" type="button">No</button>
+        <button class="opt" type="button">Not sure</button>
+      </div>
+    </div>
+
+    <div class="result" id="result">
+      <h3>You may potentially qualify.</h3>
+      <p>A free, completely confidential review is the right next step. You choose what to share and when — and nothing moves forward without your permission.</p>
+      <div class="btns">
+        <a class="call-cta" href="../talk-to-sofia/">Request a Callback</a>
+        <a class="btn-outline" href="../">Free Confidential Review Form</a>
+      </div>
+      <p style="margin-top:18px;font-size:.82rem;">This is not legal advice and no outcome is promised. Attorney advertising.</p>
+    </div>
+  </div>
+  <div class="back"><a href="../">← Back to the Rideshare Assault page</a></div>
+
+  <!-- COMPLIANCE SNIPPET — nationwide variant + trauma note (staged, pending legal review) -->
+  <div class="plg-compliance" data-variant="nationwide">
+    <p><strong>Attorney Advertising.</strong> This page is an advertisement for legal services.</p>
+    <p>Phillips Law Group is responsible for the content of this advertisement. Prior results do not guarantee a similar outcome. Laws vary by state; time limits apply and missing a deadline can bar your claim.</p>
+    <p>Contacting us does not create an attorney-client relationship. No attorney-client relationship is formed until a written agreement is signed.</p>
+    <p>Free confidential case review. You pay nothing unless we win your case.</p>
+  </div>
+  <div class="plg-compliance" data-variant="trauma-note">
+    <p>What you share is confidential. You choose what to tell us and when. You can stop at any time.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Phillips Law Group · <a href="tel:8888888888">(888) 888-8888</a></p>
+    <p class="fine" style="font-size:.82rem;color:var(--muted);margin-top:8px;">Attorney advertising. This page is for information only — it is not legal advice, and nothing here promises any outcome. Submitting this form does not create an attorney-client relationship.</p>
+  </div>
+</footer>
+
+<script>
+// Quiz: step through questions, then show the result. Answers stay on-device in this staged build.
+(function(){
+  var qs = Array.prototype.slice.call(document.querySelectorAll('.q'));
+  var bar = document.getElementById('bar');
+  var result = document.getElementById('result');
+  qs.forEach(function(q){
+    var opts = q.querySelectorAll('.opt');
+    Array.prototype.forEach.call(opts, function(btn){
+      btn.addEventListener('click', function(){
+        var next = q.nextElementSibling;
+        while (next && !next.classList.contains('q') && next.id !== 'result') next = next.nextElementSibling;
+        q.classList.remove('active');
+        if (next && next.classList.contains('q')) {
+          next.classList.add('active');
+          bar.style.width = ((qs.indexOf(next)+1)/qs.length*100) + '%';
+        } else {
+          bar.style.width = '100%';
+          result.style.display = 'block';
+        }
+        window.scrollTo({top: document.querySelector('.quiz-box').offsetTop - 80, behavior:'smooth'});
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
