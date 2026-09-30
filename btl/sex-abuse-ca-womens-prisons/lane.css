@@ -65,6 +65,8 @@ button,input,select{font:inherit;color:inherit}
 
 .submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;margin-top:16px;border:0;border-radius:999px;background:var(--cta);color:#fff;font-weight:750;font-size:1.08rem;letter-spacing:.01em;cursor:pointer;box-shadow:0 10px 24px -10px rgba(36,87,230,.8)}
 .submit:hover{background:var(--cta-deep)}
+.consent-note{font-size:.8rem;color:var(--muted);line-height:1.55;margin:14px 2px 0}
+.consent-note a{color:var(--ink-2);font-weight:600}
 .submit[disabled]{opacity:.7;cursor:progress}
 .spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .8s linear infinite;display:none}
 .submit[data-busy="1"] .spin{display:inline-block}
@@ -161,6 +163,13 @@ html{scroll-behavior:smooth}
 .lp .top nav a{text-decoration:none;color:var(--ink-2)}
 .lp .top nav a:hover{color:var(--ink)}
 .lp .top nav a.keep{padding:9px 16px;border-radius:999px;background:var(--ink);color:#fff;font-weight:650}
+@media(max-width:640px){
+  .lp .top{height:auto;flex-wrap:wrap;justify-content:center;gap:10px;padding:14px 0}
+  .lp .top .brand{flex:1 1 100%;justify-content:center}
+  .lp .top nav{flex:1 1 100%;justify-content:center}
+  .lp .top nav a:not(.keep){display:none}
+  .lp .top nav a.keep{padding:12px 30px;font-size:1rem}
+}
 
 /* hero: lane photo behind a paper scrim (same technique as Paraquat's field photo) */
 .lp .hero{position:relative;isolation:isolate;padding:34px 0 80px;text-align:center}
