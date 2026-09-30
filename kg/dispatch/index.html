@@ -1,0 +1,125 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team Dispatch — Kyle Gosselin</title>
+<meta name="description" content="Copy-paste briefs for the team. Internal.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon-kmfg.svg?v=1">
+<style>
+*{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;background:#0e1413;color:#eef4f1;padding:1rem;line-height:1.55}
+.wrap{max-width:44rem;margin:0 auto}
+h1{font-size:1.6rem;margin:.5rem 0}.sub{opacity:.7;margin:0 0 1.5rem}
+.card{background:#16211f;border:1px solid #2a3a36;border-radius:14px;padding:1.25rem;margin:0 0 1.25rem}
+.card h2{font-size:1.1rem;margin:0 0 .25rem}.seat{display:inline-block;font-size:.75rem;font-weight:700;padding:.15rem .6rem;border-radius:99px;margin-bottom:.5rem}
+.seat.claude{background:#d97757;color:#1a0f0a}.seat.chat{background:#10a37f;color:#06231b}
+pre{white-space:pre-wrap;font-size:.82rem;background:#0b100f;border:1px solid #2a3a36;border-radius:10px;padding:.9rem;max-height:22rem;overflow:auto;margin:.75rem 0}
+button.copy{display:block;width:100%;padding:.9rem;font-size:1rem;font-weight:700;border:0;border-radius:12px;background:#c9a24b;color:#1a1408;cursor:pointer}
+button.copy:active{transform:scale(.98)}
+.note{font-size:.85rem;opacity:.7;text-align:center;margin:2rem 0}
+</style>
+</head><body><div class="wrap">
+<h1>Team Dispatch</h1>
+<p class="sub">Chat's briefs are going out over the web — nothing for you to do there. Claude's two briefs below: tap <b>Copy brief</b>, paste into the Claude app. Internal — not linked anywhere.</p>
+
+<div class="card">
+<span class="seat claude">CLAUDE · BUILD</span>
+<h2>1 · CallRail transfer tracking</h2>
+<pre id="b1">Brief: Set up CallRail transfer-leg tracking so we can see how well the transferred leads are doing.
+
+Lane: CallRail only. Don't touch ad campaigns, budgets, inbound tracker routing, or anything else.
+
+Do:
+1. Verify the two Sofia-to-Phillips transfer trackers: BTL (602) 600-6247 → (602) 200-3960, NIL (602) 483-4642 → (602) 200-3976.
+2. Confirm call recording is ON for both transfer trackers, with the 'this call is recorded' whisper.
+3. Confirm caller ID shows the claimant's number (not the tracking number) on both.
+4. Pull today's transfer-leg calls: time, duration, whether Phillips answered, recording link for each.
+5. Fix anything misrouted or unrecorded.
+
+Don't: Change inbound tracker routing. Touch Meta/Ryze, budgets, or campaigns. Touch (213) 513-7977. Invent call data — real CallRail records only.
+
+Done = Both transfer trackers verified (recording on, forwarding correct, caller ID correct), today's transfer legs listed with answer/duration/recording, or a precise block report.
+
+Report: Tracker-by-tracker status, today's transfer legs, any fixes made.</pre>
+<button class="copy" data-t="b1">Copy brief</button>
+</div>
+
+<div class="card">
+<span class="seat claude">CLAUDE · BUILD</span>
+<h2>2 · Today's receipts</h2>
+<pre id="b2">Brief: Pull today's real receipts for the presentation.
+
+Lane: Read-only. Vapi, CallRail, Meta (via Ryze). Change nothing.
+
+Do:
+1. Today's Vapi calls: total inbound, real conversations, transfers, destinations, durations.
+2. CallRail: confirm the transfer legs — did Phillips answer, how long each lasted.
+3. Meta: today's spend and delivery for BTL ($150/day) and NIL ($100/day).
+4. Hand back a clean table: calls in → conversations → transfers → spend.
+
+Don't: Change anything. Invent or project numbers. Touch routing, budgets, campaigns.
+
+Done = A receipts table with real today's numbers, sourced, ready to show.
+
+Report: The table + gaps (e.g. "Phillips pickup unverified on transfer X").</pre>
+<button class="copy" data-t="b2">Copy brief</button>
+</div>
+
+<div class="card">
+<span class="seat chat">CHAT · VERIFY + MODERNIZE</span>
+<h2>3 · Portal modernize</h2>
+<pre id="b3">Brief: Review and modernize the Phillips lead accountability portal: https://lawfirmmarketingapes.com/phillips/
+
+Lane: That page only. One self-contained HTML page. Don't touch campaigns, budgets, phones, or anything live.
+
+Do:
+1. Review the current portal (4 tabs: Current Queue, Old Campaigns, Current Engine Build, Daily Disposition Reports).
+2. Make it modern and premium — clean, current, expensive-looking. It must read like Phillips had it all along (no "staged," "demo," or dev language).
+3. Add a "Sofia at work" section: show her working the leads — answers in seconds, qualifies, warm-transfers live to Phillips. Real flow: ad call → Sofia → transfer → Phillips desk.
+4. Add lead sources: where every lead comes from (Meta call ads, by lane).
+5. Add ad previews: visual cards of the actual ads running (BTL: LA County abuse, women's prisons, rideshare assault; NIL: AZ crash qualifiers). Label creative previews as previews.
+6. Show the live transfer: caller → Sofia → Phillips desk, visual and dead simple.
+7. Easy to use: a firm owner gets it in 30 seconds. No clutter.
+8. Marketing + intake report: one view joining both — what marketing bought, what intake did with it.
+9. Cost optimization: cost per signed case as the headline; how the machine saves money vs. the old way (no bloated intake department, no junk leads, every dollar tracked).
+10. Read-only: no forms, no fetch, no POST.
+
+Don't: Invent leads, calls, numbers, or signed cases — ever. Unverified number = honest empty state. No fake screenshots.
+
+Done = A finished single HTML file, modernized, with Sofia flow, sources, ad previews, transfer view, cost story — every number real or honestly empty.
+
+Report: What you changed, what's real vs. placeholder, what you need from Kyle (real ad screenshots, latest call counts). Send the finished HTML back for deploy.</pre>
+<button class="copy" data-t="b3">Copy brief</button>
+</div>
+
+<div class="card">
+<span class="seat chat">CHAT · VERIFY + MODERNIZE</span>
+<h2>4 · Portal verify</h2>
+<pre id="b4">Brief: Verify the portal before it goes in front of anyone: https://lawfirmmarketingapes.com/phillips/
+
+Lane: That page only.
+
+Do:
+1. Check every number, claim, and label against reality. Real? Honest? Implying data we don't have?
+2. Flag anything invented or projected — rewrite as an honest empty state.
+3. Then modernize per the earlier brief.
+
+Don't: Invent data to fill gaps. Leave any number you can't verify.
+
+Done = Every visible number real or honestly empty, modernized, ready for a firm owner.
+
+Report: What you verified, changed, and couldn't verify.</pre>
+<button class="copy" data-t="b4">Copy brief</button>
+</div>
+
+<p class="note">Muse runs the web — everything the seats hand back goes live through him.</p>
+</div>
+<script>
+document.querySelectorAll('button.copy').forEach(function(btn){
+btn.addEventListener('click',function(){
+var t=document.getElementById(btn.getAttribute('data-t')).innerText;
+function done(){btn.textContent='Copied ✓';setTimeout(function(){btn.textContent='Copy brief'},1500)}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done).catch(function(){fallback()})}else{fallback()}
+function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){}document.body.removeChild(ta)}
+});
+});
+</script>
+</body></html>
