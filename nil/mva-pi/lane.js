@@ -212,8 +212,8 @@
         $('rSummaryText').textContent = summary(); $('rSummary').hidden = false;
         fitOnly.forEach(function (el) { el.hidden = false; });
         say($('rSay'), P.fit);
-        var call = document.createElement('a'); call.className = 'next'; call.setAttribute('data-phone', ''); call.href = 'tel:+18888888888';
-        call.innerHTML = 'Call Sofia now · <span data-phone-display>(888) 888-8888</span>';
+        var call = document.createElement('a'); call.className = 'next'; call.setAttribute('data-phone', ''); call.href = 'tel:' + (L.phone_tel || '');
+        call.innerHTML = 'Call Sofia now · <span data-phone-display></span>';
         acts.appendChild(call); bindPhones(acts);
         acts.appendChild(button('Leave my details for a callback', 'choice', toContact));
       }

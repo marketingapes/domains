@@ -12,9 +12,9 @@
 (function () {
   'use strict';
   var L = window.EE_LANE || {};
-  // Placeholder line until Kyle says "bind it". To bind: set phone_tel / phone_display in EE_LANE on the page.
-  var TEL = L.phone_tel || '+18888888888';
-  var DISPLAY = L.phone_display || '(888) 888-8888';
+  // Phones are bound per tenant in EE_LANE on the page (Kyle-authorized 2026-09-29).
+  var TEL = L.phone_tel || '';
+  var DISPLAY = L.phone_display || '';
 
   window.dataLayer = window.dataLayer || [];
   var fired = {};
@@ -28,6 +28,7 @@
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function bindPhones(root) {
+    if (!TEL) return;
     each('a[data-ee-tel]', function (a) { a.setAttribute('href', 'tel:' + TEL); }, root);
     each('[data-ee-phone-text]', function (el) { el.textContent = DISPLAY; }, root);
   }
