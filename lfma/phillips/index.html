@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phillips Law Group — Lead Accountability Portal</title>
+<style>
+  :root{
+    --navy:#10263f; --navy-2:#16334f; --gold:#c9a227; --gold-soft:#f4ecd4;
+    --ink:#1c2b3a; --muted:#5d6f82; --line:#dfe6ee; --bg:#f5f7fa; --card:#ffffff;
+    --green:#1e7e46; --amber:#a86a08; --red:#a33226; --grey:#6b7a8d;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.55;}
+  .topbar{background:linear-gradient(135deg,var(--navy),var(--navy-2)); color:#fff; padding:28px 20px 24px; border-bottom:4px solid var(--gold);}
+  .topbar .wrap{max-width:1080px; margin:0 auto;}
+  .eyebrow{font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin:0 0 6px; font-weight:600;}
+  .topbar h1{margin:0 0 6px; font-size:26px; font-weight:700;}
+  .topbar p{margin:0; color:#c8d4e2; font-size:14px;}
+  .statband{background:#fff; border-bottom:1px solid var(--line);}
+  .statband .wrap{max-width:1080px; margin:0 auto; padding:16px 20px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+  @media(min-width:720px){.statband .wrap{grid-template-columns:repeat(4,1fr);}}
+  .stat{padding:4px 0;}
+  .stat .label{font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:600;}
+  .stat .big{font-size:26px; font-weight:800; color:var(--navy); line-height:1.15;}
+  .stat .note{font-size:12.5px; color:var(--muted);}
+  .tabs{position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--line); box-shadow:0 2px 8px rgba(16,38,63,.06);}
+  .tabs .wrap{max-width:1080px; margin:0 auto; display:flex; overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .tabs button{flex:1 0 auto; appearance:none; border:0; background:none; padding:15px 18px; font-size:14px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap;}
+  .tabs button.active{color:var(--navy); border-bottom-color:var(--gold);}
+  main{max-width:1080px; margin:0 auto; padding:24px 20px 60px;}
+  .tabpane{display:none;}
+  .tabpane.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+  h2{font-size:20px; margin:4px 0 6px; color:var(--navy);}
+  .lede{color:var(--muted); font-size:15px; margin:0 0 20px; max-width:760px;}
+  .cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:0 0 24px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(16,38,63,.05);}
+  .card .label{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:600; margin-bottom:6px;}
+  .card .big{font-size:30px; font-weight:800; color:var(--navy); line-height:1.1;}
+  .card .note{font-size:13px; color:var(--muted); margin-top:6px;}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin:0 0 20px; box-shadow:0 1px 3px rgba(16,38,63,.05);}
+  .panel h3{margin:0 0 8px; font-size:17px; color:var(--navy);}
+  .panel p{margin:0 0 10px; font-size:14.5px;}
+  .panel p:last-child{margin-bottom:0;}
+  .panel.dark{background:var(--navy); border-color:var(--navy); color:#fff;}
+  .panel.dark h3{color:#fff;}
+  .panel.dark .card{background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);}
+  .panel.dark .card .label{color:#c8d4e2;}
+  .panel.dark .card .big{color:#fff;}
+  .panel.dark .card .note{color:#c8d4e2;}
+  .gold-rule{height:3px; width:56px; background:var(--gold); border-radius:2px; margin:10px 0 14px;}
+  table{width:100%; border-collapse:collapse; font-size:14px; margin-top:8px;}
+  th,td{text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted);}
+  tr:last-child td{border-bottom:0;}
+  .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700; white-space:nowrap;}
+  .pill.new{background:#e8eef6; color:var(--navy);}
+  .pill.working{background:#fff3d6; color:var(--amber);}
+  .pill.qualified{background:#e2f3e9; color:var(--green);}
+  .pill.signed{background:var(--navy); color:#fff;}
+  .pill.turned{background:#f7e4e1; color:var(--red);}
+  .gap{background:var(--gold-soft); border:1px dashed #cdb95f; border-radius:10px; padding:14px 16px; font-size:14px; color:#6d5d16; margin:14px 0;}
+  .gap strong{color:#5d4f10;}
+  .steps{list-style:none; margin:12px 0 0; padding:0; counter-reset:step;}
+  .steps li{position:relative; padding:12px 12px 12px 52px; margin-bottom:10px; background:#f8fafc; border:1px solid var(--line); border-radius:10px; font-size:14.5px;}
+  .steps li::before{counter-increment:step; content:counter(step); position:absolute; left:12px; top:12px; width:28px; height:28px; border-radius:50%; background:var(--navy); color:#fff; font-weight:700; font-size:14px; display:flex; align-items:center; justify-content:center;}
+  .steps li strong{color:var(--navy);}
+  .lanes{display:grid; grid-template-columns:1fr; gap:12px;}
+  @media(min-width:720px){.lanes{grid-template-columns:1fr 1fr;}}
+  .lane{border:1px solid var(--line); border-radius:12px; padding:18px; background:#fff;}
+  .lane.btl{border-top:4px solid var(--navy);}
+  .lane.nil{border-top:4px solid var(--gold);}
+  .lane h4{margin:0 0 4px; font-size:16px; color:var(--navy);}
+  .lane .tagline{font-size:13px; color:var(--muted); margin:0 0 10px;}
+  .lane ul{margin:0; padding-left:18px; font-size:14px;}
+  .lane li{margin-bottom:6px;}
+  footer{border-top:1px solid var(--line); padding:22px 20px; text-align:center; color:var(--muted); font-size:13px; background:#fff;}
+  footer a{color:var(--navy); font-weight:600; text-decoration:none; border-bottom:1px solid var(--gold);}
+  .sig{font-size:12px; color:#93a1b3; margin-top:8px;}
+  .footlinks{margin-top:10px; font-size:13px;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <p class="eyebrow">Phillips Law Group</p>
+    <h1>Lead Accountability Portal</h1>
+    <p>Every lead, every disposition, every signed matter — in one place.</p>
+  </div>
+</header>
+
+<div class="statband" aria-label="Key figures">
+  <div class="wrap">
+    <div class="stat"><div class="label">Signed Matters</div><div class="big">19</div><div class="note">18 LA County sex abuse · 1 CA juvenile detention</div></div>
+    <div class="stat"><div class="label">LA County Sign Rate</div><div class="big">29.0%</div><div class="note">18 signed of 62 leads</div></div>
+    <div class="stat"><div class="label">Fresh-Lead Conversion</div><div class="big">12.34%</div><div class="note">Across fresh leads, all programs</div></div>
+    <div class="stat"><div class="label">Tracked Media Cost</div><div class="big">~$89</div><div class="note">Per signed matter</div></div>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="Portal sections">
+  <div class="wrap">
+    <button class="active" data-tab="queue">Current Queue</button>
+    <button data-tab="history">Old Campaigns</button>
+    <button data-tab="engine">Current Engine Build</button>
+    <button data-tab="reports">Daily Disposition Reports</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ CURRENT QUEUE ============ -->
+  <section class="tabpane active" id="tab-queue">
+    <h2>Current Queue</h2>
+    <div class="gold-rule"></div>
+    <p class="lede">Leads entering the current program, tracked from first contact through final disposition. The current program began September 30, 2026 — leads appear here as they arrive.</p>
+
+    <div class="cards">
+      <div class="card"><div class="label">New</div><div class="big">—</div><div class="note">Awaiting first contact</div></div>
+      <div class="card"><div class="label">Working</div><div class="big">—</div><div class="note">Intake in progress</div></div>
+      <div class="card"><div class="label">Qualified</div><div class="big">—</div><div class="note">Transferred to the firm</div></div>
+      <div class="card"><div class="label">Signed</div><div class="big">—</div><div class="note">Matters signed</div></div>
+      <div class="card"><div class="label">Turned Down</div><div class="big">—</div><div class="note">With reason recorded</div></div>
+    </div>
+
+    <div class="panel">
+      <h3>How the Queue Works</h3>
+      <ol class="steps">
+        <li><strong>First contact.</strong> A caller reaches the intake line and speaks with Sofia, the AI intake guide. Every call is recorded, and the caller is told so up front.</li>
+        <li><strong>Qualification on the call.</strong> Sofia listens to the caller's account, confirms the facts that matter — what happened, when, where, the harm, whether they already have a lawyer — and only moves forward when the claim fits the firm's criteria.</li>
+        <li><strong>Warm transfer.</strong> With the caller's permission, Sofia connects them directly to the firm's intake team and hands off everything gathered. Complex tort matters go to the complex-tort line; vehicle accident and PI matters go to the PI/MVA line.</li>
+        <li><strong>Disposition.</strong> The firm returns its call on every transferred lead — qualified or not qualified, with the reason — and every signed matter is tied back to the lane that produced it.</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h3>Lead Detail</h3>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Source Lane</th><th>Status</th><th>Disposition</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5" style="color:var(--muted); padding:22px 8px;">No leads in the queue yet. Each lead will appear here with its source lane, current status, and the firm's disposition as it is returned.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="gap"><strong>What "no leads yet" means:</strong> the current program began September 30, 2026. This table populates as calls and intakes begin. Nothing here is estimated — every row will reflect a real lead.</div>
+  </section>
+
+  <!-- ============ OLD CAMPAIGNS ============ -->
+  <section class="tabpane" id="tab-history">
+    <h2>Old Campaigns</h2>
+    <div class="gold-rule"></div>
+    <p class="lede">The three historical programs, with the leads sent and the dispositions returned. Shown exactly as they happened — including what didn't work.</p>
+
+    <div class="panel">
+      <h3>Big Lead List</h3>
+      <p>The bulk historical list delivered to the firm, with dispositions returned on the records the firm worked.</p>
+      <div class="gap"><strong>Lead-level detail:</strong> disposition detail for this period was not returned at the individual lead level. The list and the aggregate outcomes the firm reported are reflected in the totals below.</div>
+    </div>
+
+    <div class="panel">
+      <h3>LA County — Joint Venture</h3>
+      <p>JV-structured program covering institutional sexual abuse in LA County. <strong>18 signed of 62 leads — a 29.0% sign rate.</strong> This is the proven lane: every signed matter in the program's history came through institutional abuse intake, and eighteen of the nineteen came from LA County.</p>
+      <div class="cards">
+        <div class="card"><div class="label">Leads</div><div class="big">62</div><div class="note">LA County institutional abuse</div></div>
+        <div class="card"><div class="label">Signed</div><div class="big">18</div><div class="note">Matters signed</div></div>
+        <div class="card"><div class="label">Sign Rate</div><div class="big">29.0%</div><div class="note">18 of 62</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>40K MVA Test</h3>
+      <p><strong>$40,000 flat test: 42 fresh intakes, 0 signed.</strong> The evidence pointed to contact failure — the claimants were not reached — not claim failure. No intake in this test was ever evaluated and rejected on legal merits; the leads died as unresponsive numbers, wrong numbers, and people who had never asked for a lawyer. This program is being folded into the current engine build rather than repeated as a standalone test.</p>
+      <div class="cards">
+        <div class="card"><div class="label">Spend</div><div class="big">$40K</div><div class="note">Flat test</div></div>
+        <div class="card"><div class="label">Fresh Intakes</div><div class="big">42</div><div class="note">Leads delivered</div></div>
+        <div class="card"><div class="label">Signed</div><div class="big">0</div><div class="note">Contact failure, not claim failure</div></div>
+      </div>
+    </div>
+
+    <div class="panel dark">
+      <h3>Historical Totals</h3>
+      <div class="cards">
+        <div class="card"><div class="label">Signed Matters</div><div class="big">19</div><div class="note">18 LA County sex abuse · 1 CA juvenile detention</div></div>
+        <div class="card"><div class="label">Fresh-Lead Conversion</div><div class="big">12.34%</div><div class="note">Across fresh leads, all programs</div></div>
+        <div class="card"><div class="label">Tracked Media Cost</div><div class="big">~$89</div><div class="note">Per signed matter</div></div>
+      </div>
+      <p style="font-size:13px; color:#c8d4e2; margin:6px 0 0;">Every figure above traces to the firm's own Litify records. Where the record is silent, the page says so.</p>
+    </div>
+  </section>
+
+  <!-- ============ CURRENT ENGINE BUILD ============ -->
+  <section class="tabpane" id="tab-engine">
+    <h2>Current Engine Build</h2>
+    <div class="gold-rule"></div>
+    <p class="lede">The intake and delivery system serving the firm: five lanes, one AI intake line per brand, warm transfer of qualified claimants straight to the firm's intake team, delivery into Litify, and call tracking with recordings on every transferred call.</p>
+
+    <div class="panel">
+      <h3>How a Lead Reaches You</h3>
+      <ol class="steps">
+        <li><strong>Sofia answers in seconds.</strong> Every call is picked up by the AI intake guide, which introduces itself and notes the call is being recorded.</li>
+        <li><strong>She listens first.</strong> The caller describes what happened in their own words. Sofia pulls out what matters — what happened, when, where, the harm — and only asks what she still needs.</li>
+        <li><strong>She qualifies on the spot.</strong> The facts are checked against the firm's criteria for the lane — for vehicle accidents: an Arizona crash, within the last two years, not the caller's fault, injury with medical care, and no lawyer already retained. The moment she knows they qualify, she moves to handoff — no extra questions. Callers who don't fit are closed kindly, with no legal opinion given.</li>
+        <li><strong>Warm transfer, live.</strong> With the caller's permission, Sofia connects them directly to the firm's intake team and hands off what she gathered — name, number, and the basics of the claim.</li>
+        <li><strong>Delivered into Litify.</strong> Lead details flow into the firm's Litify system with the source lane attached, and every transferred call is tracked and recorded end to end.</li>
+      </ol>
+    </div>
+
+    <div class="lanes">
+      <div class="lane btl">
+        <h4>Best Tort Lawyers</h4>
+        <p class="tagline">Mass tort &amp; institutional abuse</p>
+        <ul>
+          <li><strong>LA County institutional abuse</strong> — the proven lane: 18 signed of 62</li>
+          <li><strong>California women's prisons</strong> — institutional abuse intake</li>
+          <li><strong>Rideshare assault</strong> — assault or misconduct by a rideshare driver</li>
+        </ul>
+      </div>
+      <div class="lane nil">
+        <h4>Nearest Injury Lawyers</h4>
+        <p class="tagline">Vehicle accident &amp; personal injury</p>
+        <ul>
+          <li><strong>Vehicle accident / PI</strong> — Arizona crashes, qualified on the five-point check before transfer</li>
+          <li><strong>Rideshare assault</strong> — assault or misconduct by a rideshare driver</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gap" style="margin-top:20px;"><strong>Where transfers land:</strong> complex tort matters go to the firm's complex-tort line; vehicle accident and PI matters go to the firm's PI/MVA line. Every transfer is tracked and recorded end to end.</div>
+
+    <div class="panel">
+      <h3>Delivery &amp; Attribution</h3>
+      <p><strong>Litify delivery.</strong> Each transferred lead arrives in the firm's Litify system carrying its source lane, so every signed matter ties back to the lane — and the ad — that produced it.</p>
+      <p><strong>CallRail attribution.</strong> Every lane dials through its own tracked number. Transfers are recorded, and the call record connects the signed matter to the originating call.</p>
+      <p><strong>Daily dispositions.</strong> The firm returns qualified / not qualified with reasons, plus signed matters, every day — see the Daily Disposition Reports tab. That feedback goes back into the ad platforms so spend shifts toward what signs clients.</p>
+    </div>
+  </section>
+
+  <!-- ============ DAILY DISPOSITION REPORTS ============ -->
+  <section class="tabpane" id="tab-reports">
+    <h2>Daily Disposition Reports</h2>
+    <div class="gold-rule"></div>
+    <p class="lede">The core of the arrangement: every day, the firm returns a disposition on every lead — qualified or not qualified, with the reason — plus signed matters. That feedback goes straight back into the ad platforms, so they stop buying form-fillers and start buying claimants.</p>
+
+    <div class="panel">
+      <h3>Report Structure</h3>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Leads Delivered</th><th>Qualified</th><th>Not Qualified</th><th>Reason</th><th>Signed</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" style="color:var(--muted); padding:22px 8px;">The first daily report will be issued after the first full day of lead flow. Reports will appear here each day, in this format, with real figures only.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>What Each Report Carries</h3>
+      <ol class="steps">
+        <li><strong>Qualified / Not Qualified</strong> — the firm's call on every lead delivered, with the reason for each not-qualified disposition.</li>
+        <li><strong>Signed matters</strong> — every retainer signed, tied back to its source lane and originating call.</li>
+        <li><strong>Feedback loop</strong> — dispositions feed back into the ad platforms daily, shifting spend toward the lanes and audiences that produce signed clients.</li>
+      </ol>
+    </div>
+
+    <div class="gap"><strong>Why this matters:</strong> this is the arrangement working as designed — the firm tells us what signed and what didn't, every day, and the buying gets smarter every day. No estimates, no modeled figures: only dispositions the firm actually returned.</div>
+  </section>
+
+</main>
+
+<footer>
+  Prepared for Phillips Law Group · September 2026
+  <div class="footlinks"><a href="https://lawfirmmarketingapes.com/campaign">Law Firm Marketing Apes — Request a Campaign</a></div>
+  <div class="sig">Questions on any figure or lead: every number on this page traces to a real record.</div>
+</footer>
+
+<script>
+  document.querySelectorAll('.tabs button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tabs button').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tabpane').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.getAttribute('data-tab')).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+</script>
+
+</body>
+</html>
