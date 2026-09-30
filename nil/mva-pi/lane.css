@@ -313,9 +313,9 @@ body.talk{background:radial-gradient(120% 80% at 85% 0%,#123a4a 0%,#0c1a35 38%,v
 
 /* v3: visible hero photo (Kyle: more imagery) */
 @media(max-width:899px){
-  .hero{padding-top:150px}
-  .hero-media{height:210px}
+  .hero{padding-top:50px}
+  .hero-media{height:110px}
   .hero-media img{object-position:center 35%}
-  .hero-media:after{background:linear-gradient(180deg,#08122b00 0,#08122b14 90px,#08122bcc 150px,var(--n) 210px)}
+  .hero-media:after{background:linear-gradient(180deg,#08122b00 0,#08122b14 30px,#08122bcc 50px,var(--n) 110px)}
 }
 @media(min-width:900px){.hero-media:after{background:linear-gradient(90deg,#08122bf0 0%,#08122bbf 40%,#08122b40 100%),linear-gradient(180deg,transparent 72%,var(--n) 100%)}}
