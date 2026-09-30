@@ -594,6 +594,37 @@ gtag('config', 'G-2KRKVE3Y3R');
       }
 
       locationButton.addEventListener("click", requestLocation);
+
+      // Run as opted in: if this visitor already granted location
+      // permission, show the dot on load — no second tap needed.
+      // New visitors still get the button and the browser's own prompt.
+      function autoRevealIfOptedIn() {
+        try {
+          if (!navigator.permissions || !navigator.permissions.query) return;
+          navigator.permissions.query({ name: "geolocation" }).then(function (status) {
+            if (status && status.state === "granted") {
+              revealForOptedInVisitor();
+            }
+          }).catch(function () { /* keep the button */ });
+        } catch (error) { /* keep the button */ }
+      }
+
+      function revealForOptedInVisitor() {
+        if (!navigator.geolocation) return;
+        locationButton.disabled = true;
+        document.getElementById("location-button-label").textContent = "Showing your dot…";
+        navigator.geolocation.getCurrentPosition(revealLocation, function () {
+          // Granted but unreadable — fall back to the button.
+          locationButton.disabled = false;
+          document.getElementById("location-button-label").textContent = "Show me the dot.";
+        }, {
+          enableHighAccuracy: true,
+          timeout: 12000,
+          maximumAge: 0
+        });
+      }
+
+      autoRevealIfOptedIn();
     }());
   </script>
 
