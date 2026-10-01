@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<meta name="robots" content="noindex,nofollow">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script><title>Phillips Intake System</title><style>:root{--accent:#1a3a5c}
+:root{--accent:#1a3a5c}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#f6f8fb;color:#1a2433;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:#fff;border-bottom:1px solid #e3e9f2;padding:20px 0;position:sticky;top:0;z-index:10}
+.sys{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.sys small{display:block;font-size:13px;font-weight:500;color:#64748b;letter-spacing:0;margin-top:2px}
+.date{float:right;font-size:13px;color:#64748b;padding-top:6px}
+.hero{padding:28px 0 8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid #e3e9f2;border-radius:14px;padding:16px}
+.kpi .v{font-size:30px;font-weight:800;letter-spacing:-.02em}
+.kpi .l{font-size:13px;font-weight:600;margin-top:4px}
+.kpi .n{font-size:11px;color:#94a3b8;margin-top:4px}
+.kpi.gap .v{color:#b6c2d2}
+nav.tabs{display:flex;gap:4px;margin:20px 0 0;overflow-x:auto}
+nav.tabs button{border:1px solid #e3e9f2;background:#fff;border-radius:10px 10px 0 0;
+  padding:12px 18px;font-size:14px;font-weight:600;color:#475569;cursor:pointer;white-space:nowrap}
+nav.tabs button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab{display:none;background:#fff;border:1px solid #e3e9f2;border-radius:0 14px 14px 14px;
+  padding:24px;margin-bottom:32px}
+.tab.active{display:block}
+.tab h2{font-size:17px;margin:0 0 4px}
+.sec{margin-bottom:28px}
+.sec h3{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:0 0 12px}
+.sec p.body{font-size:15px;line-height:1.65;color:#334155;max-width:72ch;margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#94a3b8;
+  padding:10px 12px;border-bottom:2px solid #eef2f7}
+td{padding:12px;border-bottom:1px solid #eef2f7;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td .sub{display:block;font-size:12px;color:#94a3b8;margin-top:3px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;
+  background:#e8f5ec;color:#15803d}
+.pill.warn{background:#fef3e2;color:#b45309}
+.gapnote{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px 16px;
+  font-size:13px;color:#64748b;margin-top:12px}
+footer{padding:24px 0 48px;color:#94a3b8;font-size:12px;text-align:center}
+@media(max-width:640px){.kpi .v{font-size:24px}.tab{padding:16px}td{padding:10px 8px}}
+
+#gate{position:fixed;inset:0;background:#f6f8fb;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .card{background:#fff;border:1px solid #e3e9f2;border-radius:18px;padding:40px 44px;max-width:420px;text-align:center;box-shadow:0 12px 40px rgba(26,58,92,.10)}
+#gate h1{font-size:20px;margin:0 0 8px;letter-spacing:-.01em}
+#gate p{font-size:14px;color:#64748b;margin:0 0 20px}
+#gate .cf-turnstile{margin:0 auto}
+#portal-root{visibility:hidden}
+#portal-root.unlocked{visibility:visible}
+</style></head><body>
+<div id="gate"><div class="card">
+<h1>Client portal</h1>
+<p id="gate-msg">Please verify you are human to view this portal.</p>
+<div class="cf-turnstile" data-sitekey="0x4AAAAAAFLVjZtHLNhxmbTc" data-callback="portalUnlock" data-error-callback="portalGateError" data-expired-callback="portalGateError"></div>
+</div></div>
+<div id="portal-root"><header class='top'><div class='wrap'><span class='date'>October 01, 2026</span><div class='sys'>Phillips Intake System<small>Marketing performance command</small></div></div></header><div class='wrap'><div class='hero'><div class='kpis'><div class='kpi'><div class='v'>$230.75</div><div class='l'>Ad spend</div><div class='n'>Meta · Sep 30 baseline</div></div><div class='kpi'><div class='v'>34</div><div class='l'>Ad-placed calls</div><div class='n'>Meta attribution · Sep 30</div></div><div class='kpi'><div class='v'>38</div><div class='l'>Calls on tracking</div><div class='n'>CallRail · Sep 30</div></div><div class='kpi'><div class='v'>30</div><div class='l'>Reached Sofia</div><div class='n'>Vapi · Sep 30</div></div><div class='kpi'><div class='v'>6</div><div class='l'>Human conversations</div><div class='n'>all BTL · Sep 30</div></div><div class='kpi'><div class='v'>$38.46</div><div class='l'>Cost / conversation</div><div class='n'>derived · Sep 30</div></div><div class='kpi'><div class='v'>0</div><div class='l'>Qualified transfers</div><div class='n'>Sep 30</div></div><div class='kpi gap'><div class='v'>—</div><div class='l'>Signed cases</div><div class='n'>awaiting disposition feed</div></div></div></div><nav class='tabs'><button class='active' onclick="show('queue',this)">Current Queue</button><button class='' onclick="show('campaigns',this)">Old Campaigns</button><button class='' onclick="show('build',this)">Engine Build</button><button class='' onclick="show('dispositions',this)">Daily Disposition Report</button></nav><div class='tab active' id='tab-queue'><h2>Current Queue</h2><div style='height:12px'></div><div class='sec'><h3>Live lanes</h3><div style='overflow-x:auto'><table><tr><th>Lane</th><th>Detail</th><th>Status</th><th>Notes</th></tr><tr><td><b>BTL — Sofia intake line</b></td><td>+1 (202) 932-9700</td><td><span class='pill'>Live</span></td><td>Mass tort + sex abuse · assistant c45499e0</td></tr><tr><td><b>NIL — Sofia intake line</b></td><td>+1 (602) 693-1461</td><td><span class='pill'>Live</span></td><td>PI + MVA · assistant 82d628a7</td></tr><tr><td><b>Transfer retry engine</b></td><td>every 15 min · 8am–8pm local</td><td><span class='pill'>Active</span></td><td>3 attempts max · last sweep Oct 1, 11:04am PT, nothing due</td></tr></table></div></div><div class='sec'><h3>What happens next</h3><p class='body'>Every inbound call reaches Sofia in seconds. She qualifies the caller and warm-transfers real claims to Phillips live. Missed or failed transfers are retried automatically during calling hours — up to three attempts, then escalated.</p></div></div><div class='tab' id='tab-campaigns'><h2>Old Campaigns</h2><div style='height:12px'></div><div class='sec'><h3>Campaign history</h3><div style='overflow-x:auto'><table><tr><th>Campaign</th><th>Scale</th><th>Outcome</th><th>Lesson / next</th></tr><tr><td><b>MVA entry campaign</b></td><td>$40,000 spend</td><td><span class='pill'>42 intakes · 0 signed</span></td><td>Died on contact, not merit. Next play: qualification + warm transfer up front.</td></tr><tr><td><b>LA County joint venture</b></td><td>Historical</td><td><span class='pill'>On file</span></td><td>Results held for the live walkthrough.</td></tr><tr><td><b>40K MVA program</b></td><td>Historical</td><td><span class='pill'>Leads + dispositions on file</span></td><td>Disposition reconciliation in progress.</td></tr></table></div></div><div class='sec'><h3>Call-first relaunch — Sep 30</h3><p class='body'>The program relaunched call-first: ads drive Call Now taps, Sofia answers in seconds, real claims transfer to Phillips live. Day-one baseline: $230.75 spend, 34 ad-placed calls, 30 reached Sofia, 6 human conversations, 2 forwards to Phillips (1 internal test, 1 voicemail), 0 qualified transfers. Signed-case outcomes join automatically once the disposition feed connects.</p></div></div><div class='tab' id='tab-build'><h2>Engine Build</h2><div style='height:12px'></div><div class='sec'><h3>Lanes</h3><div style='overflow-x:auto'><table><tr><th>Lane</th><th>Matters</th><th>Stack</th><th>State</th></tr><tr><td><b>BTL</b></td><td>Mass tort + sex abuse</td><td><span class='pill'>Own Vapi + Sofia + tracking</span></td><td>Call ads live · paused spend awaiting budget approval</td></tr><tr><td><b>NIL</b></td><td>PI + MVA</td><td><span class='pill'>Own Vapi + Sofia + tracking</span></td><td>Built · parked while BTL learns</td></tr></table></div></div><div class='sec'><h3>Intake &amp; tracking</h3><div style='overflow-x:auto'><table><tr><th>System</th><th>What it does</th><th>State</th><th>Notes</th></tr><tr><td><b>Sofia AI intake</b></td><td>Prequalifies + warm-transfers</td><td><span class='pill'>Live on both lines</span></td><td>Consent read before every transfer</td></tr><tr><td><b>CallRail</b></td><td>17 active tracking numbers</td><td><span class='pill'>Recording on</span></td><td>Every transfer dials a tracker — full recordings</td></tr><tr><td><b>Litify</b></td><td>Lead push live</td><td><span class='pill'>Disposition feed pending</span></td><td>Signed/declined outcomes will post here automatically</td></tr></table></div></div></div><div class='tab' id='tab-dispositions'><h2>Daily Disposition Report</h2><div style='height:12px'></div><div class='sec'><h3>Latest dispositions</h3><div style='overflow-x:auto'><table><tr><th>Date</th><th>Item</th><th>Disposition</th><th>Signed</th></tr><tr><td><b>Sep 30</b></td><td>Forward #1</td><td><span class='pill'>Internal test call</span></td><td>—</td></tr><tr><td><b>Sep 30</b></td><td>Forward #2</td><td><span class='pill'>Voicemail / non-claim</span></td><td>—</td></tr></table></div></div><div class='sec'><h3>About this report</h3><p class='body'>Dispositions post here automatically as Phillips works each transfer — qualified, declined with reason, or signed. The feed connection is being finalized; until then this page updates daily by hand. Nothing here is estimated — every row traces to a real call.</p><div class='gapnote'>Marked as a gap until the feed connects — not estimated.</div></div></div></div></div><footer>Every number verified · gaps marked as gaps</footer><script>
+function portalUnlock(token){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('portal-root').classList.add('unlocked');
+}
+function portalGateError(){
+  var p=document.getElementById('gate-msg');
+  if(p)p.textContent='Verification could not load. Please reload the page.';
+}
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    if(typeof turnstile==='undefined'){
+      portalGateError();
+    }
+  },8000);
+});
+
+
+function show(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script></body></html>
