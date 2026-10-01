@@ -125,7 +125,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
     <h2>Proof path — live, not a deck</h2>
     <p style="color:var(--g400);max-width:40rem">The engine is already running on our domains. Snapshot buyers look at this stack, then we map it to theirs.</p>
     <div class="proof-list">
-      <a class="cta" data-cta-id="proof_sofia" href="/talk-to-sofia.html"><b>Sofia Adaptive Intake</b><span>Live voice on this domain. Same brain, LFMA gold skin.</span></a>
+      <a class="cta" data-cta-id="proof_sofia" href="/talk-to-sofia.html"><b>Sofia Adaptive Intake</b><span>Dedicated LFMA voice is tenant-gated. Consumer-intake assistants are not reused across brands.</span></a>
       <a class="cta" data-cta-id="proof_nil" href="https://nearestinjurylawyers.com/?utm_source=lfma&amp;utm_campaign=snapshot"><b>NIL — nearestinjurylawyers.com</b><span>Consumer injury matching. Ads front door. Cloudflare + Render.</span></a>
       <a class="cta" data-cta-id="proof_btl" href="https://btl-site.onrender.com/?utm_source=lfma&amp;utm_campaign=snapshot"><b>BTL — Best Tort Lawyers</b><span>Network wrapper. Operating unit. DNS cut last.</span></a>
       <a class="cta" data-cta-id="proof_dihac" href="https://dihac-site.onrender.com/?utm_source=lfma&amp;utm_campaign=snapshot"><b>DIHAC — doihaveaclaim.ai</b><span>Claim-checker door. Same Sofia, different skin.</span></a>
@@ -172,8 +172,8 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:28px 0;color:var(--g50
         <p class="note">Nothing is charged here. If we take the work, you get an invoice. If we don’t, you get a no. Marketing Apes is not a law firm. We do not promise case outcomes.</p>
       </form>
       <div class="ok" id="thanks">
-        <h3>Request received.</h3>
-        <p>Kyle reviews fit. If it is a Snapshot, you get the invoice. If it is not, you get a no. That is the product.</p>
+        <h3>Request sent.</h3>
+        <p>We’ll confirm the request by email. Kyle reviews fit; if it is a Snapshot, you get the invoice. If it is not, you get a no.</p>
       </div>
     </div>
   </div>
@@ -201,6 +201,8 @@ document.getElementById('snapForm').addEventListener('submit',function(e){
   data.tenant_id='LFMA';
   data.source_url=location.href;
   data.offer_level='snapshot';
+  // Backward-compatible alias required by the current Make intake filter.
+  data.buyer_name=data.firm;
   var btn=form.querySelector('button[type=submit]');
   btn.disabled=true; btn.textContent='Sending…';
   document.getElementById('err').style.display='none';
