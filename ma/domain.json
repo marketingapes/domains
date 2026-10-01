@@ -100,10 +100,9 @@
       "connection_status": "CURRENT",
       "activation_state": "ON",
       "owner_tenant_id": "MA",
-      "shared_with": [
-        "LFMA"
-      ],
-      "page_id": "137455619624058"
+      "shared_with": [],
+      "page_id": "137455619624058",
+      "note": "Marketing Apes Facebook Page is MA-owned only; LFMA now has its own dedicated Facebook Page."
     },
     "instagram": {
       "connection_status": "MISSING",
