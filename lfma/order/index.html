@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Order a Legal Campaign | Law Firm Marketing Apes</title>
+<meta name="description" content="Choose the tort, set the firm's qualification rules, and order a $2,500 AI-built plaintiff campaign. Media spend is separate and governed by the tort playbook.">
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--ink:#0b1220;--ink2:#131d31;--paper:#f5f1e8;--card:#fffdf8;--line:#d9d3c5;--muted:#69717d;--gold:#c69b4b;--orange:#ef5b32;--green:#176d58;--sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--serif:Georgia,"Times New Roman",serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.45}a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.top{background:#070b12;color:#dce3ea;border-bottom:1px solid #20293a}.top .wrap{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px}.brand{font-weight:800;letter-spacing:.03em}.tag{color:#aeb8c6}
+.hero{background:radial-gradient(circle at 85% 12%,rgba(198,155,75,.19),transparent 27%),linear-gradient(135deg,#09101c,#101a2c 62%,#0a101b);color:#fff;padding:68px 0 54px}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:11px;font-weight:800;color:#e3b967;margin:0 0 15px}.hero h1{font:700 clamp(44px,7vw,82px)/.98 var(--serif);letter-spacing:-.045em;margin:0;max-width:10ch}.hero p{font-size:20px;color:#d5dce4;max-width:720px;margin:20px 0 0}.price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:25px}.price b{font:700 clamp(34px,5vw,56px)/1 var(--serif)}.price span{color:#aeb7c4}
+.hero-card{border:1px solid #344056;background:rgba(255,255,255,.05);border-radius:20px;padding:22px}.hero-card h2{font:700 24px/1.15 var(--serif);margin:0 0 14px}.hero-card ol{margin:0;padding-left:20px;color:#d7dde4}.hero-card li{margin:10px 0}.hero-card strong{color:#fff}
+.section{padding:64px 0}.section h2{font:700 clamp(32px,4.8vw,54px)/1.03 var(--serif);letter-spacing:-.035em;margin:0}.lede{font-size:17px;color:#545d68;max-width:780px;margin:14px 0 0}
+.catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}.tort{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;cursor:pointer;transition:.18s}.tort:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(11,18,32,.08)}.tort.active{outline:3px solid rgba(198,155,75,.35);border-color:var(--gold)}.tort small{display:block;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;color:var(--gold)}.tort h3{font:700 22px/1.1 var(--serif);margin:10px 0 8px}.tort .spend{font-weight:800;margin-top:14px}.tort .sub{font-size:12px;color:var(--muted);margin-top:4px}.badge{position:absolute;top:14px;right:14px;border-radius:999px;padding:6px 8px;font-size:10px;font-weight:800;background:#e8f3ef;color:var(--green)}.badge.pending{background:#f4ecdc;color:#856425}
+.order-shell{background:#0b1220;color:#fff;padding:68px 0}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:start}.panel{background:#fff;color:var(--ink);border-radius:18px;padding:22px}.panel h3{font:700 23px/1.15 var(--serif);margin:0 0 12px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}label{display:block;font-size:12px;font-weight:800;margin:4px 0 6px}input,select,textarea{width:100%;border:1px solid #cbc6bb;border-radius:10px;padding:12px 13px;font:500 15px/1.3 var(--sans);background:#fffdf8;color:#111;outline:none}textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#6d7788;box-shadow:0 0 0 3px rgba(17,28,46,.08)}.help{font-size:11px;color:#747b83;margin-top:5px}
+.summary{position:sticky;top:16px;background:#f7f3ea;color:#111;border-radius:18px;padding:22px}.summary h3{font:700 24px/1.1 var(--serif);margin:0 0 16px}.line{display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-top:1px solid #d9d3c5;font-size:14px}.line:first-of-type{border-top:0}.line span:last-child{text-align:right;font-weight:800}.total{font-size:18px}.status{margin-top:16px;border-radius:12px;padding:12px;background:#fff;border:1px solid #d8d3c6;font-size:13px}.status strong{display:block}.cta{display:block;width:100%;border:0;border-radius:12px;padding:15px 18px;background:var(--orange);color:white;font-weight:900;font-size:16px;cursor:pointer;margin-top:14px}.cta:disabled{opacity:.6;cursor:wait}.secondary{display:block;text-align:center;margin-top:10px;font-size:12px;color:#5f6872}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:28px}.flow div{background:#fff;padding:18px;border-right:1px solid var(--line)}.flow div:last-child{border-right:0}.flow b{display:block;font:700 17px/1.15 var(--serif);margin-bottom:6px}.flow span{font-size:12px;color:var(--muted)}
+.footer{background:#070b12;color:#aeb7c4;padding:26px 0 84px;font-size:12px}.footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer a{color:#fff}
+@media(max-width:900px){.hero-grid,.grid{grid-template-columns:1fr}.catalog{grid-template-columns:1fr 1fr}.summary{position:static}.flow{grid-template-columns:1fr}.flow div{border-right:0;border-bottom:1px solid var(--line)}.flow div:last-child{border-bottom:0}}
+@media(max-width:620px){.catalog,.fields{grid-template-columns:1fr}.full{grid-column:auto}.hero{padding:48px 0 40px}.section,.order-shell{padding:48px 0}.hero h1{font-size:48px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><div class="brand">LAW FIRM MARKETING APES</div><div class="tag">Kyle + AI · Plaintiff campaign ordering</div></div></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Order a campaign</p>
+      <h1>Pick the tort. Give us the rules.</h1>
+      <p>LFMA turns the brief into a branded campaign build: landing experience, ad creative/copy, Sofia AI pre-qualification, call/text intake, qualified routing and measurement.</p>
+      <div class="price"><b>$2,500</b><span>one-time campaign build · media spend separate</span></div>
+    </div>
+    <aside class="hero-card">
+      <h2>How the pilot works</h2>
+      <ol>
+        <li><strong>Select the tort.</strong> The campaign playbook supplies the locked media minimum when one exists.</li>
+        <li><strong>Set your criteria.</strong> Geography, qualification, disqualifiers and transfer destination.</li>
+        <li><strong>Preview the build.</strong> The staged printer generates the branded campaign direction.</li>
+        <li><strong>Pay after approval.</strong> Production work starts after invoice payment. Nothing launches or spends without approval.</li>
+      </ol>
+    </aside>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#9a722d">Campaign menu</p>
+    <h2>Choose your first case type.</h2>
+    <p class="lede">Media minimums come from the LFMA tort playbook — not invented estimates. Sex abuse is currently locked. Other torts can still be requested and are marked playbook-pending until Kyle locks their test budget.</p>
+
+    <div class="catalog" id="catalog">
+      <article class="tort active" data-tort="Institutional sex abuse" data-spend="3000" data-status="active">
+        <span class="badge">PLAYBOOK LOCKED</span><small>Fast lane</small><h3>Institutional / Sex Abuse</h3>
+        <div class="spend">$3,000 minimum media test</div><div class="sub">2-week sprint · $2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Motor vehicle injury" data-status="pending">
+        <span class="badge pending">PLAYBOOK PENDING</span><small>High volume</small><h3>MVA / Auto Injury</h3>
+        <div class="spend">Media minimum set by playbook</div><div class="sub">$2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Mass tort / pharma / device" data-status="pending">
+        <span class="badge pending">PLAYBOOK PENDING</span><small>National</small><h3>Mass Tort / Pharma / Device</h3>
+        <div class="spend">Media minimum set by playbook</div><div class="sub">$2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Product liability" data-status="pending">
+        <span class="badge pending">PLAYBOOK PENDING</span><small>Plaintiff</small><h3>Product Liability</h3>
+        <div class="spend">Media minimum set by playbook</div><div class="sub">$2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Premises liability" data-status="pending">
+        <span class="badge pending">PLAYBOOK PENDING</span><small>Local / regional</small><h3>Premises Liability</h3>
+        <div class="spend">Media minimum set by playbook</div><div class="sub">$2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Wrongful death" data-status="pending">
+        <span class="badge pending">PLAYBOOK PENDING</span><small>Plaintiff</small><h3>Wrongful Death</h3>
+        <div class="spend">Media minimum set by playbook</div><div class="sub">$2,500 build fee</div>
+      </article>
+      <article class="tort" data-tort="Custom plaintiff campaign" data-status="pending">
+        <span class="badge pending">REQUEST ANY TORT</span><small>Custom</small><h3>Something Else</h3>
+        <div class="spend">Tell us the tort</div><div class="sub">$2,500 build fee · playbook set before media activation</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="order-shell" id="order">
+  <div class="wrap grid">
+    <form class="panel" id="orderForm">
+      <h3>Campaign brief</h3>
+      <div class="fields">
+        <div><label for="firm">Firm name</label><input id="firm" required placeholder="Smith Trial Law"></div>
+        <div><label for="website">Firm website</label><input id="website" placeholder="https://yourfirm.com"></div>
+        <div><label for="name">Your name</label><input id="name" required></div>
+        <div><label for="email">Work email</label><input id="email" type="email" required></div>
+        <div><label for="phone">Transfer / intake phone</label><input id="phone" required placeholder="(555) 123-4567"></div>
+        <div><label for="states">Target states</label><input id="states" required placeholder="CA, AZ"></div>
+        <div class="full"><label for="tort">Tort / matter type</label><input id="tort" required value="Institutional sex abuse"></div>
+        <div class="full"><label for="criteria">What must be true to qualify?</label><textarea id="criteria" required placeholder="Diagnosis, incident/exposure dates, venue, treatment, age, other required facts..."></textarea></div>
+        <div class="full"><label for="dq">Automatic disqualifiers</label><textarea id="dq" placeholder="Already represented, outside target states, outside incident window..."></textarea></div>
+        <div><label for="capacity">Weekly capacity</label><input id="capacity" type="number" min="1" value="12"></div>
+        <div><label for="delivery">Qualified delivery</label><select id="delivery"><option>Warm transfer to intake</option><option>Secure lead delivery</option><option>Human review queue</option></select></div>
+        <div class="full"><label for="notes">Anything else the AI needs to know?</label><textarea id="notes" placeholder="Languages, preferred hours, exclusions, existing landing page, channel preference..."></textarea></div>
+      </div>
+      <p class="help">Submitting generates a staging preview only. It does not create spend, deploy production assets, provision a phone number, or launch ads.</p>
+      <button class="cta" id="previewBtn" type="submit">Generate campaign preview →</button>
+    </form>
+
+    <aside class="summary">
+      <p class="eyebrow" style="color:#9a722d">Order summary</p>
+      <h3 id="sumTort">Institutional / Sex Abuse</h3>
+      <div class="line"><span>Campaign build</span><span>$2,500</span></div>
+      <div class="line"><span>Minimum media test</span><span id="sumSpend">$3,000</span></div>
+      <div class="line total"><span>Initial test commitment</span><span id="sumTotal">$5,500</span></div>
+      <div class="status" id="playbookStatus"><strong>Playbook locked.</strong> $3,000 spend · 2-week sprint.</div>
+      <div class="status"><strong>Production gate.</strong> Build fee and media are separate. Nothing launches or spends until the required approval gates pass.</div>
+      <div class="status" id="previewStatus"><strong>Preview not generated yet.</strong> Complete the brief to print the campaign direction.</div>
+      <a class="secondary" href="/">← Back to LFMA</a>
+    </aside>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#9a722d">What happens next</p>
+    <h2>Request → Preview → Pay → Build → Test → Ready.</h2>
+    <div class="flow">
+      <div><b>1. Request</b><span>Choose the tort and give us the firm's rules.</span></div>
+      <div><b>2. Preview</b><span>See the branded campaign direction from the staged printer.</span></div>
+      <div><b>3. Pay</b><span>$2,500 build fee. Media stays separate.</span></div>
+      <div><b>4. Build + test</b><span>Page, ads, Sofia, routing, tracking and controlled QA.</span></div>
+      <div><b>5. Ready</b><span>Ready for approval within 24 hours after payment and required inputs.</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap"><div><strong style="color:#fff">Law Firm Marketing Apes</strong><br>Marketing Apes LLC is not a law firm and does not provide legal advice.</div><div><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a><br>Results are not guaranteed.</div></div></footer>
+
+<script>
+(function(){
+  var API="https://lfma-printer-staging.onrender.com";
+  var cards=[].slice.call(document.querySelectorAll(".tort"));
+  var tort=document.getElementById("tort"),sumTort=document.getElementById("sumTort"),sumSpend=document.getElementById("sumSpend"),sumTotal=document.getElementById("sumTotal"),playbook=document.getElementById("playbookStatus");
+  var activeSpend=3000;
+
+  function money(n){return "$"+Number(n||0).toLocaleString("en-US",{maximumFractionDigits:0})}
+  function labelFor(card){return card.querySelector("h3").textContent}
+  function updateSummary(card){
+    cards.forEach(function(x){x.classList.remove("active")}); card.classList.add("active");
+    tort.value=card.dataset.tort; sumTort.textContent=labelFor(card);
+    if(card.dataset.status==="active"){
+      activeSpend=Number(card.dataset.spend||0); sumSpend.textContent=money(activeSpend); sumTotal.textContent=money(2500+activeSpend);
+      playbook.innerHTML="<strong>Playbook locked.</strong> "+money(activeSpend)+" spend · 2-week sprint.";
+    }else{
+      activeSpend=0; sumSpend.textContent="Playbook pending"; sumTotal.textContent="$2,500 + media";
+      playbook.innerHTML="<strong>Playbook pending.</strong> The tort can be requested now, but no media minimum is invented before Kyle locks the playbook.";
+      refreshRule(card.dataset.tort);
+    }
+    document.getElementById("order").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  cards.forEach(function(card){card.addEventListener("click",function(){updateSummary(card)})});
+
+  function refreshRule(value){
+    fetch(API+"/rule?tort="+encodeURIComponent(value)).then(function(r){return r.json()}).then(function(j){
+      if(j.status==="active" && j.spend){
+        activeSpend=Number(j.spend); sumSpend.textContent=money(activeSpend); sumTotal.textContent=money(2500+activeSpend);
+        playbook.innerHTML="<strong>Playbook locked.</strong> "+(j.rule_line||money(activeSpend)+" minimum media test.");
+      }
+    }).catch(function(){});
+  }
+  tort.addEventListener("change",function(){refreshRule(tort.value.trim())});
+
+  document.getElementById("orderForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var btn=document.getElementById("previewBtn"),st=document.getElementById("previewStatus");
+    btn.disabled=true; btn.textContent="Printing preview…"; st.innerHTML="<strong>Building preview.</strong> The staged campaign printer is rendering the page and ad concept.";
+    var payload={
+      tort:tort.value.trim(),
+      states:document.getElementById("states").value.trim(),
+      weekly_capacity:Number(document.getElementById("capacity").value||12),
+      diagnosis_required:document.getElementById("criteria").value.trim(),
+      disqualifiers:document.getElementById("dq").value.trim(),
+      delivery_method:document.getElementById("delivery").value,
+      channels:["Meta","Google Search"],
+      firm_name:document.getElementById("firm").value.trim(),
+      phone:document.getElementById("phone").value.trim(),
+      monthly_budget:activeSpend,
+      source_website:document.getElementById("website").value.trim(),
+      order_contact_name:document.getElementById("name").value.trim(),
+      order_contact_email:document.getElementById("email").value.trim(),
+      order_notes:document.getElementById("notes").value.trim()
+    };
+    fetch(API+"/print",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
+      .then(function(x){
+        if(!x.ok) throw new Error((x.j.errors||[x.j.error||"preview rejected"]).join(" · "));
+        var job=x.j.job_id,tries=0;
+        var timer=setInterval(function(){
+          tries++;
+          fetch(API+"/status/"+encodeURIComponent(job)).then(function(r){return r.json()}).then(function(s){
+            if(s.status==="preview_ready"){
+              clearInterval(timer); btn.disabled=false; btn.textContent="Generate another preview →";
+              var p=API+s.preview_url,a=API+s.ad_preview_url;
+              st.innerHTML="<strong>Preview ready.</strong><br><a href='"+p+"' target='_blank' rel='noopener'>Open landing page preview ↗</a><br><a href='"+a+"' target='_blank' rel='noopener'>Open ad preview ↗</a><br><br>Next gate: request the $2,500 pilot invoice from Kyle.";
+            }else if(s.status==="failed"||tries>45){
+              clearInterval(timer); btn.disabled=false; btn.textContent="Try preview again →"; st.innerHTML="<strong>Preview needs attention.</strong> The staged printer did not complete. No production action occurred.";
+            }
+          }).catch(function(){});
+        },800);
+      })
+      .catch(function(err){
+        btn.disabled=false; btn.textContent="Try preview again →"; st.innerHTML="<strong>Preview blocked.</strong> "+String(err.message||err);
+      });
+  });
+})();
+</script>
+</body>
+</html>
