@@ -35,7 +35,7 @@
   meta_pixel_direct:false, // flip to true only if GTM-NKLD8KST has no Meta tag
   tiktok_pixel:"D77KL3RC77U88469GTT0",
   phone_tel:"+16026931461",phone_display:"(602) 693-1461",phone_status:"live",
-  intake_endpoint:null,disclaimer_status:"pending-attorney-review",criteria_status:"assumed"};</script>
+  intake_endpoint:"https://legal-web-lead.onrender.com/api/v1/nil/web-lead",disclaimer_status:"pending-attorney-review",criteria_status:"assumed"};</script>
 <!-- Google Tag Manager (NIL web container) -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NKLD8KST');</script>
 <!-- End Google Tag Manager -->
@@ -45,7 +45,7 @@
 if(L.meta_pixel&&L.meta_pixel_direct===true){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',L.meta_pixel);fbq('track','PageView');}
 if(L.tiktok_pixel){!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=i;ttq._t=ttq._t||{};ttq._t[e]=+new Date;ttq._o=ttq._o||{};ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript";o.async=!0;o.src=i+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)}}(window,document,"ttq");ttq.load(L.tiktok_pixel);ttq.page();}
 })(window.EE_LANE);</script>
-<link rel="stylesheet" href="/mva-pi/lane.css?v=20260929v2">
+<link rel="stylesheet" href="/mva-pi/lane.css?v=20261002blitz">
 </head>
 <body>
 <div class="sb37" style='font:400 16px/1.45 "Times New Roman",Times,serif;background:#f7f2e7;color:#1a1a1a;padding:12px 18px;border-bottom:1px solid #d9cfb8;text-align:center'>DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California or that a California court would have jurisdiction over.</div>
@@ -84,18 +84,18 @@ if(L.tiktok_pixel){!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]|
       </div>
       <div class="q-body" id="formBody">
         <form id="leadForm" data-qualifier data-done="leadDone" data-hide="formBody" novalidate>
-          <!-- intake_endpoint is null: this form never POSTs. It validates, fires events, then offers the phone line. -->
+          <!-- intake_endpoint: POSTs the lead server-side to the Render Sofia callback queue. -->
           <div class="grid">
             <p class="q-sep">Where can Sofia reach you?</p>
-            <div class="field full"><label for="full_name">Full name</label><input id="full_name" name="full_name" type="text" autocomplete="name" maxlength="100" required aria-describedby="full_name-e" data-msg="Please enter your name."><span class="ferr" id="full_name-e"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e" data-msg="Please enter a mobile number."><span class="ferr" id="phone-e"></span></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="100" required data-msg="Please enter your email." aria-describedby="email-e"><span class="ferr" id="email-e"></span></div><label class="consent full"><input type="checkbox" name="consent" value="yes"><span>By checking this box and selecting “Call Sofia now,” I agree that Phillips Law Group and its intake staff may call and text me at the number provided about my inquiry, including by automated text message. Consent is not a condition of any service. Calls may be recorded. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help. I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms.html" target="_blank" rel="noopener">Terms</a>.</span></label>
+            <div class="field full"><label for="full_name">Full name</label><input id="full_name" name="full_name" type="text" autocomplete="name" maxlength="100" required aria-describedby="full_name-e" data-msg="Please enter your name."><span class="ferr" id="full_name-e"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e" data-msg="Please enter a mobile number."><span class="ferr" id="phone-e"></span></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="100" required data-msg="Please enter your email." aria-describedby="email-e"><span class="ferr" id="email-e"></span></div><p class="consent-notice full">By selecting “Call Sofia now,” you agree that Phillips Law Group — including Sofia, its AI intake assistant — may call or text you at the number you provided about this inquiry, including calls and texts using automated technology and artificial or prerecorded voice. Calls may be recorded. Consent is not a condition of any service. Message and data rates may apply. Reply STOP to opt out of texts. You agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms.html" target="_blank" rel="noopener">Terms</a>.</p>
           </div>
-          <label class="hp" for="lf-hp">Leave this field blank</label><input class="hp" id="lf-hp" name="company_website" tabindex="-1" autocomplete="off">
+          <label class="hp" for="lf-hp">Leave this field blank</label><input class="hp" id="lf-hp" name="company" tabindex="-1" autocomplete="off">
           <button class="submit" type="submit">Call Sofia now</button>
           <p class="status" role="status" aria-live="polite"></p>
         </form>
       </div>
       <div class="done" id="leadDone" hidden aria-live="polite">
-        <div class="tick" aria-hidden="true">✓</div><h3>Thanks. The fastest next step is a quick call.</h3><p>Our online form isn’t connected yet, so nothing you entered was sent. Sofia can pick up right now, take the basics in a few minutes, and connect you with Phillips Law Group’s intake team.</p>
+        <div class="tick" aria-hidden="true">✓</div><h3>Thanks — we’ve got your details.</h3><p>Sofia will call you shortly. If you’d rather talk right now, call her directly — it’s free, and there’s no obligation.</p>
         <a class="call-big" data-phone href="tel:+16026931461"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg><span><strong>Call Sofia now</strong><small data-phone-display>(602) 693-1461</small></span></a>
         <p>Deadlines vary by state, so it’s worth calling soon. Calling is free, and there’s no obligation.</p>
         
@@ -161,6 +161,6 @@ if(L.tiktok_pixel){!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]|
   
   <p>© 2026 Marketing Apes LLC · <a href="/mva-pi/">Phillips Law Group</a></p>
 </div></footer>
-<script src="/mva-pi/lane.js?v=20260929v2" defer></script>
+<script src="/mva-pi/lane.js?v=20261002blitz" defer></script>
 </body>
 </html>
