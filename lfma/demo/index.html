@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch the machine work — Live Demo</title>
+<meta name="description" content="One man built an intake machine that turns ad clicks into signed retainers. Watch it work, live.">
+<style>
+:root{
+  --bg:#0a0e14; --bg2:#101724; --card:#141c2c; --line:#232f47;
+  --gold:#d4a94e; --gold2:#f0c96a; --txt:#eef2f8; --mut:#93a1b8; --green:#3ddc84;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding:0 20px}
+.hero{padding:56px 0 28px;text-align:center}
+.live{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);border:1px solid rgba(61,220,132,.35);background:rgba(61,220,132,.08);padding:8px 16px;border-radius:999px;margin-bottom:22px}
+.live .dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1{font-size:clamp(34px,8vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:14px}
+h1 .g{color:var(--gold)}
+.sub{font-size:17px;color:var(--mut);max-width:46ch;margin:0 auto}
+.sub b{color:var(--txt)}
+.sec{padding:26px 0}
+.sec h2{font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.paths{display:grid;gap:12px}
+.path{display:block;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-decoration:none;color:var(--txt);transition:transform .12s,border-color .12s}
+.path:active{transform:scale(.98)}
+.path:hover{border-color:var(--gold)}
+.path .t{font-size:20px;font-weight:800;margin-bottom:4px}
+.path .d{font-size:14px;color:var(--mut)}
+.path .go{float:right;font-size:22px;color:var(--gold);line-height:1}
+.callcard{background:linear-gradient(135deg,#1a1430,#101724);border:1px solid var(--gold);border-radius:20px;padding:28px 24px;text-align:center}
+.callcard .num{font-size:30px;font-weight:800;letter-spacing:-.01em;color:var(--gold2);margin:10px 0 6px}
+.callcard .note{font-size:14px;color:var(--mut)}
+.bigbtn{display:block;background:var(--gold);color:#131007;font-weight:800;font-size:18px;text-align:center;padding:18px;border-radius:16px;text-decoration:none;margin-top:18px}
+.bigbtn:active{transform:scale(.98)}
+.ghostbtn{display:block;border:1px solid var(--line);color:var(--txt);font-weight:700;font-size:16px;text-align:center;padding:16px;border-radius:16px;text-decoration:none;margin-top:12px;background:var(--card)}
+.steps{display:grid;gap:10px}
+.step{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;align-items:flex-start}
+.step .n{flex:0 0 34px;height:34px;border-radius:50%;background:var(--gold);color:#131007;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px}
+.step .t{font-weight:800;font-size:16px;margin-bottom:2px}
+.step .b{font-size:14px;color:var(--mut)}
+.proof{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 0}
+.proof ul{list-style:none;display:grid;gap:10px}
+.proof li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.proof li .ck{color:var(--green);font-weight:800;flex:0 0 22px}
+.proof li .sub2{display:block;font-size:13px;color:var(--mut)}
+footer{padding:30px 0 46px;text-align:center;color:var(--mut);font-size:13px}
+footer b{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <span class="live"><span class="dot"></span>Live demo</span>
+    <h1>Watch the <span class="g">machine</span> work.</h1>
+    <p class="sub">One man built an intake machine that turns ad clicks into <b>signed retainers</b>. Everything below is live — tap it and see.</p>
+  </div>
+
+  <div class="sec">
+    <h2>Three ways in</h2>
+    <div class="paths">
+      <a class="path" href="https://nearestinjurylawyers.com/mva-pi/"><span class="go">→</span><div class="t">Form + call</div><div class="d">Fill the form, Sofia calls you back in minutes.</div></a>
+      <a class="path" href="https://nearestinjurylawyers.com/mva-pi/quiz/"><span class="go">→</span><div class="t">Quiz</div><div class="d">Two minutes of questions. Qualify, and the firm knows you're coming.</div></a>
+      <a class="path" href="https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/"><span class="go">→</span><div class="t">Talk to Sofia</div><div class="d">Call the AI intake agent right now. She qualifies you live.</div></a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Hear it yourself</h2>
+    <div class="callcard">
+      <div style="font-size:15px;font-weight:700">Tap to call the live demo line</div>
+      <div class="num">+1 (213) 513-7977</div>
+      <div class="note">Tex answers, then hands you to Sofia.<br>Same voice throughout — the handoff is announced, never a surprise.</div>
+      <a class="bigbtn" href="tel:+12135137977">Call now</a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>The proof board</h2>
+    <p style="color:var(--mut);font-size:15px;margin-bottom:14px">Every lead, every call, every recording — one board. This is what the firm sees.</p>
+    <a class="ghostbtn" href="https://lawfirmmarketingapes.com/portal/phillips/">Open the Phillips portal →</a>
+  </div>
+
+  <div class="sec">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><div class="t">The ad runs</div><div class="b">Facebook and TikTok lead ads catch people at the moment they're hurt.</div></div></div>
+      <div class="step"><div class="n">2</div><div><div class="t">Sofia qualifies — fast</div><div class="b">She's a fast qualifier, not an interrogator. Tell her what happened, in your own words. She grabs what matters and moves.</div></div></div>
+      <div class="step"><div class="n">3</div><div><div class="t">Live transfer to the firm</div><div class="b">Qualified callers go straight to the firm's intake desk while they're still on the line. Missed ones get retried automatically.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="proof">
+  <div class="wrap">
+    <h2 style="font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Live right now</h2>
+    <ul>
+      <li><span class="ck">✓</span><span>3 intake pages live<span class="sub2">form + call · quiz · talk to Sofia — all posting to the intake engine</span></span></li>
+      <li><span class="ck">✓</span><span>Retry engine armed<span class="sub2">fires at 8am — missed transfers get called back automatically</span></span></li>
+      <li><span class="ck">✓</span><span>Portal locked down<span class="sub2">lead data behind a token gate — nothing public</span></span></li>
+      <li><span class="ck">✓</span><span>Facebook + TikTok pipes connected<span class="sub2">lead forms flow straight into the machine</span></span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="wrap">
+  <footer><b>Built by one man and his machines.</b><br>No forms here submit anything — this page is a demo. The live pages above are the real thing.</footer>
+</div>
+</body>
+</html>
