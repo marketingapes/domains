@@ -49,6 +49,18 @@ body{
 .b3{width:220px;height:220px;left:20%;bottom:-80px;background:rgba(123,92,255,.30);animation-delay:-9s}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(36px,-28px) scale(1.12)}}
 .wrap{max-width:640px;margin:0 auto;padding:0 22px}
+/* brand bar */
+.brand{display:flex;align-items:center;justify-content:center;gap:12px;padding-top:26px}
+.brand img{width:52px;height:52px;border-radius:50%;background:#fff;border:2px solid #0d1026;box-shadow:0 4px 14px rgba(13,16,38,.18)}
+.brand .word{font-weight:900;font-size:15px;letter-spacing:.28em;text-transform:uppercase;color:#0d1026}
+/* Kyle card */
+.kylecard{display:flex;gap:16px;align-items:center;margin:24px auto 0;max-width:520px;
+  background:var(--card);border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:16px 18px;
+  box-shadow:0 10px 30px rgba(13,16,38,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.kylecard img{flex:0 0 74px;width:74px;height:74px;border-radius:50%;object-fit:cover;
+  border:3px solid #fff;box-shadow:0 6px 18px rgba(13,16,38,.22)}
+.kylecard .who{font-weight:900;font-size:16px}
+.kylecard .what{font-size:14px;color:var(--mut);margin-top:2px}
 /* playful sticker badges */
 .sticker{display:inline-block;font-weight:900;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
   color:#fff;padding:9px 18px;border-radius:999px;border:3px solid #fff;
@@ -197,6 +209,10 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
 <div class="blob b3" aria-hidden="true"></div>
 
 <div class="wrap">
+  <div class="brand rise d1">
+    <img src="https://marketingapes.com/assets/network/ape-logo.jpg" alt="Marketing Apes logo">
+    <span class="word">Marketing Apes</span>
+  </div>
   <div class="hero rise d1">
     <div class="status"><span class="dot"></span>AI system online</div><br>
     <div class="sticker">1 dude · 1 gorilla · all AI</div>
@@ -213,8 +229,13 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
   </div>
   <p class="ape-cap rise d2">THE <span class="glow">AI</span> BUILDER — ALWAYS ON</p>
 
+  <div class="kylecard rise d3">
+    <img src="/assets/kyle-headshot.png" alt="Kyle — founder of Marketing Apes">
+    <div><div class="who">I'm Kyle.</div><div class="what">I built this all by myself — one gorilla, all AI. I'll build your campaign in front of you and prequalify the leads myself, live.</div></div>
+  </div>
+
   <div class="sec rise d3">
-    <h2>How it works</h2>
+    <h2>What this does for your firm</h2>
     <div class="steps">
       <div class="step"><div class="n">1</div><div><div class="t">Ads go out</div><div class="b">Meta, Google, TikTok — every click tracked to the ad that earned it.</div></div></div>
       <div class="step"><div class="n">2</div><div><div class="t">Sofia qualifies<span class="aitag">AI</span></div><div class="b">Our AI intake agent talks to every lead in seconds — fast qualifier, not an interrogation. She checks the case, the injury, the representation.</div></div></div>
@@ -223,7 +244,7 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
   </div>
 
   <div class="proof rise d4">
-    <h2>Live right now — no vaporware</h2>
+    <h2>Here's the proof — it's live right now</h2>
     <ul>
       <li><span class="ck">✓</span><span>Intake pages live<span class="sub2">Form + call, quiz, and Talk to Sofia — wired server-side.</span></span></li>
       <li><span class="ck">✓</span><span>Retry engine armed<span class="sub2">Missed leads get called back automatically, 8am–5pm.</span></span></li>
