@@ -1,8 +1,9 @@
-/* Nearest Injury Lawyers — lane behaviour v2 (landing qualifier / step-by-step quiz / talk to Sofia).
+/* Nearest Injury Lawyers — lane behaviour v3 (landing qualifier / step-by-step quiz / talk to Sofia).
  * Reads window.EE_LANE (inline in <head>) and, on the quiz page, window.EE_PREQUAL (lane questions).
  * - dataLayer receives ONLY {event, tenant, lane, page}. Never names, phones, emails, answers or states.
- * - EE_LANE.intake_endpoint is null: forms validate, fire ee_call_request, then offer the phone line.
- *   Nothing is POSTed anywhere. (Blocker: wire a NIL intake endpoint before go-live.)
+ * - EE_LANE.intake_endpoint: forms validate, POST the lead server-side to the Render intake
+ *   (Sofia callback queue), fire ee_lead_submitted, then show the done state. Consent is by
+ *   submission: clear TCPA/AI-call language sits by every submit button (no checkbox).
  * Outcomes (criteria ASSUMED): NOT_A_FIT = a hard check hit, FIRM_REVIEW = unsure/prefer-not, QUALIFIED.
  * The visitor never sees which answer mattered; FIRM_REVIEW and QUALIFIED read the same.
  */
@@ -42,7 +43,77 @@
     if (t.closest('[data-exit]')) { e.preventDefault(); try { window.location.replace('https://www.google.com/'); } catch (x) {} }
   });
 
-  // ---- Shared form validation (no endpoint) --------------------------------------------------------
+  // ---- Server-side lead delivery ---------------------------------------------------------------
+  // POSTs the validated lead to the Render intake endpoint (Sofia callback queue).
+  // Consent is by submission: the page carries explicit TCPA/AI-call language by the
+  // submit button, so we send consent:"yes" with the payload. Never send PII to dataLayer.
+  function postLead(form) {
+    var endpoint = L.intake_endpoint;
+    if (!endpoint) return Promise.resolve({ ok: false, error: 'no_endpoint' });
+    var fields = {};
+    form.querySelectorAll('input[name],select[name],textarea[name]').forEach(function (f) {
+      if (f.type === 'checkbox') return; // no checkbox on the page; consent is by submission
+      fields[f.name] = f.value;
+    });
+    var name = (fields.full_name || fields.first_name || '').trim();
+    var payload = {
+      name: name,
+      phone: fields.phone || '',
+      consent: 'yes',
+      tort: 'mva',
+      page_url: location.href,
+      submitted_at: new Date().toISOString()
+    };
+    if (fields.email) payload.email = fields.email;
+    if (fields.company) payload.company = fields.company; // honeypot, server-side filtered
+    var stateSel = form.querySelector('select[name="state"]');
+    if (stateSel && stateSel.value) payload.state = stateSel.value;
+    try {
+      var q = new URLSearchParams(location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { var v = q.get(k); if (v) payload[k] = v; });
+    } catch (e) {}
+    var outcome = form.getAttribute('data-outcome');
+    payload.source = outcome ? 'web-quiz-' + outcome.toLowerCase() : 'web-' + (L.page || 'form');
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().then(function (b) { return { ok: r.ok, status: r.status, body: b }; },
+        function () { return { ok: r.ok, status: r.status, body: {} }; });
+    }).catch(function () { return { ok: false, error: 'network' }; });
+  }
+
+  // Fire conversion signals on a successful lead POST. dataLayer is the primary
+  // path (GTM maps ee_lead_submitted to ad-platform Lead events); fbq/ttq are
+  // best-effort direct fallbacks when those libraries are already on the page.
+  function fireLeadEvent() {
+    track('ee_lead_submitted');
+    try { if (typeof window.fbq === 'function') window.fbq('track', 'Lead'); } catch (e) {}
+    try { if (window.ttq && typeof window.ttq.track === 'function') window.ttq.track('SubmitForm'); } catch (e) {}
+  }
+
+  // Shared submit: validate -> POST -> done (or phone fallback on failure so the lead isn't lost).
+  function submitLead(form, afterValidate) {
+    var btn = form.querySelector('button[type="submit"]');
+    var st = form.querySelector('.status');
+    var label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+    if (st) st.textContent = '';
+    postLead(form).then(function (res) {
+      if (btn) { btn.disabled = false; btn.textContent = label; }
+      if (res.ok) {
+        fireLeadEvent();
+        afterValidate(true);
+      } else {
+        track('ee_lead_failed');
+        if (st) st.textContent = 'Something went wrong sending your details. Please call Sofia directly — it\u2019s free, and she can take it from here.';
+        afterValidate(false);
+      }
+    });
+  }
+
+  // ---- Shared form validation (consent by submission; no checkbox) --------------------------------
   function setErr(field, msg) {
     var e = field.id && $(field.id + '-e');
     if (msg) field.setAttribute('aria-invalid', 'true'); else field.removeAttribute('aria-invalid');
@@ -62,12 +133,8 @@
       }
       if (f.type === 'email' && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return bad(f, 'Please check the email address, or leave it blank.');
     });
-    var c = form.querySelector('[name="consent"]');
-    var box = c && c.closest('.consent');
-    if (box) box.removeAttribute('aria-invalid');
-    if (c && !c.checked) { if (box) box.setAttribute('aria-invalid', 'true'); if (!first) first = c; }
     var st = form.querySelector('.status');
-    if (st) st.textContent = first ? (first === c ? 'Please review and check the contact permission box to continue.' : 'Please check the highlighted fields.') : '';
+    if (st) st.textContent = first ? 'Please check the highlighted fields.' : '';
     if (first) { first.focus(); return false; }
     return true;
   }
@@ -97,7 +164,7 @@
       track('ee_qualification_complete');
       track(o === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified');
       track('ee_call_request');
-      showDone(form, o);
+      submitLead(form, function () { showDone(form, o); });
     });
   });
 
@@ -108,7 +175,7 @@
       var hp = form.querySelector('.hp[name]'); if (hp && hp.value) return;
       if (!validate(form)) return;
       track('ee_call_request');
-      showDone(form, form.getAttribute('data-outcome') || 'QUALIFIED');
+      submitLead(form, function () { showDone(form, form.getAttribute('data-outcome') || 'QUALIFIED'); });
     });
   });
 
