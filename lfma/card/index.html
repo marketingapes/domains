@@ -41,6 +41,14 @@
   .cta{ display:block; text-align:center; margin:2rem 0 0; padding:1.05rem;
         background:var(--accent); color:#141414; font-weight:800; font-size:1.12rem;
         border-radius:12px; text-decoration:none; }
+  form.demo{ display:flex; gap:.6rem; margin:1rem 0 .25rem; }
+  form.demo input{ flex:1; padding:.95rem 1rem; border-radius:10px;
+        border:1px solid var(--line); background:var(--panel); color:var(--ink);
+        font-size:1rem; }
+  form.demo input::placeholder{ color:var(--muted); }
+  form.demo button{ padding:.95rem 1.4rem; border:none; border-radius:10px;
+        background:var(--accent); color:#141414; font-weight:800; font-size:1rem;
+        cursor:pointer; white-space:nowrap; }
   .fine{ text-align:center; color:var(--muted); font-size:.85rem; margin-top:.7rem; }
   footer{ margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--line);
           color:var(--muted); font-size:.85rem; text-align:center; }
@@ -74,13 +82,22 @@
 
   <div class="pull">"You don't own your intake. You're renting it."</div>
 
-  <h2><span class="n">03</span>It's live right now</h2>
-  <p class="lead">This isn't a slide deck. There's a <strong>personal injury blitz running in Arizona as we speak</strong> — lead ads in, Sofia calling back in minutes, every lead tracked end to end.</p>
-  <p>The client portal shows the whole thing live: every lead, where it came from, the ad it saw, every Sofia touch, every transfer. That's the product — <strong>the sprint IS the demo.</strong></p>
+  <h2><span class="n">03</span>The proof — and what's pending</h2>
+  <p class="lead"><strong>LA County was the proof.</strong> We ran the whole machine there first — ads in, Sofia qualifying, live transfers, receipts on everything. That's where the system learned what works.</p>
+  <p><strong>Arizona MVA? Pending.</strong> It's running right now — lead ads in, Sofia calling back in minutes, every lead tracked end to end. The receipts are posting live to the client portal.</p>
 
   <h2><span class="n">04</span>The deal</h2>
   <p class="lead">Two weeks. <strong>$2,500.</strong> A dedicated Sofia line on your live calls, set to your intake criteria.</p>
   <p>Every transcript and every transfer receipt lands in your inbox. You see everything he sees. <strong>If she doesn't earn it, unplug her.</strong> No free trials, no work before payment — he's one man, and he built it all himself.</p>
+
+  <h2><span class="n">05</span>Give me a topic. This or that.</h2>
+  <p class="lead">Here's the parlor trick Kyle does in person:</p>
+  <div class="card"><p class="big">"Name any business. Any claim type. Any city. <strong>Watch the machine build the page while we talk.</strong>"</p></div>
+  <form class="demo" action="https://lawfirmmarketingapes.com/campaign/" method="get">
+    <input name="topic" placeholder="e.g. roofing leads in Dallas" autocomplete="off">
+    <button type="submit">Build it</button>
+  </form>
+  <p class="fine">Name it — the brief starts the build.</p>
 
   <a class="cta" href="https://lawfirmmarketingapes.com/">See the receipts</a>
   <div class="fine">The live machine, the numbers, the proof — on the main site.</div>
