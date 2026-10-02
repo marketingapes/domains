@@ -176,6 +176,10 @@ canvas.addEventListener('touchmove',function(e){
 canvas.addEventListener('touchend',function(){touching=false;});
 window.addEventListener('resize',function(){size();});
 window.addEventListener('orientationchange',function(){setTimeout(size,200);});
+// show the snake on the board before Play is pressed
+snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+dir={x:1,y:0};nextDir={x:1,y:0};
+placeFood();
 size();draw();
 })();
 </script>
