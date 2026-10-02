@@ -138,12 +138,97 @@ test('load: sends the token as a bearer header only, and failures show no figure
 
 test('the page and script ship no report data, tokens or storage use', () => {
   assert.ok(!/localStorage|sessionStorage|document\.cookie/.test(SRC + PAGE), 'token is memory-only');
-  const tab = PAGE.slice(PAGE.indexOf("id='tab-outcomes'"), PAGE.indexOf("id='tab-summary'"));
-  assert.match(tab, /<div id='outcome-root'><\/div>/, 'the tab is empty until a token returns a report');
-  assert.ok(!/\$\d|\d{6,}/.test(tab), 'no figures or ids baked into the tab');
+  assert.ok(!PAGE.includes('tab-outcomes') && !PAGE.includes('outcome-root'), 'the tab is not written into the generated page body');
   assert.ok(!/Bearer [A-Za-z0-9]{12,}|PORTAL_TOKEN\s*=\s*["'][^"']+/.test(SRC + PAGE));
   assert.match(PAGE, /<meta name="robots" content="noindex,nofollow">/);
   assert.match(PAGE, /cf-turnstile/, 'the existing human check is still in place');
-  assert.match(PAGE, /phillips-report\.js\?v=/);
+  assert.match(PAGE, /<script src="\/assets\/portal\/phillips-report\.js\?v=[0-9a-z]+" defer><\/script>/);
   for (const fx of [JSON.stringify(sample()), JSON.stringify(empty())]) assert.ok(!/@|\+1\d{10}|\(\d{3}\) \d{3}-\d{4}/.test(fx), 'fixtures hold no emails or phone numbers');
+});
+
+// ---- Self-mounting tab (the page body is regenerated daily by another job) --------------------------
+function fakeDom() {
+  const byId = new Map();
+  const make = (tag) => {
+    const el = {
+      tagName: tag, children: [], parentNode: null, className: '', textContent: '', value: '', style: {}, disabled: false, listeners: {},
+      classList: { set: new Set(), add(c) { this.set.add(c); }, remove(c) { this.set.delete(c); }, has(c) { return this.set.has(c); } },
+      addEventListener(type, fn) { (el.listeners[type] ||= []).push(fn); },
+      insertBefore(node, ref) { node.parentNode = el; const i = el.children.indexOf(ref); el.children.splice(i < 0 ? el.children.length : i, 0, node); return node; },
+      appendChild(node) { node.parentNode = el; el.children.push(node); return node; },
+      querySelectorAll(sel) { return sel === 'button' ? el.children.filter((c) => c.tagName === 'button') : []; },
+    };
+    let id = ''; let html = '';
+    Object.defineProperty(el, 'id', { get: () => id, set: (v) => { id = v; byId.set(v, el); } });
+    Object.defineProperty(el, 'innerHTML', { get: () => html, set: (v) => {
+      html = v;
+      for (const m of String(v).matchAll(/<(\w+)[^>]*\bid="([^"]+)"/g)) { const child = make(m[1]); child.id = m[2]; }
+    } });
+    return el;
+  };
+  const container = make('div'); const nav = make('nav');
+  for (const label of ['AI Intake', 'Marketing', 'Summary']) { const b = make('button'); b.textContent = label; nav.appendChild(b); }
+  const summary = make('div'); summary.id = 'tab-summary'; summary.className = 'tab'; container.appendChild(summary);
+  const document = {
+    readyState: 'complete', createElement: make, getElementById: (id) => byId.get(id) || null,
+    querySelector: (sel) => (sel === 'nav.tabs' ? nav : null),
+    querySelectorAll: (sel) => (sel === '.tab' ? container.children : sel === 'nav.tabs button' ? nav.children : []),
+    addEventListener() {},
+  };
+  return { document, nav, container, byId };
+}
+
+test('mount: adds the tab and its own token field without touching existing markup; idempotent', () => {
+  const dom = fakeDom();
+  assert.equal(R.mount(dom.document), true);
+  assert.deepEqual(dom.nav.children.map((b) => b.textContent), ['AI Intake', 'Marketing', 'Campaign to outcome', 'Summary']);
+  assert.deepEqual(dom.container.children.map((c) => c.id), ['tab-outcomes', 'tab-summary']);
+  const tab = dom.byId.get('tab-outcomes');
+  assert.match(tab.innerHTML, /type="password" id="outcome-token"/);
+  assert.match(tab.innerHTML, /<div id="outcome-root"><\/div>$/);
+  assert.ok(!/\$\d|\d{6,}/.test(tab.innerHTML), 'no figures or ids before a token is entered');
+  assert.equal(R.mount(dom.document), false, 'second mount is a no-op');
+  assert.equal(dom.nav.children.length, 4);
+  // A page without the expected tabs is left alone.
+  assert.equal(R.mount({ getElementById: () => null, querySelector: () => null }), false);
+});
+
+test('mount: after the page body is regenerated (tab gone), the script mounts it again', () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const regenerated = fakeDom(); // the refresh replaced the body: fresh nav + tabs, no outcome tab
+  assert.equal(R.mount(regenerated.document), true);
+  assert.equal(regenerated.nav.children.filter((b) => b.textContent === 'Campaign to outcome').length, 1);
+});
+
+test('unlock: empty token asks for one and fetches nothing; a working token loads and is cleared from the field', async () => {
+  const dom = fakeDom();
+  const calls = [];
+  const window = { document: dom.document, fetch: async (url, init) => { calls.push(init.headers.Authorization); return { status: 200, ok: true, json: async () => sample() }; } };
+  vm.runInContext(SRC, vm.createContext({ window, Promise, Date, isFinite, isNaN, String, Array, Error }));
+  const input = dom.byId.get('outcome-token'); const go = dom.byId.get('outcome-unlock'); const err = dom.byId.get('outcome-err');
+  assert.ok(dom.byId.get('tab-outcomes'), 'mounted automatically on load');
+  await go.listeners.click[0]();
+  assert.deepEqual([calls.length, err.textContent], [0, 'Enter your portal access token.']);
+  input.value = '  TOKEN-VALUE  ';
+  await go.listeners.click[0]();
+  assert.deepEqual(calls, ['Bearer TOKEN-VALUE']);
+  assert.equal(input.value, '', 'token cleared from the field after success');
+  assert.ok(dom.byId.get('outcome-root').innerHTML.includes('Campaign to outcome'));
+  assert.equal(dom.byId.get('outcome-gate').style.display, 'none');
+  // Tab button activates only this tab.
+  dom.byId.get('outcome-tab-button').listeners.click[0]();
+  assert.equal(dom.byId.get('tab-outcomes').classList.has('active'), true);
+  assert.equal(dom.byId.get('tab-summary').classList.has('active'), false);
+});
+
+test('unlock: a rejected token keeps the gate and shows no figures', async () => {
+  const dom = fakeDom();
+  const window = { document: dom.document, fetch: async () => ({ status: 401, ok: false, json: async () => ({}) }) };
+  vm.runInContext(SRC, vm.createContext({ window, Promise, Date, isFinite, isNaN, String, Array, Error }));
+  dom.byId.get('outcome-token').value = 'bad';
+  await dom.byId.get('outcome-unlock').listeners.click[0]();
+  assert.match(dom.byId.get('outcome-root').innerHTML, /not recognized.*No figures are shown/);
+  assert.notEqual(dom.byId.get('outcome-gate').style.display, 'none');
+  assert.equal(dom.byId.get('outcome-token').value, 'bad', 'left in place so it can be corrected');
 });
