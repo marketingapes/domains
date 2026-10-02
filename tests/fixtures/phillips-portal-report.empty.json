@@ -1,0 +1,1024 @@
+{
+ "schema": "ee.phillips_portal_report/v1",
+ "generated_at": "2026-10-02T18:00:00.000Z",
+ "registry_as_of": "2026-10-02",
+ "sources": [
+  {
+   "id": "meta_ads_btl",
+   "label": "Meta Ads — BTL account",
+   "owner": "dot",
+   "feeds": [
+    "spend",
+    "platform_reported"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "google_ads_btl",
+   "label": "Google Ads — BTL account",
+   "owner": "dot",
+   "feeds": [
+    "spend",
+    "platform_reported"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "google_ads_nil",
+   "label": "Google Ads — NIL account",
+   "owner": "dot",
+   "feeds": [
+    "spend",
+    "platform_reported"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "website_intake",
+   "label": "Website form intake (legal-web-lead)",
+   "owner": "Claude / Kyle",
+   "feeds": [
+    "submission",
+    "queued_callback"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "native_intake",
+   "label": "Native lead-form intake (Make)",
+   "owner": "Kyle",
+   "feeds": [
+    "submission",
+    "queued_callback"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "voice_calls",
+   "label": "Voice provider call records",
+   "owner": "Kyle",
+   "feeds": [
+    "call_placed",
+    "intake_completed",
+    "transfer_attempted"
+   ],
+   "max_age_hours": 26,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "phillips_daily_disposition",
+   "label": "Phillips daily phone-disposition report",
+   "owner": "Phillips (Michael Blom) / Kyle",
+   "feeds": [
+    "firm_receipt_verified",
+    "firm_accepted",
+    "signed_retainer_confirmed"
+   ],
+   "max_age_hours": 50,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  },
+  {
+   "id": "phillips_form_status",
+   "label": "Phillips form-status pushback",
+   "owner": "Phillips / Kyle",
+   "feeds": [
+    "firm_receipt_verified",
+    "firm_accepted",
+    "signed_retainer_confirmed"
+   ],
+   "max_age_hours": 50,
+   "status": "not_connected",
+   "last_success_at": null,
+   "age_hours": null,
+   "note": "No delivery has ever been recorded from this source."
+  }
+ ],
+ "rows": [
+  {
+   "row_id": "btl-meta-native",
+   "identity": {
+    "brand_account": "BTL",
+    "platform": "meta",
+    "account_id": "411567125842274",
+    "campaign_id": "120254657014050231",
+    "campaign_type": "native_lead_form",
+    "ad_sets": [
+     {
+      "id": "120254657571010231",
+      "ads": [
+       "120254657578290231",
+       "120254657581900231",
+       "120254664072710231"
+      ]
+     }
+    ],
+    "ad_groups": null,
+    "asset_groups": null,
+    "ad_labels": null,
+    "page_id": "222081604317115",
+    "form_id": "2292029301564102"
+   },
+   "landing": {
+    "domain": null,
+    "intake_tenant": "BTL",
+    "intake_path": "native_form"
+   },
+   "conversion": {
+    "kind": "meta_native_lead",
+    "pixel_id": null
+   },
+   "attribution_window": {
+    "click": "not_applicable_native_form",
+    "view": "not_applicable_native_form",
+    "verified": false
+   },
+   "configured": {
+    "state": "paused",
+    "daily_budget_usd": 40,
+    "as_of": "2026-10-02",
+    "note": "Configuration on record, not live delivery status."
+   },
+   "spend": {
+    "value": null,
+    "state": "unknown",
+    "as_of": null
+   },
+   "platform_reported": {
+    "conversions": null,
+    "state": "unknown",
+    "as_of": null,
+    "note": "Counted by the ad platform under this row's attribution window."
+   },
+   "stages": {
+    "submission": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "native_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "queued_callback": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "native_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "call_placed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "intake_completed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "transfer_attempted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_receipt_verified": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_accepted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "signed_retainer_confirmed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    }
+   },
+   "leads": 0
+  },
+  {
+   "row_id": "btl-meta-website",
+   "identity": {
+    "brand_account": "BTL",
+    "platform": "meta",
+    "account_id": "411567125842274",
+    "campaign_id": "120254664050830231",
+    "campaign_type": "website_conversion",
+    "ad_sets": [
+     {
+      "id": "120254664075630231",
+      "ads": [
+       "120254664131140231",
+       "120254664127630231",
+       "120254664134920231"
+      ]
+     }
+    ],
+    "ad_groups": null,
+    "asset_groups": null,
+    "ad_labels": {
+     "120254664131140231": "W1",
+     "120254664127630231": "W2",
+     "120254664134920231": "W3"
+    },
+    "page_id": null,
+    "form_id": null
+   },
+   "landing": {
+    "domain": "unverified",
+    "intake_tenant": "unverified",
+    "intake_path": "website_form"
+   },
+   "conversion": {
+    "kind": "meta_pixel",
+    "pixel_id": "673552078259404"
+   },
+   "attribution_window": {
+    "click": "1_day",
+    "view": "none",
+    "verified": true
+   },
+   "configured": {
+    "state": "paused",
+    "daily_budget_usd": 40,
+    "as_of": "2026-10-02",
+    "note": "Configuration on record, not live delivery status."
+   },
+   "spend": {
+    "value": null,
+    "state": "unknown",
+    "as_of": null
+   },
+   "platform_reported": {
+    "conversions": null,
+    "state": "unknown",
+    "as_of": null,
+    "note": "Counted by the ad platform under this row's attribution window."
+   },
+   "stages": {
+    "submission": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "queued_callback": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "call_placed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "intake_completed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "transfer_attempted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_receipt_verified": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_accepted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "signed_retainer_confirmed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    }
+   },
+   "leads": 0
+  },
+  {
+   "row_id": "btl-google-pmax",
+   "identity": {
+    "brand_account": "BTL",
+    "platform": "google",
+    "account_id": "9455635555",
+    "campaign_id": "24313118384",
+    "campaign_type": "performance_max",
+    "ad_sets": null,
+    "ad_groups": null,
+    "asset_groups": [
+     {
+      "id": "6754661608",
+      "label": "W1"
+     },
+     {
+      "id": "6754661503",
+      "label": "W2"
+     },
+     {
+      "id": "6754661833",
+      "label": "W3"
+     }
+    ],
+    "ad_labels": null,
+    "page_id": null,
+    "form_id": null
+   },
+   "landing": {
+    "domain": "nearestinjurylawyers.com",
+    "intake_tenant": "NIL",
+    "intake_path": "website_form"
+   },
+   "conversion": {
+    "kind": "google_conversion_action",
+    "goal_id": "6459301608",
+    "conversion_action_id": "7564588748"
+   },
+   "attribution_window": {
+    "click": "90_day",
+    "view": "1_day",
+    "verified": true
+   },
+   "configured": {
+    "state": "paused",
+    "daily_budget_usd": 20,
+    "as_of": "2026-10-02",
+    "note": "Configuration on record, not live delivery status."
+   },
+   "spend": {
+    "value": null,
+    "state": "unknown",
+    "as_of": null
+   },
+   "platform_reported": {
+    "conversions": null,
+    "state": "unknown",
+    "as_of": null,
+    "note": "Counted by the ad platform under this row's attribution window."
+   },
+   "stages": {
+    "submission": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "queued_callback": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "call_placed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "intake_completed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "transfer_attempted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_receipt_verified": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_accepted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "signed_retainer_confirmed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    }
+   },
+   "leads": 0
+  },
+  {
+   "row_id": "nil-google-search",
+   "identity": {
+    "brand_account": "NIL",
+    "platform": "google",
+    "account_id": "9871020060",
+    "campaign_id": "24313116842",
+    "campaign_type": "search",
+    "ad_sets": null,
+    "ad_groups": [
+     {
+      "id": "203621828871",
+      "ads": [
+       "826676232387"
+      ]
+     },
+     {
+      "id": "200795346196",
+      "ads": [
+       "826676256447"
+      ]
+     },
+     {
+      "id": "199437080774",
+      "ads": [
+       "826676256462"
+      ]
+     }
+    ],
+    "asset_groups": null,
+    "ad_labels": null,
+    "page_id": null,
+    "form_id": null
+   },
+   "landing": {
+    "domain": "nearestinjurylawyers.com",
+    "intake_tenant": "NIL",
+    "intake_path": "website_form"
+   },
+   "conversion": {
+    "kind": "google_conversion_action",
+    "goal_id": "6459309512",
+    "conversion_action_id": "7716640315"
+   },
+   "attribution_window": {
+    "click": "90_day",
+    "view": "1_day",
+    "verified": true
+   },
+   "configured": {
+    "state": "paused",
+    "daily_budget_usd": 100,
+    "as_of": "2026-10-02",
+    "note": "Configuration on record, not live delivery status."
+   },
+   "spend": {
+    "value": null,
+    "state": "unknown",
+    "as_of": null
+   },
+   "platform_reported": {
+    "conversions": null,
+    "state": "unknown",
+    "as_of": null,
+    "note": "Counted by the ad platform under this row's attribution window."
+   },
+   "stages": {
+    "submission": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "queued_callback": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "website_intake",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "call_placed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "intake_completed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "transfer_attempted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "voice_calls",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_receipt_verified": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "firm_accepted": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    },
+    "signed_retainer_confirmed": {
+     "count": null,
+     "state": "unknown",
+     "pending": 0,
+     "not_reached": 0,
+     "unknown": 0,
+     "sources": [
+      {
+       "id": "phillips_daily_disposition",
+       "status": "not_connected"
+      },
+      {
+       "id": "phillips_form_status",
+       "status": "not_connected"
+      }
+     ]
+    }
+   },
+   "leads": 0
+  }
+ ],
+ "unattributed": {
+  "leads": 0,
+  "reasons": {},
+  "stages": {
+   "submission": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "website_intake",
+      "status": "not_connected"
+     },
+     {
+      "id": "native_intake",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "queued_callback": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "website_intake",
+      "status": "not_connected"
+     },
+     {
+      "id": "native_intake",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "call_placed": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "voice_calls",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "intake_completed": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "voice_calls",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "transfer_attempted": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "voice_calls",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "firm_receipt_verified": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "phillips_daily_disposition",
+      "status": "not_connected"
+     },
+     {
+      "id": "phillips_form_status",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "firm_accepted": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "phillips_daily_disposition",
+      "status": "not_connected"
+     },
+     {
+      "id": "phillips_form_status",
+      "status": "not_connected"
+     }
+    ]
+   },
+   "signed_retainer_confirmed": {
+    "count": null,
+    "state": "unknown",
+    "pending": 0,
+    "not_reached": 0,
+    "unknown": 0,
+    "sources": [
+     {
+      "id": "phillips_daily_disposition",
+      "status": "not_connected"
+     },
+     {
+      "id": "phillips_form_status",
+      "status": "not_connected"
+     }
+    ]
+   }
+  }
+ },
+ "excluded": {
+  "test": 0,
+  "dry_run": 0,
+  "superseded_campaign": 0,
+  "superseded_ids": [
+   {
+    "platform": "meta",
+    "kind": "ad_set",
+    "id": "120254663994400231"
+   },
+   {
+    "platform": "meta",
+    "kind": "campaign",
+    "id": "120254663995090231"
+   },
+   {
+    "platform": "google",
+    "kind": "campaign",
+    "id": "24318918184"
+   }
+  ],
+  "ignored_platform_rows": []
+ },
+ "comparability": {
+  "attribution_windows_in_use": [
+   "not_applicable_native_form/not_applicable_native_form",
+   "1_day/none",
+   "90_day/1_day"
+  ],
+  "platform_conversions_comparable": false,
+  "note": "Rows use different attribution windows. Platform-reported conversions are shown per row and are not totalled or compared across rows. Stage counts come from first-party records and do not depend on the window."
+ },
+ "firm_status": {
+  "counts": {},
+  "rule": "A signed retainer is confirmed only by a firm row with status Converted, a Matter ID and a retainer date. Converted without both is converted_unverified and is not counted as signed."
+ },
+ "unmatched": {
+  "count": 0,
+  "rows": []
+ },
+ "operations": {
+  "unreadable_lead_records": 0,
+  "executor": {
+   "id": "website_callback_executor",
+   "status": "unverified",
+   "owner": null,
+   "last_seen_at": null
+  },
+  "unknowns": []
+ }
+}
