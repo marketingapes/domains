@@ -3,204 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RizeUp Media — Homepage Teardown</title>
-<meta name="description" content="A law firm marketing agency homepage, torn down line by line. In their own branding.">
+<title>Bored at Law-Di-Gras? Play Snake.</title>
+<meta name="description" content="Law-Di-Gras boredom relief. Play Snake, check off conference bingo, and see what a real number looks like.">
 <link rel="canonical" href="https://kylegosselin.com/rizeup/">
 <style>
-:root{--navy:#0A2233;--navy2:#0B2A3A;--lime:#3ED600;--ink:#0A2233;--mut:#5c6b75;--card:#fff}
+:root{--navy:#0A2233;--navy2:#0B2A3A;--lime:#3ED600;--ink:#0A2233;--mut:#5c6b75}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{max-width:700px;margin:0 auto;padding:0 22px}
-/* parody agency header */
 .topbar{background:var(--navy);padding:14px 0;position:sticky;top:0;z-index:50}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between}
 .wordmark{text-decoration:none;line-height:1}
 .wordmark .r{font-weight:900;font-size:24px;color:#fff;letter-spacing:-.02em}
 .wordmark .u{font-weight:900;font-size:24px;color:var(--lime);letter-spacing:-.02em}
-.wordmark small{display:block;font-size:9px;letter-spacing:.5em;color:#fff;font-weight:700;margin-top:2px}
-.topnav{display:flex;gap:16px}
-.topnav a{color:#fff;text-decoration:none;font-size:13px;font-weight:600}
-.topnav a:hover{color:var(--lime)}
-@media(max-width:640px){.topnav{display:none}}
-/* hero in their style */
-.hero{background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:70px 0 50px;text-align:center;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:70px;background:#fff;clip-path:polygon(0 100%,100% 100%,100% 30%,0 100%)}
-.hero h1{font-size:clamp(38px,10vw,62px);font-weight:900;letter-spacing:-.03em;line-height:1.04;margin-bottom:16px;position:relative;z-index:1}
-.hero h1 .strike{text-decoration:line-through;text-decoration-color:var(--lime);text-decoration-thickness:5px}
-.hero .sub{font-size:18px;color:#cfe0e8;max-width:46ch;margin:0 auto 28px;position:relative;z-index:1}
-.limebtn{display:inline-block;background:var(--lime);color:#fff;font-weight:800;font-size:18px;padding:18px 34px;border-radius:12px;text-decoration:none;box-shadow:0 10px 30px rgba(62,214,0,.35);position:relative;z-index:1}
+.wordmark small{display:block;font-size:9px;letter-spacing:.42em;color:#fff;font-weight:700;margin-top:2px}
+.topbar .bored{color:var(--lime);font-weight:800;font-size:13px;letter-spacing:.1em}
+.hero{background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:70px 0 60px;text-align:center}
+.hero .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);border:1.5px solid var(--lime);border-radius:999px;padding:8px 18px;margin-bottom:20px}
+.hero h1{font-size:clamp(42px,11vw,68px);font-weight:900;letter-spacing:-.03em;line-height:1.02;margin-bottom:16px}
+.hero h1 .g{color:var(--lime)}
+.hero .sub{font-size:18px;color:#cfe0e8;max-width:44ch;margin:0 auto}
+.snake{padding:46px 0 10px;text-align:center}
+.snake h2{font-size:clamp(26px,7vw,36px);font-weight:900;margin-bottom:8px}
+.snake p{color:var(--mut);font-size:16px;max-width:46ch;margin:0 auto 20px}
+.snake iframe{width:100%;max-width:560px;height:640px;border:3px solid var(--lime);border-radius:18px;background:#000;box-shadow:0 18px 50px rgba(62,214,0,.25)}
+.bingo{padding:44px 0 6px}
+.bingo h2{font-size:clamp(26px,7vw,36px);font-weight:900;text-align:center;margin-bottom:6px}
+.bingo .sub{text-align:center;color:var(--mut);margin-bottom:20px}
+.card{background:#f4f7f9;border:1px solid #e4eaee;border-radius:18px;padding:22px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start;font-size:16px}
+.card .box{flex:0 0 26px;height:26px;border:2.5px solid var(--navy);border-radius:8px;margin-top:2px}
+.card b{font-weight:800}
+.card .why{display:block;font-size:14px;color:var(--mut);margin-top:2px}
+.nums{background:var(--lime);padding:40px 0;text-align:center;color:var(--navy);margin-top:36px}
+.nums h2{font-size:clamp(24px,6vw,32px);font-weight:900;margin-bottom:18px}
+.nums .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.nums .num{font-size:clamp(30px,8vw,46px);font-weight:900}
+.nums .lbl{font-size:14px;font-weight:600}
+.nums .fine{font-size:12px;margin-top:16px;opacity:.75}
+.cta{padding:44px 0 20px;text-align:center}
+.limebtn{display:inline-block;background:var(--lime);color:#fff;font-weight:800;font-size:19px;padding:20px 34px;border-radius:14px;text-decoration:none;box-shadow:0 10px 30px rgba(62,214,0,.35);width:100%;max-width:560px}
 .limebtn:active{transform:scale(.98)}
-/* stats band */
-.stats{background:var(--navy2);color:#fff;padding:34px 0}
-.stats .row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:center}
-.stats .num{font-size:clamp(24px,6vw,36px);font-weight:900;color:var(--lime)}
-.stats .lbl{font-size:12.5px;color:#cfe0e8;margin-top:4px;line-height:1.4}
-@media(max-width:560px){.stats .row{grid-template-columns:1fr;gap:18px}}
-/* boring conferences */
-.rant{padding:56px 0 10px}
-.rant .kicker{font-size:12px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-bottom:14px}
-.rant h2{font-size:clamp(30px,8vw,44px);font-weight:900;letter-spacing:-.02em;margin-bottom:18px}
-.rant p{font-size:17px;color:#333;margin-bottom:14px}
-.rant .punch{font-weight:800;color:var(--ink);font-size:19px}
-/* teardown hits */
-.sec{padding:26px 0 6px}
-.sechead{text-align:center;margin-bottom:22px}
-.sechead h2{font-size:clamp(28px,7vw,40px);font-weight:900;letter-spacing:-.02em}
-.sechead p{color:var(--mut);font-size:16px}
-.hit{background:#f4f7f9;border-radius:18px;padding:24px 22px;margin-bottom:16px;border:1px solid #e4eaee}
-.hit .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--navy);color:var(--lime);font-weight:900;font-size:16px;margin-bottom:12px}
-.hit h3{font-size:21px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
-.hit .theysay{border-left:3px solid var(--lime);padding:10px 14px;margin:12px 0;background:#fff;font-style:italic;color:#444;font-size:15px;border-radius:0 10px 10px 0}
-.hit .theysay b{display:block;font-style:normal;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#2a9d00;margin-bottom:4px}
-.hit p{font-size:16px;color:#333;margin-bottom:10px}
-.hit p:last-child{margin-bottom:0}
-.hit .punch{font-weight:800;color:var(--ink)}
-/* snake */
-.snake{background:var(--navy);padding:56px 0;color:#fff;text-align:center}
-.snake h2{font-size:clamp(28px,7vw,40px);font-weight:900;margin-bottom:10px}
-.snake h2 .g{color:var(--lime)}
-.snake p{color:#cfe0e8;font-size:16px;max-width:46ch;margin:0 auto 22px}
-.snake iframe{width:100%;max-width:560px;height:640px;border:3px solid var(--lime);border-radius:18px;background:#000;box-shadow:0 18px 50px rgba(62,214,0,.2)}
-.snake .note{font-size:13px;color:#8fa3ad;margin-top:12px}
-/* contrast */
-.contrast{margin:40px 0;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:22px;padding:30px 26px;box-shadow:0 16px 40px rgba(10,34,51,.3)}
-.contrast h2{font-size:24px;font-weight:800;margin-bottom:16px}
-.contrast h2 .g{color:var(--lime)}
-.contrast ul{list-style:none;display:grid;gap:12px}
-.contrast li{display:flex;gap:12px;align-items:flex-start;font-size:16px}
-.contrast .ck{flex:0 0 26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--lime);color:var(--navy);font-weight:800;font-size:14px}
-.contrast .num{font-weight:800;color:var(--lime)}
-.cta{padding:10px 0 30px;text-align:center}
-.cta .limebtn{width:100%;max-width:560px}
 .callnote{font-size:14px;color:var(--mut);margin-top:12px}
 footer{background:var(--navy);color:#8fa3ad;padding:34px 0 60px;text-align:center;font-size:13px}
 footer b{color:#fff}
-footer .parody{font-size:11px;margin-top:8px;color:#5c6b75}
 </style>
 </head>
 <body>
 
 <div class="topbar"><div class="wrap">
-  <a class="wordmark" href="https://kylegosselin.com/rizeup/"><span class="r">Rize</span><span class="u">Up</span><small>TEARDOWN</small></a>
-  <nav class="topnav">
-    <a href="#numbers">The Numbers</a>
-    <a href="#wrong">What's Wrong</a>
-    <a href="#boring">Boring Conferences</a>
-    <a href="#snake">Snake</a>
-  </nav>
+  <a class="wordmark" href="https://kylegosselin.com/rizeup/"><span class="r">Law-Di-</span><span class="u">Gras</span><small>BOREDOM RELIEF</small></a>
+  <span class="bored">BOREDOM LEVEL: CRITICAL</span>
 </div></div>
 
 <div class="hero"><div class="wrap">
-  <h1>Need More Cases?<br><span class="strike">More Clients?</span> More Numbers.</h1>
-  <p class="sub">Great headline, RizeUp. Now show me one number that matters. I read your whole homepage. Here's the teardown.</p>
-  <a class="limebtn" href="#wrong">See what's wrong ↓</a>
+  <div class="tag">Law-Di-Gras 2026</div>
+  <h1>Bored?<br><span class="g">Same.</span></h1>
+  <p class="sub">Same booths. Same lanyards. Same "AI-powered" everything. Here's something better to do with your phone.</p>
 </div></div>
 
-<div class="stats" id="numbers"><div class="wrap"><div class="row">
-  <div><div class="num">14,000</div><div class="lbl">calls they delivered.<br>Signed cases? Unknown.</div></div>
-  <div><div class="num">$19.91</div><div class="lbl">my cost per lead.<br>LA County, tracked.</div></div>
-  <div><div class="num">$74.12</div><div class="lbl">my cost per signed.<br>LA County, tracked.</div></div>
-</div></div></div>
-
-<div class="wrap"><div class="rant" id="boring">
-  <div class="kicker">Why this page exists</div>
-  <h2>These conferences are boring.</h2>
-  <p>Same booths. Same lanyards. Same "AI-powered" everything. Every agency on this floor sells the same four services — SEO, web design, paid media, social — with the same discovery call and the same growth roadmap.</p>
-  <p>Nobody puts a number on the slide. Nobody shows you what happens after the click. Nobody tells you what a signed case costs them. It's the same pitch in a different polo shirt.</p>
-  <p class="punch">So I brought a game instead. Play Snake. Think about your cost per signed case.</p>
-</div></div>
-
-<div class="wrap"><div class="sec" id="wrong">
-  <div class="sechead">
-    <h2>What's wrong, line by line</h2>
-    <p>Their homepage, quoted. Then what's wrong with it.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">1</div>
-    <h3>They sell services. I sell signed cases.</h3>
-    <div class="theysay"><b>Their homepage</b>"AI Visibility &amp; SEO · Web Design · Paid Media · Social Media Marketing — Achieve measurable growth and visibility with our proven strategies."</div>
-    <p>Four services. "Measurable growth" — then measure it. Their hero stats: 14,000 calls delivered, 5,490 first-page rankings, 120+ five-star reviews. Calls aren't cases. Rankings aren't revenue. Reviews are vibes.</p>
-    <p class="punch">14,000 calls delivered — how many signed a retainer? They don't say. I do: $74.12 per signed.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">2</div>
-    <h3>Their testimonials are vibes.</h3>
-    <div class="theysay"><b>Their clients</b>"Responsive, creative, and attentive." "Professional, friendly, helpful." "The people are friendly, responsive, professional."</div>
-    <p>Every testimonial is about how <em>nice</em> the agency is. Not one says what the marketing did. Did anyone sign a case? What did it cost? Nobody knows.</p>
-    <p class="punch">Feelings aren't a funnel.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">3</div>
-    <h3>Discovery call → roadmap → "results."</h3>
-    <div class="theysay"><b>Their process</b>"Schedule a discovery call. Receive a growth roadmap. Most of our clients start seeing results within 30 days."</div>
-    <p>A roadmap is a document. It's not a machine. Nobody shows you the loop — what happens when someone clicks, who talks to them, what it costs when they sign. "Results" is never defined.</p>
-    <p class="punch">My test: $2,500, built in front of you, and I prequalify the leads live. You watch it work before you spend another dollar.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">4</div>
-    <h3>"AI Visibility &amp; SEO" is not AI.</h3>
-    <div class="theysay"><b>Their AI offering</b>"Soar through the search results with our law firm SEO service."</div>
-    <p>That's their AI play: rank higher. Meanwhile nobody answers the lead at 11pm. Nobody qualifies them. Nobody transfers them live. Traffic without intake is expensive window shopping.</p>
-    <p class="punch">My AI picks up the phone. Sofia qualifies every lead in seconds and live-transfers the good ones to your desk.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">5</div>
-    <h3>No contracts means no accountability.</h3>
-    <div class="theysay"><b>Their words</b>"Lacking formal contracts allows us the flexibility to swiftly adapt to evolving objectives."</div>
-    <p>Translation: they never have to promise a number. If there's no number, there's no accountability. "Flexibility" is what you sell when you can't sell results.</p>
-    <p class="punch">I put my numbers on my homepage.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">6</div>
-    <h3>"We educate our clients."</h3>
-    <div class="theysay"><b>Their words</b>"We educate our clients on the best practices and strategies in digital marketing."</div>
-    <p>Free education — the thing I swore off years ago. Why would a firm keep paying you if you're giving away the how?</p>
-    <p class="punch">Show outcomes. Never architecture.</p>
-  </div>
-
-  <div class="hit">
-    <div class="n">7</div>
-    <h3>The CTA is free work.</h3>
-    <div class="theysay"><b>Their call to action</b>"Want to See How You Stack Up Against Competitors? Gain valuable insights with our comprehensive analysis."</div>
-    <p>A free comprehensive analysis to win the job. Free work up front, vibes-based testimonials after. That's the whole business model.</p>
-    <p class="punch">I don't do free. My front door is $2,500 and you watch me build it.</p>
-  </div>
-</div></div>
-
-<div class="snake" id="snake"><div class="wrap">
-  <h2>Bored? <span class="g">Play Snake.</span></h2>
-  <p>More fun than another "AI-powered" pitch. Beat my high score and I'll knock $100 off your sprint. (Not really. But play anyway.)</p>
+<div class="wrap"><div class="snake">
+  <h2>Play Snake.</h2>
+  <p>Beat the high score. Still more productive than a discovery call.</p>
   <iframe src="https://kylegosselin.com/snake/" title="Play Snake" loading="lazy" scrolling="no"></iframe>
-  <p class="note">Game lives at kylegosselin.com/snake — this is the real thing, embedded.</p>
 </div></div>
 
-<div class="wrap">
-  <div class="contrast">
-    <h2>What a homepage that <span class="g">sells</span> looks like</h2>
-    <ul>
-      <li><span class="ck">✓</span><span>One gorilla + AI builds your campaign — <span class="num">live, in front of you.</span></span></li>
-      <li><span class="ck">✓</span><span>Cost per lead <span class="num">$19.91</span>. Cost per signed <span class="num">$74.12</span>.</span></li>
-      <li><span class="ck">✓</span><span>Sofia qualifies every lead in seconds, transfers live to your desk.</span></li>
-      <li><span class="ck">✓</span><span>Every signed case feeds back into the targeting — your CPA drops over time.</span></li>
-      <li><span class="ck">✓</span><span>One portal: every lead, every call, every recording.</span></li>
-    </ul>
-  </div>
+<div class="wrap"><div class="bingo">
+  <h2>Conference bingo</h2>
+  <p class="sub">Check off what you've heard today.</p>
+  <div class="card"><span class="box"></span><span><b>Someone said "AI-powered."</b><span class="why">Nobody's AI answers the phone. It's a chatbot on a pricing page.</span></span></div>
+  <div class="card"><span class="box"></span><span><b>A roadmap was promised.</b><span class="why">A document. Not a machine. Not a number.</span></span></div>
+  <div class="card"><span class="box"></span><span><b>Zero numbers on the slide.</b><span class="why">No CPL. No CPA. No cost per signed case. Just vibes.</span></span></div>
+  <div class="card"><span class="box"></span><span><b>"No contracts!"</b><span class="why">Translation: we never have to promise a number.</span></span></div>
+  <div class="card"><span class="box"></span><span><b>A free analysis was offered.</b><span class="why">Free work to win the job.</span></span></div>
+  <div class="card"><span class="box"></span><span><b>You checked your phone during a talk.</b><span class="why">You're doing it right now. Hi.</span></span></div>
+</div></div>
 
-  <div class="cta">
-    <a class="limebtn" href="sms:+16197360356">Request a campaign build in person</a>
-    <p class="callnote">Text 619-736-0356. $2,500. You watch it work.</p>
+<div class="nums"><div class="wrap">
+  <h2>Since you're here — real numbers</h2>
+  <div class="row">
+    <div><div class="num">$19.91</div><div class="lbl">cost per lead</div></div>
+    <div><div class="num">$74.12</div><div class="lbl">cost per signed</div></div>
   </div>
-</div>
+  <p class="fine">LA County. Tracked. Ask me how.</p>
+</div></div>
+
+<div class="wrap"><div class="cta">
+  <a class="limebtn" href="sms:+16197360356">Request a campaign build in person</a>
+  <p class="callnote">Text 619-736-0356. $2,500. More fun than the keynote.</p>
+</div></div>
 
 <footer><div class="wrap">
-  <b>Kyle Gosselin</b><br>Built it all by myself. One gorilla, all AI.
-  <p class="parody">Parody teardown. RizeUp Media's homepage quoted for commentary. Not affiliated with RizeUp Media.</p>
+  <b>Kyle Gosselin</b><br>One gorilla, all AI.
 </div></footer>
 </body>
 </html>
