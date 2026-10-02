@@ -112,6 +112,8 @@ button,input,select{font:inherit;color:inherit}
 .consent input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--n)}
 .consent a{color:var(--ink);font-weight:700}
 .consent[aria-invalid="true"]{border-color:var(--err);background:#fffafa}
+.consent-notice{margin:10px 0 0;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--paper);font-size:12.5px;line-height:1.55;color:var(--ink2)}
+.consent-notice a{color:var(--ink);font-weight:700;text-decoration:underline}
 .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 .submit{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;margin:16px 0 6px;border:0;border-radius:999px;background:var(--cta);color:var(--cta-ink);font-weight:850;font-size:17px;cursor:pointer;box-shadow:0 10px 24px var(--cta-glow)}
 .submit:hover{background:var(--cta-d)}
