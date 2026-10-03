@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Request a Campaign | Law Firm Marketing Apes</title>
-<meta name="description" content="Tell us the campaign you need. We build the landing page, ads, intake and routing, then run a two-week sprint with reporting.">
+<meta name="description" content="Tell us the torts you take. We build the page, ads, Sofia intake and routing — $10K per tort per 30 days, all-in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -69,9 +69,9 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
 
   <h1>Tell us the campaign you need.</h1>
   <p class="lede">
-    We build the landing page, the ads, the intake and the routing, then run it as a
-    <strong>two-week sprint</strong> with reporting throughout. Answer this once and
-    everything downstream is built from it.
+    We build the landing page, the ads, Sofia intake and the routing — <strong>$10K per
+    tort per 30 days, all-in</strong>. Answer this once and everything downstream is
+    built from it.
   </p>
 
   <div class="flow">
@@ -80,7 +80,7 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
     <div class="fstep"><span class="fn">3</span><span class="ft">You fund it <em>— payment starts the build</em></span></div>
     <div class="fstep"><span class="fn">4</span><span class="ft">We build and test <em>— page, tracking, intake, a live test lead</em></span></div>
     <div class="fstep"><span class="fn">5</span><span class="ft">Launch <em>— next available cycle</em></span></div>
-    <div class="fstep"><span class="fn">6</span><span class="ft">Two-week sprint <em>— reporting throughout, then we propose the next</em></span></div>
+    <div class="fstep"><span class="fn">6</span><span class="ft">30-day run <em>— reporting throughout, then we propose the next seats</em></span></div>
   </div>
 
   <form id="briefForm">
@@ -102,20 +102,64 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
       <input type="email" id="email" name="email" required>
     </div>
 
+    <div class="field">
+      <label>Who's this for</label>
+      <div class="opts" style="margin-top:.2rem">
+        <label class="opt">
+          <input type="radio" name="whois" value="firm" checked>
+          <span>
+            <span class="opt-h">A law firm</span>
+            <span class="opt-d">Campaigns run under your firm's name.</span>
+          </span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="whois" value="partner">
+          <span>
+            <span class="opt-h">An agency / partner <span class="tag up">White-label</span></span>
+            <span class="opt-d">We build it as yours. Your clients never see us — you bill retail, we settle wholesale.</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field" id="brandField" hidden>
+      <label for="partnerbrand">Brand to put on everything</label>
+      <span class="hint">The name your clients see on the pages, ads and intake.</span>
+      <input type="text" id="partnerbrand" name="partnerbrand" placeholder="Your agency or company name">
+    </div>
+
     <h2>The campaign</h2>
 
     <div class="field">
-      <label for="tort">Case type <span class="req">· required</span></label>
-      <span class="hint">One per campaign. One case type, one state, is what makes a sprint measurable.</span>
+      <label for="tort">Tort <span class="req">· required</span></label>
+      <span class="hint">One seat per tort. Each seat gets its own campaign: page, ads, Sofia script, routing. Start with one — or pick the any-tort front door and let the calls tell us what to split out next.</span>
       <select id="tort" name="tort" required>
         <option value="">Choose one…</option>
-        <option>Car accidents (MVA)</option>
-        <option>Rideshare / commercial vehicle</option>
-        <option>Slip &amp; fall / premises</option>
-        <option>General personal injury</option>
-        <option>Sexual / institutional abuse</option>
-        <option>Mass tort — other</option>
+        <optgroup label="Injury">
+          <option>Car accidents (MVA)</option>
+          <option>Rideshare / commercial vehicle</option>
+          <option>Slip &amp; fall / premises</option>
+          <option>General personal injury</option>
+        </optgroup>
+        <optgroup label="Abuse">
+          <option>Sexual / institutional abuse</option>
+          <option>Juvenile detention</option>
+        </optgroup>
+        <optgroup label="Mass tort">
+          <option>Depo-Provera</option>
+          <option>Hair relaxer</option>
+          <option>Mass tort — other</option>
+        </optgroup>
+        <optgroup label="Front door">
+          <option>Any tort — Sofia sorts by claim type</option>
+        </optgroup>
       </select>
+    </div>
+
+    <div class="field">
+      <label for="moretorts">Other torts you take</label>
+      <span class="hint">One per line. Each one can become its own $10K seat when the volume is there.</span>
+      <textarea id="moretorts" name="moretorts" rows="3" placeholder="Trucking&#10;Nursing home neglect"></textarea>
     </div>
 
     <div class="field">
@@ -130,14 +174,14 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
     </div>
 
     <div class="field">
-      <label for="budget">Media budget for the sprint <span class="req">· required</span></label>
-      <span class="hint">This is ad spend, paid by you to the platform — separate from our fee. A $5,000 two-week sprint paces at roughly $357/day.</span>
+      <label for="budget">Seats <span class="req">· required</span></label>
+      <span class="hint">$10K per tort per 30 days, all-in — page, ads, Sofia, routing, reporting. Ad spend is inside the seat. No separate media bill, no markup, no second number.</span>
       <select id="budget" name="budget" required>
         <option value="">Choose one…</option>
-        <option>$2,500 — two weeks</option>
-        <option>$5,000 — two weeks</option>
-        <option>$10,000 — two weeks</option>
-        <option>Not sure — recommend one</option>
+        <option>1 seat — $10,000 / 30 days</option>
+        <option>2 seats — $20,000 / 30 days</option>
+        <option>3 seats — $30,000 / 30 days</option>
+        <option>4+ seats — scope it with me</option>
       </select>
     </div>
 
@@ -163,7 +207,7 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
       <label class="opt">
         <input type="radio" name="intake" value="ai">
         <span>
-          <span class="opt-h">A.I. prequalifies first<span class="tag up">Add-on</span></span>
+          <span class="opt-h">A.I. prequalifies first<span class="tag up">Recommended</span></span>
           <span class="opt-d">Our assistant calls in about a minute, qualifies by claim type in English or Spanish, and only warm-transfers what matches your criteria.</span>
         </span>
       </label>
@@ -182,9 +226,9 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
 
     <div class="money">
       <span class="money-h">How the money works</span>
-      <p><strong>Two numbers, never mixed.</strong> Media is yours — it runs in your own ad account and you pay the platform directly. We never mark it up and never front it.</p>
-      <p><strong>Our build and management fee is quoted separately</strong> on the scope we send back, and it's flat. Nothing we charge is contingent on a case outcome.</p>
-      <p><strong>Nothing is charged on this page.</strong> You'll get the scope and the invoice before anything is built.</p>
+      <p><strong>One number.</strong> $10K per tort seat per 30 days, all-in: the page, the ads, Sofia prequal, routing and reporting. Ad spend is inside — managed by us, never a second bill, never marked up.</p>
+      <p><strong>Flat marketing fee;</strong> nothing is contingent on a case outcome.</p>
+      <p><strong>Nothing is charged on this page.</strong> You'll get the invoice before anything is built.</p>
     </div>
 
     <button class="submit" type="submit">Send the brief</button>
@@ -201,8 +245,8 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
   <footer>
     <p class="disc">
       Law Firm Marketing Apes is a marketing company, not a law firm, and does not give legal
-      advice. Flat marketing fees; nothing is contingent on case outcomes. Media runs in the
-      firm's own ad account. We deliver campaign build, management and reporting — not a
+      advice. Flat marketing fees; nothing is contingent on case outcomes. Ad spend is
+      included in the seat and managed by us. We deliver campaign build, management and reporting — not a
       guaranteed number of leads or signed cases. Law firms are responsible for their own
       advertising compliance.
       <br><br>
@@ -242,6 +286,19 @@ footer{margin-top:2.6rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
     button.disabled = true;
     button.textContent = 'Form unavailable';
   });
+})();
+</script>
+<script>
+(function(){
+  var radios = document.querySelectorAll('input[name="whois"]');
+  var brandField = document.getElementById('brandField');
+  if (!radios.length || !brandField) return;
+  function sync(){
+    var v = document.querySelector('input[name="whois"]:checked');
+    brandField.hidden = !v || v.value !== 'partner';
+  }
+  radios.forEach(function(r){ r.addEventListener('change', sync); });
+  sync();
 })();
 </script>
 </body>
