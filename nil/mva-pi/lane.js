@@ -47,44 +47,72 @@
   // POSTs the validated lead to the Render intake endpoint (Sofia callback queue).
   // Consent is by submission: the page carries explicit TCPA/AI-call language by the
   // submit button, so we send consent:"yes" with the payload. Never send PII to dataLayer.
-  function postLead(form) {
-    var endpoint = L.intake_endpoint;
-    if (!endpoint) return Promise.resolve({ ok: false, error: 'no_endpoint' });
+  var attributionKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+    'gclid', 'gbraid', 'wbraid', 'fbclid', 'ttclid', 'msclkid', 'platform', 'account_id',
+    'campaign_id', 'adset_id', 'ad_id', 'form_id', 'brand'];
+  var attribution = {};
+  try {
+    var stored = JSON.parse(window.sessionStorage.getItem('nil-mva-attribution') || '{}');
+    var query = new URLSearchParams(location.search);
+    attributionKeys.forEach(function (key) {
+      var value = query.get(key) || stored[key];
+      if (typeof value === 'string' && value.length <= 256 && !/[\u0000-\u001F\u007F]/.test(value)) attribution[key] = value;
+    });
+    window.sessionStorage.setItem('nil-mva-attribution', JSON.stringify(attribution));
+  } catch (e) {
+    // Storage may be disabled; current-page attribution still works.
+    var query = new URLSearchParams(location.search);
+    attributionKeys.forEach(function (key) { var value = query.get(key); if (value && value.length <= 256) attribution[key] = value; });
+  }
+  var submissions = new WeakMap();
+  function payloadFor(form) {
     var fields = {};
     form.querySelectorAll('input[name],select[name],textarea[name]').forEach(function (f) {
-      if (f.type === 'checkbox') return; // no checkbox on the page; consent is by submission
-      fields[f.name] = f.value;
+      if (f.type !== 'checkbox') fields[f.name] = f.value;
     });
-    var name = (fields.full_name || fields.first_name || '').trim();
+    var notice = form.querySelector('.consent-notice');
+    var btn = form.querySelector('button[type="submit"]');
+    if (!notice || !btn || !notice.getAttribute('data-consent-version')) throw new Error('consent_evidence_missing');
     var payload = {
-      name: name,
-      phone: fields.phone || '',
-      consent: 'yes',
-      tort: 'mva',
-      page_url: location.href,
-      submitted_at: new Date().toISOString()
+      name: (fields.full_name || fields.first_name || '').trim(), phone: fields.phone || '',
+      consent: 'yes', consent_method: 'submit_button', consent_action: btn.textContent.trim(),
+      consent_text: notice.textContent.trim(), consent_version: notice.getAttribute('data-consent-version'),
+      tort: 'mva', page_url: location.href.split(/[?#]/)[0], page_path: location.pathname,
+      form_variant: 'web-' + (L.page || 'form')
     };
     if (fields.email) payload.email = fields.email;
-    if (fields.company) payload.company = fields.company; // honeypot, server-side filtered
-    var stateSel = form.querySelector('select[name="state"]');
-    if (stateSel && stateSel.value) payload.state = stateSel.value;
-    try {
-      var q = new URLSearchParams(location.search);
-      ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { var v = q.get(k); if (v) payload[k] = v; });
-    } catch (e) {}
-    var outcome = form.getAttribute('data-outcome');
-    payload.source = outcome ? 'web-quiz-' + outcome.toLowerCase() : 'web-' + (L.page || 'form');
-    return fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+    if (fields.company) payload.company = fields.company;
+    // State is only visitor-provided; paid targeting is never caller location.
+    if (fields.state) payload.state = fields.state;
+    Object.keys(attribution).forEach(function (key) { payload[key] = attribution[key]; });
+    return payload;
+  }
+  function validReceipt(r, body, eventId) {
+    return r.ok && body && typeof body === 'object' && !Array.isArray(body) && body.ok === true &&
+      !body.filtered && body.test === false && body.dry_run === false &&
+      (body.duplicate === undefined || typeof body.duplicate === 'boolean') &&
+      /^MA-NIL-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.lead_uid) &&
+      body.lead_id === body.lead_uid && /^phl-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.dispatch_id) &&
+      (body.status === 'awaiting_executor' || body.status === 'call_created') &&
+      (body.duplicate === true ? (body.event_id === null || typeof body.event_id === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/.test(body.event_id)) : body.event_id === eventId);
+  }
+  function postLead(payload) {
+    var controller = new AbortController();
+    var timer;
+    var timeout = new Promise(function (resolve) {
+      timer = setTimeout(function () { controller.abort(); resolve({ ok: false }); }, 15000);
+    });
+    var request = Promise.resolve().then(function () {
+      if (!L.intake_endpoint) throw new Error('no_endpoint');
+      return fetch(L.intake_endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload), signal: controller.signal });
     }).then(function (r) {
-      return r.json().then(function (b) { return { ok: r.ok, status: r.status, body: b }; },
-        function () { return { ok: r.ok, status: r.status, body: {} }; });
-    }).catch(function () { return { ok: false, error: 'network' }; });
+      return r.json().then(function (body) { return { ok: validReceipt(r, body, payload.event_id), body: body }; });
+    }).catch(function () { return { ok: false }; });
+    return Promise.race([request, timeout]).then(function (result) { clearTimeout(timer); return result; });
   }
 
-  // Fire conversion signals on a successful lead POST. dataLayer is the primary
+  // Fire conversion signals only on a validated, non-duplicate live receipt. dataLayer is the primary
   // path (GTM maps ee_lead_submitted to ad-platform Lead events); fbq/ttq are
   // best-effort direct fallbacks when those libraries are already on the page.
   function fireLeadEvent() {
@@ -94,21 +122,42 @@
   }
 
   // Shared submit: validate -> POST -> done (or phone fallback on failure so the lead isn't lost).
-  function submitLead(form, afterValidate) {
+  function submitLead(form, outcome, qualified) {
+    var previous = submissions.get(form);
+    if (previous && previous.pending) return;
     var btn = form.querySelector('button[type="submit"]');
     var st = form.querySelector('.status');
     var label = btn ? btn.textContent : '';
+    var payload, fingerprint;
+    try { payload = payloadFor(form); fingerprint = JSON.stringify(payload);
+      if (!window.crypto || typeof window.crypto.randomUUID !== 'function') throw new Error('event_identity_unavailable');
+    }
+    catch (e) { if (st) st.textContent = 'Unable to send your request. Please call Sofia directly.'; return; }
+    var entry = previous && previous.fingerprint === fingerprint ? previous : {
+      fingerprint: fingerprint, eventId: 'web-' + window.crypto.randomUUID(), submittedAt: new Date().toISOString()
+    };
+    if (entry.receipt) { showDone(form, outcome, entry.receipt); return; }
+    entry.pending = true; submissions.set(form, entry);
+    payload.event_id = entry.eventId; payload.submitted_at = entry.submittedAt;
     if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
     if (st) st.textContent = '';
-    postLead(form).then(function (res) {
+    postLead(payload).then(function (res) {
+      entry.pending = false;
       if (btn) { btn.disabled = false; btn.textContent = label; }
       if (res.ok) {
-        fireLeadEvent();
-        afterValidate(true);
+        entry.receipt = res.body;
+        if (!res.body.duplicate) {
+          if (qualified) {
+            track('ee_qualification_complete');
+            track(outcome === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified');
+          }
+          track('ee_call_request');
+          fireLeadEvent();
+        }
+        showDone(form, outcome, res.body);
       } else {
         track('ee_lead_failed');
-        if (st) st.textContent = 'Something went wrong sending your details. Please call Sofia directly — it\u2019s free, and she can take it from here.';
-        afterValidate(false);
+        if (st) st.textContent = 'Something went wrong sending your details. Please call Sofia directly — it’s free, and she can take it from here.';
       }
     });
   }
@@ -140,12 +189,16 @@
   }
   function flagOf(sel) { var o = sel.options[sel.selectedIndex]; return o ? o.getAttribute('data-flag') : null; }
   function outcomeOf(flags) { return flags.indexOf('dq') >= 0 ? 'NOT_A_FIT' : flags.indexOf('review') >= 0 ? 'FIRM_REVIEW' : 'QUALIFIED'; }
-  function showDone(form, outcome) {
+  function showDone(form, outcome, receipt) {
     var done = $(form.getAttribute('data-done'));
     var hide = form.getAttribute('data-hide') ? $(form.getAttribute('data-hide')) : form;
     hide.hidden = true;
     if (!done) return;
     done.querySelectorAll('[data-out]').forEach(function (el) { el.hidden = el.getAttribute('data-out') !== (outcome === 'NOT_A_FIT' ? 'nofit' : 'fit'); });
+    var message = done.querySelector('[data-receipt-message]');
+    if (message) message.textContent = receipt.duplicate ? 'Already received. No second callback was queued.' :
+      receipt.status === 'call_created' ? 'Your request was received and a callback call was started.' :
+      'Your callback request was queued. No call has been placed yet.';
     done.hidden = false;
     var h = done.querySelector('h2,h3');
     if (h) { h.setAttribute('tabindex', '-1'); h.focus(); }
@@ -159,12 +212,10 @@
       var hp = form.querySelector('.hp[name]'); if (hp && hp.value) return;
       if (!validate(form)) return;
       var flags = [];
-      form.querySelectorAll('select[data-q]').forEach(function (s) { var f = flagOf(s); if (f) flags.push(f); });
+      var questions = form.querySelectorAll('select[data-q]');
+      questions.forEach(function (s) { var f = flagOf(s); if (f) flags.push(f); });
       var o = outcomeOf(flags);
-      track('ee_qualification_complete');
-      track(o === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified');
-      track('ee_call_request');
-      submitLead(form, function () { showDone(form, o); });
+      submitLead(form, o, questions.length > 0);
     });
   });
 
@@ -174,8 +225,7 @@
       e.preventDefault();
       var hp = form.querySelector('.hp[name]'); if (hp && hp.value) return;
       if (!validate(form)) return;
-      track('ee_call_request');
-      submitLead(form, function () { showDone(form, form.getAttribute('data-outcome') || 'QUALIFIED'); });
+      submitLead(form, form.getAttribute('data-outcome') || 'QUALIFIED', !!form.getAttribute('data-outcome'));
     });
   });
 
@@ -265,8 +315,6 @@
     };
     var finish = function () {
       var o = outcome(); show('resultStep');
-      track('ee_qualification_complete');
-      track(o === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified');
       var acts = $('rActions'); acts.innerHTML = '';
       var fitOnly = document.querySelectorAll('[data-fit-only]');
       if (o === 'NOT_A_FIT') {
