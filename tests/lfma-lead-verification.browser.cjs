@@ -16,6 +16,7 @@ for(const width of [390,1440]){
  for(const code of [2,3]){await page.evaluate(c=>window.geoMode=c,code);await page.locator('#location-button').click();assert.match(await page.locator('#location-status').textContent(),code===2?/unavailable/:/timed out/);}
  await page.evaluate(()=>window.geoMode='success');await page.locator('#location-button').click();assert.match(await page.locator('#coordinates').textContent(),/12.34567/);await page.locator('#clear-location').click();assert.equal(await page.locator('#coordinates').isVisible(),false);
  for(const key of ['repeat','reviewed','incomplete']){await page.locator(`[data-example="${key}"]`).click();assert.match(await page.locator('#receipt').textContent(),/Not reported/);}
+ await page.locator('.closing').scrollIntoViewIfNeeded();await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
  await page.locator('h1').scrollIntoViewIfNeeded();await page.screenshot({path:`/tmp/lfma-lead-verification-${width}.png`,fullPage:true});
  assert.deepEqual(errors,[]);assert.ok(requests.every(url=>url.startsWith('http://127.0.0.1:8765/')));
  const imgs=await page.locator('img').evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth>0));assert.equal(imgs,true);
