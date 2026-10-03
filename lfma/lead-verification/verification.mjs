@@ -16,9 +16,11 @@ export function mount(doc = document, nav = navigator, win = window) {
   get('language').textContent = nav.language || 'Not exposed';
   get('viewport').textContent = `${win.innerWidth} × ${win.innerHeight} CSS px`;
   get('arrival').textContent = new Date().toLocaleTimeString();
-  const button = get('location-button'), status = get('location-status'), output = get('coordinates'), clear = get('clear-location'), mapResult = get('map-result'), mapFrame = get('map-frame');
+  const button = get('location-button'), status = get('location-status'), output = get('coordinates'), clear = get('clear-location'), mapFrame = get('map-frame'), placeholder = get('map-placeholder');
+  function resetMap() { mapFrame.replaceChildren(); mapFrame.hidden = true; placeholder.hidden = false; }
+  resetMap();
   button.addEventListener('click', () => {
-    output.textContent = ''; output.hidden = true; clear.hidden = true; mapFrame.replaceChildren(); mapResult.hidden = true;
+    output.textContent = ''; output.hidden = true; clear.hidden = true; resetMap();
     if (!win.isSecureContext) { status.textContent = 'Location requires HTTPS or a local test server. Nothing was requested. Open the secure page to try, or skip this test.'; return; }
     if (!nav.geolocation) { status.textContent = 'Location is not supported in this browser. Nothing was requested. Try a supported browser, or skip this test.'; return; }
     button.disabled = true; button.textContent = 'Waiting for browser permission / position…';
@@ -34,16 +36,16 @@ export function mount(doc = document, nav = navigator, win = window) {
         iframe.title = 'Google Map centered on your browser-reported position';
         iframe.src = `https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
         iframe.loading = 'eager'; iframe.referrerPolicy = 'no-referrer';
-        mapFrame.replaceChildren(iframe); mapResult.hidden = false;
+        mapFrame.replaceChildren(iframe); mapFrame.hidden = false; placeholder.hidden = true;
         status.textContent = 'Browser position received. Coordinates shared with Google to load your map; not proof of identity, GPS use, or legal eligibility.';
         button.disabled = false; button.textContent = 'Request location again';
       }, error => fail(error?.code), {enableHighAccuracy:true,timeout:12000,maximumAge:0});
     } catch { fail(); }
   });
   clear.addEventListener('click', () => {
-    output.textContent = ''; output.hidden = true; clear.hidden = true; mapFrame.replaceChildren(); mapResult.hidden = true;
+    output.textContent = ''; output.hidden = true; clear.hidden = true; resetMap();
     status.textContent = 'Map and displayed coordinates removed. Browser permission is unchanged. Clearing cannot undo coordinates already shared with Google.';
-    button.textContent = 'Show my dot on Google Maps'; button.focus();
+    button.textContent = 'Show my location'; button.focus();
   });
   function renderExample(key) {
     const record = examples[key]; if (!record) return;
