@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eligibility Review — California Juvenile Detention Abuse Claims</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- GTM -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PHC7459M');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1e2a4a;
+      --navy2:  #16203a;
+      --navy3:  #2a3a63;
+      --slate:  #f4f6f9;
+      --border: #dfe4ec;
+      --text:   #2f3646;
+      --muted:  #6b7690;
+      --amber:  #e8a13c;
+      --amber2: #c9861f;
+    }
+
+    html, body { height: 100%; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(160deg, #16203a 0%, #1e2a4a 60%, #1a2340 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── LEGAL AD BAR ── */
+    .legal-bar {
+      background: rgba(0,0,0,0.25);
+      padding: 7px 24px;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+    .card {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-top: 4px solid var(--amber);
+      border-radius: 16px;
+      max-width: 580px;
+      width: 100%;
+      padding: 48px 44px;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(6,10,22,0.5);
+    }
+
+    .status-icon {
+      width: 64px; height: 64px;
+      background: rgba(232,161,60,0.12);
+      border: 2px solid rgba(232,161,60,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 24px;
+    }
+
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px; font-weight: 800;
+      color: #fff; line-height: 1.3;
+      margin-bottom: 16px; letter-spacing: -0.3px;
+    }
+
+    .lead {
+      font-size: 15px; color: rgba(255,255,255,0.62);
+      line-height: 1.8; margin-bottom: 32px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      margin: 0 0 32px;
+    }
+
+    /* ── RESOURCES BOX ── */
+    .res-box {
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 28px 28px 26px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .res-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 10px;
+    }
+    .res-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px; font-weight: 800;
+      color: #fff; margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .res-name span { color: var(--amber); }
+    .res-desc {
+      font-size: 14px; color: rgba(255,255,255,0.55);
+      line-height: 1.7; margin-bottom: 18px;
+    }
+    .res-phone {
+      display: block;
+      background: var(--amber);
+      color: var(--navy2);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px; font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 15px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .res-phone:hover { background: var(--amber2); color: #fff; }
+
+    /* Child-safety note — shown only when reason=currently_minor */
+    .minor-note {
+      display: none;
+      background: rgba(232,161,60,0.08);
+      border: 1px solid rgba(232,161,60,0.35);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+    }
+    .minor-note strong { color: var(--amber); }
+
+    .fine {
+      font-size: 11px; color: rgba(255,255,255,0.28);
+      line-height: 1.65; margin-top: 20px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 10px; color: rgba(255,255,255,0.25);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      line-height: 1.7;
+    }
+    .footer-disc { max-width: 680px; margin: 0 auto; }
+    .footer-disc strong { color: rgba(255,255,255,0.4); }
+
+    @media (max-width: 560px) {
+      .card { padding: 36px 24px; }
+      h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- LEGAL ADVERTISEMENT BAR -->
+<div class="legal-bar">Legal Advertisement</div>
+
+<main>
+  <div class="card">
+
+    <div class="status-icon">🕊️</div>
+    <p class="eyebrow">Eligibility Review</p>
+    <h1>Based on Your Answers, This Program Can't Move Forward Right Now</h1>
+    <p class="lead">
+      Your answers don't meet the criteria for this particular review program — but that is <strong style="color:rgba(255,255,255,0.85);">not a judgment about what happened to you or whether it mattered</strong>, and it does not mean you have no options. A participating law firm may still be able to review your situation, and someone may reach out to discuss other legal options that could fit your circumstances. Eligibility criteria can also change — you're always welcome to come back.
+    </p>
+
+    <hr class="divider">
+
+    <!-- Child-safety note (shown when reason=currently_minor) -->
+    <div class="minor-note" id="minor-note">
+      <strong>If you are under 18 and someone is hurting you — or has hurt you — you deserve help right now.</strong> Please talk to a trusted adult, a school counselor, or call the Childhelp National Child Abuse Hotline at <strong>1-800-422-4453</strong> (available 24/7). If you are in immediate danger, call 911.
+    </div>
+
+    <div class="res-box">
+      <p class="res-label">Free, Confidential Support — 24/7</p>
+      <p class="res-name">RAINN National Sexual Assault <span>Hotline</span></p>
+      <p class="res-desc">
+        Whatever your answers were today, support is available. RAINN is a national, confidential hotline for survivors of sexual violence — free, anonymous, and staffed 24 hours a day.
+      </p>
+      <a href="tel:18006564673" class="res-phone">📞 800-656-HOPE (4673)</a>
+    </div>
+
+    <p class="fine">RAINN is an independent national nonprofit and is not affiliated with this website or any law firm. Calling RAINN does not create a legal claim or an attorney-client relationship — it's simply there if you want to talk.</p>
+
+  </div>
+</main>
+
+<footer>
+  <p class="footer-disc">
+    Attorney Advertising. This is a paid legal advertisement for legal services provided by <strong>Jordan M. Jones (360 E 2nd St #820, Los Angeles, CA 90012) and Adam Pulaski (2925 Richmond Ave #1725, Houston, TX 77098), who are responsible for this advertisement.</strong> Prior results do not guarantee a similar outcome. The information on this site is not legal advice, and submitting a form does not create an attorney-client relationship. The information you provided is kept confidential and is not sold to third-party marketers. <a href="https://www.besttortlawyers.com/privacy-policy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Privacy Policy</a> &nbsp;|&nbsp; <a href="https://www.besttortlawyers.com/terms-and-conditions.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Terms &amp; Conditions</a>.
+  </p>
+</footer>
+
+<script>
+(function() {
+  var p = new URLSearchParams(window.location.search);
+  var reason = p.get('reason') || 'unknown';
+
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      event: 'lead_disqualified',
+      tort: 'legalcalls-jdc',
+      page_key: 'jdc-ca',
+      site: 'besttortlawyers.com',
+      disq_reason: reason
+    });
+  }
+
+  // Show child-safety resources when the visitor is currently a minor
+  if (reason === 'currently_minor') {
+    var note = document.getElementById('minor-note');
+    if (note) note.style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>
