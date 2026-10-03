@@ -1,12 +1,12 @@
 # DoIHaveAClaim.ai
 
-> A free AI intake tool. Talk with Sofia about what happened. Not a law firm. Part of the Best Tort Lawyers Network. This domain is the experiment door — we A/B positioning and conversion here.
+> A free claim-check tool. Describe what happened in your own words; it shows the broad claim category, the type of law firm that usually handles it, and whether firms in our network take cases like it. Not a law firm. No legal advice.
 
 Canonical identity file (same text as production): keep this aligned with the live homepage at https://doihaveaclaim.ai/
 
 ## What this site is
 
-Free, low-friction intake. Sofia is an AI assistant, not an attorney. If a participating firm handles matters like yours, we may help connect you. Firms decide.
+Free, text-first claim check. Nothing typed is stored or sent to a law firm. General information only, not legal advice.
 
 Canonical page: https://doihaveaclaim.ai/
 

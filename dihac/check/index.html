@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Free Claim Check | DoIHaveAClaim.ai</title>
-<link rel="canonical" href="https://doihaveaclaim.ai/">
+<title>Claim Check | DoIHaveAClaim.ai</title>
 <meta name="description" content="Describe what happened in your own words. See what kind of claim it sounds like, what type of law firm handles it, and whether firms are looking for cases like yours. Free.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Claim Check — free, 30 seconds | DoIHaveAClaim.ai">
 <meta property="og:description" content="Tell us what happened. We'll tell you what kind of firm handles it and whether firms are taking cases like yours.">
 <meta name="theme-color" content="#071412">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <!-- Google Tag Manager — web container only -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -89,7 +88,7 @@ footer a{color:var(--muted)}
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJCZF46W" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <div class="wrap">
   <header>
-    <a class="brand" href="/" aria-label="DoIHaveAClaim.ai Claim Check">
+    <a class="brand" href="./" aria-label="DoIHaveAClaim.ai Claim Check">
       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 8h18a6 6 0 0 1 6 6v20a6 6 0 0 1-6 6H13a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6Z"/><path d="M17 19.5c.8-4 4.2-6.2 8.3-6.2 4.8 0 8 2.8 8 6.8 0 5-5.6 5.8-7.3 8.6"/><circle cx="25.4" cy="34.1" r="1.7"/></svg>
       <span>DoIHaveAClaim<b>.ai</b></span>
     </a>
@@ -129,7 +128,7 @@ footer a{color:var(--muted)}
 
   <footer>
     <p>DoIHaveAClaim.ai is a free directory and information tool. We are not a law firm and do not give legal advice. Deadlines to file claims vary by state — talk to a licensed attorney about your situation.</p>
-    <p><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/check/for-firms.html">For law firms</a></p>
+    <p><a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a> · <a href="for-firms.html">For law firms</a></p>
   </footer>
 </div>
 
@@ -137,7 +136,7 @@ footer a{color:var(--muted)}
 (function(){
 'use strict';
 // ---- tracking (same dataLayer schema as the rest of the site; never sends the story text) ----
-var params=new URLSearchParams(location.search), ctx={domain_id:'doihaveaclaim.ai',page_type:'claim_check_home'};
+var params=new URLSearchParams(location.search), ctx={domain_id:'doihaveaclaim.ai',page_type:'claim_check'};
 ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','ttclid'].forEach(function(k){var v=params.get(k);if(v)ctx[k]=v.slice(0,300)});
 function id(){try{return crypto.randomUUID()}catch(e){return String(Date.now())+Math.random().toString(16).slice(2)}}
 function track(ev,d){window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:ev,event_id:'event_'+id(),event_timestamp:new Date().toISOString()},ctx,d||{}))}
@@ -275,7 +274,7 @@ document.getElementById('tool').addEventListener('submit',function(e){
   out.scrollIntoView({behavior:'smooth',block:'start'});
   document.getElementById('again').onclick=function(){story.value='';ready();out.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'});story.focus()};
   document.getElementById('share').onclick=function(){
-    var u='https://doihaveaclaim.ai/';track('claim_check_share',{tool_id:'claim_check'});
+    var u='https://doihaveaclaim.ai/check/';track('claim_check_share',{tool_id:'claim_check'});
     if(navigator.share){navigator.share({title:'Free claim check',url:u}).catch(function(){})}
     else{try{navigator.clipboard.writeText(u);this.textContent='Link copied'}catch(e){}}
   };
