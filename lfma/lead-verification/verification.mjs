@@ -16,9 +16,11 @@ export function mount(doc = document, nav = navigator, win = window) {
   get('language').textContent = nav.language || 'Not exposed';
   get('viewport').textContent = `${win.innerWidth} × ${win.innerHeight} CSS px`;
   get('arrival').textContent = new Date().toLocaleTimeString();
-  const button = get('location-button'), status = get('location-status'), output = get('coordinates'), clear = get('clear-location');
+  const button = get('location-button'), status = get('location-status'), output = get('coordinates'), clear = get('clear-location'), mapFrame = get('map-frame'), placeholder = get('map-placeholder');
+  function resetMap() { mapFrame.replaceChildren(); mapFrame.hidden = true; placeholder.hidden = false; }
+  resetMap();
   button.addEventListener('click', () => {
-    output.textContent = ''; output.hidden = true; clear.hidden = true;
+    output.textContent = ''; output.hidden = true; clear.hidden = true; resetMap();
     if (!win.isSecureContext) { status.textContent = 'Location requires HTTPS or a local test server. Nothing was requested. Open the secure page to try, or skip this test.'; return; }
     if (!nav.geolocation) { status.textContent = 'Location is not supported in this browser. Nothing was requested. Try a supported browser, or skip this test.'; return; }
     button.disabled = true; button.textContent = 'Waiting for browser permission / position…';
@@ -30,15 +32,20 @@ export function mount(doc = document, nav = navigator, win = window) {
         if (![latitude,longitude,accuracy].every(Number.isFinite) || Math.abs(latitude)>90 || Math.abs(longitude)>180 || accuracy<0) { fail(2); return; }
         output.textContent = `Latitude: ${latitude.toFixed(5)} · Longitude: ${longitude.toFixed(5)} · Reported accuracy: ±${Math.round(accuracy)} m`;
         output.hidden = false; clear.hidden = false;
-        status.textContent = 'Browser position received. Displayed locally only; not proof of identity, GPS use, or legal eligibility.';
+        const iframe = doc.createElement('iframe');
+        iframe.title = 'Google Map centered on your browser-reported position';
+        iframe.src = `https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
+        iframe.loading = 'eager'; iframe.referrerPolicy = 'no-referrer';
+        mapFrame.replaceChildren(iframe); mapFrame.hidden = false; placeholder.hidden = true;
+        status.textContent = 'Browser position received. Coordinates shared with Google to load your map; not proof of identity, GPS use, or legal eligibility.';
         button.disabled = false; button.textContent = 'Request location again';
-      }, error => fail(error?.code), {enableHighAccuracy:false,timeout:12000,maximumAge:0});
+      }, error => fail(error?.code), {enableHighAccuracy:true,timeout:12000,maximumAge:0});
     } catch { fail(); }
   });
   clear.addEventListener('click', () => {
-    output.textContent = ''; output.hidden = true; clear.hidden = true;
-    status.textContent = 'Displayed result cleared. Browser permission is unchanged. Nothing was saved by this page.';
-    button.textContent = 'Ask my browser for location'; button.focus();
+    output.textContent = ''; output.hidden = true; clear.hidden = true; resetMap();
+    status.textContent = 'Map and displayed coordinates removed. Browser permission is unchanged. Clearing cannot undo coordinates already shared with Google.';
+    button.textContent = 'Show my location'; button.focus();
   });
   function renderExample(key) {
     const record = examples[key]; if (!record) return;
