@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Screening questions | DoIHaveAClaim.ai</title>
+  <meta name="description" content="A few screening questions to help you understand which kind of firm reviews matters like yours.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="ee-page-type" content="qualification">
+  <!--
+    Engine harness. Pick the tort with ?tort=afff or ?tort=paraquat (config.js
+    lists the allowed torts). The quiz markup comes from app.js with stable
+    `dihac-quiz*` class names; the few rules below only keep the harness
+    readable and are placeholders for the page's real styling.
+  -->
+  <style>
+    .dihac-quiz { max-width: 640px; margin: 0 auto; padding: 24px 16px; font-family: system-ui, sans-serif; line-height: 1.5; }
+    .dihac-quiz__option { display: block; padding: 8px 0; }
+    .dihac-quiz__option input { margin-right: 8px; }
+    .dihac-quiz__nav, .dihac-quiz__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+    .dihac-quiz__error { font-weight: 600; }
+    .dihac-quiz__disclaimer { font-size: 0.85em; }
+  </style>
+</head>
+<body data-page-type="quiz">
+  <main id="main">
+    <div data-dihac-quiz="auto" data-quiz-base="../campaigns/"></div>
+  </main>
+  <script src="../config.js?v=20260925-1"></script>
+  <script src="../app.js?v=20260925-1"></script>
+</body>
+</html>
