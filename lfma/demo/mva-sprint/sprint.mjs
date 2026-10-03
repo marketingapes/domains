@@ -15,7 +15,7 @@ export function transition(state,action,answers=null) {
     s.answers=Object.fromEntries(Object.keys(allowed).map(key=>[key,answers[key]]));move(3,'intake_complete');
   } else if(action==='agree'&&s.stage===3) s.consent=!s.consent;
   else if(action==='connect'&&s.stage===3&&s.consent) {move(4,'consent_granted');s.events.push('transfer_attempt');}
-  else if(action==='decline'&&s.stage===3) {s.outcome='Permission declined';move(5,'consent_declined');}
+  else if(action==='decline'&&s.stage===3) {s.consent=false;s.outcome='Permission declined';move(5,'consent_declined');}
   else if(action==='accepted'&&s.stage===4&&!s.unavailable) {s.outcome='Intake acknowledged — synthetic';move(5,'transfer_accepted');}
   else if(action==='unavailable'&&s.stage===4&&!s.unavailable) {s.unavailable=true;s.events.push('transfer_unavailable');}
   else if(action==='fallback'&&s.stage===4&&s.unavailable) {s.outcome='Follow-up assigned — synthetic';move(5,'fallback_queued');}
