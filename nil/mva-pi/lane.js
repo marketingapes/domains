@@ -91,10 +91,11 @@
     return r.ok && body && typeof body === 'object' && !Array.isArray(body) && body.ok === true &&
       !body.filtered && body.test === false && body.dry_run === false &&
       (body.duplicate === undefined || typeof body.duplicate === 'boolean') &&
+      typeof body.lead_uid === 'string' && typeof body.lead_id === 'string' && typeof body.dispatch_id === 'string' &&
       /^MA-NIL-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.lead_uid) &&
       body.lead_id === body.lead_uid && /^phl-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.dispatch_id) &&
       (body.status === 'awaiting_executor' || body.status === 'call_created') &&
-      (body.duplicate === true ? (body.event_id === null || typeof body.event_id === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/.test(body.event_id)) : body.event_id === eventId);
+      (body.duplicate === true ? (body.event_id === null || typeof body.event_id === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/.test(body.event_id)) : typeof body.event_id === 'string' && body.event_id === eventId);
   }
   function postLead(payload) {
     var controller = new AbortController();

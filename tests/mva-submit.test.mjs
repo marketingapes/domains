@@ -83,6 +83,35 @@ for (const page of pages) {
     assert.deepEqual(h.fields.map(f=>f.value),before); assert.equal(h.btn.disabled,false); assert.ok(h.status.textContent);
     assert.equal(conversions(h).length,0); assert.equal(h.pixels.length,0);
   });
+  for (const duplicate of [false, true]) {
+    for (const field of ['lead_uid', 'lead_id', 'dispatch_id', 'event_id']) {
+      for (const kind of ['array', 'object', 'null', 'numeric']) {
+        // The backend can return a null original event ID for a phone/matter duplicate.
+        if (duplicate && field === 'event_id' && kind === 'null') continue;
+        test(`${page}: ${duplicate ? 'duplicate' : 'accepted'} ${field} ${kind} fails closed`, async()=>{
+          const h=boot(page,p=>{
+            const valid=receipt(p)[field];
+            const value=kind==='array' ? [valid] : kind==='object' ? {toString:()=>valid} : kind==='null' ? null : 12345678;
+            const extra={duplicate,[field]:value};
+            // Exercise the lead aliases sharing the same coercible value as well.
+            if(field==='lead_uid') extra.lead_id=value;
+            return response(p,extra);
+          });
+          const before=h.fields.map(f=>f.value); h.submit(); await h.flush();
+          assert.equal(h.done.hidden,true); assert.equal(h.hide.hidden,false); assert.equal(h.btn.disabled,false);
+          assert.deepEqual(h.fields.map(f=>f.value),before); assert.ok(h.status.textContent);
+          assert.equal(conversions(h).length,0); assert.equal(h.pixels.length,0);
+        });
+      }
+    }
+  }
+  for (const originalEvent of [null, 'web-original-event']) {
+    test(`${page}: duplicate preserves supported original event ID ${originalEvent}`,async()=>{
+      const h=boot(page,p=>response(p,{duplicate:true,event_id:originalEvent})); h.submit(); await h.flush();
+      assert.equal(h.done.hidden,false); assert.match(h.message.textContent,/Already received.*No second/);
+      assert.equal(conversions(h).length,0); assert.equal(h.pixels.length,0);
+    });
+  }
   test(`${page}: accepted receipt, consent evidence, double click and repeated submission`,async()=>{
     const h=boot(page,p=>response(p)); const label=h.btn.textContent;
     h.submit(); h.submit(); assert.equal(h.btn.disabled,true); await h.flush();
