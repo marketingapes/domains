@@ -4,16 +4,22 @@
   "tiktok_paid": {
     "campaign_id": null,
     "adgroup_id": null,
-    "status": "PAUSED_REVIEW_SPEC",
+    "status": "INELIGIBLE_US_PERSONAL_INJURY",
     "approved_budget": null,
     "historical_daily_budget": 20,
     "geo": "Arizona presence",
-    "targeting": "broad adults; platform/counsel policy review required",
+    "targeting": "None: paid US MVA personal-injury acquisition ineligible",
     "sensitive_audiences": [],
     "spark_authorization": null,
-    "destination": "https://nearestinjurylawyers.com/mva-pi/?utm_source=tiktok&utm_medium=paid_social&utm_campaign=phillips_az_mva_20261005&utm_content=process_v1",
-    "caption": "Arizona vehicle-accident intake options with Phillips Law Group. Sofia is AI; legal questions receive human review. Attorney advertising. No outcome guaranteed.",
-    "asset_requirement": "Rendered review master: rendered/vertical-20s.mp4; captions/poster in rendered-assets.json. Attorney/placement review pending; no upload."
+    "destination": null,
+    "caption": null,
+    "asset_requirement": "Reusable rendered/vertical-20s.mp4 retained for separately reviewed permitted placements; not a TikTok paid acquisition specification.",
+    "policy_eligibility": "INELIGIBLE",
+    "policy_reason": "TikTok August2026 legal-services policy disallows US/Canada ads for personal injury lawsuits. Phillips Arizona MVA PI acquisition is ineligible; missing IDs/access are historical context only.",
+    "policy_source": "https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-other-products-and-services?lang=en",
+    "policy_checked": "2026-10-04",
+    "paid_activation_allowed": false,
+    "educational_acquisition_workaround_allowed": false
   },
   "youtube": {
     "paid_status": "HOLD_NO_ACCOUNT_BUILD",
@@ -38,7 +44,8 @@
     "existing_package": "marketingapes/nil-site/social/nil-az-mva-72hr-v1/package.json",
     "new_caption": "Arizona vehicle-accident questions: learn how basic details move into human review. Explore Phillips Law Group intake options through Nearest Injury Lawyers. Sofia is AI, not a lawyer. Attorney advertising; no representation or outcome guaranteed.",
     "schedule": "Monday October5 review at13UTC; publication is not scheduled or authorized",
-    "rendered_review_asset": "rendered/vertical-20s.mp4"
+    "rendered_review_asset": "rendered/vertical-20s.mp4",
+    "policy_note": "Paid TikTok ineligibility is not an organic-policy determination. Organic remains unpublished pending separate content/legal/channel review; reusable assets are retained."
   },
   "followup": {
     "email_enabled": false,

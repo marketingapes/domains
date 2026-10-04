@@ -277,7 +277,10 @@
       "daily_budget_usd_historical": 20,
       "evidence_class": "user_historical_context_exact_id_unresolved",
       "activation": false,
-      "hold": "No TikTok paid exact ID in retrieved Library v10 or repository registry. No platform tools available; do not create replacement."
+      "hold": "Paid US MVA personal-injury acquisition is ineligible under TikTok August2026 policy. Do not activate or use educational creative as an acquisition workaround; unresolved historical IDs do not change eligibility.",
+      "status": "INELIGIBLE_US_PERSONAL_INJURY",
+      "policy_eligibility": "INELIGIBLE",
+      "policy_source": "https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-other-products-and-services?lang=en"
     }
   ],
   "do_not_activate": [
@@ -314,5 +317,17 @@
       "read_on": "2026-10-04",
       "status": "current GitHub configuration, not platform delivery status"
     }
-  ]
+  ],
+  "owner_confirmed_media_plan": {
+    "total_usd": 5000,
+    "duration_days": 14,
+    "meta_website_usd": 3000,
+    "meta_website_campaign_id": "52603475656795",
+    "google_search_usd": 2000,
+    "google_search_campaign_id": "24313116842",
+    "scope": "Phillips only; separate broader offer",
+    "platform_settings_applied": false,
+    "launch_authorized_now": false,
+    "note": "Owner confirmed media plan; staged platform budget fields remain unapplied. Total-cap/end-date control and release gates require current readback before activation."
+  }
 }

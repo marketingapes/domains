@@ -32,9 +32,9 @@ Search deliberately remains W1-only for all three RSAs; W2/W3 are existing sitel
 
 ## One owner-decision batch
 
-- Budget: Kyle selects exact parent/child campaigns and approved aggregate daily spend, overdelivery controls and attribution basis. Historical Meta40+40, Google20+100 and TikTok20 are saved context, never Monday approval. No aggregate authorization is inferred.
+- Confirmed Phillips media plan: $5,000 total over14days, Meta WEBSITE $3,000 (campaign52603475656795) and Google Search $2,000 (campaign24313116842). Budget is decided; platform budget fields remain unapplied. Verify current accounts/objects and enforce total caps/end dates before activation. Historical channel amounts and the broader offer do not replace this plan.
 - Receiving hours: Kyle/Phillips confirm staffed Arizona hours and the chosen start. 6am is earlier than historical8am callback opening; website quiet-hours may not retain request. Choose staffed release time, or establish durable capture separately before approving an earlier start. Historical≤5min/max3attempts is not a new SLA.
-- Access/release evidence: use existing authorized account access to reconcile current exact IDs (including TikTok), call tracker mapping, attorney/consent and sender-recipient review, provider eligibility and account-specific attribution/outcome imports. No new grants or installation. Release stays held until applicable evidence exists. Email/SMS remain held where eligibility/permission is unknown.
+- Access/release evidence: use existing authorized account access to reconcile current eligible-channel exact IDs, call tracker mapping, attorney/consent and sender-recipient review, provider eligibility and account-specific attribution/outcome imports. No new grants or installation. Release stays held until applicable evidence exists. Email/SMS remain held where eligibility/permission is unknown.
 
 ## Measurement and handoff
 
@@ -44,7 +44,7 @@ Historical Oct2 frontend false-success finding is superseded by main265b5159 hon
 
 ## Evidence limits
 
-Library receipt libfile_50893380a748819190c612ff800fa219 version10 was read in full. GitHub config registry blob166b6a1cf58f66e16a805590ee5d20c357d8c8ab was read through the authorized connector on October4. Git remote read confirms nil-site main265b5159ae62a94cb9a70752e07d19d59fb5d174 and domains maincc45b117dd2f3fb8bd56f40b637dabf76842d9e6. GitHub PR file-list read confirms PR13 protected filenames. No platform status refresh, lead transport proof, new platform upload, real submission, call, publish or deploy occurred. TikTok exact paid campaign/adgroup ID remains unresolved; the retrieved receipt does not contain it.
+Library receipt libfile_50893380a748819190c612ff800fa219 version10 was read in full. GitHub config registry blob166b6a1cf58f66e16a805590ee5d20c357d8c8ab was read through the authorized connector on October4. Git remote read confirms nil-site main265b5159ae62a94cb9a70752e07d19d59fb5d174 and domains maincc45b117dd2f3fb8bd56f40b637dabf76842d9e6. GitHub PR file-list read confirms PR13 protected filenames. No platform status refresh, lead transport proof, new platform upload, real submission, call, publish or deploy occurred. TikTok paid IDs remain historical unresolved context; US MVA PI paid acquisition is policy-ineligible.
 
 Optional neutral injury/symptom and treatment-history questions in ai-intake-review.json are private intake only, may be skipped or answered unsure, and feed firm human review. They are excluded from Meta native form collection, platform payloads, targeting and automated legal-eligibility decisions.
 
@@ -60,6 +60,14 @@ Full source1217 and backend755 tests pass,0failed/skipped. Complete synthetic sy
 
 Existing PR42 historical unmerged Litify Apps Script/views were inspected. Its Converted/sent-date-as-Signed and earliest-phone joins are incompatible and remain excluded/preserved. No legacy writer, view change, old-loader activation or historical LA denominator. The current strict crosswalk and executed-retainer proof stay authoritative.
 
-Live prerequisites are now configuration and release evidence: confirm existing Redis/raw-BigQuery/client/retention/read permissions, separately approved private read/enrollment authorization, actual released endpoints and invocation, authentic verified MVA export/crosswalk/retainer proof. Campaign owner choices remain budget/spend controls, staffed receiving hours/start or proved durable6am capture, applicable attorney/consent/provider and exact platform/TikTok/tracker evidence. All activation/spend/contact/submission/delivery/deployment gates stay disabled; protected portal/PR13 unchanged. domains/nil is stale and never a deployment source.
+Live prerequisites are now configuration and release evidence: confirm existing Redis/raw-BigQuery/client/retention/read permissions, separately approved private read/enrollment authorization, actual released endpoints and invocation, authentic verified MVA export/crosswalk/retainer proof. Campaign owner choices remain application of confirmed spend caps, staffed receiving hours/start or proved durable6am capture, applicable attorney/consent/provider and eligible-platform/tracker evidence. All activation/spend/contact/submission/delivery/deployment gates stay disabled; protected portal/PR13 unchanged. domains/nil is stale and never a deployment source.
 
 Claude review was attempted with tools disabled and returned Not logged in; no review/sign-in/grant claimed. Prior Forbidden evidence was a read-only GraphQL failure, not a denied write; normal authorized draft-save paths succeeded.
+
+## Platform policy correction — October4
+
+Paid TikTok US MVA personal-injury acquisition is INELIGIBLE under the August2026 [legal-services policy](https://ads.tiktok.com/resources/help/article/tiktok-ads-policy-other-products-and-services?lang=en). Do not treat access/ID or copy approval as a release path, or use educational ads as an acquisition workaround. Reusable video assets stay available for separately reviewed permitted placements. Organic policy applicability is separate; publication remains off.
+
+[PMax audience signals](https://support.google.com/google-ads/answer/14530785?hl=en) are suggestions, not delivery limits; PMax can serve outside them and is not retargeting-only. [Sensitive-interest remarketing](https://support.google.com/adspolicy/answer/143465?hl=en) remains restricted. Empty signals do not establish eligibility.
+
+Internal Litify signed-case reporting does not authorize platform export. [Google customer-data policy](https://support.google.com/adspolicy/answer/7475709?hl=en) prohibits sensitive-category information in enhanced conversions/store-sales uploads. Hashing identifiers does not remove sensitive event meaning/context; click-ID-only imports are not blanket exemptions. All feedback stays default-off until event-specific policy/privacy validation. Exact current Meta terms were not verified because official pages were blocked in research. The broad $10k/30day sprint and $250fee discussion does not change Phillips budget/pricing.

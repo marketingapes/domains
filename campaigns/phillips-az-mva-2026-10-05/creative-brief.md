@@ -33,3 +33,5 @@ Optional narration repeats exactly the reviewed on-screen message; use only lice
 ## Learning loop
 
 Keep pathway, concept and creative_id distinct. Test one variable (process vs choice) within the same path/format after release; do not describe Meta allocation as a randomized test. Judge durable receipt and human-reviewed/verified accepted outcomes before proxy CTR/CPL. Downstream missing data cannot support creative winner, signed-case ROI or automatic budget scaling. No eligibility rejection by model. All-channel AI means reviewed creative assistance and disclosed intake organization, never autonomous legal advice, spending, calls or targeting using sensitive facts.
+
+Paid TikTok US MVA personal-injury acquisition is ineligible under the August2026 policy; no educational acquisition workaround. Vertical video remains reusable for separately reviewed permitted placements. Organic applicability is separate and publication stays off.

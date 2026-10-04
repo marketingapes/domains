@@ -79,3 +79,7 @@ Continued recovered runtime as evolutionengine draftPR48 07e6c4d: durable Redis 
 ### 2026-10-04 Final exact-head Phillips offline receipts
 
 Source draftPR48 7c748c1:1217 local passes, GitHub Tests and Scope Audit success; test-only pinned SES fixture makes CI offline without runtime changes. Backend draftPR16 30c04b7:755 passes, no configured CI checks. Campaign review receipt pins both final heads and complete synthetic Redis/source/backend/portal proof. Existing Library review will be replaced in place. All release choices and live bindings held; no merge/deploy/activation, protected edits or real personal submissions.
+
+
+### October4 platform-policy documentation correction
+Paid TikTok US MVA PI ineligible per official August2026 policy; preserved reusable media/organic distinction. Added PMax signal/remarketing and sensitive platform-feedback guards; no educational workaround, budget/pricing/live settings change. Existing draftPR226 and Library review updated; source/backend unchanged.

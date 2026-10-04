@@ -130,7 +130,18 @@
       "rendered/horizontal-20s.mp4",
       "rendered/square-20s.mp4",
       "rendered/vertical-20s.mp4"
-    ]
+    ],
+    "audience_policy": {
+      "signals_are_targeting_limits": false,
+      "retargeting_only": false,
+      "eligibility_verified": false,
+      "sensitive_interest_remarketing_allowed": false,
+      "note": "PMax can serve outside audience signals. Empty signals and disabled expansion settings do not constrain delivery to retargeting or establish eligibility. Sensitive-interest advertiser-curated remarketing remains restricted; campaign/asset/landing eligibility requires separate review.",
+      "sources": [
+        "https://support.google.com/google-ads/answer/14530785?hl=en",
+        "https://support.google.com/adspolicy/answer/143465?hl=en"
+      ]
+    }
   },
   "shared": {
     "location": "Arizona PRESENCE",
@@ -141,6 +152,15 @@
     "remarketing": false,
     "conversion_uploads_enabled": false,
     "approved_budget": null,
-    "attribution_note": "Saved Google actions: 90-day click / 1-day view. NIL action7716640315 is SUBMIT_LEAD_FORM despite Qualified Lead name; fixed value is not signed revenue. Keep settings; owner must approve reconciliation. Do not edit shared goals."
+    "attribution_note": "Saved Google actions: 90-day click / 1-day view. NIL action7716640315 is SUBMIT_LEAD_FORM despite Qualified Lead name; fixed value is not signed revenue. Keep settings; owner must approve reconciliation. Do not edit shared goals.",
+    "platform_feedback_policy": {
+      "status": "HOLD_EVENT_SPECIFIC_POLICY_PRIVACY_REVIEW",
+      "internal_signed_reporting_separate": true,
+      "hashed_identifiers_establish_permission": false,
+      "click_id_import_blanket_exemption": false,
+      "sensitive_enhanced_conversion_uploads_allowed": false,
+      "customer_data_policy_source": "https://support.google.com/adspolicy/answer/7475709?hl=en",
+      "note": "Internal Litify signed-case reporting is separate from platform feedback permission. Event meaning/context can disclose sensitive injury information even with hashed identifiers. Google sensitive-category information is prohibited in enhanced-conversion/store-sales uploads; click-ID-only imports are not blanket exemptions. All feedback remains default-off pending event-specific policy/privacy validation. Current Meta terms were not verified: official pages blocked in research."
+    }
   }
 }
