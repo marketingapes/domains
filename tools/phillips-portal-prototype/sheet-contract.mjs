@@ -7,14 +7,14 @@ export function canonicalRow(headers, cells, { numeric = [], dates = [] } = {}) 
   if (!Array.isArray(headers) || new Set(headers).size !== headers.length || headers.some(h => typeof h !== 'string' || !h))
     throw new Error('Exact unique workbook headers required.');
   const row = {};
-  for (const name of [...headers].filter(h => h !== 'content_hash').sort()) {
+  for (const name of [...headers].filter(h => h !== 'content_hash').sort((a,b) => a.localeCompare(b))) {
     let value = cells[headers.indexOf(name)] ?? '';
     if (value !== '' && numeric.includes(name)) {
       if (typeof value !== 'number' || !Number.isFinite(value)) throw new Error('Unformatted numeric value required: ' + name);
     }
     if (value !== '' && dates.includes(name)) {
       let date;
-      if (typeof value === 'number') date = new Date(Date.UTC(1899,11,30) + value * 86400_000);
+      if (typeof value === 'number') date = new Date(Math.round(Date.UTC(1899,11,30) + value * 86400_000));
       else if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d\d:\d\d)$/.test(value)) date = new Date(value);
       else throw new Error('Explicit UTC/offset date or Sheets serial required: ' + name);
       if (!Number.isFinite(date.getTime())) throw new Error('Invalid date: ' + name);

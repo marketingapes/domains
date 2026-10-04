@@ -28,3 +28,7 @@ test('Sheets date serials normalize to the same UTC hash',()=>{assert.equal(rowH
 test('tenant mismatch fails closed even with identical item ID and recipient',async()=>{const s=setup();s.actor.tenantId='another-firm';await rejected(s.service.view({}),503);await rejected(s.service.decide({},{item_id:s.fixture.items[0].item_id,decision:'approved',content_hash:scopeHash(s.fixture.items[0]),sheet_revision:s.fixture.sheet_revision,audit_revision:0,idempotency_key:'request-key-0003'}),503);assert.equal((await s.audit.snapshot()).events.length,0);});
 test('cross-tenant rows are omitted and cannot be approved',async()=>{const s=setup();s.fixture.items[0].tenant_id='another-firm';assert.equal((await s.service.view({})).items.length,0);await rejected(s.service.decide({},{item_id:s.fixture.items[0].item_id,decision:'approved',content_hash:scopeHash(s.fixture.items[0]),sheet_revision:s.fixture.sheet_revision,audit_revision:0,idempotency_key:'request-key-0004'}),404);});
 test('scope hash separates otherwise identical items across tenants',()=>{const i=original.items[0];assert.notEqual(scopeHash(i),scopeHash({...i,tenant_id:'another-firm'}));});
+
+test('fractional Sheets serial precision preserves exact second for source hashes',()=>{
+ assert.equal(rowHash(['observed_at'],[46299.7621875],{dates:['observed_at']}),rowHash(['observed_at'],['2026-10-04T18:17:33Z'],{dates:['observed_at']}));
+});
