@@ -92,3 +92,5 @@ BackendPR16 ed6d476:767tests pass including real Redis recovery and complete syn
 Final after-hours evidence update: backendPR16 73999fd768passes/46web; retained-duplicate queue readback required, no false saved receipt or callback-state assertion. Review receipt pins exact final head. All release boundaries unchanged.
 
 Final backend0fc1704 confirms separate website no-reissue policy;768/46web pass. Review/receipt pins this exact head; all live gates unchanged.
+
+Parent-recovered Phillips email operating evidence retained: no staff external-ID entry dependency, daily outcome reports/auditable match, missing callExternalID not webhook failure. Olivia ad/lander approval and Sriyas API roles historical; October approval/afterhoursline unverified. No messages/calls.
