@@ -89,3 +89,7 @@ Next: visual feedback. No live integration, authorization changes, provider fetc
 Saw: Kyle wants improvements reusable through copy/configuration, with Phillips validated first and no multitenant runtime expansion.
 Did: separated brand/client/campaign facts and synthetic activity fixture from shared visual builder. Typed balanced planning config, null actual-spend/remaining, synthetic exclusion from actual totals; different tenant requires independent validation rather than carrying Phillips proof. No secret/provider/live-data config.
 Next: finish visual feedback; no accounts/auth provisioning or deployments.
+
+
+### October4 historical lead preparation, source handoff pending
+Kyle requests existing Phillips received/sent history and old Facebook creative in existing portal. Added disabled read-only owner-scoped history adapter, minimized projection and exact private source schema;15focused safety checks. No raw records/PII read, populated or committed; current synthetic-only portal unchanged. Mock server cannot authorize private data; trusted owner/source runtime interfaces unconnected. Source workers reconcile actual MVA/LA sent_records and newer October4 firm outcomes separately; do not duplicate reads. Private coverage/provenance and cleared matched-or-representative image required before safe display. No all-record/Signed inference, outbound replay, deployment or sharing change.
