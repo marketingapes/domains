@@ -62,7 +62,7 @@
     "warehouse_binding_status": "UNVERIFIED_RAW_ONLY"
   },
   "source_head": "7c748c1362fa33dae2f7e6149764ce01f0360642",
-  "backend_head": "73999fdded9dda1f131620fc261c68db037bd5f8",
+  "backend_head": "0fc1704d987dfd3fb7327889e3aafe61ade08cb6",
   "source_tests": {
     "passed": 1217,
     "failed": 0,
@@ -81,6 +81,7 @@
     "after_hours_transfer_enabled": false,
     "protected_frontend_deferred_contract_changed": false,
     "live": false,
-    "duplicate_requires_actual_retained_record": true
+    "duplicate_requires_actual_retained_record": true,
+    "website_stale_claim_reissue_allowed": false
   }
 }

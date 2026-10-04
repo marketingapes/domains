@@ -51,3 +51,5 @@ October4 policy correction: paid TikTok US MVA PI explicitly ineligible, histori
 After-hours continuation: backendPR16 ed6d476 full767pass0fail0skip; web45pass, real Redis retained-record client recreation/namespace isolation/expiry and complete MVA source integration pass. Existing calling hours and frozen frontend unchanged. Capture/release default-off; deferred UI contract and after-hours routing remain release dependencies. No live request submitted.
 
 Final after-hours retained-duplicate guard: backend73999fd full768pass0fail0skip, web46pass. Marker-only duplicate cannot claim saved=true; actual retained record required. No live settings/routes/consumer hours/protected changes.
+
+Final backend0fc1704:768/46web passes include no inherited native/global reissue permission; website stale claims stay held for human review.
