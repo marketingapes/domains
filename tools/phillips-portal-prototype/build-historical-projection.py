@@ -1,13 +1,15 @@
 """Offline private-source -> minimized review and owner-only local viewer.
 No network, dispatch or public full-record output. Pass exact private source/hash.
 """
-import argparse,hashlib,json,pathlib,os,re,html
+import argparse,hashlib,json,pathlib,os,re,html,tempfile
 ap=argparse.ArgumentParser();ap.add_argument('source',type=pathlib.Path);ap.add_argument('--sha256',required=True);ap.add_argument('--safe-output',required=True,type=pathlib.Path);ap.add_argument('--private-viewer',required=True,type=pathlib.Path);args=ap.parse_args()
 raw=args.source.read_bytes();assert hashlib.sha256(raw).hexdigest()==args.sha256,'Private source hash mismatch'
 x=json.loads(raw);assert x['summary']['coverage_complete'] is False
 rows=x['dispatch_events'];assert len(rows)==135 and len(x['firm_intakes'])==384
 # Full record output must stay outside every Git checkout, owner-only.
-private=args.private_viewer.resolve();assert not any((p/'.git').exists() for p in [private.parent,*private.parents]),'Private output cannot be in Git'
+private=args.private_viewer.resolve()
+assert private.is_relative_to(pathlib.Path(tempfile.gettempdir()).resolve()),'Private viewer must use non-synced system temporary storage, not workspace/cloud directories'
+assert not any((p/'.git').exists() for p in [private.parent,*private.parents]),'Private output cannot be in Git'
 private.parent.mkdir(parents=True,exist_ok=True);os.chmod(private.parent,0o700)
 def stamp(v):
  if not v:return None
