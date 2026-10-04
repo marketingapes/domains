@@ -1,0 +1,80 @@
+{
+  "status": "DRAFT_NOT_CREATED",
+  "activation": false,
+  "existing_page_id": "1275847145612714",
+  "existing_form_id": "3518249671686937",
+  "existing_delivery_mode": "receipt_only_hold",
+  "new_form_id": null,
+  "title": "Arizona intake request | Phillips options via NIL",
+  "brand": "Nearest Injury Lawyers / Marketing Apes LLC",
+  "firm_context": "Phillips Law Group intake options; no guarantee of transfer or representation",
+  "form_type": "HIGHER_INTENT",
+  "fields": [
+    {
+      "name": "full_name",
+      "required": true
+    },
+    {
+      "name": "phone_number",
+      "required": true
+    },
+    {
+      "name": "email",
+      "required": false
+    },
+    {
+      "name": "best_time_to_contact",
+      "required": false
+    },
+    {
+      "name": "state",
+      "required": false
+    }
+  ],
+  "questions_excluded": [
+    "injury",
+    "diagnosis",
+    "medical care",
+    "fault",
+    "case value",
+    "legal eligibility"
+  ],
+  "permission_fields": [
+    {
+      "name": "consent_contact",
+      "default": false,
+      "purpose": "request contact about inquiry"
+    },
+    {
+      "name": "consent_ai_voice",
+      "default": false,
+      "purpose": "separate reviewed authorization for artificial/AI voice"
+    },
+    {
+      "name": "consent_sms",
+      "default": false,
+      "purpose": "permission-dependent follow-up; provider eligibility held"
+    },
+    {
+      "name": "consent_email",
+      "default": false,
+      "purpose": "permission-dependent follow-up; provider eligibility held"
+    }
+  ],
+  "draft_disclosure": "I agree that Nearest Injury Lawyers (Marketing Apes LLC) may contact me about this inquiry at the number and email provided. If I separately authorize automated or AI contact, Sofia identifies itself as AI. Calls may be recorded. Consent is not a condition of legal services. Message and data rates may apply. Reply STOP to opt out of texts. Nearest Injury Lawyers is a matching service, not a law firm. Submitting does not create an attorney-client relationship or guarantee representation or a result.",
+  "disclosure_sha256": "8222ace95c6757d6f100476e9f1a5388d5d310af8aa2d9e2022528d0217a74d2",
+  "disclosure_version": "phillips-az-20261005-draft-v1",
+  "disclosure_legal_review": "PENDING; counsel must align named sender and recipient with actual route and platform fields",
+  "privacy_url": "https://nearestinjurylawyers.com/privacy.html",
+  "completion": {
+    "headline": "Contact request information",
+    "body": "Timing depends on receiving hours and the permissions provided. Submission does not guarantee connection or representation.",
+    "cta": "VIEW_WEBSITE",
+    "url": "https://nearestinjurylawyers.com/mva-pi/"
+  },
+  "callback_enabled": false,
+  "sms_enabled": false,
+  "email_enabled": false,
+  "buyer_delivery_enabled": false,
+  "note": "Do not edit published form or broaden its recipients. Existing NIL submit-disclosure source verifier remains PENDING; no consent checkbox proof is inferred."
+}

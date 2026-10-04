@@ -1,0 +1,318 @@
+{
+  "schema": "ee.phillips_sprint/v1",
+  "status": "BUILT-NOT-LIVE",
+  "sprint_id": "phillips_az_mva_20261005",
+  "target_date": "2026-10-05",
+  "timezone": "America/Phoenix",
+  "target_review_time": "2026-10-05T13:00:00Z",
+  "activation": false,
+  "spend_authorized_usd": 0,
+  "approved_budget_usd": null,
+  "calls_enabled": false,
+  "form_submissions_enabled": false,
+  "buyer_delivery_enabled": false,
+  "deploy_enabled": false,
+  "geography": "Arizona presence only",
+  "platform_live_verified": false,
+  "channels": [
+    {
+      "row_id": "btl-meta-native",
+      "brand_account": "BTL",
+      "platform": "meta",
+      "account_id": "411567125842274",
+      "campaign_id": "120254657014050231",
+      "campaign_type": "native_lead_form",
+      "daily_budget_usd": 40,
+      "configured_state": "paused",
+      "ad_sets": [
+        {
+          "id": "120254657571010231",
+          "ads": [
+            "120254657578290231",
+            "120254657581900231",
+            "120254664072710231"
+          ]
+        }
+      ],
+      "page_id": "222081604317115",
+      "form_id": "2292029301564102",
+      "landing": {
+        "domain": null,
+        "intake_tenant": "BTL",
+        "intake_path": "native_form"
+      },
+      "conversion": {
+        "kind": "meta_native_lead",
+        "pixel_id": null
+      },
+      "attribution_window": {
+        "click": "not_applicable_native_form",
+        "view": "not_applicable_native_form",
+        "verified": false
+      },
+      "evidence_class": "current_repository_configuration_not_live_platform",
+      "evidence_as_of": "2026-10-02",
+      "activation": false,
+      "source": "marketingapes/legal-web-lead/config/portal/phillips-campaign-registry.json"
+    },
+    {
+      "row_id": "btl-meta-website",
+      "brand_account": "BTL",
+      "platform": "meta",
+      "account_id": "411567125842274",
+      "campaign_id": "120254664050830231",
+      "campaign_type": "website_conversion",
+      "daily_budget_usd": 40,
+      "configured_state": "paused",
+      "ad_sets": [
+        {
+          "id": "120254664075630231",
+          "ads": [
+            "120254664131140231",
+            "120254664127630231",
+            "120254664134920231"
+          ]
+        }
+      ],
+      "ad_labels": {
+        "120254664131140231": "W1",
+        "120254664127630231": "W2",
+        "120254664134920231": "W3"
+      },
+      "landing": {
+        "domain": "unverified",
+        "intake_tenant": "unverified",
+        "intake_path": "website_form"
+      },
+      "conversion": {
+        "kind": "meta_pixel",
+        "pixel_id": "673552078259404"
+      },
+      "attribution_window": {
+        "click": "1_day",
+        "view": "none",
+        "verified": true
+      },
+      "evidence_class": "current_repository_configuration_not_live_platform",
+      "evidence_as_of": "2026-10-02",
+      "activation": false,
+      "source": "marketingapes/legal-web-lead/config/portal/phillips-campaign-registry.json"
+    },
+    {
+      "row_id": "btl-google-pmax",
+      "brand_account": "BTL",
+      "platform": "google",
+      "account_id": "9455635555",
+      "campaign_id": "24313118384",
+      "campaign_type": "performance_max",
+      "daily_budget_usd": 20,
+      "configured_state": "paused",
+      "asset_groups": [
+        {
+          "id": "6754661608",
+          "label": "W1"
+        },
+        {
+          "id": "6754661503",
+          "label": "W2"
+        },
+        {
+          "id": "6754661833",
+          "label": "W3"
+        }
+      ],
+      "landing": {
+        "domain": "nearestinjurylawyers.com",
+        "intake_tenant": "NIL",
+        "intake_path": "website_form"
+      },
+      "conversion": {
+        "kind": "google_conversion_action",
+        "goal_id": "6459301608",
+        "conversion_action_id": "7564588748"
+      },
+      "attribution_window": {
+        "click": "90_day",
+        "view": "1_day",
+        "verified": true
+      },
+      "evidence_class": "current_repository_configuration_not_live_platform",
+      "evidence_as_of": "2026-10-02",
+      "activation": false,
+      "source": "marketingapes/legal-web-lead/config/portal/phillips-campaign-registry.json",
+      "budget_id": "15923112925"
+    },
+    {
+      "row_id": "nil-google-search",
+      "brand_account": "NIL",
+      "platform": "google",
+      "account_id": "9871020060",
+      "campaign_id": "24313116842",
+      "campaign_type": "search",
+      "daily_budget_usd": 100,
+      "configured_state": "paused",
+      "ad_groups": [
+        {
+          "id": "203621828871",
+          "ads": [
+            "826676232387"
+          ]
+        },
+        {
+          "id": "200795346196",
+          "ads": [
+            "826676256447"
+          ]
+        },
+        {
+          "id": "199437080774",
+          "ads": [
+            "826676256462"
+          ]
+        }
+      ],
+      "landing": {
+        "domain": "nearestinjurylawyers.com",
+        "intake_tenant": "NIL",
+        "intake_path": "website_form"
+      },
+      "conversion": {
+        "kind": "google_conversion_action",
+        "goal_id": "6459309512",
+        "conversion_action_id": "7716640315"
+      },
+      "attribution_window": {
+        "click": "90_day",
+        "view": "1_day",
+        "verified": true
+      },
+      "evidence_class": "current_repository_configuration_not_live_platform",
+      "evidence_as_of": "2026-10-02",
+      "activation": false,
+      "source": "marketingapes/legal-web-lead/config/portal/phillips-campaign-registry.json",
+      "budget_id": "15923112622"
+    },
+    {
+      "row_id": "nil-meta-website",
+      "account_id": "2536177083499794",
+      "platform": "meta",
+      "campaign_id": "52603475656795",
+      "adset_id": "52603475689595",
+      "page_id": "1275847145612714",
+      "pixel_id": "1464576608376747",
+      "ads": [
+        {
+          "path": "W1",
+          "ad_id": "52603475744195",
+          "creative_id": "28703911812583195",
+          "destination": "https://nearestinjurylawyers.com/mva-pi/"
+        },
+        {
+          "path": "W2",
+          "ad_id": "52603492387395",
+          "creative_id": "1783681079428396",
+          "destination": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/"
+        },
+        {
+          "path": "W3",
+          "ad_id": "52603492428795",
+          "creative_id": "1458294463018926",
+          "destination": "https://nearestinjurylawyers.com/mva-pi/quiz/"
+        }
+      ],
+      "daily_budget_usd_historical": 20,
+      "budget_scope": "shared adset across W1/W2/W3",
+      "evidence_class": "historical_library_v10_2026-10-02",
+      "activation": false
+    },
+    {
+      "row_id": "nil-native-contact-only",
+      "account_id": "2536177083499794",
+      "platform": "meta",
+      "campaign_id": "120254654770780231",
+      "adset_id": "120254654772400231",
+      "ad_id": "120254654776180231",
+      "creative_id": "2571334833692107",
+      "page_id": "1275847145612714",
+      "form_id": "3518249671686937",
+      "delivery_mode": "receipt_only_hold",
+      "daily_budget_usd_historical": 20,
+      "evidence_class": "historical_library_v10_2026-10-02",
+      "activation": false
+    },
+    {
+      "row_id": "nil-native-AI callback",
+      "account_id": "2536177083499794",
+      "platform": "meta",
+      "campaign_id": "120254654771580231",
+      "adset_id": "120254654773540231",
+      "ad_id": "120254654778590231",
+      "creative_id": "1149354044134111",
+      "page_id": "1275847145612714",
+      "form_id": "3518249671686937",
+      "delivery_mode": "receipt_only_hold",
+      "daily_budget_usd_historical": 20,
+      "evidence_class": "historical_library_v10_2026-10-02",
+      "activation": false
+    },
+    {
+      "row_id": "nil-meta-call",
+      "platform": "meta",
+      "account_id": "2536177083499794",
+      "campaign_id": "120254652215690231",
+      "adset_id": "120254652217020231",
+      "ad_id": "120254652218910231",
+      "creative_id": "968245108982762",
+      "historical_tracker": "+16025844696",
+      "daily_budget_usd_historical": 20,
+      "evidence_class": "historical_library_v10_2026-10-02",
+      "activation": false,
+      "hold": "Tracker is not the Oct3 tracker ending4642; do not conflate evidence. Reconcile configuration with owner without making a call."
+    },
+    {
+      "row_id": "tiktok-paid",
+      "platform": "tiktok",
+      "campaign_id": null,
+      "adgroup_id": null,
+      "daily_budget_usd_historical": 20,
+      "evidence_class": "user_historical_context_exact_id_unresolved",
+      "activation": false,
+      "hold": "No TikTok paid exact ID in retrieved Library v10 or repository registry. No platform tools available; do not create replacement."
+    }
+  ],
+  "do_not_activate": [
+    {
+      "campaign_id": "24318918184",
+      "reason": "superseded wrong TOTAL-budget PMax"
+    },
+    {
+      "campaign_id": "24311829251",
+      "reason": "old NIL PMax preserved paused; not selected"
+    },
+    {
+      "campaign_id": "52603475670195",
+      "reason": "sensitive remarketing hold"
+    }
+  ],
+  "production": {
+    "repository": "marketingapes/nil-site",
+    "main_sha": "265b5159ae62a94cb9a70752e07d19d59fb5d174",
+    "render_service": "srv-da7s0roae00c739uufmg",
+    "website_endpoint": "https://legal-web-lead.onrender.com/api/v1/nil/web-lead",
+    "stale_do_not_deploy": "marketingapes/domains/nil"
+  },
+  "sources": [
+    {
+      "library_file_id": "libfile_50893380a748819190c612ff800fa219",
+      "version": "10",
+      "read_on": "2026-10-04",
+      "status": "historical October2 evidence, not refreshed platform configuration"
+    },
+    {
+      "path": "marketingapes/legal-web-lead/config/portal/phillips-campaign-registry.json",
+      "blob_sha": "166b6a1cf58f66e16a805590ee5d20c357d8c8ab",
+      "read_on": "2026-10-04",
+      "status": "current GitHub configuration, not platform delivery status"
+    }
+  ]
+}

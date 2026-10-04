@@ -1,0 +1,138 @@
+{
+  "status": "DRAFT_REVIEW_ONLY",
+  "activation": false,
+  "search": {
+    "account_id": "9871020060",
+    "campaign_id": "24313116842",
+    "budget_id": "15923112622",
+    "preserve_daily_budget_historical": 100,
+    "positive_match": "EXACT",
+    "keyword_candidates": [
+      "[arizona car accident lawyer]",
+      "[arizona accident lawyer]",
+      "[arizona motor vehicle attorney]",
+      "[phoenix car accident lawyer]",
+      "[phoenix accident lawyer]",
+      "[phoenix motor vehicle attorney]",
+      "[car accident attorney arizona]",
+      "[car accident attorney phoenix]"
+    ],
+    "negative_phrase_candidates": [
+      "jobs",
+      "salary",
+      "law school",
+      "internship",
+      "car repair",
+      "rental car",
+      "insurance quote",
+      "news",
+      "police report",
+      "accident video",
+      "car parts",
+      "body shop",
+      "traffic report",
+      "used cars",
+      "driving school"
+    ],
+    "search_partners": false,
+    "display": false,
+    "ai_max_expansion": false,
+    "rsa_data": "google-rsa-review.csv",
+    "note": "review dataset for existing IDs, not a certified Editor import or platform mutation",
+    "primary_destination_path": "W1",
+    "primary_destination_variants": 1,
+    "path_scope": "Deliberate scope: all three RSAs use W1. W2/W3 are existing sitelink options, not distinct Search RSA destination tests. Meta website ads and BTL PMax groups cover three distinct destination variants."
+  },
+  "pmax": {
+    "account_id": "9455635555",
+    "campaign_id": "24313118384",
+    "budget_id": "15923112925",
+    "preserve_daily_budget_historical": 20,
+    "groups": [
+      {
+        "id": "6754661608",
+        "path": "W1",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/"
+      },
+      {
+        "id": "6754661503",
+        "path": "W2",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/"
+      },
+      {
+        "id": "6754661833",
+        "path": "W3",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/quiz/"
+      }
+    ],
+    "headlines": [
+      "Phillips Law Group",
+      "Arizona Accident Intake",
+      "Vehicle Accident Questions",
+      "Explore Intake Options",
+      "Human Review of Your Inquiry",
+      "Meet Sofia, AI Intake",
+      "Share the Basic Details",
+      "Arizona Intake Information",
+      "A Clear Next Step",
+      "Learn About the Process",
+      "Sofia Is an AI Assistant",
+      "No Outcome Is Guaranteed",
+      "Organize Accident Details",
+      "Choose an Intake Path",
+      "Attorney Advertising"
+    ],
+    "long_headlines": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group",
+      "Organize basic details with Sofia, an AI intake assistant",
+      "Choose a next step with human review of legal questions",
+      "Learn about the process before requesting contact",
+      "No representation or outcome is guaranteed"
+    ],
+    "descriptions": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group.",
+      "Sofia is an AI intake assistant. Attorneys review legal questions and representation.",
+      "Share basic details for human review. No representation or outcome is guaranteed.",
+      "Nearest Injury Lawyers is a matching service, not a law firm. Explore the next step.",
+      "Attorney advertising. Human review remains part of the intake process."
+    ],
+    "existing_image_ids": {
+      "landscape": [
+        "386521265318",
+        "386521356218",
+        "386697408210"
+      ],
+      "square": [
+        "386621866957",
+        "386521330061",
+        "386621881837"
+      ],
+      "portrait": [
+        "386621860654",
+        "386697408138"
+      ],
+      "logo": [
+        "386691668643"
+      ]
+    },
+    "new_asset_uploads": false,
+    "url_expansion": false,
+    "text_automation": false,
+    "image_automation": false,
+    "video_automation": false,
+    "audience_signals": [],
+    "conversion_action_id": "7564588748",
+    "cross_account_import_verified": false
+  },
+  "shared": {
+    "location": "Arizona PRESENCE",
+    "language": "English",
+    "status": "PAUSED",
+    "sensitive_audiences": [],
+    "customer_match": false,
+    "remarketing": false,
+    "conversion_uploads_enabled": false,
+    "approved_budget": null,
+    "attribution_note": "Saved Google actions: 90-day click / 1-day view. NIL action7716640315 is SUBMIT_LEAD_FORM despite Qualified Lead name; fixed value is not signed revenue. Keep settings; owner must approve reconciliation. Do not edit shared goals."
+  }
+}
