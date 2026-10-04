@@ -122,7 +122,15 @@
     "video_automation": false,
     "audience_signals": [],
     "conversion_action_id": "7564588748",
-    "cross_account_import_verified": false
+    "cross_account_import_verified": false,
+    "rendered_review_assets": [
+      "rendered/pmax-landscape-1200x628.jpg",
+      "rendered/pmax-square-1200x1200.jpg",
+      "rendered/pmax-portrait-960x1200.jpg",
+      "rendered/horizontal-20s.mp4",
+      "rendered/square-20s.mp4",
+      "rendered/vertical-20s.mp4"
+    ]
   },
   "shared": {
     "location": "Arizona PRESENCE",

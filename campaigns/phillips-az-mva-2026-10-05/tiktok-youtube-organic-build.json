@@ -13,7 +13,7 @@
     "spark_authorization": null,
     "destination": "https://nearestinjurylawyers.com/mva-pi/?utm_source=tiktok&utm_medium=paid_social&utm_campaign=phillips_az_mva_20261005&utm_content=process_v1",
     "caption": "Arizona vehicle-accident intake options with Phillips Law Group. Sofia is AI; legal questions receive human review. Attorney advertising. No outcome guaranteed.",
-    "asset_requirement": "creative-brief.md: new reviewed Phillips process master; existing educational master source only"
+    "asset_requirement": "Rendered review master: rendered/vertical-20s.mp4; captions/poster in rendered-assets.json. Attorney/placement review pending; no upload."
   },
   "youtube": {
     "paid_status": "HOLD_NO_ACCOUNT_BUILD",
@@ -21,7 +21,11 @@
     "title": "Arizona Accident Intake | Phillips Options",
     "description": "Explore the intake process through Nearest Injury Lawyers, a matching service. Sofia is an AI intake assistant, not a lawyer. No representation or outcome is guaranteed. Attorney advertising.",
     "destination": "https://nearestinjurylawyers.com/mva-pi/?utm_source=youtube&utm_medium=organic_social&utm_campaign=phillips_az_mva_20261005&utm_content=process_v1",
-    "visibility": "private review upload only when authorized; no upload performed"
+    "visibility": "private review upload only when authorized; no upload performed",
+    "rendered_review_assets": [
+      "rendered/horizontal-20s.mp4",
+      "rendered/vertical-20s.mp4"
+    ]
   },
   "organic": {
     "channels": [
@@ -33,7 +37,8 @@
     "publication_enabled": false,
     "existing_package": "marketingapes/nil-site/social/nil-az-mva-72hr-v1/package.json",
     "new_caption": "Arizona vehicle-accident questions: learn how basic details move into human review. Explore Phillips Law Group intake options through Nearest Injury Lawyers. Sofia is AI, not a lawyer. Attorney advertising; no representation or outcome guaranteed.",
-    "schedule": "Monday October5 review at13UTC; publication is not scheduled or authorized"
+    "schedule": "Monday October5 review at13UTC; publication is not scheduled or authorized",
+    "rendered_review_asset": "rendered/vertical-20s.mp4"
   },
   "followup": {
     "email_enabled": false,
