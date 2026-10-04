@@ -62,24 +62,25 @@
     "warehouse_binding_status": "UNVERIFIED_RAW_ONLY"
   },
   "source_head": "7c748c1362fa33dae2f7e6149764ce01f0360642",
-  "backend_head": "ed6d476ba905a2a4f05212720bcb040cb586025c",
+  "backend_head": "73999fdded9dda1f131620fc261c68db037bd5f8",
   "source_tests": {
     "passed": 1217,
     "failed": 0,
     "skipped": 0
   },
   "backend_tests": {
-    "passed": 767,
+    "passed": 768,
     "failed": 0,
     "skipped": 0
   },
   "after_hours_retention": {
     "mode": "DISABLED_DEFAULT_OFF",
     "real_redis_recreation_expiry_pass": true,
-    "web_suite_pass": 45,
+    "web_suite_pass": 46,
     "consumer_hours_widened": false,
     "after_hours_transfer_enabled": false,
     "protected_frontend_deferred_contract_changed": false,
-    "live": false
+    "live": false,
+    "duplicate_requires_actual_retained_record": true
   }
 }

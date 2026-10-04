@@ -87,3 +87,6 @@ Paid TikTok US MVA PI ineligible per official August2026 policy; preserved reusa
 
 ### October4 default-off after-hours retention
 BackendPR16 ed6d476:767tests pass including real Redis recovery and complete synthetic MVA integration. Kyle confirms after-hours team; same transfer line unverified. Existing consumer hours unchanged. Separate queue captures authorized NIL MVA requests only after durable consent/readback, no immediate provider call. Frontend deferred-status contract needed before enable; frozen PR13 unchanged. Browser UI inaccessible (no connected Desktop Commander devices); known cron current receipt:cron is diagnostics, not callback proof.
+
+
+Final after-hours evidence update: backendPR16 73999fd768passes/46web; retained-duplicate queue readback required, no false saved receipt or callback-state assertion. Review receipt pins exact final head. All release boundaries unchanged.
