@@ -64,3 +64,8 @@ Next: keep PR226 draft and all campaign controls disabled. Private backend publi
 ### 2026-10-04 Phillips MVA completed staged continuation
 
 Continued existing PR226 branch. Built six still formats, three silent20-second video masters, posters/captions, three isolated landing previews and one self-contained playable review artifact; source logo untouched. Campaign validator46 pass; local browser previews/media pass. Private replay plus default-off offline outcome preparation saved as legal-web-lead draft PR16 991531b; backend728 pass/5 skip and existing canonical raw-runtime memory contract checked. Prior Forbidden evidence corrected to read-only GraphQL request; current normal rights allowed authorized draft save. No production bindings, PR13/protected portal changes, merge, deploy, upload, calls, messages, personal submissions, spend or activation. Budget, staffing and applicable release/source/access bindings remain held.
+
+
+### 2026-10-04 Phillips MVA disabled durable-delivery completion
+
+Backend PR16 68db57e now builds same-Redis private atomic journal, strict injected transport, per-destination claim/readback/ack/retry/partial recovery and callable default-off worker factory. Full750pass0skip using all isolated Redis checks; focused53pass. No server/scheduler/live binding. Canonical runtime's durable registry/raw readback requires approved existing integration or minimal evolutionengine scope; no other repo changed, new persistent service, credentials or marketing_events writer. Campaign/demo receipts refreshed; all original launch boundaries remain.
