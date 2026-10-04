@@ -8,3 +8,13 @@
 - No platform mutation, upload, lead submission, phone call, buyer delivery, deployment, campaign activation or spending. No claim of end-to-end acceptance or staffed answer.
 
 Re-run: `node campaigns/phillips-az-mva-2026-10-05/validate.mjs`.
+
+## Independent-review corrections
+
+Added optional neutral injury/symptom and treatment-history prompts for private intake and firm human review only. They can be skipped, cannot decide legal eligibility and cannot be collected in Meta forms or used for audience targeting. Search scope is explicit: three RSAs all use W1; W2/W3 are sitelinks rather than distinct Search destination tests.
+
+The self-contained validator now parses both CSVs with strict quoted-field/record handling and checks exact IDs/routes, columns, row counts, copy limits, paused states, channel safety flags and consent. 41 focused positive/negative tests pass, including malformed CSVs, changed route IDs, enabled controls, overlength copy and missing/tampered source assets. CI runs this validator and focused suite without requiring any external checkout.
+
+Asset verification output is separate: the self-contained run reports external byte checks **NOT RUN**. An explicit local run with `--assets-root /workspace/nil-site` verified all six actual files, sizes and SHA256 hashes. An explicitly requested absent root or missing file fails; nothing is silently skipped.
+
+Full existing release tests: 226 passed, 0 failed; build/foundation checks pass. The first wrapper invocation reached its final clean-worktree check while corrections were uncommitted; after committing, the wrapper was rerun to verify the clean-worktree gate. No protected files, runtime intake, portal, deployment or live controls changed.

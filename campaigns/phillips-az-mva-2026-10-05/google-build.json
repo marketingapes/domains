@@ -38,7 +38,10 @@
     "display": false,
     "ai_max_expansion": false,
     "rsa_data": "google-rsa-review.csv",
-    "note": "review dataset for existing IDs, not a certified Editor import or platform mutation"
+    "note": "review dataset for existing IDs, not a certified Editor import or platform mutation",
+    "primary_destination_path": "W1",
+    "primary_destination_variants": 1,
+    "path_scope": "Deliberate scope: all three RSAs use W1. W2/W3 are existing sitelink options, not distinct Search RSA destination tests. Meta website ads and BTL PMax groups cover three distinct destination variants."
   },
   "pmax": {
     "account_id": "9455635555",

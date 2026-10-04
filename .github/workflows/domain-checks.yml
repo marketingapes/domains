@@ -28,6 +28,10 @@ jobs:
           python-version: '3.12'
       - name: Install schema validation dependency
         run: python3 -m pip install -r requirements-ci.txt
+      - name: Validate staged Phillips package and rejection tests (no sibling repository)
+        run: |
+          node campaigns/phillips-az-mva-2026-10-05/validate.mjs
+          node --test campaigns/phillips-az-mva-2026-10-05/validate.test.mjs
       - name: Validate the build, foundation and existing tests
         shell: bash
         run: |
