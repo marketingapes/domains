@@ -1,4 +1,13 @@
 {
+  "requested_period": {
+    "start": "2026-01-01",
+    "through": "2026-10-04"
+  },
+  "yearwide_account_coverage": "INVENTORY_PENDING",
+  "complete_all_accounts": false,
+  "distinct_explicit_source_groups": 119,
+  "missing_source_id_events": 14,
+  "dedupe_policy": "Preserve all events; explicit source groups are not unique people; candidate phone joins remain held",
   "schema": "phillips.deidentified-dispatch-history/v1",
   "mode": "DEIDENTIFIED_HISTORICAL_REVIEW",
   "coverage": "INCOMPLETE",
@@ -13,6 +22,11 @@
   "outbound_enabled": false,
   "rows": [
     {
+      "source_group": "SOURCE-GROUP-001",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-001",
       "campaign": "mva",
       "received_at": null,
@@ -30,6 +44,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-002",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-002",
       "campaign": "mva",
       "received_at": "2026-07-08T19:03:00.733Z",
@@ -47,6 +66,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-003",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-003",
       "campaign": "mva",
       "received_at": "2026-07-08T19:04:02.186Z",
@@ -64,6 +88,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-004",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-004",
       "campaign": "mva",
       "received_at": null,
@@ -81,6 +110,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-005",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-005",
       "campaign": "mva",
       "received_at": null,
@@ -98,6 +132,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-006",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-006",
       "campaign": "mva",
       "received_at": null,
@@ -115,6 +154,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-007",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-007",
       "campaign": "mva",
       "received_at": null,
@@ -132,6 +176,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-008",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-008",
       "campaign": "mva",
       "received_at": null,
@@ -149,6 +198,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-009",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-009",
       "campaign": "mva",
       "received_at": null,
@@ -166,6 +220,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-010",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-010",
       "campaign": "mva",
       "received_at": null,
@@ -183,6 +242,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-011",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-011",
       "campaign": "mva",
       "received_at": null,
@@ -200,6 +264,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-012",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-012",
       "campaign": "mva",
       "received_at": null,
@@ -217,6 +286,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-013",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-013",
       "campaign": "mva",
       "received_at": null,
@@ -234,6 +308,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-014",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-014",
       "campaign": "mva",
       "received_at": null,
@@ -251,6 +330,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-015",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-015",
       "campaign": "mva",
       "received_at": null,
@@ -268,6 +352,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-016",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-016",
       "campaign": "mva",
       "received_at": null,
@@ -285,6 +374,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-017",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-017",
       "campaign": "mva",
       "received_at": null,
@@ -302,6 +396,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-018",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-018",
       "campaign": "mva",
       "received_at": null,
@@ -319,6 +418,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-019",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-019",
       "campaign": "mva",
       "received_at": null,
@@ -336,6 +440,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-020",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-020",
       "campaign": "mva",
       "received_at": null,
@@ -353,6 +462,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-021",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-021",
       "campaign": "mva",
       "received_at": null,
@@ -370,6 +484,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-022",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-022",
       "campaign": "mva",
       "received_at": null,
@@ -387,6 +506,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-023",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-023",
       "campaign": "mva",
       "received_at": null,
@@ -404,6 +528,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-024",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-024",
       "campaign": "mva",
       "received_at": null,
@@ -421,6 +550,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-025",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-025",
       "campaign": "mva",
       "received_at": null,
@@ -438,6 +572,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-026",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-026",
       "campaign": "mva",
       "received_at": null,
@@ -455,6 +594,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-027",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-027",
       "campaign": "mva",
       "received_at": null,
@@ -472,6 +616,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-028",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-028",
       "campaign": "mva",
       "received_at": null,
@@ -489,6 +638,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-029",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-029",
       "campaign": "mva",
       "received_at": null,
@@ -506,6 +660,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-030",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-030",
       "campaign": "mva",
       "received_at": null,
@@ -523,6 +682,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-031",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-031",
       "campaign": "mva",
       "received_at": null,
@@ -540,6 +704,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-032",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-032",
       "campaign": "mva",
       "received_at": null,
@@ -557,6 +726,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-033",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-033",
       "campaign": "mva",
       "received_at": null,
@@ -574,6 +748,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-034",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-034",
       "campaign": "mva",
       "received_at": null,
@@ -591,6 +770,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-035",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-035",
       "campaign": "mva",
       "received_at": null,
@@ -608,6 +792,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-036",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-036",
       "campaign": "mva",
       "received_at": "2026-07-13T18:12:34.889Z",
@@ -625,6 +814,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-037",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-037",
       "campaign": "mva",
       "received_at": "2026-07-13T19:33:18.916Z",
@@ -642,6 +836,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-038",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-038",
       "campaign": "mva",
       "received_at": "2026-07-14T04:17:27.452Z",
@@ -659,6 +858,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-039",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-039",
       "campaign": "mva",
       "received_at": "2026-08-21T17:30:50.782Z",
@@ -676,6 +880,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-040",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-040",
       "campaign": "la",
       "received_at": "2026-05-27T21:28:17.580Z",
@@ -693,6 +902,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-041",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-041",
       "campaign": "la",
       "received_at": "2026-05-28T06:25:40.228Z",
@@ -710,6 +924,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-042",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-042",
       "campaign": "la",
       "received_at": "2026-05-28T08:34:19.931Z",
@@ -727,6 +946,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-043",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-043",
       "campaign": "la",
       "received_at": "2026-05-28T19:51:24.731Z",
@@ -744,6 +968,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-044",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-044",
       "campaign": "la",
       "received_at": "2026-05-28T20:43:04.780Z",
@@ -761,6 +990,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-045",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-045",
       "campaign": "la",
       "received_at": "2026-05-29T01:02:54.216Z",
@@ -778,6 +1012,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-046",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-046",
       "campaign": "la",
       "received_at": "2026-05-29T04:39:46.704Z",
@@ -795,6 +1034,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-047",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-047",
       "campaign": "la",
       "received_at": "2026-05-29T04:54:26.113Z",
@@ -812,6 +1056,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-048",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-048",
       "campaign": "la",
       "received_at": "2026-05-29T04:55:39.110Z",
@@ -829,6 +1078,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-049",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-049",
       "campaign": "la",
       "received_at": "2026-05-29T11:19:09.295Z",
@@ -846,6 +1100,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-050",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-050",
       "campaign": "la",
       "received_at": "2026-05-29T13:31:56.708Z",
@@ -863,6 +1122,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-051",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-051",
       "campaign": "la",
       "received_at": "2026-05-29T19:06:59.291Z",
@@ -880,6 +1144,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-052",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-052",
       "campaign": "la",
       "received_at": "2026-06-01T04:44:14.337Z",
@@ -897,6 +1166,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-053",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-053",
       "campaign": "la",
       "received_at": "2026-06-24T07:38:46.905Z",
@@ -914,6 +1188,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-054",
       "campaign": "la",
       "received_at": null,
@@ -931,6 +1210,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-055",
       "campaign": "la",
       "received_at": null,
@@ -948,6 +1232,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-056",
       "campaign": "la",
       "received_at": null,
@@ -965,6 +1254,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-057",
       "campaign": "la",
       "received_at": null,
@@ -982,6 +1276,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-058",
       "campaign": "la",
       "received_at": null,
@@ -999,6 +1298,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-059",
       "campaign": "la",
       "received_at": null,
@@ -1016,6 +1320,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-060",
       "campaign": "la",
       "received_at": null,
@@ -1033,6 +1342,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-061",
       "campaign": "la",
       "received_at": null,
@@ -1050,6 +1364,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-062",
       "campaign": "la",
       "received_at": null,
@@ -1067,6 +1386,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-054",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-063",
       "campaign": "la",
       "received_at": "2026-07-27T19:30:28.227Z",
@@ -1084,6 +1408,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-055",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-064",
       "campaign": "la",
       "received_at": "2026-07-27T20:44:07.123Z",
@@ -1101,6 +1430,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-056",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-065",
       "campaign": "la",
       "received_at": "2026-07-28T07:53:02.426Z",
@@ -1118,6 +1452,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-057",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-066",
       "campaign": "la",
       "received_at": "2026-07-28T07:53:57.571Z",
@@ -1135,6 +1474,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-058",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-067",
       "campaign": "la",
       "received_at": "2026-07-28T08:15:54.523Z",
@@ -1152,6 +1496,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-059",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-068",
       "campaign": "la",
       "received_at": "2026-07-28T11:47:16.947Z",
@@ -1169,6 +1518,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-060",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-069",
       "campaign": "la",
       "received_at": "2026-07-29T08:26:07.290Z",
@@ -1186,6 +1540,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-061",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-070",
       "campaign": "la",
       "received_at": "2026-07-28T10:43:21.105Z",
@@ -1203,6 +1562,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-062",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-071",
       "campaign": "la",
       "received_at": null,
@@ -1220,6 +1584,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-063",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-072",
       "campaign": "la",
       "received_at": null,
@@ -1237,6 +1606,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-064",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-073",
       "campaign": "la",
       "received_at": null,
@@ -1254,6 +1628,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-064",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-074",
       "campaign": "la",
       "received_at": null,
@@ -1271,6 +1650,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-065",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-075",
       "campaign": "la",
       "received_at": null,
@@ -1288,6 +1672,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-066",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-076",
       "campaign": "la",
       "received_at": null,
@@ -1305,6 +1694,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-066",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Source workbook API log",
       "display_id": "HISTORY-077",
       "campaign": "la",
       "received_at": null,
@@ -1322,6 +1716,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-067",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-078",
       "campaign": "ca_juvenile_detention",
       "received_at": null,
@@ -1339,6 +1738,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-068",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-079",
       "campaign": "ca_juvenile_detention",
       "received_at": null,
@@ -1356,6 +1760,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-069",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-080",
       "campaign": "ca_juvenile_detention",
       "received_at": null,
@@ -1373,6 +1782,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-070",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-081",
       "campaign": "la",
       "received_at": "2026-05-26T20:08:30.815Z",
@@ -1390,6 +1804,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-071",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-082",
       "campaign": "la",
       "received_at": "2026-05-25T15:14:22.212Z",
@@ -1407,6 +1826,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-083",
       "campaign": "la",
       "received_at": null,
@@ -1424,6 +1848,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-072",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-084",
       "campaign": "la",
       "received_at": "2026-05-25T10:35:04.074Z",
@@ -1441,6 +1870,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-073",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-085",
       "campaign": "la",
       "received_at": "2026-05-25T12:15:31.964Z",
@@ -1458,6 +1892,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-074",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-086",
       "campaign": "la",
       "received_at": "2026-05-26T07:25:41.760Z",
@@ -1475,6 +1914,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-075",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-087",
       "campaign": "la",
       "received_at": "2026-05-26T00:13:39.644Z",
@@ -1492,6 +1936,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-076",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-088",
       "campaign": "la",
       "received_at": "2026-05-25T18:07:23.011Z",
@@ -1509,6 +1958,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-077",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-089",
       "campaign": "la",
       "received_at": "2026-05-25T14:55:49.188Z",
@@ -1526,6 +1980,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-078",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-090",
       "campaign": "la",
       "received_at": "2026-05-26T19:46:37.026Z",
@@ -1543,6 +2002,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-079",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-091",
       "campaign": "la",
       "received_at": "2026-05-25T02:32:39.259Z",
@@ -1560,6 +2024,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-080",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-092",
       "campaign": "la",
       "received_at": "2026-05-23T13:31:05.525Z",
@@ -1577,6 +2046,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-081",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-093",
       "campaign": "la",
       "received_at": "2026-05-24T07:37:49.188Z",
@@ -1594,6 +2068,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-082",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-094",
       "campaign": "la",
       "received_at": "2026-05-23T08:24:48.158Z",
@@ -1611,6 +2090,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-083",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-095",
       "campaign": "la",
       "received_at": "2026-05-22T15:25:30.240Z",
@@ -1628,6 +2112,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-084",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-096",
       "campaign": "la",
       "received_at": "2026-05-22T15:23:56.404Z",
@@ -1645,6 +2134,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-085",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-097",
       "campaign": "la",
       "received_at": "2026-05-22T19:02:31.395Z",
@@ -1662,6 +2156,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-086",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-098",
       "campaign": "la",
       "received_at": "2026-05-23T15:56:45.553Z",
@@ -1679,6 +2178,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-087",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-099",
       "campaign": "la",
       "received_at": "2026-05-23T20:35:52.084Z",
@@ -1696,6 +2200,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-088",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-100",
       "campaign": "la",
       "received_at": "2026-05-24T15:46:05.753Z",
@@ -1713,6 +2222,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-089",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-101",
       "campaign": "la",
       "received_at": "2026-05-22T15:12:28.343Z",
@@ -1730,6 +2244,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-090",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-102",
       "campaign": "la",
       "received_at": "2026-05-20T01:56:39.063Z",
@@ -1747,6 +2266,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-091",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-103",
       "campaign": "la",
       "received_at": "2026-05-22T05:44:09.222Z",
@@ -1764,6 +2288,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-092",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-104",
       "campaign": "la",
       "received_at": "2026-05-22T05:20:38.677Z",
@@ -1781,6 +2310,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-105",
       "campaign": "la",
       "received_at": null,
@@ -1798,6 +2332,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-093",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-106",
       "campaign": "la",
       "received_at": "2026-05-20T20:33:58.968Z",
@@ -1815,6 +2354,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-094",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-107",
       "campaign": "la",
       "received_at": "2026-05-22T09:13:55.588Z",
@@ -1832,6 +2376,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-095",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-108",
       "campaign": "la",
       "received_at": "2026-05-21T08:23:32.163Z",
@@ -1849,6 +2398,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-096",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-109",
       "campaign": "la",
       "received_at": "2026-05-22T01:33:02.393Z",
@@ -1866,6 +2420,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-097",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-110",
       "campaign": "la",
       "received_at": "2026-05-21T01:59:31.875Z",
@@ -1883,6 +2442,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-098",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-111",
       "campaign": "la",
       "received_at": "2026-05-15T17:39:46.123Z",
@@ -1900,6 +2464,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-099",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-112",
       "campaign": "la",
       "received_at": "2026-05-18T01:30:24.459Z",
@@ -1917,6 +2486,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-100",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-113",
       "campaign": "la",
       "received_at": "2026-05-14T08:51:17.552Z",
@@ -1934,6 +2508,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-101",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-114",
       "campaign": "la",
       "received_at": "2026-05-19T10:12:33.891Z",
@@ -1951,6 +2530,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-115",
       "campaign": "la",
       "received_at": null,
@@ -1968,6 +2552,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-102",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-116",
       "campaign": "la",
       "received_at": "2026-05-14T13:45:50.327Z",
@@ -1985,6 +2574,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-103",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-117",
       "campaign": "la",
       "received_at": "2026-05-18T06:21:11.911Z",
@@ -2002,6 +2596,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-104",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-118",
       "campaign": "la",
       "received_at": "2026-05-15T20:54:51.620Z",
@@ -2019,6 +2618,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-105",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-119",
       "campaign": "la",
       "received_at": "2026-05-18T14:11:48.343Z",
@@ -2036,6 +2640,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-106",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-120",
       "campaign": "la",
       "received_at": "2026-05-15T06:38:57.545Z",
@@ -2053,6 +2662,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-107",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-121",
       "campaign": "la",
       "received_at": "2026-05-13T19:39:09.907Z",
@@ -2070,6 +2684,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-108",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-122",
       "campaign": "la",
       "received_at": "2026-05-12T20:42:17.390Z",
@@ -2087,6 +2706,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-109",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-123",
       "campaign": "la",
       "received_at": "2026-05-13T02:57:31.861Z",
@@ -2104,6 +2728,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-110",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-124",
       "campaign": "la",
       "received_at": "2026-05-13T02:53:51.129Z",
@@ -2121,6 +2750,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-111",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-125",
       "campaign": "la",
       "received_at": "2026-05-13T13:53:14.833Z",
@@ -2138,6 +2772,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-112",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-126",
       "campaign": "la",
       "received_at": "2026-05-12T14:31:10.359Z",
@@ -2155,6 +2794,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-113",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-127",
       "campaign": "la",
       "received_at": "2026-05-14T04:13:53.049Z",
@@ -2172,6 +2816,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-128",
       "campaign": "la",
       "received_at": null,
@@ -2189,6 +2838,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": null,
+      "dedupe_basis": "Source ID missing; no merge",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-129",
       "campaign": "la",
       "received_at": null,
@@ -2206,6 +2860,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-114",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-130",
       "campaign": "la",
       "received_at": "2026-05-13T03:25:06.729Z",
@@ -2223,6 +2882,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-115",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-131",
       "campaign": "la",
       "received_at": "2026-05-12T05:17:20.724Z",
@@ -2240,6 +2904,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-116",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-132",
       "campaign": "la",
       "received_at": "2026-05-12T06:02:24.274Z",
@@ -2257,6 +2926,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-117",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-133",
       "campaign": "la",
       "received_at": "2026-05-06T15:24:45.889Z",
@@ -2274,6 +2948,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-118",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-134",
       "campaign": "la",
       "received_at": "2026-05-17T11:41:09.934Z",
@@ -2291,6 +2970,11 @@
       "creative_attribution": "Historical campaign reference only; individual attribution unavailable"
     },
     {
+      "source_group": "SOURCE-GROUP-119",
+      "dedupe_basis": "Explicit campaign/source key",
+      "account_key": "UNVERIFIED",
+      "account_attribution": "Inventory pending; no account inferred",
+      "source_kind": "Recorded delivery email",
       "display_id": "HISTORY-135",
       "campaign": "la",
       "received_at": "2026-05-15T10:17:09.416Z",
