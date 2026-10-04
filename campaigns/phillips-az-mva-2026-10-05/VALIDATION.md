@@ -18,3 +18,11 @@ The self-contained validator now parses both CSVs with strict quoted-field/recor
 Asset verification output is separate: the self-contained run reports external byte checks **NOT RUN**. An explicit local run with `--assets-root /workspace/nil-site` verified all six actual files, sizes and SHA256 hashes. An explicitly requested absent root or missing file fails; nothing is silently skipped.
 
 Full existing release tests: 226 passed, 0 failed; build/foundation checks pass. The first wrapper invocation reached its final clean-worktree check while corrections were uncommitted; after committing, the wrapper was rerun to verify the clean-worktree gate. No protected files, runtime intake, portal, deployment or live controls changed.
+
+## Connected Mac verification — October 4
+
+- Fresh GitHub read: PR226 OPEN/DRAFT at 9e94a4c0b9f142cf8361fe6a727c56672d2580d5; existing Domain release checks SUCCESS. This historical head was verified before continuation.
+- Existing branch recovered, not rebuilt. Expanded only the inert full-sprint walkthrough and handoff evidence. Release suite 226 passed; campaign validator 41 passed; explicit asset-root verification passed all six files against current nil-site main265b5159. Source nil-site and nil-intake working trees remained clean.
+- Local Chromium at 375, 768 and 1440 pixels: no horizontal overflow, page errors, external HTTP requests or live intake controls. Screenshots and machine receipt saved in the local recovery directory. No authenticated portal/browser or provider end-to-end result claimed.
+- Recovered private patches match historical SHA256s. Legal-web-lead focused29 pass; full721 pass/5 skipped; separate35-test local Redis composition run passes all five previously skipped checks. Existing nil-intake campaign suite37 pass/2 skipped; separate14-test ephemeral Redis store/routes suite passes both skipped checks. These are overlapping runs, not additive totals or live integration evidence.
+- Backend publication remains blocked by the reported prior Forbidden write; no retry. Claude review attempt returned Not logged in. Canonical importer binding, verified MVA crosswalk, legal/provider/access evidence, budget and staffing remain owner dependencies.
