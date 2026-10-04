@@ -62,7 +62,7 @@
     "warehouse_binding_status": "UNVERIFIED_RAW_ONLY"
   },
   "source_head": "7c748c1362fa33dae2f7e6149764ce01f0360642",
-  "backend_head": "30c04b70de7988e68f838e5a163b6302b2a7616b",
+  "backend_head": "ed6d476ba905a2a4f05212720bcb040cb586025c",
   "source_tests": {
     "passed": 1217,
     "failed": 0,

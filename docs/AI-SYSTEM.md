@@ -83,3 +83,7 @@ Source draftPR48 7c748c1:1217 local passes, GitHub Tests and Scope Audit success
 
 ### October4 platform-policy documentation correction
 Paid TikTok US MVA PI ineligible per official August2026 policy; preserved reusable media/organic distinction. Added PMax signal/remarketing and sensitive platform-feedback guards; no educational workaround, budget/pricing/live settings change. Existing draftPR226 and Library review updated; source/backend unchanged.
+
+
+### October4 default-off after-hours retention
+BackendPR16 ed6d476:767tests pass including real Redis recovery and complete synthetic MVA integration. Kyle confirms after-hours team; same transfer line unverified. Existing consumer hours unchanged. Separate queue captures authorized NIL MVA requests only after durable consent/readback, no immediate provider call. Frontend deferred-status contract needed before enable; frozen PR13 unchanged. Browser UI inaccessible (no connected Desktop Commander devices); known cron current receipt:cron is diagnostics, not callback proof.
