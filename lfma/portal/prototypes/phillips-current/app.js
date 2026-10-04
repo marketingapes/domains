@@ -1,0 +1,17 @@
+'use strict';
+const node = (tag,text,cls) => { const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n; };
+let current;
+async function api(path,body){ const r=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});const data=await r.json();if(!r.ok)throw new Error(data.error||'Preview unavailable.');return data; }
+function render(data){
+ current=data;const list=document.querySelector('#task-list');list.replaceChildren();
+ for(const item of data.items){const card=node('article');card.append(node('h3',item.title),node('p',item.summary),node('p',`Version: ${item.version}`,'version'),node('p',`Content: ${item.content_hash}`,'version'),node('p',`Local review: ${item.decision}${item.stale_decision?' · Earlier decision is stale':''}`));
+ if(item.action==='review_creative'){const img=node('img');img.src='review-asset.jpg';img.alt='Exact staged Phillips MVA Meta square creative';img.className='review-image';card.append(img);}
+ const actions=node('div',undefined,'actions');for(const [decision,label]of[['approved','Approve this version (demo)'],['changes_requested','Request changes (demo)']]){const button=node('button',label);button.onclick=async()=>{actions.querySelectorAll('button').forEach(b=>b.disabled=true);try{await api('/api/decision',{item_id:item.item_id,decision,content_hash:item.content_hash,sheet_revision:current.sheet_revision,audit_revision:current.audit_revision,idempotency_key:crypto.randomUUID()});await refresh();document.querySelector('#message').textContent='Local decision recorded. Campaign execution remains held.';}catch(e){document.querySelector('#message').textContent=e.message;await refresh();}};actions.append(button);}card.append(actions);list.append(card);}
+ if(!data.items.length)list.append(node('p','No review items assigned to this recipient.'));
+ const history=document.querySelector('#audit-list');history.replaceChildren();for(const event of data.events){const card=node('article');card.append(node('p',`${event.actor_id} · ${event.decision} · ${event.decided_at}`),node('p',`${event.item_id} · ${event.item_version}`,'version'),node('code',event.approved_scope_hash));history.append(card);}if(!data.events.length)history.append(node('p','No local decisions recorded for this recipient.'));
+}
+async function refresh(){render(await api('/api/view'));}
+async function session(){await api('/api/mock-session',{persona:document.querySelector('#persona').value});await refresh();}
+document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b===button)));document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!==button.dataset.tab);}));
+document.querySelector('#persona').addEventListener('change',()=>{document.querySelector('#message').textContent='';session().catch(e=>document.querySelector('#message').textContent=e.message);});
+(async()=>{try{const data=await api('/api/plan');if(data.mode!=='LOCAL_MOCK_ONLY')throw new Error('Unsupported source.');document.querySelector('#source').textContent=data.source_label;await session();}catch(e){document.querySelector('#source').textContent='Preview disabled. Start the explicit local mock runner to use synthetic tasks.';document.querySelectorAll('.actions button').forEach(b=>b.disabled=true);}})();

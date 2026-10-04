@@ -1,0 +1,43 @@
+{
+  "schema": "ee.portal_current_state/v1",
+  "mode": "LOCAL_MOCK_ONLY",
+  "sheet_revision": "mock-sheet-r1",
+  "source_label": "Local fixture; private PhillipsPerspectiveOperations workbook is not connected",
+  "source_as_of": null,
+  "plan": {
+    "total_usd": 5000,
+    "duration_days": 14,
+    "meta_website_usd": 3000,
+    "google_search_usd": 2000,
+    "execution_state": "HELD_NOT_LIVE",
+    "start_at": null,
+    "spend_to_date": null
+  },
+  "items": [
+    {
+      "item_id": "phillips-creative-001",
+      "title": "Review Phillips MVA creative",
+      "assigned_to": "demo-reviewer",
+      "action": "review_creative",
+      "version": "campaign-c997ddb-meta-square",
+      "artifact_sha256": "cf0bd4620698bab1bfec5baaea112d7482acca5cf2a2e4a7321a6dfc39e32b8e",
+      "artifact_ref": "https://github.com/marketingapes/domains/blob/c997ddb4b27eda54b99925d06d1e358139799979/campaigns/phillips-az-mva-2026-10-05/rendered/meta-square-1080x1080.jpg",
+      "campaign_id": "52603475656795",
+      "status_cell": "pending",
+      "summary": "Exact staged artwork; October approval unverified. Local review only."
+    },
+    {
+      "item_id": "phillips-operations-001",
+      "title": "Confirm after-hours transfer route",
+      "assigned_to": "demo-operator",
+      "action": "review_routing",
+      "version": "routing-review-v1",
+      "artifact_sha256": "889c7feed6cc945f9e51ac83b29e9b77919c932282ef41cee8800a91ffe785c8",
+      "artifact_ref": "Existing Phillips DID/API routing; confirmation pending",
+      "campaign_id": "24313116842",
+      "status_cell": "pending",
+      "summary": "After-hours team confirmed; same-line reachability unresolved. Consumer callback hours unchanged."
+    }
+  ],
+  "workbook_id": "1FET1WpeS8bDfPJlkym3lNXYLBaFBhwOtz4kUTl_hDe8"
+}
