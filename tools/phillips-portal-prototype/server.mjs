@@ -5,7 +5,7 @@ import { createReviewService, memoryAudit } from './service.mjs';
 if (!process.argv.includes('--local-mock')) throw new Error('Disabled. Explicit --local-mock required.');
 const fixture = JSON.parse(await readFile(new URL('./fixture.json', import.meta.url), 'utf8'));
 const actors = Object.fromEntries(fixture.items.map(i => [i.assigned_to, {
-  subject: i.assigned_to, itemIds: [i.item_id], actions: [i.action], mode: 'LOCAL_MOCK_ONLY',
+  subject: i.assigned_to, tenantId: fixture.tenant_id, itemIds: [i.item_id], actions: [i.action], mode: 'LOCAL_MOCK_ONLY',
   expiresAt: new Date(Date.now() + 3600_000).toISOString()
 }]));
 const sessions = new Map();

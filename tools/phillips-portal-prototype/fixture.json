@@ -24,7 +24,8 @@
       "artifact_ref": "https://github.com/marketingapes/domains/blob/c997ddb4b27eda54b99925d06d1e358139799979/campaigns/phillips-az-mva-2026-10-05/rendered/meta-square-1080x1080.jpg",
       "campaign_id": "52603475656795",
       "status_cell": "pending",
-      "summary": "Exact staged artwork; October approval unverified. Local review only."
+      "summary": "Exact staged artwork; October approval unverified. Local review only.",
+      "tenant_id": "phillips"
     },
     {
       "item_id": "phillips-operations-001",
@@ -36,8 +37,10 @@
       "artifact_ref": "Existing Phillips DID/API routing; confirmation pending",
       "campaign_id": "24313116842",
       "status_cell": "pending",
-      "summary": "After-hours team confirmed; same-line reachability unresolved. Consumer callback hours unchanged."
+      "summary": "After-hours team confirmed; same-line reachability unresolved. Consumer callback hours unchanged.",
+      "tenant_id": "phillips"
     }
   ],
-  "workbook_id": "1FET1WpeS8bDfPJlkym3lNXYLBaFBhwOtz4kUTl_hDe8"
+  "workbook_id": "1FET1WpeS8bDfPJlkym3lNXYLBaFBhwOtz4kUTl_hDe8",
+  "tenant_id": "phillips"
 }

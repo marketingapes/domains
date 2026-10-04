@@ -1,6 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
-export const scopeHash = item => hash([item.item_id, item.assigned_to, item.action, item.version,
+export const scopeHash = item => hash([item.tenant_id, item.item_id, item.assigned_to, item.action, item.version,
   item.artifact_sha256, item.artifact_ref, item.campaign_id, item.title, item.summary]);
 const error = (status, message) => Object.assign(new Error(message), { status });
 export function memoryAudit() {
@@ -20,13 +20,13 @@ export function createReviewService({ enabled = false, mode, readCurrent, resolv
   async function actor(context) {
     if (!enabled || mode !== 'LOCAL_MOCK_ONLY') throw error(503, 'Prototype disabled.');
     const a = await resolveActor(context);
-    if (!a || a.mode !== 'LOCAL_MOCK_ONLY' || !a.subject ||
+    if (!a || a.mode !== 'LOCAL_MOCK_ONLY' || !a.subject || !a.tenantId ||
         !Array.isArray(a.itemIds) || !Array.isArray(a.actions) ||
         !Number.isFinite(Date.parse(a.expiresAt)) || Date.parse(a.expiresAt) <= now().getTime())
       throw error(401, 'Verified recipient session required.');
     return a;
   }
-  const owns = (a, i) => i.assigned_to === a.subject && a.itemIds.includes(i.item_id) && a.actions.includes(i.action);
+  const owns = (a, i) => i.tenant_id === a.tenantId && i.assigned_to === a.subject && a.itemIds.includes(i.item_id) && a.actions.includes(i.action);
   function project(i, events) {
     const digest = scopeHash(i);
     const latest = events.filter(e => e.item_id === i.item_id).at(-1);
@@ -39,7 +39,7 @@ export function createReviewService({ enabled = false, mode, readCurrent, resolv
   }
   async function view(context) {
     const a = await actor(context), current = await readCurrent(), snapshot = await audit.snapshot();
-    if (current.mode !== 'LOCAL_MOCK_ONLY') throw error(503, 'Unsupported source mode.');
+    if (current.mode !== 'LOCAL_MOCK_ONLY' || current.tenant_id !== a.tenantId) throw error(503, 'Unsupported source mode.');
     const visible = current.items.filter(i => owns(a, i));
     const ids = new Set(visible.map(i => i.item_id));
     return { mode: 'LOCAL_MOCK_ONLY', actor: a.subject, source_label: current.source_label,
@@ -56,7 +56,7 @@ export function createReviewService({ enabled = false, mode, readCurrent, resolv
         !['approved','changes_requested'].includes(input.decision) ||
         !/^[a-zA-Z0-9_-]{8,128}$/.test(input.idempotency_key || '')) throw error(400, 'Invalid review request.');
     const a = await actor(context), current = await readCurrent(), snapshot = await audit.snapshot();
-    if (current.mode !== 'LOCAL_MOCK_ONLY') throw error(503, 'Unsupported source mode.');
+    if (current.mode !== 'LOCAL_MOCK_ONLY' || current.tenant_id !== a.tenantId) throw error(503, 'Unsupported source mode.');
     const item = current.items.find(i => i.item_id === input.item_id && owns(a, i));
     if (!item) throw error(404, 'Review item unavailable.');
     const fingerprint = hash([a.subject, input.item_id, input.decision, input.content_hash, input.sheet_revision]);
@@ -73,10 +73,10 @@ export function createReviewService({ enabled = false, mode, readCurrent, resolv
     // Recheck identity/source after awaited reads; do not record a stale or revoked decision.
     const freshActor = await actor(context), fresh = await readCurrent();
     const freshItem = fresh.items.find(i => i.item_id === item.item_id && owns(freshActor, i));
-    if (fresh.mode !== 'LOCAL_MOCK_ONLY' || freshActor.subject !== a.subject || !freshItem ||
+    if (fresh.mode !== 'LOCAL_MOCK_ONLY' || fresh.tenant_id !== a.tenantId || freshActor.tenantId !== a.tenantId || freshActor.subject !== a.subject || !freshItem ||
         scopeHash(freshItem) !== input.content_hash || fresh.sheet_revision !== input.sheet_revision)
       throw error(409, 'Review scope changed; refresh before deciding.');
-    const event = { event_id: randomUUID(), tenant_id: 'phillips', request_id: item.item_id,
+    const event = { event_id: randomUUID(), tenant_id: a.tenantId, request_id: item.item_id,
       item_id: item.item_id, actor_id: a.subject, decision: input.decision, decided_at: now().toISOString(),
       item_version: item.version, approved_scope_hash: input.content_hash, evidence_url: item.artifact_ref,
       sheet_revision: current.sheet_revision, idempotency_key: input.idempotency_key, fingerprint,
