@@ -79,3 +79,13 @@ Next: Kyle chooses visual direction. Keep all draft/unpublished; no infrastructu
 Saw: Kyle specified campaign tabs MVA/LA County plus ambiguous handoff label; within each Overview/Leads/Marketing/Next steps. MVA first, stronger modern MA identity with clarity; no further runtime work.
 Did: one updated interactive portal, bold budget/heading, coordinated campaign sections, clearly synthetic deidentified lead interface with source/work filters and seven distinct proof stages, planned allocation/creative view, honest unknown actual results and proposed improvements. Neutral Handoff placeholder; no LA County result assumptions. Native preview+desktop/mobile+demo-leads-mobile images.36 responsive campaign/section checks plus filters, keyboard and stage distinctions; seven focused source/packaging tests. Protected portal unchanged.
 Next: visual feedback and clarification of Handoff label. All draft/unpublished, no live integration or execution authority.
+
+## 2026-10-04 UTC — Codex (numbers-first Sofia reporting preview)
+Saw: Kyle wants numbers dominant and AI intake differentiated, with Lead/Text/Email/Call/Status/Ad, firm Signed reason and protected recording evidence. Then explicitly parked SocialDM/WhatsApp/CTV expansion.
+Did: eight metric-to-evidence drilldowns, Overview AI handoff centerpiece, synthetic Sofia multi-channel presentation, separate firm reason/proof/next action and disabled call-recording/transcript affordances with unresolved association states. Read-only source mapping found Text/Email OFF/PENDING at backend0fc; no assumed live capability. All real aggregate/results values remain unavailable; no synthetic rows counted. Parked channels removed from shipped UI and kept only outside git.
+Next: visual feedback. No live integration, authorization changes, provider fetches, messaging/calls or publishing. Keep exact MVA/LA County/Handoff and Overview/Leads/Marketing/Next steps structure.
+
+## 2026-10-04 UTC — Codex (repeatable visual configuration)
+Saw: Kyle wants improvements reusable through copy/configuration, with Phillips validated first and no multitenant runtime expansion.
+Did: separated brand/client/campaign facts and synthetic activity fixture from shared visual builder. Typed balanced planning config, null actual-spend/remaining, synthetic exclusion from actual totals; different tenant requires independent validation rather than carrying Phillips proof. No secret/provider/live-data config.
+Next: finish visual feedback; no accounts/auth provisioning or deployments.

@@ -1,0 +1,120 @@
+{
+  "mode": "SYNTHETIC_ONLY",
+  "counted_in_actual_totals": false,
+  "rows": [
+    {
+      "id": "DEMO-01",
+      "source": "meta",
+      "creative": "Meta square · demonstration label",
+      "work": "transfer",
+      "title": "Transfer review",
+      "ai": "Connected to AI — demo",
+      "steps": [
+        [
+          "Lead receipt",
+          "Synthetic example received; no actual lead."
+        ],
+        [
+          "Called / attempted",
+          "Call attempted — demo state."
+        ],
+        [
+          "Connected to AI",
+          "Connected — demo state, separate from an attempted call."
+        ],
+        [
+          "Transfer attempted",
+          "Attempt recorded — demo state."
+        ],
+        [
+          "Transfer completed",
+          "Not established in this example."
+        ],
+        [
+          "Phillips connected / working",
+          "Firm connection and work not verified."
+        ],
+        [
+          "Firm disposition / Signed proof",
+          "Pending; no executed-retainer proof."
+        ]
+      ]
+    },
+    {
+      "id": "DEMO-02",
+      "source": "search",
+      "creative": "Search → W1 · demonstration label",
+      "work": "contact",
+      "title": "Contact follow-up",
+      "ai": "AI connection not established — demo",
+      "steps": [
+        [
+          "Lead receipt",
+          "Synthetic example received; no actual lead."
+        ],
+        [
+          "Called / attempted",
+          "Call attempted — demo state."
+        ],
+        [
+          "Connected to AI",
+          "Not established; attempt is not a connection."
+        ],
+        [
+          "Transfer attempted",
+          "Not attempted in this example."
+        ],
+        [
+          "Transfer completed",
+          "Not completed in this example."
+        ],
+        [
+          "Phillips connected / working",
+          "Not established."
+        ],
+        [
+          "Firm disposition / Signed proof",
+          "Pending; no executed-retainer proof."
+        ]
+      ]
+    },
+    {
+      "id": "DEMO-03",
+      "source": "meta",
+      "creative": "Website creative · demonstration label",
+      "work": "new",
+      "title": "Awaiting contact",
+      "ai": "AI work not started — demo",
+      "steps": [
+        [
+          "Lead receipt",
+          "Synthetic example received; no actual lead."
+        ],
+        [
+          "Called / attempted",
+          "Not attempted in this example."
+        ],
+        [
+          "Connected to AI",
+          "Not connected in this example."
+        ],
+        [
+          "Transfer attempted",
+          "Not attempted in this example."
+        ],
+        [
+          "Transfer completed",
+          "Not completed in this example."
+        ],
+        [
+          "Phillips connected / working",
+          "Not established."
+        ],
+        [
+          "Firm disposition / Signed proof",
+          "Pending; no executed-retainer proof."
+        ]
+      ]
+    }
+  ]
+}

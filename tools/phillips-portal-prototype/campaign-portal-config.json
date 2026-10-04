@@ -1,0 +1,15 @@
+{
+  "schema": "client-perspective.visual-config/v1",
+  "mode": "LOCAL_VISUAL_REVIEW_ONLY",
+  "runtime_connected": false,
+  "brand": {"product": "Client Perspective", "provider": "Marketing Apes", "logo_asset": "lfma/card/ma-logo.png"},
+  "client": {"tenant_id": "phillips", "display_name": "Phillips Law Group", "short_name": "Phillips"},
+  "plan": {"total_usd": 5000, "duration_days": 14, "meta_website_usd": 3000, "google_search_usd": 2000, "observed_at": "2026-10-04T18:17:33Z", "actual_spent": null, "remaining": null},
+  "campaigns": {
+    "mva": {"tab_label": "MVA", "name": "Arizona MVA", "state": "Planned · Held", "summary": "Marketing → AI intake → firm feedback → verified outcome."},
+    "la": {"tab_label": "LA County", "name": "LA County", "state": "Not configured here", "summary": "Campaign structure reserved. No current performance or workflow is inferred."},
+    "handoff": {"tab_label": "Handoff", "name": "Handoff", "state": "Label to confirm", "summary": "Neutral placeholder until the requested campaign label and scope are clarified."}
+  },
+  "channel_availability": {"call": "LIVE_EXECUTION_UNVERIFIED", "text": "STAGED_OFF_PENDING", "email": "STAGED_OFF_PENDING"},
+  "demo_fixture": "campaign-portal-demo-leads.json"
+}
