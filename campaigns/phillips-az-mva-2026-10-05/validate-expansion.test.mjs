@@ -11,3 +11,5 @@ test('conflicting snapshots held rather than earliest positive chosen',()=>asser
 test('signed requires separate retainer proof and date, never Converted/sent',()=>{assert.equal(reviewConversation({...valid,status:'Converted',sent_date:'2026-10-05'}).signed,false);assert.equal(reviewConversation({...valid,retainer_executed:true,retainer_evidence_ref:'executed-test-only',retainer_executed_date:'2026-10-05'}).signed,true);assert.equal(reviewConversation({...valid,retainer_executed:true,retainer_evidence_ref:'executed-test-only',retainer_executed_date:'bad'}).signed,false);});
 
 test('impossible retainer date is held',()=>assert.equal(reviewConversation({...valid,retainer_executed:true,retainer_evidence_ref:'executed-test-only',retainer_executed_date:'2026-02-31'}).signed,false));
+
+test('conflicting source proof held even when both qualify',()=>assert.deepEqual(countConversations([valid,{...valid,source_receipt_ref:'different-private-source'}]).held_conflicting_lead_ids,['synthetic-only']));

@@ -56,4 +56,4 @@ Final backend0fc1704:768/46web passes include no inherited native/global reissue
 
 ## Expanded channel review
 
-79 offline campaign tests pass, including negative funding/identity/privacy/call/qualification checks. Six original assets reverified by SHA256;12 browser/viewport checks pass with inert previews and embedded media, no external requests. Full domains release checks run at committed head. New staged channel specs and offline private scoring helper have no provider transport, credential use, platform feedback or activation. Current ad-account states remain unverified; Page read does not prove Ads Manager access.
+80 offline campaign tests pass, including negative funding/identity/privacy/call/qualification checks. Six original assets reverified by SHA256;12 browser/viewport checks pass with inert previews and embedded media, no external requests. Full domains release checks run at committed head. New staged channel specs and offline private scoring helper have no provider transport, credential use, platform feedback or activation. Current ad-account states remain unverified; Page read does not prove Ads Manager access.

@@ -358,9 +358,9 @@ export function reviewConversation(record){
 }
 export function countConversations(records){
  // Conflicting snapshots are held, never silently choose an earlier positive row.
- const grouped=new Map();for(const record of records){if(!proof(record.lead_id))continue;const rows=grouped.get(record.lead_id)??[];rows.push(reviewConversation(record));grouped.set(record.lead_id,rows);}
+ const grouped=new Map();for(const record of records){if(!proof(record.lead_id))continue;const rows=grouped.get(record.lead_id)??[];rows.push({review:reviewConversation(record),snapshot:JSON.stringify(record)});grouped.set(record.lead_id,rows);}
  let qualified=0,signed=0;const held=[];
- for(const [id,rows] of grouped){if(rows.some(r=&gt;JSON.stringify(r)!==JSON.stringify(rows[0]))){held.push(id);continue;}if(rows[0].qualified_live_conversation)qualified++;if(rows[0].signed)signed++;}
+ for(const [id,rows] of grouped){if(rows.some(r=&gt;r.snapshot!==rows[0].snapshot)){held.push(id);continue;}if(rows[0].review.qualified_live_conversation)qualified++;if(rows[0].review.signed)signed++;}
  return {qualified_live_conversations:qualified,signed,held_conflicting_lead_ids:held,platform_export_allowed:false};
 }
 </pre></details><details id="spec-manifest.json"><summary>manifest.json</summary><pre>{
