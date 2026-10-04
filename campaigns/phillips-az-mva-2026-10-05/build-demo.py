@@ -28,7 +28,7 @@ demo=(root/"review.html").read_text()
 demo=demo.replace('href="phillips-mva-full-sprint-review.html"','href="#rendered-assets"')
 demo=demo.replace("style-src 'unsafe-inline'; connect-src","img-src data:; media-src data:; style-src 'unsafe-inline'; connect-src")
 demo=demo.replace("</style>","details{margin:24px 0;padding:18px;border:1px solid #b5a699}summary{cursor:pointer;font-weight:bold}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 monospace}.asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px}.asset-grid img,.asset-grid video{width:100%;height:auto}video{max-height:680px}details main{padding:20px}details img{max-width:160px}details header{display:flex;align-items:center;gap:24px;flex-wrap:wrap}figure{margin:0}figcaption{font-size:14px}</style>")
-files=['manifest.json','meta-build-sheet.csv','google-rsa-review.csv','google-build.json','tiktok-youtube-organic-build.json','native-form-review.json','ai-intake-review.json','tracking-intake-contract.json','landing-variants.json','asset-manifest.json','creative-brief.md','README.md','rendered-assets.json','offline-system-receipt.json']
+files=['channel-expansion-review.json','launch-decision-review.md','qualified-conversation-review.mjs','manifest.json','meta-build-sheet.csv','google-rsa-review.csv','google-build.json','tiktok-youtube-organic-build.json','native-form-review.json','ai-intake-review.json','tracking-intake-contract.json','landing-variants.json','asset-manifest.json','creative-brief.md','README.md','rendered-assets.json','offline-system-receipt.json']
 specs=[]
 for f in files:
     demo=demo.replace(f'href="{f}"',f'href="#spec-{f}"')

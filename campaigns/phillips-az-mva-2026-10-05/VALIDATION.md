@@ -53,3 +53,7 @@ After-hours continuation: backendPR16 ed6d476 full767pass0fail0skip; web45pass, 
 Final after-hours retained-duplicate guard: backend73999fd full768pass0fail0skip, web46pass. Marker-only duplicate cannot claim saved=true; actual retained record required. No live settings/routes/consumer hours/protected changes.
 
 Final backend0fc1704:768/46web passes include no inherited native/global reissue permission; website stale claims stay held for human review.
+
+## Expanded channel review
+
+79 offline campaign tests pass, including negative funding/identity/privacy/call/qualification checks. Six original assets reverified by SHA256;12 browser/viewport checks pass with inert previews and embedded media, no external requests. Full domains release checks run at committed head. New staged channel specs and offline private scoring helper have no provider transport, credential use, platform feedback or activation. Current ad-account states remain unverified; Page read does not prove Ads Manager access.

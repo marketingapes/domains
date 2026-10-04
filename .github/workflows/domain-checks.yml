@@ -31,7 +31,7 @@ jobs:
       - name: Validate staged Phillips package and rejection tests (no sibling repository)
         run: |
           node campaigns/phillips-az-mva-2026-10-05/validate.mjs
-          node --test campaigns/phillips-az-mva-2026-10-05/validate.test.mjs
+          node --test campaigns/phillips-az-mva-2026-10-05/validate.test.mjs campaigns/phillips-az-mva-2026-10-05/validate-expansion.test.mjs
       - name: Validate the build, foundation and existing tests
         shell: bash
         run: |

@@ -41,7 +41,7 @@
     "note": "review dataset for existing IDs, not a certified Editor import or platform mutation",
     "primary_destination_path": "W1",
     "primary_destination_variants": 1,
-    "path_scope": "Deliberate scope: all three RSAs use W1. W2/W3 are existing sitelink options, not distinct Search RSA destination tests. Meta website ads and BTL PMax groups cover three distinct destination variants."
+    "path_scope": "All three existing RSAs deliberately use W1. W2/W3 remain held website alternatives; new NIL PMax exploration is separately staged with no IDs or budget. Historical BTL PMax is not release-ready."
   },
   "pmax": {
     "account_id": "9455635555",
@@ -141,7 +141,9 @@
         "https://support.google.com/google-ads/answer/14530785?hl=en",
         "https://support.google.com/adspolicy/answer/143465?hl=en"
       ]
-    }
+    },
+    "scope_status": "HISTORICAL_BTL_MAPPING_ONLY_NOT_NIL_EXPLORATION",
+    "nil_exploration_spec": "channel-expansion-review.json#google_pmax_exploration"
   },
   "shared": {
     "location": "Arizona PRESENCE",

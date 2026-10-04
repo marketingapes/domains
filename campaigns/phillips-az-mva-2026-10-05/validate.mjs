@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {validateExpansion} from './validate-expansion.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -65,6 +66,7 @@ export function validatePackage(dir=packageDir,{assetsRoot}={}){
  for(const x of produced.assets){assert.ok(x.file.startsWith('rendered/')&&!x.file.split('/').includes('..'));const bytes=fs.readFileSync(path.join(dir,x.file));assert.equal(bytes.length,x.bytes,'rendered size');assert.equal(hash(bytes),x.sha256,'rendered hash');if(x.kind==='video'){assert.equal(x.duration_seconds,20);assert.equal(x.codec,'h264');assert.equal(x.pixel_format,'yuv420p');assert.equal(x.audio,'none');}}
  for(const v of l.variants){const html=fs.readFileSync(path.join(dir,'landing-previews',v.path+'.html'),'utf8');assert.ok(html.includes(v.title));assert.match(html,/noindex,nofollow/);assert.match(html,/review pending/i);assert.match(html,/connect-src 'none'/);assert.doesNotMatch(html,/<form\b|<script\b|<input\b|<iframe\b|tel:/i);}
  const full=fs.readFileSync(path.join(dir,'phillips-mva-full-sprint-review.html'),'utf8');assert.match(full,/media-src data:/);assert.match(full,/connect-src 'none'/);assert.doesNotMatch(full,/<form\b|<script\b|<input\b|<iframe\b|tel:/i);assert.match(full,/data:video\/mp4;base64,/);assert.match(full,/landing-W3/);
+ validateExpansion(dir);
  return {packageVerification:'PASS: self-contained CSV structure/copy, exact routes, paused flags, safety contracts, consent, date, asset manifest and inert preview checks.',assetVerification};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
