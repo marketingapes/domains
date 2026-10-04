@@ -1,0 +1,76 @@
+{
+  "status": "PASS_SYNTHETIC_OFFLINE",
+  "actual_source_routes": true,
+  "actual_redis_registry_replay_and_worker": true,
+  "actual_bq_repository_with_mock_client": true,
+  "actual_portal_cas": true,
+  "lost_registry_ack_repaired": true,
+  "source_service_recreated": true,
+  "independent_registry_process_readback": true,
+  "partial_destination_retry": true,
+  "exact_replay_no_duplicate_rows": true,
+  "converted_not_signed": true,
+  "distinct_signed_proof": true,
+  "health_fields_rejected": true,
+  "live": false,
+  "stats": {
+    "raw_insert_rows": 3,
+    "outcome_rows": 2,
+    "queries": 6,
+    "registry_bindings": 2,
+    "query_parameterized": true,
+    "warehouse": "MOCK_RAW_ONLY"
+  },
+  "states": {
+    "status": "PRIVATE_DELIVERY_STATE",
+    "jobs": [
+      {
+        "job_id": "d11206a3385fcfd8f081be37b30237314c2f29ac9ba669dc8c7847ba662388bd",
+        "canonical": {
+          "state": "acknowledged",
+          "attempts": 2,
+          "next_attempt_at": null,
+          "reason": null,
+          "acknowledged_at": "2026-10-04T18:00:01.100Z"
+        },
+        "portal": {
+          "state": "acknowledged",
+          "attempts": 2,
+          "next_attempt_at": null,
+          "reason": null,
+          "acknowledged_at": "2026-10-04T18:00:02.200Z"
+        }
+      },
+      {
+        "job_id": "1f80aad2800be627672ad2ec4f2fcda15aae6388e9ff430a2265d9ad5f6f1d55",
+        "canonical": {
+          "state": "acknowledged",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "reason": null,
+          "acknowledged_at": "2026-10-04T18:00:02.200Z"
+        },
+        "portal": {
+          "state": "acknowledged",
+          "attempts": 1,
+          "next_attempt_at": null,
+          "reason": null,
+          "acknowledged_at": "2026-10-04T18:00:02.200Z"
+        }
+      }
+    ],
+    "warehouse_binding_status": "UNVERIFIED_RAW_ONLY"
+  },
+  "source_head": "07e6c4df2907956fea5559413ce54e14ade29890",
+  "backend_head": "03ec23181382ad87486cd02b781c0c60159043fc",
+  "source_tests": {
+    "passed": 1217,
+    "failed": 0,
+    "skipped": 0
+  },
+  "backend_tests": {
+    "passed": 755,
+    "failed": 0,
+    "skipped": 0
+  }
+}
