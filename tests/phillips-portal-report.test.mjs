@@ -182,11 +182,11 @@ function fakeDom() {
 test('mount: adds the tab and its own token field without touching existing markup; idempotent', () => {
   const dom = fakeDom();
   assert.equal(R.mount(dom.document), true);
-  assert.deepEqual(dom.nav.children.map((b) => b.textContent), ['AI Intake', 'Marketing', 'Campaign to outcome', 'Summary']);
+  assert.deepEqual(dom.nav.children.map((b) => b.textContent), ['AI Intake', 'Marketing', 'Reporting', 'Summary']);
   assert.deepEqual(dom.container.children.map((c) => c.id), ['tab-outcomes', 'tab-summary']);
   const tab = dom.byId.get('tab-outcomes');
   assert.match(tab.innerHTML, /type="password" id="outcome-token"/);
-  assert.match(tab.innerHTML, /<div id="outcome-root"><\/div>$/);
+  assert.match(tab.innerHTML, /<div id="outcome-root"><\/div><section class="lead-feed" id="lead-feed-root"/);
   assert.ok(!/\$\d|\d{6,}/.test(tab.innerHTML), 'no figures or ids before a token is entered');
   assert.equal(R.mount(dom.document), false, 'second mount is a no-op');
   assert.equal(dom.nav.children.length, 4);
@@ -199,7 +199,7 @@ test('mount: after the page body is regenerated (tab gone), the script mounts it
   R.mount(dom.document);
   const regenerated = fakeDom(); // the refresh replaced the body: fresh nav + tabs, no outcome tab
   assert.equal(R.mount(regenerated.document), true);
-  assert.equal(regenerated.nav.children.filter((b) => b.textContent === 'Campaign to outcome').length, 1);
+  assert.equal(regenerated.nav.children.filter((b) => b.textContent === 'Reporting').length, 1);
 });
 
 test('unlock: empty token asks for one and fetches nothing; a working token loads and is cleared from the field', async () => {
@@ -213,7 +213,7 @@ test('unlock: empty token asks for one and fetches nothing; a working token load
   assert.deepEqual([calls.length, err.textContent], [0, 'Enter your portal access token.']);
   input.value = '  TOKEN-VALUE  ';
   await go.listeners.click[0]();
-  assert.deepEqual(calls, ['Bearer TOKEN-VALUE']);
+  assert.deepEqual(calls, ['Bearer TOKEN-VALUE', 'Bearer TOKEN-VALUE']);
   assert.equal(input.value, '', 'token cleared from the field after success');
   assert.ok(dom.byId.get('outcome-root').innerHTML.includes('Campaign to outcome'));
   assert.equal(dom.byId.get('outcome-gate').style.display, 'none');
@@ -388,7 +388,7 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
 
 // ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
 test('N1: the page loads the current script version', () => {
-  assert.match(PAGE, /phillips-report\.js\?v=20261005e"/);
+  assert.match(PAGE, /phillips-report\.js\?v=20261005f"/);
 });
 test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
   const dom = fakeDom();
@@ -602,4 +602,34 @@ test('Review minors: duplicate source ids never count as fresh; inherited names 
   const html = R.render(inh);
   assert.doesNotMatch(text(html), /undefined/);
   assert.match(leadsBlock(html), /— Unknown/);
+});
+
+
+test('saved feed: escapes identity fields and never claims source consolidation', () => {
+  const html = R.renderFeed({served_at:'2026-10-05T20:00:00Z',leads:[{id:'same',name:'<script>attack</script>',phone:'555-test',status:'New'},{id:'same'},{name:'No ID'}]});
+  assert.match(html,/&lt;script&gt;/); assert.doesNotMatch(html,/<script>|All leads loaded/);
+  assert.match(html,/Duplicate IDs: 1/); assert.match(html,/Records without a stable ID: 1/);
+  assert.match(html,/All Phillips leads: coverage unverified/); assert.match(html,/Not available/);
+  assert.match(html,/Saved feed refreshed: 2026-10-05T20:00:00Z/);
+  const empty = R.renderFeed({leads:[]}); assert.match(empty,/does not establish zero leads/);
+  for (const bad of [null,{}, {leads:{}},{leads:[null]},{leads:[[]]}]) assert.throws(()=>R.renderFeed(bad));
+});
+test('saved feed: authenticated request clears stale identities on unreadable and failed responses', async () => {
+  const dom = fakeDom(); R.mount(dom.document); const target=dom.byId.get('lead-feed-root');
+  let request;
+  await R.loadFeed('synthetic-only',{document:dom.document,fetch:async(url,opts)=>{request={url,opts};return {ok:true,status:200,json:async()=>({leads:[{id:'test',name:'Synthetic Person'}]})};}});
+  assert.match(target.innerHTML,/Synthetic Person/); assert.match(request.url,/\/phillips\/leads$/);
+  assert.equal(request.opts.headers.Authorization,'Bearer synthetic-only'); assert.equal(request.opts.cache,'no-store'); assert.equal(request.opts.credentials,'omit');
+  await R.loadFeed('t',{document:dom.document,fetch:async()=>({ok:true,status:200,json:async()=>({leads:[null]})})});
+  assert.doesNotMatch(target.innerHTML,/Synthetic Person/); assert.match(target.innerHTML,/could not be read/);
+  await R.loadFeed('t',{document:dom.document,fetch:async()=>{throw new Error('private-host-secret');}});
+  assert.doesNotMatch(target.innerHTML,/private-host-secret/);
+  for(const status of [401,404,500]) {await R.loadFeed('t',{document:dom.document,fetch:async()=>({ok:false,status})});assert.match(target.innerHTML,/coverage remains unverified/);}
+});
+test('saved feed: clear during pending response prevents identities returning', async () => {
+  const dom=fakeDom(); R.mount(dom.document); let release;
+  const pending=R.loadFeed('t',{document:dom.document,fetch:()=>new Promise(resolve=>{release=resolve;})});
+  await Promise.resolve(); dom.byId.get('outcome-clear').listeners.click[0]();
+  release({ok:true,status:200,json:async()=>({leads:[{id:'late',name:'Late Synthetic'}]})}); await pending;
+  assert.equal(dom.byId.get('lead-feed-root').innerHTML,'');
 });
