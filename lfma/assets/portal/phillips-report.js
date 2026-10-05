@@ -10,6 +10,9 @@
  *   separately as unverified.
  * - Platform-reported conversions are shown per row with that row's attribution window and are
  *   never totalled.
+ * - Program view: MVA is the default when the registry labels any campaign MVA. LA, every other
+ *   program, campaigns with no program on record, and "All campaigns" stay one click away. A
+ *   missing label is shown as "Program not on record" — never guessed.
  */
 (function (root) {
   'use strict';
@@ -47,6 +50,50 @@
     return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   }
 
+  var PROGRAM_ALL = '__all__';
+  var PROGRAM_NONE = '__none__';
+  var DEFAULT_PROGRAM = 'MVA';
+
+  function programOf(row) {
+    var p = row && row.identity && row.identity.program;
+    return typeof p === 'string' && p ? p : null;
+  }
+  /** Programs present in the report: [{ key, label, count }], MVA first, then A–Z, then unlabeled, then all. */
+  function programViews(rows) {
+    var counts = {}; var none = 0;
+    rows.forEach(function (r) { var p = programOf(r); if (p === null) none++; else counts[p] = (counts[p] || 0) + 1; });
+    var keys = Object.keys(counts).sort(function (a, b) {
+      if (a === DEFAULT_PROGRAM) return -1; if (b === DEFAULT_PROGRAM) return 1; return a < b ? -1 : a > b ? 1 : 0;
+    });
+    var views = keys.map(function (k) { return { key: k, label: k, count: counts[k] }; });
+    if (none) views.push({ key: PROGRAM_NONE, label: 'Program not on record', count: none });
+    views.push({ key: PROGRAM_ALL, label: 'All campaigns', count: rows.length });
+    return views;
+  }
+  function resolveProgram(rows, wanted) {
+    var views = programViews(rows);
+    var has = function (k) { return views.some(function (v) { return v.key === k; }); };
+    if (wanted && has(wanted)) return wanted;
+    return has(DEFAULT_PROGRAM) ? DEFAULT_PROGRAM : PROGRAM_ALL;
+  }
+  function rowsFor(rows, program) {
+    if (program === PROGRAM_ALL) return rows;
+    return rows.filter(function (r) { var p = programOf(r); return program === PROGRAM_NONE ? p === null : p === program; });
+  }
+  function renderProgramBar(rows, program) {
+    var views = programViews(rows);
+    var current = views.filter(function (v) { return v.key === program; })[0];
+    var buttons = views.map(function (v) {
+      return '<button type="button" class="oc-prog' + (v.key === program ? ' active' : '') + '" data-program="' + esc(v.key) + '" aria-pressed="' + (v.key === program ? 'true' : 'false') + '">' +
+        esc(v.label) + ' (' + v.count + ')</button>';
+    }).join(' ');
+    var note = '';
+    if (!views.some(function (v) { return v.key === DEFAULT_PROGRAM; })) {
+      note = '<div class="gapnote">No campaign in this report is labeled MVA yet, so all campaigns are shown. Program labels come only from the campaign registry; a campaign without one is listed under “Program not on record”.</div>';
+    }
+    return '<div class="oc-programs" role="group" aria-label="Campaign program"><p class="intro">Viewing: ' + esc(current ? current.label : 'All campaigns') + '</p>' + buttons + '</div>' + note;
+  }
+
   /** Text for one stage cell. Returns { text, cls, sub }. Unknown is never rendered as a number. */
   function cellView(cell) {
     var c = cell || {};
@@ -82,7 +129,7 @@
         '<td>' + esc(when(s.last_success_at)) + '<span class="sub">' + (num(s.age_hours) === null ? 'never' : esc(s.age_hours) + 'h ago · allowed ' + esc(s.max_age_hours) + 'h') + esc(auth) + '</span></td>' +
         '<td>' + esc(s.owner || 'Unknown') + '</td></tr>';
     }).join('');
-    return '<div class="sec"><h3>Source freshness</h3><p class="intro">Where each number comes from and when that source last delivered. A stage is only as current as its source.</p>' +
+    return '<div class="sec"><h3>Source freshness (all campaigns)</h3><p class="intro">Where each number comes from and when that source last delivered. A stage is only as current as its source.</p>' +
       '<div style="overflow-x:auto"><table><tr><th>Source</th><th>Status</th><th>Last delivery</th><th>Owner</th></tr>' + rows + '</table></div></div>';
   }
 
@@ -139,7 +186,7 @@
     return '<div class="sec"><h3>Operational unknowns</h3><div class="gapnote">' + body + '</div></div>';
   }
 
-  function render(report) {
+  function render(report, opts) {
     if (!report || report.schema !== 'ee.phillips_portal_report/v1' || !Array.isArray(report.rows) || report.rows.some(function(r){return !r || !r.identity || !r.stages;})) {
       return '<div class="gapnote">The report could not be read. Nothing is shown rather than showing numbers that may be wrong.</div>';
     }
@@ -147,13 +194,16 @@
     var firm = (report.firm_status && report.firm_status.counts) || {};
     var un = report.unattributed || {};
     var comp = report.comparability || {};
+    var program = resolveProgram(report.rows, opts && opts.program);
+    var shown = rowsFor(report.rows, program);
     return '<p class="intro">Generated ' + esc(when(report.generated_at)) + ' · campaign configuration as of ' + esc(report.registry_as_of) + '. “Unknown” means no source has reported — it is not zero.</p>' +
       '<p class="oc-cohort">' + esc(report.cohort && report.cohort.note || 'Stage counts cover retained indexed leads only. Delivery completeness has not been reconciled.') + '</p>' +
       renderSources(report.sources) +
       '<div class="sec"><h3>Campaign to outcome</h3>' +
+      renderProgramBar(report.rows, program) +
       '<div class="gapnote">' + esc(comp.note || '') + '</div>' +
-      report.rows.map(renderRow).join('') + '</div>' +
-      '<div class="sec"><h3>Kept out of the numbers above</h3><p class="body">Test records: ' + esc(num(ex.test) === null ? 'Unknown' : ex.test) +
+      (shown.length ? shown.map(renderRow).join('') : '<div class="gapnote">No campaigns in this view.</div>') + '</div>' +
+      '<div class="sec"><h3>Kept out of the numbers above (all campaigns)</h3><p class="body">Test records: ' + esc(num(ex.test) === null ? 'Unknown' : ex.test) +
       ' · dry runs: ' + esc(num(ex.dry_run) === null ? 'Unknown' : ex.dry_run) +
       ' · leads from superseded campaigns: ' + esc(num(ex.superseded_campaign) === null ? 'Unknown' : ex.superseded_campaign) +
       ' · leads with no campaign identity: ' + esc(num(un.leads) === null ? 'Unknown' : un.leads) +
@@ -163,8 +213,18 @@
   }
 
   var loadVersion = 0;
+  var loaded = null; // { report, version } — the last report this page successfully rendered
+  /** Re-renders the loaded report for a program view. Returns false when no report is loaded. */
+  function setProgram(program, opts) {
+    var doc = (opts && opts.document) || root.document;
+    var target = doc && doc.getElementById('outcome-root');
+    if (!target || !loaded || loaded.version !== loadVersion) return false;
+    target.innerHTML = render(loaded.report, { program: program });
+    return true;
+  }
   function load(token, opts) {
     var version = ++loadVersion;
+    loaded = null;
     var o = opts || {};
     var doc = o.document || root.document;
     var target = doc.getElementById('outcome-root');
@@ -180,6 +240,7 @@
     }).then(function (report) {
       if(version !== loadVersion) return null;
       target.innerHTML = render(report);
+      loaded = { report: report, version: version };
       if (note) note.style.display = 'none';
       return report;
     }).catch(function (e) {
@@ -232,7 +293,7 @@
     var go = d.getElementById('outcome-unlock');
     var err = d.getElementById('outcome-err');
     var clear = d.getElementById('outcome-clear');
-    function clearReport(){loadVersion++;input.value='';d.getElementById('outcome-root').innerHTML='';d.getElementById('outcome-gate').style.display='';go.disabled=false;go.textContent='Load report';err.textContent='';}
+    function clearReport(){loadVersion++;loaded=null;input.value='';d.getElementById('outcome-root').innerHTML='';d.getElementById('outcome-gate').style.display='';go.disabled=false;go.textContent='Load report';err.textContent='';}
     clear.addEventListener('click', clearReport);
     if(typeof root.addEventListener==='function') root.addEventListener('pagehide',clearReport);
     function unlock() {
@@ -248,11 +309,16 @@
       });
     }
     go.addEventListener('click', unlock);
+    d.getElementById('outcome-root').addEventListener('click', function (e) {
+      var t = e && e.target;
+      var key = t && typeof t.getAttribute === 'function' ? t.getAttribute('data-program') : null;
+      if (key) setProgram(key, { document: d });
+    });
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     return true;
   }
 
-  var api = { render: render, cellView: cellView, load: load, mount: mount, STAGES: STAGES };
+  var api = { render: render, cellView: cellView, load: load, mount: mount, setProgram: setProgram, STAGES: STAGES };
   root.PhillipsReport = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root.document && typeof root.document.addEventListener === 'function') {

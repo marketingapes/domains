@@ -263,3 +263,68 @@ test('clear report removes loaded data and reopens the gate without token storag
  dom.byId.get('outcome-clear').listeners.click[0]();
  assert.equal(dom.byId.get('outcome-root').innerHTML,'');assert.equal(dom.byId.get('outcome-token').value,'');assert.equal(dom.byId.get('outcome-gate').style.display,'');
 });
+
+// ---- Program view (PHILLIPS-PORTAL-20261004-01, Claude pass 1) ----
+// MVA is the default view when the registry labels any campaign MVA; LA and every other
+// campaign stay one click away; nothing is hidden or relabeled when labels are missing.
+const labeled = () => {
+  const r = sample();
+  r.rows[0].identity.program = 'MVA'; r.rows[1].identity.program = 'LA'; r.rows[2].identity.program = 'MVA';
+  r.rows[3].identity.program = null;
+  return r;
+};
+const rowCount = (html) => (html.match(/class="oc-row"/g) || []).length;
+
+test('program: MVA is the default view when labeled, and the switcher keeps LA, unlabeled and all', () => {
+  const html = R.render(labeled());
+  assert.equal(rowCount(html), 2, 'only the two MVA rows by default');
+  const t = text(html);
+  assert.match(t, /Viewing: MVA/);
+  for (const label of ['MVA (2)', 'LA (1)', 'Program not on record (1)', 'All campaigns (4)']) assert.ok(t.includes(label), label);
+  assert.match(html, /data-program="MVA"[^>]*aria-pressed="true"/);
+});
+test('program: each view shows exactly its rows; All shows every row', () => {
+  const r = labeled();
+  assert.equal(rowCount(R.render(r, { program: 'LA' })), 1);
+  assert.equal(rowCount(R.render(r, { program: '__none__' })), 1);
+  assert.equal(rowCount(R.render(r, { program: '__all__' })), 4);
+  assert.equal(rowCount(R.render(r, { program: 'NOPE' })), 2, 'unknown selection falls back to the default, MVA');
+});
+test('program: with no MVA label on record, all campaigns show and the gap is stated, not hidden', () => {
+  const html = R.render(sample());
+  assert.equal(rowCount(html), sample().rows.length);
+  assert.match(text(html), /No campaign in this report is labeled MVA/);
+  assert.match(text(html), /Program not on record \(4\)/);
+});
+test('program: whole-report sections say they cover all campaigns', () => {
+  const t = text(R.render(labeled()));
+  assert.match(t, /Source freshness \(all campaigns\)/);
+  assert.match(t, /Kept out of the numbers above \(all campaigns\)/);
+});
+test('program: a hostile label is escaped and cannot inject markup', () => {
+  const r = labeled(); r.rows[1].identity.program = '<img src=x onerror=alert(1)>';
+  const html = R.render(r, { program: '__all__' });
+  assert.ok(!/<img/.test(html));
+});
+test('program: switching views re-renders from the loaded report without refetching', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  let fetches = 0;
+  await R.load('t', { document, fetch: async () => { fetches++; return { status: 200, ok: true, json: async () => labeled() }; } });
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 2);
+  assert.equal(R.setProgram('LA', { document }), true);
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 1);
+  assert.equal(fetches, 1);
+  R.setProgram('__all__', { document });
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 4);
+});
+test('program: after a failed load, switching views shows nothing from an earlier report', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  await R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => labeled() }) });
+  await R.load('t', { document, fetch: async () => ({ status: 401, ok: false, json: async () => ({}) }) });
+  assert.equal(R.setProgram('LA', { document }), false);
+  assert.ok(!nodes['outcome-root'].innerHTML.includes('oc-row'));
+});
