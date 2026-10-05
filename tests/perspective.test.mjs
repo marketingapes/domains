@@ -21,6 +21,8 @@ test('page ships no lead data and loads only the token-gated feed', async () => 
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   assert.ok(!/\d{3}[-.)\s]\d{3}[-.\s]\d{4}/.test(html), 'no phone numbers in page');
   assert.ok(html.includes('/assets/portal/perspective.js'));
+  assert.match(html, /id="step-email" hidden/);
+  assert.match(html, /id="token-alt" open/);
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
   assert.ok(!/localStorage\.setItem\([^)]*token/i.test(js), 'token never persisted');
 });
@@ -59,6 +61,69 @@ test('portal is per-firm: the page names its client and the feed comes live from
   assert.ok(!/['"]Transferred to Phillips/.test(js), 'no firm name hard-coded in stage labels');
   assert.ok(!/legal-web-lead|FALLBACK/.test(js), 'no silent fallback to another feed');
   assert.ok(!/(localStorage|sessionStorage)\.setItem\([^)]*(token|session)/i.test(js), 'session never persisted');
+});
+
+function authDom() {
+  const ids = new Map(['app', 'gate', 'lock-btn', 'feed-pill', 'token', 'code', 'step-email', 'step-code', 'send-code', 'gate-copy', 'gate-err', 'token-alt', 'lead-list', 'lead-detail', 'lt-table', 'scoreboard']
+    .map((id) => [id, { hidden: false, disabled: false, textContent: '', className: '', value: '', innerHTML: '', open: false }]));
+  return { ids, document: { body: { getAttribute: () => 'https://perspective-s3b8.onrender.com' }, getElementById: (id) => ids.get(id) || null } };
+}
+
+test('email sign-in health fallback opens the working owner-token path and survives lock', () => {
+  const oldDocument = globalThis.document;
+  const { ids, document } = authDom();
+  globalThis.document = document;
+  try {
+    assert.equal(P._applyAuthAvailability({ email_sign_in: false }), false);
+    assert.equal(ids.get('step-email').hidden, true);
+    assert.equal(ids.get('step-code').hidden, true);
+    assert.equal(ids.get('send-code').disabled, true);
+    assert.equal(ids.get('token-alt').open, true);
+    assert.match(ids.get('gate-copy').textContent, /owner access token/i);
+    P._lock();
+    assert.equal(ids.get('step-email').hidden, true);
+    assert.equal(ids.get('token-alt').open, true);
+  } finally {
+    P._state.emailSignIn = null;
+    globalThis.document = oldDocument;
+  }
+});
+
+test('healthy email sign-in replaces the neutral gate; invalid health changes nothing', () => {
+  const oldDocument = globalThis.document;
+  const { ids, document } = authDom();
+  globalThis.document = document;
+  try {
+    assert.equal(P._applyAuthAvailability({}), false);
+    assert.equal(ids.get('step-email').hidden, false, 'invalid health does not rewrite the DOM helper state');
+    assert.equal(P._applyAuthAvailability({ email_sign_in: true }), true);
+    assert.equal(ids.get('step-email').hidden, false);
+    assert.equal(ids.get('send-code').disabled, false);
+    assert.equal(ids.get('token-alt').open, false);
+    assert.match(ids.get('gate-copy').textContent, /work email/i);
+  } finally {
+    P._state.emailSignIn = null;
+    globalThis.document = oldDocument;
+  }
+});
+
+test('failed, non-OK, and malformed health checks retain the email flow', async () => {
+  const oldDocument = globalThis.document, oldFetch = globalThis.fetch;
+  for (const fetchResult of [
+    () => Promise.reject(new Error('offline')),
+    () => Promise.resolve({ ok: false }),
+    () => Promise.resolve({ ok: true, json: () => Promise.resolve({ nope: true }) }),
+  ]) {
+    const { ids, document } = authDom();
+    globalThis.document = document;
+    globalThis.fetch = fetchResult;
+    assert.equal(await P._checkAuthAvailability(), true);
+    assert.equal(ids.get('step-email').hidden, false);
+    assert.equal(ids.get('send-code').disabled, false);
+  }
+  P._state.emailSignIn = null;
+  globalThis.fetch = oldFetch;
+  globalThis.document = oldDocument;
 });
 
 test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attribution, our-only leads stay', () => {

@@ -23,8 +23,11 @@
     return h && /^https:\/\/[a-z0-9.-]+$/i.test(h) ? h : DEFAULT_HUB;
   }
   var REFRESH_MS = 60000;
+  var AUTH_CHECK_MS = 4000;
+  var EMAIL_SIGN_IN_COPY = "Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.";
+  var TOKEN_SIGN_IN_COPY = 'Email sign-in is temporarily unavailable. Use the owner access token below. Lead data loads only after access is verified, and clears when you lock or close the tab.';
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0 };
+  var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
   var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['contact', 'Names & phone digits']];
   var LEVEL_LABELS = [['csuite', 'C-suite'], ['management', 'Management'], ['basic', 'Basic']];
   function access() { return (state.feed && state.feed.access) || { sections: [], owner: false }; }
@@ -419,7 +422,8 @@
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
-    $('step-code').hidden = true; $('step-email').hidden = false;
+    $('step-code').hidden = true; $('step-email').hidden = state.emailSignIn === false;
+    if (state.emailSignIn === false && $('token-alt')) $('token-alt').open = true;
     ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
   }
   // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
@@ -504,6 +508,29 @@
         if (!r.ok) throw new Error((d && typeof d.detail === 'string' && d.detail) || 'Sign-in unavailable (HTTP ' + r.status + ').');
         return d; }); });
   }
+  function applyAuthAvailability(health) {
+    if (!health || typeof health.email_sign_in !== 'boolean') return false;
+    state.emailSignIn = health.email_sign_in;
+    $('step-email').hidden = !state.emailSignIn;
+    $('step-code').hidden = true;
+    $('send-code').disabled = !state.emailSignIn;
+    $('gate-copy').textContent = state.emailSignIn ? EMAIL_SIGN_IN_COPY : TOKEN_SIGN_IN_COPY;
+    $('gate-err').textContent = '';
+    var alt = $('token-alt');
+    if (alt) alt.open = !state.emailSignIn;
+    return state.emailSignIn;
+  }
+  function checkAuthAvailability() {
+    var probe = root.fetch(hub() + '/portal/health', { cache: 'no-store', credentials: 'omit', redirect: 'error' })
+      .then(function (r) { if (!r.ok) throw new Error('health unavailable'); return r.json(); })
+      .then(function (health) { if (!health || typeof health.email_sign_in !== 'boolean') throw new Error('invalid health'); return health; });
+    var timer;
+    var timeout = new Promise(function (resolve) { timer = root.setTimeout(function () { resolve({ email_sign_in: true }); }, AUTH_CHECK_MS); });
+    return Promise.race([probe, timeout]).catch(function () { return { email_sign_in: true }; }).then(function (health) {
+      if (timer) root.clearTimeout(timer);
+      return applyAuthAvailability(health);
+    });
+  }
   function busy(id, on) { var b = $(id); if (b) b.disabled = on; }
   function sendCode() {
     var email = ($('email').value || '').trim();
@@ -576,9 +603,10 @@
     $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
     $('task-form').addEventListener('submit', addTask);
     $('set-save').addEventListener('click', saveSettings);
+    checkAuthAvailability();
   }
 
-  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh };
+  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability };
   root.Perspective = exported;
   if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {
