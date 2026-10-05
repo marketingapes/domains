@@ -192,8 +192,11 @@
     return '<div class="sec"><h3>Operational unknowns</h3><div class="gapnote">' + body + '</div></div>';
   }
 
+  function isValidReport(report) {
+    return !!report && report.schema === 'ee.phillips_portal_report/v1' && Array.isArray(report.rows) && !report.rows.some(function(r){return !r || !r.identity || !r.stages;});
+  }
   function render(report, opts) {
-    if (!report || report.schema !== 'ee.phillips_portal_report/v1' || !Array.isArray(report.rows) || report.rows.some(function(r){return !r || !r.identity || !r.stages;})) {
+    if (!isValidReport(report)) {
       return '<div class="gapnote">The report could not be read. Nothing is shown rather than showing numbers that may be wrong.</div>';
     }
     var ex = report.excluded || {};
@@ -224,7 +227,7 @@
   function announce(doc, report, program) {
     var el = doc && typeof doc.getElementById === 'function' ? doc.getElementById('outcome-view') : null;
     if (!el) return;
-    if (!report) { el.textContent = ''; return; }
+    if (!isValidReport(report)) { el.textContent = ''; return; }
     var key = resolveProgram(report.rows, program);
     var v = programViews(report.rows).filter(function (x) { return x.key === key; })[0];
     el.textContent = 'Viewing: ' + (v ? v.label : 'All campaigns');
@@ -233,7 +236,7 @@
   function setProgram(program, opts) {
     var doc = (opts && opts.document) || root.document;
     var target = doc && doc.getElementById('outcome-root');
-    if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program)) return false;
+    if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program) || !isValidReport(loaded.report)) return false;
     var key = resolveProgram(loaded.report.rows, program); // the view actually shown
     target.innerHTML = render(loaded.report, { program: key });
     // Keep keyboard focus on the shown view's button (the bar was just re-rendered).
@@ -262,7 +265,7 @@
     }).then(function (report) {
       if(version !== loadVersion) return null;
       target.innerHTML = render(report);
-      loaded = { report: report, version: version };
+      if (isValidReport(report)) loaded = { report: report, version: version };
       announce(doc, report);
       if (note) note.style.display = 'none';
       return report;

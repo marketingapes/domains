@@ -415,3 +415,14 @@ test('A5: after Clear report, switching views shows nothing and the announcement
   assert.ok(!dom.byId.get('outcome-root').innerHTML.includes('oc-row'));
   assert.equal(dom.byId.get('outcome-view').textContent, '');
 });
+test('R1: a malformed report keeps the "could not be read" copy, announces nothing, and cannot be switched', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  for (const body of [{ schema: 'bogus' }, null]) {
+    await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => body }) });
+    assert.match(dom.byId.get('outcome-root').innerHTML, /could not be read/);
+    assert.ok(!/Cannot read|undefined/.test(dom.byId.get('outcome-root').innerHTML));
+    assert.equal(dom.byId.get('outcome-view').textContent, '');
+    assert.equal(R.setProgram('MVA', { document: dom.document }), false);
+  }
+});
