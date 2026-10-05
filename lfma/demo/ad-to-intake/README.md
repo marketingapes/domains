@@ -83,3 +83,9 @@ Desktop entry and mobile inquiry screenshots were visually inspected.
 Leading indicators for a future authorized test: demo starts/completions and
 inquiry requests. Business outcome: qualified firm conversation confirmed by Kyle.
 No analytics is installed, and no lift or signed-case result is inferred here.
+
+Poster limitation: Library `libfile_4c613a0e07408191aee37182e892858e`,
+`marketing-apes-ten-toes-down.png`, could not be downloaded with the current
+Library materialization helper (initial attempt and one bounded retry).
+No local bytes were available to inspect; the poster was not embedded, edited,
+or republished. Continue with the code-native creative and existing LFMA artwork.
