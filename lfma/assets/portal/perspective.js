@@ -1,7 +1,9 @@
-/* Perspective — Phillips Law Group client portal (feed schema perspective/v1).
+/* Perspective — client portal for any firm (feed schema perspective/v1).
  *
- * The page ships with zero lead data. Everything renders from the token-gated feed
- * (GET legal-web-lead /api/v1/portal/phillips/leads, Authorization: Bearer <token>).
+ * The page ships with zero lead data. Everything renders from the token-gated live feed
+ * (GET <hub>/portal/{client}/feed, Authorization: Bearer <token>), which the Render hub
+ * builds from BigQuery on every request. The page refreshes it every minute while open.
+ * The firm is the page's <body data-client="...">, so a new firm is a copied folder.
  * The token and feed live in memory only; Lock or closing the tab clears both.
  *
  * Rules:
@@ -13,9 +15,28 @@
 (function (root) {
   'use strict';
 
-  var FEED_API = 'https://legal-web-lead.onrender.com/api/v1/portal/phillips/leads';
+  // Perspective server. A page may point elsewhere with <body data-hub="https://host">, so moving the server is a
+  // one-attribute change; only a bare https origin is accepted.
+  var DEFAULT_HUB = 'https://affiliate-hub-tbks.onrender.com';
+  function hub() {
+    var b = root.document && root.document.body, h = b && b.getAttribute('data-hub');
+    return h && /^https:\/\/[a-z0-9.-]+$/i.test(h) ? h : DEFAULT_HUB;
+  }
+  var REFRESH_MS = 60000;
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'intake', lead: null, litify: null, litifyLabel: '' };
+  var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0 };
+  var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['contact', 'Names & phone digits']];
+  var LEVEL_LABELS = [['csuite', 'C-suite'], ['management', 'Management'], ['basic', 'Basic']];
+  function access() { return (state.feed && state.feed.access) || { sections: [], owner: false }; }
+  function can(section) { return access().sections.indexOf(section) >= 0; }
+  function clientId() {
+    var b = root.document && root.document.body, c = b && b.getAttribute('data-client');
+    if (c) return c;
+    var m = /\/portal\/([a-z0-9-]+)\//.exec((root.location && root.location.pathname) || '');
+    return m ? m[1] : '';
+  }
+  function firm() { var c = state.feed && state.feed.client; return (c && (c.short_name || c.name)) || 'your firm'; }
+  function firmName() { var c = state.feed && state.feed.client; return (c && c.name) || ''; }
 
   // ---------- helpers ----------
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -33,7 +54,7 @@
   var STAGES = {
     received: ['Received', 'mute'], queued: ['Queued for AI call', 'mute'], ai_contacted: ['AI reached', ''],
     not_reached: ['Not reached yet', 'warn'], intake_completed: ['Intake completed', ''],
-    transferred: ['Transferred to Phillips', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
+    transferred: ['Transferred to firm', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
   };
   function stageTag(s) { var d = STAGES[s] || [s || 'Unknown', 'mute']; return '<span class="tag ' + d[1] + '">' + esc(d[0]) + '</span>'; }
   function litifyTag(status) {
@@ -42,14 +63,34 @@
     return '<span class="tag ' + cls + '">' + esc(status) + '</span>';
   }
 
+  // ---------- source freshness ----------
+  var SRC_TAG = { ok: ['Current', 'ok'], stale: ['Stale', 'warn'], unavailable: ['No data', 'bad'], not_connected: ['Not connected', 'mute'] };
+  function sourcesHTML(feed) {
+    var rows = (feed.sources || []).map(function (s) {
+      var t = SRC_TAG[s.status] || [s.status || 'Unknown', 'mute'];
+      return '<li><span class="tag ' + t[1] + '">' + esc(t[0]) + '</span> <b>' + esc(s.label) + '</b>' +
+        (s.as_of ? ' · as of ' + asOf(s.as_of) : '') + (s.note ? ' · ' + esc(s.note) : '') + (s.detail ? ' <small>(' + esc(s.detail) + ')</small>' : '') + '</li>';
+    }).join('');
+    var notes = (feed.notes || []).map(function (n) { return '<p>' + esc(n) + '</p>'; }).join('');
+    return '<div class="sources"><div><b>Last updated ' + when(feed.generated_at) + '</b>' +
+      (state.failedAt ? ' · <span class="tag bad">Refresh failed at ' + when(state.failedAt) + '; showing the last good data</span>' : '') +
+      '</div><ul>' + rows + '</ul>' + notes + '</div>';
+  }
+  function noName() { var a = state.feed && state.feed.access; return a && a.contact === false ? 'Contact details hidden' : 'Name not captured'; }
+  function asOf(v) { return /^\d{4}-\d{2}-\d{2}$/.test(v || '') ? day(v + 'T12:00:00') : when(v); }
+  function feedHealth(feed) {
+    var bad = (feed.sources || []).filter(function (s) { return s.status !== 'ok'; }).length;
+    return bad ? ['Updated ' + when(feed.generated_at) + ' · ' + bad + ' source' + (bad > 1 ? 's' : '') + ' not current', 'warn'] : ['Updated ' + when(feed.generated_at), 'ok'];
+  }
+
   // ---------- data selection ----------
   function campaignsAll() { return (state.feed && state.feed.campaigns) || []; }
   function current() {
     var id = state.campaign;
     if (id === 'all') {
       var cs = campaignsAll();
-      return { id: 'all', label: 'All campaigns', name: 'All Phillips campaigns', state: cs.length + ' campaigns',
-        summary: 'Every lead Marketing Apes has sent Phillips since the campaigns started, in one place.',
+      return { id: 'all', label: 'All campaigns', name: 'All ' + firm() + ' campaigns', state: cs.length + ' campaigns',
+        summary: 'Every lead in the connected sources for ' + firm() + '\u2019s campaigns. Check the source dates below for what is current.',
         budget: { amount: sum(cs.map(function (c) { return c.budget && c.budget.amount; })) },
         spend: { amount: sum(cs.map(function (c) { return c.spend && c.spend.amount; })) },
         channels: [].concat.apply([], cs.map(function (c) { return c.channels || []; })),
@@ -65,21 +106,14 @@
   function litifyRows() { return state.litify || (state.feed && state.feed.litify) || []; }
   function litifyFor(id) { var l = litifyRows(); return id === 'all' ? l : l.filter(function (x) { return x.campaign === id; }); }
 
+  // Campaign numbers come from the server (feed.campaigns[].overview), so they never depend on which rows this person may see.
   function metrics(c) {
-    var leads = leadsFor(c.id), lit = litifyFor(c.id);
-    // Cumulative funnel: a transferred lead was also reached and completed intake.
-    var has = function (sts) { return leads.filter(function (l) { var r = (l.stages_reached || []).concat([l.stage]); return sts.some(function (s) { return r.indexOf(s) >= 0; }); }).length; };
-    var aiTracked = leads.some(function (l) { return l.ai_tracked; });
-    var m = {
-      leads: leads.length,
-      reached: aiTracked ? has(['ai_contacted', 'intake_completed', 'disqualified', 'transferred']) : null,
-      intake: aiTracked ? has(['intake_completed', 'transferred']) : null,
-      transfers: aiTracked ? has(['transferred']) : null,
-      inLitify: leads.filter(function (l) { return l.litify; }).length,
-      working: lit.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length,
-      signed: lit.filter(function (r) { return r.status === 'Converted'; }).length,
-      budget: c.budget && num(c.budget.amount), spend: c.spend && num(c.spend.amount)
-    };
+    var cs = c.id === 'all' ? campaignsAll() : [c];
+    var ov = cs.map(function (x) { return x.overview; }).filter(Boolean);
+    var add = function (k) { var v = ov.map(function (o) { return o[k]; }).filter(function (v) { return typeof v === 'number'; }); return v.length ? v.reduce(function (a, b) { return a + b; }, 0) : null; };
+    var m = ov.length ? { leads: add('leads'), reached: add('reached'), intake: add('intake'), transfers: add('transfers'), inLitify: add('in_litify'),
+      working: add('working'), signed: add('signed'), budget: add('budget'), spend: add('spend') }
+      : { leads: null, reached: null, intake: null, transfers: null, inLitify: null, working: null, signed: null, budget: null, spend: null };
     m.cpl = ratio(m.spend, m.leads); m.cpt = ratio(m.spend, m.transfers); m.cps = ratio(m.spend, m.signed);
     return m;
   }
@@ -88,7 +122,8 @@
   function renderCampaignTabs() {
     var cs = campaignsAll(), nav = $('campaign-tabs');
     var items = cs.map(function (c) { return { id: c.id, label: c.label, sub: c.state || '' }; });
-    items.push({ id: 'all', label: 'All campaigns', sub: leadsFor('all').length + ' leads total' });
+    var tot = metrics({ id: 'all' }).leads;
+    items.push({ id: 'all', label: 'All campaigns', sub: tot === null ? cs.length + ' campaigns' : fmtInt(tot) + ' leads total' });
     nav.innerHTML = items.map(function (it) {
       var sel = it.id === state.campaign;
       return '<button role="tab" data-campaign="' + esc(it.id) + '" aria-selected="' + sel + '" tabindex="' + (sel ? 0 : -1) + '"><strong>' + esc(it.label) + '</strong><small>' + esc(it.sub) + '</small></button>';
@@ -97,15 +132,19 @@
 
   function cell(label, value, note, na) { return '<div class="score"><span class="s-label">' + esc(label) + '</span><span class="s-num' + (na ? ' na' : '') + '">' + value + '</span><span class="s-note">' + esc(note) + '</span></div>'; }
 
-  function renderHero() {
-    var c = current(), m = metrics(c);
+  function renderHead() {
+    var c = current();
     $('c-eyebrow').textContent = c.id === 'all' ? 'ALL CAMPAIGNS' : 'CAMPAIGN';
     $('c-title').textContent = c.name || c.label || '';
     $('c-summary').textContent = c.summary || '';
     $('c-state').textContent = c.state || '';
+    $('freshness').innerHTML = sourcesHTML(state.feed) + (state.litifyLabel ? '<div>Comparing against: ' + esc(state.litifyLabel) + '</div>' : '');
+  }
+  function renderOverview() {
+    var c = current(), m = metrics(c);
     var spendNote = c.spend && c.spend.as_of ? 'Platform spend as of ' + day(c.spend.as_of) : 'Ad platform spend not connected';
     $('scoreboard').innerHTML = [
-      cell('Total leads', fmtInt(m.leads), m.inLitify + ' found in your Litify report'),
+      cell('Total leads', fmtInt(m.leads), fmtInt(m.inLitify) + ' found in your Litify report'),
       cell('Budget', fmtMoney(m.budget), (c.budget && c.budget.note) || (m.budget === null ? 'No paid budget on this campaign' : ''), m.budget === null),
       cell('Spent', fmtMoney(m.spend), spendNote, m.spend === null),
       cell('Reaching out', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
@@ -119,8 +158,6 @@
     var steps = [['Leads', m.leads, ''], ['AI reached', m.reached, pct(m.reached, m.leads)], ['Intake done', m.intake, pct(m.intake, m.reached)],
       ['Transferred', m.transfers, pct(m.transfers, m.intake)], ['In Litify', m.inLitify, pct(m.inLitify, m.leads)], ['Signed', m.signed, pct(m.signed, m.inLitify)]];
     $('funnel').innerHTML = steps.map(function (s) { return '<div class="f-step"><b>' + fmtInt(s[1]) + '</b><span>' + esc(s[0]) + '</span>' + (s[2] ? '<i>' + s[2] + ' →</i>' : '') + '</div>'; }).join('');
-    var src = (state.feed.sources || []).map(function (s) { return esc(s.label) + ' ' + day(s.as_of); }).join(' · ');
-    $('freshness').innerHTML = 'Updated ' + when(state.feed.generated_at) + (src ? ' · Sources: ' + src : '') + (state.litifyLabel ? ' · Litify: ' + esc(state.litifyLabel) : '');
   }
 
   // ---------- AI intake (CRM) ----------
@@ -132,6 +169,7 @@
   function renderIntake() {
     var leads = leadsFor(state.campaign);
     fillSelect($('f-stage'), sortedEntries(countBy(leads, function (l) { return l.stage; })).map(function (e) { return [e[0], ((STAGES[e[0]] || [e[0]])[0]) + ' (' + e[1] + ')']; }), 'All stages');
+    $('f-litify').hidden = !can('litify');
     fillSelect($('f-litify'), sortedEntries(countBy(leads, function (l) { return (l.litify && l.litify.status) || 'Not in Litify'; })).map(function (e) { return [e[0], e[0] + ' (' + e[1] + ')']; }), 'All Litify statuses');
     var q = ($('q').value || '').toLowerCase().trim(), fs = $('f-stage').value, fl = $('f-litify').value;
     var rows = leads.filter(function (l) {
@@ -141,23 +179,25 @@
       return [l.name, l.phone_last4, l.lead_uid, l.litify && l.litify.intake].join(' ').toLowerCase().indexOf(q) >= 0;
     }).sort(function (a, b) { return String(b.received_at || '').localeCompare(String(a.received_at || '')); });
     $('lead-list').innerHTML = rows.length ? rows.map(function (l) {
-      return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || 'Name not captured') + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
-        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + litifyTag(l.litify && l.litify.status) + '</span></button>';
+      return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || noName()) + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
+        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + (can('litify') ? litifyTag(l.litify && l.litify.status) : '') + (l.recording_url ? ' <span class="tag">Recording</span>' : '') + '</span></button>';
     }).join('') : '<p style="padding:16px">No leads match these filters.</p>';
     $('list-count').textContent = rows.length + ' of ' + leads.length + ' leads';
     renderDetail();
   }
   function renderDetail() {
     var l = leadsFor('all').filter(function (x) { return x.lead_uid === state.lead; })[0], box = $('lead-detail');
-    if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what Phillips reported back.</p>'; return; }
+    if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what ' + esc(firm()) + ' reported back.</p>'; return; }
     var ev = (l.ai_events || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
     var lit = l.litify || {};
-    box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || 'Name not captured') + '</h2>' + stageTag(l.stage) + ' ' + litifyTag(lit.status) +
+    var rec = /^https:\/\/storage\.vapi\.ai\//.test(l.recording_url || '') ? l.recording_url : '';
+    box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || noName()) + '</h2>' + stageTag(l.stage) + ' ' + (can('litify') ? litifyTag(lit.status) : '') +
       '<dl class="kv"><dt>Lead ID</dt><dd>' + esc(l.lead_uid) + '</dd><dt>Received</dt><dd>' + when(l.received_at) + '</dd><dt>Phone</dt><dd>' + (l.phone_last4 ? '…' + esc(l.phone_last4) : NA) + '</dd><dt>State</dt><dd>' + esc(l.state || NA) + '</dd>' +
       '<dt>Claim</dt><dd>' + esc(l.case_type || l.claim || NA) + '</dd><dt>Source</dt><dd>' + esc([l.channel, l.source].filter(Boolean).join(' · ') || NA) + '</dd>' +
       (l.ad ? '<dt>Ad</dt><dd>' + esc(l.ad) + '</dd>' : '') +
       (l.transfer ? '<dt>Transfer</dt><dd>' + esc(l.transfer.outcome || '') + ' · ' + when(l.transfer.at) + '</dd>' : '') +
-      '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' +
+      (rec ? '<dt>Call recording</dt><dd><a href="' + esc(rec) + '" target="_blank" rel="noopener noreferrer">Listen</a> · ' + when(l.recording_at) + ' <small>(Sofia call, stored by Vapi)</small></dd>' : '<dt>Call recording</dt><dd>None on file</dd>') +
+      (can('litify') ? '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' : '') +
       (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') + '</dl>' +
       '<div class="eyebrow" style="margin-top:6px">WHAT THE AI DID</div>' +
       (ev.length ? '<ul class="timeline">' + ev.map(function (e) { return '<li class="' + esc(e.kind || '') + '"><time>' + when(e.at) + '</time>' + esc(e.text) + '</li>'; }).join('') + '</ul>'
@@ -171,16 +211,16 @@
     $('mk-top').innerHTML = [
       ['Spend', fmtMoney(m.spend), c.spend && c.spend.as_of ? 'as of ' + day(c.spend.as_of) : 'not connected'],
       ['Impressions · Clicks', fmtInt(impressions) + ' · ' + fmtInt(clicks), clicks && impressions ? 'CTR ' + (clicks / impressions * 100).toFixed(2) + '%' : 'from ad platforms'],
-      ['Cost per lead', fmtMoney(m.cpl, true), m.leads + ' leads']
+      ['Cost per lead', fmtMoney(m.cpl, true), m.leads === null ? 'needs Overview access' : fmtInt(m.leads) + ' leads']
     ].map(function (x) { return '<div class="panel"><div class="eyebrow">' + esc(x[0]) + '</div><div class="s-num" style="font-size:34px">' + x[1] + '</div><p style="margin:0">' + esc(x[2]) + '</p></div>'; }).join('');
     var byChan = countBy(leads, function (l) { return l.channel || l.source || 'Unknown'; });
     var chans = (c.channels || []).slice();
     Object.keys(byChan).forEach(function (k) { if (!chans.some(function (x) { return x.name === k; })) chans.push({ name: k }); });
     $('mk-channels').innerHTML = '<tr><th>Channel</th><th class="num">Our leads</th><th class="num">Platform-reported</th><th class="num">Spend</th><th class="num">CPL</th><th class="num">Clicks</th></tr>' +
-      chans.map(function (ch) { var n = byChan[ch.name] || 0; return '<tr><td>' + esc(ch.name) + (ch.status ? ' <span class="tag mute">' + esc(ch.status) + '</span>' : '') + '</td><td class="num">' + fmtInt(n) + '</td><td class="num">' + fmtInt(ch.platform_leads) + '</td><td class="num">' + fmtMoney(ch.spend) + '</td><td class="num">' + fmtMoney(ratio(ch.spend, n), true) + '</td><td class="num">' + fmtInt(ch.clicks) + '</td></tr>'; }).join('');
+      chans.map(function (ch) { var n = can('leads') ? byChan[ch.name] || 0 : null; return '<tr><td>' + esc(ch.name) + (ch.status ? ' <span class="tag mute">' + esc(ch.status) + '</span>' : '') + '</td><td class="num">' + fmtInt(n) + '</td><td class="num">' + fmtInt(ch.platform_leads) + '</td><td class="num">' + fmtMoney(ch.spend) + '</td><td class="num">' + fmtMoney(ratio(ch.spend, n), true) + '</td><td class="num">' + fmtInt(ch.clicks) + '</td></tr>'; }).join('');
     var weeks = countBy(leads, function (l) { if (!l.received_at) return null; var d = new Date(l.received_at); if (isNaN(d)) return null; d.setUTCDate(d.getUTCDate() - d.getUTCDay()); return d.toISOString().slice(0, 10); });
     var wk = Object.keys(weeks).sort(), max = Math.max.apply(null, wk.map(function (k) { return weeks[k]; }).concat([1]));
-    $('mk-weeks').innerHTML = wk.length ? wk.map(function (k) { return '<div class="bar"><span>Week of ' + day(k + 'T12:00:00Z') + '</span><span class="track"><span class="fill" style="width:' + (weeks[k] / max * 100) + '%;display:block"></span></span><b>' + weeks[k] + '</b></div>'; }).join('') : '<p>No dated leads.</p>';
+    $('mk-weeks').innerHTML = !can('leads') ? '<p class="note">Lead volume by week needs Leads &amp; AI Intake access.</p>' : wk.length ? wk.map(function (k) { return '<div class="bar"><span>Week of ' + day(k + 'T12:00:00Z') + '</span><span class="track"><span class="fill" style="width:' + (weeks[k] / max * 100) + '%;display:block"></span></span><b>' + weeks[k] + '</b></div>'; }).join('') : '<p>No dated leads.</p>';
     var ads = c.ads || [];
     $('mk-ads').innerHTML = ads.length ? ads.map(function (a) { return '<div class="ad">' + (a.image ? '<img alt="" loading="lazy" src="' + esc(a.image) + '">' : '') + '<div><b>' + esc(a.name) + '</b><br>' + esc([a.channel, a.status].filter(Boolean).join(' · ')) + (num(a.leads) !== null ? '<br>' + a.leads + ' leads' : '') + (num(a.spend) !== null ? ' · ' + fmtMoney(a.spend) : '') + '</div></div>'; }).join('') : '<p>No creative attached to this campaign yet.</p>';
     var log = (c.log || []).slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
@@ -190,7 +230,7 @@
   // ---------- litify match ----------
   function renderLitify() {
     var rows = litifyFor(state.campaign);
-    var matched = rows.filter(function (r) { return r.match_lead_uid; }).length;
+    var matched = rows.filter(function (r) { return r.match_lead_uid || r.matched; }).length;
     var st = countBy(rows, function (r) { return r.status || 'Blank'; });
     $('lt-top').innerHTML = [
       ['In your Litify report', fmtInt(rows.length), state.litifyLabel || 'Daily “All Marketing Apes Leads” report'],
@@ -204,12 +244,12 @@
     var q = ($('lq').value || '').toLowerCase().trim(), fs = $('l-status').value, fm = $('l-match').value;
     var shown = rows.filter(function (r) {
       if (fs && (r.status || 'Blank') !== fs) return false;
-      if (fm === 'matched' && !r.match_lead_uid) return false;
-      if (fm === 'unmatched' && r.match_lead_uid) return false;
+      if (fm === 'matched' && !(r.match_lead_uid || r.matched)) return false;
+      if (fm === 'unmatched' && (r.match_lead_uid || r.matched)) return false;
       return !q || [r.intake, r.name, r.phone_last4].join(' ').toLowerCase().indexOf(q) >= 0;
     });
     $('lt-table').innerHTML = '<tr><th>Created</th><th>Intake</th><th>Client</th><th>Case type</th><th>Status</th><th>Reason</th><th>Our lead</th></tr>' +
-      shown.slice(0, 600).map(function (r) { return '<tr><td>' + esc(r.created || '') + '</td><td>' + esc(r.intake || '') + '</td><td>' + esc(r.name || '') + (r.phone_last4 ? '<br><small>…' + esc(r.phone_last4) + '</small>' : '') + '</td><td>' + esc(r.case_type || '') + '</td><td>' + litifyTag(r.status) + '</td><td>' + esc(r.reason || '') + '</td><td>' + (r.match_lead_uid ? '<button class="btn ghost" style="padding:4px 8px" data-open-lead="' + esc(r.match_lead_uid) + '">Open</button>' : '<span class="tag mute">No match</span>') + '</td></tr>'; }).join('');
+      shown.slice(0, 600).map(function (r) { return '<tr><td>' + esc(r.created || '') + '</td><td>' + esc(r.intake || '') + '</td><td>' + esc(r.name || '') + (r.phone_last4 ? '<br><small>…' + esc(r.phone_last4) + '</small>' : '') + '</td><td>' + esc(r.case_type || '') + '</td><td>' + litifyTag(r.status) + '</td><td>' + esc(r.reason || '') + '</td><td>' + (r.match_lead_uid && can('leads') ? '<button class="btn ghost" style="padding:4px 8px" data-open-lead="' + esc(r.match_lead_uid) + '">Open</button>' : r.match_lead_uid || r.matched ? '<span class="tag ok">Our lead</span>' : '<span class="tag mute">No match</span>') + '</td></tr>'; }).join('');
   }
 
   // CSV parsing (RFC 4180-ish) for a user-chosen Litify export
@@ -243,7 +283,8 @@
   function loadLitifyFile(file) {
     var reader = new root.FileReader();
     reader.onload = function () {
-      var raw = parseCSV(String(reader.result || ''));
+      state.litifyText = String(reader.result || '');
+      var raw = parseCSV(state.litifyText);
       if (!raw.length || !('Intake: Intake Name' in raw[0])) { $('lt-fileinfo').textContent = 'That file does not look like the “All Marketing Apes Leads” export.'; return; }
       var byHash = Object.create(null);
       leadsFor('all').forEach(function (l) { if (l.phone_hash) byHash[l.phone_hash] = l.lead_uid; });
@@ -254,11 +295,24 @@
             status: r['Status'], reason: r['Turn Down Reason'], details: r['Turn Down Details'], campaign: campaignForLitify(r), match_lead_uid: (hashes[i] && byHash[hashes[i]]) || null };
         });
         state.litifyLabel = file.name + ' (loaded in this browser)';
-        $('lt-fileinfo').textContent = raw.length + ' rows read from ' + file.name + '. Nothing was uploaded.';
+        $('lt-fileinfo').textContent = raw.length + ' rows read from ' + file.name + '. Nothing was uploaded' +
+          (access().owner ? ' (use “Load into Perspective” to make it everyone\u2019s data).' : '.');
         renderAll();
       });
     };
     reader.readAsText(file);
+  }
+  function uploadLitify() {
+    var d = ($('lt-date').value || '').trim();
+    if (!state.litifyText) { $('lt-fileinfo').textContent = 'Choose the Litify CSV first.'; return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { $('lt-fileinfo').textContent = 'Enter the report date (the date in the Litify email subject).'; return; }
+    busy('lt-upload-btn', true);
+    root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify({ csv: state.litifyText, report_date: d }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); })
+      .then(function (j) { $('lt-fileinfo').textContent = j.loaded + ' Litify rows for ' + j.report_date + ' loaded into Perspective. Refreshing…'; state.litify = null; state.litifyLabel = ''; refresh(); })
+      .catch(function (e) { $('lt-fileinfo').textContent = e.message; })
+      .then(function () { busy('lt-upload-btn', false); });
   }
   function saveLitify() {
     var rows = litifyFor(state.campaign), cols = ['created', 'intake', 'name', 'phone_last4', 'case_type', 'source', 'status', 'reason', 'details', 'campaign', 'match_lead_uid'];
@@ -270,42 +324,102 @@
   }
 
   // ---------- summary ----------
-  function checkKey(c, n) { return 'perspective:check:' + (n.campaign || c.id) + ':' + (n.id || n.label); }
-  function getCheck(k, dflt) { try { var v = root.localStorage.getItem(k); return v === null ? !!dflt : v === '1'; } catch (e) { return !!dflt; } }
-  function setCheck(k, v) { try { root.localStorage.setItem(k, v ? '1' : '0'); } catch (e) { /* storage blocked */ } }
   function renderSummary() {
     var c = current(), m = metrics(c);
-    $('sm-head').textContent = (c.label || '') + ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed';
-    var auto = [
-      fmtInt(m.leads) + ' leads sent; ' + fmtInt(m.inLitify) + ' appear in your Litify report.',
+    $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
+    var auto = m.leads === null ? [] : [
+      fmtInt(m.leads) + ' leads in the connected sources; ' + fmtInt(m.inLitify) + ' appear in your Litify data.',
       fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still being worked.',
       m.transfers !== null ? fmtInt(m.transfers) + ' live transfers from AI intake.' : 'AI transfer tracking does not cover these leads.',
       m.spend !== null ? fmtMoney(m.spend) + ' spent' + (m.cpl !== null ? ' · ' + fmtMoney(m.cpl, true) + ' per lead' : '') + '.' : 'Spend not connected for this view.'
     ];
-    $('sm-body').innerHTML = '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
-      (c.narrative || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+    $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
+      ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var needs = c.needs || [];
-    $('sm-checklist').innerHTML = needs.length ? needs.map(function (n, i) {
-      var k = checkKey(c, n), on = getCheck(k, n.done);
-      return '<li><input type="checkbox" id="need-' + i + '" data-key="' + esc(k) + '"' + (on ? ' checked' : '') + '><label for="need-' + i + '"><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner === 'Phillips' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></label></li>';
+    $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
+      return '<li><span><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner && n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
     }).join('') : '<li>No open items.</li>';
+    var tasks = ((state.feed && state.feed.tasks) || []).filter(function (t) { return c.id === 'all' || !t.campaign_id || t.campaign_id === c.id; });
+    var mayCheck = !!access().can_complete_tasks;
+    $('sm-tasks').innerHTML = tasks.length ? tasks.map(function (t, i) {
+      var late = !t.done && t.due_date && t.due_date < new Date().toISOString().slice(0, 10);
+      return '<li><input type="checkbox" id="task-' + i + '" data-task="' + esc(t.task_id) + '"' + (t.done ? ' checked' : '') + (mayCheck ? '' : ' disabled') + '><label for="task-' + i + '"><b>' + esc(t.title) + '</b> ' +
+        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> <span class="tag ' + (late ? 'bad' : 'mute') + '">Due ' + day((t.due_date || '') + 'T12:00:00') + '</span>' +
+        '<small>' + (t.done ? 'Done by ' + esc(t.done_by || '?') + ' · ' + when(t.done_at) : 'Open · added by ' + esc(t.created_by || '?')) + '</small></label></li>';
+    }).join('') : '<li>No handoffs yet.</li>';
+    var form = $('task-form');
+    form.hidden = !access().owner;
+    if (!form.hidden) fillSelect($('t-campaign'), campaignsAll().map(function (x) { return [x.id, x.label]; }), 'All campaigns');
+  }
+  function api(method, path, body) {
+    var gen = state.gen;
+    return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: method, cache: 'no-store', credentials: 'omit', redirect: 'error',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
+        if (gen !== state.gen) throw new Error('locked');
+        if (r.status === 401) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; throw new Error('Your session ended.'); }
+        if (!r.ok) throw new Error(j.detail || 'Could not save (HTTP ' + r.status + ').');
+        return j; }); });
+  }
+  function setTask(id, done, box) {
+    box.disabled = true; $('task-msg').textContent = 'Saving…';
+    api('POST', '/tasks/' + encodeURIComponent(id), { done: done })
+      .then(function (j) { $('task-msg').textContent = (done ? 'Marked done' : 'Reopened') + ' by ' + j.by + '.'; refresh(); })
+      .catch(function (e) { box.checked = !done; $('task-msg').textContent = e.message; })
+      .then(function () { box.disabled = !access().can_complete_tasks; });
+  }
+  function addTask(e) {
+    e.preventDefault();
+    api('POST', '/tasks', { title: $('t-title').value, assignee: $('t-assignee').value, due_date: $('t-due').value, campaign_id: $('t-campaign').value })
+      .then(function () { $('task-msg').textContent = 'Task added.'; $('task-form').reset(); refresh(); })
+      .catch(function (err) { $('task-msg').textContent = err.message; });
+  }
+
+  // ---------- owner settings ----------
+  function renderSettings() {
+    var st = (state.feed && state.feed.settings) || { levels: {}, updated: {} };
+    $('set-table').innerHTML = '<tr><th>Level</th>' + SECTION_LABELS.map(function (x) { return '<th>' + esc(x[1]) + '</th>'; }).join('') + '<th>Last changed</th></tr>' +
+      LEVEL_LABELS.map(function (lv) {
+        var on = st.levels[lv[0]] || [], up = (st.updated || {})[lv[0]];
+        return '<tr><td><b>' + esc(lv[1]) + '</b></td>' + SECTION_LABELS.map(function (x) {
+          return '<td><input type="checkbox" aria-label="' + esc(lv[1] + ': ' + x[1]) + '" data-level="' + lv[0] + '" data-section="' + x[0] + '"' + (on.indexOf(x[0]) >= 0 ? ' checked' : '') + '></td>';
+        }).join('') + '<td><small>' + (up ? esc(up.by || '') + ' · ' + when(up.at) : 'Never set (sees nothing)') + '</small></td></tr>';
+      }).join('');
+  }
+  function saveSettings() {
+    var levels = {};
+    LEVEL_LABELS.forEach(function (lv) { levels[lv[0]] = []; });
+    root.document.querySelectorAll('#set-table input[data-level]').forEach(function (b) { if (b.checked) levels[b.getAttribute('data-level')].push(b.getAttribute('data-section')); });
+    busy('set-save', true); $('set-msg').textContent = 'Saving…';
+    api('PUT', '/settings', { levels: levels })
+      .then(function () { $('set-msg').textContent = 'Saved. Each level sees its new sections on its next refresh (within a minute).'; refresh(); })
+      .catch(function (e) { $('set-msg').textContent = e.message; })
+      .then(function () { busy('set-save', false); });
   }
 
   // ---------- wiring ----------
   function renderAll() {
-    renderCampaignTabs(); renderHero();
-    ({ intake: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary })[state.view]();
+    renderCampaignTabs(); renderHead();
+    var fn = { overview: renderOverview, leads: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary, settings: renderSettings }[state.view];
+    if (fn) fn();
   }
+  function allowedViews() { var a = access(); return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); }).concat(a.owner ? ['settings'] : []); }
   function setView(v) {
+    var ok = allowedViews();
+    if (ok.indexOf(v) < 0) v = ok[0] || '';
     state.view = v;
+    $('no-sections').hidden = !!v;
     root.document.querySelectorAll('.section-tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-view') === v)); });
     root.document.querySelectorAll('.view').forEach(function (s) { s.hidden = s.getAttribute('data-panel') !== v; });
     renderAll();
   }
   function lock() {
-    state.feed = null; state.litify = null; state.litifyLabel = ''; state.lead = null;
+    state.gen++;   // anything in flight from before the lock is ignored when it lands
+    state.feed = null; state.litify = null; state.litifyLabel = ''; state.litifyText = ''; state.lead = null; state.token = null; state.failedAt = null;
+    if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
-    $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = '';
+    $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
+    $('step-code').hidden = true; $('step-email').hidden = false;
     ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
   }
   // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
@@ -315,13 +429,14 @@
   function later(a, b) { return STAGE_ORDER.indexOf(b) > STAGE_ORDER.indexOf(a) ? b : a; }
   function normalizeFeed(feed) {
     if (!feed || !Array.isArray(feed.leads)) return feed;
-    var flat = feed.leads.some(function (l) { return l && ('litify_status' in l || 'transfer_outcome' in l); }) || Array.isArray(feed.transfers);
+    var flat = feed.leads.some(function (l) { return l && !Array.isArray(l.stages_reached); }) || Array.isArray(feed.transfers) || Array.isArray(feed.litify);
     if (!flat) return feed;
     var str = function (v) { return typeof v === 'string' ? v.trim() : v == null ? '' : String(v); };
     var shape = function (r) {
       var l = { lead_uid: str(r.lead_uid), campaign: str(r.campaign) || 'other', received_at: str(r.received_at) || null, name: str(r.name), phone_last4: str(r.phone_last4),
         phone_hash: str(r.phone_hash), case_type: str(r.case_type), state: str(r.state), channel: str(r.channel), source: str(r.source), stage: str(r.stage) || 'received',
-        ai_tracked: r.ai_tracked === true || r.ai_tracked === 'true', ours: r.ours === true || r.ours === 'true', ai_events: [], stages_reached: [] };
+        ai_tracked: r.ai_tracked === true || r.ai_tracked === 'true', ours: r.ours === true || r.ours === 'true', ai_events: [], stages_reached: [],
+        recording_url: str(r.recording_url), recording_at: str(r.recording_at) };
       l.stages_reached.push(l.stage);
       if (str(r.litify_intake) || str(r.litify_status)) l.litify = { intake: str(r.litify_intake), created: str(r.litify_created), status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details) };
       return l;
@@ -340,12 +455,12 @@
       target.ai_tracked = true;
       var connected = /^Live transfer connected/i.test(outcome);
       target.ai_events.push({ at: at, text: 'Sofia completed intake: ' + (t.case_type || 'claim') + (t.state ? ', ' + t.state : ''), kind: '' });
-      target.ai_events.push({ at: at, text: connected ? 'Live transfer connected to Phillips' : (outcome || 'Transfer attempted'), kind: connected ? 'firm' : 'warn' });
+      target.ai_events.push({ at: at, text: connected ? 'Live transfer connected to ' + firm() : (outcome || 'Transfer attempted'), kind: connected ? 'firm' : 'warn' });
       if (str(r.ai_summary)) target.ai_events.push({ at: at, text: 'Summary: ' + str(r.ai_summary).slice(0, 280), kind: '' });
       ['intake_completed'].concat(connected ? ['transferred'] : []).forEach(function (s) { target.stage = later(target.stage, s); if (target.stages_reached.indexOf(s) < 0) target.stages_reached.push(s); });
       if (connected) target.transfer = { at: at, outcome: 'Live transfer connected' };
     });
-    var litify = feed.leads.filter(function (r) { return r && (str(r.litify_intake) || str(r.litify_status)); }).map(function (r) {
+    var litify = Array.isArray(feed.litify) ? feed.litify : feed.leads.filter(function (r) { return r && (str(r.litify_intake) || str(r.litify_status)); }).map(function (r) {
       var l = byHash[str(r.phone_hash)];
       return { created: str(r.litify_created), intake: str(r.litify_intake), name: str(r.name), phone_last4: str(r.phone_last4), case_type: str(r.case_type), source: str(r.source).replace(/^Litify · /, ''),
         status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details), campaign: str(r.campaign) || 'other', match_lead_uid: l && l.ours ? l.lead_uid : null };
@@ -359,21 +474,81 @@
     state.feed = feed;
     state.campaign = state.campaign || (feed.campaigns[0] && feed.campaigns[0].id) || 'all';
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
-    $('feed-pill').textContent = 'Live · ' + feed.leads.length + ' leads'; $('feed-pill').className = 'pill ok';
+    var h = feedHealth(feed); $('feed-pill').textContent = h[0]; $('feed-pill').className = 'pill ' + h[1];
+    var up = $('lt-upload'); if (up) up.hidden = !(feed.access && feed.access.owner && feed.access.role === 'owner');
+    if (firmName()) {
+      root.document.title = 'Perspective · ' + firmName();
+      root.document.querySelectorAll('[data-firm]').forEach(function (el) { el.textContent = el.getAttribute('data-firm') === 'short' ? firm() : firmName(); });
+    }
+    // Only the sections this person may open (the server already removed data they can't see).
+    var ok = allowedViews();
+    root.document.querySelectorAll('.section-tabs [data-view]').forEach(function (b) { b.hidden = ok.indexOf(b.getAttribute('data-view')) < 0; });
     setView(state.view);
+  }
+  function fetchFeed(token) {
+    var opts = { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', credentials: 'omit', redirect: 'error' };
+    var get = function (url) {
+      return root.fetch(url, opts).then(function (r) {
+        if (r.status === 401) throw Object.assign(new Error('That token was not accepted.'), { final: true });
+        if (r.status === 404) throw new Error('No data has been published yet.');
+        if (!r.ok) throw new Error('Portal data unavailable (HTTP ' + r.status + ').');
+        return r.json();
+      });
+    };
+    return get(hub() + '/portal/' + encodeURIComponent(clientId()) + '/feed');
+  }
+  function post(path, body) {
+    return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error' })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok) throw new Error((d && typeof d.detail === 'string' && d.detail) || 'Sign-in unavailable (HTTP ' + r.status + ').');
+        return d; }); });
+  }
+  function busy(id, on) { var b = $(id); if (b) b.disabled = on; }
+  function sendCode() {
+    var email = ($('email').value || '').trim();
+    if (!email) { $('gate-err').textContent = 'Enter your work email.'; return; }
+    busy('send-code', true); $('gate-err').textContent = '';
+    post('/login', { email: email }).then(function () {
+      $('step-email').hidden = true; $('step-code').hidden = false; $('code').value = ''; $('code').focus();
+      $('gate-err').textContent = 'If ' + email + ' has access, a code is on its way. Check your inbox.';
+    }).catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('send-code', false); });
+  }
+  function startSession(token, feed) {
+    state.gen++; state.token = token; open(feed);
+    if (state.timer) root.clearInterval(state.timer);
+    state.timer = root.setInterval(refresh, REFRESH_MS);
+  }
+  function verifyCode() {
+    var email = ($('email').value || '').trim(), code = ($('code').value || '').replace(/\D/g, '');
+    if (code.length !== 6) { $('gate-err').textContent = 'Enter the 6-digit code from the email.'; return; }
+    busy('verify', true); $('gate-err').textContent = '';
+    post('/verify', { email: email, code: code })
+      .then(function (d) { var gen = state.gen; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
+      .catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('verify', false); });
+  }
+  function refresh() {
+    if (!state.token || root.document.hidden) return;
+    var gen = state.gen;
+    fetchFeed(state.token).then(function (feed) {
+      if (gen !== state.gen || !state.token) return;   // locked (or signed in again) while this was loading
+      var view = state.view, lead = state.lead;
+      state.failedAt = null; open(feed); state.lead = lead; setView(view);
+    }).catch(function (e) {
+      if (gen !== state.gen || !state.token) return;
+      if (e && e.final) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; return; }
+      state.failedAt = new Date().toISOString();
+      $('feed-pill').textContent = 'Not refreshed since ' + when(state.feed && state.feed.generated_at); $('feed-pill').className = 'pill bad';
+      $('freshness').innerHTML = sourcesHTML(state.feed);
+    });
   }
   function unlock() {
     var token = ($('token').value || '').trim(), btn = $('unlock');
     if (!token) { $('gate-err').textContent = 'Enter your access token.'; return; }
     btn.disabled = true; $('gate-err').textContent = '';
-    root.fetch(FEED_API, { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', credentials: 'omit', redirect: 'error' })
-      .then(function (r) {
-        if (r.status === 401) throw new Error('That token was not accepted.');
-        if (r.status === 404) throw new Error('No data has been published yet.');
-        if (!r.ok) throw new Error('Portal data unavailable (HTTP ' + r.status + ').');
-        return r.json();
-      })
-      .then(function (feed) { $('token').value = ''; open(feed); })
+    var gen = state.gen;
+    fetchFeed(token)
+      .then(function (feed) { if (gen !== state.gen) return; $('token').value = ''; startSession(token, feed); })
       .catch(function (e) { $('gate-err').textContent = (e && e.message) || 'Could not load the portal.'; })
       .then(function () { btn.disabled = false; });
   }
@@ -381,6 +556,11 @@
   function mount() {
     var d = root.document;
     $('unlock').addEventListener('click', unlock);
+    $('send-code').addEventListener('click', sendCode);
+    $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });
+    $('verify').addEventListener('click', verifyCode);
+    $('code').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyCode(); });
+    $('change-email').addEventListener('click', function () { $('step-code').hidden = true; $('step-email').hidden = false; $('gate-err').textContent = ''; $('email').focus(); });
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);
@@ -391,13 +571,16 @@
     ['lq', 'l-status', 'l-match'].forEach(function (id) { $(id).addEventListener('input', renderLitify); });
     $('lt-file').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) loadLitifyFile(f); });
     $('lt-save').addEventListener('click', saveLitify);
-    $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('intake'); } });
-    $('sm-checklist').addEventListener('change', function (e) { var k = e.target.getAttribute('data-key'); if (k) setCheck(k, e.target.checked); });
+    if ($('lt-upload-btn')) $('lt-upload-btn').addEventListener('click', uploadLitify);
+    $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('leads'); } });
+    $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
+    $('task-form').addEventListener('submit', addTask);
+    $('set-save').addEventListener('click', saveSettings);
   }
 
-  var api = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state };
-  root.Perspective = api;
-  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh };
+  root.Perspective = exported;
+  if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {
     if (root.document.readyState === 'loading') root.document.addEventListener('DOMContentLoaded', mount); else mount();
   }

@@ -47,3 +47,52 @@ test('flat Make feed: transfers merge onto the Litify lead by phone hash; unmatc
   const lone = f.leads.find((l) => l.phone_hash === 'h9');
   assert.equal(lone.stage, 'intake_completed');
 });
+
+test('portal is per-firm: the page names its client and the feed comes live from the hub', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
+  assert.match(html, /<body data-client="plg" data-hub="https:\/\/[a-z0-9.-]+">/);
+  const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
+  assert.ok(js.includes("hub() + '/portal/' + encodeURIComponent(clientId()) + '/feed'"));
+  assert.ok(!/HUB \+/.test(js), 'every request goes through hub()');
+  assert.ok(js.includes("getAttribute('data-hub')") && js.includes('/^https:\\/\\/[a-z0-9.-]+$/i'), 'data-hub accepts only a bare https origin');
+  assert.ok(!/['"]Transferred to Phillips/.test(js), 'no firm name hard-coded in stage labels');
+  assert.ok(!/legal-web-lead|FALLBACK/.test(js), 'no silent fallback to another feed');
+  assert.ok(!/(localStorage|sessionStorage)\.setItem\([^)]*(token|session)/i.test(js), 'session never persisted');
+});
+
+test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attribution, our-only leads stay', () => {
+  const row = (o) => Object.assign({ lead_uid: '', campaign: 'la', received_at: '2026-05-06T12:00:00Z', name: 'A', phone_last4: '0001',
+    phone_hash: 'h1', case_type: 'Sex Abuse', state: '', channel: 'Meta · Website', source: 'Litify · Marketing Apes', stage: 'received',
+    ai_tracked: false, ours: true, litify_intake: '', litify_created: '', litify_status: '', litify_reason: '', litify_details: '' }, o);
+  const f = P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'plg', name: 'Phillips Law Group', short_name: 'Phillips' }, campaigns: [],
+    transfers: [], leads: [
+      row({ lead_uid: 'LIT-1', litify_intake: 'INT-1', litify_status: 'Converted' }),
+      row({ lead_uid: 'LIT-2', litify_intake: 'INT-2', litify_status: 'Turned Down' }),
+      row({ lead_uid: 'EE-9', phone_hash: 'h9', source: 'Our intake · web_form', channel: 'Website form' })] });
+  assert.deepEqual(f.leads.map((l) => l.lead_uid).sort(), ['EE-9', 'LIT-1']);
+  assert.equal(f.leads.find((l) => l.lead_uid === 'LIT-1').litify.status, 'Converted');
+  assert.equal(f.litify.length, 2);
+  assert.equal(f.litify[0].match_lead_uid, 'LIT-1');
+});
+
+test('one portal: five sections plus an owner-only settings tab, no per-level pages', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
+  for (const v of ['overview', 'leads', 'marketing', 'litify', 'summary']) assert.match(html, new RegExp(`data-view="${v}"`));
+  assert.match(html, /data-view="settings" aria-selected="false" hidden/);
+  assert.match(html, /id="sm-tasks"/);
+  const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
+  assert.ok(!dirs.some((d) => /csuite|management|basic/i.test(d)), 'no separate portals per level');
+});
+
+test('overview numbers come from the server, summed across campaigns, and are blank without overview access', () => {
+  P._state.feed = { campaigns: [{ id: 'mva', overview: { leads: 2, reached: 1, intake: 1, transfers: 1, in_litify: 1, working: 0, signed: 0, budget: 100, spend: 50 } },
+    { id: 'la', overview: { leads: 3, reached: null, intake: null, transfers: null, in_litify: 2, working: 1, signed: 1, budget: null, spend: 25 } }], leads: [] };
+  const all = P.metrics({ id: 'all' });
+  assert.equal(all.leads, 5); assert.equal(all.signed, 1); assert.equal(all.transfers, 1); assert.equal(all.spend, 75); assert.equal(all.cpl, 15);
+  P._state.feed = { campaigns: [{ id: 'mva' }], leads: [{ lead_uid: 'x', campaign: 'mva' }] };
+  const none = P.metrics({ id: 'mva' });
+  assert.equal(none.leads, null); assert.equal(none.signed, null);
+  P._state.feed = null;
+});

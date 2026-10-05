@@ -58,6 +58,10 @@ p{line-height:1.6;color:var(--muted);font-size:14px}
 .f-step span{font-size:11px;color:var(--muted)}
 .f-step i{display:block;font-style:normal;font-size:11px;color:var(--accent);font-weight:700;margin-top:4px}
 .fresh{font-size:11px;color:var(--muted);margin:8px 0 0}
+.sources ul{list-style:none;margin:6px 0;padding:0;display:grid;gap:4px}.sources p{margin:4px 0}
+.linkbtn{border:0;background:none;color:var(--muted);text-decoration:underline;padding:10px 0 0 12px;font-size:14px;cursor:pointer}
+.token-alt{margin-top:18px;font-size:14px;color:var(--muted)}
+.token-alt summary{cursor:pointer}
 .section-tabs{display:flex;gap:6px;margin:24px 0 0;overflow-x:auto;border-bottom:1px solid var(--line)}
 .section-tabs button{border:0;border-bottom:3px solid transparent;background:none;padding:12px 16px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
 .section-tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
@@ -104,40 +108,59 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261005c" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006c" defer></script>
 </head>
-<body>
+<body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
   <header class="topline">
-    <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · PHILLIPS LAW GROUP</small></div></div>
+    <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · <span data-firm="name">PHILLIPS LAW GROUP</span></small></div></div>
     <div style="display:flex;gap:8px;align-items:center"><span class="pill" id="feed-pill">Locked</span><button class="btn ghost" id="lock-btn" type="button" hidden>Lock</button></div>
   </header>
 
   <section class="gate" id="gate">
     <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
-    <h2 style="margin-top:10px">Enter your access token</h2>
-    <p>Lead data is never stored in this page. It loads only after your token is accepted and clears when you lock or close the tab.</p>
-    <label for="token" class="eyebrow">Access token</label>
-    <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
+    <h2 style="margin-top:10px">Sign in to Perspective</h2>
+    <p>Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.</p>
+    <div id="step-email">
+      <label for="email" class="eyebrow">Work email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@firm.com">
+      <button class="btn" id="send-code" type="button">Email me a code</button>
+    </div>
+    <div id="step-code" hidden>
+      <label for="code" class="eyebrow">6-digit code</label>
+      <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+      <button class="btn" id="verify" type="button">Sign in</button>
+      <button class="linkbtn" id="change-email" type="button">Use a different email</button>
+    </div>
     <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <button class="btn" id="unlock" type="button">Open Perspective</button>
+    <details class="token-alt"><summary>Owner access token (read-only)</summary>
+      <label for="token" class="eyebrow">Access token</label>
+      <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
+      <button class="btn" id="unlock" type="button">Open Perspective</button>
+    </details>
   </section>
 
   <div id="app" hidden>
     <nav class="campaign-tabs" role="tablist" aria-label="Campaigns" id="campaign-tabs"></nav>
     <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p></div><span class="pill" id="c-state"></span></div>
-    <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
-    <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
-    <p class="fresh" id="freshness"></p>
+    <div class="fresh" id="freshness"></div>
 
     <nav class="section-tabs" role="tablist" aria-label="Sections">
-      <button role="tab" data-view="intake" aria-selected="true">AI Intake</button>
+      <button role="tab" data-view="overview" aria-selected="true">Overview</button>
+      <button role="tab" data-view="leads" aria-selected="false">Leads &amp; AI Intake</button>
       <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
-      <button role="tab" data-view="litify" aria-selected="false">Litify Match</button>
-      <button role="tab" data-view="summary" aria-selected="false">Summary</button>
+      <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
+      <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
+      <button role="tab" data-view="settings" aria-selected="false" hidden>Settings</button>
     </nav>
+    <p class="note" id="no-sections" hidden>Your access level doesn’t include any sections yet. Ask the portal owner.</p>
 
-    <section class="view" data-panel="intake">
+    <section class="view" data-panel="overview">
+      <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
+      <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
+    </section>
+
+    <section class="view" data-panel="leads" hidden>
       <div class="crm">
         <div>
           <div class="toolbar">
@@ -148,7 +171,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
           <div class="lead-list" id="lead-list" role="list"></div>
           <p class="fresh" id="list-count"></p>
         </div>
-        <aside class="panel detail" id="lead-detail"><div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what Phillips reported back.</p></aside>
+        <aside class="panel detail" id="lead-detail"><div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what <span data-firm="short">Phillips</span> reported back.</p></aside>
       </div>
     </section>
 
@@ -169,6 +192,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
         <div class="panel"><div class="eyebrow">REFRESH THE MATCH</div><h2 style="margin-top:8px">Your Litify report</h2>
           <p>Matched from the daily “All Marketing Apes Leads” report. To re-match against a newer export, choose the CSV below. It is read in your browser only and is not uploaded.</p>
           <div class="toolbar"><input type="file" id="lt-file" accept=".csv,text/csv" aria-label="Litify CSV"><button class="btn ghost" id="lt-save" type="button">Save matched report (CSV)</button></div>
+          <div class="toolbar" id="lt-upload" hidden><label class="eyebrow" for="lt-date">Report date</label><input type="date" id="lt-date"><button class="btn" id="lt-upload-btn" type="button">Load into Perspective</button></div>
           <p class="fresh" id="lt-fileinfo"></p>
         </div>
       </div>
@@ -179,11 +203,34 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section class="view" data-panel="summary" hidden>
       <div class="grid2">
         <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Checklist</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Check marks are saved on this device. Items marked “Phillips” need your team; “Marketing Apes” items are ours.</p></div>
+        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours.</p></div>
+      </div>
+      <div class="panel" style="margin-top:16px"><div class="eyebrow">DAILY HANDOFFS</div><h2 style="margin-top:8px">Shared tasks</h2>
+        <p class="note">Everyone with Summary access sees the same list. Checking a task records who checked it and when; it never changes a lead or its Litify outcome.</p>
+        <ul class="checklist" id="sm-tasks"></ul>
+        <form id="task-form" class="toolbar" hidden>
+          <input id="t-title" placeholder="Task" aria-label="Task" maxlength="300" required>
+          <input id="t-assignee" placeholder="Assignee (name or email)" aria-label="Assignee" maxlength="200" required>
+          <input id="t-due" type="date" aria-label="Due date" required>
+          <select id="t-campaign" aria-label="Campaign"><option value="">All campaigns</option></select>
+          <button class="btn" id="t-add" type="submit">Add task</button>
+        </form>
+        <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
       </div>
     </section>
 
-    <p class="foot">Perspective · Marketing Apes for Phillips Law Group. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
+    <section class="view" data-panel="settings" hidden>
+      <div class="panel"><div class="eyebrow">OWNER SETTINGS</div><h2 style="margin-top:8px">What each access level sees</h2>
+        <p>Everyone uses this same portal. Tick the sections each level may open. The server removes everything else before it reaches their browser. A level with nothing ticked can’t sign in.</p>
+        <p class="note">Overview shows campaign totals: leads, funnel, signed, budget, spend and cost per lead/transfer/signed. Marketing adds the channel, ad and invoice detail. Litify Outcomes adds turn-down reasons and details. “Names &amp; phone digits” adds names, the last 4 phone digits and state wherever lead or Litify rows are shown.</p>
+        <div class="tbl-wrap"><table id="set-table"></table></div>
+        <div class="toolbar" style="margin-top:12px"><button class="btn" id="set-save" type="button">Save access levels</button></div>
+        <p class="fresh" id="set-msg" role="status" aria-live="polite"></p>
+        <p class="note">People are added by Marketing Apes only after you approve them, each with one level.</p>
+      </div>
+    </section>
+
+    <p class="foot">Perspective · Marketing Apes for <span data-firm="name">Phillips Law Group</span>. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
   </div>
 </main>
 </body>
