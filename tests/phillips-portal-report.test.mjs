@@ -7,7 +7,7 @@ import vm from 'node:vm';
 
 const read = (p) => readFileSync(new URL(p, import.meta.url), 'utf8');
 const SRC = read('../lfma/assets/portal/phillips-report.js');
-const PAGE = read('../lfma/portal/phillips/index.html');
+const PAGE = read('../lfma/portal/phillips/report/index.html');
 const sample = () => JSON.parse(read('./fixtures/phillips-portal-report.sample.json'));
 const empty = () => JSON.parse(read('./fixtures/phillips-portal-report.empty.json'));
 
