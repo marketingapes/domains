@@ -32,12 +32,12 @@ WORKBOOKS = {
 CAMPAIGNS = {
     "mva": "Arizona MVA",
     "la_county": "LA County",
-    "deadleads": "Dead-lead reactivation",
+    "deadleads": "Deadleads (firm intakes)",
     "other": "Other Phillips intakes",
 }
 # Owner-confirmed plan carried in PR228's campaign-portal-config.json. Only MVA has one.
 MVA_PLAN = {"total_usd": 5000, "duration_days": 14, "allocation": {"meta_website_usd": 3000, "google_search_usd": 2000},
-            "observed_at": "2026-10-04T18:17:33Z", "source": "Owner-confirmed plan (campaign-portal-config.json)",
+            "observed_at": "2026-10-04T18:17:33Z", "source": "Owner-confirmed plan, observed 2026-10-04",
             "note": "Planned next flight. No spend for this flight appears in any source yet."}
 
 SIGNED_NOTE = "Not verified: no executed-retainer reference in any source."

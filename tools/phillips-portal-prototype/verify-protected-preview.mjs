@@ -15,7 +15,7 @@ const origin = new URL(args.url).origin;
 const { chromium } = await import(process.env.PERSPECTIVE_PLAYWRIGHT_MODULE || '/private/tmp/phillips-mva-browser-qa/node_modules/playwright-core/index.mjs');
 const browser = await chromium.launch({ executablePath: process.env.PERSPECTIVE_CHROMIUM || '/Users/kylegosselin/Library/Caches/ms-playwright/chromium-1217/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing', headless: true });
 
-const CAMPAIGNS = { mva: 'Arizona MVA', la_county: 'LA County', deadleads: 'Dead-lead reactivation' };
+const CAMPAIGNS = { mva: 'Arizona MVA', la_county: 'LA County', deadleads: 'Deadleads (firm intakes)' };
 const SECTIONS = ['overview', 'leads', 'marketing', 'next'];
 const EMAIL = /[\w.+-]+@[\w-]+\.[\w.]+/, PHONE = /\(?\b\d{3}\)?[-. ]\d{3}[-. ]\d{4}\b/;
 const fail = (m, extra) => { throw Error(m + (extra ? ' ' + JSON.stringify(extra) : '')); };
@@ -98,7 +98,11 @@ try {
           if (width === 375 && (await page.locator('.cp-leads thead').isVisible())) fail('phone layout shows table header');
         }
         if (section === 'marketing' && key !== 'deadleads') {
-          const ok = await page.locator('.cp-creative img').first().evaluate((img) => new Promise((r) => (img.complete ? r(img.naturalWidth > 0) : (img.onload = () => r(true), img.onerror = () => r(false)))));
+          // Images are lazy: bring the first into view, then wait (bounded) for it to decode.
+          const img = page.locator('.cp-creative img').first();
+          await img.scrollIntoViewIfNeeded();
+          const ok = await img.evaluate((el) => new Promise((r) => { if (el.complete) return r(el.naturalWidth > 0); el.onload = () => r(true); el.onerror = () => r(false); setTimeout(() => r(false), 10000); }));
+          await page.evaluate(() => scrollTo(0, 0));
           if (!ok) fail('creative image did not load', { key });
         }
         if (section === 'overview' && !/Coverage gaps/i.test(text)) fail('coverage gaps missing', { key });

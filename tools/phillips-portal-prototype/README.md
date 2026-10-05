@@ -35,3 +35,26 @@ The existing authorized Google Drive connector successfully read metadata and bo
 Private connector snapshots and projected receipts live in the task recovery directory outside this repository; they are not published or committed. `project-owner-snapshot.mjs --owner-snapshot --input FILE --output FILE` validates an offline owner receipt and emits only the safe projection. The optional `build-review.py --owner-projection FILE` includes verified current-state records in the **private** review walkthrough. The generic public demo remains untouched.
 
 The code is not mounted to a live server. Minimal remaining runtime dependency: the actual portal server must supply an existing authenticated server-owned readRange connector/session authorized for the private workbook, and verified recipient tenant/item scopes. This executor's authorized conversational connector read proves owner read access **now**, not that the current Render service has access or that any client recipient may see it. No token extraction, OAuth creation, sharing or service permission changes are authorized by this implementation. Real decision actions additionally need complete requests and durable atomic audit.
+
+## Client Perspective in the protected portal
+
+The existing `/portal/phillips/` page and its loader `lfma/assets/portal/phillips-report.js` now render the Client Perspective inside the token-gated **Campaign to outcome** tab: Arizona MVA by default, LA County and Deadleads (firm intakes) selectable, each with Campaign overview, Leads, Marketing and Next steps. The page holds no data. The view appears only after the report API accepts a portal token. Clear report and pagehide remove it.
+
+Data path, reusing what exists:
+
+1. Owner exports the three original workbooks (MVA `1KcJS5…`, MVA daily spend `1IL3Y6…`, LA County `1evjyp…`) as .xlsx into system temporary storage.
+2. `python3 tools/phillips-portal-prototype/project-client-perspective.py --mva … --mva-daily … --la-county … --modified '{…Drive modifiedTime…}' --output /tmp/…/perspective.json` writes the deidentified `ee.phillips_client_perspective/v1` projection (0600). It refuses paths outside temp storage or inside Git. Delete the exports afterwards.
+3. POST `{"client_perspective": …}` to legal-web-lead `/api/v1/portal/phillips/report-inputs` with the operator key. The backend refuses names, contact details, narratives and notes, then stores the projection in Redis next to the inputs snapshot.
+4. GET `/report` with the portal token returns it as `client_perspective`.
+
+Projection rules: explicit source IDs, dates, delivery evidence, categorical status and reason only. Every original row is listed with its tab and row number. Records merge only on a shared explicit ID. Two rows from one tab that would merge are held as ambiguous. Phone and name similarity are never used, so AI call logs are counted but not attached to leads. Missing spend days, blank days and sheet TOTAL mismatches are reported, never filled. A second spend source is compared, not added. Converted, Retainer Sent, the retainer column and Meta's "signed" lead status never count as Signed.
+
+Local protected preview, with no deployment:
+
+```
+node tools/phillips-portal-prototype/protected-preview.mjs --backend ../legal-web-lead/src/intake/portal-report.js \
+  --perspective /tmp/…/perspective.json --token-file /tmp/…/token
+node tools/phillips-portal-prototype/verify-protected-preview.mjs --url http://127.0.0.1:PORT/portal/phillips/ --token-file /tmp/…/token --out /tmp/…/qa
+```
+
+The preview binds 127.0.0.1, generates a random token, and serves only the portal page and portal assets. It loads the projection through the backend's real ingest validation and keeps it in memory. In the served copies only, it rewrites the API origin to itself and the Turnstile key to Cloudflare's always-pass test key. QA covers: no request before a token, rejected tokens, the token never stored, Clear, 36 campaign × section views at 1440/768/375 with no overflow and no contact-like text, lead filters and paging. Screenshots contain source IDs and stay in temp storage.
