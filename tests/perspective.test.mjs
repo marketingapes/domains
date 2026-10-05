@@ -24,3 +24,26 @@ test('page ships no lead data and loads only the token-gated feed', async () => 
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
   assert.ok(!/localStorage\.setItem\([^)]*token/i.test(js), 'token never persisted');
 });
+
+test('flat Make feed: transfers merge onto the Litify lead by phone hash; unmatched transfers become leads', () => {
+  const feed = {
+    schema: 'perspective/v1', campaigns: [{ id: 'la', label: 'LA' }],
+    leads: [
+      { lead_uid: 'PLG-1', campaign: 'la', phone_hash: 'h1', litify_intake: 'INT-1', litify_status: 'Turned Down', stage: 'received' },
+      { lead_uid: 'PLG-2', campaign: 'la', phone_hash: 'h1', litify_intake: 'INT-2', litify_status: 'Converted', stage: 'received' },
+    ],
+    transfers: [
+      { lead_uid: 'MA-1', campaign: 'la', phone_hash: 'h1', transfer_outcome: 'Live transfer connected - desk', transfer_at: '2026-09-20T12:00:00Z', ai_tracked: true, ours: true },
+      { lead_uid: 'MA-2', campaign: 'la', phone_hash: 'h9', transfer_outcome: 'Consented - transfer failed', transfer_at: '2026-09-21T12:00:00Z' },
+    ],
+  };
+  const f = P.normalizeFeed(feed);
+  assert.equal(f.litify.length, 2, 'every Litify row kept');
+  assert.equal(f.leads.length, 2, 'one CRM row per person');
+  const p = f.leads.find((l) => l.phone_hash === 'h1');
+  assert.equal(p.litify.status, 'Converted', 'best Litify status wins');
+  assert.equal(p.stage, 'transferred');
+  assert.equal(f.litify.find((r) => r.intake === 'INT-1').match_lead_uid, p.lead_uid);
+  const lone = f.leads.find((l) => l.phone_hash === 'h9');
+  assert.equal(lone.stage, 'intake_completed');
+});
