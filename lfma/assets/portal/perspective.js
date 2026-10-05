@@ -16,11 +16,9 @@
   'use strict';
 
   var HUB = 'https://affiliate-hub-tbks.onrender.com';
-  // Phillips' pre-hub feed, used only if the live hub is unreachable.
-  var FALLBACK = { plg: 'https://legal-web-lead.onrender.com/api/v1/portal/phillips/leads' };
   var REFRESH_MS = 60000;
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'intake', lead: null, litify: null, litifyLabel: '', token: null, timer: null };
+  var state = { feed: null, campaign: null, view: 'intake', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null };
   function clientId() {
     var b = root.document && root.document.body, c = b && b.getAttribute('data-client');
     if (c) return c;
@@ -55,6 +53,26 @@
     return '<span class="tag ' + cls + '">' + esc(status) + '</span>';
   }
 
+  // ---------- source freshness ----------
+  var SRC_TAG = { ok: ['Current', 'ok'], stale: ['Stale', 'warn'], unavailable: ['No data', 'bad'], not_connected: ['Not connected', 'mute'] };
+  function sourcesHTML(feed) {
+    var rows = (feed.sources || []).map(function (s) {
+      var t = SRC_TAG[s.status] || [s.status || 'Unknown', 'mute'];
+      return '<li><span class="tag ' + t[1] + '">' + esc(t[0]) + '</span> <b>' + esc(s.label) + '</b>' +
+        (s.as_of ? ' · as of ' + asOf(s.as_of) : '') + (s.note ? ' · ' + esc(s.note) : '') + (s.detail ? ' <small>(' + esc(s.detail) + ')</small>' : '') + '</li>';
+    }).join('');
+    var notes = (feed.notes || []).map(function (n) { return '<p>' + esc(n) + '</p>'; }).join('');
+    return '<div class="sources"><div><b>Last updated ' + when(feed.generated_at) + '</b>' +
+      (state.failedAt ? ' · <span class="tag bad">Refresh failed at ' + when(state.failedAt) + '; showing the last good data</span>' : '') +
+      '</div><ul>' + rows + '</ul>' + notes + '</div>';
+  }
+  function noName() { var a = state.feed && state.feed.access; return a && a.contact === false ? 'Contact details hidden' : 'Name not captured'; }
+  function asOf(v) { return /^\d{4}-\d{2}-\d{2}$/.test(v || '') ? day(v + 'T12:00:00') : when(v); }
+  function feedHealth(feed) {
+    var bad = (feed.sources || []).filter(function (s) { return s.status !== 'ok'; }).length;
+    return bad ? ['Updated ' + when(feed.generated_at) + ' · ' + bad + ' source' + (bad > 1 ? 's' : '') + ' not current', 'warn'] : ['Updated ' + when(feed.generated_at), 'ok'];
+  }
+
   // ---------- data selection ----------
   function campaignsAll() { return (state.feed && state.feed.campaigns) || []; }
   function current() {
@@ -62,7 +80,7 @@
     if (id === 'all') {
       var cs = campaignsAll();
       return { id: 'all', label: 'All campaigns', name: 'All ' + firm() + ' campaigns', state: cs.length + ' campaigns',
-        summary: 'Every lead Marketing Apes has sent ' + firm() + ' since the campaigns started, in one place.',
+        summary: 'Every lead in the connected sources for ' + firm() + '\u2019s campaigns. Check the source dates below for what is current.',
         budget: { amount: sum(cs.map(function (c) { return c.budget && c.budget.amount; })) },
         spend: { amount: sum(cs.map(function (c) { return c.spend && c.spend.amount; })) },
         channels: [].concat.apply([], cs.map(function (c) { return c.channels || []; })),
@@ -132,8 +150,7 @@
     var steps = [['Leads', m.leads, ''], ['AI reached', m.reached, pct(m.reached, m.leads)], ['Intake done', m.intake, pct(m.intake, m.reached)],
       ['Transferred', m.transfers, pct(m.transfers, m.intake)], ['In Litify', m.inLitify, pct(m.inLitify, m.leads)], ['Signed', m.signed, pct(m.signed, m.inLitify)]];
     $('funnel').innerHTML = steps.map(function (s) { return '<div class="f-step"><b>' + fmtInt(s[1]) + '</b><span>' + esc(s[0]) + '</span>' + (s[2] ? '<i>' + s[2] + ' →</i>' : '') + '</div>'; }).join('');
-    var src = (state.feed.sources || []).map(function (s) { return esc(s.label) + ' ' + day(s.as_of); }).join(' · ');
-    $('freshness').innerHTML = 'Updated ' + when(state.feed.generated_at) + (src ? ' · Sources: ' + src : '') + (state.litifyLabel ? ' · Litify: ' + esc(state.litifyLabel) : '');
+    $('freshness').innerHTML = sourcesHTML(state.feed) + (state.litifyLabel ? '<div>Comparing against: ' + esc(state.litifyLabel) + '</div>' : '');
   }
 
   // ---------- AI intake (CRM) ----------
@@ -154,7 +171,7 @@
       return [l.name, l.phone_last4, l.lead_uid, l.litify && l.litify.intake].join(' ').toLowerCase().indexOf(q) >= 0;
     }).sort(function (a, b) { return String(b.received_at || '').localeCompare(String(a.received_at || '')); });
     $('lead-list').innerHTML = rows.length ? rows.map(function (l) {
-      return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || 'Name not captured') + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
+      return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || noName()) + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
         '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + litifyTag(l.litify && l.litify.status) + '</span></button>';
     }).join('') : '<p style="padding:16px">No leads match these filters.</p>';
     $('list-count').textContent = rows.length + ' of ' + leads.length + ' leads';
@@ -165,7 +182,7 @@
     if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what ' + esc(firm()) + ' reported back.</p>'; return; }
     var ev = (l.ai_events || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
     var lit = l.litify || {};
-    box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || 'Name not captured') + '</h2>' + stageTag(l.stage) + ' ' + litifyTag(lit.status) +
+    box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || noName()) + '</h2>' + stageTag(l.stage) + ' ' + litifyTag(lit.status) +
       '<dl class="kv"><dt>Lead ID</dt><dd>' + esc(l.lead_uid) + '</dd><dt>Received</dt><dd>' + when(l.received_at) + '</dd><dt>Phone</dt><dd>' + (l.phone_last4 ? '…' + esc(l.phone_last4) : NA) + '</dd><dt>State</dt><dd>' + esc(l.state || NA) + '</dd>' +
       '<dt>Claim</dt><dd>' + esc(l.case_type || l.claim || NA) + '</dd><dt>Source</dt><dd>' + esc([l.channel, l.source].filter(Boolean).join(' · ') || NA) + '</dd>' +
       (l.ad ? '<dt>Ad</dt><dd>' + esc(l.ad) + '</dd>' : '') +
@@ -256,7 +273,8 @@
   function loadLitifyFile(file) {
     var reader = new root.FileReader();
     reader.onload = function () {
-      var raw = parseCSV(String(reader.result || ''));
+      state.litifyText = String(reader.result || '');
+      var raw = parseCSV(state.litifyText);
       if (!raw.length || !('Intake: Intake Name' in raw[0])) { $('lt-fileinfo').textContent = 'That file does not look like the “All Marketing Apes Leads” export.'; return; }
       var byHash = Object.create(null);
       leadsFor('all').forEach(function (l) { if (l.phone_hash) byHash[l.phone_hash] = l.lead_uid; });
@@ -267,11 +285,24 @@
             status: r['Status'], reason: r['Turn Down Reason'], details: r['Turn Down Details'], campaign: campaignForLitify(r), match_lead_uid: (hashes[i] && byHash[hashes[i]]) || null };
         });
         state.litifyLabel = file.name + ' (loaded in this browser)';
-        $('lt-fileinfo').textContent = raw.length + ' rows read from ' + file.name + '. Nothing was uploaded.';
+        $('lt-fileinfo').textContent = raw.length + ' rows read from ' + file.name + '. Nothing was uploaded' +
+          (state.feed && state.feed.access && state.feed.access.can_upload_litify ? ' (use “Load into Perspective” to make it everyone\u2019s data).' : '.');
         renderAll();
       });
     };
     reader.readAsText(file);
+  }
+  function uploadLitify() {
+    var d = ($('lt-date').value || '').trim();
+    if (!state.litifyText) { $('lt-fileinfo').textContent = 'Choose the Litify CSV first.'; return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { $('lt-fileinfo').textContent = 'Enter the report date (the date in the Litify email subject).'; return; }
+    busy('lt-upload-btn', true);
+    root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify({ csv: state.litifyText, report_date: d }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); })
+      .then(function (j) { $('lt-fileinfo').textContent = j.loaded + ' Litify rows for ' + j.report_date + ' loaded into Perspective. Refreshing…'; state.litify = null; state.litifyLabel = ''; refresh(); })
+      .catch(function (e) { $('lt-fileinfo').textContent = e.message; })
+      .then(function () { busy('lt-upload-btn', false); });
   }
   function saveLitify() {
     var rows = litifyFor(state.campaign), cols = ['created', 'intake', 'name', 'phone_last4', 'case_type', 'source', 'status', 'reason', 'details', 'campaign', 'match_lead_uid'];
@@ -316,7 +347,7 @@
     renderAll();
   }
   function lock() {
-    state.feed = null; state.litify = null; state.litifyLabel = ''; state.lead = null; state.token = null;
+    state.feed = null; state.litify = null; state.litifyLabel = ''; state.litifyText = ''; state.lead = null; state.token = null; state.failedAt = null;
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
@@ -374,7 +405,8 @@
     state.feed = feed;
     state.campaign = state.campaign || (feed.campaigns[0] && feed.campaigns[0].id) || 'all';
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
-    $('feed-pill').textContent = 'Live · ' + feed.leads.length + ' leads'; $('feed-pill').className = 'pill ok';
+    var h = feedHealth(feed); $('feed-pill').textContent = h[0]; $('feed-pill').className = 'pill ' + h[1];
+    var up = $('lt-upload'); if (up) up.hidden = !(feed.access && feed.access.can_upload_litify);
     if (firmName()) {
       root.document.title = 'Perspective · ' + firmName();
       root.document.querySelectorAll('[data-firm]').forEach(function (el) { el.textContent = el.getAttribute('data-firm') === 'short' ? firm() : firmName(); });
@@ -395,11 +427,7 @@
         return r.json();
       });
     };
-    var c = clientId();
-    return get(HUB + '/portal/' + encodeURIComponent(c) + '/feed').catch(function (e) {
-      if (e.final || !FALLBACK[c]) throw e;
-      return get(FALLBACK[c]);
-    });
+    return get(HUB + '/portal/' + encodeURIComponent(clientId()) + '/feed');
   }
   function post(path, body) {
     return root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -435,10 +463,12 @@
     if (!state.token || root.document.hidden) return;
     fetchFeed(state.token).then(function (feed) {
       var view = state.view, lead = state.lead;
-      open(feed); state.lead = lead; setView(view);
+      state.failedAt = null; open(feed); state.lead = lead; setView(view);
     }).catch(function (e) {
       if (e && e.final) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; return; }
-      $('feed-pill').textContent = 'Reconnecting…'; $('feed-pill').className = 'pill warn';
+      state.failedAt = new Date().toISOString();
+      $('feed-pill').textContent = 'Not refreshed since ' + when(state.feed && state.feed.generated_at); $('feed-pill').className = 'pill bad';
+      $('freshness').innerHTML = sourcesHTML(state.feed);
     });
   }
   function unlock() {
@@ -469,11 +499,12 @@
     ['lq', 'l-status', 'l-match'].forEach(function (id) { $(id).addEventListener('input', renderLitify); });
     $('lt-file').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) loadLitifyFile(f); });
     $('lt-save').addEventListener('click', saveLitify);
+    if ($('lt-upload-btn')) $('lt-upload-btn').addEventListener('click', uploadLitify);
     $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('intake'); } });
     $('sm-checklist').addEventListener('change', function (e) { var k = e.target.getAttribute('data-key'); if (k) setCheck(k, e.target.checked); });
   }
 
-  var api = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state };
+  var api = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh };
   root.Perspective = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {

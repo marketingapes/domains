@@ -53,8 +53,10 @@ test('portal is per-firm: the page names its client and the feed comes live from
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   assert.match(html, /<body data-client="plg">/);
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
-  assert.ok(js.includes("HUB + '/portal/' + encodeURIComponent(c) + '/feed'"));
+  assert.ok(js.includes("HUB + '/portal/' + encodeURIComponent(clientId()) + '/feed'"));
   assert.ok(!/['"]Transferred to Phillips/.test(js), 'no firm name hard-coded in stage labels');
+  assert.ok(!/legal-web-lead|FALLBACK/.test(js), 'no silent fallback to another feed');
+  assert.ok(!/(localStorage|sessionStorage)\.setItem\([^)]*(token|session)/i.test(js), 'session never persisted');
 });
 
 test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attribution, our-only leads stay', () => {

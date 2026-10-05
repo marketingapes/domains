@@ -58,6 +58,7 @@ p{line-height:1.6;color:var(--muted);font-size:14px}
 .f-step span{font-size:11px;color:var(--muted)}
 .f-step i{display:block;font-style:normal;font-size:11px;color:var(--accent);font-weight:700;margin-top:4px}
 .fresh{font-size:11px;color:var(--muted);margin:8px 0 0}
+.sources ul{list-style:none;margin:6px 0;padding:0;display:grid;gap:4px}.sources p{margin:4px 0}
 .linkbtn{border:0;background:none;color:var(--muted);text-decoration:underline;padding:10px 0 0 12px;font-size:14px;cursor:pointer}
 .token-alt{margin-top:18px;font-size:14px;color:var(--muted)}
 .token-alt summary{cursor:pointer}
@@ -107,7 +108,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261005e" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006a" defer></script>
 </head>
 <body data-client="plg">
 <main class="main">
@@ -144,7 +145,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p></div><span class="pill" id="c-state"></span></div>
     <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
     <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
-    <p class="fresh" id="freshness"></p>
+    <div class="fresh" id="freshness"></div>
 
     <nav class="section-tabs" role="tablist" aria-label="Sections">
       <button role="tab" data-view="intake" aria-selected="true">AI Intake</button>
@@ -185,6 +186,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
         <div class="panel"><div class="eyebrow">REFRESH THE MATCH</div><h2 style="margin-top:8px">Your Litify report</h2>
           <p>Matched from the daily “All Marketing Apes Leads” report. To re-match against a newer export, choose the CSV below. It is read in your browser only and is not uploaded.</p>
           <div class="toolbar"><input type="file" id="lt-file" accept=".csv,text/csv" aria-label="Litify CSV"><button class="btn ghost" id="lt-save" type="button">Save matched report (CSV)</button></div>
+          <div class="toolbar" id="lt-upload" hidden><label class="eyebrow" for="lt-date">Report date</label><input type="date" id="lt-date"><button class="btn" id="lt-upload-btn" type="button">Load into Perspective</button></div>
           <p class="fresh" id="lt-fileinfo"></p>
         </div>
       </div>
