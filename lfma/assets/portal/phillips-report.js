@@ -13,6 +13,9 @@
  * - Program view: MVA is the default when the registry labels any campaign MVA. LA, every other
  *   program, campaigns with no program on record, and "All campaigns" stay one click away. A
  *   missing label is shown as "Program not on record" — never guessed.
+ * - Leads in this view: per campaign, the lead count, its source, reporting period and last
+ *   refresh. A missing field reads "Not available". "All leads loaded" is claimed only when the
+ *   report marks its cohort complete, no lead record was unreadable and every lead source is fresh.
  */
 (function (root) {
   'use strict';
@@ -44,11 +47,13 @@
     });
   }
   function num(value) { return typeof value === 'number' && isFinite(value) ? value : null; }
+  var NA = 'Not available';
   function when(iso) {
-    if (!iso) return '—';
+    if (!iso) return NA;
     var d = new Date(iso);
-    return isNaN(d.getTime()) ? '—' : d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+    return isNaN(d.getTime()) ? NA : d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
   }
+  function orNA(value) { return value == null || value === '' ? NA : value; }
 
   var PROGRAM_ALL = '__all__';
   var PROGRAM_NONE = '__none__';
@@ -133,7 +138,7 @@
       return '<tr><td><b>' + esc(s.label) + '</b><span class="sub">feeds: ' + esc((s.feeds || []).join(', ').replace(/_/g, ' ')) + '</span></td>' +
         '<td><span class="pill ' + st[1] + '">' + st[0] + '</span></td>' +
         '<td>' + esc(when(s.last_success_at)) + '<span class="sub">' + (num(s.age_hours) === null ? 'never' : esc(s.age_hours) + 'h ago · allowed ' + esc(s.max_age_hours) + 'h') + esc(auth) + '</span></td>' +
-        '<td>' + esc(s.owner || 'Unknown') + '</td></tr>';
+        '<td>' + esc(orNA(s.owner)) + '</td></tr>';
     }).join('');
     return '<div class="sec"><h3>Source freshness (all campaigns)</h3><p class="intro">Where each number comes from and when that source last delivered. A stage is only as current as its source.</p>' +
       '<div style="overflow-x:auto"><table><tr><th>Source</th><th>Status</th><th>Last delivery</th><th>Owner</th></tr>' + rows + '</table></div></div>';
@@ -160,17 +165,17 @@
     var cfg = r.configured || {};
     return '<div class="oc-row"><div class="oc-head"><b>' + esc(id.brand_account) + ' · ' + esc(String(id.campaign_type || '').replace(/_/g, ' ')) + '</b>' +
       '<span class="pill warn">Configured: ' + esc(cfg.state || 'unknown') + '</span></div>' +
-      '<p class="oc-meta">' + identityLine(id) + '<br>Lands on: ' + esc(landing.domain || 'in-platform form') + ' · intake: ' + esc(landing.intake_tenant || 'Unknown') +
-      ' · reports to: ' + convText + '<br>Budget on record: ' + (num(cfg.daily_budget_usd) === null ? 'Unknown' : '$' + esc(cfg.daily_budget_usd) + '/day') + ' (as of ' + esc(cfg.as_of) + ') · Attribution window: ' + windowText(r.attribution_window) + '</p>' +
+      '<p class="oc-meta">' + identityLine(id) + '<br>Lands on: ' + esc(landing.domain || 'in-platform form') + ' · intake: ' + esc(orNA(landing.intake_tenant)) +
+      ' · reports to: ' + convText + '<br>Budget on record: ' + (num(cfg.daily_budget_usd) === null ? NA : '$' + esc(cfg.daily_budget_usd) + '/day') + ' (as of ' + esc(orNA(cfg.as_of)) + ') · Attribution window: ' + windowText(r.attribution_window) + '</p>' +
       '<div style="overflow-x:auto"><table class="oc-table"><tr><th>Spend</th><th>Platform-reported</th>' + STAGES.map(function (s) { return '<th>' + s[1] + '</th>'; }).join('') + '</tr>' +
-      '<tr><td><b>' + esc(money(r.spend)) + '</b><span class="sub">Period: ' + esc(r.spend && r.spend.period || 'not supplied') + '<br>As of: ' + esc(when(r.spend && r.spend.as_of)) + '</span></td><td><b>' + esc(prText) + '</b><span class="sub">platform count, this row’s window<br>As of: ' + esc(when(pr.as_of)) + '</span></td>' + cells + '</tr></table></div></div>';
+      '<tr><td><b>' + esc(money(r.spend)) + '</b><span class="sub">Period: ' + esc(orNA(r.spend && r.spend.period)) + '<br>As of: ' + esc(when(r.spend && r.spend.as_of)) + '</span></td><td><b>' + esc(prText) + '</b><span class="sub">platform count, this row’s window<br>As of: ' + esc(when(pr.as_of)) + '</span></td>' + cells + '</tr></table></div></div>';
   }
 
   function renderUnmatched(unmatched) {
     var u = unmatched || { count: 0, rows: [] };
     if (!u.count) return '<div class="sec"><h3>Unmatched firm records</h3><p class="intro">No unmatched records are stored. This does not prove the firm feed is connected or complete.</p></div>';
     var rows = (u.rows || []).map(function (x) {
-      return '<tr><td>' + esc(x.report_date || '—') + '</td><td>' + esc(String(x.status || 'unknown').replace(/_/g,' ')) + '<span class="sub">reads as: ' + esc(String(x.status || '').replace(/_/g, ' ')) + ' — not counted</span></td>' +
+      return '<tr><td>' + esc(orNA(x.report_date)) + '</td><td>' + esc(String(x.status || 'unknown').replace(/_/g,' ')) + '<span class="sub">reads as: ' + esc(String(x.status || '').replace(/_/g, ' ')) + ' — not counted</span></td>' +
         '<td>' + esc(String(x.reason || '').replace(/_/g, ' ')) + '</td><td>' + esc(x.source === 'form_status' ? 'Form status' : 'Daily report') + '</td></tr>';
     }).join('');
     return '<div class="sec"><h3>Unmatched firm records</h3><p class="intro">' + esc(u.count) + ' firm record(s) could not be tied to one lead. They are not counted anywhere above until reconciled.</p>' +
@@ -192,6 +197,66 @@
     return '<div class="sec"><h3>Operational unknowns</h3><div class="gapnote">' + body + '</div></div>';
   }
 
+  function rowName(r) {
+    var id = r.identity || {};
+    return orNA(id.brand_account) + ' · ' + orNA(String(id.campaign_type || '').replace(/_/g, ' ') || null);
+  }
+  /** Sources feeding a row's submission count, resolved to the report's source list. */
+  function leadSources(r, report) {
+    var byId = Object.create(null);
+    (report.sources || []).forEach(function (s) { if (s && typeof s.id === 'string') byId[s.id] = s; });
+    var cell = (r.stages || {}).submission || {};
+    return (Array.isArray(cell.sources) ? cell.sources : []).map(function (x) {
+      return x && typeof x.id === 'string' && byId[x.id] ? byId[x.id] : { id: x && x.id, label: x && x.id, status: 'unknown' };
+    });
+  }
+  function leadCount(r) {
+    var v = cellView((r.stages || {}).submission);
+    return v.cls === 'ok' || v.cls === 'pend' && /^\d+$/.test(v.text) ? Number(v.text) : null;
+  }
+  /** Why "all leads loaded" cannot be claimed for these rows. Empty array = coverage verified. */
+  function coverageGaps(report, shown) {
+    var gaps = [];
+    if (!report.cohort || report.cohort.complete !== true) gaps.push('the report has not reconciled its lead cohort as complete');
+    var unreadable = report.operations ? report.operations.unreadable_lead_records : null;
+    if (num(unreadable) === null) gaps.push('unreadable lead records: ' + NA);
+    else if (unreadable > 0) gaps.push(unreadable + ' lead record(s) could not be read');
+    var stale = 0; var none = 0;
+    shown.forEach(function (r) {
+      var src = leadSources(r, report);
+      if (!src.length) none++;
+      else if (src.some(function (s) { return s.status !== 'fresh'; })) stale++;
+    });
+    if (none) gaps.push(campaigns(none) + ' with no lead source on record');
+    if (stale) gaps.push(campaigns(stale) + ' with a lead source that is not fresh');
+    if (!shown.length) gaps.push('no campaigns in this view');
+    return gaps;
+  }
+  function renderLeadSummary(report, shown) {
+    var cohort = report.cohort || {};
+    var period = cohort.kind === 'all_retained_indexed_leads' ? 'All retained leads to date (not a daily total)' : orNA(cohort.kind && String(cohort.kind).replace(/_/g, ' '));
+    var reported = 0; var withCount = 0;
+    var rows = shown.map(function (r) {
+      var n = leadCount(r);
+      if (n !== null) { reported += n; withCount++; }
+      var src = leadSources(r, report);
+      var latest = null;
+      src.forEach(function (s) { var t = s.last_success_at ? new Date(s.last_success_at).getTime() : NaN; if (!isNaN(t) && (latest === null || t > latest)) latest = t; });
+      var srcText = src.length ? src.map(function (s) { return esc(orNA(s.label)) + ' — ' + (SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown)[0]; }).join('; ') : NA;
+      return '<tr><td><b>' + esc(rowName(r)) + '</b></td><td><b>' + (n === null ? NA : esc(n)) + '</b></td><td>' + srcText + '</td><td>' + esc(period) + '</td><td>' +
+        esc(latest === null ? NA : when(new Date(latest).toISOString())) + '</td></tr>';
+    }).join('');
+    var total = withCount === 0 ? NA + ' — no campaign in this view has a reported lead count'
+      : reported + ' from ' + withCount + ' of ' + campaigns(shown.length) + (withCount < shown.length ? '; ' + NA + ' for the other ' + campaigns(shown.length - withCount) : '');
+    var gaps = coverageGaps(report, shown);
+    var coverage = gaps.length
+      ? '<span class="pill warn">Coverage not verified</span> These are the leads available in the report, not confirmed to be all leads: ' + esc(gaps.join('; ')) + '.'
+      : '<span class="pill">All leads loaded</span> The report marks its lead cohort complete, no record was unreadable and every lead source is fresh.';
+    return '<div class="oc-leads"><h4>Leads in this view</h4><p class="intro">Leads reported: <b>' + esc(total) + '</b>. Report refreshed ' + esc(when(report.generated_at)) + '.</p>' +
+      '<div class="gapnote" role="note">' + coverage + '</div>' +
+      (shown.length ? '<div style="overflow-x:auto"><table><tr><th>Campaign</th><th>Leads</th><th>Lead source</th><th>Reporting period</th><th>Last refreshed</th></tr>' + rows + '</table></div>' : '') + '</div>';
+  }
+
   function isValidReport(report) {
     return !!report && report.schema === 'ee.phillips_portal_report/v1' && Array.isArray(report.rows) && !report.rows.some(function(r){return !r || !r.identity || !r.stages;});
   }
@@ -205,11 +270,12 @@
     var comp = report.comparability || {};
     var program = resolveProgram(report.rows, opts && opts.program);
     var shown = rowsFor(report.rows, program);
-    return '<p class="intro">Generated ' + esc(when(report.generated_at)) + ' · campaign configuration as of ' + esc(report.registry_as_of) + '. “Unknown” means no source has reported — it is not zero.</p>' +
+    return '<p class="intro">Generated ' + esc(when(report.generated_at)) + ' · campaign configuration as of ' + esc(orNA(report.registry_as_of)) + '. “Unknown” means no source has reported — it is not zero.</p>' +
       '<p class="oc-cohort">' + esc(report.cohort && report.cohort.note || 'Stage counts cover retained indexed leads only. Delivery completeness has not been reconciled.') + '</p>' +
       renderSources(report.sources) +
       '<div class="sec"><h3>Campaign to outcome</h3>' +
       renderProgramBar(report.rows, program) +
+      renderLeadSummary(report, shown) +
       '<div class="gapnote">' + esc(comp.note || '') + '</div>' +
       (shown.length ? shown.map(renderRow).join('') : '<div class="gapnote">No campaigns in this view.</div>') + '</div>' +
       '<div class="sec"><h3>Kept out of the numbers above (all campaigns)</h3><p class="body">Test records: ' + esc(num(ex.test) === null ? 'Unknown' : ex.test) +
@@ -345,7 +411,7 @@
     return true;
   }
 
-  var api = { render: render, cellView: cellView, load: load, mount: mount, setProgram: setProgram, STAGES: STAGES };
+  var api = { render: render, cellView: cellView, coverageGaps: coverageGaps, load: load, mount: mount, setProgram: setProgram, STAGES: STAGES };
   root.PhillipsReport = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root.document && typeof root.document.addEventListener === 'function') {

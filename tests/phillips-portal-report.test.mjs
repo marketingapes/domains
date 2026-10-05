@@ -25,7 +25,8 @@ test('empty system: every figure reads Unknown, never 0 or $0', () => {
   assert.equal((html.match(/class="oc-unk"/g) || []).length, 4 * 8, 'all 32 stage cells are unknown');
   assert.equal((html.match(/<td><b>Unknown<\/b><span class="sub">Period:/g) || []).length, 4, 'spend unknown on all four rows');
   assert.doesNotMatch(html, /<b>0<\/b>|\$0\.00/);
-  assert.equal((t.match(/Not connected/g) || []).length, 8, 'all eight sources not connected');
+  const freshness = t.slice(t.indexOf('Source freshness'), t.indexOf('Campaign to outcome'));
+  assert.equal((freshness.match(/Not connected/g) || []).length, 8, 'all eight sources not connected');
   assert.match(t, /Website callback worker: no worker has identified itself/);
   assert.match(t, /“Unknown” means no source has reported — it is not zero/);
 });
@@ -80,7 +81,7 @@ test('source freshness shows stale and failed sign-in distinctly from fresh and 
   const t = text(R.render(sample()));
   assert.match(t, /Google Ads — NIL account feeds: spend, platform reported Unknown .* sign-in failed/);
   assert.match(t, /Website form intake \(legal-web-lead\) feeds: submission, queued callback Fresh/);
-  assert.match(t, /Phillips form-status pushback .* Not connected — never/);
+  assert.match(t, /Phillips form-status pushback .* Not connected Not available never/);
 });
 
 test('unmatched firm records expose only redacted status and reason', () => {
@@ -387,7 +388,7 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
 
 // ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
 test('N1: the page loads the current script version', () => {
-  assert.match(PAGE, /phillips-report\.js\?v=20261005b"/);
+  assert.match(PAGE, /phillips-report\.js\?v=20261005c"/);
 });
 test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
   const dom = fakeDom();
@@ -425,4 +426,60 @@ test('R1: a malformed report keeps the "could not be read" copy, announces nothi
     assert.equal(dom.byId.get('outcome-view').textContent, '');
     assert.equal(R.setProgram('MVA', { document: dom.document }), false);
   }
+});
+
+// ---- Leads in this view (2026-10-05 scheduled run): count, source, period, refresh, coverage ----
+const leadsBlock = (html) => { const t = text(html); return t.slice(t.indexOf('Leads in this view'), t.indexOf('Rows use different')); };
+
+test('L1: each campaign shows its lead count, lead source, reporting period and last refresh', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /Campaign Leads Lead source Reporting period Last refreshed/);
+  assert.match(t, /NIL · search 8 Website form intake \(legal-web-lead\) — Fresh All retained leads to date \(not a daily total\) 2026-10-02 17:30 UTC/);
+  assert.match(t, /Report refreshed 2026-10-02 18:00 UTC/);
+});
+
+test('L2: a missing count, source time or period reads "Not available", never 0', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /BTL · native lead form Not available Native lead-form intake \(Make\) — Not connected All retained leads to date \(not a daily total\) Not available/);
+  assert.match(t, /Leads reported: 8 from 1 of 4 campaigns; Not available for the other 3 campaigns/);
+  const e = leadsBlock(R.render(empty()));
+  assert.match(e, /Leads reported: Not available — no campaign in this view has a reported lead count/);
+  assert.doesNotMatch(e, /Leads reported: 0|<b>0<\/b>/);
+  const noCohort = sample(); delete noCohort.cohort;
+  assert.match(leadsBlock(R.render(noCohort)), /NIL · search 8 .* Not available 2026-10-02 17:30 UTC/);
+});
+
+test('L3: "All leads loaded" is never claimed while the cohort is incomplete', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /Coverage not verified These are the leads available in the report, not confirmed to be all leads: the report has not reconciled its lead cohort as complete; 1 campaign with a lead source that is not fresh\./);
+  assert.doesNotMatch(t, /All leads loaded/);
+});
+
+test('L4: "All leads loaded" needs a complete cohort, zero unreadable records and fresh lead sources', () => {
+  const nil = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); return r; };
+  const ok = nil(); ok.cohort.complete = true;
+  assert.match(leadsBlock(R.render(ok)), /All leads loaded/);
+  assert.equal(R.coverageGaps(ok, ok.rows).length, 0);
+  const unread = nil(); unread.cohort.complete = true; unread.operations.unreadable_lead_records = 2;
+  assert.match(leadsBlock(R.render(unread)), /Coverage not verified .* 2 lead record\(s\) could not be read/);
+  const noOps = nil(); noOps.cohort.complete = true; delete noOps.operations;
+  assert.match(leadsBlock(R.render(noOps)), /unreadable lead records: Not available/);
+  const stale = nil(); stale.cohort.complete = true; stale.sources.find((s) => s.id === 'website_intake').status = 'stale';
+  assert.match(leadsBlock(R.render(stale)), /Coverage not verified .* 1 campaign with a lead source that is not fresh/);
+  const truthy = nil(); truthy.cohort.complete = 'true';
+  assert.doesNotMatch(leadsBlock(R.render(truthy)), /All leads loaded/, 'only boolean true counts');
+});
+
+test('L5: the lead summary follows the program view and stays escaped', () => {
+  const r = sample();
+  r.rows[3].identity.program = 'MVA'; r.rows[1].identity.program = 'LA';
+  r.sources.find((s) => s.id === 'website_intake').label = '<img src=x onerror=alert(1)>';
+  const html = R.render(r);
+  const t = leadsBlock(html);
+  assert.match(t, /Leads reported: 8 from 1 of 1 campaign \./);
+  assert.doesNotMatch(t, /native lead form/);
+  assert.doesNotMatch(html, /<img src=x/);
+  const la = leadsBlock(R.render(r, { program: 'LA' }));
+  assert.match(la, /Leads reported: Not available/);
+  assert.match(la, /BTL · website conversion/);
 });
