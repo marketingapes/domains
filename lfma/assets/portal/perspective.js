@@ -61,7 +61,7 @@
   };
   function stageTag(s) { var d = STAGES[s] || [s || 'Unknown', 'mute']; return '<span class="tag ' + d[1] + '">' + esc(d[0]) + '</span>'; }
   function litifyTag(status) {
-    if (!status) return '<span class="tag mute">Not in Litify</span>';
+    if (!status) return '<span class="tag mute">No confirmed Litify match</span>';
     var cls = status === 'Converted' ? 'ok' : status === 'Turned Down' ? 'bad' : 'warn';
     return '<span class="tag ' + cls + '">' + esc(status) + '</span>';
   }
@@ -173,11 +173,11 @@
     var leads = leadsFor(state.campaign);
     fillSelect($('f-stage'), sortedEntries(countBy(leads, function (l) { return l.stage; })).map(function (e) { return [e[0], ((STAGES[e[0]] || [e[0]])[0]) + ' (' + e[1] + ')']; }), 'All stages');
     $('f-litify').hidden = !can('litify');
-    fillSelect($('f-litify'), sortedEntries(countBy(leads, function (l) { return (l.litify && l.litify.status) || 'Not in Litify'; })).map(function (e) { return [e[0], e[0] + ' (' + e[1] + ')']; }), 'All Litify statuses');
+    fillSelect($('f-litify'), sortedEntries(countBy(leads, function (l) { return (l.litify && l.litify.status) || 'No confirmed Litify match'; })).map(function (e) { return [e[0], e[0] + ' (' + e[1] + ')']; }), 'All Litify statuses');
     var q = ($('q').value || '').toLowerCase().trim(), fs = $('f-stage').value, fl = $('f-litify').value;
     var rows = leads.filter(function (l) {
       if (fs && l.stage !== fs) return false;
-      if (fl && ((l.litify && l.litify.status) || 'Not in Litify') !== fl) return false;
+      if (fl && ((l.litify && l.litify.status) || 'No confirmed Litify match') !== fl) return false;
       if (!q) return true;
       return [l.name, l.phone_last4, l.lead_uid, l.litify && l.litify.intake].join(' ').toLowerCase().indexOf(q) >= 0;
     }).sort(function (a, b) { return String(b.received_at || '').localeCompare(String(a.received_at || '')); });
