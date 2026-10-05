@@ -16,6 +16,9 @@
     // TODO(launch gate): web intake endpoint (Make webhook → BigQuery row → Sofia outbound → Phillips transfer).
     // Empty = fail closed: nothing is sent and the visitor is told plainly. Must return {status:'received', receipt_id}.
     endpoint: '',
+    // Safe staging only: the Render relay keeps the Make webhook secret, accepts synthetic tests only,
+    // and cannot trigger calls, texts, email, buyer delivery or ad events.
+    synthetic_endpoint: 'https://btl-plg-az-mva-intake-stage-20261005.onrender.com/intake',
     // Phillips PI/MVA intake DID (legal-web-lead/config/phillips-lane/routes.json, confirmed 2026-09-07).
     firm_phone: { e164: '+16022003976', display: '(602) 200-3976' },
     // TODO(launch gate): a Phillips-branded Sofia assistant bound to its own number (identity rule: no borrowing NIL/BTL lines).
@@ -29,6 +32,7 @@
   var params = new URLSearchParams(location.search);
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   var SYNTHETIC = params.get('ee_test') === 'synthetic' && (isLocal || /\.onrender\.com$/.test(location.hostname));
+  if (SYNTHETIC && /\.onrender\.com$/.test(location.hostname)) CONFIG.endpoint = CONFIG.synthetic_endpoint;
   if (SYNTHETIC && isLocal && params.get('ee_endpoint')) CONFIG.endpoint = params.get('ee_endpoint');
 
   var form = document.getElementById('leadForm');
