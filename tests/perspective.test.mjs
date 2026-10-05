@@ -212,44 +212,81 @@ test('pending items show their owner and due date, or say none is set; nothing c
   const oldDocument = globalThis.document;
   const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
   globalThis.document = document;
+  const feed = (sections) => P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
+    access: { sections, owner: false, email: 'basic@example.test', can_request: true },
+    campaigns: [{ id: 'mva', label: 'MVA', needs: [
+      { id: 'n1', label: 'Send the export', owner: 'Synthetic', detail: '' },
+      { id: 'n2', label: 'Pick a launch date', owner: '  ', detail: '' },
+      { id: 'n3', label: 'Approve the script', owner: 'Marketing Apes', due: '2020-01-02', detail: '' },
+      { id: 'n4', label: 'Confirm hours', owner: 'Synthetic', due_date: '2999-01-02T17:00:00Z', detail: '' },
+      { id: 'n5', label: 'Pick a voice', owner: 'Synthetic', due: 'next week', detail: '' }] },
+      { id: 'req-aaaaaaaaaa', label: 'Launched request' }],
+    tasks: [{ task_id: 't1', title: 'Old open task', assignee: 'Sam', due_date: '2020-01-02', done: false },
+      { task_id: 't2', title: 'Old done task', assignee: 'Sam', due_date: '2020-01-02', done: true }],
+    requests: [
+      { id: 'r1', case_type: 'Dog bite', status: 'requested', requested_at: '2026-10-01T12:00:00Z', requested_by: 'basic@example.test', campaign_id: 'req-1111111111' },
+      { id: 'r2', case_type: 'Slip and fall', status: 'approved', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z', campaign_id: 'req-2222222222' },
+      { id: 'r3', case_type: 'Boat', status: 'declined', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z', campaign_id: 'req-3333333333' },
+      { id: 'r4', case_type: 'Launched', status: 'approved', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z', campaign_id: 'req-aaaaaaaaaa' }],
+    leads: [
+      { lead_uid: 'EE-OPEN', campaign: 'mva', phone_hash: 'h1', stage: 'received' },
+      { lead_uid: 'EE-SIGNED', campaign: 'mva', phone_hash: 'h2', stage: 'received', litify_intake: 'INT-2', litify_status: 'Converted' },
+      { lead_uid: 'EE-DOWN', campaign: 'mva', phone_hash: 'h4', stage: 'received', litify_intake: 'INT-4', litify_status: 'Turned Down' },
+      { lead_uid: 'EE-DQ', campaign: 'mva', phone_hash: 'h3', stage: 'disqualified' }] });
   try {
     P._state.campaign = 'mva';
-    P._state.feed = P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
-      access: { sections: ['leads', 'litify', 'summary', 'requests'], owner: false, email: 'basic@example.test', can_request: true },
-      campaigns: [{ id: 'mva', label: 'MVA', needs: [
-        { id: 'n1', label: 'Send the export', owner: 'Synthetic', detail: '' },
-        { id: 'n2', label: 'Pick a launch date', detail: '' },
-        { id: 'n3', label: 'Approve the script', owner: 'Marketing Apes', due: '2020-01-02', detail: '' }] }],
-      requests: [
-        { id: 'r1', case_type: 'Dog bite', status: 'requested', requested_at: '2026-10-01T12:00:00Z', requested_by: 'basic@example.test' },
-        { id: 'r2', case_type: 'Slip and fall', status: 'approved', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z' },
-        { id: 'r3', case_type: 'Boat', status: 'declined', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z' }],
-      leads: [
-        { lead_uid: 'EE-OPEN', campaign: 'mva', phone_hash: 'h1', stage: 'received' },
-        { lead_uid: 'EE-SIGNED', campaign: 'mva', phone_hash: 'h2', stage: 'received', litify_intake: 'INT-2', litify_status: 'Converted' },
-        { lead_uid: 'EE-DQ', campaign: 'mva', phone_hash: 'h3', stage: 'disqualified' }] });
-
+    P._state.feed = feed(['leads', 'litify', 'summary', 'requests']);
     P._renderSummary();
     const items = els.get('sm-checklist').innerHTML.split('</li>');
     assert.match(items[0], /Synthetic<\/span> <span class="tag warn">No due date/, 'owner shown; missing due date flagged');
-    assert.match(items[1], /Owner not set/, 'missing owner flagged, not defaulted');
+    assert.match(items[1], /Owner not set/, 'a blank owner is flagged, not shown empty or defaulted');
     assert.ok(!/>Marketing Apes</.test(items[1]), 'no invented owner');
-    assert.match(items[2], /Marketing Apes<\/span> <span class="tag bad">Due Jan 2, 2020/, 'a past due date shows as late');
+    assert.match(items[2], /Marketing Apes<\/span> <span class="tag bad">Overdue · was due Jan 2, 2020/, 'a passed due date says Overdue in words');
+    assert.match(items[3], /<span class="tag mute">Due Jan 2, 2999/, 'due_date key and timestamps are read');
+    assert.match(items[4], /Due date unreadable/, 'a present but unreadable date is not shown as missing');
+    const tasks = els.get('sm-tasks').innerHTML.split('</li>');
+    assert.match(tasks[0], /Overdue · was due Jan 2, 2020/);
+    assert.ok(!/Overdue/.test(tasks[1]) && /Due Jan 2, 2020/.test(tasks[1]), 'a done task is never overdue');
 
     P._renderRequests();
     const rq = els.get('rq-list').innerHTML.split('</li>');
     assert.match(rq[0], /Requested · awaiting decision[\s\S]*Not assigned[\s\S]*No due date[\s\S]*an owner approves or declines it/);
     assert.match(rq[1], /Approved · inactive draft[\s\S]*Not assigned[\s\S]*No due date[\s\S]*Nothing runs or spends until then/);
     assert.ok(!/Not assigned|No due date|Next:/.test(rq[2]), 'a declined request is not pending');
+    assert.match(rq[3], /Approved · campaign switched on/);
+    assert.ok(!/Not assigned|No due date|Next:|inactive|Nothing runs/.test(rq[3]), 'a switched-on campaign is not described as pending or inactive');
 
-    for (const [uid, open] of [['EE-OPEN', true], ['EE-SIGNED', false], ['EE-DQ', false]]) {
+    for (const [uid, open] of [['EE-OPEN', true], ['EE-SIGNED', false], ['EE-DOWN', false], ['EE-DQ', false]]) {
       P._state.lead = uid;
       P._renderDetail();
       assert.equal(/Follow-up<\/dt><dd><span class="tag warn">Not recorded/.test(els.get('lead-detail').innerHTML), open, uid);
     }
+    P._state.feed = feed(['leads', 'summary']);   // cannot see Litify outcomes: no lead is presented as open
+    for (const uid of ['EE-OPEN', 'EE-SIGNED', 'EE-DOWN']) {
+      P._state.lead = uid;
+      P._renderDetail();
+      assert.ok(!/Follow-up/.test(els.get('lead-detail').innerHTML), uid + ' without Litify access');
+    }
+
+    // "Overdue" turns at the viewer's midnight: 6:30 PM on Oct 5 in Phoenix is already Oct 6 in UTC.
+    const RealDate = Date, oldTZ = process.env.TZ;
+    process.env.TZ = 'America/Phoenix';
+    globalThis.Date = class extends RealDate { constructor(...a) { if (a.length) super(...a); else super('2026-10-06T01:30:00Z'); } };
+    try {
+      P._state.feed = feed(['leads', 'litify', 'summary', 'requests']);
+      P._state.feed.campaigns[0].needs = [{ id: 'n6', label: 'Due today', owner: 'Synthetic', due: '2026-10-05' }];
+      P._renderSummary();
+      assert.match(els.get('sm-checklist').innerHTML, /<span class="tag mute">Due Oct 5, 2026/, 'due today is not overdue in the evening');
+    } finally {
+      globalThis.Date = RealDate;
+      if (oldTZ === undefined) delete process.env.TZ; else process.env.TZ = oldTZ;
+    }
+
     const fs = await import('node:fs');
     const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
-    for (const claim of ['being set up', 'will set it up', 'still being worked', 'Not reached yet', "n.owner || 'Marketing Apes'"]) assert.ok(!js.includes(claim), claim);
+    const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
+    for (const claim of ['being set up', 'will set it up', 'sets it up', 'still being worked', 'Not reached yet', "n.owner || 'Marketing Apes'", 'Reaching out', 'recorded yet'])
+      assert.ok(!js.includes(claim) && !html.includes(claim), claim);
   } finally {
     P._state.feed = null; P._state.campaign = null; P._state.lead = null;
     globalThis.document = oldDocument;

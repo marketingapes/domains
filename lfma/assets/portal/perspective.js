@@ -50,6 +50,15 @@
   function ratio(spend, n) { spend = num(spend); n = num(n); return spend === null || !n ? null : spend / n; }
   function day(iso) { if (!iso) return NA; var d = new Date(iso); return isNaN(d) ? esc(iso) : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
   function when(iso) { if (!iso) return NA; var d = new Date(iso); return isNaN(d) ? esc(iso) : d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); }
+  // The viewer's own date (YYYY-MM-DD), so "overdue" turns at their midnight, not UTC's.
+  function localDay() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  // A passed due date says so in words; a date that is present but unreadable is never shown as "no due date".
+  function dueTag(raw, done) {
+    if (!raw) return '<span class="tag warn">No due date</span>';
+    var d = /^\d{4}-\d{2}-\d{2}/.test(String(raw)) ? String(raw).slice(0, 10) : '';
+    if (!d) return '<span class="tag warn">Due date unreadable</span>';
+    return !done && d < localDay() ? '<span class="tag bad">Overdue · was due ' + day(d + 'T12:00:00') + '</span>' : '<span class="tag mute">Due ' + day(d + 'T12:00:00') + '</span>';
+  }
   function $(id) { return root.document.getElementById(id); }
   function countBy(rows, fn) { var o = Object.create(null); rows.forEach(function (r) { var k = fn(r); if (k != null && k !== '') o[k] = (o[k] || 0) + 1; }); return o; }
   function sortedEntries(o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }).sort(function (a, b) { return b[1] - a[1]; }); }
@@ -150,7 +159,7 @@
       cell('Total leads', fmtInt(m.leads), fmtInt(m.inLitify) + ' found in your Litify report'),
       cell('Budget', fmtMoney(m.budget), (c.budget && c.budget.note) || (m.budget === null ? 'No paid budget on this campaign' : ''), m.budget === null),
       cell('Spent', fmtMoney(m.spend), spendNote, m.spend === null),
-      cell('Reaching out', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
+      cell('AI reached', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
       cell('Signed', fmtInt(m.signed), 'Litify status Converted'),
       cell('Intake completed', fmtInt(m.intake), m.intake === null ? 'Not tracked for these leads' : pct(m.intake, m.leads) + ' of leads', m.intake === null),
       cell('Transfers', fmtInt(m.transfers), m.transfers === null ? 'Not tracked for these leads' : 'Live transfers to your intake line', m.transfers === null),
@@ -206,11 +215,12 @@
       (can('litify') ? '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' : '') +
       (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') +
       // No source sends a follow-up owner, next action or due date for a lead; say that rather than imply one exists.
-      (lit.status === 'Converted' || lit.status === 'Turned Down' || l.stage === 'disqualified' ? ''
+      // Shown only to people who can see the Litify outcome, so a closed lead never looks open.
+      (!can('litify') || lit.status === 'Converted' || lit.status === 'Turned Down' || l.stage === 'disqualified' ? ''
         : '<dt>Follow-up</dt><dd><span class="tag warn">Not recorded</span> No owner, next action or due date for this lead is in the connected data.</dd>') + '</dl>' +
       '<div class="eyebrow" style="margin-top:6px">WHAT THE AI DID</div>' +
       (ev.length ? '<ul class="timeline">' + ev.map(function (e) { return '<li class="' + esc(e.kind || '') + '"><time>' + when(e.at) + '</time>' + esc(e.text) + '</li>'; }).join('') + '</ul>'
-        : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded yet for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
+        : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
     if (keep && $('rec-box')) { $('rec-box').appendChild(keep); $('rec-play').hidden = true; }
   }
 
@@ -379,19 +389,17 @@
       ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var needs = c.needs || [];
     // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
-    var today = new Date().toISOString().slice(0, 10);
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
-      var due = /^\d{4}-\d{2}-\d{2}$/.test(n.due || '') ? n.due : '';
-      return '<li><span><b>' + esc(n.label) + '</b> ' + (n.owner ? '<span class="tag ' + (n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
-        ' ' + (due ? '<span class="tag ' + (due < today ? 'bad' : 'mute') + '">Due ' + day(due + 'T12:00:00') + '</span>' : '<span class="tag warn">No due date</span>') +
+      var owner = typeof n.owner === 'string' ? n.owner.trim() : n.owner;
+      return '<li><span><b>' + esc(n.label) + '</b> ' + (owner ? '<span class="tag ' + (owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
+        ' ' + dueTag(n.due || n.due_date, false) +
         (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
     }).join('') : '<li>No open items.</li>';
     var tasks = ((state.feed && state.feed.tasks) || []).filter(function (t) { return c.id === 'all' || !t.campaign_id || t.campaign_id === c.id; });
     var mayCheck = !!access().can_complete_tasks;
     $('sm-tasks').innerHTML = tasks.length ? tasks.map(function (t, i) {
-      var late = !t.done && t.due_date && t.due_date < new Date().toISOString().slice(0, 10);
       return '<li><input type="checkbox" id="task-' + i + '" data-task="' + esc(t.task_id) + '"' + (t.done ? ' checked' : '') + (mayCheck ? '' : ' disabled') + '><label for="task-' + i + '"><b>' + esc(t.title) + '</b> ' +
-        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> <span class="tag ' + (late ? 'bad' : 'mute') + '">Due ' + day((t.due_date || '') + 'T12:00:00') + '</span>' +
+        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> ' + dueTag(t.due_date, t.done) +
         '<small>' + (t.done ? 'Done by ' + esc(t.done_by || '?') + ' · ' + when(t.done_at) : 'Open · added by ' + esc(t.created_by || '?')) + '</small></label></li>';
     }).join('') : '<li>No handoffs yet.</li>';
     var form = $('task-form');
@@ -470,9 +478,11 @@
     $('rq-form').hidden = !a.can_request;
     if (!a.can_request && !a.owner) $('rq-msg').textContent = "Your access doesn't include campaign requests.";
     $('rq-list').innerHTML = list.length ? list.map(function (r) {
-      var st = RQ_STATUS[r.status] || [r.status, 'mute'];
+      // Once its campaign is switched on (the feed lists only active campaigns) an approved request is no longer pending.
+      var live = r.status === 'approved' && campaignsAll().some(function (c) { return c.id === r.campaign_id; });
+      var st = live ? ['Approved · campaign switched on', 'ok'] : RQ_STATUS[r.status] || [r.status, 'mute'];
       var bits = [r.states, r.monthly_goal ? fmtInt(r.monthly_goal) + ' signed/month wanted' : '', r.budget ? fmtMoney(r.budget) + ' budget' : ''].filter(Boolean).join(' · ');
-      var next = RQ_NEXT[r.status];
+      var next = live ? '' : RQ_NEXT[r.status];
       return '<li><span><b>' + esc(r.case_type) + '</b> <span class="tag ' + st[1] + '">' + esc(st[0]) + '</span>' +
         (next ? ' <span class="tag warn">Not assigned</span> <span class="tag warn">No due date</span>' : '') +
         '<small>' + esc(bits) + (bits ? ' · ' : '') + 'asked ' + when(r.requested_at) + (r.requested_by ? ' by ' + esc(r.requested_by) : '') +
