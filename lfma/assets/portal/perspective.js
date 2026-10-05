@@ -314,14 +314,16 @@
     return 'other';
   }
   function loadLitifyFile(file) {
-    var reader = new root.FileReader();
+    var reader = new root.FileReader(), gen = state.gen;
     reader.onload = function () {
+      if (gen !== state.gen) return;
       state.litifyText = String(reader.result || '');
       var raw = parseCSV(state.litifyText);
       if (!raw.length || !('Intake: Intake Name' in raw[0])) { $('lt-fileinfo').textContent = 'That file does not look like the “All Marketing Apes Leads” export.'; return; }
       var byHash = Object.create(null);
       leadsFor('all').forEach(function (l) { if (l.phone_hash) byHash[l.phone_hash] = l.lead_uid; });
       Promise.all(raw.map(function (r) { var d = digits(r['Phone']); return d ? sha256(d) : Promise.resolve(''); })).then(function (hashes) {
+        if (gen !== state.gen) return;
         state.litify = raw.map(function (r, i) {
           var d = digits(r['Phone']);
           return { created: r['Intake: Created Date'], intake: r['Intake: Intake Name'], name: r['Client'], phone_last4: d.slice(-4), case_type: r['Case Type'], source: r['Source'],
@@ -340,9 +342,13 @@
     if (!state.litifyText) { $('lt-fileinfo').textContent = 'Choose the Litify CSV first.'; return; }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { $('lt-fileinfo').textContent = 'Enter the report date (the date in the Litify email subject).'; return; }
     busy('lt-upload-btn', true);
+    var gen = state.gen;
     root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify({ csv: state.litifyText, report_date: d }) })
-      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
+        if (gen !== state.gen) return hold();
+        if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); },
+        function (e) { if (gen !== state.gen) return hold(); throw e; })
       .then(function (j) { $('lt-fileinfo').textContent = j.loaded + ' Litify rows for ' + j.report_date + ' loaded into Perspective. Refreshing…'; state.litify = null; state.litifyLabel = ''; refresh(); })
       .catch(function (e) { $('lt-fileinfo').textContent = e.message; })
       .then(function () { busy('lt-upload-btn', false); });
@@ -384,15 +390,18 @@
     form.hidden = !access().owner;
     if (!form.hidden) fillSelect($('t-campaign'), campaignsAll().map(function (x) { return [x.id, x.label]; }), 'All campaigns');
   }
+  // A reply that lands after Lock or after someone else signs in is dropped: the promise never settles, so no
+  // then/catch of the old session can write into the page the next person sees.
+  function hold() { return new Promise(function () {}); }
   function api(method, path, body) {
     var gen = state.gen;
     return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: method, cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify(body) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
-        if (gen !== state.gen) throw new Error('locked');
-        if (r.status === 401) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; throw new Error('Your session ended.'); }
+        if (gen !== state.gen) return hold();
+        if (r.status === 401) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; return hold(); }
         if (!r.ok) throw new Error(j.detail || 'Could not save (HTTP ' + r.status + ').');
-        return j; }); });
+        return j; }); }, function (e) { if (gen !== state.gen) return hold(); throw e; });
   }
   function setTask(id, done, box) {
     box.disabled = true; $('task-msg').textContent = 'Saving…';
@@ -529,7 +538,18 @@
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
     $('step-code').hidden = true; $('step-email').hidden = state.emailSignIn === false;
     if (state.emailSignIn === false && $('token-alt')) $('token-alt').open = true;
-    ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
+    resetApp();
+  }
+  // Everything a signed-in person sees or types lives inside #app. Lock and every new sign-in put #app back to the
+  // page's original empty markup (lists, proposals, requests, forms, typed values, messages) and rebind its handlers,
+  // so nothing from one person's session can be left behind for the next.
+  var APP_TEMPLATE = null;
+  function resetApp() {
+    var app = $('app');
+    state.view = 'overview'; state.campaign = null; state.lead = null;
+    if (!app || APP_TEMPLATE === null) return;
+    app.innerHTML = APP_TEMPLATE;
+    bindApp();
   }
   // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
   // transfer (transfers). Fold them into the structured shape the views use. Transfers merge onto
@@ -647,7 +667,8 @@
     }).catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('send-code', false); });
   }
   function startSession(token, feed) {
-    state.gen++; state.token = token; open(feed);
+    state.gen++; clearAudio(); state.litify = null; state.litifyLabel = ''; state.litifyText = ''; resetApp();
+    state.token = token; open(feed);
     if (state.timer) root.clearInterval(state.timer);
     state.timer = root.setInterval(refresh, REFRESH_MS);
   }
@@ -655,8 +676,9 @@
     var email = ($('email').value || '').trim(), code = ($('code').value || '').replace(/\D/g, '');
     if (code.length !== 6) { $('gate-err').textContent = 'Enter the 6-digit code from the email.'; return; }
     busy('verify', true); $('gate-err').textContent = '';
+    var gen = state.gen;
     post('/verify', { email: email, code: code })
-      .then(function (d) { var gen = state.gen; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
+      .then(function (d) { if (gen !== state.gen) return; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
       .catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('verify', false); });
   }
   function refresh() {
@@ -686,7 +708,6 @@
   }
 
   function mount() {
-    var d = root.document;
     $('unlock').addEventListener('click', unlock);
     $('send-code').addEventListener('click', sendCode);
     $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });
@@ -696,6 +717,12 @@
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);
+    APP_TEMPLATE = $('app').innerHTML;
+    bindApp();
+    checkAuthAvailability();
+  }
+  function bindApp() {
+    var d = root.document;
     $('campaign-tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-campaign]'); if (b) { state.campaign = b.getAttribute('data-campaign'); state.lead = null; renderAll(); } });
     d.querySelector('.section-tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-view]'); if (b) setView(b.getAttribute('data-view')); });
     $('lead-list').addEventListener('click', function (e) { var b = e.target.closest('[data-lead]'); if (b) { state.lead = b.getAttribute('data-lead'); renderIntake(); } });
@@ -717,7 +744,6 @@
     $('pr-form').addEventListener('submit', addProposal);
     $('rq-form').addEventListener('submit', sendRequest);
     $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
-    checkAuthAvailability();
   }
 
   var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability };

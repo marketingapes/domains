@@ -188,3 +188,17 @@ test('recordings play only through the server with the session header; no provid
   assert.ok(js.includes('access().can_listen'), 'Listen only when the server says this person may play');
   assert.ok(/function lock\(\) \{[\s\S]{0,200}clearAudio\(\)/.test(js), 'locking drops any loaded audio');
 });
+
+test('Lock and every new sign-in reset the signed-in area; late replies and file reads are dropped', async () => {
+  const fs = await import('node:fs');
+  const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
+  assert.ok(/APP_TEMPLATE = \$\('app'\)\.innerHTML;\s*bindApp\(\);/.test(js), 'pristine #app snapshot taken before any rendering');
+  assert.ok(/function lock\(\) \{[\s\S]*?resetApp\(\);\s*\}/.test(js), 'Lock restores the pristine #app (lists, forms, typed values, messages)');
+  assert.ok(/function startSession\(token, feed\) \{\s*state\.gen\+\+;[^\n]*resetApp\(\);/.test(js), 'a new sign-in starts from a clean page');
+  assert.ok(/if \(gen !== state\.gen\) return hold\(\);/.test(js) && js.includes('function hold() { return new Promise(function () {}); }'),
+    'a reply that lands after Lock never reaches any then/catch');
+  const lit = js.slice(js.indexOf('function loadLitifyFile'), js.indexOf('function uploadLitify'));
+  assert.equal((lit.match(/if \(gen !== state\.gen\) return;/g) || []).length, 2, 'file read and hashing both drop a stale result');
+  const up = js.slice(js.indexOf('function uploadLitify'), js.indexOf('function saveLitify'));
+  assert.ok(up.includes('if (gen !== state.gen) return hold();'), 'Litify upload reply dropped after Lock');
+});
