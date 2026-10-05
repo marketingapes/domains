@@ -319,7 +319,8 @@
     state.feed = null; state.litify = null; state.litifyLabel = ''; state.lead = null; state.token = null;
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
-    $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = '';
+    $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
+    $('step-code').hidden = true; $('step-email').hidden = false;
     ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
   }
   // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
@@ -378,6 +379,10 @@
       root.document.title = 'Perspective · ' + firmName();
       root.document.querySelectorAll('[data-firm]').forEach(function (el) { el.textContent = el.getAttribute('data-firm') === 'short' ? firm() : firmName(); });
     }
+    // Only the sections this person may open (the server already removed data they can't see).
+    var allowed = (feed.access && feed.access.sections) || null;
+    root.document.querySelectorAll('.section-tabs [data-view]').forEach(function (b) { b.hidden = !!allowed && allowed.indexOf(b.getAttribute('data-view')) < 0; });
+    if (allowed && allowed.indexOf(state.view) < 0) state.view = allowed[0];
     setView(state.view);
   }
   function fetchFeed(token) {
@@ -396,23 +401,52 @@
       return get(FALLBACK[c]);
     });
   }
+  function post(path, body) {
+    return root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error' })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok) throw new Error((d && typeof d.detail === 'string' && d.detail) || 'Sign-in unavailable (HTTP ' + r.status + ').');
+        return d; }); });
+  }
+  function busy(id, on) { var b = $(id); if (b) b.disabled = on; }
+  function sendCode() {
+    var email = ($('email').value || '').trim();
+    if (!email) { $('gate-err').textContent = 'Enter your work email.'; return; }
+    busy('send-code', true); $('gate-err').textContent = '';
+    post('/login', { email: email }).then(function () {
+      $('step-email').hidden = true; $('step-code').hidden = false; $('code').value = ''; $('code').focus();
+      $('gate-err').textContent = 'If ' + email + ' has access, a code is on its way. Check your inbox.';
+    }).catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('send-code', false); });
+  }
+  function startSession(token, feed) {
+    state.token = token; open(feed);
+    if (state.timer) root.clearInterval(state.timer);
+    state.timer = root.setInterval(refresh, REFRESH_MS);
+  }
+  function verifyCode() {
+    var email = ($('email').value || '').trim(), code = ($('code').value || '').replace(/\D/g, '');
+    if (code.length !== 6) { $('gate-err').textContent = 'Enter the 6-digit code from the email.'; return; }
+    busy('verify', true); $('gate-err').textContent = '';
+    post('/verify', { email: email, code: code })
+      .then(function (d) { return fetchFeed(d.session).then(function (feed) { $('code').value = ''; startSession(d.session, feed); }); })
+      .catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('verify', false); });
+  }
   function refresh() {
     if (!state.token || root.document.hidden) return;
     fetchFeed(state.token).then(function (feed) {
       var view = state.view, lead = state.lead;
       open(feed); state.lead = lead; setView(view);
-    }).catch(function () { $('feed-pill').textContent = 'Reconnecting…'; $('feed-pill').className = 'pill warn'; });
+    }).catch(function (e) {
+      if (e && e.final) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; return; }
+      $('feed-pill').textContent = 'Reconnecting…'; $('feed-pill').className = 'pill warn';
+    });
   }
   function unlock() {
     var token = ($('token').value || '').trim(), btn = $('unlock');
     if (!token) { $('gate-err').textContent = 'Enter your access token.'; return; }
     btn.disabled = true; $('gate-err').textContent = '';
     fetchFeed(token)
-      .then(function (feed) {
-        $('token').value = ''; state.token = token; open(feed);
-        if (state.timer) root.clearInterval(state.timer);
-        state.timer = root.setInterval(refresh, REFRESH_MS);
-      })
+      .then(function (feed) { $('token').value = ''; startSession(token, feed); })
       .catch(function (e) { $('gate-err').textContent = (e && e.message) || 'Could not load the portal.'; })
       .then(function () { btn.disabled = false; });
   }
@@ -420,6 +454,11 @@
   function mount() {
     var d = root.document;
     $('unlock').addEventListener('click', unlock);
+    $('send-code').addEventListener('click', sendCode);
+    $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });
+    $('verify').addEventListener('click', verifyCode);
+    $('code').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyCode(); });
+    $('change-email').addEventListener('click', function () { $('step-code').hidden = true; $('step-email').hidden = false; $('gate-err').textContent = ''; $('email').focus(); });
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);

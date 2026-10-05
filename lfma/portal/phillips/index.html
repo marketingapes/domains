@@ -58,6 +58,9 @@ p{line-height:1.6;color:var(--muted);font-size:14px}
 .f-step span{font-size:11px;color:var(--muted)}
 .f-step i{display:block;font-style:normal;font-size:11px;color:var(--accent);font-weight:700;margin-top:4px}
 .fresh{font-size:11px;color:var(--muted);margin:8px 0 0}
+.linkbtn{border:0;background:none;color:var(--muted);text-decoration:underline;padding:10px 0 0 12px;font-size:14px;cursor:pointer}
+.token-alt{margin-top:18px;font-size:14px;color:var(--muted)}
+.token-alt summary{cursor:pointer}
 .section-tabs{display:flex;gap:6px;margin:24px 0 0;overflow-x:auto;border-bottom:1px solid var(--line)}
 .section-tabs button{border:0;border-bottom:3px solid transparent;background:none;padding:12px 16px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
 .section-tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
@@ -104,7 +107,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261005d" defer></script>
+<script src="/assets/portal/perspective.js?v=20261005e" defer></script>
 </head>
 <body data-client="plg">
 <main class="main">
@@ -115,12 +118,25 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 
   <section class="gate" id="gate">
     <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
-    <h2 style="margin-top:10px">Enter your access token</h2>
-    <p>Lead data is never stored in this page. It loads only after your token is accepted and clears when you lock or close the tab.</p>
-    <label for="token" class="eyebrow">Access token</label>
-    <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
+    <h2 style="margin-top:10px">Sign in to Perspective</h2>
+    <p>Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.</p>
+    <div id="step-email">
+      <label for="email" class="eyebrow">Work email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@firm.com">
+      <button class="btn" id="send-code" type="button">Email me a code</button>
+    </div>
+    <div id="step-code" hidden>
+      <label for="code" class="eyebrow">6-digit code</label>
+      <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+      <button class="btn" id="verify" type="button">Sign in</button>
+      <button class="linkbtn" id="change-email" type="button">Use a different email</button>
+    </div>
     <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <button class="btn" id="unlock" type="button">Open Perspective</button>
+    <details class="token-alt"><summary>Have an access token instead?</summary>
+      <label for="token" class="eyebrow">Access token</label>
+      <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
+      <button class="btn" id="unlock" type="button">Open Perspective</button>
+    </details>
   </section>
 
   <div id="app" hidden>
