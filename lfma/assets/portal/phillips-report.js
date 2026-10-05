@@ -132,7 +132,7 @@
   }
 
   function renderSources(sources) {
-    var rows = (sources || []).map(function (s) {
+    var rows = (Array.isArray(sources) ? sources : []).filter(function (s) { return s && typeof s === 'object'; }).map(function (s) {
       var st = SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown;
       var auth = s.auth === 'failed' ? ' · sign-in failed' : '';
       return '<tr><td><b>' + esc(s.label) + '</b><span class="sub">feeds: ' + esc((s.feeds || []).join(', ').replace(/_/g, ' ')) + '</span></td>' +
@@ -243,7 +243,7 @@
       var latest = null;
       src.forEach(function (s) { var t = s.last_success_at ? new Date(s.last_success_at).getTime() : NaN; if (!isNaN(t) && (latest === null || t > latest)) latest = t; });
       var srcText = src.length ? src.map(function (s) { return esc(orNA(s.label)) + ' — ' + (SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown)[0]; }).join('; ') : NA;
-      return '<tr><td><b>' + esc(rowName(r)) + '</b></td><td><b>' + (n === null ? NA : esc(n)) + '</b></td><td>' + srcText + '</td><td>' + esc(period) + '</td><td>' +
+      return '<tr><td data-label="Campaign"><b>' + esc(rowName(r)) + '</b></td><td data-label="Leads"><b>' + (n === null ? NA : esc(n)) + '</b></td><td data-label="Lead source">' + srcText + '</td><td data-label="Reporting period">' + esc(period) + '</td><td data-label="Last refreshed">' +
         esc(latest === null ? NA : when(new Date(latest).toISOString())) + '</td></tr>';
     }).join('');
     var total = withCount === 0 ? NA + ' — no campaign in this view has a reported lead count'
@@ -254,7 +254,7 @@
       : '<span class="pill">All leads loaded</span> The report marks its lead cohort complete, no record was unreadable and every lead source is fresh.';
     return '<div class="oc-leads"><h4>Leads in this view</h4><p class="intro">Leads reported: <b>' + esc(total) + '</b>. Report refreshed ' + esc(when(report.generated_at)) + '.</p>' +
       '<div class="gapnote" role="note">' + coverage + '</div>' +
-      (shown.length ? '<div style="overflow-x:auto"><table><tr><th>Campaign</th><th>Leads</th><th>Lead source</th><th>Reporting period</th><th>Last refreshed</th></tr>' + rows + '</table></div>' : '') + '</div>';
+      (shown.length ? '<div style="overflow-x:auto"><table class="oc-leadtable"><tr><th>Campaign</th><th>Leads</th><th>Lead source</th><th>Reporting period</th><th>Last refreshed</th></tr>' + rows + '</table></div>' : '') + '</div>';
   }
 
   function isValidReport(report) {

@@ -388,7 +388,7 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
 
 // ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
 test('N1: the page loads the current script version', () => {
-  assert.match(PAGE, /phillips-report\.js\?v=20261005c"/);
+  assert.match(PAGE, /phillips-report\.js\?v=20261005d"/);
 });
 test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
   const dom = fakeDom();
@@ -482,4 +482,34 @@ test('L5: the lead summary follows the program view and stays escaped', () => {
   const la = leadsBlock(R.render(r, { program: 'LA' }));
   assert.match(la, /Leads reported: Not available/);
   assert.match(la, /BTL · website conversion/);
+});
+
+test('L6: malformed lead-source data degrades to "Not available" without throwing or overclaiming', () => {
+  const variants = [
+    (r) => { r.sources = null; },
+    (r) => { r.sources = [null, 7, { id: 'website_intake', label: 'W', status: 'fresh', last_success_at: 'not-a-date' }]; },
+    (r) => { r.rows.forEach((x) => { x.stages.submission.sources = 'website_intake'; }); },
+    (r) => { r.rows.forEach((x) => { x.stages.submission.sources = [{ id: 'ghost_source' }, null]; }); },
+    (r) => { r.rows.forEach((x) => { delete x.stages.submission; }); },
+    (r) => { r.cohort = null; r.operations = null; r.generated_at = 'garbage'; },
+    (r) => { r.rows = []; },
+  ];
+  for (const mutate of variants) {
+    const r = sample(); r.cohort.complete = true; mutate(r);
+    const html = R.render(r);
+    const t = leadsBlock(html);
+    assert.match(t, /Leads in this view/);
+    assert.doesNotMatch(t, /All leads loaded/, 'malformed source data never verifies coverage');
+    assert.doesNotMatch(t, /Invalid Date|NaN|undefined|null/);
+  }
+  const bad = sample(); bad.sources = [{ id: 'website_intake', label: 'W', status: 'fresh', last_success_at: 'not-a-date' }];
+  assert.match(leadsBlock(R.render(bad)), /NIL · search 8 W — Fresh All retained leads to date \(not a daily total\) Not available/);
+  const none = sample(); none.rows = [];
+  assert.match(leadsBlock(R.render(none)), /no campaigns in this view/);
+});
+
+test('L7: lead table cells carry labels for the stacked phone layout', () => {
+  const html = R.render(sample());
+  for (const l of ['Campaign', 'Leads', 'Lead source', 'Reporting period', 'Last refreshed']) assert.match(html, new RegExp('data-label="' + l + '"'));
+  assert.match(PAGE, /@media\(max-width:640px\)\{\.oc-leadtable tr:first-child\{display:none\}/);
 });
