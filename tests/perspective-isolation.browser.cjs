@@ -50,7 +50,13 @@ async function mockHub(page, held) {
   await page.route(HUB + '/**', async (route) => {
     const req = route.request(), url = new URL(req.url()), auth = req.headers().authorization || '';
     const json = (status, body) => route.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
-    if (url.pathname === '/portal/health') return json(200, { email_sign_in: false });
+    if (url.pathname === '/portal/health') return json(200, { email_sign_in: true });
+    // Email sign-in, synthetic: any 6-digit code works and the session names which mocked feed to serve.
+    if (url.pathname.endsWith('/login')) return json(200, { sent: true });
+    if (url.pathname.endsWith('/verify')) {
+      const who = SESSIONS[JSON.parse(req.postData() || '{}').email];
+      return who ? json(200, { session: who, user: {} }) : json(401, { detail: "that code didn't work" });
+    }
     if (url.pathname.endsWith('/feed')) {
       const feed = FEEDS[auth.replace('Bearer ', '')];
       return feed ? json(200, feed) : json(401, { detail: 'sign in again' });
@@ -63,12 +69,19 @@ async function mockHub(page, held) {
   });
 }
 
-async function signIn(page, token) {
-  await page.waitForSelector('#token-alt[open]', { timeout: 10000 });
-  await page.fill('#token', token);
-  await page.click('#unlock');
+const SESSIONS = { 'owner@example.test': 'OWNER', 'basic@example.test': 'BASIC' };
+const EMAILS = { OWNER: 'owner@example.test', BASIC: 'basic@example.test' };
+async function signIn(page, who) {
+  await page.waitForSelector('#step-email:not([hidden])', { timeout: 10000 });
+  await page.fill('#email', EMAILS[who]);
+  await page.click('#send-code');
+  await page.waitForSelector('#step-code:not([hidden])', { timeout: 10000 });
+  await page.fill('#code', '123456');
+  await page.click('#verify');
   await page.waitForSelector('#app:not([hidden])', { timeout: 10000 });
 }
+// After Lock the sign-in screen must not keep the previous person's email (or code).
+const gateCleared = (page) => page.evaluate(() => document.querySelector('#email').value === '' && document.querySelector('#code').value === '');
 
 // Everything a person could see or read back: markup, typed values, file inputs, and the portal's in-memory state.
 const leftovers = (page) => page.evaluate((secrets) => {
@@ -115,6 +128,7 @@ const leftovers = (page) => page.evaluate((secrets) => {
     // 2. Lock: the page holds nothing of the owner's session.
     await page.click('#lock-btn');
     assert.deepEqual(await leftovers(page), [], `${width}px: nothing of the owner's session after Lock`);
+    assert.ok(await gateCleared(page), `${width}px: sign-in screen no longer holds the owner's email`);
 
     // 3. A restricted user signs in; then the owner's replies land.
     await signIn(page, 'BASIC');
@@ -139,6 +153,7 @@ const leftovers = (page) => page.evaluate((secrets) => {
     await page.setInputFiles('#lt-file', { name: 'litify.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
     await page.waitForTimeout(100);
     await page.click('#lock-btn');
+    assert.ok(await gateCleared(page), `${width}px: sign-in screen cleared on the second Lock`);
     await signIn(page, 'BASIC');
     await page.waitForTimeout(2500);
     await page.click('[data-view="litify"]');

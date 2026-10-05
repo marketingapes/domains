@@ -536,6 +536,7 @@
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
+    if ($('email')) $('email').value = '';   // the next person starts with an empty sign-in
     $('step-code').hidden = true; $('step-email').hidden = state.emailSignIn === false;
     if (state.emailSignIn === false && $('token-alt')) $('token-alt').open = true;
     resetApp();
