@@ -374,7 +374,8 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
   const root = dom.byId.get('outcome-root');
   assert.ok(root.listeners && root.listeners.click && root.listeners.click.length === 1, 'one delegated click listener on the report root');
   await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA','MVA',null]) }) });
-  assert.match(root.innerHTML, /aria-live="polite"[^>]*>Viewing: MVA/);
+  assert.match(text(root.innerHTML), /Viewing: MVA/);
+  assert.equal(dom.byId.get('outcome-view').textContent, 'Viewing: MVA');
   let focused = null;
   const btn = { getAttribute: (a) => (a === 'data-program' ? 'LA' : null) };
   const inner = { closest: (sel) => (sel === '[data-program]' ? btn : null), getAttribute: () => null };
@@ -382,4 +383,35 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
   root.listeners.click[0]({ target: inner });
   assert.equal(rowCount(root.innerHTML), 1);
   assert.equal(focused, 'LA');
+});
+
+// ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
+test('N1: the page loads the current script version', () => {
+  assert.match(PAGE, /phillips-report\.js\?v=20261005b"/);
+});
+test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const root = dom.byId.get('outcome-root');
+  const live = dom.byId.get('outcome-view');
+  assert.ok(live, 'live region exists outside the report root');
+  assert.match(dom.byId.get('tab-outcomes').innerHTML, /id="outcome-view"[^>]*aria-live="polite"/);
+  assert.ok(!/aria-live/.test(R.render(withPrograms(['MVA']))), 'no live region inside re-rendered markup');
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  assert.equal(live.textContent, 'Viewing: MVA');
+  let focused = null;
+  root.querySelector = (sel) => { const m = sel.match(/data-program="([^"]+)"/); return m ? { focus: () => { focused = m[1]; } } : null; };
+  assert.equal(R.setProgram('NB', { document: dom.document }), true);
+  assert.equal(focused, 'MVA');
+  R.setProgram('LA', { document: dom.document });
+  assert.equal(live.textContent, 'Viewing: LA');
+});
+test('A5: after Clear report, switching views shows nothing and the announcement is cleared', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  dom.byId.get('outcome-clear').listeners.click[0]();
+  assert.equal(R.setProgram('LA', { document: dom.document }), false);
+  assert.ok(!dom.byId.get('outcome-root').innerHTML.includes('oc-row'));
+  assert.equal(dom.byId.get('outcome-view').textContent, '');
 });

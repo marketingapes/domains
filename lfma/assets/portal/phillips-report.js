@@ -97,7 +97,7 @@
       note = '<div class="gapnote">No campaign in this report is labeled MVA yet' + (program === PROGRAM_ALL ? ', so all campaigns are shown' : '') +
         '. Program labels come only from the campaign registry; a campaign without one is listed under “Program not on record”.</div>';
     }
-    return '<div class="oc-programs" role="group" aria-label="Campaign program"><p class="intro" aria-live="polite">Viewing: ' + esc(current ? current.label : 'All campaigns') + '</p>' + buttons + '</div>' + note;
+    return '<div class="oc-programs" role="group" aria-label="Campaign program"><p class="intro">Viewing: ' + esc(current ? current.label : 'All campaigns') + '</p>' + buttons + '</div>' + note;
   }
 
   /** Text for one stage cell. Returns { text, cls, sub }. Unknown is never rendered as a number. */
@@ -220,20 +220,33 @@
 
   var loadVersion = 0;
   var loaded = null; // { report, version } — the last report this page successfully rendered
+  /** Updates the persistent screen-reader announcement (outside the re-rendered region). */
+  function announce(doc, report, program) {
+    var el = doc && typeof doc.getElementById === 'function' ? doc.getElementById('outcome-view') : null;
+    if (!el) return;
+    if (!report) { el.textContent = ''; return; }
+    var key = resolveProgram(report.rows, program);
+    var v = programViews(report.rows).filter(function (x) { return x.key === key; })[0];
+    el.textContent = 'Viewing: ' + (v ? v.label : 'All campaigns');
+  }
   /** Re-renders the loaded report for a program view. Returns false when no report is loaded. */
   function setProgram(program, opts) {
     var doc = (opts && opts.document) || root.document;
     var target = doc && doc.getElementById('outcome-root');
     if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program)) return false;
-    target.innerHTML = render(loaded.report, { program: program });
-    // Keep keyboard focus on the chosen view (the bar was just re-rendered).
-    var chosen = typeof target.querySelector === 'function' ? target.querySelector('[data-program="' + program + '"]') : null;
+    var key = resolveProgram(loaded.report.rows, program); // the view actually shown
+    target.innerHTML = render(loaded.report, { program: key });
+    // Keep keyboard focus on the shown view's button (the bar was just re-rendered).
+    var chosen = typeof target.querySelector === 'function' ? target.querySelector('[data-program="' + key + '"]') : null;
     if (chosen && typeof chosen.focus === 'function') chosen.focus();
+    announce(doc, loaded.report, key);
     return true;
   }
+  function docOf(opts) { return (opts && opts.document) || root.document; }
   function load(token, opts) {
     var version = ++loadVersion;
     loaded = null;
+    announce(docOf(opts), null);
     var o = opts || {};
     var doc = o.document || root.document;
     var target = doc.getElementById('outcome-root');
@@ -250,6 +263,7 @@
       if(version !== loadVersion) return null;
       target.innerHTML = render(report);
       loaded = { report: report, version: version };
+      announce(doc, report);
       if (note) note.style.display = 'none';
       return report;
     }).catch(function (e) {
@@ -281,7 +295,7 @@
       '<label for="outcome-token" style="position:absolute;left:-9999px">Portal access token</label>' +
       '<input type="password" id="outcome-token" placeholder="Portal access token" autocomplete="off"> ' +
       '<button type="button" id="outcome-unlock">Load report</button>' +
-      '<p id="outcome-err" role="status" aria-live="polite" style="margin:8px 0 0"></p></div><button type="button" id="outcome-clear" class="oc-clear">Clear report</button><div id="outcome-root"></div>';
+      '<p id="outcome-err" role="status" aria-live="polite" style="margin:8px 0 0"></p></div><button type="button" id="outcome-clear" class="oc-clear">Clear report</button><p id="outcome-view" class="oc-sr" role="status" aria-live="polite"></p><div id="outcome-root"></div>';
     summary.parentNode.insertBefore(tab, summary);
 
     var btn = d.createElement('button');
@@ -302,7 +316,7 @@
     var go = d.getElementById('outcome-unlock');
     var err = d.getElementById('outcome-err');
     var clear = d.getElementById('outcome-clear');
-    function clearReport(){loadVersion++;loaded=null;input.value='';d.getElementById('outcome-root').innerHTML='';d.getElementById('outcome-gate').style.display='';go.disabled=false;go.textContent='Load report';err.textContent='';}
+    function clearReport(){loadVersion++;loaded=null;announce(d,null);input.value='';d.getElementById('outcome-root').innerHTML='';d.getElementById('outcome-gate').style.display='';go.disabled=false;go.textContent='Load report';err.textContent='';}
     clear.addEventListener('click', clearReport);
     if(typeof root.addEventListener==='function') root.addEventListener('pagehide',clearReport);
     function unlock() {
