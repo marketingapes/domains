@@ -108,7 +108,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006c" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006d" defer></script>
 </head>
 <body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
@@ -120,8 +120,8 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <section class="gate" id="gate">
     <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
     <h2 style="margin-top:10px">Sign in to Perspective</h2>
-    <p>Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.</p>
-    <div id="step-email">
+    <p id="gate-copy">Checking sign-in options. Owner access is available below.</p>
+    <div id="step-email" hidden>
       <label for="email" class="eyebrow">Work email</label>
       <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@firm.com">
       <button class="btn" id="send-code" type="button">Email me a code</button>
@@ -133,7 +133,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button class="linkbtn" id="change-email" type="button">Use a different email</button>
     </div>
     <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <details class="token-alt"><summary>Owner access token (read-only)</summary>
+    <details class="token-alt" id="token-alt" open><summary>Owner access token (read-only)</summary>
       <label for="token" class="eyebrow">Access token</label>
       <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
       <button class="btn" id="unlock" type="button">Open Perspective</button>
