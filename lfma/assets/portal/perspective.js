@@ -15,7 +15,13 @@
 (function (root) {
   'use strict';
 
-  var HUB = 'https://affiliate-hub-tbks.onrender.com';
+  // Perspective server. A page may point elsewhere with <body data-hub="https://host">, so moving the server is a
+  // one-attribute change; only a bare https origin is accepted.
+  var DEFAULT_HUB = 'https://affiliate-hub-tbks.onrender.com';
+  function hub() {
+    var b = root.document && root.document.body, h = b && b.getAttribute('data-hub');
+    return h && /^https:\/\/[a-z0-9.-]+$/i.test(h) ? h : DEFAULT_HUB;
+  }
   var REFRESH_MS = 60000;
   var NA = '—';
   var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0 };
@@ -301,7 +307,7 @@
     if (!state.litifyText) { $('lt-fileinfo').textContent = 'Choose the Litify CSV first.'; return; }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { $('lt-fileinfo').textContent = 'Enter the report date (the date in the Litify email subject).'; return; }
     busy('lt-upload-btn', true);
-    root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
+    root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify({ csv: state.litifyText, report_date: d }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); })
       .then(function (j) { $('lt-fileinfo').textContent = j.loaded + ' Litify rows for ' + j.report_date + ' loaded into Perspective. Refreshing…'; state.litify = null; state.litifyLabel = ''; refresh(); })
@@ -347,7 +353,7 @@
   }
   function api(method, path, body) {
     var gen = state.gen;
-    return root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + path, { method: method, cache: 'no-store', credentials: 'omit', redirect: 'error',
+    return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: method, cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify(body) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
         if (gen !== state.gen) throw new Error('locked');
@@ -489,10 +495,10 @@
         return r.json();
       });
     };
-    return get(HUB + '/portal/' + encodeURIComponent(clientId()) + '/feed');
+    return get(hub() + '/portal/' + encodeURIComponent(clientId()) + '/feed');
   }
   function post(path, body) {
-    return root.fetch(HUB + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error' })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
         if (!r.ok) throw new Error((d && typeof d.detail === 'string' && d.detail) || 'Sign-in unavailable (HTTP ' + r.status + ').');

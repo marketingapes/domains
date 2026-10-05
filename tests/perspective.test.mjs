@@ -51,9 +51,11 @@ test('flat Make feed: transfers merge onto the Litify lead by phone hash; unmatc
 test('portal is per-firm: the page names its client and the feed comes live from the hub', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
-  assert.match(html, /<body data-client="plg">/);
+  assert.match(html, /<body data-client="plg" data-hub="https:\/\/[a-z0-9.-]+">/);
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
-  assert.ok(js.includes("HUB + '/portal/' + encodeURIComponent(clientId()) + '/feed'"));
+  assert.ok(js.includes("hub() + '/portal/' + encodeURIComponent(clientId()) + '/feed'"));
+  assert.ok(!/HUB \+/.test(js), 'every request goes through hub()');
+  assert.ok(js.includes("getAttribute('data-hub')") && js.includes('/^https:\\/\\/[a-z0-9.-]+$/i'), 'data-hub accepts only a bare https origin');
   assert.ok(!/['"]Transferred to Phillips/.test(js), 'no firm name hard-coded in stage labels');
   assert.ok(!/legal-web-lead|FALLBACK/.test(js), 'no silent fallback to another feed');
   assert.ok(!/(localStorage|sessionStorage)\.setItem\([^)]*(token|session)/i.test(js), 'session never persisted');
