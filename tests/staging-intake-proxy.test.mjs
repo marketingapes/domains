@@ -3,7 +3,7 @@ import test from 'node:test';
 import { once } from 'node:events';
 
 process.env.NODE_ENV = 'test';
-const { createApp, validateSyntheticForm } = await import('../btl/phillips-law/az-accident/staging-intake-proxy.mjs');
+const { createApp, validateSyntheticForm } = await import('../services/plg-az-mva-staging-intake/proxy.mjs');
 
 const ORIGIN = 'https://btl-phillips-az-accident-stage-20261005.onrender.com';
 const payload = {
