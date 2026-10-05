@@ -27,8 +27,8 @@
   var EMAIL_SIGN_IN_COPY = "Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.";
   var TOKEN_SIGN_IN_COPY = 'Email sign-in is temporarily unavailable. Use the owner access token below. Lead data loads only after access is verified, and clears when you lock or close the tab.';
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
-  var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['contact', 'Names & phone digits']];
+  var state = { audio: null, feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
+  var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['proposals', 'Proposals'], ['requests', 'Request a Campaign'], ['contact', 'Names & phone digits']];
   var LEVEL_LABELS = [['csuite', 'C-suite'], ['management', 'Management'], ['basic', 'Basic']];
   function access() { return (state.feed && state.feed.access) || { sections: [], owner: false }; }
   function can(section) { return access().sections.indexOf(section) >= 0; }
@@ -183,7 +183,7 @@
     }).sort(function (a, b) { return String(b.received_at || '').localeCompare(String(a.received_at || '')); });
     $('lead-list').innerHTML = rows.length ? rows.map(function (l) {
       return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || noName()) + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
-        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + (can('litify') ? litifyTag(l.litify && l.litify.status) : '') + (l.recording_url ? ' <span class="tag">Recording</span>' : '') + '</span></button>';
+        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + (can('litify') ? litifyTag(l.litify && l.litify.status) : '') + (l.has_recording ? ' <span class="tag">Recording</span>' : '') + '</span></button>';
     }).join('') : '<p style="padding:16px">No leads match these filters.</p>';
     $('list-count').textContent = rows.length + ' of ' + leads.length + ' leads';
     renderDetail();
@@ -193,18 +193,48 @@
     if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what ' + esc(firm()) + ' reported back.</p>'; return; }
     var ev = (l.ai_events || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
     var lit = l.litify || {};
-    var rec = /^https:\/\/storage\.vapi\.ai\//.test(l.recording_url || '') ? l.recording_url : '';
+    var keep = state.audio && state.audioLead === l.lead_uid && l.has_recording && access().can_listen ? box.querySelector('audio') : null;   // survive the 60 s refresh
+    if (!keep) clearAudio();
     box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || noName()) + '</h2>' + stageTag(l.stage) + ' ' + (can('litify') ? litifyTag(lit.status) : '') +
       '<dl class="kv"><dt>Lead ID</dt><dd>' + esc(l.lead_uid) + '</dd><dt>Received</dt><dd>' + when(l.received_at) + '</dd><dt>Phone</dt><dd>' + (l.phone_last4 ? '…' + esc(l.phone_last4) : NA) + '</dd><dt>State</dt><dd>' + esc(l.state || NA) + '</dd>' +
       '<dt>Claim</dt><dd>' + esc(l.case_type || l.claim || NA) + '</dd><dt>Source</dt><dd>' + esc([l.channel, l.source].filter(Boolean).join(' · ') || NA) + '</dd>' +
       (l.ad ? '<dt>Ad</dt><dd>' + esc(l.ad) + '</dd>' : '') +
       (l.transfer ? '<dt>Transfer</dt><dd>' + esc(l.transfer.outcome || '') + ' · ' + when(l.transfer.at) + '</dd>' : '') +
-      (rec ? '<dt>Call recording</dt><dd><a href="' + esc(rec) + '" target="_blank" rel="noopener noreferrer">Listen</a> · ' + when(l.recording_at) + ' <small>(Sofia call, stored by Vapi)</small></dd>' : '<dt>Call recording</dt><dd>None on file</dd>') +
+      '<dt>Call recording</dt><dd>' + (!l.has_recording ? 'None on file'
+        : access().can_listen ? '<button class="btn" type="button" id="rec-play" data-rec="' + esc(l.lead_uid) + '">Listen</button> ' + when(l.recording_at) + ' <small>(Sofia call)</small><span id="rec-box"></span><small id="rec-msg" role="status" aria-live="polite"></small>'
+        : 'On file · ' + when(l.recording_at) + ' <small>(your access doesn\'t include playback)</small>') + '</dd>' +
       (can('litify') ? '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' : '') +
       (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') + '</dl>' +
       '<div class="eyebrow" style="margin-top:6px">WHAT THE AI DID</div>' +
       (ev.length ? '<ul class="timeline">' + ev.map(function (e) { return '<li class="' + esc(e.kind || '') + '"><time>' + when(e.at) + '</time>' + esc(e.text) + '</li>'; }).join('') + '</ul>'
         : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded yet for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
+    if (keep && $('rec-box')) { $('rec-box').appendChild(keep); $('rec-play').hidden = true; }
+  }
+
+  // Recordings come only from the Perspective server, which checks the person, firm and lead each time. The audio is
+  // fetched with the session header and played from memory, so no token or storage address is ever in a URL.
+  function clearAudio() {
+    if (state.audio) { try { root.URL.revokeObjectURL(state.audio); } catch (e) { /* already gone */ } state.audio = null; state.audioLead = null; }
+  }
+  var REC_ERRORS = { 403: "Your access doesn't include call recordings.", 404: 'No recording is available for this lead.', 429: 'Too many recordings opened. Try again later.',
+                     502: "The recording couldn't be loaded. Try again later.", 503: "Recordings aren't switched on yet." };
+  function playRecording(uid, btn) {
+    var gen = state.gen, lead = state.lead;
+    btn.disabled = true; $('rec-msg').textContent = ' Loading…';
+    root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/recordings/' + encodeURIComponent(uid),
+      { headers: { Authorization: 'Bearer ' + state.token }, cache: 'no-store', credentials: 'omit', redirect: 'error' })
+      .then(function (r) {
+        if (r.status === 401) { if (gen === state.gen) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; } throw new Error(''); }
+        if (!r.ok || !/^audio\//.test(r.headers.get('content-type') || '')) throw new Error(REC_ERRORS[r.status] || REC_ERRORS[502]);
+        return r.blob();
+      })
+      .then(function (b) {
+        if (gen !== state.gen || lead !== state.lead || !$('rec-box')) return;
+        clearAudio(); state.audio = root.URL.createObjectURL(b); state.audioLead = lead;
+        $('rec-box').innerHTML = '<audio controls autoplay preload="auto" controlslist="nodownload" style="display:block;width:100%;margin-top:8px"></audio>';
+        $('rec-box').firstChild.src = state.audio; $('rec-msg').textContent = ''; btn.hidden = true;
+      })
+      .catch(function (e) { if (gen === state.gen && $('rec-msg')) { $('rec-msg').textContent = e.message ? ' ' + e.message : ''; btn.disabled = false; } });
   }
 
   // ---------- marketing ----------
@@ -378,37 +408,48 @@
       .catch(function (err) { $('task-msg').textContent = err.message; });
   }
 
-  // ---------- proposals & campaign requests (everyone with access) ----------
+  // ---------- proposals & campaign requests ----------
+  // Proposals: the server sends a non-owner only those the owner named them on. "Got it" records reading, nothing more.
+  var ACK_COPY = 'Got it records that you have read this, with your name and the time. It is not acceptance, a signature, an amendment or a budget change.';
   function renderProposals() {
     var list = (state.feed && state.feed.proposals) || [], a = access();
     $('pr-list').innerHTML = list.length ? list.map(function (p) {
       var who = a.owner ? (p.acks && p.acks.length ? p.acks.map(function (k) { return esc(k.by) + ' · ' + when(k.at); }).join('<br>') : 'No one yet') : '';
+      var to = (p.recipients || []);
       return '<article class="panel" style="margin:12px 0"><div class="eyebrow">' + (p.kind === 'agreement' ? 'SIGNED AGREEMENT' : 'PROPOSAL') +
-        (p.effective_date ? ' · ' + esc(day(p.effective_date + 'T12:00:00')) : '') + '</div><h3 style="margin:6px 0">' + esc(p.title) + '</h3>' +
+        (p.effective_date ? ' · ' + esc(day(p.effective_date + 'T12:00:00')) : '') + (a.owner ? ' · ' + (p.status === 'shared' ? 'SHARED' : 'DRAFT, OWNERS ONLY') : '') + '</div><h3 style="margin:6px 0">' + esc(p.title) + '</h3>' +
         (p.summary ? '<p><b>' + esc(p.summary) + '</b></p>' : '') + (p.body || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
-        '<div class="toolbar">' + (p.acked_by_me ? '<span class="tag">You got it</span>' : (a.email ? '<button class="btn" type="button" data-ack="' + esc(p.id) + '">Got it</button>' : '')) +
-        ' <span class="tag mute">' + fmtInt(p.ack_count || 0) + ' acknowledged</span></div>' +
-        (a.owner ? '<p class="note"><b>Who got it:</b><br>' + who + '</p>' : '') + '</article>';
-    }).join('') : '<p>Nothing here yet.</p>';
+        (a.owner ? '' : '<div class="toolbar">' + (p.acked_by_me ? '<span class="tag">You got it</span>' : (a.email ? '<button class="btn" type="button" data-ack="' + esc(p.id) + '">Got it</button>' : '')) + '</div>' +
+          '<p class="note">' + esc(p.ack_meaning || ACK_COPY) + '</p>') +
+        (a.owner ? '<p class="note"><b>Shared with:</b> ' + (to.length ? to.map(function (e) { return esc(e) + ' <button class="linkbtn" type="button" data-unshare="' + esc(p.id) + '" data-email="' + esc(e) + '">Remove</button>'; }).join(', ') : 'No one (draft)') + '</p>' +
+          '<form class="toolbar" data-share="' + esc(p.id) + '"><input type="email" required placeholder="approved person\'s email" aria-label="Share with (email)" maxlength="254"> <button class="btn" type="submit">Share</button></form>' +
+          '<p class="note"><b>Who got it:</b><br>' + who + '</p>' : '') + '</article>';
+    }).join('') : '<p>' + (a.owner ? 'No proposals yet.' : 'Nothing has been shared with you.') + '</p>';
     $('pr-form-wrap').hidden = !a.owner;
+  }
+  function shareProposal(id, email, shared) {
+    $('pr-msg').textContent = 'Saving…';
+    api('POST', '/proposals/' + encodeURIComponent(id) + '/share', { email: email, shared: shared })
+      .then(function (j) { $('pr-msg').textContent = shared ? 'Shared with ' + j.recipient + '. They see it if their level includes Proposals.' : 'Removed ' + j.recipient + '.'; refresh(); })
+      .catch(function (e) { $('pr-msg').textContent = e.message; });
   }
   function ackProposal(id, btn) {
     btn.disabled = true; $('pr-msg').textContent = 'Saving…';
     api('POST', '/proposals/' + encodeURIComponent(id) + '/ack', {})
-      .then(function () { $('pr-msg').textContent = 'Recorded. Thank you.'; refresh(); })
+      .then(function () { $('pr-msg').textContent = 'Recorded that you read it (acknowledgment only).'; refresh(); })
       .catch(function (e) { btn.disabled = false; $('pr-msg').textContent = e.message; });
   }
   function addProposal(e) {
     e.preventDefault();
     api('POST', '/proposals', { title: $('pr-title').value, summary: $('pr-summary').value, body: $('pr-body').value, kind: 'proposal' })
-      .then(function () { $('pr-msg').textContent = 'Published.'; $('pr-form').reset(); refresh(); })
+      .then(function () { $('pr-msg').textContent = 'Saved as a draft. Only owners see it until you share it.'; $('pr-form').reset(); refresh(); })
       .catch(function (err) { $('pr-msg').textContent = err.message; });
   }
   var RQ_STATUS = { requested: ['Requested · draft', 'warn'], approved: ['Approved · being set up', ''], declined: ['Declined', 'mute'] };
   function renderRequests() {
     var list = (state.feed && state.feed.requests) || [], a = access();
     $('rq-form').hidden = !a.can_request;
-    if (!a.can_request) $('rq-msg').textContent = 'Sign in with your email to send a request.';
+    if (!a.can_request && !a.owner) $('rq-msg').textContent = "Your access doesn't include campaign requests.";
     $('rq-list').innerHTML = list.length ? list.map(function (r) {
       var st = RQ_STATUS[r.status] || [r.status, 'mute'];
       var bits = [r.states, r.monthly_goal ? fmtInt(r.monthly_goal) + ' signed/month wanted' : '', r.budget ? fmtMoney(r.budget) + ' budget' : ''].filter(Boolean).join(' · ');
@@ -467,9 +508,8 @@
   function allowedViews() {
     var a = access();
     if (!state.feed) return [];
-    // Proposals and campaign requests are open to everyone with access; the server decides who sees names.
     return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); })
-      .concat(['proposals', 'requests']).concat(a.owner ? ['settings'] : []);
+      .concat(a.owner ? ['settings'] : []);
   }
   function setView(v) {
     var ok = allowedViews();
@@ -482,6 +522,7 @@
   }
   function lock() {
     state.gen++;   // anything in flight from before the lock is ignored when it lands
+    clearAudio();
     state.feed = null; state.litify = null; state.litifyLabel = ''; state.litifyText = ''; state.lead = null; state.token = null; state.failedAt = null;
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
@@ -504,7 +545,7 @@
       var l = { lead_uid: str(r.lead_uid), campaign: str(r.campaign) || 'other', received_at: str(r.received_at) || null, name: str(r.name), phone_last4: str(r.phone_last4),
         phone_hash: str(r.phone_hash), case_type: str(r.case_type), state: str(r.state), channel: str(r.channel), source: str(r.source), stage: str(r.stage) || 'received',
         ai_tracked: r.ai_tracked === true || r.ai_tracked === 'true', ours: r.ours === true || r.ours === 'true', ai_events: [], stages_reached: [],
-        recording_url: str(r.recording_url), recording_at: str(r.recording_at) };
+        has_recording: r.has_recording === true || r.has_recording === 'true', recording_at: str(r.recording_at) };
       l.stages_reached.push(l.stage);
       if (str(r.litify_intake) || str(r.litify_status)) l.litify = { intake: str(r.litify_intake), created: str(r.litify_created), status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details) };
       return l;
@@ -667,7 +708,12 @@
     $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
     $('task-form').addEventListener('submit', addTask);
     $('set-save').addEventListener('click', saveSettings);
-    $('pr-list').addEventListener('click', function (e) { var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b); });
+    $('pr-list').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b);
+      var u = e.target.closest('[data-unshare]'); if (u) shareProposal(u.getAttribute('data-unshare'), u.getAttribute('data-email'), false);
+    });
+    $('pr-list').addEventListener('submit', function (e) { var f = e.target.closest('[data-share]'); if (f) { e.preventDefault(); shareProposal(f.getAttribute('data-share'), f.querySelector('input').value, true); } });
+    $('lead-detail').addEventListener('click', function (e) { var b = e.target.closest('[data-rec]'); if (b) playRecording(b.getAttribute('data-rec'), b); });
     $('pr-form').addEventListener('submit', addProposal);
     $('rq-form').addEventListener('submit', sendRequest);
     $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });

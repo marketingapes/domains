@@ -162,7 +162,7 @@ test('overview numbers come from the server, summed across campaigns, and are bl
   P._state.feed = null;
 });
 
-test('proposals and campaign requests are tabs everyone with access gets', async () => {
+test('proposals and campaign requests are section-gated tabs', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
@@ -171,7 +171,20 @@ test('proposals and campaign requests are tabs everyone with access gets', async
   assert.match(html, /data-panel="proposals"/);
   assert.match(html, /data-panel="requests"/);
   assert.match(html, /Nothing runs or spends until it is approved and launched/);
-  assert.ok(js.includes(".concat(['proposals', 'requests'])"), 'both tabs are open to every signed-in level');
+  assert.ok(!js.includes(".concat(['proposals', 'requests'])"), 'tabs are not forced open for every level');
+  assert.ok(js.includes("['proposals', 'Proposals'], ['requests', 'Request a Campaign']"), 'owner ticks both per level in Settings');
+  assert.ok(js.includes("'/proposals/' + encodeURIComponent(id) + '/share'"), 'owner names recipients');
+  assert.match(html, /not acceptance, a signature, an amendment or a budget change/);
   assert.ok(js.includes("api('POST', '/requests'") && js.includes("'/proposals/' + encodeURIComponent(id) + '/ack'"));
   assert.ok(js.includes('a.owner ? (p.acks'), 'only the owner sees who acknowledged');
+});
+
+test('recordings play only through the server with the session header; no provider link in the page', async () => {
+  const fs = await import('node:fs');
+  const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
+  assert.ok(!/storage\.vapi\.ai|recording_url|recording_call_id/.test(js), 'no provider address or call id handled by the page');
+  assert.ok(js.includes("'/recordings/' + encodeURIComponent(uid)") && js.includes("Authorization: 'Bearer ' + state.token"));
+  assert.ok(js.includes('createObjectURL(b)') && js.includes('revokeObjectURL'), 'audio plays from memory and is released');
+  assert.ok(js.includes('access().can_listen'), 'Listen only when the server says this person may play');
+  assert.ok(/function lock\(\) \{[\s\S]{0,200}clearAudio\(\)/.test(js), 'locking drops any loaded audio');
 });
