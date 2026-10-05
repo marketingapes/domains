@@ -308,7 +308,53 @@
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = '';
     ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
   }
+  // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
+  // transfer (transfers). Fold them into the structured shape the views use. Transfers merge onto
+  // the Litify lead with the same phone hash; unmatched transfers become their own lead.
+  var STAGE_ORDER = ['received', 'handed_over', 'queued', 'not_reached', 'ai_contacted', 'intake_completed', 'disqualified', 'transferred'];
+  function later(a, b) { return STAGE_ORDER.indexOf(b) > STAGE_ORDER.indexOf(a) ? b : a; }
+  function normalizeFeed(feed) {
+    if (!feed || !Array.isArray(feed.leads)) return feed;
+    var flat = feed.leads.some(function (l) { return l && ('litify_status' in l || 'transfer_outcome' in l); }) || Array.isArray(feed.transfers);
+    if (!flat) return feed;
+    var str = function (v) { return typeof v === 'string' ? v.trim() : v == null ? '' : String(v); };
+    var shape = function (r) {
+      var l = { lead_uid: str(r.lead_uid), campaign: str(r.campaign) || 'other', received_at: str(r.received_at) || null, name: str(r.name), phone_last4: str(r.phone_last4),
+        phone_hash: str(r.phone_hash), case_type: str(r.case_type), state: str(r.state), channel: str(r.channel), source: str(r.source), stage: str(r.stage) || 'received',
+        ai_tracked: r.ai_tracked === true || r.ai_tracked === 'true', ours: r.ours === true || r.ours === 'true', ai_events: [], stages_reached: [] };
+      l.stages_reached.push(l.stage);
+      if (str(r.litify_intake) || str(r.litify_status)) l.litify = { intake: str(r.litify_intake), created: str(r.litify_created), status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details) };
+      return l;
+    };
+    // A phone can appear on several Litify intakes; keep one CRM row per person, best status first.
+    var rank = function (l) { var s = l.litify && l.litify.status; return s === 'Converted' ? 0 : s && s !== 'Turned Down' ? 1 : s ? 2 : 3; };
+    var seen = Object.create(null), byHash = Object.create(null);
+    var leads = feed.leads.filter(Boolean).map(shape).sort(function (a, b) { return rank(a) - rank(b); })
+      .filter(function (l) { var k = l.phone_hash || l.lead_uid; if (seen[k]) return false; seen[k] = true; return true; });
+    leads.forEach(function (l) { if (l.phone_hash) byHash[l.phone_hash] = l; });
+    (feed.transfers || []).filter(Boolean).forEach(function (r) {
+      var t = shape(r), at = str(r.transfer_at) || t.received_at, outcome = str(r.transfer_outcome);
+      var target = (t.phone_hash && byHash[t.phone_hash]) || null;
+      if (!target) { target = t; leads.push(t); if (t.phone_hash) byHash[t.phone_hash] = t; }
+      else { target.ours = true; if (!target.state) target.state = t.state; if (target.channel === '' || /Unattributed|Legacy/.test(target.channel)) target.channel = t.channel; }
+      target.ai_tracked = true;
+      var connected = /^Live transfer connected/i.test(outcome);
+      target.ai_events.push({ at: at, text: 'Sofia completed intake: ' + (t.case_type || 'claim') + (t.state ? ', ' + t.state : ''), kind: '' });
+      target.ai_events.push({ at: at, text: connected ? 'Live transfer connected to Phillips' : (outcome || 'Transfer attempted'), kind: connected ? 'firm' : 'warn' });
+      if (str(r.ai_summary)) target.ai_events.push({ at: at, text: 'Summary: ' + str(r.ai_summary).slice(0, 280), kind: '' });
+      ['intake_completed'].concat(connected ? ['transferred'] : []).forEach(function (s) { target.stage = later(target.stage, s); if (target.stages_reached.indexOf(s) < 0) target.stages_reached.push(s); });
+      if (connected) target.transfer = { at: at, outcome: 'Live transfer connected' };
+    });
+    var litify = feed.leads.filter(function (r) { return r && (str(r.litify_intake) || str(r.litify_status)); }).map(function (r) {
+      var l = byHash[str(r.phone_hash)];
+      return { created: str(r.litify_created), intake: str(r.litify_intake), name: str(r.name), phone_last4: str(r.phone_last4), case_type: str(r.case_type), source: str(r.source).replace(/^Litify · /, ''),
+        status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details), campaign: str(r.campaign) || 'other', match_lead_uid: l && l.ours ? l.lead_uid : null };
+    });
+    return Object.assign({}, feed, { leads: leads, litify: litify, transfers: undefined });
+  }
+
   function open(feed) {
+    feed = normalizeFeed(feed);
     if (!feed || !Array.isArray(feed.leads) || !Array.isArray(feed.campaigns)) throw new Error('This feed is not a Perspective feed yet.');
     state.feed = feed;
     state.campaign = state.campaign || (feed.campaigns[0] && feed.campaigns[0].id) || 'all';
@@ -349,7 +395,7 @@
     $('sm-checklist').addEventListener('change', function (e) { var k = e.target.getAttribute('data-key'); if (k) setCheck(k, e.target.checked); });
   }
 
-  var api = { open: open, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state };
+  var api = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state };
   root.Perspective = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {
