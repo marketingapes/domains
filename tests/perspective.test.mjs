@@ -161,3 +161,17 @@ test('overview numbers come from the server, summed across campaigns, and are bl
   assert.equal(none.leads, null); assert.equal(none.signed, null);
   P._state.feed = null;
 });
+
+test('proposals and campaign requests are tabs everyone with access gets', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
+  const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
+  assert.match(html, /data-view="proposals"/);
+  assert.match(html, /data-view="requests"/);
+  assert.match(html, /data-panel="proposals"/);
+  assert.match(html, /data-panel="requests"/);
+  assert.match(html, /Nothing runs or spends until it is approved and launched/);
+  assert.ok(js.includes(".concat(['proposals', 'requests'])"), 'both tabs are open to every signed-in level');
+  assert.ok(js.includes("api('POST', '/requests'") && js.includes("'/proposals/' + encodeURIComponent(id) + '/ack'"));
+  assert.ok(js.includes('a.owner ? (p.acks'), 'only the owner sees who acknowledged');
+});

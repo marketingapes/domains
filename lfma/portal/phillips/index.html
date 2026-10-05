@@ -108,7 +108,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006d" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006f" defer></script>
 </head>
 <body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
@@ -151,6 +151,8 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
       <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
       <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
+      <button role="tab" data-view="proposals" aria-selected="false">Proposals</button>
+      <button role="tab" data-view="requests" aria-selected="false">Request a Campaign</button>
       <button role="tab" data-view="settings" aria-selected="false" hidden>Settings</button>
     </nav>
     <p class="note" id="no-sections" hidden>Your access level doesn’t include any sections yet. Ask the portal owner.</p>
@@ -216,6 +218,45 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
           <button class="btn" id="t-add" type="submit">Add task</button>
         </form>
         <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="view" data-panel="proposals" hidden>
+      <div class="panel"><div class="eyebrow">AGREEMENTS &amp; PROPOSALS</div><h2 style="margin-top:8px">What we've signed and what's on the table</h2>
+        <p class="note">Everyone with access sees this page. “Got it” records that you've read an item, with your name and the time.</p>
+        <div id="pr-list"></div>
+        <p class="fresh" id="pr-msg" role="status" aria-live="polite"></p>
+      </div>
+      <div class="panel" id="pr-form-wrap" style="margin-top:16px" hidden><div class="eyebrow">OWNER</div><h2 style="margin-top:8px">Add a proposal</h2>
+        <form id="pr-form">
+          <input id="pr-title" placeholder="Title" aria-label="Title" maxlength="200" required style="width:100%;margin-bottom:8px">
+          <input id="pr-summary" placeholder="One-line summary" aria-label="Summary" maxlength="1000" style="width:100%;margin-bottom:8px">
+          <textarea id="pr-body" placeholder="Details (a blank line starts a new paragraph)" aria-label="Details" maxlength="20000" rows="6" style="width:100%;margin-bottom:8px"></textarea>
+          <button class="btn" type="submit">Publish to the portal</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="view" data-panel="requests" hidden>
+      <div class="grid2">
+        <div class="panel"><div class="eyebrow">REQUEST A CAMPAIGN</div><h2 style="margin-top:8px">Tell us what you want more of</h2>
+          <p class="note">Your request is saved as a draft campaign with your name and the time. Marketing Apes sets it up the same way as your current campaigns. Nothing runs or spends until it is approved and launched.</p>
+          <form id="rq-form">
+            <label class="eyebrow" for="rq-case">Case type</label>
+            <input id="rq-case" placeholder="e.g. Depo-Provera, rideshare assault, AZ auto" maxlength="120" required style="width:100%;margin-bottom:8px">
+            <label class="eyebrow" for="rq-states">States</label>
+            <input id="rq-states" placeholder="e.g. AZ, NV" maxlength="200" style="width:100%;margin-bottom:8px">
+            <label class="eyebrow" for="rq-goal">Signed cases wanted per month</label>
+            <input id="rq-goal" type="number" min="0" max="10000" step="1" style="width:100%;margin-bottom:8px">
+            <label class="eyebrow" for="rq-budget">Budget (optional, USD)</label>
+            <input id="rq-budget" type="number" min="0" step="1" style="width:100%;margin-bottom:8px">
+            <label class="eyebrow" for="rq-notes">Anything else</label>
+            <textarea id="rq-notes" maxlength="2000" rows="4" style="width:100%;margin-bottom:8px"></textarea>
+            <button class="btn" type="submit" id="rq-send">Send request</button>
+          </form>
+          <p class="fresh" id="rq-msg" role="status" aria-live="polite"></p>
+        </div>
+        <div class="panel"><div class="eyebrow">REQUESTS</div><h2 style="margin-top:8px">Requested campaigns</h2><ul class="checklist" id="rq-list"></ul></div>
       </div>
     </section>
 

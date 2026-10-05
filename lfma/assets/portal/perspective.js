@@ -378,6 +378,64 @@
       .catch(function (err) { $('task-msg').textContent = err.message; });
   }
 
+  // ---------- proposals & campaign requests (everyone with access) ----------
+  function renderProposals() {
+    var list = (state.feed && state.feed.proposals) || [], a = access();
+    $('pr-list').innerHTML = list.length ? list.map(function (p) {
+      var who = a.owner ? (p.acks && p.acks.length ? p.acks.map(function (k) { return esc(k.by) + ' · ' + when(k.at); }).join('<br>') : 'No one yet') : '';
+      return '<article class="panel" style="margin:12px 0"><div class="eyebrow">' + (p.kind === 'agreement' ? 'SIGNED AGREEMENT' : 'PROPOSAL') +
+        (p.effective_date ? ' · ' + esc(day(p.effective_date + 'T12:00:00')) : '') + '</div><h3 style="margin:6px 0">' + esc(p.title) + '</h3>' +
+        (p.summary ? '<p><b>' + esc(p.summary) + '</b></p>' : '') + (p.body || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+        '<div class="toolbar">' + (p.acked_by_me ? '<span class="tag">You got it</span>' : (a.email ? '<button class="btn" type="button" data-ack="' + esc(p.id) + '">Got it</button>' : '')) +
+        ' <span class="tag mute">' + fmtInt(p.ack_count || 0) + ' acknowledged</span></div>' +
+        (a.owner ? '<p class="note"><b>Who got it:</b><br>' + who + '</p>' : '') + '</article>';
+    }).join('') : '<p>Nothing here yet.</p>';
+    $('pr-form-wrap').hidden = !a.owner;
+  }
+  function ackProposal(id, btn) {
+    btn.disabled = true; $('pr-msg').textContent = 'Saving…';
+    api('POST', '/proposals/' + encodeURIComponent(id) + '/ack', {})
+      .then(function () { $('pr-msg').textContent = 'Recorded. Thank you.'; refresh(); })
+      .catch(function (e) { btn.disabled = false; $('pr-msg').textContent = e.message; });
+  }
+  function addProposal(e) {
+    e.preventDefault();
+    api('POST', '/proposals', { title: $('pr-title').value, summary: $('pr-summary').value, body: $('pr-body').value, kind: 'proposal' })
+      .then(function () { $('pr-msg').textContent = 'Published.'; $('pr-form').reset(); refresh(); })
+      .catch(function (err) { $('pr-msg').textContent = err.message; });
+  }
+  var RQ_STATUS = { requested: ['Requested · draft', 'warn'], approved: ['Approved · being set up', ''], declined: ['Declined', 'mute'] };
+  function renderRequests() {
+    var list = (state.feed && state.feed.requests) || [], a = access();
+    $('rq-form').hidden = !a.can_request;
+    if (!a.can_request) $('rq-msg').textContent = 'Sign in with your email to send a request.';
+    $('rq-list').innerHTML = list.length ? list.map(function (r) {
+      var st = RQ_STATUS[r.status] || [r.status, 'mute'];
+      var bits = [r.states, r.monthly_goal ? fmtInt(r.monthly_goal) + ' signed/month wanted' : '', r.budget ? fmtMoney(r.budget) + ' budget' : ''].filter(Boolean).join(' · ');
+      return '<li><span><b>' + esc(r.case_type) + '</b> <span class="tag ' + st[1] + '">' + esc(st[0]) + '</span>' +
+        '<small>' + esc(bits) + (bits ? ' · ' : '') + 'asked ' + when(r.requested_at) + (r.requested_by ? ' by ' + esc(r.requested_by) : '') +
+        (r.decided_at ? ' · ' + esc(r.status) + ' ' + when(r.decided_at) + (r.decided_by ? ' by ' + esc(r.decided_by) : '') : '') + '</small>' +
+        (r.notes ? '<small>' + esc(r.notes) + '</small>' : '') +
+        (a.owner && r.status === 'requested' ? '<span class="toolbar"><button class="btn" type="button" data-rq="' + esc(r.id) + '" data-decision="approve">Approve as draft campaign</button>' +
+          ' <button class="linkbtn" type="button" data-rq="' + esc(r.id) + '" data-decision="decline">Decline</button></span>' : '') + '</span></li>';
+    }).join('') : '<li>No requests yet.</li>';
+  }
+  function sendRequest(e) {
+    e.preventDefault();
+    busy('rq-send', true); $('rq-msg').textContent = 'Sending…';
+    api('POST', '/requests', { case_type: $('rq-case').value, states: $('rq-states').value, monthly_goal: parseInt($('rq-goal').value || '0', 10) || 0,
+                               budget: parseFloat($('rq-budget').value || '0') || 0, notes: $('rq-notes').value })
+      .then(function () { $('rq-msg').textContent = 'Request sent. It is saved as a draft campaign; Marketing Apes will set it up.'; $('rq-form').reset(); refresh(); })
+      .catch(function (err) { $('rq-msg').textContent = err.message; })
+      .then(function () { busy('rq-send', false); });
+  }
+  function decideRequest(id, decision, btn) {
+    btn.disabled = true; $('rq-msg').textContent = 'Saving…';
+    api('POST', '/requests/' + encodeURIComponent(id), { decision: decision })
+      .then(function (j) { $('rq-msg').textContent = decision === 'approve' ? 'Approved. Draft campaign ' + j.campaign_id + ' added (inactive until launched).' : 'Declined.'; refresh(); })
+      .catch(function (e) { btn.disabled = false; $('rq-msg').textContent = e.message; });
+  }
+
   // ---------- owner settings ----------
   function renderSettings() {
     var st = (state.feed && state.feed.settings) || { levels: {}, updated: {} };
@@ -403,10 +461,16 @@
   // ---------- wiring ----------
   function renderAll() {
     renderCampaignTabs(); renderHead();
-    var fn = { overview: renderOverview, leads: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary, settings: renderSettings }[state.view];
+    var fn = { overview: renderOverview, leads: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary, proposals: renderProposals, requests: renderRequests, settings: renderSettings }[state.view];
     if (fn) fn();
   }
-  function allowedViews() { var a = access(); return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); }).concat(a.owner ? ['settings'] : []); }
+  function allowedViews() {
+    var a = access();
+    if (!state.feed) return [];
+    // Proposals and campaign requests are open to everyone with access; the server decides who sees names.
+    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); })
+      .concat(['proposals', 'requests']).concat(a.owner ? ['settings'] : []);
+  }
   function setView(v) {
     var ok = allowedViews();
     if (ok.indexOf(v) < 0) v = ok[0] || '';
@@ -603,6 +667,10 @@
     $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
     $('task-form').addEventListener('submit', addTask);
     $('set-save').addEventListener('click', saveSettings);
+    $('pr-list').addEventListener('click', function (e) { var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b); });
+    $('pr-form').addEventListener('submit', addProposal);
+    $('rq-form').addEventListener('submit', sendRequest);
+    $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
     checkAuthAvailability();
   }
 
