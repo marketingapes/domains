@@ -108,7 +108,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}.topline{flex-wrap:wrap}.topline .pill{white-space:normal}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006i" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006j" defer></script>
 </head>
 <body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
@@ -205,7 +205,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section class="view" data-panel="summary" hidden>
       <div class="grid2">
         <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours.</p></div>
+        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours. “Owner not set” or “No due date” means no one has assigned or scheduled it yet.</p></div>
       </div>
       <div class="panel" style="margin-top:16px"><div class="eyebrow">DAILY HANDOFFS</div><h2 style="margin-top:8px">Shared tasks</h2>
         <p class="note">Everyone with Summary access sees the same list. Checking a task records who checked it and when; it never changes a lead or its Litify outcome.</p>
@@ -240,7 +240,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section class="view" data-panel="requests" hidden>
       <div class="grid2">
         <div class="panel"><div class="eyebrow">REQUEST A CAMPAIGN</div><h2 style="margin-top:8px">Tell us what you want more of</h2>
-          <p class="note">Your request is saved as a draft campaign with your name and the time. Marketing Apes sets it up the same way as your current campaigns. Nothing runs or spends until it is approved and launched.</p>
+          <p class="note">Your request is saved with your name and the time. An owner approves or declines it; approving adds it as an inactive draft campaign. Sending it doesn't assign or schedule any setup, and nothing runs or spends until it is launched.</p>
           <form id="rq-form">
             <label class="eyebrow" for="rq-case">Case type</label>
             <input id="rq-case" placeholder="e.g. Depo-Provera, rideshare assault, AZ auto" maxlength="120" required style="width:100%;margin-bottom:8px">

@@ -56,7 +56,7 @@
 
   var STAGES = {
     received: ['Received', 'mute'], queued: ['Queued for AI call', 'mute'], ai_contacted: ['AI reached', ''],
-    not_reached: ['Not reached yet', 'warn'], intake_completed: ['Intake completed', ''],
+    not_reached: ['Not reached', 'warn'], intake_completed: ['Intake completed', ''],
     transferred: ['Transferred to firm', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
   };
   function stageTag(s) { var d = STAGES[s] || [s || 'Unknown', 'mute']; return '<span class="tag ' + d[1] + '">' + esc(d[0]) + '</span>'; }
@@ -204,7 +204,10 @@
         : access().can_listen ? '<button class="btn" type="button" id="rec-play" data-rec="' + esc(l.lead_uid) + '">Listen</button> ' + when(l.recording_at) + ' <small>(Sofia call)</small><span id="rec-box"></span><small id="rec-msg" role="status" aria-live="polite"></small>'
         : 'On file · ' + when(l.recording_at) + ' <small>(your access doesn\'t include playback)</small>') + '</dd>' +
       (can('litify') ? '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' : '') +
-      (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') + '</dl>' +
+      (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') +
+      // No source sends a follow-up owner, next action or due date for a lead; say that rather than imply one exists.
+      (lit.status === 'Converted' || lit.status === 'Turned Down' || l.stage === 'disqualified' ? ''
+        : '<dt>Follow-up</dt><dd><span class="tag warn">Not recorded</span> No owner, next action or due date for this lead is in the connected data.</dd>') + '</dl>' +
       '<div class="eyebrow" style="margin-top:6px">WHAT THE AI DID</div>' +
       (ev.length ? '<ul class="timeline">' + ev.map(function (e) { return '<li class="' + esc(e.kind || '') + '"><time>' + when(e.at) + '</time>' + esc(e.text) + '</li>'; }).join('') + '</ul>'
         : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded yet for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
@@ -268,7 +271,7 @@
     $('lt-top').innerHTML = [
       ['In your Litify report', fmtInt(rows.length), state.litifyLabel || 'Daily “All Marketing Apes Leads” report'],
       ['Matched to our leads', fmtInt(matched), pct(matched, rows.length) + ' matched on phone'],
-      ['Converted (signed)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still working']
+      ['Converted (signed)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still open']
     ].map(function (x) { return '<div class="panel"><div class="eyebrow">' + esc(x[0]) + '</div><div class="s-num" style="font-size:34px">' + x[1] + '</div><p style="margin:0">' + esc(x[2]) + '</p></div>'; }).join('');
     var reasons = sortedEntries(countBy(rows.filter(function (r) { return r.status === 'Turned Down'; }), function (r) { return r.reason || 'No reason given'; }));
     var max = reasons.length ? reasons[0][1] : 1;
@@ -368,15 +371,20 @@
     $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
     var auto = m.leads === null ? [] : [
       fmtInt(m.leads) + ' leads in the connected sources; ' + fmtInt(m.inLitify) + ' appear in your Litify data.',
-      fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still being worked.',
+      fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still open in Litify.',
       m.transfers !== null ? fmtInt(m.transfers) + ' live transfers from AI intake.' : 'AI transfer tracking does not cover these leads.',
       m.spend !== null ? fmtMoney(m.spend) + ' spent' + (m.cpl !== null ? ' · ' + fmtMoney(m.cpl, true) + ' per lead' : '') + '.' : 'Spend not connected for this view.'
     ];
     $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
       ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var needs = c.needs || [];
+    // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
+    var today = new Date().toISOString().slice(0, 10);
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
-      return '<li><span><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner && n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
+      var due = /^\d{4}-\d{2}-\d{2}$/.test(n.due || '') ? n.due : '';
+      return '<li><span><b>' + esc(n.label) + '</b> ' + (n.owner ? '<span class="tag ' + (n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
+        ' ' + (due ? '<span class="tag ' + (due < today ? 'bad' : 'mute') + '">Due ' + day(due + 'T12:00:00') + '</span>' : '<span class="tag warn">No due date</span>') +
+        (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
     }).join('') : '<li>No open items.</li>';
     var tasks = ((state.feed && state.feed.tasks) || []).filter(function (t) { return c.id === 'all' || !t.campaign_id || t.campaign_id === c.id; });
     var mayCheck = !!access().can_complete_tasks;
@@ -454,7 +462,9 @@
       .then(function () { $('pr-msg').textContent = 'Saved as a draft. Only owners see it until you share it.'; $('pr-form').reset(); refresh(); })
       .catch(function (err) { $('pr-msg').textContent = err.message; });
   }
-  var RQ_STATUS = { requested: ['Requested · draft', 'warn'], approved: ['Approved · being set up', ''], declined: ['Declined', 'mute'] };
+  var RQ_STATUS = { requested: ['Requested · awaiting decision', 'warn'], approved: ['Approved · inactive draft', ''], declined: ['Declined', 'mute'] };
+  // A request carries no owner or due date, so an open one says so instead of implying someone is on it.
+  var RQ_NEXT = { requested: 'Next: an owner approves or declines it.', approved: 'Next: set up and launch it. Nothing runs or spends until then.' };
   function renderRequests() {
     var list = (state.feed && state.feed.requests) || [], a = access();
     $('rq-form').hidden = !a.can_request;
@@ -462,9 +472,12 @@
     $('rq-list').innerHTML = list.length ? list.map(function (r) {
       var st = RQ_STATUS[r.status] || [r.status, 'mute'];
       var bits = [r.states, r.monthly_goal ? fmtInt(r.monthly_goal) + ' signed/month wanted' : '', r.budget ? fmtMoney(r.budget) + ' budget' : ''].filter(Boolean).join(' · ');
+      var next = RQ_NEXT[r.status];
       return '<li><span><b>' + esc(r.case_type) + '</b> <span class="tag ' + st[1] + '">' + esc(st[0]) + '</span>' +
+        (next ? ' <span class="tag warn">Not assigned</span> <span class="tag warn">No due date</span>' : '') +
         '<small>' + esc(bits) + (bits ? ' · ' : '') + 'asked ' + when(r.requested_at) + (r.requested_by ? ' by ' + esc(r.requested_by) : '') +
         (r.decided_at ? ' · ' + esc(r.status) + ' ' + when(r.decided_at) + (r.decided_by ? ' by ' + esc(r.decided_by) : '') : '') + '</small>' +
+        (next ? '<small>' + esc(next) + '</small>' : '') +
         (r.notes ? '<small>' + esc(r.notes) + '</small>' : '') +
         (a.owner && r.status === 'requested' ? '<span class="toolbar"><button class="btn" type="button" data-rq="' + esc(r.id) + '" data-decision="approve">Approve as draft campaign</button>' +
           ' <button class="linkbtn" type="button" data-rq="' + esc(r.id) + '" data-decision="decline">Decline</button></span>' : '') + '</span></li>';
@@ -475,7 +488,7 @@
     busy('rq-send', true); $('rq-msg').textContent = 'Sending…';
     api('POST', '/requests', { case_type: $('rq-case').value, states: $('rq-states').value, monthly_goal: parseInt($('rq-goal').value || '0', 10) || 0,
                                budget: parseFloat($('rq-budget').value || '0') || 0, notes: $('rq-notes').value })
-      .then(function () { $('rq-msg').textContent = 'Request sent. It is saved as a draft campaign; Marketing Apes will set it up.'; $('rq-form').reset(); refresh(); })
+      .then(function () { $('rq-msg').textContent = 'Request saved. It waits for an owner to approve or decline it; no one is assigned yet and nothing runs or spends.'; $('rq-form').reset(); refresh(); })
       .catch(function (err) { $('rq-msg').textContent = err.message; })
       .then(function () { busy('rq-send', false); });
   }
@@ -747,7 +760,8 @@
     $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
   }
 
-  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability };
+  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability,
+                   _renderSummary: renderSummary, _renderRequests: renderRequests, _renderDetail: renderDetail };
   root.Perspective = exported;
   if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {

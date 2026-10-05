@@ -170,7 +170,7 @@ test('proposals and campaign requests are section-gated tabs', async () => {
   assert.match(html, /data-view="requests"/);
   assert.match(html, /data-panel="proposals"/);
   assert.match(html, /data-panel="requests"/);
-  assert.match(html, /Nothing runs or spends until it is approved and launched/);
+  assert.match(html, /Sending it doesn't assign or schedule any setup, and nothing runs or spends until it is launched/);
   assert.ok(!js.includes(".concat(['proposals', 'requests'])"), 'tabs are not forced open for every level');
   assert.ok(js.includes("['proposals', 'Proposals'], ['requests', 'Request a Campaign']"), 'owner ticks both per level in Settings');
   assert.ok(js.includes("'/proposals/' + encodeURIComponent(id) + '/share'"), 'owner names recipients');
@@ -201,4 +201,57 @@ test('Lock and every new sign-in reset the signed-in area; late replies and file
   assert.equal((lit.match(/if \(gen !== state\.gen\) return;/g) || []).length, 2, 'file read and hashing both drop a stale result');
   const up = js.slice(js.indexOf('function uploadLitify'), js.indexOf('function saveLitify'));
   assert.ok(up.includes('if (gen !== state.gen) return hold();'), 'Litify upload reply dropped after Lock');
+});
+
+function renderDom(ids) {
+  const els = new Map(ids.map((id) => [id, { hidden: false, disabled: false, textContent: '', innerHTML: '', value: '', querySelector: () => null }]));
+  return { els, document: { body: { getAttribute: () => null }, getElementById: (id) => els.get(id) || null } };
+}
+
+test('pending items show their owner and due date, or say none is set; nothing claims follow-up that is not scheduled', async () => {
+  const oldDocument = globalThis.document;
+  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
+  globalThis.document = document;
+  try {
+    P._state.campaign = 'mva';
+    P._state.feed = P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
+      access: { sections: ['leads', 'litify', 'summary', 'requests'], owner: false, email: 'basic@example.test', can_request: true },
+      campaigns: [{ id: 'mva', label: 'MVA', needs: [
+        { id: 'n1', label: 'Send the export', owner: 'Synthetic', detail: '' },
+        { id: 'n2', label: 'Pick a launch date', detail: '' },
+        { id: 'n3', label: 'Approve the script', owner: 'Marketing Apes', due: '2020-01-02', detail: '' }] }],
+      requests: [
+        { id: 'r1', case_type: 'Dog bite', status: 'requested', requested_at: '2026-10-01T12:00:00Z', requested_by: 'basic@example.test' },
+        { id: 'r2', case_type: 'Slip and fall', status: 'approved', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z' },
+        { id: 'r3', case_type: 'Boat', status: 'declined', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z' }],
+      leads: [
+        { lead_uid: 'EE-OPEN', campaign: 'mva', phone_hash: 'h1', stage: 'received' },
+        { lead_uid: 'EE-SIGNED', campaign: 'mva', phone_hash: 'h2', stage: 'received', litify_intake: 'INT-2', litify_status: 'Converted' },
+        { lead_uid: 'EE-DQ', campaign: 'mva', phone_hash: 'h3', stage: 'disqualified' }] });
+
+    P._renderSummary();
+    const items = els.get('sm-checklist').innerHTML.split('</li>');
+    assert.match(items[0], /Synthetic<\/span> <span class="tag warn">No due date/, 'owner shown; missing due date flagged');
+    assert.match(items[1], /Owner not set/, 'missing owner flagged, not defaulted');
+    assert.ok(!/>Marketing Apes</.test(items[1]), 'no invented owner');
+    assert.match(items[2], /Marketing Apes<\/span> <span class="tag bad">Due Jan 2, 2020/, 'a past due date shows as late');
+
+    P._renderRequests();
+    const rq = els.get('rq-list').innerHTML.split('</li>');
+    assert.match(rq[0], /Requested · awaiting decision[\s\S]*Not assigned[\s\S]*No due date[\s\S]*an owner approves or declines it/);
+    assert.match(rq[1], /Approved · inactive draft[\s\S]*Not assigned[\s\S]*No due date[\s\S]*Nothing runs or spends until then/);
+    assert.ok(!/Not assigned|No due date|Next:/.test(rq[2]), 'a declined request is not pending');
+
+    for (const [uid, open] of [['EE-OPEN', true], ['EE-SIGNED', false], ['EE-DQ', false]]) {
+      P._state.lead = uid;
+      P._renderDetail();
+      assert.equal(/Follow-up<\/dt><dd><span class="tag warn">Not recorded/.test(els.get('lead-detail').innerHTML), open, uid);
+    }
+    const fs = await import('node:fs');
+    const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
+    for (const claim of ['being set up', 'will set it up', 'still being worked', 'Not reached yet', "n.owner || 'Marketing Apes'"]) assert.ok(!js.includes(claim), claim);
+  } finally {
+    P._state.feed = null; P._state.campaign = null; P._state.lead = null;
+    globalThis.document = oldDocument;
+  }
 });
