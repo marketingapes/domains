@@ -25,7 +25,8 @@ test('empty system: every figure reads Unknown, never 0 or $0', () => {
   assert.equal((html.match(/class="oc-unk"/g) || []).length, 4 * 8, 'all 32 stage cells are unknown');
   assert.equal((html.match(/<td><b>Unknown<\/b><span class="sub">Period:/g) || []).length, 4, 'spend unknown on all four rows');
   assert.doesNotMatch(html, /<b>0<\/b>|\$0\.00/);
-  assert.equal((t.match(/Not connected/g) || []).length, 8, 'all eight sources not connected');
+  const freshness = t.slice(t.indexOf('Source freshness'), t.indexOf('Campaign to outcome'));
+  assert.equal((freshness.match(/Not connected/g) || []).length, 8, 'all eight sources not connected');
   assert.match(t, /Website callback worker: no worker has identified itself/);
   assert.match(t, /“Unknown” means no source has reported — it is not zero/);
 });
@@ -80,7 +81,7 @@ test('source freshness shows stale and failed sign-in distinctly from fresh and 
   const t = text(R.render(sample()));
   assert.match(t, /Google Ads — NIL account feeds: spend, platform reported Unknown .* sign-in failed/);
   assert.match(t, /Website form intake \(legal-web-lead\) feeds: submission, queued callback Fresh/);
-  assert.match(t, /Phillips form-status pushback .* Not connected — never/);
+  assert.match(t, /Phillips form-status pushback .* Not connected Not available never/);
 });
 
 test('unmatched firm records expose only redacted status and reason', () => {
@@ -181,11 +182,11 @@ function fakeDom() {
 test('mount: adds the tab and its own token field without touching existing markup; idempotent', () => {
   const dom = fakeDom();
   assert.equal(R.mount(dom.document), true);
-  assert.deepEqual(dom.nav.children.map((b) => b.textContent), ['AI Intake', 'Marketing', 'Campaign to outcome', 'Summary']);
+  assert.deepEqual(dom.nav.children.map((b) => b.textContent), ['AI Intake', 'Marketing', 'Reporting', 'Summary']);
   assert.deepEqual(dom.container.children.map((c) => c.id), ['tab-outcomes', 'tab-summary']);
   const tab = dom.byId.get('tab-outcomes');
   assert.match(tab.innerHTML, /type="password" id="outcome-token"/);
-  assert.match(tab.innerHTML, /<div id="outcome-root"><\/div>$/);
+  assert.match(tab.innerHTML, /<div id="outcome-root"><\/div><section class="lead-feed" id="lead-feed-root"/);
   assert.ok(!/\$\d|\d{6,}/.test(tab.innerHTML), 'no figures or ids before a token is entered');
   assert.equal(R.mount(dom.document), false, 'second mount is a no-op');
   assert.equal(dom.nav.children.length, 4);
@@ -198,7 +199,7 @@ test('mount: after the page body is regenerated (tab gone), the script mounts it
   R.mount(dom.document);
   const regenerated = fakeDom(); // the refresh replaced the body: fresh nav + tabs, no outcome tab
   assert.equal(R.mount(regenerated.document), true);
-  assert.equal(regenerated.nav.children.filter((b) => b.textContent === 'Campaign to outcome').length, 1);
+  assert.equal(regenerated.nav.children.filter((b) => b.textContent === 'Reporting').length, 1);
 });
 
 test('unlock: empty token asks for one and fetches nothing; a working token loads and is cleared from the field', async () => {
@@ -212,7 +213,7 @@ test('unlock: empty token asks for one and fetches nothing; a working token load
   assert.deepEqual([calls.length, err.textContent], [0, 'Enter your portal access token.']);
   input.value = '  TOKEN-VALUE  ';
   await go.listeners.click[0]();
-  assert.deepEqual(calls, ['Bearer TOKEN-VALUE']);
+  assert.deepEqual(calls, ['Bearer TOKEN-VALUE', 'Bearer TOKEN-VALUE']);
   assert.equal(input.value, '', 'token cleared from the field after success');
   assert.ok(dom.byId.get('outcome-root').innerHTML.includes('Campaign to outcome'));
   assert.equal(dom.byId.get('outcome-gate').style.display, 'none');
@@ -262,4 +263,373 @@ test('clear report removes loaded data and reopens the gate without token storag
  dom.byId.get('outcome-token').value='TOKEN-VALUE';await dom.byId.get('outcome-unlock').listeners.click[0]();
  dom.byId.get('outcome-clear').listeners.click[0]();
  assert.equal(dom.byId.get('outcome-root').innerHTML,'');assert.equal(dom.byId.get('outcome-token').value,'');assert.equal(dom.byId.get('outcome-gate').style.display,'');
+});
+
+// ---- Program view (PHILLIPS-PORTAL-20261004-01, Claude pass 1) ----
+// MVA is the default view when the registry labels any campaign MVA; LA and every other
+// campaign stay one click away; nothing is hidden or relabeled when labels are missing.
+const labeled = () => {
+  const r = sample();
+  r.rows[0].identity.program = 'MVA'; r.rows[1].identity.program = 'LA'; r.rows[2].identity.program = 'MVA';
+  r.rows[3].identity.program = null;
+  return r;
+};
+const rowCount = (html) => (html.match(/class="oc-row"/g) || []).length;
+
+test('program: MVA is the default view when labeled, and the switcher keeps LA, unlabeled and all', () => {
+  const html = R.render(labeled());
+  assert.equal(rowCount(html), 2, 'only the two MVA rows by default');
+  const t = text(html);
+  assert.match(t, /Viewing: MVA/);
+  for (const label of ['MVA (2 campaigns)', 'LA (1 campaign)', 'Program not on record (1 campaign)', 'All campaigns (4 campaigns)']) assert.ok(t.includes(label), label);
+  assert.match(html, /data-program="MVA"[^>]*aria-pressed="true"/);
+});
+test('program: each view shows exactly its rows; All shows every row', () => {
+  const r = labeled();
+  assert.equal(rowCount(R.render(r, { program: 'LA' })), 1);
+  assert.equal(rowCount(R.render(r, { program: '__none__' })), 1);
+  assert.equal(rowCount(R.render(r, { program: '__all__' })), 4);
+  assert.equal(rowCount(R.render(r, { program: 'NOPE' })), 2, 'unknown selection falls back to the default, MVA');
+});
+test('program: with no MVA label on record, all campaigns show and the gap is stated, not hidden', () => {
+  const html = R.render(sample());
+  assert.equal(rowCount(html), sample().rows.length);
+  assert.match(text(html), /No campaign in this report is labeled MVA/);
+  assert.match(text(html), /Program not on record \(4 campaigns\)/);
+});
+test('program: whole-report sections say they cover all campaigns', () => {
+  const t = text(R.render(labeled()));
+  assert.match(t, /Source freshness \(all campaigns\)/);
+  assert.match(t, /Kept out of the numbers above \(all campaigns\)/);
+});
+test('program: a hostile label is escaped and cannot inject markup', () => {
+  const r = labeled(); r.rows[1].identity.program = '<img src=x onerror=alert(1)>';
+  const html = R.render(r, { program: '__all__' });
+  assert.ok(!/<img/.test(html));
+});
+test('program: switching views re-renders from the loaded report without refetching', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  let fetches = 0;
+  await R.load('t', { document, fetch: async () => { fetches++; return { status: 200, ok: true, json: async () => labeled() }; } });
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 2);
+  assert.equal(R.setProgram('LA', { document }), true);
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 1);
+  assert.equal(fetches, 1);
+  R.setProgram('__all__', { document });
+  assert.equal(rowCount(nodes['outcome-root'].innerHTML), 4);
+});
+test('program: after a failed load, switching views shows nothing from an earlier report', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  await R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => labeled() }) });
+  await R.load('t', { document, fetch: async () => ({ status: 401, ok: false, json: async () => ({}) }) });
+  assert.equal(R.setProgram('LA', { document }), false);
+  assert.ok(!nodes['outcome-root'].innerHTML.includes('oc-row'));
+});
+
+// ---- Pass 2 fixes (review receipt pass-1/REVIEW-pass1.md) ----
+const withPrograms = (labels) => { const r = sample(); r.rows.forEach((row, i) => { row.identity.program = labels[i] ?? null; }); return r; };
+test('D1: with no MVA label, the "all campaigns are shown" note appears only on the All view', () => {
+  const r = withPrograms(['LA', null, null, null]);
+  assert.match(text(R.render(r)), /No campaign in this report is labeled MVA yet, so all campaigns are shown/);
+  const la = text(R.render(r, { program: 'LA' }));
+  assert.ok(!/so all campaigns are shown/.test(la));
+  assert.match(la, /No campaign in this report is labeled MVA yet\./);
+});
+test('D4: labels the backend would reject are treated as not on record; sentinels and prototype keys cannot collide', () => {
+  const r = withPrograms(['__all__', 'toString', '__proto__', 'MVA']);
+  const html = R.render(r, { program: '__all__' });
+  assert.equal((html.match(/data-program="__all__"/g) || []).length, 1, 'one All button');
+  assert.ok(!/native code/.test(html));
+  assert.match(text(html), /Program not on record \(3 campaigns\)/);
+  assert.equal(rowCount(R.render(r, { program: '__none__' })), 3);
+});
+test('counts are labeled as campaigns, not leads', () => {
+  const t = text(R.render(withPrograms(['MVA', 'MVA', 'LA', null])));
+  assert.match(t, /MVA \(2 campaigns\)/); assert.match(t, /LA \(1 campaign\)/); assert.match(t, /All campaigns \(4 campaigns\)/);
+});
+test('A4: attribute-breakout payloads stay inside the attribute', () => {
+  const r = withPrograms(['MVA', '" onclick="x', "' onmouseover='y", null]);
+  const html = R.render(r, { program: '__all__' });
+  assert.ok(!/onclick="x|onmouseover='y/.test(html));
+});
+test('A5: setProgram shows nothing while a load is in flight, after it is superseded, or after clear', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  await R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  let release; const pending = new Promise((res) => { release = res; });
+  const inflight = R.load('t', { document, fetch: () => pending });
+  assert.equal(R.setProgram('LA', { document }), false, 'in flight');
+  const newer = R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['LA','LA']) }) });
+  await newer; release({ status: 200, ok: true, json: async () => withPrograms(['MVA','MVA','MVA','MVA']) }); await inflight;
+  assert.equal(R.setProgram('__all__', { document }), true);
+  assert.ok(!/MVA \(/.test(text(nodes['outcome-root'].innerHTML)), 'the superseded report never comes back');
+});
+test('D2/D3: mounted tab switches views by click delegation, keeps focus on the chosen button, and announces the view', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const root = dom.byId.get('outcome-root');
+  assert.ok(root.listeners && root.listeners.click && root.listeners.click.length === 1, 'one delegated click listener on the report root');
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA','MVA',null]) }) });
+  assert.match(text(root.innerHTML), /Viewing: MVA/);
+  assert.equal(dom.byId.get('outcome-view').textContent, 'Viewing: MVA');
+  let focused = null;
+  const btn = { getAttribute: (a) => (a === 'data-program' ? 'LA' : null) };
+  const inner = { closest: (sel) => (sel === '[data-program]' ? btn : null), getAttribute: () => null };
+  root.querySelector = (sel) => (sel === '[data-program="LA"]' ? { focus: () => { focused = 'LA'; } } : null);
+  root.listeners.click[0]({ target: inner });
+  assert.equal(rowCount(root.innerHTML), 1);
+  assert.equal(focused, 'LA');
+});
+
+// ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
+test('N1: the page loads the current script version', () => {
+  assert.match(PAGE, /phillips-report\.js\?v=20261005f"/);
+});
+test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const root = dom.byId.get('outcome-root');
+  const live = dom.byId.get('outcome-view');
+  assert.ok(live, 'live region exists outside the report root');
+  assert.match(dom.byId.get('tab-outcomes').innerHTML, /id="outcome-view"[^>]*aria-live="polite"/);
+  assert.ok(!/aria-live/.test(R.render(withPrograms(['MVA']))), 'no live region inside re-rendered markup');
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  assert.equal(live.textContent, 'Viewing: MVA');
+  let focused = null;
+  root.querySelector = (sel) => { const m = sel.match(/data-program="([^"]+)"/); return m ? { focus: () => { focused = m[1]; } } : null; };
+  assert.equal(R.setProgram('NB', { document: dom.document }), true);
+  assert.equal(focused, 'MVA');
+  R.setProgram('LA', { document: dom.document });
+  assert.equal(live.textContent, 'Viewing: LA');
+});
+test('A5: after Clear report, switching views shows nothing and the announcement is cleared', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  dom.byId.get('outcome-clear').listeners.click[0]();
+  assert.equal(R.setProgram('LA', { document: dom.document }), false);
+  assert.ok(!dom.byId.get('outcome-root').innerHTML.includes('oc-row'));
+  assert.equal(dom.byId.get('outcome-view').textContent, '');
+});
+test('R1: a malformed report keeps the "could not be read" copy, announces nothing, and cannot be switched', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  for (const body of [{ schema: 'bogus' }, null]) {
+    await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => body }) });
+    assert.match(dom.byId.get('outcome-root').innerHTML, /could not be read/);
+    assert.ok(!/Cannot read|undefined/.test(dom.byId.get('outcome-root').innerHTML));
+    assert.equal(dom.byId.get('outcome-view').textContent, '');
+    assert.equal(R.setProgram('MVA', { document: dom.document }), false);
+  }
+});
+
+// ---- Leads in this view (2026-10-05 scheduled run): count, source, period, refresh, coverage ----
+const leadsBlock = (html) => { const t = text(html); return t.slice(t.indexOf('Leads in this view'), t.indexOf('Rows use different')); };
+
+test('L1: each campaign shows its lead count, lead source, reporting period and last refresh', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /Campaign Leads Lead source Reporting period Last refreshed/);
+  assert.match(t, /NIL · search 8 Website form intake \(legal-web-lead\) — Fresh All retained leads to date \(not a daily total\) 2026-10-02 17:30 UTC/);
+  assert.match(t, /Report refreshed 2026-10-02 18:00 UTC/);
+});
+
+test('L2: a missing count, source time or period reads "Not available", never 0', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /BTL · native lead form Not available Native lead-form intake \(Make\) — Not connected All retained leads to date \(not a daily total\) Not available/);
+  assert.match(t, /Leads reported: 8 from 1 of 4 campaigns; Not available for the other 3 campaigns/);
+  const e = leadsBlock(R.render(empty()));
+  assert.match(e, /Leads reported: Not available — no campaign in this view has a reported lead count/);
+  assert.doesNotMatch(e, /Leads reported: 0|<b>0<\/b>/);
+  const noCohort = sample(); delete noCohort.cohort;
+  assert.match(leadsBlock(R.render(noCohort)), /NIL · search 8 .* Not available 2026-10-02 17:30 UTC/);
+});
+
+test('L3: "All leads loaded" is never claimed while the cohort is incomplete', () => {
+  const t = leadsBlock(R.render(sample()));
+  assert.match(t, /Coverage not verified These are the leads available in the report, not confirmed to be all leads: the report has not reconciled its lead cohort as complete; 3 campaigns with no reported lead count; 1 campaign with a lead source that is not fresh\./);
+  assert.doesNotMatch(t, /All leads loaded/);
+});
+
+test('L4: "All leads loaded" needs a complete cohort, zero unreadable records and fresh lead sources', () => {
+  const nil = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); return r; };
+  const ok = nil(); ok.cohort.complete = true;
+  assert.match(leadsBlock(R.render(ok)), /All leads loaded/);
+  assert.equal(R.coverageGaps(ok, ok.rows).length, 0);
+  const unread = nil(); unread.cohort.complete = true; unread.operations.unreadable_lead_records = 2;
+  assert.match(leadsBlock(R.render(unread)), /Coverage not verified .* 2 lead record\(s\) could not be read/);
+  const noOps = nil(); noOps.cohort.complete = true; delete noOps.operations;
+  assert.match(leadsBlock(R.render(noOps)), /unreadable lead records: Not available/);
+  const stale = nil(); stale.cohort.complete = true; stale.sources.find((s) => s.id === 'website_intake').status = 'stale';
+  assert.match(leadsBlock(R.render(stale)), /Coverage not verified .* 1 campaign with a lead source that is not fresh/);
+  const truthy = nil(); truthy.cohort.complete = 'true';
+  assert.doesNotMatch(leadsBlock(R.render(truthy)), /All leads loaded/, 'only boolean true counts');
+});
+
+test('L5: the lead summary follows the program view and stays escaped', () => {
+  const r = sample();
+  r.rows[3].identity.program = 'MVA'; r.rows[1].identity.program = 'LA';
+  r.sources.find((s) => s.id === 'website_intake').label = '<img src=x onerror=alert(1)>';
+  const html = R.render(r);
+  const t = leadsBlock(html);
+  assert.match(t, /Leads reported: 8 from 1 of 1 campaign \./);
+  assert.doesNotMatch(t, /native lead form/);
+  assert.doesNotMatch(html, /<img src=x/);
+  const la = leadsBlock(R.render(r, { program: 'LA' }));
+  assert.match(la, /Leads reported: Not available/);
+  assert.match(la, /BTL · website conversion/);
+});
+
+test('L6: malformed lead-source data degrades to "Not available" without throwing or overclaiming', () => {
+  const variants = [
+    (r) => { r.sources = null; },
+    (r) => { r.sources = [null, 7, { id: 'website_intake', label: 'W', status: 'fresh', last_success_at: 'not-a-date' }]; },
+    (r) => { r.rows.forEach((x) => { x.stages.submission.sources = 'website_intake'; }); },
+    (r) => { r.rows.forEach((x) => { x.stages.submission.sources = [{ id: 'ghost_source' }, null]; }); },
+    (r) => { r.rows.forEach((x) => { delete x.stages.submission; }); },
+    (r) => { r.cohort = null; r.operations = null; r.generated_at = 'garbage'; },
+    (r) => { r.rows = []; },
+  ];
+  for (const mutate of variants) {
+    const r = sample(); r.cohort.complete = true; mutate(r);
+    const html = R.render(r);
+    const t = leadsBlock(html);
+    assert.match(t, /Leads in this view/);
+    assert.doesNotMatch(t, /All leads loaded/, 'malformed source data never verifies coverage');
+    assert.doesNotMatch(t, /Invalid Date|NaN|undefined|null/);
+  }
+  const bad = sample(); bad.sources = [{ id: 'website_intake', label: 'W', status: 'fresh', last_success_at: 'not-a-date' }];
+  assert.match(leadsBlock(R.render(bad)), /NIL · search 8 W — Fresh All retained leads to date \(not a daily total\) Not available/);
+  const none = sample(); none.rows = [];
+  assert.match(leadsBlock(R.render(none)), /no campaigns in this view/);
+});
+
+test('L7: lead table cells carry labels for the stacked phone layout', () => {
+  const html = R.render(sample());
+  for (const l of ['Campaign', 'Leads', 'Lead source', 'Reporting period', 'Last refreshed']) assert.match(html, new RegExp('data-label="' + l + '"'));
+  assert.match(PAGE, /@media\(max-width:640px\)\{\.oc-leadtable tr:first-child\{display:none\}/);
+});
+
+test('L8 (review findings 1-7): coverage is never claimed on an unproven count, source or record total', () => {
+  const base = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); r.cohort.complete = true; return r; };
+  assert.match(leadsBlock(R.render(base())), /All leads loaded/, 'control: complete, known, fresh');
+  const cases = {
+    unknownCount: (r) => { r.rows[0].stages.submission = { state: 'unknown', count: null, sources: [{ id: 'website_intake' }] }; },
+    partial: (r) => { r.rows[0].stages.submission.state = 'partial'; },
+    pending: (r) => { r.rows[0].stages.submission.state = 'pending'; r.rows[0].stages.submission.pending = 3; },
+    pendingOnKnown: (r) => { r.rows[0].stages.submission.pending = 2; },
+    unknownOnKnown: (r) => { r.rows[0].stages.submission.unknown = 5; },
+    caveat: (r) => { r.rows[0].stages.submission.caveat = 'source_not_fresh'; },
+    negativeUnreadable: (r) => { r.operations.unreadable_lead_records = -1; },
+    fractionalUnreadable: (r) => { r.operations.unreadable_lead_records = 0.5; },
+    duplicateStale: (r) => { r.sources.unshift({ id: 'website_intake', label: 'W', status: 'stale', last_success_at: '2026-10-02T17:30:00Z' }); },
+    freshNoTime: (r) => { r.sources.find((s) => s.id === 'website_intake').last_success_at = null; },
+    freshBadTime: (r) => { r.sources.find((s) => s.id === 'website_intake').last_success_at = 'not-a-date'; },
+    sourcesObject: (r) => { r.sources = {}; },
+    sourcesString: (r) => { r.sources = 'x'; },
+  };
+  for (const [name, mutate] of Object.entries(cases)) {
+    const r = base(); mutate(r);
+    let html;
+    assert.doesNotThrow(() => { html = R.render(r); }, name);
+    assert.doesNotMatch(leadsBlock(html), /All leads loaded/, name);
+    assert.match(leadsBlock(html), /Coverage not verified/, name);
+  }
+  const p = base(); p.rows[0].stages.submission.state = 'partial';
+  assert.match(leadsBlock(R.render(p)), /Leads reported: 8 from 1 of 1 campaign \(1 of those counts partial or pending\)/);
+  assert.match(leadsBlock(R.render(p)), /NIL · search 8 \(partial\)/);
+  const d = base(); d.rows[0].stages.submission.sources = [{ id: 'website_intake' }, { id: 'website_intake' }];
+  assert.equal((leadsBlock(R.render(d)).match(/Website form intake \(legal-web-lead\) — Fresh/g) || []).length, 1, 'repeated source shown once');
+  const o = base(); o.rows[0].stages.submission.sources = [{ id: 'ghost' }]; o.sources = [];
+  assert.doesNotMatch(leadsBlock(R.render(o)), /\[object Object\]/);
+  const obj = base(); obj.rows[0].stages.submission.sources = [{ id: { a: 1 } }];
+  assert.doesNotMatch(leadsBlock(R.render(obj)), /\[object Object\]/);
+});
+
+test('R2 (Codex): malformed nested collections show generic unreadable copy, never a raw error', () => {
+  const cases = {
+    sourcesObject: (r) => { r.sources = {}; },
+    sourcesNullEntry: (r) => { r.sources = [null, ...r.sources]; },
+    unmatchedRowsObject: (r) => { r.unmatched = { count: 2, rows: {} }; },
+    unmatchedNullRow: (r) => { r.unmatched = { count: 1, rows: [null] }; },
+    unmatchedString: (r) => { r.unmatched = 'x'; },
+    feedsObject: (r) => { r.sources[0].feeds = {}; },
+    stagesString: (r) => { r.rows[0].stages = 'x'; },
+  };
+  for (const [name, mutate] of Object.entries(cases)) {
+    const r = sample(); mutate(r);
+    let html;
+    assert.doesNotThrow(() => { html = R.render(r); }, name);
+    assert.doesNotMatch(html, /is not a function|Cannot read|TypeError|undefined/, name);
+  }
+});
+
+test('R2 (Codex): a render failure clears the previous report, its view and announcement', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const good = sample(); good.rows[3].identity.program = 'MVA';
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => good }) });
+  assert.equal(dom.byId.get('outcome-view').textContent, 'Viewing: MVA');
+  assert.equal(R.setProgram('MVA', { document: dom.document }), true);
+  // A report whose nested shape makes rendering throw (getter simulates an unforeseen shape).
+  const bad = sample(); Object.defineProperty(bad, 'excluded', { get() { throw new TypeError('boom internal'); } });
+  const out = await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => bad }) });
+  assert.equal(out, null);
+  assert.match(dom.byId.get('outcome-root').innerHTML, /could not be read/);
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /boom internal|TypeError/);
+  assert.equal(dom.byId.get('outcome-view').textContent, '');
+  assert.equal(R.setProgram('MVA', { document: dom.document }), false, 'previous report cannot survive the failure');
+  // Network/parse exceptions show generic copy; controlled HTTP access copy is kept.
+  await R.load('t', { document: dom.document, fetch: async () => { throw new TypeError('Failed to fetch secret-host'); } });
+  assert.match(dom.byId.get('outcome-root').innerHTML, /Report unavailable\. No figures are shown\./);
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /secret-host/);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => { throw new SyntaxError('Unexpected token < in JSON'); } }) });
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /Unexpected token/);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 401, ok: false }) });
+  assert.match(dom.byId.get('outcome-root').innerHTML, /That token was not recognized for the report\./);
+  assert.equal(R.setProgram('MVA', { document: dom.document }), false);
+});
+
+test('Review minors: duplicate source ids never count as fresh; inherited names are not statuses', () => {
+  const nil = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); r.cohort.complete = true; return r; };
+  const dup = nil(); dup.sources.push({ id: 'website_intake', label: 'W2', status: 'fresh', last_success_at: null });
+  assert.doesNotMatch(leadsBlock(R.render(dup)), /All leads loaded/);
+  const inh = nil(); inh.sources.find((s) => s.id === 'website_intake').status = 'hasOwnProperty';
+  const html = R.render(inh);
+  assert.doesNotMatch(text(html), /undefined/);
+  assert.match(leadsBlock(html), /— Unknown/);
+});
+
+
+test('saved feed: escapes identity fields and never claims source consolidation', () => {
+  const html = R.renderFeed({served_at:'2026-10-05T20:00:00Z',leads:[{id:'same',name:'<script>attack</script>',phone:'555-test',status:'New'},{id:'same'},{name:'No ID'}]});
+  assert.match(html,/&lt;script&gt;/); assert.doesNotMatch(html,/<script>|All leads loaded/);
+  assert.match(html,/Duplicate IDs: 1/); assert.match(html,/Records without a stable ID: 1/);
+  assert.match(html,/All Phillips leads: coverage unverified/); assert.match(html,/Not available/);
+  assert.match(html,/Saved feed refreshed: 2026-10-05T20:00:00Z/);
+  const empty = R.renderFeed({leads:[]}); assert.match(empty,/does not establish zero leads/);
+  for (const bad of [null,{}, {leads:{}},{leads:[null]},{leads:[[]]}]) assert.throws(()=>R.renderFeed(bad));
+});
+test('saved feed: authenticated request clears stale identities on unreadable and failed responses', async () => {
+  const dom = fakeDom(); R.mount(dom.document); const target=dom.byId.get('lead-feed-root');
+  let request;
+  await R.loadFeed('synthetic-only',{document:dom.document,fetch:async(url,opts)=>{request={url,opts};return {ok:true,status:200,json:async()=>({leads:[{id:'test',name:'Synthetic Person'}]})};}});
+  assert.match(target.innerHTML,/Synthetic Person/); assert.match(request.url,/\/phillips\/leads$/);
+  assert.equal(request.opts.headers.Authorization,'Bearer synthetic-only'); assert.equal(request.opts.cache,'no-store'); assert.equal(request.opts.credentials,'omit');
+  await R.loadFeed('t',{document:dom.document,fetch:async()=>({ok:true,status:200,json:async()=>({leads:[null]})})});
+  assert.doesNotMatch(target.innerHTML,/Synthetic Person/); assert.match(target.innerHTML,/could not be read/);
+  await R.loadFeed('t',{document:dom.document,fetch:async()=>{throw new Error('private-host-secret');}});
+  assert.doesNotMatch(target.innerHTML,/private-host-secret/);
+  for(const status of [401,404,500]) {await R.loadFeed('t',{document:dom.document,fetch:async()=>({ok:false,status})});assert.match(target.innerHTML,/coverage remains unverified/);}
+});
+test('saved feed: clear during pending response prevents identities returning', async () => {
+  const dom=fakeDom(); R.mount(dom.document); let release;
+  const pending=R.loadFeed('t',{document:dom.document,fetch:()=>new Promise(resolve=>{release=resolve;})});
+  await Promise.resolve(); dom.byId.get('outcome-clear').listeners.click[0]();
+  release({ok:true,status:200,json:async()=>({leads:[{id:'late',name:'Late Synthetic'}]})}); await pending;
+  assert.equal(dom.byId.get('lead-feed-root').innerHTML,'');
 });
