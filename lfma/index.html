@@ -166,7 +166,7 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
 
   <div class="kylecard rise d2">
     <img src="/assets/kyle-headshot.png" alt="Kyle — founder of Marketing Apes">
-    <div><div class="who">I'm Kyle.</div><div class="what">I help firms incorporate AI with a purpose — not toys, not demos that die. Real systems that sign cases. Tell me your bottleneck below.</div></div>
+    <div><div class="who">I'm Kyle.</div><div class="what">I help firms incorporate AI with a purpose — not toys, not demos that die. Practical systems for intake and follow-up. Tell me your bottleneck below.</div></div>
   </div>
 
   <div class="sec rise d3">
@@ -174,22 +174,22 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
     <div class="steps">
       <div class="step"><div class="n">1</div><div><div class="t">Find the bottleneck</div><div class="b">Leads going cold? Intake too slow? Nobody following up? We start where the money leaks.</div></div></div>
       <div class="step"><div class="n">2</div><div><div class="t">Build the AI for it</div><div class="b">Sofia qualifies leads in seconds. Full-channel campaigns. Automated follow-up. Built live, in front of you.</div></div></div>
-      <div class="step"><div class="n">3</div><div><div class="t">Watch it pay</div><div class="b">Every signed case feeds back into the system. It gets cheaper and smarter the longer it runs.</div></div></div>
+      <div class="step"><div class="n">3</div><div><div class="t">Watch it pay</div><div class="b">Review intake outcomes and costs together. Confirm signed retainers before reporting signed-case results.</div></div></div>
     </div>
   </div>
 
   <div class="proof rise d4" style="background:linear-gradient(135deg,rgba(125,232,0,.10),rgba(0,200,255,.12),rgba(123,92,255,.12))">
-    <h2>Proof it works</h2>
+    <h2>Results and evidence</h2>
     <ul>
-      <li><span class="ck">✓</span><span>LA County<span class="sub2">18 signed. Cost per lead $19.91. Cost per signed $74.12. The loop keeps pushing both down.</span></span></li>
-      <li><span class="ck">✓</span><span>Live client site<span class="sub2"><a href="https://nearestinjurylawyers.com/" style="color:var(--violet);font-weight:700">Nearest Injury Lawyers</a> — running the full loop right now.</span></span></li>
+      <li><span class="ck">✓</span><span>LA County<span class="sub2">18 CRM Converted out of 81 recorded intakes. Executed retainers are unverified. Spend and outcome cohorts are unmatched, so confirmed signed-case cost is not calculable. <a href="/results/la-county/#scoreboard" style="color:var(--violet);font-weight:700">See the results and limitations</a>.</span></span></li>
+      <li><span class="ck">✓</span><span>Live client site<span class="sub2"><a href="https://nearestinjurylawyers.com/" style="color:var(--violet);font-weight:700">Nearest Injury Lawyers</a> — explore the live site.</span></span></li>
     </ul>
   </div>
 
   <div class="formcard rise d4" id="contact">
     <h2>Talk to Kyle</h2>
     <p class="fsub">Tell him where it hurts. He'll tell you straight if AI can fix it.</p>
-    <form id="kyleForm" novalidate>
+    <form id="kyleForm">
       <div class="field">
         <label for="fName">Your name</label>
         <input id="fName" name="name" type="text" autocomplete="name" required placeholder="Jane Attorney">
@@ -210,13 +210,15 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
         <label for="fMsg">Where does it hurt?</label>
         <textarea id="fMsg" name="message" required placeholder="Leads go cold after hours… intake takes too long… I don't know where my cases come from…"></textarea>
       </div>
-      <button class="submitbtn" type="submit" id="fBtn">Send it to Kyle</button>
-      <p class="formnote">No spam, no drip sequence. Kyle reads every one.</p>
+      <button class="submitbtn" type="submit" id="fBtn" disabled>Send it to Kyle</button>
+      <p class="formnote">Describe your firm’s workflow. Please leave out confidential client information.</p>
+      <p class="formnote" id="formError" role="alert" hidden></p>
+      <noscript><p class="formnote">Please call <a href="tel:+16197360356">619-736-0356</a> to reach Kyle.</p></noscript>
     </form>
-    <div class="formok" id="formOk">
+    <div class="formok" id="formOk" role="status" tabindex="-1">
       <div class="big">🦍</div>
-      <h3>Got it.</h3>
-      <p>Kyle will read this himself and get back to you.</p>
+      <h3>Request accepted.</h3>
+      <p>Your request was accepted by our contact endpoint. This does not confirm Kyle has received or read it. For direct contact, call <a href="tel:+16197360356">619-736-0356</a>.</p>
     </div>
   </div>
 
@@ -231,43 +233,66 @@ footer .airun{font-weight:700;background:linear-gradient(90deg,var(--cyan),var(-
 
 <script>
 (function(){
-var MAKE_WEBHOOK_URL = "REPLACE_WITH_MAKE_WEBHOOK_URL";
+// Existing LFMA agency-contact destination and contract: /contact.html.
+var CONTACT_URL = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
 var form = document.getElementById('kyleForm');
 var btn = document.getElementById('fBtn');
 var ok = document.getElementById('formOk');
-form.addEventListener('submit', function(e){
+var error = document.getElementById('formError');
+var sending = false;
+btn.disabled = false;
+form.addEventListener('submit', async function(e){
   e.preventDefault();
+  if(sending) return;
+  error.hidden = true;
   var name = document.getElementById('fName').value.trim();
   var email = document.getElementById('fEmail').value.trim();
   var msg = document.getElementById('fMsg').value.trim();
-  if(!name || !email || !msg){
-    alert('Please fill in your name, email, and message.');
+  if(!form.reportValidity() || !name || !email || !msg){
+    error.textContent = 'Please enter your name, a valid email, and a message.';
+    error.hidden = false;
     return;
   }
+  sending = true;
   btn.disabled = true;
   btn.textContent = 'Sending…';
   var payload = {
-    name: name,
-    firm: document.getElementById('fFirm').value.trim(),
+    firm_name: document.getElementById('fFirm').value.trim(),
+    contact_name: name,
     email: email,
     phone: document.getElementById('fPhone').value.trim(),
+    website: '',
+    budget: '',
+    services: '',
     message: msg,
-    source: 'lawfirmmarketingapes.com',
-    submitted_at: new Date().toISOString()
+    source: 'agency_contact_form',
+    page: window.location.origin + window.location.pathname,
+    timestamp: new Date().toISOString()
   };
-  fetch(MAKE_WEBHOOK_URL, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(payload)
-  }).then(function(r){
-    if(!r.ok) throw new Error('send failed');
+  var controller = new AbortController();
+  var timeout = setTimeout(function(){ controller.abort(); }, 15000);
+  try {
+    var response = await fetch(CONTACT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      redirect: 'error',
+      credentials: 'omit'
+    });
+    if(!response.ok) throw new Error('Contact endpoint rejected the request');
     form.style.display = 'none';
     ok.style.display = 'block';
-  }).catch(function(){
+    ok.focus();
+  } catch(err) {
+    error.textContent = 'We could not confirm acceptance. Your message is still here. Please call 619-736-0356 before resending to avoid a duplicate request.';
+    error.hidden = false;
+  } finally {
+    clearTimeout(timeout);
+    sending = false;
     btn.disabled = false;
     btn.textContent = 'Send it to Kyle';
-    alert('Hmm, that didn\'t send. Please call 619-736-0356 instead.');
-  });
+  }
 });
 })();
 </script>
