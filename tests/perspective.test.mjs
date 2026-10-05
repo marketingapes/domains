@@ -73,3 +73,24 @@ test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attri
   assert.equal(f.litify.length, 2);
   assert.equal(f.litify[0].match_lead_uid, 'LIT-1');
 });
+
+test('one portal: five sections plus an owner-only settings tab, no per-level pages', async () => {
+  const fs = await import('node:fs');
+  const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
+  for (const v of ['overview', 'leads', 'marketing', 'litify', 'summary']) assert.match(html, new RegExp(`data-view="${v}"`));
+  assert.match(html, /data-view="settings" aria-selected="false" hidden/);
+  assert.match(html, /id="sm-tasks"/);
+  const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
+  assert.ok(!dirs.some((d) => /csuite|management|basic/i.test(d)), 'no separate portals per level');
+});
+
+test('overview numbers come from the server, summed across campaigns, and are blank without overview access', () => {
+  P._state.feed = { campaigns: [{ id: 'mva', overview: { leads: 2, reached: 1, intake: 1, transfers: 1, in_litify: 1, working: 0, signed: 0, budget: 100, spend: 50 } },
+    { id: 'la', overview: { leads: 3, reached: null, intake: null, transfers: null, in_litify: 2, working: 1, signed: 1, budget: null, spend: 25 } }], leads: [] };
+  const all = P.metrics({ id: 'all' });
+  assert.equal(all.leads, 5); assert.equal(all.signed, 1); assert.equal(all.transfers, 1); assert.equal(all.spend, 75); assert.equal(all.cpl, 15);
+  P._state.feed = { campaigns: [{ id: 'mva' }], leads: [{ lead_uid: 'x', campaign: 'mva' }] };
+  const none = P.metrics({ id: 'mva' });
+  assert.equal(none.leads, null); assert.equal(none.signed, null);
+  P._state.feed = null;
+});

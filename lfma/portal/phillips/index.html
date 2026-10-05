@@ -108,7 +108,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006a" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006b" defer></script>
 </head>
 <body data-client="plg">
 <main class="main">
@@ -133,7 +133,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button class="linkbtn" id="change-email" type="button">Use a different email</button>
     </div>
     <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <details class="token-alt"><summary>Have an access token instead?</summary>
+    <details class="token-alt"><summary>Owner access token (read-only)</summary>
       <label for="token" class="eyebrow">Access token</label>
       <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
       <button class="btn" id="unlock" type="button">Open Perspective</button>
@@ -143,18 +143,24 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <div id="app" hidden>
     <nav class="campaign-tabs" role="tablist" aria-label="Campaigns" id="campaign-tabs"></nav>
     <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p></div><span class="pill" id="c-state"></span></div>
-    <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
-    <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
     <div class="fresh" id="freshness"></div>
 
     <nav class="section-tabs" role="tablist" aria-label="Sections">
-      <button role="tab" data-view="intake" aria-selected="true">AI Intake</button>
+      <button role="tab" data-view="overview" aria-selected="true">Overview</button>
+      <button role="tab" data-view="leads" aria-selected="false">Leads &amp; AI Intake</button>
       <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
-      <button role="tab" data-view="litify" aria-selected="false">Litify Match</button>
-      <button role="tab" data-view="summary" aria-selected="false">Summary</button>
+      <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
+      <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
+      <button role="tab" data-view="settings" aria-selected="false" hidden>Settings</button>
     </nav>
+    <p class="note" id="no-sections" hidden>Your access level doesn’t include any sections yet. Ask the portal owner.</p>
 
-    <section class="view" data-panel="intake">
+    <section class="view" data-panel="overview">
+      <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
+      <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
+    </section>
+
+    <section class="view" data-panel="leads" hidden>
       <div class="crm">
         <div>
           <div class="toolbar">
@@ -197,7 +203,30 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section class="view" data-panel="summary" hidden>
       <div class="grid2">
         <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Checklist</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Check marks are saved on this device. Items marked with your firm’s name need your team; “Marketing Apes” items are ours.</p></div>
+        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours.</p></div>
+      </div>
+      <div class="panel" style="margin-top:16px"><div class="eyebrow">DAILY HANDOFFS</div><h2 style="margin-top:8px">Shared tasks</h2>
+        <p class="note">Everyone with Summary access sees the same list. Checking a task records who checked it and when; it never changes a lead or its Litify outcome.</p>
+        <ul class="checklist" id="sm-tasks"></ul>
+        <form id="task-form" class="toolbar" hidden>
+          <input id="t-title" placeholder="Task" aria-label="Task" maxlength="300" required>
+          <input id="t-assignee" placeholder="Assignee (name or email)" aria-label="Assignee" maxlength="200" required>
+          <input id="t-due" type="date" aria-label="Due date" required>
+          <select id="t-campaign" aria-label="Campaign"><option value="">All campaigns</option></select>
+          <button class="btn" id="t-add" type="submit">Add task</button>
+        </form>
+        <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="view" data-panel="settings" hidden>
+      <div class="panel"><div class="eyebrow">OWNER SETTINGS</div><h2 style="margin-top:8px">What each access level sees</h2>
+        <p>Everyone uses this same portal. Tick the sections each level may open. The server removes everything else before it reaches their browser. A level with nothing ticked can’t sign in.</p>
+        <p class="note">Overview shows campaign totals: leads, funnel, signed, budget, spend and cost per lead/transfer/signed. Marketing adds the channel, ad and invoice detail. Litify Outcomes adds turn-down reasons and details. “Names &amp; phone digits” adds names, the last 4 phone digits and state wherever lead or Litify rows are shown.</p>
+        <div class="tbl-wrap"><table id="set-table"></table></div>
+        <div class="toolbar" style="margin-top:12px"><button class="btn" id="set-save" type="button">Save access levels</button></div>
+        <p class="fresh" id="set-msg" role="status" aria-live="polite"></p>
+        <p class="note">People are added by Marketing Apes only after you approve them, each with one level.</p>
       </div>
     </section>
 
