@@ -129,6 +129,11 @@ const leftovers = (page) => page.evaluate((secrets) => {
     await page.click('#lock-btn');
     assert.deepEqual(await leftovers(page), [], `${width}px: nothing of the owner's session after Lock`);
     assert.ok(await gateCleared(page), `${width}px: sign-in screen no longer holds the owner's email`);
+    // One reply lands while the page is locked (before anyone signs in): it must not write anything either.
+    await held.shift()();
+    await page.waitForTimeout(300);
+    assert.deepEqual(await leftovers(page), [], `${width}px: a reply landing while locked wrote nothing`);
+    assert.ok(await page.isHidden('#app'), `${width}px: page stays locked`);
 
     // 3. A restricted user signs in; then the owner's replies land.
     await signIn(page, 'BASIC');
