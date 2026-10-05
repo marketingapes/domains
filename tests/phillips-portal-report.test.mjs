@@ -280,7 +280,7 @@ test('program: MVA is the default view when labeled, and the switcher keeps LA, 
   assert.equal(rowCount(html), 2, 'only the two MVA rows by default');
   const t = text(html);
   assert.match(t, /Viewing: MVA/);
-  for (const label of ['MVA (2)', 'LA (1)', 'Program not on record (1)', 'All campaigns (4)']) assert.ok(t.includes(label), label);
+  for (const label of ['MVA (2 campaigns)', 'LA (1 campaign)', 'Program not on record (1 campaign)', 'All campaigns (4 campaigns)']) assert.ok(t.includes(label), label);
   assert.match(html, /data-program="MVA"[^>]*aria-pressed="true"/);
 });
 test('program: each view shows exactly its rows; All shows every row', () => {
@@ -294,7 +294,7 @@ test('program: with no MVA label on record, all campaigns show and the gap is st
   const html = R.render(sample());
   assert.equal(rowCount(html), sample().rows.length);
   assert.match(text(html), /No campaign in this report is labeled MVA/);
-  assert.match(text(html), /Program not on record \(4\)/);
+  assert.match(text(html), /Program not on record \(4 campaigns\)/);
 });
 test('program: whole-report sections say they cover all campaigns', () => {
   const t = text(R.render(labeled()));
@@ -327,4 +327,59 @@ test('program: after a failed load, switching views shows nothing from an earlie
   await R.load('t', { document, fetch: async () => ({ status: 401, ok: false, json: async () => ({}) }) });
   assert.equal(R.setProgram('LA', { document }), false);
   assert.ok(!nodes['outcome-root'].innerHTML.includes('oc-row'));
+});
+
+// ---- Pass 2 fixes (review receipt pass-1/REVIEW-pass1.md) ----
+const withPrograms = (labels) => { const r = sample(); r.rows.forEach((row, i) => { row.identity.program = labels[i] ?? null; }); return r; };
+test('D1: with no MVA label, the "all campaigns are shown" note appears only on the All view', () => {
+  const r = withPrograms(['LA', null, null, null]);
+  assert.match(text(R.render(r)), /No campaign in this report is labeled MVA yet, so all campaigns are shown/);
+  const la = text(R.render(r, { program: 'LA' }));
+  assert.ok(!/so all campaigns are shown/.test(la));
+  assert.match(la, /No campaign in this report is labeled MVA yet\./);
+});
+test('D4: labels the backend would reject are treated as not on record; sentinels and prototype keys cannot collide', () => {
+  const r = withPrograms(['__all__', 'toString', '__proto__', 'MVA']);
+  const html = R.render(r, { program: '__all__' });
+  assert.equal((html.match(/data-program="__all__"/g) || []).length, 1, 'one All button');
+  assert.ok(!/native code/.test(html));
+  assert.match(text(html), /Program not on record \(3 campaigns\)/);
+  assert.equal(rowCount(R.render(r, { program: '__none__' })), 3);
+});
+test('counts are labeled as campaigns, not leads', () => {
+  const t = text(R.render(withPrograms(['MVA', 'MVA', 'LA', null])));
+  assert.match(t, /MVA \(2 campaigns\)/); assert.match(t, /LA \(1 campaign\)/); assert.match(t, /All campaigns \(4 campaigns\)/);
+});
+test('A4: attribute-breakout payloads stay inside the attribute', () => {
+  const r = withPrograms(['MVA', '" onclick="x', "' onmouseover='y", null]);
+  const html = R.render(r, { program: '__all__' });
+  assert.ok(!/onclick="x|onmouseover='y/.test(html));
+});
+test('A5: setProgram shows nothing while a load is in flight, after it is superseded, or after clear', async () => {
+  const el = (id) => ({ id, innerHTML: '', style: {} });
+  const nodes = { 'outcome-root': el('outcome-root'), 'outcome-gate': el('outcome-gate') };
+  const document = { getElementById: (id) => nodes[id] || null };
+  await R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA']) }) });
+  let release; const pending = new Promise((res) => { release = res; });
+  const inflight = R.load('t', { document, fetch: () => pending });
+  assert.equal(R.setProgram('LA', { document }), false, 'in flight');
+  const newer = R.load('t', { document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['LA','LA']) }) });
+  await newer; release({ status: 200, ok: true, json: async () => withPrograms(['MVA','MVA','MVA','MVA']) }); await inflight;
+  assert.equal(R.setProgram('__all__', { document }), true);
+  assert.ok(!/MVA \(/.test(text(nodes['outcome-root'].innerHTML)), 'the superseded report never comes back');
+});
+test('D2/D3: mounted tab switches views by click delegation, keeps focus on the chosen button, and announces the view', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const root = dom.byId.get('outcome-root');
+  assert.ok(root.listeners && root.listeners.click && root.listeners.click.length === 1, 'one delegated click listener on the report root');
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => withPrograms(['MVA','LA','MVA',null]) }) });
+  assert.match(root.innerHTML, /aria-live="polite"[^>]*>Viewing: MVA/);
+  let focused = null;
+  const btn = { getAttribute: (a) => (a === 'data-program' ? 'LA' : null) };
+  const inner = { closest: (sel) => (sel === '[data-program]' ? btn : null), getAttribute: () => null };
+  root.querySelector = (sel) => (sel === '[data-program="LA"]' ? { focus: () => { focused = 'LA'; } } : null);
+  root.listeners.click[0]({ target: inner });
+  assert.equal(rowCount(root.innerHTML), 1);
+  assert.equal(focused, 'LA');
 });

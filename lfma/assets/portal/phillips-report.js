@@ -54,13 +54,18 @@
   var PROGRAM_NONE = '__none__';
   var DEFAULT_PROGRAM = 'MVA';
 
+  // Same rule as the API's registry check. Anything else (sentinels, prototype keys, markup) is
+  // treated as "not on record" so a bad payload cannot collide with a view or invent a program.
+  var PROGRAM_LABEL = /^[A-Z][A-Z0-9_]{1,15}$/;
   function programOf(row) {
     var p = row && row.identity && row.identity.program;
-    return typeof p === 'string' && p ? p : null;
+    return typeof p === 'string' && PROGRAM_LABEL.test(p) ? p : null;
   }
+  function isViewKey(k) { return k === PROGRAM_ALL || k === PROGRAM_NONE || (typeof k === 'string' && PROGRAM_LABEL.test(k)); }
+  function campaigns(n) { return n + (n === 1 ? ' campaign' : ' campaigns'); }
   /** Programs present in the report: [{ key, label, count }], MVA first, then A–Z, then unlabeled, then all. */
   function programViews(rows) {
-    var counts = {}; var none = 0;
+    var counts = Object.create(null); var none = 0;
     rows.forEach(function (r) { var p = programOf(r); if (p === null) none++; else counts[p] = (counts[p] || 0) + 1; });
     var keys = Object.keys(counts).sort(function (a, b) {
       if (a === DEFAULT_PROGRAM) return -1; if (b === DEFAULT_PROGRAM) return 1; return a < b ? -1 : a > b ? 1 : 0;
@@ -85,13 +90,14 @@
     var current = views.filter(function (v) { return v.key === program; })[0];
     var buttons = views.map(function (v) {
       return '<button type="button" class="oc-prog' + (v.key === program ? ' active' : '') + '" data-program="' + esc(v.key) + '" aria-pressed="' + (v.key === program ? 'true' : 'false') + '">' +
-        esc(v.label) + ' (' + v.count + ')</button>';
+        esc(v.label) + ' (' + campaigns(v.count) + ')</button>';
     }).join(' ');
     var note = '';
     if (!views.some(function (v) { return v.key === DEFAULT_PROGRAM; })) {
-      note = '<div class="gapnote">No campaign in this report is labeled MVA yet, so all campaigns are shown. Program labels come only from the campaign registry; a campaign without one is listed under “Program not on record”.</div>';
+      note = '<div class="gapnote">No campaign in this report is labeled MVA yet' + (program === PROGRAM_ALL ? ', so all campaigns are shown' : '') +
+        '. Program labels come only from the campaign registry; a campaign without one is listed under “Program not on record”.</div>';
     }
-    return '<div class="oc-programs" role="group" aria-label="Campaign program"><p class="intro">Viewing: ' + esc(current ? current.label : 'All campaigns') + '</p>' + buttons + '</div>' + note;
+    return '<div class="oc-programs" role="group" aria-label="Campaign program"><p class="intro" aria-live="polite">Viewing: ' + esc(current ? current.label : 'All campaigns') + '</p>' + buttons + '</div>' + note;
   }
 
   /** Text for one stage cell. Returns { text, cls, sub }. Unknown is never rendered as a number. */
@@ -218,8 +224,11 @@
   function setProgram(program, opts) {
     var doc = (opts && opts.document) || root.document;
     var target = doc && doc.getElementById('outcome-root');
-    if (!target || !loaded || loaded.version !== loadVersion) return false;
+    if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program)) return false;
     target.innerHTML = render(loaded.report, { program: program });
+    // Keep keyboard focus on the chosen view (the bar was just re-rendered).
+    var chosen = typeof target.querySelector === 'function' ? target.querySelector('[data-program="' + program + '"]') : null;
+    if (chosen && typeof chosen.focus === 'function') chosen.focus();
     return true;
   }
   function load(token, opts) {
@@ -311,7 +320,8 @@
     go.addEventListener('click', unlock);
     d.getElementById('outcome-root').addEventListener('click', function (e) {
       var t = e && e.target;
-      var key = t && typeof t.getAttribute === 'function' ? t.getAttribute('data-program') : null;
+      var b = t && typeof t.closest === 'function' ? t.closest('[data-program]') : t;
+      var key = b && typeof b.getAttribute === 'function' ? b.getAttribute('data-program') : null;
       if (key) setProgram(key, { document: d });
     });
     input.addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
