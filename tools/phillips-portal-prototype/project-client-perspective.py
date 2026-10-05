@@ -17,12 +17,12 @@ shared source ID; a merge that would join two different records of the same tab 
 ambiguous; phone/name similarity is never used. Missing spend days stay missing. Converted,
 Retainer Sent and platform "signed" markers are not counted as signed.
 """
-import argparse, collections, datetime as dt, json, os, pathlib, re, tempfile
+import argparse, collections, csv, datetime as dt, json, os, pathlib, re, tempfile
 
 import openpyxl
 
 SCHEMA = "ee.phillips_client_perspective/v1"
-VERSION = "2026-10-04.1"
+VERSION = "2026-10-05.1"
 # Exact workbook IDs of the three original sources. Their exports are the only accepted inputs.
 WORKBOOKS = {
     "mva": "1KcJS5nBn7A-06rFfPzbMd9sRsRnSfeaI-W7bCpB-oNE",
@@ -32,9 +32,25 @@ WORKBOOKS = {
 CAMPAIGNS = {
     "mva": "Arizona MVA",
     "la_county": "LA County",
-    "deadleads": "Deadleads (firm intakes)",
+    "deadleads": "Deadleads batch (5/21)",
     "other": "Other Phillips intakes",
+    "all": "All since Apr 1",
 }
+WINDOW_START = "2026-04-01"
+# Platform campaigns are placed in a lane by campaign name only; the basis is shown with every row.
+LANES = [
+    ("la_county", "LA County abuse", re.compile(r"LA County", re.I)),
+    ("abuse_other", "Other abuse (CA JDC / WDC)", re.compile(r"Juvenile|JDC|WDC", re.I)),
+    ("tort_tests", "Tort tests (April GLP-1, Depo, Talc, Dupixent, Ozempic; Sept multi-tort)", re.compile(r"Ozempic|Dupixent|Depo|Talc|GLP1|Multi-Tort|Hospitals", re.I)),
+    ("mva", "Arizona MVA / PI", re.compile(r"PLG|Phillips|AZ Accident|AZ MVA|MVA|Sofia-Availability|phillips-law-group", re.I)),
+    ("not_phillips", "Not Phillips (other buyers)", re.compile(r".")),
+]
+
+
+def lane_of(name):
+    for key, label, rx in LANES:
+        if rx.search(name or ""):
+            return key, label
 # Owner-confirmed plan carried in PR228's campaign-portal-config.json. Only MVA has one.
 MVA_PLAN = {"total_usd": 5000, "duration_days": 14, "allocation": {"meta_website_usd": 3000, "google_search_usd": 2000},
             "observed_at": "2026-10-04T18:17:33Z", "source": "Owner-confirmed plan, observed 2026-10-04",
@@ -112,7 +128,9 @@ def count(v):
 
 
 class Projector:
-    def __init__(self, paths, modified):
+    def __init__(self, paths, modified, litify=None, provider_spend=None):
+        self.litify = litify
+        self.provider_spend = provider_spend
         self.paths = paths
         self.modified = modified
         self.sources = []
@@ -121,7 +139,7 @@ class Projector:
 
     def source(self, wb, tab, label, rows, period=None):
         sid = f"{wb}:{tab}"
-        self.sources.append({"source_id": sid, "workbook": wb, "sheet_id": WORKBOOKS[wb], "tab": tab, "label": label,
+        self.sources.append({"source_id": sid, "workbook": wb, "sheet_id": WORKBOOKS.get(wb), "tab": tab, "label": label,
                              "rows": len(rows), "period": period, "workbook_modified_at": self.modified.get(wb)})
         return sid
 
@@ -209,6 +227,22 @@ class Projector:
             rec = self.litify_row(sid, n, r, camp)
             rec["firm_export"] = True
             self.records.append(rec)
+
+        if self.litify:
+            # Phillips' daily Litify export: the firm's own, newest record of every intake we sent.
+            path, as_of = self.litify
+            with open(path, encoding="utf-8-sig", newline="") as f:
+                rows = [(n, r) for n, r in enumerate(csv.DictReader(f), start=2) if any((v or "").strip() for v in r.values())]
+            self.modified["litify"] = as_of
+            sid = self.source("litify", f"export {as_of[:10]}", "Phillips Litify daily export (All Marketing Apes Leads)", rows,
+                              self.period([day(r.get("Intake: Created Date")) for _, r in rows]))
+            for n, r in rows:
+                ct = text(r.get("Case Type")) or ""
+                camp = ("deadleads" if "Deadleads" in (text(r.get("Source")) or "") else
+                        "la_county" if ct.startswith("Sex Abuse") else "mva" if ct.startswith("Auto") else "other")
+                rec = self.litify_row(sid, n, r, camp)
+                rec.update(firm_export=True, firm_status_as_of=as_of[:10], firm_case_spam=ct == "Spam")
+                self.records.append(rec)
 
         rows = table(P["mva_daily"], "sent_records")
         sid = self.source("mva_daily", "sent_records", "MVA API delivery log (older copy)", rows,
@@ -304,11 +338,14 @@ class Projector:
                 statuses.append({"status": m["firm_status"], "turn_down_reason": m.get("turn_down_reason"), "source": m["source"], "row": m["row"],
                                  "as_of": m.get("firm_status_as_of") or self.modified.get(m["source"].split(":")[0], "")[:10] or None})
         statuses.sort(key=lambda s: s["as_of"] or "", reverse=True)
-        distinct = {s["status"] for s in statuses}
+        latest = statuses[0]["as_of"] if statuses else None
+        # A conflict is disagreement between the newest sources; older differing values are history.
+        distinct = {s["status"] for s in statuses if s["as_of"] == latest}
+        updated = len({s["status"] for s in statuses}) > len(distinct)
         channel = first("channel")
         test = any(m.get("test_marker") for m in members) or bool(channel and TEST_CHANNELS.search(channel)) or \
             any("test" in (m.get("source_label") or "").lower() for m in members)
-        spam = any((m.get("turn_down_reason") or "") == "Spam" for m in members) or bool(channel and "SPAM" in channel)
+        spam = any((m.get("turn_down_reason") or "") == "Spam" or m.get("firm_case_spam") for m in members) or bool(channel and "SPAM" in channel)
 
         attribution = None
         fbid = next((v[3:] for v in ids.get("lead", []) if v.startswith("FBL")), None)
@@ -350,13 +387,13 @@ class Projector:
             # sharing its ID stays its own record rather than being guessed onto one.
             "record_basis": sorted({"firm_export" if m.get("firm_export") else "delivery_log" if m.get("delivery") else "lead_ledger" for m in members}),
             "submitted_at": first("submitted_at") or (self.fb.get(fbid) or {}).get("created_at"),
-            "firm_created_date": first("created_date"),
+            "firm_created_date": min((m["created_date"] for m in members if m.get("created_date")), default=None),
             "handoff": {"state": handoff_state, "ledger_channel": channel, "ledger_sent": first("sent_logged"), "deliveries": delivery,
                         "firm_receipt": "firm_record_exists" if ids.get("intake") else "unknown",
                         "note": "API success and ledger entries show sending, not firm acceptance."},
             "contact": contact, "attribution": attribution or {"state": "unavailable"},
             "firm": {"current_status": current, "turn_down_reason": statuses[0]["turn_down_reason"] if statuses else None,
-                     "history": statuses, "conflict": len(distinct) > 1, "retainer": retainer},
+                     "history": statuses, "conflict": len(distinct) > 1, "updated": updated, "retainer": retainer},
             "excluded": "test" if test else "spam" if spam else None,
             "float_id_unusable": any(m.get("float_id") for m in members),
         }
@@ -470,8 +507,37 @@ class Projector:
                            "limits": "Historical campaign association. Individual lead attribution unavailable."}],
         }
 
+        platform = []
+        if self.provider_spend:
+            pull = self.provider_spend
+            for r in pull["rows"]:
+                if r["month"] < WINDOW_START[:7]:
+                    continue
+                lane, lane_label = lane_of(r["campaign"])
+                platform.append({**{k: r[k] for k in ("platform", "account_id", "account", "campaign_id", "campaign", "month", "spend_usd")},
+                                 "lane": lane, "lane_label": lane_label, "lane_basis": "campaign name"})
+            self.sources.append({"source_id": "platform:spend", "workbook": None, "sheet_id": None, "tab": None,
+                                 "label": "Ad platform spend (Meta, Google) by campaign and month", "rows": len(platform),
+                                 "period": pull["window"], "workbook_modified_at": pull["pulled_at"], "accounts_checked": pull["accounts_checked"]})
+
+        def platform_spend(rows, window_note):
+            if not self.provider_spend:
+                return {"state": "unknown", "note": "No platform pull supplied."}
+            months = collections.defaultdict(float)
+            for r in rows:
+                months[r["month"]] += r["spend_usd"]
+            return {"state": "known", "window": self.provider_spend["window"], "pulled_at": self.provider_spend["pulled_at"],
+                    "total_usd": round(sum(r["spend_usd"] for r in rows), 2), "by_month": {m: round(v, 2) for m, v in sorted(months.items())},
+                    "campaigns": sorted(rows, key=lambda r: (r["month"], -r["spend_usd"])), "note": window_note}
+
+        def intake_month(l):
+            d = l["firm_created_date"] or (l["submitted_at"] or "")[:10] or (l["handoff"]["ledger_sent"] or "")[:10]
+            return d[:7] if d else None
+
         campaigns = []
         for key, label in CAMPAIGNS.items():
+            if key == "all":
+                continue
             mine = [l for l in leads if l["campaign"] == key]
             counted = [l for l in mine if not l["excluded"]]
             if not mine and key not in ("mva", "la_county"):
@@ -521,6 +587,8 @@ class Projector:
                 "spend": ({k: spend[k] for k in ("source", "period", "days_reported", "days_missing", "days_blank", "total_usd", "by_channel", "sheet_total", "sheet_total_matches")}
                           | {"state": "known_partial" if spend["days_missing"] or spend["days_blank"] else "known"}) if spend else {"state": "unknown"},
                 "spend_corroboration": corroboration if key == "mva" else None,
+                "platform_spend": platform_spend([r for r in platform if r["lane"] == key],
+                                                 "Platform-reported, placed in this campaign by campaign name. Separate from the daily sheet; not added to it.") if key in ("mva", "la_county") else None,
                 "daily": spend["daily"] if spend else [],
                 "performance": mk_campaigns if key == "mva" else None,
                 "coverage_gaps": gaps,
@@ -534,6 +602,53 @@ class Projector:
                 "creative": creative.get(key, []),
                 "next_steps": {"missing_feedback": missing_feedback, "data_issues": data_issues},
             })
+        # ---- All since April 1: every send, every dollar, the 5/21 batch and the tests in one place.
+        counted = [l for l in leads if not l["excluded"]]
+        months = sorted({r["month"] for r in platform} | {m for m in (intake_month(l) for l in leads) if m and m >= WINDOW_START[:7]})
+        timeline = []
+        for m in months:
+            lane_spend = collections.defaultdict(float)
+            for r in platform:
+                if r["month"] == m:
+                    lane_spend[r["lane_label"]] += r["spend_usd"]
+            these = [l for l in counted if intake_month(l) == m]
+            timeline.append({"month": m, "spend_total_usd": round(sum(lane_spend.values()), 2), "spend_by_lane": {k: round(v, 2) for k, v in sorted(lane_spend.items(), key=lambda kv: -kv[1])},
+                             "leads": len(these), "leads_by_campaign": dict(collections.Counter(CAMPAIGNS[l["campaign"]] for l in these).most_common()),
+                             "sent_api_success": sum(1 for l in these if l["handoff"]["state"] == "api_success")})
+        batches = []
+        by_day = collections.defaultdict(list)
+        for l in leads:
+            if l["campaign"] == "deadleads" and l["firm_created_date"]:
+                by_day[l["firm_created_date"]].append(l)
+        for d, ls in sorted(by_day.items()):
+            batches.append({"date": d, "intakes": len(ls), "source": "Marketing Apes Deadleads (Litify Source field)",
+                            "case_types": dict(collections.Counter(l["case_type"] or "Unknown" for l in ls).most_common()),
+                            "firm_status": dict(collections.Counter(l["firm"]["current_status"] or "No status" for l in ls).most_common()),
+                            "firm_reasons": dict(collections.Counter(l["firm"]["turn_down_reason"] or "None given" for l in ls).most_common()),
+                            "origin_note": "Case types match the April tort tests (GLP-1, Depo-Provera, Talc, Dupixent, Ozempic) and earlier MVA/abuse leads. No per-lead campaign ID exists in any source, so no lead is tied to a specific campaign."})
+        tests = [{"lead": l["key"], "ids": l["ids"], "kind": l["excluded"], "campaign": CAMPAIGNS[l["campaign"]], "date": l["firm_created_date"] or l["submitted_at"] or l["handoff"]["ledger_sent"],
+                  "channel": l["handoff"]["ledger_channel"], "status": l["firm"]["current_status"]} for l in leads if l["excluded"]]
+        tests.sort(key=lambda t: str(t["date"] or ""))
+        all_status = collections.Counter(l["firm"]["current_status"] or "No status" for l in counted)
+        platform_all = platform_spend(platform, "Every campaign in the checked accounts, including tests and other buyers; lane shown per row by campaign name.")
+        gaps = [{"kind": "no_firm_intakes_before_may", "detail": "Phillips' Litify export starts 5/12/2026. Nothing sent before then appears as a Phillips intake."},
+                {"kind": "lane_by_name", "detail": "Platform spend is placed in lanes by campaign name only."}]
+        if self.provider_spend:
+            gaps += [{"kind": "account_" + a["account_id"], "detail": f"{a['platform'].title()} account {a['account_id']}: {a['result']}."} for a in self.provider_spend["accounts_checked"] if a["result"] != "rows"]
+        campaigns.append({
+            "key": "all", "label": CAMPAIGNS["all"], "default": False, "scope": "all",
+            "planned_budget": {"state": "unknown", "note": "No overall planned budget in any source."},
+            "spend": {"state": platform_all["state"], "total_usd": platform_all.get("total_usd"), "period": platform_all.get("window"), "days_reported": None, "source": "platform:spend"},
+            "platform_spend": platform_all, "timeline": timeline, "batches": batches, "tests": tests,
+            "daily": [], "coverage_gaps": gaps,
+            "leads_summary": {"records": len(leads), "counted": len(counted), "excluded": len(leads) - len(counted), "statuses": dict(all_status.most_common()),
+                              "handoff": dict(collections.Counter(l["handoff"]["state"] for l in counted)),
+                              "retainer_sent_or_flagged": sum(1 for l in counted if l["firm"]["retainer"]["sent_date"] or l["firm"]["retainer"]["agreement_flag"]),
+                              "signed_verified": None, "signed_note": SIGNED_NOTE},
+            "creative": [], "raw_intake_logs": self.raw_logs,
+            "next_steps": {"missing_feedback": [x for c in campaigns for x in c["next_steps"]["missing_feedback"]],
+                           "data_issues": [{"kind": g["kind"], "detail": g["detail"]} for g in gaps]},
+        })
         return {"schema": SCHEMA, "projector_version": VERSION, "generated_at": now,
                 "privacy": "Deidentified: no names, phones, emails, locations, ages, narratives, notes, IPs or click IDs.",
                 "dedupe_policy": "Records merge only on a shared explicit source ID. Conflicts within one tab are held unresolved. Phone or name similarity is never used.",
@@ -561,17 +676,23 @@ def main():
     for k in WORKBOOKS:
         ap.add_argument(f"--{k.replace('_', '-')}", required=True, type=pathlib.Path)
     ap.add_argument("--modified", required=True, help="JSON {workbook: modifiedTime} from Drive metadata")
+    ap.add_argument("--litify", type=pathlib.Path, help="Phillips Litify daily CSV export (All Marketing Apes Leads)")
+    ap.add_argument("--litify-as-of", help="Report time of that export, e.g. 2026-10-04T14:00:19Z")
+    ap.add_argument("--provider-spend", type=pathlib.Path, help="ee.provider_spend_pull/v1 JSON (platform spend by campaign/month)")
     ap.add_argument("--output", required=True, type=pathlib.Path)
     ap.add_argument("--now", default=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
     a = ap.parse_args()
     out = a.output.resolve()
     tmp = pathlib.Path(tempfile.gettempdir()).resolve()
-    for p in [out, *(getattr(a, k).resolve() for k in WORKBOOKS)]:
+    for p in [out, *(getattr(a, k).resolve() for k in WORKBOOKS), *([a.litify.resolve()] if a.litify else [])]:
         # Inputs hold claimant data; the output is protected. Both stay in non-synced temp storage, outside Git.
         assert p.is_relative_to(tmp) or p.is_relative_to(pathlib.Path("/private/tmp")), f"{p} must be in system temporary storage"
         assert not any((q / ".git").exists() for q in p.parents), f"{p} is inside a Git checkout"
     paths = {k: getattr(a, k) for k in WORKBOOKS}
-    result = Projector(paths, json.loads(a.modified)).build(a.now)
+    assert bool(a.litify) == bool(a.litify_as_of), "--litify and --litify-as-of go together"
+    spend = json.loads(a.provider_spend.read_text()) if a.provider_spend else None
+    assert spend is None or spend.get("schema") == "ee.provider_spend_pull/v1", "unexpected provider spend schema"
+    result = Projector(paths, json.loads(a.modified), (a.litify, a.litify_as_of) if a.litify else None, spend).build(a.now)
     assert_deidentified(result)
     out.parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(out, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)

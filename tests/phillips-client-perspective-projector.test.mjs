@@ -11,14 +11,14 @@ const script = fileURLToPath(new URL('../tools/phillips-portal-prototype/project
 const makeBooks = fileURLToPath(new URL('./fixtures/phillips-client-perspective-workbooks.py', import.meta.url));
 const MODIFIED = JSON.stringify({ mva: '2026-10-01T00:00:00Z', mva_daily: '2026-07-25T00:00:00Z', la_county: '2026-08-03T00:00:00Z' });
 
-function project(t, output) {
+function project(t, output, extra = []) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'synthetic-perspective-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const made = spawnSync('python3', [makeBooks, dir], { encoding: 'utf8' });
   assert.equal(made.status, 0, made.stderr);
   const out = output ? output(dir) : path.join(dir, 'out', 'perspective.json');
   const r = spawnSync('python3', [script, '--mva', path.join(dir, 'mva.xlsx'), '--mva-daily', path.join(dir, 'az-mva.xlsx'), '--la-county', path.join(dir, 'la-county.xlsx'),
-    '--modified', MODIFIED, '--output', out, '--now', '2026-10-04T20:00:00Z'], { encoding: 'utf8' });
+    '--modified', MODIFIED, '--output', out, '--now', '2026-10-04T20:00:00Z', ...extra.flatMap((x) => (typeof x === 'function' ? x(dir) : [x]))], { encoding: 'utf8' });
   return { r, out, dir, data: r.status === 0 ? JSON.parse(fs.readFileSync(out, 'utf8')) : null, raw: r.status === 0 ? fs.readFileSync(out, 'utf8') : '' };
 }
 const lead = (d, id) => d.leads.find((l) => Object.values(l.ids).flat().includes(id));
@@ -44,7 +44,7 @@ test('output is owner-only and refused inside Git or outside temporary storage',
 test('MVA is the default; LA County and other Phillips intakes stay available', (t) => {
   const { data } = project(t);
   assert.deepEqual(data.campaigns.filter((c) => c.default).map((c) => c.key), ['mva']);
-  assert.deepEqual(data.campaigns.map((c) => c.key), ['mva', 'la_county', 'deadleads']);
+  assert.deepEqual(data.campaigns.map((c) => c.key), ['mva', 'la_county', 'deadleads', 'all']);
 });
 
 test('records merge only on shared explicit IDs, keep every source row, and disagreements stay visible', (t) => {
@@ -52,7 +52,8 @@ test('records merge only on shared explicit IDs, keep every source row, and disa
   const l = lead(data, 'INT-000000000001');
   assert.equal(l.dedupe.state, 'merged');
   assert.equal(l.source_records.length, 4, 'ledger + older ledger + firm export + delivery log');
-  assert.equal(l.firm.conflict, true);
+  assert.equal(l.firm.conflict, false, 'older values are history, not a conflict');
+  assert.equal(l.firm.updated, true);
   assert.equal(l.firm.current_status, 'Chasing', 'latest workbook wins the display, others kept');
   assert.ok(l.firm.history.some((h) => h.status === 'Turned Down'));
   // A delivery row whose ID has no ledger row stays its own record.
@@ -107,4 +108,39 @@ test('test/spam rows are excluded from counts; calls are not attached to leads b
   assert.equal(mva.calls.records, 1);
   assert.equal(mva.calls.linked_to_leads, 0);
   assert.equal(lead(data, 'FBL1000000000000009').next_action.kind, 'delivery');
+});
+
+const LITIFY = [(dir) => ['--litify', path.join(dir, 'litify.csv'), '--litify-as-of', '2026-10-04T14:00:19Z', '--provider-spend', path.join(dir, 'spend.json')]];
+
+test('Litify update: the newest firm export wins and earlier statuses stay as history', (t) => {
+  const { r, data, raw } = project(t, null, LITIFY);
+  assert.equal(r.status, 0, r.stderr);
+  const l = lead(data, 'INT-000000000001');
+  assert.equal(l.firm.current_status, 'Turned Down');
+  assert.equal(l.firm.turn_down_reason, 'Client unresponsive');
+  assert.ok(l.firm.history.some((h) => h.status === 'Chasing'));
+  assert.equal(l.source_records.length, 5);
+  assert.ok(data.sources.some((s) => s.source_id === 'litify:export 2026-10-04'));
+  assert.ok(!raw.includes('SYNTHETIC') && !raw.includes('555-01'));
+});
+
+test('since April: platform spend by lane, month timeline, the bulk batch and tests are listed', (t) => {
+  const { data } = project(t, null, LITIFY);
+  const all = camp(data, 'all');
+  assert.equal(all.default, false);
+  assert.equal(all.scope, 'all');
+  assert.equal(all.platform_spend.total_usd, 355.5, 'March row outside the window is dropped');
+  const lanes = Object.fromEntries(all.platform_spend.campaigns.map((r) => [r.campaign, r.lane]));
+  assert.deepEqual(lanes, { 'GLP1-Vision': 'tort_tests', 'LA County Sex Abuse': 'la_county', 'PLG | AZ MVA-PI | Retargeting': 'mva', 'VS — Viatical': 'not_phillips' });
+  assert.deepEqual(all.timeline.map((m) => [m.month, m.spend_total_usd]).slice(0, 2), [['2026-04', 200], ['2026-05', 105]]);
+  assert.equal(all.timeline.find((m) => m.month === '2026-04').leads, 0);
+  const batch = all.batches.find((b) => b.date === '2026-05-21');
+  assert.equal(batch.intakes, 3);
+  assert.deepEqual(batch.firm_reasons, { 'Bad Lead Gen': 3 });
+  assert.match(batch.origin_note, /no lead is tied to a specific campaign/);
+  assert.ok(all.tests.some((x) => x.kind === 'test'));
+  assert.ok(all.tests.some((x) => x.kind === 'spam' && (x.ids.intake || []).includes('INT-000000000400')), 'Litify Spam case type is excluded');
+  assert.equal(camp(data, 'mva').platform_spend.total_usd, 50.5);
+  assert.equal(camp(data, 'la_county').platform_spend.total_usd, 100);
+  assert.ok(all.coverage_gaps.some((g) => /not proof of zero/.test(g.detail)));
 });

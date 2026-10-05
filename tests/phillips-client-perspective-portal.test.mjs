@@ -24,7 +24,7 @@ const projection = (() => {
     assert.equal(spawnSync('python3', [tools('./fixtures/phillips-client-perspective-workbooks.py'), dir]).status, 0);
     const out = path.join(dir, 'p.json');
     const r = spawnSync('python3', [tools('../tools/phillips-portal-prototype/project-client-perspective.py'), '--mva', path.join(dir, 'mva.xlsx'), '--mva-daily', path.join(dir, 'az-mva.xlsx'),
-      '--la-county', path.join(dir, 'la-county.xlsx'), '--modified', '{"mva":"2026-10-01T00:00:00Z"}', '--output', out, '--now', '2026-10-04T20:00:00Z'], { encoding: 'utf8' });
+      '--la-county', path.join(dir, 'la-county.xlsx'), '--litify', path.join(dir, 'litify.csv'), '--litify-as-of', '2026-10-04T14:00:19Z', '--provider-spend', path.join(dir, 'spend.json'), '--modified', '{"mva":"2026-10-01T00:00:00Z"}', '--output', out, '--now', '2026-10-04T20:00:00Z'], { encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
     return JSON.parse(fs.readFileSync(out, 'utf8'));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
@@ -44,11 +44,11 @@ test('MVA opens first with planned budget, actual spend and its period; Signed s
 });
 
 test('every campaign and section renders without leaking another campaign', () => {
-  for (const c of ['mva', 'la_county', 'deadleads']) for (const s of ['overview', 'leads', 'marketing', 'next']) {
+  for (const c of ['mva', 'la_county', 'deadleads', 'all']) for (const s of ['overview', 'leads', 'marketing', 'next']) {
     const html = view({ campaign: c, section: s });
     assert.match(html, new RegExp(`data-cp-campaign="${c}" aria-selected="true"`));
     assert.match(html, new RegExp(`data-cp-section="${s}" class="active"`));
-    if (s === 'leads' && c !== 'la_county') assert.ok(!html.includes('PLGLASYN01'), `${c} shows an LA lead`);
+    if (s === 'leads' && c !== 'la_county' && c !== 'all') assert.ok(!html.includes('PLGLASYN01'), `${c} shows an LA lead`);
   }
   assert.match(text(view({ campaign: 'la_county' })), /Unknown Planned budget/);
   assert.match(text(view({ campaign: 'deadleads', section: 'marketing' })), /No spend source exists/);
@@ -62,18 +62,18 @@ test('leads view: source, dates, contact, handoff evidence, firm disposition and
   assert.match(t, /Meta lead-ad record/);
   assert.match(t, /ad 9001/);
   assert.match(t, /Sent by API \(success logged\)/);
-  assert.match(t, /Sources disagree/);
+  assert.match(t, /Turned Down Client unresponsive Earlier: Chasing \(mva:All_leads\)/);
   assert.match(t, /Platform marked “signed” — unverified/);
   assert.match(t, /Signed: not verified/);
-  assert.match(t, /Report the contact outcome Phillips/);
-  assert.match(t, /4 source records merged by shared ID/);
+  assert.match(t, /None — closed by firm/);
+  assert.match(t, /5 source records merged by shared ID/);
 });
 
 test('lead filters: status, ID search, excluded toggle and paging', () => {
   const base = text(view({ section: 'leads' })).match(/(\d+) shown/)[1];
   assert.equal(text(view({ section: 'leads', excluded: true })).match(/(\d+) shown/)[1], String(Number(base) + 1));
   assert.match(text(view({ section: 'leads', q: 'no-such-id' })), /0 shown .*No leads match these filters/);
-  assert.match(text(view({ section: 'leads', status: 'Chasing' })), /2 shown/);
+  assert.match(text(view({ section: 'leads', status: 'Chasing' })), /1 shown/);
   assert.match(view({ section: 'leads', page: 99 }), /page 1 of 1/);
 });
 
@@ -89,7 +89,7 @@ test('marketing: channel spend, sheet-total check, second source compared not ad
 
 test('next steps: missing feedback grouped by owner and action; unresolved data issues listed', () => {
   const t = text(view({ section: 'next' }));
-  assert.match(t, /Phillips · Report the contact outcome — 2 lead\(s\)/);
+  assert.match(t, /Phillips · Report the contact outcome — 1 lead\(s\)/);
   assert.match(t, /Marketing Apes · Deliver to Phillips or close as unsent — 1 lead\(s\)/);
   assert.match(t, /ambiguous match/);
   assert.match(text(view({ campaign: 'la_county', section: 'next' })), /Confirm signed retainer with an executed-retainer reference/);
@@ -114,4 +114,21 @@ test('the public page holds no perspective data; it only arrives with an accepte
   for (const s of ['INT-', 'MAT-', 'FBL', 'client_perspective', '$5,000', 'Arizona MVA']) assert.ok(!PAGE.includes(s), s);
   assert.ok(!SRC.includes('INT-0'), 'loader carries no records');
   assert.match(SRC, /Authorization: 'Bearer ' \+ token/);
+});
+
+test('All since Apr 1: month table, bulk batch, tests list and every platform campaign with its lane', () => {
+  const t = text(view({ campaign: 'all' }));
+  assert.match(t, /\$355\.50 Platform spend since Apr 1/);
+  assert.match(t, /2026-04 \$200\.00/);
+  assert.match(t, /Bulk batch · 2026-05-21/);
+  assert.match(t, /3 intakes created by Phillips on 2026-05-21/);
+  assert.match(t, /Firm reasons: Bad Lead Gen 3/);
+  assert.match(t, /Tests and spam · \d+ records, excluded from counts/);
+  const m = text(view({ campaign: 'all', section: 'marketing' }));
+  assert.match(m, /GLP1-Vision .*Tort tests/);
+  assert.match(m, /VS — Viatical .*Not Phillips/);
+  const leads = text(view({ campaign: 'all', section: 'leads' }));
+  assert.match(leads, /PLGLASYN01/);
+  assert.match(leads, /INT-000000000001/);
+  assert.match(text(view({})), /\$50\.50 Platform spend since Apr 1/);
 });

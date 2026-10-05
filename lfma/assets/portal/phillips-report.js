@@ -185,7 +185,40 @@
   }
   function kpi(v, l, n, gap) { return '<div class="kpi' + (gap ? ' gap' : '') + '"><div class="v">' + v + '</div><div class="l">' + esc(l) + '</div>' + (n ? '<div class="n">' + n + '</div>' : '') + '</div>'; }
 
+  function cpPlatformTable(ps, withLane) {
+    if (!ps || ps.state !== 'known') return '';
+    return '<div class="oc-scroll"><table><tr><th>Month</th><th>Campaign</th>' + (withLane ? '<th>Lane (by name)</th>' : '') + '<th>Account</th><th>Spend</th></tr>' +
+      (ps.campaigns || []).map(function (r) { return '<tr><td>' + esc(r.month) + '</td><td><b>' + esc(r.campaign) + '</b><span class="sub">' + esc(r.platform) + ' · ' + esc(r.campaign_id) + '</span></td>' + (withLane ? '<td>' + esc(r.lane_label) + '</td>' : '') + '<td>' + esc(r.account) + '</td><td>' + esc(usd(r.spend_usd)) + '</td></tr>'; }).join('') + '</table></div>';
+  }
+
+  function cpAllOverview(c) {
+    var ps = c.platform_spend || {}, ls = c.leads_summary || {};
+    var html = '<div class="kpis">' +
+      kpi(esc(usd(ps.total_usd)), 'Platform spend since Apr 1', esc('All checked Meta and Google accounts · pulled ' + when(ps.pulled_at)), ps.state !== 'known') +
+      kpi(esc(ls.counted), 'Leads in sources', esc((ls.excluded || 0) + ' tests/spam listed below, not counted')) +
+      kpi(esc((c.batches || []).reduce(function (n, b) { return n + b.intakes; }, 0)), 'Sent in bulk batch', esc((c.batches || []).map(function (b) { return b.date; }).join(', '))) +
+      kpi('Unknown', 'Signed', esc(ls.signed_note || ''), true) + '</div>';
+    var lanes = {};
+    (c.timeline || []).forEach(function (t) { Object.keys(t.spend_by_lane || {}).forEach(function (k) { lanes[k] = 1; }); });
+    var lk = Object.keys(lanes);
+    html += '<div class="sec" style="margin-top:20px"><h3>Month by month · spend and leads</h3><div class="oc-scroll"><table class="cp-timeline"><tr><th>Month</th><th>Spend</th>' + lk.map(function (k) { return '<th>' + esc(k) + '</th>'; }).join('') + '<th>Leads</th><th>By campaign</th><th>API sends</th></tr>' +
+      (c.timeline || []).map(function (t) {
+        return '<tr><td><b>' + esc(t.month) + '</b></td><td><b>' + esc(usd(t.spend_total_usd)) + '</b></td>' + lk.map(function (k) { return '<td>' + (t.spend_by_lane[k] ? esc(usd(t.spend_by_lane[k])) : '<span class="cp-dim">—</span>') + '</td>'; }).join('') +
+          '<td><b>' + esc(t.leads) + '</b></td><td>' + Object.keys(t.leads_by_campaign || {}).map(function (k) { return esc(k) + ' ' + esc(t.leads_by_campaign[k]); }).join('<br>') + '</td><td>' + esc(t.sent_api_success) + '</td></tr>';
+      }).join('') + '</table></div><p class="oc-period">Leads are counted in the month Phillips created the intake, or else the submission or send date. Spend is platform-reported and placed in lanes by campaign name.</p></div>';
+    (c.batches || []).forEach(function (b) {
+      var obj = function (o) { return Object.keys(o || {}).map(function (k) { return esc(k) + ' ' + esc(o[k]); }).join(' · '); };
+      html += '<div class="sec"><h3>Bulk batch · ' + esc(b.date) + '</h3><div class="note"><div class="nt">' + esc(b.intakes) + ' intakes created by Phillips on ' + esc(b.date) + ' — ' + esc(b.source) + '</div><div class="nb">Case types: ' + obj(b.case_types) +
+        '<br>Firm status: ' + obj(b.firm_status) + '<br>Firm reasons: ' + obj(b.firm_reasons) + '<br><span class="cp-dim">' + esc(b.origin_note) + '</span></div></div></div>';
+    });
+    html += '<div class="sec"><h3>Tests and spam · ' + esc((c.tests || []).length) + ' records, excluded from counts</h3>' + ((c.tests || []).length ? '<div class="oc-scroll"><table><tr><th>Date</th><th>Kind</th><th>IDs</th><th>Campaign</th><th>Ledger channel</th><th>Firm status</th></tr>' +
+      c.tests.map(function (t) { return '<tr><td>' + esc(String(t.date || '—').replace('T', ' ')) + '</td><td><span class="pill warn">' + esc(t.kind) + '</span></td><td>' + idList(t.ids) + '</td><td>' + esc(t.campaign) + '</td><td>' + esc(t.channel || '—') + '</td><td>' + esc(t.status || '—') + '</td></tr>'; }).join('') + '</table></div>' : '<p class="intro">None.</p>') + '</div>';
+    html += '<div class="sec"><h3>Coverage gaps</h3><div class="notes">' + (c.coverage_gaps || []).map(function (g) { return '<div class="note"><div class="nd">' + label(g.kind) + '</div><div class="nb">' + esc(g.detail) + '</div></div>'; }).join('') + '</div></div>';
+    return html;
+  }
+
   function cpOverview(c, p) {
+    if (c.scope === 'all') return cpAllOverview(c);
     var s = c.spend || {}, b = c.planned_budget || {}, ls = c.leads_summary || {};
     var planned = b.state === 'known' ? usd(b.total_usd) : 'Unknown';
     var plannedNote = b.state === 'known' ? esc(b.duration_days + ' days · ' + (b.source || '')) + (b.allocation ? '<br>' + Object.keys(b.allocation).map(function (k) { return label(k.replace(/_usd$/, '')) + ' ' + usd(b.allocation[k]); }).join(' · ') : '') : esc(b.note || 'Not in any source');
@@ -197,7 +230,8 @@
       kpi(esc(num(ls.counted) === null ? 'Unknown' : ls.counted), 'Leads in sources', esc((ls.excluded || 0) + ' test/spam excluded · not unique people')) +
       kpi(esc(hand.api_success || 0), 'Sent with API success', 'Sending is not firm acceptance') +
       kpi(esc(ls.retainer_sent_or_flagged || 0), 'Retainer sent or flagged', 'Firm-reported; not signed') +
-      kpi('Unknown', 'Signed', esc(ls.signed_note || 'No executed-retainer evidence'), true) + '</div>';
+      kpi('Unknown', 'Signed', esc(ls.signed_note || 'No executed-retainer evidence'), true) +
+      (c.platform_spend && c.platform_spend.state === 'known' ? kpi(esc(usd(c.platform_spend.total_usd)), 'Platform spend since Apr 1', esc('By campaign name · separate from the daily sheet')) : '') + '</div>';
     if (b.state === 'known' && b.note) html += '<p class="gapnote">' + esc(b.note) + '</p>';
     var statuses = ls.statuses || {};
     html += '<div class="sec" style="margin-top:20px"><h3>Firm status today</h3><div class="cp-chips">' + Object.keys(statuses).map(function (k) { return '<span class="pill' + (/turned down/i.test(k) ? '' : ' warn') + '">' + esc(k) + ' · ' + esc(statuses[k]) + '</span>'; }).join(' ') + '</div></div>';
@@ -231,6 +265,7 @@
     var hand = esc(HANDOFF_TEXT[h.state] || 'No delivery evidence') + (h.ledger_channel ? '<span class="sub">' + esc(h.ledger_channel) + '</span>' : '') +
       (h.deliveries || []).map(function (d) { return '<span class="sub">' + (d.api_success ? 'API success' : 'API not successful') + (d.sent_at ? ' · ' + esc(d.sent_at.replace('T', ' ')) : '') + ' · ' + esc(d.source) + ' row ' + esc(d.row) + '</span>'; }).join('');
     var disp = '<b>' + esc(f.current_status || 'No status') + '</b>' + (f.turn_down_reason ? '<span class="sub">' + esc(f.turn_down_reason) + '</span>' : '') +
+      (f.updated && !f.conflict ? '<span class="sub">Earlier: ' + (f.history || []).slice(1).map(function (x) { return esc(x.status) + ' (' + esc(x.source) + ')'; }).join(' · ') + '</span>' : '') +
       (f.conflict ? '<span class="sub cp-warn">Sources disagree: ' + (f.history || []).map(function (x) { return esc(x.status) + ' (' + esc(x.source) + ')'; }).join(' · ') + '</span>' : '') +
       (r.sent_date ? '<span class="sub">Retainer sent ' + esc(r.sent_date) + '</span>' : '') + (r.agreement_flag ? '<span class="sub">Retainer column: ' + esc(r.agreement_flag) + '</span>' : '') +
       (r.platform_signed_marker ? '<span class="sub">Platform marked “signed” — unverified</span>' : '') + '<span class="sub">Signed: not verified</span>';
@@ -252,7 +287,7 @@
   }
 
   function cpLeads(c, p, st) {
-    var all = (p.leads || []).filter(function (l) { return l.campaign === c.key; });
+    var all = (p.leads || []).filter(function (l) { return c.scope === 'all' || l.campaign === c.key; });
     var statuses = {};
     all.forEach(function (l) { var s = l.firm && l.firm.current_status || 'No status'; statuses[s] = (statuses[s] || 0) + 1; });
     var shown = all.filter(function (l) { return cpLeadFilter(l, st); });
@@ -271,10 +306,12 @@
 
   function cpMarketing(c) {
     var s = c.spend || {}, html = '';
-    if (s.state && s.state !== 'unknown') {
+    if (c.scope === 'all') { /* platform table below carries every dollar */ }
+    else if (s.state && s.state !== 'unknown') {
       html += '<div class="sec"><h3>Spend by channel · ' + span(s.period) + '</h3><div class="kpis">' + Object.keys(s.by_channel || {}).map(function (k) { return kpi(esc(usd(s.by_channel[k])), label(k), ''); }).join('') + '</div>' +
         (s.sheet_total ? '<p class="oc-period">Sheet TOTAL row: ' + esc(usd(s.sheet_total.spend_usd)) + (s.sheet_total_matches ? ' — matches the daily rows.' : ' — differs from the daily rows; daily rows are shown.') + '</p>' : '') + '</div>';
     } else html += '<p class="gapnote">No spend source exists for this campaign. Nothing is estimated.</p>';
+    if (c.platform_spend && c.platform_spend.state === 'known') html += '<div class="sec"><h3>Platform spend since Apr 1 · ' + esc(usd(c.platform_spend.total_usd)) + '</h3><p class="intro">' + esc(c.platform_spend.note) + '</p>' + cpPlatformTable(c.platform_spend, c.scope === 'all') + '</div>';
     var cor = c.spend_corroboration;
     if (cor) html += '<p class="gapnote">' + esc(cor.note) + ' ' + esc(cor.source) + ': ' + esc(usd(cor.total_usd)) + ' over ' + span(cor.period) + '; differs on ' + esc((cor.days_differing || []).length) + ' of ' + esc(cor.overlap_days) + ' shared days.</p>';
     if ((c.performance || []).length) {
@@ -364,7 +401,7 @@
     '.cp-tools select,.cp-tools input[type=search]{font:inherit;min-height:44px;padding:8px 10px;border:1px solid #cbd5e1;border-radius:8px;min-width:180px}' +
     '.cp-tools .cp-check{flex-direction:row;align-items:center;min-height:44px}.cp-leads{min-width:1080px}.cp-leads td{font-size:13px;overflow-wrap:anywhere}' +
     '.cp-pager{display:flex;gap:8px;margin-top:12px}.cp-pager button{font:inherit;min-height:44px;padding:8px 16px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;cursor:pointer}.cp-pager button:disabled{opacity:.5;cursor:default}' +
-    '.cp-dim{color:#94a3b8}.cp-warn{color:#b45309!important}.cp-creative{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}' +
+    '.cp-timeline{min-width:900px}.cp-dim{color:#94a3b8}.cp-warn{color:#b45309!important}.cp-creative{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}' +
     '.cp-creative figure{margin:0;border:1px solid #e3e9f2;border-radius:14px;overflow:hidden}.cp-creative img{width:100%;height:auto;display:block}.cp-creative figcaption{font-size:13px;color:#475569;padding:12px;line-height:1.5}' +
     '@media(max-width:640px){.cp-body{padding:14px;border-radius:0 0 14px 14px}.cp-tools label,.cp-tools select,.cp-tools input[type=search]{width:100%}' +
     '.cp-leads{min-width:0}.cp-leads thead{display:none}.cp-leads tr{display:block;border:1px solid #e3e9f2;border-radius:12px;margin:0 0 12px;padding:6px 10px}' +

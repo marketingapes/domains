@@ -73,3 +73,18 @@ book(f'{out}/la-county.xlsx', [
      [['PLGLASYN01', 'SYNTHETIC PERSON', '2135550100', 'synthetic@example.com', 'Success', None, True, 'a0C', '001'],
       ['PLGLASYN99', 'SYNTHETIC PERSON', '2135550199', 'synthetic@example.com', 'Success', None, True, 'a0C', '001']]),
 ])
+# Synthetic Litify daily export and platform spend pull.
+import csv, json
+with open(f'{out}/litify.csv', 'w', newline='', encoding='utf-8') as f:
+    w = csv.writer(f); w.writerow(LEDGER[:17])
+    w.writerow(['10/1/2026', 'INT-000000000001', 'Auto (AA)', '', 'SYNTHETIC PERSON', 'Marketing Apes', '(602) 555-0101', '', '', 'No', '', '', '', 'Turned Down', 'Client unresponsive', 'SYNTHETIC NARRATIVE', ''])
+    for i in range(3):
+        w.writerow(['5/21/2026', f'INT-00000000030{i}', 'Mass Tort - Weight Loss Drugs', '', 'SYNTHETIC PERSON', 'Marketing Apes Deadleads', '(602) 555-0102', '', '', '', '', '', '', 'Turned Down', 'Bad Lead Gen', '', ''])
+    w.writerow(['7/27/2026', 'INT-000000000400', 'Spam', '', 'SYNTHETIC PERSON', 'Marketing Apes', '(602) 555-0103', '', '', '', '', '', '', 'Turned Down', 'Spam', '', ''])
+json.dump({"schema": "ee.provider_spend_pull/v1", "window": {"start": "2026-04-01", "end": "2026-10-04"}, "pulled_at": "2026-10-05T03:00:00Z",
+           "accounts_checked": [{"platform": "meta", "account_id": "1", "result": "rows"}, {"platform": "meta", "account_id": "2", "result": "no rows returned (not proof of zero)"}],
+           "rows": [{"platform": "google", "account_id": "1", "account": "Synthetic", "campaign_id": "11", "campaign": "GLP1-Vision", "month": "2026-04", "spend_usd": 200.0},
+                    {"platform": "meta", "account_id": "1", "account": "Synthetic", "campaign_id": "12", "campaign": "LA County Sex Abuse", "month": "2026-05", "spend_usd": 100.0},
+                    {"platform": "meta", "account_id": "1", "account": "Synthetic", "campaign_id": "13", "campaign": "PLG | AZ MVA-PI | Retargeting", "month": "2026-07", "spend_usd": 50.5},
+                    {"platform": "meta", "account_id": "1", "account": "Synthetic", "campaign_id": "14", "campaign": "VS — Viatical", "month": "2026-05", "spend_usd": 5.0},
+                    {"platform": "meta", "account_id": "1", "account": "Synthetic", "campaign_id": "15", "campaign": "Old campaign", "month": "2026-03", "spend_usd": 999.0}]}, open(f'{out}/spend.json', 'w'))
