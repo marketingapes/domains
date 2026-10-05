@@ -451,7 +451,7 @@ test('L2: a missing count, source time or period reads "Not available", never 0'
 
 test('L3: "All leads loaded" is never claimed while the cohort is incomplete', () => {
   const t = leadsBlock(R.render(sample()));
-  assert.match(t, /Coverage not verified These are the leads available in the report, not confirmed to be all leads: the report has not reconciled its lead cohort as complete; 1 campaign with a lead source that is not fresh\./);
+  assert.match(t, /Coverage not verified These are the leads available in the report, not confirmed to be all leads: the report has not reconciled its lead cohort as complete; 3 campaigns with no reported lead count; 1 campaign with a lead source that is not fresh\./);
   assert.doesNotMatch(t, /All leads loaded/);
 });
 
@@ -512,4 +512,40 @@ test('L7: lead table cells carry labels for the stacked phone layout', () => {
   const html = R.render(sample());
   for (const l of ['Campaign', 'Leads', 'Lead source', 'Reporting period', 'Last refreshed']) assert.match(html, new RegExp('data-label="' + l + '"'));
   assert.match(PAGE, /@media\(max-width:640px\)\{\.oc-leadtable tr:first-child\{display:none\}/);
+});
+
+test('L8 (review findings 1-7): coverage is never claimed on an unproven count, source or record total', () => {
+  const base = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); r.cohort.complete = true; return r; };
+  assert.match(leadsBlock(R.render(base())), /All leads loaded/, 'control: complete, known, fresh');
+  const cases = {
+    unknownCount: (r) => { r.rows[0].stages.submission = { state: 'unknown', count: null, sources: [{ id: 'website_intake' }] }; },
+    partial: (r) => { r.rows[0].stages.submission.state = 'partial'; },
+    pending: (r) => { r.rows[0].stages.submission.state = 'pending'; r.rows[0].stages.submission.pending = 3; },
+    pendingOnKnown: (r) => { r.rows[0].stages.submission.pending = 2; },
+    unknownOnKnown: (r) => { r.rows[0].stages.submission.unknown = 5; },
+    caveat: (r) => { r.rows[0].stages.submission.caveat = 'source_not_fresh'; },
+    negativeUnreadable: (r) => { r.operations.unreadable_lead_records = -1; },
+    fractionalUnreadable: (r) => { r.operations.unreadable_lead_records = 0.5; },
+    duplicateStale: (r) => { r.sources.unshift({ id: 'website_intake', label: 'W', status: 'stale', last_success_at: '2026-10-02T17:30:00Z' }); },
+    freshNoTime: (r) => { r.sources.find((s) => s.id === 'website_intake').last_success_at = null; },
+    freshBadTime: (r) => { r.sources.find((s) => s.id === 'website_intake').last_success_at = 'not-a-date'; },
+    sourcesObject: (r) => { r.sources = {}; },
+    sourcesString: (r) => { r.sources = 'x'; },
+  };
+  for (const [name, mutate] of Object.entries(cases)) {
+    const r = base(); mutate(r);
+    let html;
+    assert.doesNotThrow(() => { html = R.render(r); }, name);
+    assert.doesNotMatch(leadsBlock(html), /All leads loaded/, name);
+    assert.match(leadsBlock(html), /Coverage not verified/, name);
+  }
+  const p = base(); p.rows[0].stages.submission.state = 'partial';
+  assert.match(leadsBlock(R.render(p)), /Leads reported: 8 from 1 of 1 campaign \(1 of those counts partial or pending\)/);
+  assert.match(leadsBlock(R.render(p)), /NIL · search 8 \(partial\)/);
+  const d = base(); d.rows[0].stages.submission.sources = [{ id: 'website_intake' }, { id: 'website_intake' }];
+  assert.equal((leadsBlock(R.render(d)).match(/Website form intake \(legal-web-lead\) — Fresh/g) || []).length, 1, 'repeated source shown once');
+  const o = base(); o.rows[0].stages.submission.sources = [{ id: 'ghost' }]; o.sources = [];
+  assert.doesNotMatch(leadsBlock(R.render(o)), /\[object Object\]/);
+  const obj = base(); obj.rows[0].stages.submission.sources = [{ id: { a: 1 } }];
+  assert.doesNotMatch(leadsBlock(R.render(obj)), /\[object Object\]/);
 });

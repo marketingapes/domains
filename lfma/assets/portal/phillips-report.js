@@ -201,32 +201,57 @@
     var id = r.identity || {};
     return orNA(id.brand_account) + ' · ' + orNA(String(id.campaign_type || '').replace(/_/g, ' ') || null);
   }
-  /** Sources feeding a row's submission count, resolved to the report's source list. */
-  function leadSources(r, report) {
+  var STATUS_RANK = { fresh: 0, stale: 1, unknown: 2, not_connected: 3 };
+  function validTime(iso) { var t = typeof iso === 'string' && iso ? new Date(iso).getTime() : NaN; return isNaN(t) ? null : t; }
+  /** Report sources by id. A repeated id keeps its worst status, so a duplicate cannot hide a stale source. */
+  function sourceIndex(report) {
     var byId = Object.create(null);
-    (report.sources || []).forEach(function (s) { if (s && typeof s.id === 'string') byId[s.id] = s; });
-    var cell = (r.stages || {}).submission || {};
-    return (Array.isArray(cell.sources) ? cell.sources : []).map(function (x) {
-      return x && typeof x.id === 'string' && byId[x.id] ? byId[x.id] : { id: x && x.id, label: x && x.id, status: 'unknown' };
+    (Array.isArray(report.sources) ? report.sources : []).forEach(function (s) {
+      if (!s || typeof s !== 'object' || typeof s.id !== 'string') return;
+      var prior = byId[s.id];
+      var rank = function (x) { return STATUS_RANK.hasOwnProperty(x.status) ? STATUS_RANK[x.status] : 2; };
+      if (!prior || rank(s) > rank(prior)) byId[s.id] = s;
     });
+    return byId;
   }
+  /** Sources feeding a row's submission count, de-duplicated and resolved to the report's source list. */
+  function leadSources(r, byId) {
+    var cell = (r.stages || {}).submission || {};
+    var seen = Object.create(null);
+    return (Array.isArray(cell.sources) ? cell.sources : []).filter(function (x) {
+      var id = x && typeof x.id === 'string' ? x.id : null;
+      if (id === null || seen[id]) return false;
+      seen[id] = true; return true;
+    }).map(function (x) { return byId[x.id] || { id: x.id, label: x.id, status: 'unknown' }; });
+  }
+  /** A source counts as fresh only with status fresh AND a readable delivery time. */
+  function isFresh(src) { return src.status === 'fresh' && validTime(src.last_success_at) !== null; }
+  /** { n, final } for a row's submissions: n is null when no count was reported; final is true only for a
+   *  known count with nothing pending, unknown or caveated. */
   function leadCount(r) {
-    var v = cellView((r.stages || {}).submission);
-    return v.cls === 'ok' || v.cls === 'pend' && /^\d+$/.test(v.text) ? Number(v.text) : null;
+    var c = (r.stages || {}).submission || {};
+    var n = Number.isSafeInteger(c.count) && c.count >= 0 && (c.state === 'known' || c.state === 'partial' || c.state === 'pending') ? c.count : null;
+    var final = n !== null && c.state === 'known' && !(num(c.pending) > 0) && !(num(c.unknown) > 0) && !c.caveat;
+    return { n: n, final: final };
   }
   /** Why "all leads loaded" cannot be claimed for these rows. Empty array = coverage verified. */
   function coverageGaps(report, shown) {
     var gaps = [];
     if (!report.cohort || report.cohort.complete !== true) gaps.push('the report has not reconciled its lead cohort as complete');
     var unreadable = report.operations ? report.operations.unreadable_lead_records : null;
-    if (num(unreadable) === null) gaps.push('unreadable lead records: ' + NA);
+    if (!Number.isSafeInteger(unreadable) || unreadable < 0) gaps.push('unreadable lead records: ' + NA);
     else if (unreadable > 0) gaps.push(unreadable + ' lead record(s) could not be read');
-    var stale = 0; var none = 0;
+    var byId = sourceIndex(report);
+    var noCount = 0; var notFinal = 0; var stale = 0; var none = 0;
     shown.forEach(function (r) {
-      var src = leadSources(r, report);
+      var lc = leadCount(r);
+      if (lc.n === null) noCount++; else if (!lc.final) notFinal++;
+      var src = leadSources(r, byId);
       if (!src.length) none++;
-      else if (src.some(function (s) { return s.status !== 'fresh'; })) stale++;
+      else if (!src.every(isFresh)) stale++;
     });
+    if (noCount) gaps.push(campaigns(noCount) + ' with no reported lead count');
+    if (notFinal) gaps.push(campaigns(notFinal) + ' with a partial or pending lead count');
     if (none) gaps.push(campaigns(none) + ' with no lead source on record');
     if (stale) gaps.push(campaigns(stale) + ' with a lead source that is not fresh');
     if (!shown.length) gaps.push('no campaigns in this view');
@@ -235,19 +260,22 @@
   function renderLeadSummary(report, shown) {
     var cohort = report.cohort || {};
     var period = cohort.kind === 'all_retained_indexed_leads' ? 'All retained leads to date (not a daily total)' : orNA(cohort.kind && String(cohort.kind).replace(/_/g, ' '));
-    var reported = 0; var withCount = 0;
+    var reported = 0; var withCount = 0; var partial = 0;
+    var byId = sourceIndex(report);
     var rows = shown.map(function (r) {
-      var n = leadCount(r);
-      if (n !== null) { reported += n; withCount++; }
-      var src = leadSources(r, report);
+      var lc = leadCount(r);
+      var n = lc.n;
+      if (n !== null) { reported += n; withCount++; if (!lc.final) partial++; }
+      var src = leadSources(r, byId);
       var latest = null;
-      src.forEach(function (s) { var t = s.last_success_at ? new Date(s.last_success_at).getTime() : NaN; if (!isNaN(t) && (latest === null || t > latest)) latest = t; });
-      var srcText = src.length ? src.map(function (s) { return esc(orNA(s.label)) + ' — ' + (SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown)[0]; }).join('; ') : NA;
-      return '<tr><td data-label="Campaign"><b>' + esc(rowName(r)) + '</b></td><td data-label="Leads"><b>' + (n === null ? NA : esc(n)) + '</b></td><td data-label="Lead source">' + srcText + '</td><td data-label="Reporting period">' + esc(period) + '</td><td data-label="Last refreshed">' +
+      src.forEach(function (s) { var t = validTime(s.last_success_at); if (t !== null && (latest === null || t > latest)) latest = t; });
+      var srcText = src.length ? src.map(function (s) { return esc(typeof s.label === 'string' && s.label ? s.label : NA) + ' — ' + (SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown)[0]; }).join('; ') : NA;
+      return '<tr><td data-label="Campaign"><b>' + esc(rowName(r)) + '</b></td><td data-label="Leads"><b>' + (n === null ? NA : esc(n) + (lc.final ? '' : ' (partial)')) + '</b></td><td data-label="Lead source">' + srcText + '</td><td data-label="Reporting period">' + esc(period) + '</td><td data-label="Last refreshed">' +
         esc(latest === null ? NA : when(new Date(latest).toISOString())) + '</td></tr>';
     }).join('');
     var total = withCount === 0 ? NA + ' — no campaign in this view has a reported lead count'
-      : reported + ' from ' + withCount + ' of ' + campaigns(shown.length) + (withCount < shown.length ? '; ' + NA + ' for the other ' + campaigns(shown.length - withCount) : '');
+      : reported + ' from ' + withCount + ' of ' + campaigns(shown.length) + (partial ? ' (' + partial + ' of those counts partial or pending)' : '') +
+        (withCount < shown.length ? '; ' + NA + ' for the other ' + campaigns(shown.length - withCount) : '');
     var gaps = coverageGaps(report, shown);
     var coverage = gaps.length
       ? '<span class="pill warn">Coverage not verified</span> These are the leads available in the report, not confirmed to be all leads: ' + esc(gaps.join('; ')) + '.'
