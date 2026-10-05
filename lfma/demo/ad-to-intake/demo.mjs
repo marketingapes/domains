@@ -8,7 +8,9 @@ if(typeof document!=='undefined') {
   let outcome=null;
   function show(step){
     if(step===3&&!outcome) return;
-    document.querySelectorAll('[data-step]').forEach(el=>el.hidden=Number(el.dataset.step)!==step);
+    document.querySelectorAll('[data-step]').forEach(el=>{el.hidden=Number(el.dataset.step)!==step;el.classList.remove('entering');});
+    const active=document.querySelector(`[data-step="${step}"]`);
+    void active.offsetWidth;active.classList.add('entering');
     document.querySelectorAll('.demo-progress li').forEach((el,i)=>i===step?el.setAttribute('aria-current','step'):el.removeAttribute('aria-current'));
     document.querySelector(`[data-step="${step}"] h2`).focus({preventScroll:true});
     $('journey').scrollIntoView({behavior:'instant',block:'start'});

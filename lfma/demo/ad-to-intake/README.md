@@ -7,8 +7,8 @@ are unchanged. No merge, deployment, outreach or live submission is authorized.
 
 ## Journey
 
-1. Lawyer-facing entry: TEN TOES DOWN. Ready for the evolution? Marketing Apes /
-   One gorilla + AI. CTA: Experience the demo.
+1. Lawyer-facing entry: CAN YOUR AGENCY DO THIS? CTA: TRY THE DEMO.
+   Theme: TEN TOES DOWN / READY FOR THE EVOLUTION. Marketing Apes / One gorilla + AI.
 2. A clearly synthetic MVA ad for placeholder `Your Firm` opens a branded prospect
    page with the same message. No actual firm endorsement is implied.
 3. Fixed sample intake answers, separate simulated permission, simulated receipt
@@ -78,7 +78,7 @@ requests and non-GET requests are blocked/count as failures. It covers the four
 stages at 375 and 1440px, both consent choices, changed-answer invalidation, reset,
 all pricing categories, synthetic JSON download, disabled send, no overflow and
 no script errors. Screenshots are written to `/tmp/lfma-ad-demo-review/`.
-Desktop entry and mobile inquiry screenshots were visually inspected.
+Desktop entry and mobile screens were visually inspected.
 
 Leading indicators for a future authorized test: demo starts/completions and
 inquiry requests. Business outcome: qualified firm conversation confirmed by Kyle.
@@ -89,3 +89,18 @@ Poster limitation: Library `libfile_4c613a0e07408191aee37182e892858e`,
 Library materialization helper (initial attempt and one bounded retry).
 No local bytes were available to inspect; the poster was not embedded, edited,
 or republished. Continue with the code-native creative and existing LFMA artwork.
+
+
+## Futuristic / primal visual revision
+
+Official MA logo inspected from `ma/assets/network/ape-logo.jpg`, the same asset
+referenced by `ma/index.html` at the official marketingapes.com path. The LFMA
+copy at `assets/portal/ape-logo.jpg` is byte-identical:
+SHA-256 `5dcc03152b3881cd3d943bf36260c514703f07e45a452f75da1cdc77c5426dab`.
+Glasses, bow tie, facial features and silhouette are preserved; CSS frames the
+unchanged image with orbital lines, grid, and diagonal marks. No replacement
+mascot was drawn. Main challenge and actual logo sit beside each other on desktop
+and stack on mobile. One headline hierarchy; theme stays in the eyebrow.
+Pale paper, black type, restrained electric lime, and 320ms step transitions.
+Reduced-motion preference removes animations, transitions and hover movement.
+Browser tests verify both motion modes and the official logo loading.

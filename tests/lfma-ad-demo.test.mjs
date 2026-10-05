@@ -21,6 +21,12 @@ test('demo forbids live connections and exposes no webhook or personal-data form
 });
 test('all four journey stages, synthetic boundaries, existing assets and corrected proof are present',()=>{
  for(let i=0;i<4;i++)assert.ok(html.includes(`data-step="${i}"`));
- for(const text of ['TEN TOES','Ready for the evolution','Experience the demo','../mva-sprint/journey.svg','18 CRM Converted','Executed retainers are unverified','not calculable']) assert.ok(html.includes(text));
+ for(const text of ['TEN TOES','READY FOR THE EVOLUTION','TRY THE DEMO','../mva-sprint/journey.svg','18 CRM Converted','Executed retainers are unverified','not calculable']) assert.ok(html.includes(text));
  assert.doesNotMatch(html,/18 signed|74\.12|monthly management|2,500 a minute/i);
+});
+
+test('official MA logo is preserved byte-for-byte and motion can be disabled',()=>{
+ assert.deepEqual(readFileSync(new URL('../lfma/assets/portal/ape-logo.jpg',import.meta.url)),readFileSync(new URL('../ma/assets/network/ape-logo.jpg',import.meta.url)));
+ assert.match(html,/Official Marketing Apes logo/);assert.match(html,/CAN YOUR<br>AGENCY/);assert.match(html,/Interactive simulation/);
+ const css=readFileSync(new URL('demo.css',root),'utf8');assert.match(css,/prefers-reduced-motion:reduce/);assert.match(css,/animation:none!important/);
 });

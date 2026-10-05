@@ -39,8 +39,14 @@ const assert=require('node:assert/strict');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
    await page.locator('#reset').click();assert.equal(await page.locator('[data-step="0"]').isVisible(),true);
    await page.getByRole('button',{name:'Learn more'}).click();await page.getByRole('button',{name:'Try the sample intake'}).click();await page.locator('#decline').click();assert.match(await page.locator('#receipt').textContent(),/No handoff occurred/);await page.locator('#to-inquiry').click();
+   await page.emulateMedia({reducedMotion:'no-preference'});
+   await page.locator('#reset').click();await page.getByRole('button',{name:'Learn more'}).click();
+   assert.equal(await page.locator('[data-step="1"]').evaluate(el=>getComputedStyle(el).animationName),'step-in');
+   await page.emulateMedia({reducedMotion:'reduce'});
+   assert.equal(await page.locator('[data-step="1"]').evaluate(el=>getComputedStyle(el).animationName),'none');
+   const logo=page.locator('.logo-core img');assert.equal(await logo.evaluate(el=>el.complete&&el.naturalWidth===360),true);
    assert.deepEqual(errors,[]);assert.equal(forbidden,0);await page.close();
   }
-  console.log('PASS: 375/1440px complete journey, permission/decline/reset, stale receipt invalidation, four pricing tiers, local brief download, disabled live submission, no overflow/errors/external requests.');
+  console.log('PASS: 375/1440px complete journey, permission/decline/reset, stale receipt invalidation, four pricing tiers, local brief download, disabled live submission, normal/reduced motion, official logo loaded, no overflow/errors/external requests.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
