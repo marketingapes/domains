@@ -104,12 +104,12 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}}
 </style>
-<script src="/assets/portal/perspective.js?v=20261005c" defer></script>
+<script src="/assets/portal/perspective.js?v=20261005d" defer></script>
 </head>
-<body>
+<body data-client="plg">
 <main class="main">
   <header class="topline">
-    <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · PHILLIPS LAW GROUP</small></div></div>
+    <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · <span data-firm="name">PHILLIPS LAW GROUP</span></small></div></div>
     <div style="display:flex;gap:8px;align-items:center"><span class="pill" id="feed-pill">Locked</span><button class="btn ghost" id="lock-btn" type="button" hidden>Lock</button></div>
   </header>
 
@@ -148,7 +148,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
           <div class="lead-list" id="lead-list" role="list"></div>
           <p class="fresh" id="list-count"></p>
         </div>
-        <aside class="panel detail" id="lead-detail"><div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what Phillips reported back.</p></aside>
+        <aside class="panel detail" id="lead-detail"><div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what <span data-firm="short">Phillips</span> reported back.</p></aside>
       </div>
     </section>
 
@@ -179,11 +179,11 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <section class="view" data-panel="summary" hidden>
       <div class="grid2">
         <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Checklist</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Check marks are saved on this device. Items marked “Phillips” need your team; “Marketing Apes” items are ours.</p></div>
+        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Checklist</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Check marks are saved on this device. Items marked with your firm’s name need your team; “Marketing Apes” items are ours.</p></div>
       </div>
     </section>
 
-    <p class="foot">Perspective · Marketing Apes for Phillips Law Group. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
+    <p class="foot">Perspective · Marketing Apes for <span data-firm="name">Phillips Law Group</span>. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
   </div>
 </main>
 </body>

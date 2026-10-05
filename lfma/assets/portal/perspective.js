@@ -1,7 +1,9 @@
-/* Perspective — Phillips Law Group client portal (feed schema perspective/v1).
+/* Perspective — client portal for any firm (feed schema perspective/v1).
  *
- * The page ships with zero lead data. Everything renders from the token-gated feed
- * (GET legal-web-lead /api/v1/portal/phillips/leads, Authorization: Bearer <token>).
+ * The page ships with zero lead data. Everything renders from the token-gated live feed
+ * (GET <hub>/portal/{client}/feed, Authorization: Bearer <token>), which the Render hub
+ * builds from BigQuery on every request. The page refreshes it every minute while open.
+ * The firm is the page's <body data-client="...">, so a new firm is a copied folder.
  * The token and feed live in memory only; Lock or closing the tab clears both.
  *
  * Rules:
@@ -13,9 +15,20 @@
 (function (root) {
   'use strict';
 
-  var FEED_API = 'https://legal-web-lead.onrender.com/api/v1/portal/phillips/leads';
+  var HUB = 'https://affiliate-hub-tbks.onrender.com';
+  // Phillips' pre-hub feed, used only if the live hub is unreachable.
+  var FALLBACK = { plg: 'https://legal-web-lead.onrender.com/api/v1/portal/phillips/leads' };
+  var REFRESH_MS = 60000;
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'intake', lead: null, litify: null, litifyLabel: '' };
+  var state = { feed: null, campaign: null, view: 'intake', lead: null, litify: null, litifyLabel: '', token: null, timer: null };
+  function clientId() {
+    var b = root.document && root.document.body, c = b && b.getAttribute('data-client');
+    if (c) return c;
+    var m = /\/portal\/([a-z0-9-]+)\//.exec((root.location && root.location.pathname) || '');
+    return m ? m[1] : '';
+  }
+  function firm() { var c = state.feed && state.feed.client; return (c && (c.short_name || c.name)) || 'your firm'; }
+  function firmName() { var c = state.feed && state.feed.client; return (c && c.name) || ''; }
 
   // ---------- helpers ----------
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -33,7 +46,7 @@
   var STAGES = {
     received: ['Received', 'mute'], queued: ['Queued for AI call', 'mute'], ai_contacted: ['AI reached', ''],
     not_reached: ['Not reached yet', 'warn'], intake_completed: ['Intake completed', ''],
-    transferred: ['Transferred to Phillips', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
+    transferred: ['Transferred to firm', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
   };
   function stageTag(s) { var d = STAGES[s] || [s || 'Unknown', 'mute']; return '<span class="tag ' + d[1] + '">' + esc(d[0]) + '</span>'; }
   function litifyTag(status) {
@@ -48,8 +61,8 @@
     var id = state.campaign;
     if (id === 'all') {
       var cs = campaignsAll();
-      return { id: 'all', label: 'All campaigns', name: 'All Phillips campaigns', state: cs.length + ' campaigns',
-        summary: 'Every lead Marketing Apes has sent Phillips since the campaigns started, in one place.',
+      return { id: 'all', label: 'All campaigns', name: 'All ' + firm() + ' campaigns', state: cs.length + ' campaigns',
+        summary: 'Every lead Marketing Apes has sent ' + firm() + ' since the campaigns started, in one place.',
         budget: { amount: sum(cs.map(function (c) { return c.budget && c.budget.amount; })) },
         spend: { amount: sum(cs.map(function (c) { return c.spend && c.spend.amount; })) },
         channels: [].concat.apply([], cs.map(function (c) { return c.channels || []; })),
@@ -149,7 +162,7 @@
   }
   function renderDetail() {
     var l = leadsFor('all').filter(function (x) { return x.lead_uid === state.lead; })[0], box = $('lead-detail');
-    if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what Phillips reported back.</p>'; return; }
+    if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what ' + esc(firm()) + ' reported back.</p>'; return; }
     var ev = (l.ai_events || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
     var lit = l.litify || {};
     box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || 'Name not captured') + '</h2>' + stageTag(l.stage) + ' ' + litifyTag(lit.status) +
@@ -287,7 +300,7 @@
     var needs = c.needs || [];
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n, i) {
       var k = checkKey(c, n), on = getCheck(k, n.done);
-      return '<li><input type="checkbox" id="need-' + i + '" data-key="' + esc(k) + '"' + (on ? ' checked' : '') + '><label for="need-' + i + '"><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner === 'Phillips' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></label></li>';
+      return '<li><input type="checkbox" id="need-' + i + '" data-key="' + esc(k) + '"' + (on ? ' checked' : '') + '><label for="need-' + i + '"><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner && n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></label></li>';
     }).join('') : '<li>No open items.</li>';
   }
 
@@ -303,7 +316,8 @@
     renderAll();
   }
   function lock() {
-    state.feed = null; state.litify = null; state.litifyLabel = ''; state.lead = null;
+    state.feed = null; state.litify = null; state.litifyLabel = ''; state.lead = null; state.token = null;
+    if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = '';
     ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
@@ -340,7 +354,7 @@
       target.ai_tracked = true;
       var connected = /^Live transfer connected/i.test(outcome);
       target.ai_events.push({ at: at, text: 'Sofia completed intake: ' + (t.case_type || 'claim') + (t.state ? ', ' + t.state : ''), kind: '' });
-      target.ai_events.push({ at: at, text: connected ? 'Live transfer connected to Phillips' : (outcome || 'Transfer attempted'), kind: connected ? 'firm' : 'warn' });
+      target.ai_events.push({ at: at, text: connected ? 'Live transfer connected to ' + firm() : (outcome || 'Transfer attempted'), kind: connected ? 'firm' : 'warn' });
       if (str(r.ai_summary)) target.ai_events.push({ at: at, text: 'Summary: ' + str(r.ai_summary).slice(0, 280), kind: '' });
       ['intake_completed'].concat(connected ? ['transferred'] : []).forEach(function (s) { target.stage = later(target.stage, s); if (target.stages_reached.indexOf(s) < 0) target.stages_reached.push(s); });
       if (connected) target.transfer = { at: at, outcome: 'Live transfer connected' };
@@ -360,20 +374,45 @@
     state.campaign = state.campaign || (feed.campaigns[0] && feed.campaigns[0].id) || 'all';
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
     $('feed-pill').textContent = 'Live · ' + feed.leads.length + ' leads'; $('feed-pill').className = 'pill ok';
+    if (firmName()) {
+      root.document.title = 'Perspective · ' + firmName();
+      root.document.querySelectorAll('[data-firm]').forEach(function (el) { el.textContent = el.getAttribute('data-firm') === 'short' ? firm() : firmName(); });
+    }
     setView(state.view);
+  }
+  function fetchFeed(token) {
+    var opts = { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', credentials: 'omit', redirect: 'error' };
+    var get = function (url) {
+      return root.fetch(url, opts).then(function (r) {
+        if (r.status === 401) throw Object.assign(new Error('That token was not accepted.'), { final: true });
+        if (r.status === 404) throw new Error('No data has been published yet.');
+        if (!r.ok) throw new Error('Portal data unavailable (HTTP ' + r.status + ').');
+        return r.json();
+      });
+    };
+    var c = clientId();
+    return get(HUB + '/portal/' + encodeURIComponent(c) + '/feed').catch(function (e) {
+      if (e.final || !FALLBACK[c]) throw e;
+      return get(FALLBACK[c]);
+    });
+  }
+  function refresh() {
+    if (!state.token || root.document.hidden) return;
+    fetchFeed(state.token).then(function (feed) {
+      var view = state.view, lead = state.lead;
+      open(feed); state.lead = lead; setView(view);
+    }).catch(function () { $('feed-pill').textContent = 'Reconnecting…'; $('feed-pill').className = 'pill warn'; });
   }
   function unlock() {
     var token = ($('token').value || '').trim(), btn = $('unlock');
     if (!token) { $('gate-err').textContent = 'Enter your access token.'; return; }
     btn.disabled = true; $('gate-err').textContent = '';
-    root.fetch(FEED_API, { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', credentials: 'omit', redirect: 'error' })
-      .then(function (r) {
-        if (r.status === 401) throw new Error('That token was not accepted.');
-        if (r.status === 404) throw new Error('No data has been published yet.');
-        if (!r.ok) throw new Error('Portal data unavailable (HTTP ' + r.status + ').');
-        return r.json();
+    fetchFeed(token)
+      .then(function (feed) {
+        $('token').value = ''; state.token = token; open(feed);
+        if (state.timer) root.clearInterval(state.timer);
+        state.timer = root.setInterval(refresh, REFRESH_MS);
       })
-      .then(function (feed) { $('token').value = ''; open(feed); })
       .catch(function (e) { $('gate-err').textContent = (e && e.message) || 'Could not load the portal.'; })
       .then(function () { btn.disabled = false; });
   }
