@@ -37,6 +37,7 @@
     not_connected: ['Not connected', 'warn'],
     unknown: ['Unknown', 'warn']
   };
+  function statusOf(status) { return Object.prototype.hasOwnProperty.call(SOURCE_STATUS, status) ? SOURCE_STATUS[status] : SOURCE_STATUS.unknown; }
   var WINDOW_TEXT = {
     '1_day': '1-day', '90_day': '90-day', none: 'none', not_applicable_native_form: 'n/a (native form)'
   };
@@ -133,7 +134,7 @@
 
   function renderSources(sources) {
     var rows = (Array.isArray(sources) ? sources : []).filter(function (s) { return s && typeof s === 'object'; }).map(function (s) {
-      var st = SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown;
+      var st = statusOf(s.status);
       var auth = s.auth === 'failed' ? ' · sign-in failed' : '';
       return '<tr><td><b>' + esc(s.label) + '</b><span class="sub">feeds: ' + esc((s.feeds || []).join(', ').replace(/_/g, ' ')) + '</span></td>' +
         '<td><span class="pill ' + st[1] + '">' + st[0] + '</span></td>' +
@@ -172,9 +173,9 @@
   }
 
   function renderUnmatched(unmatched) {
-    var u = unmatched || { count: 0, rows: [] };
+    var u = unmatched && typeof unmatched === 'object' ? unmatched : { count: 0, rows: [] };
     if (!u.count) return '<div class="sec"><h3>Unmatched firm records</h3><p class="intro">No unmatched records are stored. This does not prove the firm feed is connected or complete.</p></div>';
-    var rows = (u.rows || []).map(function (x) {
+    var rows = (Array.isArray(u.rows) ? u.rows : []).filter(function (x) { return x && typeof x === 'object'; }).map(function (x) {
       return '<tr><td>' + esc(orNA(x.report_date)) + '</td><td>' + esc(String(x.status || 'unknown').replace(/_/g,' ')) + '<span class="sub">reads as: ' + esc(String(x.status || '').replace(/_/g, ' ')) + ' — not counted</span></td>' +
         '<td>' + esc(String(x.reason || '').replace(/_/g, ' ')) + '</td><td>' + esc(x.source === 'form_status' ? 'Form status' : 'Daily report') + '</td></tr>';
     }).join('');
@@ -209,8 +210,10 @@
     (Array.isArray(report.sources) ? report.sources : []).forEach(function (s) {
       if (!s || typeof s !== 'object' || typeof s.id !== 'string') return;
       var prior = byId[s.id];
-      var rank = function (x) { return STATUS_RANK.hasOwnProperty(x.status) ? STATUS_RANK[x.status] : 2; };
-      if (!prior || rank(s) > rank(prior)) byId[s.id] = s;
+      var rank = function (x) { return Object.prototype.hasOwnProperty.call(STATUS_RANK, x.status) ? STATUS_RANK[x.status] : 2; };
+      // A repeated id contradicts itself: keep the worst entry and never let it count as fresh.
+      if (!prior) byId[s.id] = s;
+      else { var worst = rank(s) > rank(prior) ? s : prior; byId[s.id] = { id: s.id, label: worst.label, status: worst.status === 'fresh' ? 'unknown' : worst.status, last_success_at: worst.last_success_at }; }
     });
     return byId;
   }
@@ -269,7 +272,7 @@
       var src = leadSources(r, byId);
       var latest = null;
       src.forEach(function (s) { var t = validTime(s.last_success_at); if (t !== null && (latest === null || t > latest)) latest = t; });
-      var srcText = src.length ? src.map(function (s) { return esc(typeof s.label === 'string' && s.label ? s.label : NA) + ' — ' + (SOURCE_STATUS[s.status] || SOURCE_STATUS.unknown)[0]; }).join('; ') : NA;
+      var srcText = src.length ? src.map(function (s) { return esc(typeof s.label === 'string' && s.label ? s.label : NA) + ' — ' + statusOf(s.status)[0]; }).join('; ') : NA;
       return '<tr><td data-label="Campaign"><b>' + esc(rowName(r)) + '</b></td><td data-label="Leads"><b>' + (n === null ? NA : esc(n) + (lc.final ? '' : ' (partial)')) + '</b></td><td data-label="Lead source">' + srcText + '</td><td data-label="Reporting period">' + esc(period) + '</td><td data-label="Last refreshed">' +
         esc(latest === null ? NA : when(new Date(latest).toISOString())) + '</td></tr>';
     }).join('');
@@ -288,10 +291,15 @@
   function isValidReport(report) {
     return !!report && report.schema === 'ee.phillips_portal_report/v1' && Array.isArray(report.rows) && !report.rows.some(function(r){return !r || !r.identity || !r.stages;});
   }
+  var UNREADABLE = '<div class="gapnote">The report could not be read. Nothing is shown rather than showing numbers that may be wrong.</div>';
+  /** Renders a report. Any malformed nested field that still throws yields the generic unreadable copy. */
   function render(report, opts) {
-    if (!isValidReport(report)) {
-      return '<div class="gapnote">The report could not be read. Nothing is shown rather than showing numbers that may be wrong.</div>';
-    }
+    if (!isValidReport(report)) return UNREADABLE;
+    try { return renderReport(report, opts); } catch (e) { return UNREADABLE; }
+  }
+  /** True when render() would show figures (not the unreadable copy). */
+  function renders(report) { return render(report) !== UNREADABLE; }
+  function renderReport(report, opts) {
     var ex = report.excluded || {};
     var firm = (report.firm_status && report.firm_status.counts) || {};
     var un = report.unattributed || {};
@@ -315,13 +323,15 @@
       renderOperations(report.operations);
   }
 
+  /** An error whose message is written for the client (HTTP access states). Anything else shows generic copy. */
+  function shown(message) { var e = new Error(message); e.portalMessage = true; return e; }
   var loadVersion = 0;
   var loaded = null; // { report, version } — the last report this page successfully rendered
   /** Updates the persistent screen-reader announcement (outside the re-rendered region). */
   function announce(doc, report, program) {
     var el = doc && typeof doc.getElementById === 'function' ? doc.getElementById('outcome-view') : null;
     if (!el) return;
-    if (!isValidReport(report)) { el.textContent = ''; return; }
+    if (!isValidReport(report) || !renders(report)) { el.textContent = ''; return; }
     var key = resolveProgram(report.rows, program);
     var v = programViews(report.rows).filter(function (x) { return x.key === key; })[0];
     el.textContent = 'Viewing: ' + (v ? v.label : 'All campaigns');
@@ -330,7 +340,7 @@
   function setProgram(program, opts) {
     var doc = (opts && opts.document) || root.document;
     var target = doc && doc.getElementById('outcome-root');
-    if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program) || !isValidReport(loaded.report)) return false;
+    if (!target || !loaded || loaded.version !== loadVersion || !isViewKey(program) || !renders(loaded.report)) return false;
     var key = resolveProgram(loaded.report.rows, program); // the view actually shown
     target.innerHTML = render(loaded.report, { program: key });
     // Keep keyboard focus on the shown view's button (the bar was just re-rendered).
@@ -352,21 +362,24 @@
     var fetchImpl = o.fetch || root.fetch;
     target.innerHTML = '<div class="gapnote">Loading report…</div>';
     return fetchImpl(o.api || REPORT_API, { headers: { Authorization: 'Bearer ' + token }, cache:'no-store', credentials:'omit', redirect:'error' }).then(function (r) {
-      if (r.status === 401) throw new Error('That token was not recognized for the report.');
-      if (r.status === 404) throw new Error('The report service is not available yet.');
-      if (!r.ok) throw new Error('Report unavailable (HTTP ' + r.status + ').');
+      if (r.status === 401) throw shown('That token was not recognized for the report.');
+      if (r.status === 404) throw shown('The report service is not available yet.');
+      if (!r.ok) throw shown('Report unavailable (HTTP ' + r.status + ').');
       return r.json();
     }).then(function (report) {
       if(version !== loadVersion) return null;
-      target.innerHTML = render(report);
-      if (isValidReport(report)) loaded = { report: report, version: version };
+      var html = render(report);
+      target.innerHTML = html;
+      if (html !== UNREADABLE) loaded = { report: report, version: version };
+      else { announce(doc, null); if (note) note.style.display = ''; return null; }
       announce(doc, report);
       if (note) note.style.display = 'none';
       return report;
     }).catch(function (e) {
       if(version !== loadVersion) return null;
       if(note) note.style.display='';
-      target.innerHTML = '<div class="gapnote">' + esc(e && e.message ? e.message : 'Report unavailable.') + ' No figures are shown.</div>';
+      loaded = null; announce(doc, null);
+      target.innerHTML = '<div class="gapnote">' + esc(e && e.portalMessage ? e.message : 'Report unavailable.') + ' No figures are shown.</div>';
       return null;
     });
   }

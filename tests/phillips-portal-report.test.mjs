@@ -388,7 +388,7 @@ test('D2/D3: mounted tab switches views by click delegation, keeps focus on the 
 
 // ---- Pass 3 fixes (review receipt pass-2/REVIEW-pass2.md) ----
 test('N1: the page loads the current script version', () => {
-  assert.match(PAGE, /phillips-report\.js\?v=20261005d"/);
+  assert.match(PAGE, /phillips-report\.js\?v=20261005e"/);
 });
 test('N2/N3: a valid but absent key focuses the view actually shown; a persistent live region announces it', async () => {
   const dom = fakeDom();
@@ -548,4 +548,58 @@ test('L8 (review findings 1-7): coverage is never claimed on an unproven count, 
   assert.doesNotMatch(leadsBlock(R.render(o)), /\[object Object\]/);
   const obj = base(); obj.rows[0].stages.submission.sources = [{ id: { a: 1 } }];
   assert.doesNotMatch(leadsBlock(R.render(obj)), /\[object Object\]/);
+});
+
+test('R2 (Codex): malformed nested collections show generic unreadable copy, never a raw error', () => {
+  const cases = {
+    sourcesObject: (r) => { r.sources = {}; },
+    sourcesNullEntry: (r) => { r.sources = [null, ...r.sources]; },
+    unmatchedRowsObject: (r) => { r.unmatched = { count: 2, rows: {} }; },
+    unmatchedNullRow: (r) => { r.unmatched = { count: 1, rows: [null] }; },
+    unmatchedString: (r) => { r.unmatched = 'x'; },
+    feedsObject: (r) => { r.sources[0].feeds = {}; },
+    stagesString: (r) => { r.rows[0].stages = 'x'; },
+  };
+  for (const [name, mutate] of Object.entries(cases)) {
+    const r = sample(); mutate(r);
+    let html;
+    assert.doesNotThrow(() => { html = R.render(r); }, name);
+    assert.doesNotMatch(html, /is not a function|Cannot read|TypeError|undefined/, name);
+  }
+});
+
+test('R2 (Codex): a render failure clears the previous report, its view and announcement', async () => {
+  const dom = fakeDom();
+  R.mount(dom.document);
+  const good = sample(); good.rows[3].identity.program = 'MVA';
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => good }) });
+  assert.equal(dom.byId.get('outcome-view').textContent, 'Viewing: MVA');
+  assert.equal(R.setProgram('MVA', { document: dom.document }), true);
+  // A report whose nested shape makes rendering throw (getter simulates an unforeseen shape).
+  const bad = sample(); Object.defineProperty(bad, 'excluded', { get() { throw new TypeError('boom internal'); } });
+  const out = await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => bad }) });
+  assert.equal(out, null);
+  assert.match(dom.byId.get('outcome-root').innerHTML, /could not be read/);
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /boom internal|TypeError/);
+  assert.equal(dom.byId.get('outcome-view').textContent, '');
+  assert.equal(R.setProgram('MVA', { document: dom.document }), false, 'previous report cannot survive the failure');
+  // Network/parse exceptions show generic copy; controlled HTTP access copy is kept.
+  await R.load('t', { document: dom.document, fetch: async () => { throw new TypeError('Failed to fetch secret-host'); } });
+  assert.match(dom.byId.get('outcome-root').innerHTML, /Report unavailable\. No figures are shown\./);
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /secret-host/);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 200, ok: true, json: async () => { throw new SyntaxError('Unexpected token < in JSON'); } }) });
+  assert.doesNotMatch(dom.byId.get('outcome-root').innerHTML, /Unexpected token/);
+  await R.load('t', { document: dom.document, fetch: async () => ({ status: 401, ok: false }) });
+  assert.match(dom.byId.get('outcome-root').innerHTML, /That token was not recognized for the report\./);
+  assert.equal(R.setProgram('MVA', { document: dom.document }), false);
+});
+
+test('Review minors: duplicate source ids never count as fresh; inherited names are not statuses', () => {
+  const nil = () => { const r = sample(); r.rows = r.rows.filter((x) => x.identity.brand_account === 'NIL'); r.cohort.complete = true; return r; };
+  const dup = nil(); dup.sources.push({ id: 'website_intake', label: 'W2', status: 'fresh', last_success_at: null });
+  assert.doesNotMatch(leadsBlock(R.render(dup)), /All leads loaded/);
+  const inh = nil(); inh.sources.find((s) => s.id === 'website_intake').status = 'hasOwnProperty';
+  const html = R.render(inh);
+  assert.doesNotMatch(text(html), /undefined/);
+  assert.match(leadsBlock(html), /— Unknown/);
 });
