@@ -24,8 +24,8 @@
   }
   var REFRESH_MS = 60000;
   var AUTH_CHECK_MS = 4000;
-  var EMAIL_SIGN_IN_COPY = "Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.";
-  var TOKEN_SIGN_IN_COPY = 'Email sign-in is temporarily unavailable. Use the owner access token below. Lead data loads only after access is verified, and clears when you lock or close the tab.';
+  var EMAIL_SIGN_IN_COPY = "Sign in with your Phillips Law Group email. We'll email you a 6-digit code.";
+  var TOKEN_SIGN_IN_COPY = 'Email sign-in is unavailable right now. Please try again in a few minutes.';
   var NA = '—';
   var state = { audio: null, feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
   var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['proposals', 'Proposals'], ['requests', 'Request a Campaign'], ['contact', 'Names & phone digits']];
@@ -150,6 +150,7 @@
     $('c-title').textContent = c.name || c.label || '';
     $('c-summary').textContent = c.summary || '';
     $('c-state').textContent = c.state || '';
+    if ($('c-links')) $('c-links').innerHTML = linksHtml(c.id === 'all' ? [] : c.links);
     $('freshness').innerHTML = sourcesHTML(state.feed) + (state.litifyLabel ? '<div>Comparing against: ' + esc(state.litifyLabel) + '</div>' : '');
   }
   function renderOverview() {
@@ -376,6 +377,18 @@
   }
 
   // ---------- summary ----------
+  // Campaign pages and ad previews: https only (the server also filters), opened in a new tab without a referrer.
+  function linksHtml(links) {
+    var ok = (links || []).filter(function (l) { return l && /^https:\/\/[A-Za-z0-9.-]+(\/|$)/.test(String(l.url || '')) && l.label; });
+    if (!ok.length) return '';
+    var group = function (kind, title) {
+      var rows = ok.filter(function (l) { return (l.kind === 'ad' ? 'ad' : 'page') === kind; });
+      return rows.length ? '<h4 style="margin:14px 0 6px;font-size:13px">' + title + '</h4><ul class="camp-links" style="padding-left:18px;margin:0;line-height:1.8;font-size:14px">' +
+        rows.map(function (l) { return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener noreferrer">' + esc(l.label) + '</a>' + (l.note ? ' <small>' + esc(l.note) + '</small>' : '') + '</li>'; }).join('') + '</ul>' : '';
+    };
+    return group('page', 'Pages') + group('ad', 'Ad previews');
+  }
+
   function renderSummary() {
     var c = current(), m = metrics(c);
     $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
@@ -386,7 +399,8 @@
       m.spend !== null ? fmtMoney(m.spend) + ' spent' + (m.cpl !== null ? ' · ' + fmtMoney(m.cpl, true) + ' per lead' : '') + '.' : 'Spend not connected for this view.'
     ];
     $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
-      ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+      ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+      linksHtml(c.id === 'all' ? [] : c.links);
     var needs = c.needs || [];
     // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
@@ -470,7 +484,7 @@
       .then(function () { $('pr-msg').textContent = 'Saved as a draft. Only owners see it until you share it.'; $('pr-form').reset(); refresh(); })
       .catch(function (err) { $('pr-msg').textContent = err.message; });
   }
-  var RQ_STATUS = { requested: ['Requested · awaiting decision', 'warn'], approved: ['Approved · inactive draft', ''], declined: ['Declined', 'mute'] };
+  var RQ_STATUS = { requested: ['Pending review', 'warn'], approved: ['Approved · inactive draft', ''], declined: ['Declined', 'mute'] };
   // A request carries no owner or due date, so an open one says so instead of implying someone is on it.
   var RQ_NEXT = { requested: 'Next: an owner approves or declines it.', approved: 'Next: set up and launch it. Nothing runs or spends until then.' };
   function renderRequests() {
@@ -498,7 +512,7 @@
     busy('rq-send', true); $('rq-msg').textContent = 'Sending…';
     api('POST', '/requests', { case_type: $('rq-case').value, states: $('rq-states').value, monthly_goal: parseInt($('rq-goal').value || '0', 10) || 0,
                                budget: parseFloat($('rq-budget').value || '0') || 0, notes: $('rq-notes').value })
-      .then(function () { $('rq-msg').textContent = 'Request saved. It waits for an owner to approve or decline it; no one is assigned yet and nothing runs or spends.'; $('rq-form').reset(); refresh(); })
+      .then(function () { $('rq-msg').textContent = 'Request saved · Pending review. Marketing Apes reviews it; nothing runs or spends until it is approved and launched.'; $('rq-form').reset(); refresh(); })
       .catch(function (err) { $('rq-msg').textContent = err.message; })
       .then(function () { busy('rq-send', false); });
   }
@@ -540,11 +554,11 @@
   function allowedViews() {
     var a = access();
     if (!state.feed) return [];
-    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); })
-      .concat(a.owner ? ['settings'] : []);
+    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); });
   }
   function setView(v) {
     var ok = allowedViews();
+    if (access().owner) ok = ok.concat(['settings']);   // owner admin: reached only through #admin, never a tab
     if (ok.indexOf(v) < 0) v = ok[0] || '';
     state.view = v;
     $('no-sections').hidden = !!v;
@@ -560,8 +574,8 @@
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
     if ($('email')) $('email').value = '';   // the next person starts with an empty sign-in
-    $('step-code').hidden = true; $('step-email').hidden = state.emailSignIn === false;
-    if (state.emailSignIn === false && $('token-alt')) $('token-alt').open = true;
+    $('step-code').hidden = true; $('step-email').hidden = false;
+    if ($('token-alt')) $('token-alt').open = false;
     resetApp();
   }
   // Everything a signed-in person sees or types lives inside #app. Lock and every new sign-in put #app back to the
@@ -625,7 +639,8 @@
     feed = normalizeFeed(feed);
     if (!feed || !Array.isArray(feed.leads) || !Array.isArray(feed.campaigns)) throw new Error('This feed is not a Perspective feed yet.');
     state.feed = feed;
-    state.campaign = state.campaign || (feed.campaigns[0] && feed.campaigns[0].id) || 'all';
+    var preview = feed.campaigns.filter(function (c) { return (c.links || []).length; })[0];
+    state.campaign = state.campaign || (preview || feed.campaigns[0] || { id: 'all' }).id;
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
     var h = feedHealth(feed); $('feed-pill').textContent = h[0]; $('feed-pill').className = 'pill ' + h[1];
     var up = $('lt-upload'); if (up) up.hidden = !(feed.access && feed.access.owner && feed.access.role === 'owner');
@@ -636,15 +651,29 @@
     // Only the sections this person may open (the server already removed data they can't see).
     var ok = allowedViews();
     root.document.querySelectorAll('.section-tabs [data-view]').forEach(function (b) { b.hidden = ok.indexOf(b.getAttribute('data-view')) < 0; });
+    var a = access();
+    if ($('rq-top')) $('rq-top').hidden = !a.can_request;
+    if ($('admin-link')) $('admin-link').hidden = !a.owner;
     setView(state.view);
+    route();
+  }
+  // #admin opens owner administration. Anyone else lands on the overview; the server refuses their admin calls anyway.
+  function route() {
+    if (!state.feed || (root.location && root.location.hash) !== '#admin') return;
+    if (access().owner) setView('settings');
+    else { try { root.history.replaceState(null, '', root.location.pathname); } catch (e) {} setView('overview'); }
+  }
+  function openRequest() {
+    setView('requests');
+    var f = $('rq-case'); if (f) { f.focus(); if (f.scrollIntoView) f.scrollIntoView({ block: 'center' }); }
   }
   function fetchFeed(token) {
     var opts = { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store', credentials: 'omit', redirect: 'error' };
     var get = function (url) {
       return root.fetch(url, opts).then(function (r) {
-        if (r.status === 401) throw Object.assign(new Error('That token was not accepted.'), { final: true });
+        if (r.status === 401) throw Object.assign(new Error('That sign-in was not accepted. Please sign in again.'), { final: true });
         if (r.status === 404) throw new Error('No data has been published yet.');
-        if (!r.ok) throw new Error('Portal data unavailable (HTTP ' + r.status + ').');
+        if (!r.ok) throw new Error('Your portal could not load right now. Please try again in a minute.');
         return r.json();
       });
     };
@@ -654,19 +683,17 @@
     return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body), cache: 'no-store', credentials: 'omit', redirect: 'error' })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) {
-        if (!r.ok) throw new Error((d && typeof d.detail === 'string' && d.detail) || 'Sign-in unavailable (HTTP ' + r.status + ').');
+        if (!r.ok) throw new Error(r.status < 500 && d && typeof d.detail === 'string' && d.detail.length < 120 ? d.detail.charAt(0).toUpperCase() + d.detail.slice(1) + '.' : 'Sign-in is unavailable right now. Please try again in a minute.');
         return d; }); });
   }
   function applyAuthAvailability(health) {
     if (!health || typeof health.email_sign_in !== 'boolean') return false;
     state.emailSignIn = health.email_sign_in;
-    $('step-email').hidden = !state.emailSignIn;
+    $('step-email').hidden = false;
     $('step-code').hidden = true;
     $('send-code').disabled = !state.emailSignIn;
     $('gate-copy').textContent = state.emailSignIn ? EMAIL_SIGN_IN_COPY : TOKEN_SIGN_IN_COPY;
     $('gate-err').textContent = '';
-    var alt = $('token-alt');
-    if (alt) alt.open = !state.emailSignIn;
     return state.emailSignIn;
   }
   function checkAuthAvailability() {
@@ -692,7 +719,7 @@
   }
   function startSession(token, feed) {
     state.gen++; clearAudio(); state.litify = null; state.litifyLabel = ''; state.litifyText = ''; resetApp();
-    state.token = token; open(feed);
+    state.token = token; open(feed); $('gate-err').textContent = '';
     if (state.timer) root.clearInterval(state.timer);
     state.timer = root.setInterval(refresh, REFRESH_MS);
   }
@@ -702,7 +729,7 @@
     busy('verify', true); $('gate-err').textContent = '';
     var gen = state.gen;
     post('/verify', { email: email, code: code })
-      .then(function (d) { if (gen !== state.gen) return; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
+      .then(function (d) { if (gen !== state.gen) return; $('gate-err').textContent = 'Signed in. Loading your portal…'; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
       .catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('verify', false); });
   }
   function refresh() {
@@ -723,7 +750,7 @@
   function unlock() {
     var token = ($('token').value || '').trim(), btn = $('unlock');
     if (!token) { $('gate-err').textContent = 'Enter your access token.'; return; }
-    btn.disabled = true; $('gate-err').textContent = '';
+    btn.disabled = true; $('gate-err').textContent = 'Loading your portal…';
     var gen = state.gen;
     fetchFeed(token)
       .then(function (feed) { if (gen !== state.gen) return; $('token').value = ''; startSession(token, feed); })
@@ -741,6 +768,7 @@
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);
+    root.addEventListener('hashchange', route);
     APP_TEMPLATE = $('app').innerHTML;
     bindApp();
     checkAuthAvailability();
@@ -767,6 +795,7 @@
     $('lead-detail').addEventListener('click', function (e) { var b = e.target.closest('[data-rec]'); if (b) playRecording(b.getAttribute('data-rec'), b); });
     $('pr-form').addEventListener('submit', addProposal);
     $('rq-form').addEventListener('submit', sendRequest);
+    if ($('rq-top')) $('rq-top').addEventListener('click', openRequest);
     $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
   }
 

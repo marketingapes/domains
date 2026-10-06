@@ -107,8 +107,14 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 [hidden]{display:none!important}
 @media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
 @media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}.topline{flex-wrap:wrap}.topline .pill{white-space:normal}}
+.portal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+.ph-title{margin:0;font-size:clamp(22px,4vw,30px)}
+.ph-actions{display:flex;align-items:center;gap:12px}
+#c-links h4{margin:12px 0 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#5b6475)}
+#c-links ul{margin:0;padding-left:18px;line-height:1.7;font-size:14px}
+.token-alt{margin-top:18px;font-size:13px}.token-alt summary{color:var(--muted,#5b6475)}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006k" defer></script>
+<script src="/assets/portal/perspective.js?v=20261006m" defer></script>
 </head>
 <body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
@@ -120,10 +126,10 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <section class="gate" id="gate">
     <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
     <h2 style="margin-top:10px">Sign in to Perspective</h2>
-    <p id="gate-copy">Checking sign-in options. Owner access is available below.</p>
-    <div id="step-email" hidden>
-      <label for="email" class="eyebrow">Work email</label>
-      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@firm.com">
+    <p id="gate-copy">Sign in with your Phillips Law Group email. We'll email you a 6-digit code.</p>
+    <div id="step-email">
+      <label for="email" class="eyebrow">Phillips email address</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@phillipslaw.com">
       <button class="btn" id="send-code" type="button">Email me a code</button>
     </div>
     <div id="step-code" hidden>
@@ -133,16 +139,20 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button class="linkbtn" id="change-email" type="button">Use a different email</button>
     </div>
     <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <details class="token-alt" id="token-alt" open><summary>Owner access token (read-only)</summary>
-      <label for="token" class="eyebrow">Access token</label>
-      <input id="token" type="password" autocomplete="off" placeholder="Portal access token">
+    <details class="token-alt" id="token-alt"><summary>Owner sign-in</summary>
+      <label for="token" class="eyebrow">Owner key</label>
+      <input id="token" type="password" autocomplete="off" placeholder="Owner key">
       <button class="btn" id="unlock" type="button">Open Perspective</button>
     </details>
   </section>
 
   <div id="app" hidden>
+    <div class="portal-head">
+      <h1 class="ph-title"><span data-firm="short">Phillips</span> Perspective</h1>
+      <div class="ph-actions"><button class="btn" id="rq-top" type="button" hidden>+ Request a Campaign</button><a class="linkbtn" id="admin-link" href="#admin" hidden>Admin</a></div>
+    </div>
     <nav class="campaign-tabs" role="tablist" aria-label="Campaigns" id="campaign-tabs"></nav>
-    <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p></div><span class="pill" id="c-state"></span></div>
+    <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p><div id="c-links"></div></div><span class="pill" id="c-state"></span></div>
     <div class="fresh" id="freshness"></div>
 
     <nav class="section-tabs" role="tablist" aria-label="Sections">
@@ -153,7 +163,6 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
       <button role="tab" data-view="proposals" aria-selected="false">Proposals</button>
       <button role="tab" data-view="requests" aria-selected="false">Request a Campaign</button>
-      <button role="tab" data-view="settings" aria-selected="false" hidden>Settings</button>
     </nav>
     <p class="note" id="no-sections" hidden>Your access level doesn’t include any sections yet. Ask the portal owner.</p>
 
@@ -261,7 +270,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     </section>
 
     <section class="view" data-panel="settings" hidden>
-      <div class="panel"><div class="eyebrow">OWNER SETTINGS</div><h2 style="margin-top:8px">What each access level sees</h2>
+      <div class="panel"><div class="eyebrow">OWNER ADMIN</div><h2 style="margin-top:8px">What each access level sees</h2>
         <p>Everyone uses this same portal. Tick the sections each level may open. The server removes everything else before it reaches their browser. A level with nothing ticked can’t sign in.</p>
         <p class="note">Overview shows campaign totals: leads, funnel, signed, budget, spend and cost per lead/transfer/signed. Marketing adds the channel, ad and invoice detail. Litify Outcomes adds turn-down reasons and details. “Names &amp; phone digits” adds names, the last 4 phone digits and state wherever lead or Litify rows are shown.</p>
         <div class="tbl-wrap"><table id="set-table"></table></div>

@@ -21,8 +21,9 @@ test('page ships no lead data and loads only the token-gated feed', async () => 
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   assert.ok(!/\d{3}[-.)\s]\d{3}[-.\s]\d{4}/.test(html), 'no phone numbers in page');
   assert.ok(html.includes('/assets/portal/perspective.js'));
-  assert.match(html, /id="step-email" hidden/);
-  assert.match(html, /id="token-alt" open/);
+  assert.match(html, /<div id="step-email">/, 'the email box shows immediately');
+  assert.match(html, /<details class="token-alt" id="token-alt"><summary>Owner sign-in<\/summary>/, 'owner key is folded behind a small link');
+  assert.ok(!/API|access token|Checking sign-in/i.test(html.slice(html.indexOf('id="gate"'), html.indexOf('id="app"'))), 'no technical language at sign-in');
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
   assert.ok(!/localStorage\.setItem\([^)]*token/i.test(js), 'token never persisted');
 });
@@ -69,20 +70,21 @@ function authDom() {
   return { ids, document: { body: { getAttribute: () => 'https://perspective-s3b8.onrender.com' }, getElementById: (id) => ids.get(id) || null } };
 }
 
-test('email sign-in health fallback opens the working owner-token path and survives lock', () => {
+test('email sign-in outage keeps the client sign-in plain: no owner box forced open, survives lock', () => {
   const oldDocument = globalThis.document;
   const { ids, document } = authDom();
   globalThis.document = document;
   try {
     assert.equal(P._applyAuthAvailability({ email_sign_in: false }), false);
-    assert.equal(ids.get('step-email').hidden, true);
+    assert.equal(ids.get('step-email').hidden, false);
     assert.equal(ids.get('step-code').hidden, true);
     assert.equal(ids.get('send-code').disabled, true);
-    assert.equal(ids.get('token-alt').open, true);
-    assert.match(ids.get('gate-copy').textContent, /owner access token/i);
+    assert.equal(ids.get('token-alt').open, false);
+    assert.match(ids.get('gate-copy').textContent, /unavailable right now/i);
+    assert.ok(!/token|API|HTTP/i.test(ids.get('gate-copy').textContent));
     P._lock();
-    assert.equal(ids.get('step-email').hidden, true);
-    assert.equal(ids.get('token-alt').open, true);
+    assert.equal(ids.get('step-email').hidden, false);
+    assert.equal(ids.get('token-alt').open, false);
   } finally {
     P._state.emailSignIn = null;
     globalThis.document = oldDocument;
@@ -100,7 +102,7 @@ test('healthy email sign-in replaces the neutral gate; invalid health changes no
     assert.equal(ids.get('step-email').hidden, false);
     assert.equal(ids.get('send-code').disabled, false);
     assert.equal(ids.get('token-alt').open, false);
-    assert.match(ids.get('gate-copy').textContent, /work email/i);
+    assert.match(ids.get('gate-copy').textContent, /Phillips Law Group email/i);
   } finally {
     P._state.emailSignIn = null;
     globalThis.document = oldDocument;
@@ -141,11 +143,14 @@ test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attri
   assert.equal(f.litify[0].match_lead_uid, 'LIT-1');
 });
 
-test('one portal: five sections plus an owner-only settings tab, no per-level pages', async () => {
+test('one portal: client sections, Settings only at the owner-only #admin route, no per-level pages', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   for (const v of ['overview', 'leads', 'marketing', 'litify', 'summary']) assert.match(html, new RegExp(`data-view="${v}"`));
-  assert.match(html, /data-view="settings" aria-selected="false" hidden/);
+  assert.ok(!/data-view="settings"/.test(html), 'no Settings tab in the navigation');
+  assert.match(html, /data-panel="settings"/);
+  assert.match(html, /<a class="linkbtn" id="admin-link" href="#admin" hidden>Admin<\/a>/);
+  assert.match(html, /<button class="btn" id="rq-top" type="button" hidden>\+ Request a Campaign<\/button>/);
   assert.match(html, /id="sm-tasks"/);
   const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
   assert.ok(!dirs.some((d) => /csuite|management|basic/i.test(d)), 'no separate portals per level');
@@ -250,7 +255,7 @@ test('pending items show their owner and due date, or say none is set; nothing c
 
     P._renderRequests();
     const rq = els.get('rq-list').innerHTML.split('</li>');
-    assert.match(rq[0], /Requested · awaiting decision[\s\S]*Not assigned[\s\S]*No due date[\s\S]*an owner approves or declines it/);
+    assert.match(rq[0], /Pending review[\s\S]*Not assigned[\s\S]*No due date[\s\S]*an owner approves or declines it/);
     assert.match(rq[1], /Approved · inactive draft[\s\S]*Not assigned[\s\S]*No due date[\s\S]*Nothing runs or spends until then/);
     assert.ok(!/Not assigned|No due date|Next:/.test(rq[2]), 'a declined request is not pending');
     assert.match(rq[3], /Approved · campaign switched on/);
@@ -291,4 +296,28 @@ test('pending items show their owner and due date, or say none is set; nothing c
     P._state.feed = null; P._state.campaign = null; P._state.lead = null;
     globalThis.document = oldDocument;
   }
+});
+
+test('campaign pages and ad previews render as https links only, opened without a referrer', async () => {
+  const oldDocument = globalThis.document;
+  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
+  globalThis.document = document;
+  try {
+    P._state.campaign = 'mva';
+    P._state.feed = P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
+      access: { sections: ['summary'], owner: false, email: 'basic@example.test' },
+      campaigns: [{ id: 'mva', label: 'MVA', needs: [], links: [
+        { kind: 'page', label: 'A · Form + call', url: 'https://example.onrender.com/a/' },
+        { kind: 'ad', label: 'Meta <N1>', url: 'https://fb.me/abc', note: 'paused' },
+        { kind: 'page', label: 'evil', url: 'javascript:alert(1)' },
+        { kind: 'ad', label: 'plain', url: 'http://example.com/' }] }],
+      tasks: [], requests: [], leads: [] });
+    P._renderSummary();
+    const html = els.get('sm-body').innerHTML;
+    assert.match(html, /<h4[^>]*>Pages<\/h4>/);
+    assert.match(html, /<h4[^>]*>Ad previews<\/h4>/);
+    assert.match(html, /href="https:\/\/example\.onrender\.com\/a\/" target="_blank" rel="noopener noreferrer">A · Form \+ call<\/a>/);
+    assert.match(html, /Meta &lt;N1&gt;<\/a> <small>paused<\/small>/);
+    assert.doesNotMatch(html, /javascript:|http:\/\/example\.com|>evil<|>plain</);
+  } finally { globalThis.document = oldDocument; }
 });
