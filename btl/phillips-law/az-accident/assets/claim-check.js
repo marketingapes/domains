@@ -65,11 +65,16 @@
       chips(list);
     });
   }
+  function summarize() {
+    var sum = $('ccSummary'); if (!sum) return;
+    var parts = path.map(function (i) { var st = STEPS[i]; var c = st.c.filter(function (x) { return x[0] === A[st.id]; })[0]; return c ? c[1] : ''; }).filter(Boolean);
+    $('ccSummaryText').textContent = parts.length ? parts.length + (parts.length === 1 ? ' answer' : ' answers') + ': ' + parts.join(' · ') : 'Your answers will show here.';
+  }
   function pick(idx, c) {
     var st = STEPS[idx];
     if (!path.length) track('ee_quiz_start');
     bubble('u', c[1]);
-    A[st.id] = c[0]; path.push(idx); track('ee_quiz_step', { step_index: path.length });
+    A[st.id] = c[0]; path.push(idx); summarize(); track('ee_quiz_step', { step_index: path.length });
     if (c[2]) flags[st.id] = c[2]; else delete flags[st.id];
     if (c[2] === DQ) { why = st.id; return finish(); }
     var n = nextIndex(idx + 1);
@@ -78,9 +83,9 @@
   }
   function back() {
     var last = path.pop(); if (last == null) return;
-    delete A[STEPS[last].id]; delete flags[STEPS[last].id]; why = null;
+    delete A[STEPS[last].id]; delete flags[STEPS[last].id]; why = null; summarize();
     // replay the transcript up to the step being changed (no typing animation), then re-ask it
-    thread.innerHTML = ''; dock.innerHTML = ''; $('contactStep').hidden = true;
+    thread.innerHTML = ''; dock.innerHTML = '';
     path.forEach(function (i) { var st = STEPS[i]; bubble('s', st.q()); var c = st.c.filter(function (x) { return x[0] === A[st.id]; })[0]; if (c) bubble('u', c[1]); });
     ask(last);
   }
@@ -102,18 +107,96 @@
       return;
     }
     botSay('Based on what you shared, this looks like the kind of accident claim Phillips Law Group’s Arizona team reviews.', function () {
-      botSay('Fastest next step: call now — it’s free, 24/7. Or leave your name and number and they’ll call you.', function () {
+      botSay('Fastest next step: call now — it’s free. Or I can have a person from the Arizona intake team call you back. Callbacks start at 8 AM Arizona time.', function () {
         dock.innerHTML = '';
         var a = document.createElement('a'); a.className = 'btn-call'; a.href = 'tel:' + (window.PLG ? window.PLG.firm.e164 : '+16022003976');
         a.innerHTML = '<span>Call now · ' + (window.PLG ? window.PLG.firm.display : '(602) 200-3976') + '</span>';
         a.onclick = function () { track('ee_call_click', { call_target: 'firm', placement: 'check_result' }); };
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'chip wide'; b.textContent = 'Have them call me';
-        b.onclick = function () { bubble('u', 'Have them call me'); dock.innerHTML = ''; botSay('Sure — where can they reach you?', function () { $('contactStep').hidden = false; $('full_name').focus(); scrollDown(); }); };
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'chip wide'; b.textContent = 'Have a person call me back';
+        b.onclick = function () { bubble('u', 'Have a person call me back'); dock.innerHTML = ''; track('ee_form_start'); askName(); };
         var w = document.createElement('div'); w.className = 'result-actions'; w.appendChild(a); w.appendChild(b); dock.appendChild(w);
       });
     });
   }
-  function restart() { A = {}; flags = {}; path = []; why = null; thread.innerHTML = ''; $('contactStep').hidden = true; $('pill').textContent = 'Checking'; $('pill').className = 'pill'; track('ee_quiz_restart'); ask(0); }
+  function restart() { A = {}; flags = {}; path = []; why = null; summarize(); thread.innerHTML = ''; $('pill').textContent = 'Checking'; $('pill').className = 'pill'; track('ee_quiz_restart'); ask(0); }
+
+  // ---- Contact details, one question at a time. The hidden #leadForm carries them to the shared intake (plg-intake.js),
+  // so the payload, consent text and receipt rules are exactly those of paths A and B. ----
+  var form = $('leadForm');
+  function field(opts, onOk) {
+    dock.innerHTML = '';
+    var f = document.createElement('form'); f.className = 'cc-input'; f.noValidate = true;
+    var i = document.createElement('input'); i.type = opts.type; i.id = 'cc-' + opts.name; i.autocomplete = opts.ac; i.maxLength = opts.max;
+    if (opts.mode) i.inputMode = opts.mode;
+    i.setAttribute('aria-label', opts.label); i.placeholder = opts.ph; i.value = form[opts.name].value || '';
+    var go = document.createElement('button'); go.type = 'submit'; go.className = 'cc-send'; go.textContent = 'Next'; go.setAttribute('aria-label', 'Send');
+    var err = document.createElement('p'); err.className = 'cc-err'; err.setAttribute('role', 'alert');
+    f.appendChild(i); f.appendChild(go); dock.appendChild(f); dock.appendChild(err);
+    if (opts.skip) chipsInto(dock, [{ label: opts.skip, ghost: true, fn: function () { form[opts.name].value = ''; bubble('u', opts.skip); onOk(''); } }]);
+    f.onsubmit = function (e) {
+      e.preventDefault();
+      var v = opts.check(i.value);
+      if (v === null) { err.textContent = opts.bad; i.setAttribute('aria-invalid', 'true'); i.focus({ preventScroll: true }); return; }
+      form[opts.name].value = v; bubble('u', opts.echo ? opts.echo(v) : v); onOk(v);
+    };
+    setTimeout(function () { i.focus({ preventScroll: true }); }, 30);
+  }
+  function chipsInto(el, list) {
+    var wrap = document.createElement('div'); wrap.className = 'chips';
+    list.forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip' + (c.ghost ? ' ghost' : '') + (c.primary ? ' primary' : ''); b.textContent = c.label; b.onclick = c.fn; wrap.appendChild(b); });
+    el.appendChild(wrap);
+  }
+  var clean = function (v) { return (v || '').replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim(); };
+  function askName() {
+    botSay('Sure. What’s your full name?', function () {
+      field({ name: 'full_name', type: 'text', ac: 'name', max: 100, label: 'Full name', ph: 'Your full name', bad: 'Please enter your name.',
+              check: function (v) { v = clean(v); return v.length >= 2 ? v : null; } }, askPhone);
+    });
+  }
+  function askPhone(name) {
+    botSay('Thanks, ' + name.split(' ')[0] + '. What’s the best mobile number to call?', function () {
+      field({ name: 'phone', type: 'tel', ac: 'tel-national', mode: 'tel', max: 20, label: 'Mobile phone', ph: '(602) 555-0123', bad: 'Please enter a 10-digit US number.',
+              check: function (v) { return window.PLG && window.PLG.normPhone(v) ? clean(v) : null; } }, askEmail);
+    });
+  }
+  function askEmail() {
+    botSay('Email is optional. Want to add one?', function () {
+      field({ name: 'email', type: 'email', ac: 'email', mode: 'email', max: 120, label: 'Email (optional)', ph: 'you@example.com', skip: 'Skip email', bad: 'Check the email, or skip it.',
+              check: function (v) { v = clean(v); return !v || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? v : null; } }, askConsent);
+    });
+  }
+  function askConsent() {
+    botSay('Last step. Please read this before I send your request:', function () {
+      var c = $('consentT'), b = document.createElement('div'); b.className = 'b s legal'; b.innerHTML = c ? c.innerHTML : ''; thread.appendChild(b); scrollDown();
+      dock.innerHTML = '';
+      var send = document.createElement('button'); send.type = 'button'; send.className = 'submit cc-agree';
+      send.textContent = ($('submitBtn').querySelector('.lbl') || {}).textContent || 'Yes, call me back';
+      send.onclick = function () { send.disabled = true; form.requestSubmit ? form.requestSubmit() : $('submitBtn').click(); };
+      dock.appendChild(send);
+      chipsInto(dock, [{ label: 'Change my number', ghost: true, fn: function () { bubble('u', 'Change my number'); askPhone(form.full_name.value || ''); } }]);
+    });
+  }
+  document.addEventListener('plg:submit', function (e) {
+    var d = e.detail || {}, send = dock.querySelector('.cc-agree');
+    if (d.state === 'sending') { if (send) { send.disabled = true; send.textContent = 'Sending…'; } return; }
+    if (d.state === 'received') {
+      $('pill').textContent = 'Request received'; $('pill').className = 'pill yes'; dock.innerHTML = '';
+      botSay('Got it — your request is in. A person from Phillips Law Group’s Arizona intake team will call you back. Requests that come in overnight are returned starting at 8 AM Arizona time.\nReference: ' + d.ref, function () {
+        var a = document.createElement('a'); a.className = 'btn-call'; a.href = 'tel:' + window.PLG.firm.e164; a.innerHTML = '<span>Rather talk now? Call ' + window.PLG.firm.display + '</span>';
+        a.onclick = function () { track('ee_call_click', { call_target: 'firm', placement: 'receipt' }); };
+        dock.appendChild(a);
+      });
+      return;
+    }
+    var msg = d.state === 'not_connected' ? 'Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + window.PLG.firm.display + '.'
+      : d.state === 'invalid' ? 'Something in your details didn’t look right. Let’s check your number again.'
+      : d.state === 'trap' ? 'Thanks — we’ve got it.'
+      : 'We couldn’t confirm your request was received. Please try again — it won’t create a duplicate — or call ' + window.PLG.firm.display + '.';
+    botSay(msg, function () {
+      if (d.state === 'invalid') return askPhone(form.full_name.value || '');
+      if (d.state === 'error' && send) { send.disabled = false; send.textContent = ($('submitBtn').querySelector('.lbl') || {}).textContent || 'Yes, call me back'; }
+    });
+  });
   window.PLG_CHECK = { answers: function () { var o = {}; for (var k in A) o[k] = A[k]; o.web_outcome = outcome(); o.check_version = 'plg-azmva-claimcheck-2026-10-05-v1'; return o; } };
   ask(0);
 })();

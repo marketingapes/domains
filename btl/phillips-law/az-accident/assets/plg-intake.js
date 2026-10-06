@@ -28,6 +28,8 @@
     timeout_ms: 15000
   };
   window.PLG = { firm: CONFIG.firm_phone, sofia: CONFIG.sofia_phone };
+  // The Claim Check chat (path C) listens for submit outcomes and shows them as messages.
+  function emit(state, detail) { try { document.dispatchEvent(new CustomEvent('plg:submit', { detail: Object.assign({ state: state }, detail || {}) })); } catch (e) {} }
 
   var params = new URLSearchParams(location.search);
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
@@ -159,12 +161,13 @@
     if (inFlight) return;
     form.setAttribute('data-tried', '1');
     var r = validate();
-    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]'); if (f) (f.tagName === 'FIELDSET' ? f.querySelector('input') : f).focus(); return; }
+    if (!r.ok) { emit('invalid', { field: r.first }); say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]'); if (f) (f.tagName === 'FIELDSET' ? f.querySelector('input') : f).focus(); return; }
     var v = r.v;
     track('ee_lead_submit_attempt');
-    if (v.hp || Date.now() - T0 < 2500) { busy(true); setTimeout(function () { busy(false); say('Thanks — we’ve got it.', ''); }, 900); return; } // silent bot trap
+    if (v.hp || Date.now() - T0 < 2500) { busy(true); setTimeout(function () { busy(false); say('Thanks — we’ve got it.', ''); emit('trap'); }, 900); return; } // silent bot trap
     if (!CONFIG.endpoint) {
-      say('Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + CONFIG.firm_phone.display + ' — Phillips Law Group answers 24/7.', 'warn');
+      say('Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + CONFIG.firm_phone.display + '.', 'warn');
+      emit('not_connected');
       return;
     }
     var screening = KIND === 'check' && window.PLG_CHECK ? window.PLG_CHECK.answers() : {};
@@ -183,7 +186,7 @@
       attribution: attribution(),
       test: SYNTHETIC ? { synthetic: true, suppress: ['outbound_calls', 'sms', 'email', 'buyer_delivery', 'ad_events'] } : undefined
     };
-    busy(true); say('');
+    busy(true); say(''); emit('sending');
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, CONFIG.timeout_ms);
     fetch(CONFIG.endpoint, {
@@ -193,15 +196,18 @@
       .then(function (x) {
         clearTimeout(timer);
         var receipt = x.b.receipt_id || x.b.lead_id;
-        if (x.res.ok && receipt && /^(received|accepted|duplicate)$/.test(x.b.status || '')) { track('ee_lead_submit_success', true); showReceipt(receipt); }
+        if (x.res.ok && receipt && /^(received|accepted|duplicate)$/.test(x.b.status || '')) { track('ee_lead_submit_success', true); showReceipt(receipt); emit('received', { ref: refChip(receipt) }); }
         else throw new Error('no_receipt');
       }).catch(function () {
         clearTimeout(timer); track('ee_lead_submit_error'); busy(false);
         say('We couldn’t confirm your request was received. Please try again (it won’t create a duplicate) — or call ' + CONFIG.firm_phone.display + '.', 'err');
+        emit('error');
         btn.focus();
       });
   });
 
+  function refChip(receipt) { return 'PLG·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase(); }
+  window.PLG.normPhone = function (v) { return normPhone(v); };
   function showReceipt(receipt) {
     var body = document.getElementById('formBody');
     var ai = CONSENT_MODE === 'ai';
@@ -213,7 +219,7 @@
     w.querySelector('p').textContent = ai
       ? 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.'
       : 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.';
-    w.querySelector('.ref-chip').textContent = 'PLG·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase();
+    w.querySelector('.ref-chip').textContent = refChip(receipt);
     w.querySelector('.btn-call').addEventListener('click', function () { track('ee_call_click', false, { call_target: 'firm', placement: 'receipt' }); });
     body.appendChild(w); w.focus();
     try { sessionStorage.removeItem(SK); } catch (e) {}

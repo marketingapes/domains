@@ -43,6 +43,7 @@ jobs:
           npx playwright install --with-deps chromium
           node tests/perspective-isolation.browser.cjs 2>&1 | tee perspective-browser.log
           node tests/perspective-ux.browser.cjs 2>&1 | tee -a perspective-browser.log
+          node tests/plg-az-accident.browser.cjs 2>&1 | tee -a perspective-browser.log
       - name: Preserve validation receipt
         if: always()
         uses: actions/upload-artifact@v4
