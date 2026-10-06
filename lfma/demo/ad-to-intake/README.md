@@ -1,106 +1,117 @@
-# Ten toes down — clickable campaign demo
+# Can your agency do this? — conference demo (DEMO-20261006-1925)
 
-Review-only route: `/demo/ad-to-intake/`. New branch from main
-`a6763aa4084860de268fcaf118bcd66f73ab4509`; independent of defective draft PR238.
-Homepage, existing demos, providers, generated campaign studios and pricing model
-are unchanged. No merge, deployment, outreach or live submission is authorized.
+Review-only route: `/demo/ad-to-intake/` (source `lfma/demo/ad-to-intake/`).
+Pages-only work by Claude; dot coordinates API, voice/SMS readiness and QA.
+No merge, deployment, provider configuration, live call, transfer or message is
+authorized or performed by this change.
+
+## Status: page-ready, integration-blocked
+
+The page ships **unconnected**. `integration-config.mjs` exports the frozen
+`UNCONNECTED` config and `transport = null`, and the CSP keeps
+`connect-src 'none'`, `media-src 'none'`, `form-action 'none'`. In this mode no
+live control can be enabled, nothing leaves the tab, and no live state
+(starting / in call / processing / ready) can be displayed. A clearly labeled
+**Simulation** receipt is available instead.
+
+Contract in force (coordinator update, 2026-10-06): Vapi web calls cannot
+transfer to PSTN; the live path is not approved; a phone-first flow needs a
+participant lead phone and a separate, verified receiving phone. SMS
+eligibility is unknown.
 
 ## Journey
 
-1. Lawyer-facing entry: CAN YOUR AGENCY DO THIS? CTA: TRY THE DEMO.
-   Theme: TEN TOES DOWN / READY FOR THE EVOLUTION. Marketing Apes / One gorilla + AI.
-2. A clearly synthetic MVA ad for placeholder `Your Firm` opens a branded prospect
-   page with the same message. No actual firm endorsement is implied.
-3. Fixed sample intake answers, separate simulated permission, simulated receipt
-   or decline. Changing answers clears permission and the old receipt.
-4. Back to the firm: campaign category, transparent planning prices, local JSON
-   brief download. Live inquiry button is disabled; no personal details collected.
+1. **You** — name + work email, then “Start demo”. Validated in-page only.
+   Starting is explicitly not consent to call, recording or texts.
+2. **The ad** — owned, labeled sample ad for placeholder “Your Firm”, with:
+   “Pretend you are your ideal potential client. Use the fictional case answers
+   for this demo.”
+3. **Their page** — matching synthetic prospect page and the fixed fictional case
+   answers (no free-text case details).
+4. **Sofia** — AI disclosure (“Sofia is an AI agent, not a person”), three
+   separate unchecked consents (phone contact, recording, optional SMS),
+   lead phone, live state pill, and an optional handoff to the participant’s own
+   second phone: verify → confirm code → transfer, each state shown separately.
+   Purpose/caller/recording copy comes only from the approved contract; until
+   then it reads “pending the approved contract”.
+5. **Receipt** — private, in-tab: recording, intake summary, transfer outcome,
+   text follow-up state and “Perspective”, using only data returned for that
+   session; missing/processing/failed is labeled as such.
+   Close: “One man + AI. Interested in this for your firm? Talk to Kyle.” and
+   “Reply READY” for consented SMS (display only; the page sends nothing).
 
-## Creative decisions and provenance
+The prior $2,500 pricing strip, campaign-inquiry pricing step and LA County
+scoreboard are omitted from this conference view. The canonical pricing model in
+`campaign-system/` is untouched.
 
-Audience evidence: Kyle says recipients are mostly lawyers familiar with his work.
-Hypothesis: participation makes the next buyer conversation more concrete than
-another generic AI pitch. No open/click data was imported or performance claimed.
-Three considered mechanisms: (a) founder-led evolution invitation, (b) follow the
-prospect's click, (c) evidence-led scoreboard. Lead is Kyle's evolution invitation,
-with the click journey as proof of functionality and scoreboard limitations as
-support. A scoreboard-first control would test proof emphasis; no experiment runs.
+## Files
 
-Reuses `../mva-sprint/sprint.css`, `../mva-sprint/journey.svg`, LFMA ape logo,
-Kyle portrait, and the existing fixed-answer/permission pattern. No live client
-photo, new endorsement or generated visual is introduced. Separately prepared
-creative is not yet integrated. The new route has its own small state controller;
-importing sprint.mjs would initialize the old demo's DOM bindings.
+- `index.html`, `demo.css` — page and styles (existing MA logo, type, lime palette,
+  orbital hero, reduced-motion support preserved).
+- `demo.mjs` — DOM wiring only.
+- `adapter.mjs` — pure integration boundary + session controller (no network).
+- `integration-config.mjs` — the single binding point; unconnected.
+- Tests: `tests/lfma-ad-demo.test.mjs`, `tests/lfma-ad-demo.browser.cjs`,
+  test-only fake `tests/fixtures/lfma-ad-demo-fake-transport.mjs`.
 
-Applied Evolution Landing Page and Adaptive Creative Director skills. The landing
-skill's referenced creative/delivery resources were unavailable; its root guidance
-was available. Repository had no AGENTS.md or local SKILL.md in inspected locations.
+## Safety behaviour (enforced in `adapter.mjs`, covered by tests)
 
-## Pricing authority
+- Participant data lives only in a closure; never in URLs, history, storage,
+  cookies or analytics. Start over clears inputs, DOM receipt and controller.
+- Every identity, consent, lead-phone or fictional-answer change bumps a
+  generation counter: the session is discarded and late responses are ignored.
+- `start()` is idempotent while starting/active; repeated clicks create one session.
+  Retry after failure creates a fresh session.
+- “Starting” is set on request; `in_call`/`processing`/`ready` only from
+  `getStatus`. No timers manufacture success; polling only reads status.
+- Transfer requires phone voice path + in call + verified receiving phone that
+  differs from the lead phone. `requested` is never shown as completed;
+  completion only from status/receipt (`connected`).
+- Recording playback renders only for a URL on the approved contract origin;
+  anything else (e.g. a raw provider URL) is withheld and labeled.
 
-User's current instruction overrides the older studio's monthly management label:
-**$2,500 flat campaign build fee**, media separate. Existing generated pricing and
-contracts are not rewritten. Media operating amounts follow
-`campaign-system/model.mjs` and `campaign-system/README.md`: MVA, personal injury,
-major mass tort $10,000; standard tort/sex abuse $5,000. Tests compare all four
-amounts to the canonical model. Existing approved agreements/waivers apply.
-The MVA walkthrough does not claim to implement every tort's content or criteria.
+## Binding a verified contract (for dot)
 
-## Integration blocker and safety
+Replace both exports in `integration-config.mjs`:
 
-No verified Render intermediary for LFMA contact was found in inspected repository
-source. Make6492404 is the current LFMA contact scenario found in read-only review,
-with name/firm/email/phone/message/source/submitted_at fields and Kyle notification.
-Do NOT copy a Make webhook into this page. PR238's selected legacy campaign-order
-route is defective; none of that code or endpoint is reused here.
+    integrationConfig = { status: 'verified', contractVersion, voicePath: 'phone'|'browser',
+      origin: 'https://<approved-origin>', disclosures: { callPurpose, callerIdentity, recordingUse },
+      recordingOptional: false, pollMs }
+    transport = { createSession, launchVoice, getStatus, startVerification,
+                  confirmVerification, requestTransfer, getReceipt }
 
-CSP prohibits connections and form actions. No fetch, analytics, storage, external
-assets, free-text input, contact capture, calls, dispatch, invoices or ad spend.
-The download is local and explicitly synthetic. There is no real conversion event.
-A future live inquiry requires scope approval, verified Render endpoint/contract,
-correct current Make forwarding, recipient/side-effect approval, test receipt,
-and separate release authorization. No broad backend changes were made.
+and narrow CSP `connect-src` (and `media-src` if playback is approved) to that one
+origin. Proposed normalized shapes the controller expects — **proposals, to be
+confirmed or corrected by the contract, not verified endpoints**:
+
+- `createSession({participant, consent, fictionalCase, leadPhone, voicePath})` → `{sessionId}`
+- `launchVoice(sessionId)` → `{state:'starting'}` or `{error}`
+- `getStatus(sessionId)` → `{state: starting|in_call|processing|ready|failed, transfer?, error?}`
+- `startVerification(sessionId, e164)` → `{verification:'challenge_issued'|'failed'}`
+- `confirmVerification(sessionId, code)` → `{verification:'verified'|'failed'}`
+- `requestTransfer(sessionId, e164)` → `{transfer:'requested'|'failed'}`
+- `getReceipt(sessionId)` → `{summary?, perspective?:[{label,value}], recording:{state, playbackUrl?},
+   transfer:{state}, sms:{state}}`
+
+Open questions for the contract: session auth/credential handling; whether calls can
+run unrecorded (`recordingOptional`); verification channel (call vs SMS — SMS
+eligibility unknown); recording access control and expiry; error codes. If
+`voicePath` is `browser`, the handoff UI stays unavailable (no PSTN transfer) and a
+browser voice SDK would need its own approved script/CSP change.
 
 ## Local review
 
-From repository root:
-
-    python3 -m http.server 8765 --directory lfma
-
-Open http://127.0.0.1:8765/demo/ad-to-intake/ .
-
+    python3 -m http.server 8765 --directory lfma   # http://127.0.0.1:8765/demo/ad-to-intake/
     node --test tests/lfma-ad-demo.test.mjs
-    CHROMIUM_PATH=/usr/bin/chromium node tests/lfma-ad-demo.browser.cjs
+    CHROMIUM_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome node tests/lfma-ad-demo.browser.cjs
     bash tools/check-release.sh
 
-Browser test serves repository assets through request interception; all external
-requests and non-GET requests are blocked/count as failures. It covers the four
-stages at 375 and 1440px, both consent choices, changed-answer invalidation, reset,
-all pricing categories, synthetic JSON download, disabled send, no overflow and
-no script errors. Screenshots are written to `/tmp/lfma-ad-demo-review/`.
-Desktop entry and mobile screens were visually inspected.
+The browser test serves repo files via interception and counts any external or
+non-GET request as a failure. It runs the shipped unconnected page and a
+test-only fake binding (injected by intercepting `integration-config.mjs`) at
+375 and 1440px. Screenshots go to `/tmp/lfma-ad-demo-review/`. The fake binding
+proves UI state handling only; it is not live evidence.
 
-Leading indicators for a future authorized test: demo starts/completions and
-inquiry requests. Business outcome: qualified firm conversation confirmed by Kyle.
-No analytics is installed, and no lift or signed-case result is inferred here.
-
-Poster limitation: Library `libfile_4c613a0e07408191aee37182e892858e`,
-`marketing-apes-ten-toes-down.png`, could not be downloaded with the current
-Library materialization helper (initial attempt and one bounded retry).
-No local bytes were available to inspect; the poster was not embedded, edited,
-or republished. Continue with the code-native creative and existing LFMA artwork.
-
-
-## Futuristic / primal visual revision
-
-Official MA logo inspected from `ma/assets/network/ape-logo.jpg`, the same asset
-referenced by `ma/index.html` at the official marketingapes.com path. The LFMA
-copy at `assets/portal/ape-logo.jpg` is byte-identical:
-SHA-256 `5dcc03152b3881cd3d943bf36260c514703f07e45a452f75da1cdc77c5426dab`.
-Glasses, bow tie, facial features and silhouette are preserved; CSS frames the
-unchanged image with orbital lines, grid, and diagonal marks. No replacement
-mascot was drawn. Main challenge and actual logo sit beside each other on desktop
-and stack on mobile. One headline hierarchy; theme stays in the eyebrow.
-Pale paper, black type, restrained electric lime, and 320ms step transitions.
-Reduced-motion preference removes animations, transitions and hover movement.
-Browser tests verify both motion modes and the official logo loading.
+Logo: `lfma/assets/portal/ape-logo.jpg` is byte-identical to
+`ma/assets/network/ape-logo.jpg` (SHA-256
+`5dcc03152b3881cd3d943bf36260c514703f07e45a452f75da1cdc77c5426dab`), asserted in tests.
