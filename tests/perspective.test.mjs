@@ -152,7 +152,9 @@ test('one portal: client sections, Settings only at the owner-only #admin route,
   assert.match(html, /data-panel="settings"/);
   assert.ok(!/id="admin-link"/.test(html), 'no Admin/Settings link in the header (owner uses the #admin URL)');
   assert.match(html, /<button class="btn" id="rq-top" type="button" hidden>\+ Request a Campaign<\/button>/);
-  assert.match(html, /id="sm-tasks"/);
+  assert.ok(!/id="sm-tasks"|id="task-form"|Daily Handoffs/.test(html), 'no shared-task list or add-task form');
+  assert.match(html, /data-view="summary"[^>]*>Current Phillips Review</);
+  assert.match(html, /id="gate-wait"[^>]*>Signing in usually takes about 5 seconds[^<]*up to a minute/);
   const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
   assert.ok(!dirs.some((d) => /csuite|management|basic/i.test(d)), 'no separate portals per level');
 });
@@ -216,10 +218,10 @@ function renderDom(ids) {
 
 test('pending items show their owner and due date, or say none is set; nothing claims follow-up that is not scheduled', async () => {
   const oldDocument = globalThis.document;
-  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
+  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'review-setup', 'task-msg', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
   globalThis.document = document;
   const feed = (sections) => P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
-    access: { sections, owner: false, email: 'basic@example.test', can_request: true },
+    access: { sections, owner: false, email: 'basic@example.test', can_request: true, can_complete_tasks: true },
     campaigns: [{ id: 'mva', label: 'MVA', needs: [
       { id: 'n1', label: 'Send the export', owner: 'Synthetic', detail: '' },
       { id: 'n2', label: 'Pick a launch date', owner: '  ', detail: '' },
@@ -227,8 +229,8 @@ test('pending items show their owner and due date, or say none is set; nothing c
       { id: 'n4', label: 'Confirm hours', owner: 'Synthetic', due_date: '2999-01-02T17:00:00Z', detail: '' },
       { id: 'n5', label: 'Pick a voice', owner: 'Synthetic', due: 'next week', detail: '' }] },
       { id: 'req-aaaaaaaaaa', label: 'Launched request' }],
-    tasks: [{ task_id: 't1', title: 'Old open task', assignee: 'Sam', due_date: '2020-01-02', done: false },
-      { task_id: 't2', title: 'Old done task', assignee: 'Sam', due_date: '2020-01-02', done: true }],
+    tasks: [{ task_id: 'n1', title: 'Send the export', assignee: 'Synthetic', due_date: '2020-01-02', done: true, done_by: 'jane.doe@phillipslaw.com', done_at: '2026-10-06T16:00:00Z' },
+      { task_id: 't9', title: 'Approve the script', campaign_id: 'mva', assignee: 'Marketing Apes', due_date: '2020-01-02', done: false }],
     requests: [
       { id: 'r1', case_type: 'Dog bite', status: 'requested', requested_at: '2026-10-01T12:00:00Z', requested_by: 'basic@example.test', campaign_id: 'req-1111111111' },
       { id: 'r2', case_type: 'Slip and fall', status: 'approved', requested_at: '2026-10-01T12:00:00Z', decided_at: '2026-10-02T12:00:00Z', campaign_id: 'req-2222222222' },
@@ -250,9 +252,12 @@ test('pending items show their owner and due date, or say none is set; nothing c
     assert.match(items[2], /Marketing Apes<\/span> <span class="tag bad">Overdue · was due Jan 2, 2020/, 'a passed due date says Overdue in words');
     assert.match(items[3], /<span class="tag mute">Due Jan 2, 2999/, 'due_date key and timestamps are read');
     assert.match(items[4], /Due date unreadable/, 'a present but unreadable date is not shown as missing');
-    const tasks = els.get('sm-tasks').innerHTML.split('</li>');
-    assert.match(tasks[0], /Overdue · was due Jan 2, 2020/);
-    assert.ok(!/Overdue/.test(tasks[1]) && /Due Jan 2, 2020/.test(tasks[1]), 'a done task is never overdue');
+    // Review items are checkboxes; a check shows the email of whoever checked it.
+    assert.match(items[0], /<li class="done"><input type="checkbox" id="rv-0" data-task="n1" checked>/, 'matched by id, checked, enabled for a firm user who may check');
+    assert.match(items[0], /Checked off by jane\.doe@phillipslaw\.com/);
+    assert.match(items[1], /<input type="checkbox" id="rv-1" disabled>[\s\S]*Check-off not switched on yet/, 'no server record: not checkable, said plainly');
+    assert.match(items[2], /data-task="t9"/, 'matched by title within the same campaign');
+    assert.ok(!/Checked off by/.test(items[2]), 'an open item names no checker');
 
     P._renderRequests();
     const rq = els.get('rq-list').innerHTML.split('</li>');
@@ -301,7 +306,7 @@ test('pending items show their owner and due date, or say none is set; nothing c
 
 test('campaign pages and ad previews render as https links only, opened without a referrer', async () => {
   const oldDocument = globalThis.document;
-  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
+  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'review-setup', 'task-msg', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
   globalThis.document = document;
   try {
     P._state.campaign = 'mva';

@@ -117,6 +117,9 @@ const leak = (page) => page.evaluate((secrets) => {
       assert.ok(await page.isVisible('#rq-top'), `${width}: + Request a Campaign at the top`);
       assert.equal(await page.innerText('#rq-top'), '+ Request a Campaign');
       assert.match(await page.innerText('#c-title'), /Arizona MVA/, `${width}: opens on the Arizona MVA preview`);
+      const menu = await page.$$eval('#campaign-tabs [data-campaign] strong', (els) => els.map((e) => e.textContent));
+      assert.deepEqual(menu, ['AZ MVA', 'LA County', 'Master', 'All campaigns'], `${width}: menu order AZ MVA, LA County, Master, All`);
+      assert.match(await page.innerText('[data-view="summary"]'), /Current Phillips Review/);
       assert.match(await page.innerText('#c-state'), /PREVIEW/);
       const links = await page.$$eval('#c-links a', (as) => as.map((a) => [a.textContent, a.href, a.target, a.rel]));
       assert.deepEqual(links.map((l) => l[0]), ['A · Form + call', 'Meta N1 · Request a callback']);
