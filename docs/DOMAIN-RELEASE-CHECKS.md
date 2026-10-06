@@ -2,7 +2,7 @@
 
 Changes to this repository can run the existing validation without an AI session
 or provider credentials. The workflow runs on pull requests, pushes to `main`, and
-manual dispatch, with a ten-minute time limit and a seven-day validation log.
+manual dispatch, with a fifteen-minute time limit and a seven-day validation log.
 
 ## What is checked
 
@@ -13,6 +13,10 @@ manual dispatch, with a ten-minute time limit and a seven-day validation log.
 - The existing site and campaign-system tests pass, including the regression
   test that builds a campaign in a temporary tree and checks for manifest drift.
 - Build/tests do not modify tracked source files.
+- Perspective browser isolation: `node tests/perspective-isolation.browser.cjs` drives the Phillips portal page in
+  real Chromium at 390px and 1280px against a mocked Perspective server (synthetic data). Owner -> Lock -> restricted
+  user must leave nothing behind, including replies and file reads that finish after Lock. Its log is kept as
+  `perspective-browser.log`, separate from the unit-test counts in `release-checks.log`.
 
 Run locally with Node 22+ and Python 3.12:
 

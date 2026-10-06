@@ -27,8 +27,8 @@
   var EMAIL_SIGN_IN_COPY = "Enter your work email and we'll send you a 6-digit code. Lead data loads only after you sign in, and clears when you lock or close the tab.";
   var TOKEN_SIGN_IN_COPY = 'Email sign-in is temporarily unavailable. Use the owner access token below. Lead data loads only after access is verified, and clears when you lock or close the tab.';
   var NA = '—';
-  var state = { feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
-  var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['contact', 'Names & phone digits']];
+  var state = { audio: null, feed: null, campaign: null, view: 'overview', lead: null, litify: null, litifyLabel: '', litifyText: '', token: null, timer: null, failedAt: null, gen: 0, emailSignIn: null };
+  var SECTION_LABELS = [['overview', 'Overview'], ['leads', 'Leads & AI Intake'], ['marketing', 'Marketing'], ['litify', 'Litify Outcomes'], ['summary', 'Summary & Daily Handoffs'], ['proposals', 'Proposals'], ['requests', 'Request a Campaign'], ['contact', 'Names & phone digits']];
   var LEVEL_LABELS = [['csuite', 'C-suite'], ['management', 'Management'], ['basic', 'Basic']];
   function access() { return (state.feed && state.feed.access) || { sections: [], owner: false }; }
   function can(section) { return access().sections.indexOf(section) >= 0; }
@@ -50,18 +50,27 @@
   function ratio(spend, n) { spend = num(spend); n = num(n); return spend === null || !n ? null : spend / n; }
   function day(iso) { if (!iso) return NA; var d = new Date(iso); return isNaN(d) ? esc(iso) : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
   function when(iso) { if (!iso) return NA; var d = new Date(iso); return isNaN(d) ? esc(iso) : d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); }
+  // The viewer's own date (YYYY-MM-DD), so "overdue" turns at their midnight, not UTC's.
+  function localDay() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  // A passed due date says so in words; a date that is present but unreadable is never shown as "no due date".
+  function dueTag(raw, done) {
+    if (!raw) return '<span class="tag warn">No due date</span>';
+    var d = /^\d{4}-\d{2}-\d{2}/.test(String(raw)) ? String(raw).slice(0, 10) : '';
+    if (!d) return '<span class="tag warn">Due date unreadable</span>';
+    return !done && d < localDay() ? '<span class="tag bad">Overdue · was due ' + day(d + 'T12:00:00') + '</span>' : '<span class="tag mute">Due ' + day(d + 'T12:00:00') + '</span>';
+  }
   function $(id) { return root.document.getElementById(id); }
   function countBy(rows, fn) { var o = Object.create(null); rows.forEach(function (r) { var k = fn(r); if (k != null && k !== '') o[k] = (o[k] || 0) + 1; }); return o; }
   function sortedEntries(o) { return Object.keys(o).map(function (k) { return [k, o[k]]; }).sort(function (a, b) { return b[1] - a[1]; }); }
 
   var STAGES = {
     received: ['Received', 'mute'], queued: ['Queued for AI call', 'mute'], ai_contacted: ['AI reached', ''],
-    not_reached: ['Not reached yet', 'warn'], intake_completed: ['Intake completed', ''],
+    not_reached: ['Not reached', 'warn'], intake_completed: ['Intake completed', ''],
     transferred: ['Transferred to firm', 'ok'], disqualified: ['Did not qualify', 'bad'], handed_over: ['Handed over (list)', 'mute']
   };
   function stageTag(s) { var d = STAGES[s] || [s || 'Unknown', 'mute']; return '<span class="tag ' + d[1] + '">' + esc(d[0]) + '</span>'; }
   function litifyTag(status) {
-    if (!status) return '<span class="tag mute">Not in Litify</span>';
+    if (!status) return '<span class="tag mute">No confirmed Litify match</span>';
     var cls = status === 'Converted' ? 'ok' : status === 'Turned Down' ? 'bad' : 'warn';
     return '<span class="tag ' + cls + '">' + esc(status) + '</span>';
   }
@@ -150,7 +159,7 @@
       cell('Total leads', fmtInt(m.leads), fmtInt(m.inLitify) + ' found in your Litify report'),
       cell('Budget', fmtMoney(m.budget), (c.budget && c.budget.note) || (m.budget === null ? 'No paid budget on this campaign' : ''), m.budget === null),
       cell('Spent', fmtMoney(m.spend), spendNote, m.spend === null),
-      cell('Reaching out', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
+      cell('AI reached', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
       cell('Signed', fmtInt(m.signed), 'Litify status Converted'),
       cell('Intake completed', fmtInt(m.intake), m.intake === null ? 'Not tracked for these leads' : pct(m.intake, m.leads) + ' of leads', m.intake === null),
       cell('Transfers', fmtInt(m.transfers), m.transfers === null ? 'Not tracked for these leads' : 'Live transfers to your intake line', m.transfers === null),
@@ -173,17 +182,17 @@
     var leads = leadsFor(state.campaign);
     fillSelect($('f-stage'), sortedEntries(countBy(leads, function (l) { return l.stage; })).map(function (e) { return [e[0], ((STAGES[e[0]] || [e[0]])[0]) + ' (' + e[1] + ')']; }), 'All stages');
     $('f-litify').hidden = !can('litify');
-    fillSelect($('f-litify'), sortedEntries(countBy(leads, function (l) { return (l.litify && l.litify.status) || 'Not in Litify'; })).map(function (e) { return [e[0], e[0] + ' (' + e[1] + ')']; }), 'All Litify statuses');
+    fillSelect($('f-litify'), sortedEntries(countBy(leads, function (l) { return (l.litify && l.litify.status) || 'No confirmed Litify match'; })).map(function (e) { return [e[0], e[0] + ' (' + e[1] + ')']; }), 'All Litify statuses');
     var q = ($('q').value || '').toLowerCase().trim(), fs = $('f-stage').value, fl = $('f-litify').value;
     var rows = leads.filter(function (l) {
       if (fs && l.stage !== fs) return false;
-      if (fl && ((l.litify && l.litify.status) || 'Not in Litify') !== fl) return false;
+      if (fl && ((l.litify && l.litify.status) || 'No confirmed Litify match') !== fl) return false;
       if (!q) return true;
       return [l.name, l.phone_last4, l.lead_uid, l.litify && l.litify.intake].join(' ').toLowerCase().indexOf(q) >= 0;
     }).sort(function (a, b) { return String(b.received_at || '').localeCompare(String(a.received_at || '')); });
     $('lead-list').innerHTML = rows.length ? rows.map(function (l) {
       return '<button class="lead-row" role="listitem" data-lead="' + esc(l.lead_uid) + '" aria-pressed="' + (state.lead === l.lead_uid) + '"><span><b>' + esc(l.name || noName()) + '</b><small>' + esc(l.case_type || l.claim || '') + ' · ' + day(l.received_at) + (l.phone_last4 ? ' · …' + esc(l.phone_last4) : '') + '</small></span>' +
-        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + (can('litify') ? litifyTag(l.litify && l.litify.status) : '') + (l.recording_url ? ' <span class="tag">Recording</span>' : '') + '</span></button>';
+        '<span class="mid">' + stageTag(l.stage) + '<small>' + esc(l.channel || l.source || '') + '</small></span><span>' + (can('litify') ? litifyTag(l.litify && l.litify.status) : '') + (l.has_recording ? ' <span class="tag">Recording</span>' : '') + '</span></button>';
     }).join('') : '<p style="padding:16px">No leads match these filters.</p>';
     $('list-count').textContent = rows.length + ' of ' + leads.length + ' leads';
     renderDetail();
@@ -193,18 +202,52 @@
     if (!l) { box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what ' + esc(firm()) + ' reported back.</p>'; return; }
     var ev = (l.ai_events || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
     var lit = l.litify || {};
-    var rec = /^https:\/\/storage\.vapi\.ai\//.test(l.recording_url || '') ? l.recording_url : '';
+    var keep = state.audio && state.audioLead === l.lead_uid && l.has_recording && access().can_listen ? box.querySelector('audio') : null;   // survive the 60 s refresh
+    if (!keep) clearAudio();
     box.innerHTML = '<div class="eyebrow">LEAD DETAIL</div><h2 style="margin-top:8px">' + esc(l.name || noName()) + '</h2>' + stageTag(l.stage) + ' ' + (can('litify') ? litifyTag(lit.status) : '') +
       '<dl class="kv"><dt>Lead ID</dt><dd>' + esc(l.lead_uid) + '</dd><dt>Received</dt><dd>' + when(l.received_at) + '</dd><dt>Phone</dt><dd>' + (l.phone_last4 ? '…' + esc(l.phone_last4) : NA) + '</dd><dt>State</dt><dd>' + esc(l.state || NA) + '</dd>' +
       '<dt>Claim</dt><dd>' + esc(l.case_type || l.claim || NA) + '</dd><dt>Source</dt><dd>' + esc([l.channel, l.source].filter(Boolean).join(' · ') || NA) + '</dd>' +
       (l.ad ? '<dt>Ad</dt><dd>' + esc(l.ad) + '</dd>' : '') +
       (l.transfer ? '<dt>Transfer</dt><dd>' + esc(l.transfer.outcome || '') + ' · ' + when(l.transfer.at) + '</dd>' : '') +
-      (rec ? '<dt>Call recording</dt><dd><a href="' + esc(rec) + '" target="_blank" rel="noopener noreferrer">Listen</a> · ' + when(l.recording_at) + ' <small>(Sofia call, stored by Vapi)</small></dd>' : '<dt>Call recording</dt><dd>None on file</dd>') +
+      '<dt>Call recording</dt><dd>' + (!l.has_recording ? 'None on file'
+        : access().can_listen ? '<button class="btn" type="button" id="rec-play" data-rec="' + esc(l.lead_uid) + '">Listen</button> ' + when(l.recording_at) + ' <small>(Sofia call)</small><span id="rec-box"></span><small id="rec-msg" role="status" aria-live="polite"></small>'
+        : 'On file · ' + when(l.recording_at) + ' <small>(your access doesn\'t include playback)</small>') + '</dd>' +
       (can('litify') ? '<dt>Litify intake</dt><dd>' + esc(lit.intake || NA) + (lit.created ? ' · created ' + esc(lit.created) : '') + '</dd>' : '') +
-      (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') + '</dl>' +
+      (lit.reason ? '<dt>Turn-down reason</dt><dd>' + esc(lit.reason) + (lit.details ? ' — ' + esc(lit.details) : '') + '</dd>' : '') +
+      // No source sends a follow-up owner, next action or due date for a lead; say that rather than imply one exists.
+      // Shown only to people who can see the Litify outcome, so a closed lead never looks open.
+      (!can('litify') || lit.status === 'Converted' || lit.status === 'Turned Down' || l.stage === 'disqualified' ? ''
+        : '<dt>Follow-up</dt><dd><span class="tag warn">Not recorded</span> No owner, next action or due date for this lead is in the connected data.</dd>') + '</dl>' +
       '<div class="eyebrow" style="margin-top:6px">WHAT THE AI DID</div>' +
       (ev.length ? '<ul class="timeline">' + ev.map(function (e) { return '<li class="' + esc(e.kind || '') + '"><time>' + when(e.at) + '</time>' + esc(e.text) + '</li>'; }).join('') + '</ul>'
-        : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded yet for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
+        : '<p class="note">' + (l.ai_tracked ? 'No AI activity recorded for this lead.' : 'This lead came before AI intake was tracked (handed over as a list or routed directly).') + '</p>');
+    if (keep && $('rec-box')) { $('rec-box').appendChild(keep); $('rec-play').hidden = true; }
+  }
+
+  // Recordings come only from the Perspective server, which checks the person, firm and lead each time. The audio is
+  // fetched with the session header and played from memory, so no token or storage address is ever in a URL.
+  function clearAudio() {
+    if (state.audio) { try { root.URL.revokeObjectURL(state.audio); } catch (e) { /* already gone */ } state.audio = null; state.audioLead = null; }
+  }
+  var REC_ERRORS = { 403: "Your access doesn't include call recordings.", 404: 'No recording is available for this lead.', 429: 'Too many recordings opened. Try again later.',
+                     502: "The recording couldn't be loaded. Try again later.", 503: "Recordings aren't switched on yet." };
+  function playRecording(uid, btn) {
+    var gen = state.gen, lead = state.lead;
+    btn.disabled = true; $('rec-msg').textContent = ' Loading…';
+    root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/recordings/' + encodeURIComponent(uid),
+      { headers: { Authorization: 'Bearer ' + state.token }, cache: 'no-store', credentials: 'omit', redirect: 'error' })
+      .then(function (r) {
+        if (r.status === 401) { if (gen === state.gen) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; } throw new Error(''); }
+        if (!r.ok || !/^audio\//.test(r.headers.get('content-type') || '')) throw new Error(REC_ERRORS[r.status] || REC_ERRORS[502]);
+        return r.blob();
+      })
+      .then(function (b) {
+        if (gen !== state.gen || lead !== state.lead || !$('rec-box')) return;
+        clearAudio(); state.audio = root.URL.createObjectURL(b); state.audioLead = lead;
+        $('rec-box').innerHTML = '<audio controls autoplay preload="auto" controlslist="nodownload" style="display:block;width:100%;margin-top:8px"></audio>';
+        $('rec-box').firstChild.src = state.audio; $('rec-msg').textContent = ''; btn.hidden = true;
+      })
+      .catch(function (e) { if (gen === state.gen && $('rec-msg')) { $('rec-msg').textContent = e.message ? ' ' + e.message : ''; btn.disabled = false; } });
   }
 
   // ---------- marketing ----------
@@ -238,7 +281,7 @@
     $('lt-top').innerHTML = [
       ['In your Litify report', fmtInt(rows.length), state.litifyLabel || 'Daily “All Marketing Apes Leads” report'],
       ['Matched to our leads', fmtInt(matched), pct(matched, rows.length) + ' matched on phone'],
-      ['Converted (signed)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still working']
+      ['Converted (signed)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still open']
     ].map(function (x) { return '<div class="panel"><div class="eyebrow">' + esc(x[0]) + '</div><div class="s-num" style="font-size:34px">' + x[1] + '</div><p style="margin:0">' + esc(x[2]) + '</p></div>'; }).join('');
     var reasons = sortedEntries(countBy(rows.filter(function (r) { return r.status === 'Turned Down'; }), function (r) { return r.reason || 'No reason given'; }));
     var max = reasons.length ? reasons[0][1] : 1;
@@ -284,14 +327,16 @@
     return 'other';
   }
   function loadLitifyFile(file) {
-    var reader = new root.FileReader();
+    var reader = new root.FileReader(), gen = state.gen;
     reader.onload = function () {
+      if (gen !== state.gen) return;
       state.litifyText = String(reader.result || '');
       var raw = parseCSV(state.litifyText);
       if (!raw.length || !('Intake: Intake Name' in raw[0])) { $('lt-fileinfo').textContent = 'That file does not look like the “All Marketing Apes Leads” export.'; return; }
       var byHash = Object.create(null);
       leadsFor('all').forEach(function (l) { if (l.phone_hash) byHash[l.phone_hash] = l.lead_uid; });
       Promise.all(raw.map(function (r) { var d = digits(r['Phone']); return d ? sha256(d) : Promise.resolve(''); })).then(function (hashes) {
+        if (gen !== state.gen) return;
         state.litify = raw.map(function (r, i) {
           var d = digits(r['Phone']);
           return { created: r['Intake: Created Date'], intake: r['Intake: Intake Name'], name: r['Client'], phone_last4: d.slice(-4), case_type: r['Case Type'], source: r['Source'],
@@ -310,9 +355,13 @@
     if (!state.litifyText) { $('lt-fileinfo').textContent = 'Choose the Litify CSV first.'; return; }
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) { $('lt-fileinfo').textContent = 'Enter the report date (the date in the Litify email subject).'; return; }
     busy('lt-upload-btn', true);
+    var gen = state.gen;
     root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + '/litify-report', { method: 'POST', cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify({ csv: state.litifyText, report_date: d }) })
-      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
+        if (gen !== state.gen) return hold();
+        if (!r.ok) throw new Error(j.detail || 'Upload failed (HTTP ' + r.status + ').'); return j; }); },
+        function (e) { if (gen !== state.gen) return hold(); throw e; })
       .then(function (j) { $('lt-fileinfo').textContent = j.loaded + ' Litify rows for ' + j.report_date + ' loaded into Perspective. Refreshing…'; state.litify = null; state.litifyLabel = ''; refresh(); })
       .catch(function (e) { $('lt-fileinfo').textContent = e.message; })
       .then(function () { busy('lt-upload-btn', false); });
@@ -332,37 +381,43 @@
     $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
     var auto = m.leads === null ? [] : [
       fmtInt(m.leads) + ' leads in the connected sources; ' + fmtInt(m.inLitify) + ' appear in your Litify data.',
-      fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still being worked.',
+      fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still open in Litify.',
       m.transfers !== null ? fmtInt(m.transfers) + ' live transfers from AI intake.' : 'AI transfer tracking does not cover these leads.',
       m.spend !== null ? fmtMoney(m.spend) + ' spent' + (m.cpl !== null ? ' · ' + fmtMoney(m.cpl, true) + ' per lead' : '') + '.' : 'Spend not connected for this view.'
     ];
     $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
       ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
     var needs = c.needs || [];
+    // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
-      return '<li><span><b>' + esc(n.label) + '</b> <span class="tag ' + (n.owner && n.owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(n.owner || 'Marketing Apes') + '</span>' + (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
+      var owner = typeof n.owner === 'string' ? n.owner.trim() : n.owner;
+      return '<li><span><b>' + esc(n.label) + '</b> ' + (owner ? '<span class="tag ' + (owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
+        ' ' + dueTag(n.due || n.due_date, false) +
+        (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
     }).join('') : '<li>No open items.</li>';
     var tasks = ((state.feed && state.feed.tasks) || []).filter(function (t) { return c.id === 'all' || !t.campaign_id || t.campaign_id === c.id; });
     var mayCheck = !!access().can_complete_tasks;
     $('sm-tasks').innerHTML = tasks.length ? tasks.map(function (t, i) {
-      var late = !t.done && t.due_date && t.due_date < new Date().toISOString().slice(0, 10);
       return '<li><input type="checkbox" id="task-' + i + '" data-task="' + esc(t.task_id) + '"' + (t.done ? ' checked' : '') + (mayCheck ? '' : ' disabled') + '><label for="task-' + i + '"><b>' + esc(t.title) + '</b> ' +
-        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> <span class="tag ' + (late ? 'bad' : 'mute') + '">Due ' + day((t.due_date || '') + 'T12:00:00') + '</span>' +
+        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> ' + dueTag(t.due_date, t.done) +
         '<small>' + (t.done ? 'Done by ' + esc(t.done_by || '?') + ' · ' + when(t.done_at) : 'Open · added by ' + esc(t.created_by || '?')) + '</small></label></li>';
     }).join('') : '<li>No handoffs yet.</li>';
     var form = $('task-form');
     form.hidden = !access().owner;
     if (!form.hidden) fillSelect($('t-campaign'), campaignsAll().map(function (x) { return [x.id, x.label]; }), 'All campaigns');
   }
+  // A reply that lands after Lock or after someone else signs in is dropped: the promise never settles, so no
+  // then/catch of the old session can write into the page the next person sees.
+  function hold() { return new Promise(function () {}); }
   function api(method, path, body) {
     var gen = state.gen;
     return root.fetch(hub() + '/portal/' + encodeURIComponent(clientId()) + path, { method: method, cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + state.token }, body: JSON.stringify(body) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) {
-        if (gen !== state.gen) throw new Error('locked');
-        if (r.status === 401) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; throw new Error('Your session ended.'); }
+        if (gen !== state.gen) return hold();
+        if (r.status === 401) { lock(); $('gate-err').textContent = 'Your session ended. Sign in again.'; return hold(); }
         if (!r.ok) throw new Error(j.detail || 'Could not save (HTTP ' + r.status + ').');
-        return j; }); });
+        return j; }); }, function (e) { if (gen !== state.gen) return hold(); throw e; });
   }
   function setTask(id, done, box) {
     box.disabled = true; $('task-msg').textContent = 'Saving…';
@@ -376,6 +431,82 @@
     api('POST', '/tasks', { title: $('t-title').value, assignee: $('t-assignee').value, due_date: $('t-due').value, campaign_id: $('t-campaign').value })
       .then(function () { $('task-msg').textContent = 'Task added.'; $('task-form').reset(); refresh(); })
       .catch(function (err) { $('task-msg').textContent = err.message; });
+  }
+
+  // ---------- proposals & campaign requests ----------
+  // Proposals: the server sends a non-owner only those the owner named them on. "Got it" records reading, nothing more.
+  var ACK_COPY = 'Got it records that you have read this, with your name and the time. It is not acceptance, a signature, an amendment or a budget change.';
+  function renderProposals() {
+    var list = (state.feed && state.feed.proposals) || [], a = access();
+    $('pr-list').innerHTML = list.length ? list.map(function (p) {
+      var who = a.owner ? (p.acks && p.acks.length ? p.acks.map(function (k) { return esc(k.by) + ' · ' + when(k.at); }).join('<br>') : 'No one yet') : '';
+      var to = (p.recipients || []);
+      return '<article class="panel" style="margin:12px 0"><div class="eyebrow">' + (p.kind === 'agreement' ? 'SIGNED AGREEMENT' : 'PROPOSAL') +
+        (p.effective_date ? ' · ' + esc(day(p.effective_date + 'T12:00:00')) : '') + (a.owner ? ' · ' + (p.status === 'shared' ? 'SHARED' : 'DRAFT, OWNERS ONLY') : '') + '</div><h3 style="margin:6px 0">' + esc(p.title) + '</h3>' +
+        (p.summary ? '<p><b>' + esc(p.summary) + '</b></p>' : '') + (p.body || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+        (a.owner ? '' : '<div class="toolbar">' + (p.acked_by_me ? '<span class="tag">You got it</span>' : (a.email ? '<button class="btn" type="button" data-ack="' + esc(p.id) + '">Got it</button>' : '')) + '</div>' +
+          '<p class="note">' + esc(p.ack_meaning || ACK_COPY) + '</p>') +
+        (a.owner ? '<p class="note"><b>Shared with:</b> ' + (to.length ? to.map(function (e) { return esc(e) + ' <button class="linkbtn" type="button" data-unshare="' + esc(p.id) + '" data-email="' + esc(e) + '">Remove</button>'; }).join(', ') : 'No one (draft)') + '</p>' +
+          '<form class="toolbar" data-share="' + esc(p.id) + '"><input type="email" required placeholder="approved person\'s email" aria-label="Share with (email)" maxlength="254"> <button class="btn" type="submit">Share</button></form>' +
+          '<p class="note"><b>Who got it:</b><br>' + who + '</p>' : '') + '</article>';
+    }).join('') : '<p>' + (a.owner ? 'No proposals yet.' : 'Nothing has been shared with you.') + '</p>';
+    $('pr-form-wrap').hidden = !a.owner;
+  }
+  function shareProposal(id, email, shared) {
+    $('pr-msg').textContent = 'Saving…';
+    api('POST', '/proposals/' + encodeURIComponent(id) + '/share', { email: email, shared: shared })
+      .then(function (j) { $('pr-msg').textContent = shared ? 'Shared with ' + j.recipient + '. They see it if their level includes Proposals.' : 'Removed ' + j.recipient + '.'; refresh(); })
+      .catch(function (e) { $('pr-msg').textContent = e.message; });
+  }
+  function ackProposal(id, btn) {
+    btn.disabled = true; $('pr-msg').textContent = 'Saving…';
+    api('POST', '/proposals/' + encodeURIComponent(id) + '/ack', {})
+      .then(function () { $('pr-msg').textContent = 'Recorded that you read it (acknowledgment only).'; refresh(); })
+      .catch(function (e) { btn.disabled = false; $('pr-msg').textContent = e.message; });
+  }
+  function addProposal(e) {
+    e.preventDefault();
+    api('POST', '/proposals', { title: $('pr-title').value, summary: $('pr-summary').value, body: $('pr-body').value, kind: 'proposal' })
+      .then(function () { $('pr-msg').textContent = 'Saved as a draft. Only owners see it until you share it.'; $('pr-form').reset(); refresh(); })
+      .catch(function (err) { $('pr-msg').textContent = err.message; });
+  }
+  var RQ_STATUS = { requested: ['Requested · awaiting decision', 'warn'], approved: ['Approved · inactive draft', ''], declined: ['Declined', 'mute'] };
+  // A request carries no owner or due date, so an open one says so instead of implying someone is on it.
+  var RQ_NEXT = { requested: 'Next: an owner approves or declines it.', approved: 'Next: set up and launch it. Nothing runs or spends until then.' };
+  function renderRequests() {
+    var list = (state.feed && state.feed.requests) || [], a = access();
+    $('rq-form').hidden = !a.can_request;
+    if (!a.can_request && !a.owner) $('rq-msg').textContent = "Your access doesn't include campaign requests.";
+    $('rq-list').innerHTML = list.length ? list.map(function (r) {
+      // Once its campaign is switched on (the feed lists only active campaigns) an approved request is no longer pending.
+      var live = r.status === 'approved' && campaignsAll().some(function (c) { return c.id === r.campaign_id; });
+      var st = live ? ['Approved · campaign switched on', 'ok'] : RQ_STATUS[r.status] || [r.status, 'mute'];
+      var bits = [r.states, r.monthly_goal ? fmtInt(r.monthly_goal) + ' signed/month wanted' : '', r.budget ? fmtMoney(r.budget) + ' budget' : ''].filter(Boolean).join(' · ');
+      var next = live ? '' : RQ_NEXT[r.status];
+      return '<li><span><b>' + esc(r.case_type) + '</b> <span class="tag ' + st[1] + '">' + esc(st[0]) + '</span>' +
+        (next ? ' <span class="tag warn">Not assigned</span> <span class="tag warn">No due date</span>' : '') +
+        '<small>' + esc(bits) + (bits ? ' · ' : '') + 'asked ' + when(r.requested_at) + (r.requested_by ? ' by ' + esc(r.requested_by) : '') +
+        (r.decided_at ? ' · ' + esc(r.status) + ' ' + when(r.decided_at) + (r.decided_by ? ' by ' + esc(r.decided_by) : '') : '') + '</small>' +
+        (next ? '<small>' + esc(next) + '</small>' : '') +
+        (r.notes ? '<small>' + esc(r.notes) + '</small>' : '') +
+        (a.owner && r.status === 'requested' ? '<span class="toolbar"><button class="btn" type="button" data-rq="' + esc(r.id) + '" data-decision="approve">Approve as draft campaign</button>' +
+          ' <button class="linkbtn" type="button" data-rq="' + esc(r.id) + '" data-decision="decline">Decline</button></span>' : '') + '</span></li>';
+    }).join('') : '<li>No requests yet.</li>';
+  }
+  function sendRequest(e) {
+    e.preventDefault();
+    busy('rq-send', true); $('rq-msg').textContent = 'Sending…';
+    api('POST', '/requests', { case_type: $('rq-case').value, states: $('rq-states').value, monthly_goal: parseInt($('rq-goal').value || '0', 10) || 0,
+                               budget: parseFloat($('rq-budget').value || '0') || 0, notes: $('rq-notes').value })
+      .then(function () { $('rq-msg').textContent = 'Request saved. It waits for an owner to approve or decline it; no one is assigned yet and nothing runs or spends.'; $('rq-form').reset(); refresh(); })
+      .catch(function (err) { $('rq-msg').textContent = err.message; })
+      .then(function () { busy('rq-send', false); });
+  }
+  function decideRequest(id, decision, btn) {
+    btn.disabled = true; $('rq-msg').textContent = 'Saving…';
+    api('POST', '/requests/' + encodeURIComponent(id), { decision: decision })
+      .then(function (j) { $('rq-msg').textContent = decision === 'approve' ? 'Approved. Draft campaign ' + j.campaign_id + ' added (inactive until launched).' : 'Declined.'; refresh(); })
+      .catch(function (e) { btn.disabled = false; $('rq-msg').textContent = e.message; });
   }
 
   // ---------- owner settings ----------
@@ -403,10 +534,15 @@
   // ---------- wiring ----------
   function renderAll() {
     renderCampaignTabs(); renderHead();
-    var fn = { overview: renderOverview, leads: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary, settings: renderSettings }[state.view];
+    var fn = { overview: renderOverview, leads: renderIntake, marketing: renderMarketing, litify: renderLitify, summary: renderSummary, proposals: renderProposals, requests: renderRequests, settings: renderSettings }[state.view];
     if (fn) fn();
   }
-  function allowedViews() { var a = access(); return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); }).concat(a.owner ? ['settings'] : []); }
+  function allowedViews() {
+    var a = access();
+    if (!state.feed) return [];
+    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); })
+      .concat(a.owner ? ['settings'] : []);
+  }
   function setView(v) {
     var ok = allowedViews();
     if (ok.indexOf(v) < 0) v = ok[0] || '';
@@ -418,13 +554,26 @@
   }
   function lock() {
     state.gen++;   // anything in flight from before the lock is ignored when it lands
+    clearAudio();
     state.feed = null; state.litify = null; state.litifyLabel = ''; state.litifyText = ''; state.lead = null; state.token = null; state.failedAt = null;
     if (state.timer) { root.clearInterval(state.timer); state.timer = null; }
     $('app').hidden = true; $('gate').hidden = false; $('lock-btn').hidden = true;
     $('feed-pill').textContent = 'Locked'; $('feed-pill').className = 'pill'; $('token').value = ''; $('code').value = '';
+    if ($('email')) $('email').value = '';   // the next person starts with an empty sign-in
     $('step-code').hidden = true; $('step-email').hidden = state.emailSignIn === false;
     if (state.emailSignIn === false && $('token-alt')) $('token-alt').open = true;
-    ['lead-list', 'lead-detail', 'lt-table', 'scoreboard'].forEach(function (id) { var e = $(id); if (e) e.innerHTML = ''; });
+    resetApp();
+  }
+  // Everything a signed-in person sees or types lives inside #app. Lock and every new sign-in put #app back to the
+  // page's original empty markup (lists, proposals, requests, forms, typed values, messages) and rebind its handlers,
+  // so nothing from one person's session can be left behind for the next.
+  var APP_TEMPLATE = null;
+  function resetApp() {
+    var app = $('app');
+    state.view = 'overview'; state.campaign = null; state.lead = null;
+    if (!app || APP_TEMPLATE === null) return;
+    app.innerHTML = APP_TEMPLATE;
+    bindApp();
   }
   // The daily Make publisher sends flat rows: one per Litify intake (leads) plus one per Sofia
   // transfer (transfers). Fold them into the structured shape the views use. Transfers merge onto
@@ -440,7 +589,7 @@
       var l = { lead_uid: str(r.lead_uid), campaign: str(r.campaign) || 'other', received_at: str(r.received_at) || null, name: str(r.name), phone_last4: str(r.phone_last4),
         phone_hash: str(r.phone_hash), case_type: str(r.case_type), state: str(r.state), channel: str(r.channel), source: str(r.source), stage: str(r.stage) || 'received',
         ai_tracked: r.ai_tracked === true || r.ai_tracked === 'true', ours: r.ours === true || r.ours === 'true', ai_events: [], stages_reached: [],
-        recording_url: str(r.recording_url), recording_at: str(r.recording_at) };
+        has_recording: r.has_recording === true || r.has_recording === 'true', recording_at: str(r.recording_at) };
       l.stages_reached.push(l.stage);
       if (str(r.litify_intake) || str(r.litify_status)) l.litify = { intake: str(r.litify_intake), created: str(r.litify_created), status: str(r.litify_status), reason: str(r.litify_reason), details: str(r.litify_details) };
       return l;
@@ -542,7 +691,8 @@
     }).catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('send-code', false); });
   }
   function startSession(token, feed) {
-    state.gen++; state.token = token; open(feed);
+    state.gen++; clearAudio(); state.litify = null; state.litifyLabel = ''; state.litifyText = ''; resetApp();
+    state.token = token; open(feed);
     if (state.timer) root.clearInterval(state.timer);
     state.timer = root.setInterval(refresh, REFRESH_MS);
   }
@@ -550,8 +700,9 @@
     var email = ($('email').value || '').trim(), code = ($('code').value || '').replace(/\D/g, '');
     if (code.length !== 6) { $('gate-err').textContent = 'Enter the 6-digit code from the email.'; return; }
     busy('verify', true); $('gate-err').textContent = '';
+    var gen = state.gen;
     post('/verify', { email: email, code: code })
-      .then(function (d) { var gen = state.gen; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
+      .then(function (d) { if (gen !== state.gen) return; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
       .catch(function (e) { $('gate-err').textContent = e.message; }).then(function () { busy('verify', false); });
   }
   function refresh() {
@@ -581,7 +732,6 @@
   }
 
   function mount() {
-    var d = root.document;
     $('unlock').addEventListener('click', unlock);
     $('send-code').addEventListener('click', sendCode);
     $('email').addEventListener('keydown', function (e) { if (e.key === 'Enter') sendCode(); });
@@ -591,6 +741,12 @@
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);
+    APP_TEMPLATE = $('app').innerHTML;
+    bindApp();
+    checkAuthAvailability();
+  }
+  function bindApp() {
+    var d = root.document;
     $('campaign-tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-campaign]'); if (b) { state.campaign = b.getAttribute('data-campaign'); state.lead = null; renderAll(); } });
     d.querySelector('.section-tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-view]'); if (b) setView(b.getAttribute('data-view')); });
     $('lead-list').addEventListener('click', function (e) { var b = e.target.closest('[data-lead]'); if (b) { state.lead = b.getAttribute('data-lead'); renderIntake(); } });
@@ -603,10 +759,19 @@
     $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
     $('task-form').addEventListener('submit', addTask);
     $('set-save').addEventListener('click', saveSettings);
-    checkAuthAvailability();
+    $('pr-list').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b);
+      var u = e.target.closest('[data-unshare]'); if (u) shareProposal(u.getAttribute('data-unshare'), u.getAttribute('data-email'), false);
+    });
+    $('pr-list').addEventListener('submit', function (e) { var f = e.target.closest('[data-share]'); if (f) { e.preventDefault(); shareProposal(f.getAttribute('data-share'), f.querySelector('input').value, true); } });
+    $('lead-detail').addEventListener('click', function (e) { var b = e.target.closest('[data-rec]'); if (b) playRecording(b.getAttribute('data-rec'), b); });
+    $('pr-form').addEventListener('submit', addProposal);
+    $('rq-form').addEventListener('submit', sendRequest);
+    $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
   }
 
-  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability };
+  var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability,
+                   _renderSummary: renderSummary, _renderRequests: renderRequests, _renderDetail: renderDetail };
   root.Perspective = exported;
   if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {
