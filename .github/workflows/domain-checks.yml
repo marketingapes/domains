@@ -17,7 +17,7 @@ jobs:
   domain-release-checks:
     name: Domain release checks
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,11 +33,22 @@ jobs:
         run: |
           set -o pipefail
           bash tools/check-release.sh 2>&1 | tee release-checks.log
+      - name: Perspective browser isolation (owner -> Lock -> restricted user, 390px and 1280px)
+        # Real Chromium against the Phillips portal page with a mocked Perspective server and synthetic data only.
+        # Fails the job if anything from one person's session survives Lock or a late reply crosses into the next.
+        shell: bash
+        run: |
+          set -o pipefail
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node tests/perspective-isolation.browser.cjs 2>&1 | tee perspective-browser.log
       - name: Preserve validation receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: domain-checks-${{ github.sha }}
-          path: release-checks.log
+          path: |
+            release-checks.log
+            perspective-browser.log
           if-no-files-found: warn
           retention-days: 7
