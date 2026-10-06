@@ -28,7 +28,7 @@
     // BTL Sofia line (Vapi phone 4d07e1e8 -> assistant d2b58eeb, Kyle 2026-10-06). Sofia screens Arizona
     // accident callers and transfers qualified callers to firm_phone. Path B's main button dials it.
     sofia_phone: { e164: '+16026931461', display: '(602) 693-1461', verified: true },
-    consent_version: 'plg-azmva-consent-2026-10-05-v1', // approved by Kyle 2026-10-05
+    consent_version: 'plg-azmva-consent-2026-10-06-v3', // Sofia disclosure approved by Kyle 2026-10-06
     timeout_ms: 15000
   };
   window.PLG = { firm: CONFIG.firm_phone, sofia: CONFIG.sofia_phone };
@@ -101,13 +101,14 @@
   var SMS = '<a href="https://besttortlawyers.com/sms-terms/" target="_blank" rel="noopener">SMS Terms</a>';
   var btnLabel = (document.getElementById('submitBtn') || {}).textContent || 'Submit';
   btnLabel = btnLabel.trim();
-  // Path A: AI covered in the consent only — not promoted on the page.
-  var CONSENT_STANDARD = 'By tapping “' + btnLabel + ',” I agree that Phillips Law Group and its marketing partner Best Tort Lawyers may call and text me at the number above about my potential claim, including calls and texts made with automated technology and artificial, prerecorded or AI-generated voice. Calls may be recorded. Consent is not a condition of any purchase or service. Message frequency varies; msg & data rates may apply; reply STOP to opt out.';
-  // Paths B/C: AI named up front.
-  var CONSENT_AI = 'By tapping “' + btnLabel + ',” I agree that Sofia — an AI intake assistant for Phillips Law Group — and Phillips Law Group’s intake team may call and text me at the number above about my potential claim, including with automated technology and an artificial (AI) voice. Calls are recorded and processed by an AI voice provider. Consent is not a condition of any purchase or service. Message frequency varies; msg & data rates may apply; reply STOP to opt out.';
-  var CONSENT_TEXT = CONSENT_MODE === 'ai' ? CONSENT_AI : CONSENT_STANDARD;
+  // TCPA consent: verbatim from the AZ MVA package sent to Phillips (Olivia Lemorrocco) on 2026-08-07, led by the exact button name.
+  // Kyle approved adding the Sofia AI callback and recording disclosure on 2026-10-06.
+  var PLG_PRIV = '<a href="https://www.phillipslaw.com/disclaimer/" target="_blank" rel="noopener">Privacy Policy</a>';
+  var PLG_TERMS = '<a href="https://www.phillipslaw.com/disclaimer/" target="_blank" rel="noopener">Terms of Use</a>';
+  var CONSENT_BODY = 'By providing your phone number, you agree to receive calls and transactional SMS messages about your potential claim from Phillips Law Group and its agents, including Best Tort Lawyers. Calls may come from Sofia, an AI intake assistant, using automated technology and an artificial voice, and may be recorded. Message frequency may vary. Message & data rates may apply. Reply STOP to opt out at any time. Consent is not a condition of service. No attorney-client relationship is formed by submitting this form.';
+  var CONSENT_TEXT = 'By tapping “' + btnLabel + ',” I agree to the Privacy Policy & Terms of Use. ' + CONSENT_BODY;
   var box = document.getElementById('consentBox');
-  if (box) box.innerHTML = '<p class="legal-sm" id="consentT">' + CONSENT_TEXT + ' I also agree to the ' + PRIV + ', ' + TERMS + ' and ' + SMS + '. Submitting does not create an attorney-client relationship.</p>';
+  if (box) box.innerHTML = '<p class="legal-sm" id="consentT">By tapping “' + btnLabel + ',” I agree to the ' + PLG_PRIV + ' &amp; ' + PLG_TERMS + '. ' + CONSENT_BODY + '</p>';
 
   // ---- Validation ------------------------------------------------------------------------------
   function normPhone(v) { var d = (v || '').replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); return /^[2-9]\d{2}[2-9]\d{6}$/.test(d) ? '+1' + d : null; }
