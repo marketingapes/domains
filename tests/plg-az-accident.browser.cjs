@@ -52,7 +52,7 @@ function serve() {
 
       // ---- C: Claim Check chat ----
       await page.goto(base + 'claim-check/' + q);
-      assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.textContent('.f-legal')).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion');
+      assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.$$eval('.f-legal', (ps) => ps[ps.length - 1].textContent)).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion'); assert.match(await page.textContent('footer'), /Attorney Advertising\. Phillips Law Group \(3101 N Central Ave, Suite 1500, Phoenix, AZ 85012\) is responsible for this advertisement\. For Arizona claims\./);
       await page.locator('#chat').scrollIntoViewIfNeeded();
       const card0 = await page.locator('#chat').boundingBox();
       const doc0 = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -82,6 +82,8 @@ function serve() {
       const legal = await page.textContent('.b.legal');
       assert.match(legal, /By tapping “Yes, call me back,” I agree/, `${w}: consent names the exact button`);
       assert.ok(!/Sofia|AI\)|AI intake/.test(legal), `${w}: no AI promise in consent`);
+      assert.ok(!/artificial|prerecorded|AI-generated|automated technology/i.test(legal), `${w}: consent never promises artificial, prerecorded or AI voice`);
+      assert.match(legal, /receive calls and transactional SMS messages about your potential claim from Phillips Law Group and its agents, including Best Tort Lawyers\./, `${w}: verbatim 8/7 TCPA consent`);
       await page.click('.cc-agree'); // immediately: no timing gate
       await page.waitForFunction(() => /your request is in/.test(document.querySelector('#thread').innerText), null, { timeout: 8000 });
       assert.match(await page.textContent('#thread'), /starting at 8 AM Arizona time[\s\S]*Reference: PLG·/);
@@ -104,7 +106,7 @@ function serve() {
       // ---- A and B: forms still work and reach a receipt ----
       for (const [p, kind] of [['', 'A'], ['talk-to-sofia/', 'B']]) {
         await page.goto(base + p + q);
-        assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.textContent('.f-legal')).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion');
+        assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.$$eval('.f-legal', (ps) => ps[ps.length - 1].textContent)).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion'); assert.match(await page.textContent('footer'), /Attorney Advertising\. Phillips Law Group \(3101 N Central Ave, Suite 1500, Phoenix, AZ 85012\) is responsible for this advertisement\. For Arizona claims\./);
         if (kind === 'B') {
           // Main button dials the BTL Sofia line; the callback form is the second option.
           assert.equal(await page.getAttribute('#callSofia', 'href'), 'tel:+16026931461', 'B: Talk to Sofia dials the Sofia line');
