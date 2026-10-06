@@ -19,7 +19,8 @@
     { id: 'type', q: function () { return 'What kind of accident was it?'; },
       c: [['car', 'Car'], ['truck', 'Truck or semi'], ['motorcycle', 'Motorcycle'], ['rideshare', 'Uber / Lyft'], ['pedestrian_bike', 'Walking or on a bike'], ['other', 'Something else', RV]] },
     { id: 'when', q: function () { return 'When did it happen?'; },
-      c: [['under_30d', 'In the last 30 days'], ['1_6m', '1–6 months ago'], ['6_24m', '6 months to 2 years ago'], ['over_2y', 'More than 2 years ago', DQ], ['not_sure', 'Not sure', RV]] },
+      // Kyle + Michael (PLG): the accident must be less than one year ago. "Not sure" goes to the intake team, who confirm the date.
+      c: [['under_30d', 'In the last 30 days'], ['1_6m', '1–6 months ago'], ['6_12m', '6–12 months ago'], ['over_1y', 'More than a year ago', DQ], ['not_sure', 'Not sure of the date', RV]] },
     { id: 'hurt', q: function () { return yp('Were you hurt?', 'Were they hurt?'); },
       c: [['yes', 'Yes'], ['not_sure', 'Not sure yet — still sore', RV], ['no', 'No, just vehicle damage', DQ]] },
     { id: 'treated', when: function () { return A.hurt !== 'no'; }, q: function () { return yp('Have you seen a doctor for it?', 'Did they see a doctor for it?'); }, help: 'ER, urgent care, your doctor, a chiropractor or physical therapy all count.',
@@ -31,7 +32,7 @@
   ];
   var WHY = {
     where: 'Phillips Law Group handles Arizona accident claims, so this one isn’t a match for us. An injury lawyer licensed in the state where it happened is the right next call — most offer a free consultation.',
-    when: 'Arizona generally gives injured people two years to file an injury claim, so this may be past the deadline. Some exceptions exist, so if you’re unsure about the date, an attorney can check.',
+    when: 'Phillips Law Group’s Arizona team reviews accidents from the past 12 months through this check, so this one isn’t a match here. That doesn’t mean you have no options — Arizona generally allows two years to file an injury claim, so an injury lawyer can tell you where you stand.',
     hurt: 'Injury claims cover injuries, so with vehicle damage only there isn’t an injury claim for us to review. Your insurance company or the other driver’s insurer handles property damage. If pain shows up later, see a doctor and come back.',
     fault: 'When no one else was involved, there usually isn’t anyone to make a claim against. If a road defect or a faulty vehicle part played a role, that can change things.',
     lawyer: 'Since you already have a lawyer for this accident, they’re the right person to talk to — we can’t step in on a case someone else is handling.'
@@ -190,13 +191,12 @@
     }
     var msg = d.state === 'not_connected' ? 'Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + window.PLG.firm.display + '.'
       : d.state === 'invalid' ? 'Something in your details didn’t look right. Let’s check your number again.'
-      : d.state === 'trap' ? 'Thanks — we’ve got it.'
       : 'We couldn’t confirm your request was received. Please try again — it won’t create a duplicate — or call ' + window.PLG.firm.display + '.';
     botSay(msg, function () {
       if (d.state === 'invalid') return askPhone(form.full_name.value || '');
       if (d.state === 'error' && send) { send.disabled = false; send.textContent = ($('submitBtn').querySelector('.lbl') || {}).textContent || 'Yes, call me back'; }
     });
   });
-  window.PLG_CHECK = { answers: function () { var o = {}; for (var k in A) o[k] = A[k]; o.web_outcome = outcome(); o.check_version = 'plg-azmva-claimcheck-2026-10-05-v1'; return o; } };
+  window.PLG_CHECK = { answers: function () { var o = {}; for (var k in A) o[k] = A[k]; o.web_outcome = outcome(); o.check_version = 'plg-azmva-claimcheck-2026-10-06-v2'; return o; } };
   ask(0);
 })();
