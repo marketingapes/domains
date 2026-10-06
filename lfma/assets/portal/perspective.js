@@ -96,7 +96,13 @@
   }
 
   // ---------- data selection ----------
-  function campaignsAll() { return (state.feed && state.feed.campaigns) || []; }
+  // Menu order: Arizona MVA, LA County, Handoff, then anything else; "All campaigns" is always last.
+  var CAMPAIGN_ORDER = ['mva', 'la', 'handover'];
+  var TAB_LABEL = { mva: 'Arizona MVA', la: 'LA County', handover: 'Handoff' };
+  function campaignRank(id) { var i = CAMPAIGN_ORDER.indexOf(id); return i < 0 ? CAMPAIGN_ORDER.length : i; }
+  function campaignsAll() {
+    return ((state.feed && state.feed.campaigns) || []).slice().sort(function (a, b) { return campaignRank(a.id) - campaignRank(b.id); });
+  }
   function current() {
     var id = state.campaign;
     if (id === 'all') {
@@ -108,7 +114,7 @@
         channels: [].concat.apply([], cs.map(function (c) { return c.channels || []; })),
         ads: [].concat.apply([], cs.map(function (c) { return c.ads || []; })),
         log: [].concat.apply([], cs.map(function (c) { return c.log || []; })),
-        needs: [].concat.apply([], cs.map(function (c) { return (c.needs || []).map(function (n) { return Object.assign({ campaign: c.label }, n); }); })),
+        needs: [].concat.apply([], cs.map(function (c) { return (c.needs || []).map(function (n) { return Object.assign({ campaign: TAB_LABEL[c.id] || c.label, cid: c.id }, n); }); })),
         narrative: [].concat.apply([], cs.map(function (c) { return (c.narrative || []).slice(0, 1).map(function (t) { return c.label + ': ' + t; }); })) };
     }
     return campaignsAll().filter(function (c) { return c.id === id; })[0] || campaignsAll()[0] || {};
@@ -133,7 +139,7 @@
   // ---------- render: shell ----------
   function renderCampaignTabs() {
     var cs = campaignsAll(), nav = $('campaign-tabs');
-    var items = cs.map(function (c) { return { id: c.id, label: c.label, sub: c.state || '' }; });
+    var items = cs.map(function (c) { return { id: c.id, label: TAB_LABEL[c.id] || c.label, sub: c.state || '' }; });
     var tot = metrics({ id: 'all' }).leads;
     items.push({ id: 'all', label: 'All campaigns', sub: tot === null ? cs.length + ' campaigns' : fmtInt(tot) + ' leads total' });
     nav.innerHTML = items.map(function (it) {
@@ -401,24 +407,22 @@
     $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
       ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
       linksHtml(c.id === 'all' ? [] : c.links);
-    var needs = c.needs || [];
-    // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
-    $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
-      var owner = typeof n.owner === 'string' ? n.owner.trim() : n.owner;
-      return '<li><span><b>' + esc(n.label) + '</b> ' + (owner ? '<span class="tag ' + (owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
-        ' ' + dueTag(n.due || n.due_date, false) +
-        (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') + '<small>' + esc(n.detail || '') + '</small></span></li>';
-    }).join('') : '<li>No open items.</li>';
-    var tasks = ((state.feed && state.feed.tasks) || []).filter(function (t) { return c.id === 'all' || !t.campaign_id || t.campaign_id === c.id; });
-    var mayCheck = !!access().can_complete_tasks;
-    $('sm-tasks').innerHTML = tasks.length ? tasks.map(function (t, i) {
-      return '<li><input type="checkbox" id="task-' + i + '" data-task="' + esc(t.task_id) + '"' + (t.done ? ' checked' : '') + (mayCheck ? '' : ' disabled') + '><label for="task-' + i + '"><b>' + esc(t.title) + '</b> ' +
-        '<span class="tag">' + esc(t.assignee || 'Unassigned') + '</span> ' + dueTag(t.due_date, t.done) +
-        '<small>' + (t.done ? 'Done by ' + esc(t.done_by || '?') + ' · ' + when(t.done_at) : 'Open · added by ' + esc(t.created_by || '?')) + '</small></label></li>';
-    }).join('') : '<li>No handoffs yet.</li>';
-    var form = $('task-form');
-    form.hidden = !access().owner;
-    if (!form.hidden) fillSelect($('t-campaign'), campaignsAll().map(function (x) { return [x.id, x.label]; }), 'All campaigns');
+    var needs = (c.needs || []).map(function (n) { return n.cid ? n : Object.assign({ cid: c.id }, n); });
+    var tasks = (state.feed && state.feed.tasks) || [], mayCheck = !!access().can_complete_tasks;
+    // A review item is checkable once the server holds a matching check-off record (same id, or same title in the same campaign).
+    var taskFor = function (n) { return tasks.filter(function (t) { return t.task_id === n.id || (t.title === n.label && (!t.campaign_id || t.campaign_id === n.cid)); })[0]; };
+    state.reviewMissing = needs.filter(function (n) { return !taskFor(n); });
+    // An item shows its owner and due date, or says plainly that neither has been set: never a default owner.
+    $('sm-checklist').innerHTML = needs.length ? needs.map(function (n, i) {
+      var owner = typeof n.owner === 'string' ? n.owner.trim() : n.owner, t = taskFor(n), done = !!(t && t.done);
+      return '<li' + (done ? ' class="done"' : '') + '><input type="checkbox" id="rv-' + i + '"' + (t ? ' data-task="' + esc(t.task_id) + '"' : '') + (done ? ' checked' : '') + (t && mayCheck ? '' : ' disabled') + '>' +
+        '<label for="rv-' + i + '"><b>' + esc(n.label) + '</b> ' + (owner ? '<span class="tag ' + (owner !== 'Marketing Apes' ? 'warn' : '') + '">' + esc(owner) + '</span>' : '<span class="tag bad">Owner not set</span>') +
+        ' ' + dueTag(n.due || n.due_date, done) +
+        (n.campaign ? ' <span class="tag mute">' + esc(n.campaign) + '</span>' : '') +
+        (done ? '<small class="by">\u2713 Checked off by ' + esc(t.done_by || 'unknown') + ' \u00b7 ' + when(t.done_at) + '</small>' : '') +
+        '<small>' + esc(n.detail || '') + (t ? '' : (n.detail ? ' \u00b7 ' : '') + 'Check-off not switched on yet') + '</small></label></li>';
+    }).join('') : '<li>Nothing to review right now.</li>';
+    $('review-setup').hidden = !(access().owner && state.reviewMissing.length);
   }
   // A reply that lands after Lock or after someone else signs in is dropped: the promise never settles, so no
   // then/catch of the old session can write into the page the next person sees.
@@ -434,17 +438,24 @@
         return j; }); }, function (e) { if (gen !== state.gen) return hold(); throw e; });
   }
   function setTask(id, done, box) {
-    box.disabled = true; $('task-msg').textContent = 'Saving…';
+    box.disabled = true; $('task-msg').textContent = 'Saving\u2026';
     api('POST', '/tasks/' + encodeURIComponent(id), { done: done })
-      .then(function (j) { $('task-msg').textContent = (done ? 'Marked done' : 'Reopened') + ' by ' + j.by + '.'; refresh(); })
+      .then(function (j) { $('task-msg').textContent = (done ? 'Checked off by ' : 'Unchecked by ') + (j.by || 'you') + '.'; refresh(); })
       .catch(function (e) { box.checked = !done; $('task-msg').textContent = e.message; })
       .then(function () { box.disabled = !access().can_complete_tasks; });
   }
-  function addTask(e) {
-    e.preventDefault();
-    api('POST', '/tasks', { title: $('t-title').value, assignee: $('t-assignee').value, due_date: $('t-due').value, campaign_id: $('t-campaign').value })
-      .then(function () { $('task-msg').textContent = 'Task added.'; $('task-form').reset(); refresh(); })
-      .catch(function (err) { $('task-msg').textContent = err.message; });
+  // Owner only: create the server check-off record for review items that don't have one yet, one at a time.
+  function setupReview() {
+    var missing = (state.reviewMissing || []).slice(), today = new Date().toISOString().slice(0, 10), btn = $('review-setup');
+    if (!missing.length) return;
+    btn.disabled = true; $('task-msg').textContent = 'Switching on check-offs\u2026';
+    missing.reduce(function (p, n) {
+      var due = /^\d{4}-\d{2}-\d{2}/.test(n.due || n.due_date || '') ? String(n.due || n.due_date).slice(0, 10) : today;
+      return p.then(function () { return api('POST', '/tasks', { title: n.label, assignee: (typeof n.owner === 'string' && n.owner.trim()) || 'Phillips', due_date: due, campaign_id: n.cid || '' }); });
+    }, Promise.resolve())
+      .then(function () { $('task-msg').textContent = 'Check-offs are on for ' + missing.length + ' item' + (missing.length === 1 ? '' : 's') + '.'; refresh(); })
+      .catch(function (e) { $('task-msg').textContent = e.message; })
+      .then(function () { btn.disabled = false; });
   }
 
   // ---------- proposals & campaign requests ----------
@@ -639,8 +650,8 @@
     feed = normalizeFeed(feed);
     if (!feed || !Array.isArray(feed.leads) || !Array.isArray(feed.campaigns)) throw new Error('This feed is not a Perspective feed yet.');
     state.feed = feed;
-    var preview = feed.campaigns.filter(function (c) { return (c.links || []).length; })[0];
-    state.campaign = state.campaign || (preview || feed.campaigns[0] || { id: 'all' }).id;
+    var ordered = campaignsAll(), preview = ordered.filter(function (c) { return (c.links || []).length; })[0];
+    state.campaign = state.campaign || (preview || ordered[0] || { id: 'all' }).id;
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
     var h = feedHealth(feed); $('feed-pill').textContent = h[0]; $('feed-pill').className = 'pill ' + h[1];
     var up = $('lt-upload'); if (up) up.hidden = !(feed.access && feed.access.owner && feed.access.role === 'owner');
@@ -711,7 +722,7 @@
   function sendCode() {
     var email = ($('email').value || '').trim();
     if (!email) { $('gate-err').textContent = 'Enter your work email.'; return; }
-    busy('send-code', true); $('gate-err').textContent = '';
+    busy('send-code', true); $('gate-err').textContent = 'Sending your code\u2026 this can take up to a minute.';
     post('/login', { email: email }).then(function () {
       $('step-email').hidden = true; $('step-code').hidden = false; $('code').value = ''; $('code').focus();
       $('gate-err').textContent = 'If ' + email + ' has access, a code is on its way. Check your inbox.';
@@ -726,7 +737,7 @@
   function verifyCode() {
     var email = ($('email').value || '').trim(), code = ($('code').value || '').replace(/\D/g, '');
     if (code.length !== 6) { $('gate-err').textContent = 'Enter the 6-digit code from the email.'; return; }
-    busy('verify', true); $('gate-err').textContent = '';
+    busy('verify', true); $('gate-err').textContent = 'Signing you in\u2026 usually about 5 seconds, up to a minute when busy.';
     var gen = state.gen;
     post('/verify', { email: email, code: code })
       .then(function (d) { if (gen !== state.gen) return; $('gate-err').textContent = 'Signed in. Loading your portal…'; return fetchFeed(d.session).then(function (feed) { if (gen !== state.gen) return; $('code').value = ''; startSession(d.session, feed); }); })
@@ -787,8 +798,8 @@
     $('lt-save').addEventListener('click', saveLitify);
     if ($('lt-upload-btn')) $('lt-upload-btn').addEventListener('click', uploadLitify);
     $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('leads'); } });
-    $('sm-tasks').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
-    $('task-form').addEventListener('submit', addTask);
+    $('sm-checklist').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
+    $('review-setup').addEventListener('click', setupReview);
     $('set-save').addEventListener('click', saveSettings);
     $('pr-list').addEventListener('click', function (e) {
       var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b);

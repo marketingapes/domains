@@ -102,6 +102,8 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 .checklist li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}
 .checklist input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
 .checklist small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.checklist li.done b{text-decoration:line-through;color:var(--muted)}
+.checklist small.by{color:var(--ok);font-weight:600}
 .note{background:#f8f9fe;border:1px dashed #cdd2e6;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);margin-top:12px}
 .foot{margin-top:40px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 [hidden]{display:none!important}
@@ -127,6 +129,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
     <h2 style="margin-top:10px">Sign in to Perspective</h2>
     <p id="gate-copy">Sign in with your Phillips Law Group email. We'll email you a 6-digit code.</p>
+    <p class="note" id="gate-wait">Signing in usually takes about 5 seconds. When things are busy it can take up to a minute, so keep this page open.</p>
     <div id="step-email">
       <label for="email" class="eyebrow">Phillips email address</label>
       <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@phillipslaw.com">
@@ -160,7 +163,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <button role="tab" data-view="leads" aria-selected="false">Leads &amp; AI Intake</button>
       <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
       <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
-      <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
+      <button role="tab" data-view="summary" aria-selected="false">Current Phillips Review</button>
       <button role="tab" data-view="proposals" aria-selected="false">Proposals</button>
       <button role="tab" data-view="requests" aria-selected="false">Request a Campaign</button>
     </nav>
@@ -212,22 +215,13 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     </section>
 
     <section class="view" data-panel="summary" hidden>
-      <div class="grid2">
-        <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours. “Owner not set” or “No due date” means no one has assigned or scheduled it yet.</p></div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">DAILY HANDOFFS</div><h2 style="margin-top:8px">Shared tasks</h2>
-        <p class="note">Everyone with Summary access sees the same list. Checking a task records who checked it and when; it never changes a lead or its Litify outcome.</p>
-        <ul class="checklist" id="sm-tasks"></ul>
-        <form id="task-form" class="toolbar" hidden>
-          <input id="t-title" placeholder="Task" aria-label="Task" maxlength="300" required>
-          <input id="t-assignee" placeholder="Assignee (name or email)" aria-label="Assignee" maxlength="200" required>
-          <input id="t-due" type="date" aria-label="Due date" required>
-          <select id="t-campaign" aria-label="Campaign"><option value="">All campaigns</option></select>
-          <button class="btn" id="t-add" type="submit">Add task</button>
-        </form>
+      <div class="panel"><div class="eyebrow">CURRENT PHILLIPS REVIEW</div><h2 style="margin-top:8px" id="sm-head"></h2>
+        <p class="note">Check an item off when it’s done. Everyone with access sees the same list, and each check shows the email of the person who checked it and when. Checking an item never changes a lead or its Litify outcome.</p>
+        <ul class="checklist" id="sm-checklist"></ul>
+        <button class="btn ghost" id="review-setup" type="button" hidden>Turn on check-offs for new items</button>
         <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
       </div>
+      <div class="panel" style="margin-top:16px"><div class="eyebrow">WHERE THINGS STAND</div><div id="sm-body"></div></div>
     </section>
 
     <section class="view" data-panel="proposals" hidden>
