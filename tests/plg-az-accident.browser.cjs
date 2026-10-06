@@ -105,7 +105,13 @@ function serve() {
       for (const [p, kind] of [['', 'A'], ['talk-to-sofia/', 'B']]) {
         await page.goto(base + p + q);
         assert.equal((await page.textContent('.ca-disclaimer')).trim(), DIS);
-        if (kind === 'B') await page.click('#callSofia');
+        if (kind === 'B') {
+          // Main button dials the BTL Sofia line; the callback form is the second option.
+          assert.equal(await page.getAttribute('#callSofia', 'href'), 'tel:+16026931461', 'B: Talk to Sofia dials the Sofia line');
+          assert.match(await page.textContent('#callSub'), /\(602\) 693-1461/);
+          assert.equal(await page.isVisible('#openCb'), true, 'B: callback option still offered');
+          await page.click('#openCb');
+        }
         await page.fill('#full_name', 'Synthetic Tester'); await page.fill('#phone', '6025550199');
         await page.click('#submitBtn');
         await page.waitForFunction(() => /highlighted/.test(document.querySelector('#formStatus').textContent));

@@ -22,7 +22,8 @@ test('page ships no lead data and loads only the token-gated feed', async () => 
   assert.ok(!/\d{3}[-.)\s]\d{3}[-.\s]\d{4}/.test(html), 'no phone numbers in page');
   assert.ok(html.includes('/assets/portal/perspective.js'));
   assert.match(html, /<div id="step-email">/, 'the email box shows immediately');
-  assert.match(html, /<details class="token-alt" id="token-alt"><summary>Owner sign-in<\/summary>/, 'owner key is folded behind a small link');
+  assert.match(html, /<details class="token-alt" id="token-alt" hidden><summary>Owner sign-in<\/summary>/, 'owner key sign-in is hidden from clients (opened at #owner)');
+  assert.ok(!/access level doesn/.test(html), 'no access-level wording on client screens');
   assert.ok(!/API|access token|Checking sign-in/i.test(html.slice(html.indexOf('id="gate"'), html.indexOf('id="app"'))), 'no technical language at sign-in');
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
   assert.ok(!/localStorage\.setItem\([^)]*token/i.test(js), 'token never persisted');

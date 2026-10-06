@@ -25,9 +25,9 @@
     synthetic_endpoint: 'https://btl-plg-az-mva-intake-stage-20261005.onrender.com/intake',
     // Phillips PI/MVA intake DID (legal-web-lead/config/phillips-lane/routes.json, confirmed 2026-09-07).
     firm_phone: { e164: '+16022003976', display: '(602) 200-3976' },
-    // AI voice is OFF until Phillips approves it in writing (indemnification agreement 1(f)).
-    // verified:false => the path B button opens the human callback form instead of dialing.
-    sofia_phone: { e164: '', display: '', verified: false },
+    // BTL Sofia line (Vapi phone 4d07e1e8 -> assistant d2b58eeb, Kyle 2026-10-06). Sofia screens Arizona
+    // accident callers and transfers qualified callers to firm_phone. Path B's main button dials it.
+    sofia_phone: { e164: '+16026931461', display: '(602) 693-1461', verified: true },
     consent_version: 'plg-azmva-consent-2026-10-05-v1', // approved by Kyle 2026-10-05
     timeout_ms: 15000
   };

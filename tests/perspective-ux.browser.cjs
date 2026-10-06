@@ -101,7 +101,8 @@ const leak = (page) => page.evaluate((secrets) => {
       assert.equal(await page.isVisible('#token'), false, `${width}: owner key hidden`);
       const gate = await page.innerText('#gate');
       assert.ok(!/API|token|HTTP|onrender/i.test(gate), `${width}: plain sign-in copy (${gate})`);
-      assert.ok(/Owner sign-in/.test(gate));
+      assert.ok(!/Owner sign-in|access level|Admin|Settings/i.test(gate), `${width}: no owner/admin/access controls on the client sign-in`);
+      assert.equal(await page.isVisible('#token-alt'), false);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `${width}: no sideways scroll`);
       await shot(page, `${width}-1-signin`);
       await page.fill('#email', 'Jane.Doe@PhillipsLaw.com'); await page.click('#send-code');
@@ -149,8 +150,10 @@ const leak = (page) => page.evaluate((secrets) => {
       // 5. Owner: Admin link, #admin opens administration; Settings still not a tab.
       await page.click('#lock-btn');
       await page.waitForSelector('#gate:not([hidden])');
+      await page.evaluate(() => { location.hash = '#owner'; });
+      await page.waitForSelector('#token-alt:not([hidden])');
       await page.click('#token-alt summary');
-      assert.ok(await page.isVisible('#token'), `${width}: owner sign-in reachable`);
+      assert.ok(await page.isVisible('#token'), `${width}: owner sign-in reachable at #owner only`);
       await page.click('#token-alt summary');
       await signIn(page, 'kyle@marketingapes.com');
       assert.equal(await page.$('#admin-link'), null, `${width}: no Admin/Settings link even for the owner`);
