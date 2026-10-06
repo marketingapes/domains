@@ -4,7 +4,7 @@ const path=require('node:path');
 const assert=require('node:assert/strict');
 // Test-only connected binding, injected by request interception. Not shipped in lfma/.
 const FAKE_BINDING=`
-const S=window.__fake={calls:[],statuses:['in_call'],verify:'verified',transfer:'requested',receipt:null};
+const S=window.__fake={calls:[],statuses:['in_call'],verify:'verified',transfer:'requested',receipt:null,holdConfirm:false,held:[],transferTo:null};
 export const integrationConfig=Object.freeze({status:'verified',contractVersion:'browser-fixture',voicePath:'phone',origin:'https://contract.test',
  disclosures:{callPurpose:'Fixture purpose',callerIdentity:'Fixture caller',recordingUse:'Fixture recording use'},recordingOptional:false,pollMs:40});
 const wait=()=>new Promise(r=>setTimeout(r,30));
@@ -13,8 +13,8 @@ export const transport={
  async launchVoice(){S.calls.push('launchVoice');return{state:'starting'};},
  async getStatus(){S.calls.push('getStatus');return{state:S.statuses.length>1?S.statuses.shift():S.statuses[0]};},
  async startVerification(){S.calls.push('startVerification');return{verification:'challenge_issued'};},
- async confirmVerification(){S.calls.push('confirmVerification');return{verification:S.verify};},
- async requestTransfer(){S.calls.push('requestTransfer');return{transfer:S.transfer};},
+ async confirmVerification(){S.calls.push('confirmVerification');if(S.holdConfirm)return new Promise(r=>S.held.push(r));return{verification:S.verify};},
+ async requestTransfer(id,phone){S.calls.push('requestTransfer');S.transferTo=phone;return{transfer:S.transfer};},
  async getReceipt(){S.calls.push('getReceipt');return S.receipt;}};`;
 const NAME='Pat Example',EMAIL='pat@example.com';
 (async()=>{
@@ -127,9 +127,26 @@ const NAME='Pat Example',EMAIL='pat@example.com';
    await p.waitForFunction(()=>document.getElementById('verify-state').textContent==='Verification failed');
    assert.equal(await p.locator('#transfer').isDisabled(),true);
    await p.evaluate(()=>{window.__fake.verify='verified';window.__fake.transfer='failed';});
+   // Regression: editing the receiving number after a challenge abandons that challenge.
+   await p.locator('#verify-send').click();
+   await p.waitForFunction(()=>/ending 0101/.test(document.getElementById('verify-state').textContent));
+   await p.locator('#verify-code').fill('123');
+   await p.locator('#recv-phone').fill('480-555-0102');
+   assert.equal(await p.locator('#verify-state').textContent(),'Not started');
+   assert.equal(await p.locator('#verify-code').inputValue(),'');assert.equal(await p.locator('#verify-confirm').isDisabled(),true);
+   assert.equal(await p.locator('#transfer').isDisabled(),true);
    await p.locator('#verify-send').click();await p.locator('#verify-code').fill('123456');await p.locator('#verify-confirm').click();
-   await p.waitForFunction(()=>document.getElementById('verify-state').textContent==='Verified');
+   await p.waitForFunction(()=>document.getElementById('verify-state').textContent==='Verified (number ending 0102)');
+   assert.equal(await p.locator('#recv-phone').isDisabled(),true,'verified number is locked');
+   // Change number is the only way to edit a verified number, and it drops the verification.
+   await p.locator('#change-number').click();
+   assert.equal(await p.locator('#verify-state').textContent(),'Not started');assert.equal(await p.locator('#transfer').isDisabled(),true);
+   await p.locator('#recv-phone').fill('480-555-0101');
+   await p.locator('#verify-send').click();await p.locator('#verify-code').fill('123456');await p.locator('#verify-confirm').click();
+   await p.waitForFunction(()=>document.getElementById('verify-state').textContent==='Verified (number ending 0101)');
+   assert.equal(await p.locator('#recv-phone').inputValue(),'480-555-0101');
    await p.locator('#transfer').click();
+   assert.equal(await p.evaluate(()=>window.__fake.transferTo),'+14805550101','transfer targets the displayed, verified number');
    await p.waitForFunction(()=>/Failed/.test(document.getElementById('transfer-state').textContent));
    await p.screenshot({path:`${out}/${width}-06-fixture-transfer-failed.png`,fullPage:true});
    await p.evaluate(()=>{window.__fake.receipt={recording:{state:'processing'},transfer:{state:'failed'},sms:{state:'not_consented'}};window.__fake.statuses=['processing','ready'];});
@@ -147,9 +164,27 @@ const NAME='Pat Example',EMAIL='pat@example.com';
    assert.equal(await p.locator('#live-pill').textContent(),'Not connected');assert.equal(await p.locator('#r-recording').textContent(),'');
    await p.locator('#p-name').fill('Second Person');await p.locator('#p-email').fill('second@example.com');await p.locator('#start-demo').click();
    await p.evaluate(()=>document.querySelector('[data-go="4"]').click());
-   assert.notEqual(await visibleStep(p),4);
+   assert.equal(await visibleStep(p),3,'receipt is unreachable without a receipt; falls back to Sofia');
+   for(const id of ['#c-phone','#c-recording','#c-sms'])assert.equal(await p.locator(id).isChecked(),false);
+   await p.locator('#c-phone').check();await p.locator('#c-recording').check();await p.locator('#c-sms').check();await p.locator('#lead-phone').fill('602-555-0100');
+   await p.evaluate(()=>{const S=window.__fake;S.statuses=['in_call'];S.verify='verified';S.holdConfirm=true;});
+   await p.locator('#start-call').click();await p.waitForFunction(()=>document.getElementById('live-pill').textContent==='In call');
+   await p.locator('#recv-phone').fill('480-555-0101');await p.locator('#verify-send').click();
+   await p.locator('#verify-code').fill('123456');await p.locator('#verify-confirm').click();
+   await p.waitForFunction(()=>document.getElementById('verify-state').textContent==='Checking…');
+   // Identity edited mid-verification: the late "verified" must not surface for anyone.
+   for(const back of ['← Back to the page','← Back to the ad','← Back'])await p.getByRole('button',{name:back,exact:true}).click();
+   await p.locator('#p-email').fill('third@example.com');
+   await p.evaluate(()=>{const S=window.__fake;S.held.shift()({verification:'verified'});});
+   await p.locator('#start-demo').click();await p.getByRole('button',{name:'Learn more'}).click();await p.getByRole('button',{name:'Talk to Sofia'}).click();
+   for(const id of ['#c-phone','#c-recording','#c-sms'])assert.equal(await p.locator(id).isChecked(),false,id+' carried to new identity');
+   for(const id of ['#lead-phone','#recv-phone','#verify-code'])assert.equal(await p.locator(id).inputValue(),'',id+' carried to new identity');
+   assert.equal(await p.locator('#live-pill').textContent(),'Not connected');
+   assert.equal(await p.locator('#verify-state').textContent(),'Not started');
+   assert.equal(await p.locator('#change-number').isHidden(),true);assert.equal(await p.locator('#transfer').isDisabled(),true);
+   assert.equal(await p.locator('#start-call').isDisabled(),true);
    assert.deepEqual(f.errors,[]);assert.equal(f.forbidden(),0);await p.close();
   }
-  console.log('PASS: 375/1440px start validation + keyboard, AI disclosure, unchecked separate consents, unconnected live controls disabled, labelled simulation receipt, back/answer/identity invalidation, reset clears PII (DOM, inputs, URL, storage), reduced motion, logo, no overflow/errors/external requests; fixture binding: single session on repeated clicks, wrong/same/unverified phone, failed verification, failed transfer, processing/failed recording, stale-session cleanup.');
+  console.log('PASS: 375/1440px start validation + keyboard, AI disclosure, unchecked separate consents, unconnected live controls disabled, labelled simulation receipt, back/answer/identity invalidation, reset clears PII (DOM, inputs, URL, storage), reduced motion, logo, no overflow/errors/external requests; fixture binding: single session on repeated clicks, wrong/same/unverified phone, edit-after-challenge, change number, stale verification across identity change, no consent/phone carry-over, failed verification, failed transfer, processing/failed recording, stale-session cleanup.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

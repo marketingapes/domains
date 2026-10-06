@@ -12,6 +12,9 @@ export function createFakeTransport(opts = {}) {
     calls: [], statuses: opts.statuses ?? ['starting'], receipt: opts.receipt ?? null,
     verifyResult: opts.verifyResult ?? 'verified', transferResult: opts.transferResult ?? 'requested',
     throwOn: opts.throwOn ?? null, seq: 0,
+    // Set hold to an operation name to park its responses until releaseHeld(result) is called.
+    hold: null, held: [],
+    releaseHeld(result) { const h = t.held.shift(); h?.(result); },
     release() { releaseCreate?.(); },
     async createSession(...args) {
       t.calls.push({ op: 'createSession', args });
@@ -21,8 +24,16 @@ export function createFakeTransport(opts = {}) {
     },
     async launchVoice(...args) { t.calls.push({ op: 'launchVoice', args }); return { state: 'starting' }; },
     async getStatus(...args) { t.calls.push({ op: 'getStatus', args }); return { state: t.statuses.length > 1 ? t.statuses.shift() : t.statuses[0] }; },
-    async startVerification(...args) { t.calls.push({ op: 'startVerification', args }); return { verification: 'challenge_issued' }; },
-    async confirmVerification(...args) { t.calls.push({ op: 'confirmVerification', args }); return { verification: t.verifyResult }; },
+    async startVerification(...args) {
+      t.calls.push({ op: 'startVerification', args });
+      if (t.hold === 'startVerification') return new Promise(r => t.held.push(r));
+      return { verification: 'challenge_issued' };
+    },
+    async confirmVerification(...args) {
+      t.calls.push({ op: 'confirmVerification', args });
+      if (t.hold === 'confirmVerification') return new Promise(r => t.held.push(r));
+      return { verification: t.verifyResult };
+    },
     async requestTransfer(...args) { t.calls.push({ op: 'requestTransfer', args }); return { transfer: t.transferResult }; },
     async getReceipt(...args) { t.calls.push({ op: 'getReceipt', args }); return t.receipt; }
   };

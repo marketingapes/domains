@@ -65,6 +65,16 @@ if (typeof document !== 'undefined') {
   }
 
   function clearSimulation() { simReceipt = null; }
+  const lastFour = phone => phone ? ` (number ending ${phone.slice(-4)})` : '';
+  const verifyText = s => VERIFY_TEXT[s.verification] + (s.verification === 'verified' ? lastFour(s.verifiedPhone) : s.verification === 'challenge_issued' ? lastFour(s.pendingPhone) : '');
+
+  // Consents, phones and verification belong to one participant's session only.
+  function clearSessionInputs() {
+    ['lead-phone', 'recv-phone', 'verify-code'].forEach(id => { $(id).value = ''; });
+    ['lead-error'].forEach(id => { $(id).textContent = ''; });
+    ['c-phone', 'c-recording', 'c-sms'].forEach(id => { $(id).checked = false; });
+  }
+  let lastIdentity = null;
 
   function render(s = ctl.snapshot()) {
     const live = s.connected;
@@ -87,12 +97,14 @@ if (typeof document !== 'undefined') {
     $('retry-call').hidden = !(live && s.state === 'failed');
     const canHandoff = live && transferSupported(integrationConfig) && s.hasSession && ['starting', 'in_call'].includes(s.state);
     $('handoff').classList.toggle('unavailable', !canHandoff);
-    $('recv-phone').disabled = !canHandoff || ['requesting', 'checking', 'verified'].includes(s.verification);
+    // The receiving field is read-only while a request is in flight, once verified (use Change number) and after a transfer request.
+    $('recv-phone').disabled = !canHandoff || s.transfer !== 'not_requested' || ['requesting', 'checking', 'verified'].includes(s.verification);
+    $('change-number').hidden = !canHandoff || s.verification !== 'verified' || s.transfer !== 'not_requested';
     $('verify-send').disabled = $('recv-phone').disabled;
     $('verify-code').disabled = !canHandoff || s.verification !== 'challenge_issued';
     $('verify-confirm').disabled = $('verify-code').disabled;
     $('verify-state').textContent = !live ? 'Unavailable — not connected'
-      : !transferSupported(integrationConfig) ? 'Unavailable on this voice path' : VERIFY_TEXT[s.verification];
+      : !transferSupported(integrationConfig) ? 'Unavailable on this voice path' : verifyText(s);
     $('transfer-state').textContent = !live ? 'Unavailable — not connected' : TRANSFER_TEXT[s.transfer];
     $('transfer').disabled = !canHandoff || s.state !== 'in_call' || s.verification !== 'verified' || s.transfer !== 'not_requested';
     document.querySelector('.sim-box').hidden = live;
@@ -137,6 +149,8 @@ if (typeof document !== 'undefined') {
     const err = !name ? 'Enter your name.' : !validEmail(email) ? 'Enter a valid work email.' : '';
     $('start-error').textContent = err;
     if (err) { (name ? $('p-email') : $('p-name')).focus(); return; }
+    if (lastIdentity !== `${name}\n${email}`) clearSessionInputs();
+    lastIdentity = `${name}\n${email}`;
     started = true; clearSimulation();
     ctl.setParticipant({ name, email });
     ctl.setFictionalCase(fictionalCase());
@@ -144,7 +158,7 @@ if (typeof document !== 'undefined') {
   });
   ['p-name', 'p-email'].forEach(id => $(id).addEventListener('input', () => {
     if (!started) return;
-    started = false; clearSimulation(); ctl.setParticipant(null);
+    started = false; lastIdentity = null; clearSimulation(); clearSessionInputs(); ctl.setParticipant(null);
   }));
 
   document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', () => show(Number(el.dataset.go))));
@@ -164,7 +178,10 @@ if (typeof document !== 'undefined') {
 
   $('start-call').addEventListener('click', () => ctl.start());
   $('retry-call').addEventListener('click', () => ctl.start());
-  $('verify-send').addEventListener('click', () => ctl.startVerification($('recv-phone').value));
+  // Any edit to the receiving number abandons the pending challenge; late responses for it are ignored.
+  $('recv-phone').addEventListener('input', () => { $('verify-code').value = ''; ctl.resetVerification(); });
+  $('change-number').addEventListener('click', () => { $('verify-code').value = ''; if (ctl.resetVerification()) $('recv-phone').focus(); });
+  $('verify-send').addEventListener('click', () => { $('verify-code').value = ''; ctl.startVerification($('recv-phone').value); });
   $('verify-confirm').addEventListener('click', () => ctl.confirmVerification($('verify-code').value));
   $('transfer').addEventListener('click', () => ctl.requestTransfer());
 
@@ -175,10 +192,9 @@ if (typeof document !== 'undefined') {
   });
 
   $('reset').addEventListener('click', () => {
-    started = false; clearSimulation();
-    ['p-name', 'p-email', 'lead-phone', 'recv-phone', 'verify-code'].forEach(id => { $(id).value = ''; });
-    ['start-error', 'lead-error'].forEach(id => { $(id).textContent = ''; });
-    ['c-phone', 'c-recording', 'c-sms'].forEach(id => { $(id).checked = false; });
+    started = false; lastIdentity = null; clearSimulation(); clearSessionInputs();
+    ['p-name', 'p-email'].forEach(id => { $(id).value = ''; });
+    $('start-error').textContent = '';
     document.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; });
     ctl.reset();
     show(0);

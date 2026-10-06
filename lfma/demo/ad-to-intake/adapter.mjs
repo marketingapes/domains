@@ -70,6 +70,7 @@ function freshLive() {
 // Session controller. All participant data lives only in this closure.
 export function createSessionController({ config = UNCONNECTED, transport = null, onChange = () => {} } = {}) {
   let generation = 0;
+  let verifyGen = 0;
   let starting = null;
   let pollTimer = null;
   let participant = null;
@@ -87,7 +88,8 @@ export function createSessionController({ config = UNCONNECTED, transport = null
       connected: connected(), problems: problems(), transferSupported: transferSupported(config),
       generation, hasParticipant: Boolean(participant), consent: { ...consent },
       state: live.state, error: live.error, verification: live.verification,
-      transfer: live.transfer, receipt: live.receipt, hasSession: Boolean(live.sessionId)
+      transfer: live.transfer, receipt: live.receipt, hasSession: Boolean(live.sessionId),
+      pendingPhone: live.pendingPhone, verifiedPhone: live.verifiedPhone
     };
   }
 
@@ -95,7 +97,7 @@ export function createSessionController({ config = UNCONNECTED, transport = null
 
   // Any change to identity, consent or fictional answers discards the old session.
   function invalidate() {
-    generation++; starting = null; stopPolling();
+    generation++; verifyGen++; starting = null; stopPolling();
     live = freshLive();
     emit();
   }
@@ -110,7 +112,11 @@ export function createSessionController({ config = UNCONNECTED, transport = null
   }
 
   function setParticipant(next) {
-    participant = next ? { name: String(next.name).trim(), email: String(next.email).trim() } : null;
+    const name = next ? String(next.name).trim() : null, email = next ? String(next.email).trim() : null;
+    if (!participant || participant.name !== name || participant.email !== email) {
+      consent = { phoneContact: false, recording: false, sms: false }; leadPhone = null;
+    }
+    participant = next ? { name, email } : null;
     invalidate();
   }
   function setConsent(next) { consent = { phoneContact: !!next.phoneContact, recording: !!next.recording, sms: !!next.sms }; invalidate(); }
@@ -202,33 +208,55 @@ export function createSessionController({ config = UNCONNECTED, transport = null
     };
   }
 
+  // Verification has its own generation: editing the receiving number, a new
+  // challenge or a session change makes every in-flight verification response stale.
+  const verifyGuard = (gen, vgen) => guard(gen) && vgen === verifyGen;
+
+  function resetVerification() {
+    if (live.transfer !== 'not_requested') return false;
+    verifyGen++;
+    live.verification = 'not_started'; live.pendingPhone = null; live.verifiedPhone = null;
+    emit();
+    return true;
+  }
+
   async function startVerification(raw) {
     const phone = normalizePhone(raw);
-    if (!transferSupported(config) || !live.sessionId) return { ok: false, reason: 'unavailable' };
+    if (!transferSupported(config) || !live.sessionId || live.transfer !== 'not_requested') return { ok: false, reason: 'unavailable' };
+    if (['requesting', 'checking'].includes(live.verification)) return { ok: false, reason: 'busy' };
+    verifyGen++;
+    live.pendingPhone = null; live.verifiedPhone = null;
     if (!phone) { live.verification = 'invalid'; emit(); return { ok: false, reason: 'invalid_phone' }; }
     if (phone === leadPhone) { live.verification = 'same_as_lead'; emit(); return { ok: false, reason: 'same_as_lead' }; }
-    const gen = generation;
-    live.verification = 'requesting'; live.verifiedPhone = null; emit();
+    const gen = generation, vgen = verifyGen;
+    live.verification = 'requesting'; emit();
     try {
       const r = await transport.startVerification(live.sessionId, phone);
-      if (!guard(gen)) return { ok: false, reason: 'stale' };
+      if (!verifyGuard(gen, vgen)) return { ok: false, reason: 'stale' };
       live.verification = r?.verification === 'challenge_issued' ? 'challenge_issued' : 'failed';
       if (live.verification === 'challenge_issued') live.pendingPhone = phone;
-    } catch { if (guard(gen)) live.verification = 'failed'; }
+    } catch {
+      if (!verifyGuard(gen, vgen)) return { ok: false, reason: 'stale' };
+      live.verification = 'failed';
+    }
     emit();
     return { ok: live.verification === 'challenge_issued' };
   }
 
   async function confirmVerification(code) {
-    if (live.verification !== 'challenge_issued' || !live.sessionId) return { ok: false };
-    const gen = generation;
+    if (live.verification !== 'challenge_issued' || !live.sessionId || !live.pendingPhone) return { ok: false };
+    const gen = generation, vgen = verifyGen, phone = live.pendingPhone;
     live.verification = 'checking'; emit();
     try {
-      const r = await transport.confirmVerification(live.sessionId, String(code ?? '').trim());
-      if (!guard(gen)) return { ok: false, reason: 'stale' };
+      const r = await transport.confirmVerification(live.sessionId, String(code ?? '').trim(), phone);
+      if (!verifyGuard(gen, vgen)) return { ok: false, reason: 'stale' };
       live.verification = r?.verification === 'verified' ? 'verified' : 'failed';
-      live.verifiedPhone = live.verification === 'verified' ? live.pendingPhone : null;
-    } catch { if (guard(gen)) live.verification = 'failed'; }
+      live.verifiedPhone = live.verification === 'verified' ? phone : null;
+    } catch {
+      if (!verifyGuard(gen, vgen)) return { ok: false, reason: 'stale' };
+      live.verification = 'failed';
+    }
+    if (live.verification !== 'verified') live.pendingPhone = null;
     emit();
     return { ok: live.verification === 'verified' };
   }
@@ -254,7 +282,7 @@ export function createSessionController({ config = UNCONNECTED, transport = null
   }
 
   return {
-    snapshot, start, refresh: () => refresh(), startVerification, confirmVerification, requestTransfer,
+    snapshot, start, refresh: () => refresh(), startVerification, confirmVerification, resetVerification, requestTransfer,
     setParticipant, setConsent, setFictionalCase, setLeadPhone, startBlockers, reset
   };
 }

@@ -117,3 +117,51 @@ test('conference copy, disclosures and scope boundaries are present',()=>{
  const css=read('demo.css');assert.match(css,/prefers-reduced-motion:reduce/);assert.match(css,/animation:none!important/);
  assert.deepEqual(readFileSync(new URL('../lfma/assets/portal/ape-logo.jpg',import.meta.url)),readFileSync(new URL('../ma/assets/network/ape-logo.jpg',import.meta.url)));
 });
+
+test('editing the receiving phone after a challenge abandons it; transfer uses only the verified number',async()=>{
+ const fake=createFakeTransport({statuses:['in_call'],verifyResult:'verified'});const ctl=createSessionController({config:FAKE_CONFIG,transport:fake});ready(ctl);
+ await ctl.start();await tick();
+ await ctl.startVerification('480-555-0101');assert.equal(ctl.snapshot().pendingPhone,'+14805550101');
+ assert.equal(ctl.resetVerification(),true);// the page calls this on any edit to the field
+ let s=ctl.snapshot();assert.equal(s.verification,'not_started');assert.equal(s.pendingPhone,null);assert.equal(s.verifiedPhone,null);
+ assert.deepEqual(await ctl.confirmVerification('123456'),{ok:false});
+ assert.equal(fake.calls.filter(c=>c.op==='confirmVerification').length,0);
+ assert.deepEqual(await ctl.requestTransfer(),{ok:false});
+ await ctl.startVerification('480-555-0102');await ctl.confirmVerification('123456');
+ s=ctl.snapshot();assert.equal(s.verification,'verified');assert.equal(s.verifiedPhone,'+14805550102');
+ assert.equal(fake.calls.at(-1).args[2],'+14805550102','confirmation is bound to the challenged number');
+ await ctl.requestTransfer();
+ assert.equal(fake.calls.find(c=>c.op==='requestTransfer').args[1],'+14805550102');
+ assert.equal(ctl.resetVerification(),false,'number cannot change once a transfer is requested');
+});
+
+test('late verification responses for an abandoned number or session are ignored',async()=>{
+ const fake=createFakeTransport({statuses:['in_call']});const ctl=createSessionController({config:FAKE_CONFIG,transport:fake});ready(ctl);
+ await ctl.start();await tick();
+ // Late challenge for number A arrives after the field was edited.
+ fake.hold='startVerification';const a=ctl.startVerification('480-555-0101');
+ ctl.resetVerification();fake.releaseHeld({verification:'challenge_issued'});
+ assert.equal((await a).reason,'stale');assert.equal(ctl.snapshot().verification,'not_started');assert.equal(ctl.snapshot().pendingPhone,null);
+ // Late "verified" for number A arrives after the participant moved on to number B.
+ fake.hold=null;await ctl.startVerification('480-555-0101');
+ fake.hold='confirmVerification';const confirmA=ctl.confirmVerification('111111');
+ assert.equal(ctl.resetVerification(),true);
+ fake.hold=null;await ctl.startVerification('480-555-0102');
+ fake.releaseHeld({verification:'verified'});assert.equal((await confirmA).reason,'stale');
+ let s=ctl.snapshot();assert.equal(s.verification,'challenge_issued');assert.equal(s.pendingPhone,'+14805550102');assert.equal(s.verifiedPhone,null);
+ assert.deepEqual(await ctl.requestTransfer(),{ok:false});
+ // Late "verified" after the whole session is reset never reaches the next participant.
+ fake.hold='confirmVerification';const confirmB=ctl.confirmVerification('222222');
+ ctl.reset();fake.releaseHeld({verification:'verified'});assert.equal((await confirmB).reason,'stale');
+ s=ctl.snapshot();assert.equal(s.verification,'not_started');assert.equal(s.verifiedPhone,null);assert.equal(s.hasSession,false);
+});
+
+test('a new participant identity never inherits consents or phones',()=>{
+ const ctl=createSessionController({config:FAKE_CONFIG,transport:createFakeTransport()});ready(ctl);
+ ctl.setConsent({phoneContact:true,recording:true,sms:true});assert.deepEqual(ctl.startBlockers(),[]);
+ ctl.setParticipant(participant);// same person re-confirming keeps their own choices
+ assert.deepEqual(ctl.snapshot().consent,{phoneContact:true,recording:true,sms:true});
+ ctl.setParticipant({name:'Someone Else',email:'else@example.com'});
+ assert.deepEqual(ctl.snapshot().consent,{phoneContact:false,recording:false,sms:false});
+ const b=ctl.startBlockers();assert.ok(b.some(x=>/Phone contact consent/.test(x)));assert.ok(b.some(x=>/phone number for Sofia/.test(x)));
+});
