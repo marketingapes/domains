@@ -1,287 +1,205 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
 <meta name="robots" content="noindex,nofollow">
-<meta name="referrer" content="no-referrer">
-<title>Perspective · Phillips Law Group</title>
-<link rel="icon" href="/assets/portal/ape-logo.jpg">
-<style>
-:root{--bg:#f4f6ff;--surface:#fff;--ink:#0d1026;--muted:#5a5f7d;--line:#e0e3f0;--accent:#7051da;--focus:#7051da;--tint:#eeebfb;--navy:#151a31;--ok:#15803d;--okbg:#e8f5ec;--warn:#b45309;--warnbg:#fef3e2;--bad:#b42318;--badbg:#fdecea}
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script><title>Phillips Intake System</title><style>:root{--accent:#1a3a5c}
+:root{--accent:#1a3a5c}
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
-button,select,input{font:inherit}button{cursor:pointer}
-button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
-h1,h2,h3,p{margin-top:0}
-h1{letter-spacing:-.05em;line-height:1.06;font-size:clamp(30px,4vw,48px);margin-bottom:8px}
-h2{letter-spacing:-.025em;font-size:21px;margin-bottom:6px}
-h3{font-size:14px;margin-bottom:8px}
-p{line-height:1.6;color:var(--muted);font-size:14px}
-.main{max-width:1440px;margin:auto;padding:22px 28px 60px}
-.eyebrow{font-size:10px;letter-spacing:.16em;font-weight:750;text-transform:uppercase;color:var(--muted)}
-.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{width:40px;height:40px;object-fit:contain;border-radius:8px}
-.brand strong{display:block;font-size:20px;letter-spacing:-.035em}
-.brand small{display:block;font-size:10px;color:var(--muted);margin-top:3px;letter-spacing:.08em}
-.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:30px;padding:6px 10px;font-size:11px;font-weight:700;white-space:nowrap;background:#fff}
-.pill:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.pill.ok:before{background:var(--ok)}.pill.warn:before{background:var(--warn)}.pill.bad:before{background:var(--bad)}
-.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;background:var(--tint);color:#4b36a8;white-space:nowrap}
-.tag.ok{background:var(--okbg);color:var(--ok)}.tag.warn{background:var(--warnbg);color:var(--warn)}.tag.bad{background:var(--badbg);color:var(--bad)}.tag.mute{background:#eef0f6;color:var(--muted)}
-.gate{max-width:460px;margin:12vh auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px}
-.gate input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:14px 0 10px}
-.btn{border:1px solid var(--navy);background:var(--navy);color:#fff;border-radius:10px;padding:11px 16px;font-weight:700;font-size:13px}
-.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
-.btn:disabled{opacity:.5;cursor:default}
-.err{color:var(--bad);font-size:13px;min-height:18px;margin:0}
-.campaign-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:22px 0 18px}
-.campaign-tabs button{border:1px solid var(--line);background:#fff;color:var(--muted);padding:14px 16px;border-radius:12px;text-align:left}
-.campaign-tabs button strong{display:block;font-size:15px;color:var(--ink)}
-.campaign-tabs button small{display:block;font-size:11px;margin-top:5px}
-.campaign-tabs button[aria-selected=true]{background:var(--navy);border-color:var(--navy)}
-.campaign-tabs button[aria-selected=true] strong{color:#fff}.campaign-tabs button[aria-selected=true] small{color:#bbc4df}
-.intro{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;flex-wrap:wrap}
-.intro p{margin:0;max-width:760px}
-.scoreboard{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:#dce0f0;border:1px solid #dce0f0;border-radius:20px;overflow:hidden;margin:20px 0 10px}
-.score{padding:20px;background:#fff;display:flex;flex-direction:column;min-width:0;min-height:150px}
-.score:first-child{background:linear-gradient(140deg,#161b32,#2c2450);color:#fff}
-.score:first-child .s-note{color:#bbc4df}
-.s-label{font-size:11px;font-weight:750;letter-spacing:.07em;text-transform:uppercase;line-height:1.4}
-.s-num{font-size:clamp(30px,3.4vw,48px);line-height:1.1;letter-spacing:-.06em;font-weight:800;margin:12px 0 6px}
-.s-num.na{color:#b8bdd3}
-.s-note{font-size:11px;line-height:1.5;color:#65708d}
-.funnel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:10px 0 6px}
-.f-step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.f-step b{display:block;font-size:22px;letter-spacing:-.04em}
-.f-step span{font-size:11px;color:var(--muted)}
-.f-step i{display:block;font-style:normal;font-size:11px;color:var(--accent);font-weight:700;margin-top:4px}
-.fresh{font-size:11px;color:var(--muted);margin:8px 0 0}
-.sources ul{list-style:none;margin:6px 0;padding:0;display:grid;gap:4px}.sources p{margin:4px 0}
-.linkbtn{border:0;background:none;color:var(--muted);text-decoration:underline;padding:10px 0 0 12px;font-size:14px;cursor:pointer}
-.token-alt{margin-top:18px;font-size:14px;color:var(--muted)}
-.token-alt summary{cursor:pointer}
-.section-tabs{display:flex;gap:6px;margin:24px 0 0;overflow-x:auto;border-bottom:1px solid var(--line)}
-.section-tabs button{border:0;border-bottom:3px solid transparent;background:none;padding:12px 16px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
-.section-tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
-.view{padding-top:22px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.crm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.toolbar input,.toolbar select{padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:0}
-.toolbar input[type=search]{flex:1 1 180px}
-.lead-list{max-height:70vh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
-.lead-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:10px;padding:12px 14px;border:0;border-bottom:1px solid var(--line);background:#fff;width:100%;text-align:left;align-items:center}
-.lead-row:hover{background:#fafaff}.lead-row[aria-pressed=true]{background:var(--tint)}
-.lead-row b{display:block;font-size:14px}.lead-row small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
-.detail{position:sticky;top:12px}
-.timeline{list-style:none;padding:0;margin:14px 0 0;border-left:2px solid var(--line)}
-.timeline li{position:relative;padding:0 0 14px 16px;font-size:13px}
-.timeline li:before{content:"";position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
-.timeline li.firm:before{background:var(--ok)}.timeline li.warn:before{background:var(--warn)}
-.timeline time{display:block;font-size:11px;color:var(--muted)}
-dl.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;font-size:13px;margin:12px 0}
-dl.kv dt{color:var(--muted)}dl.kv dd{margin:0;word-break:break-word}
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:9px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
-td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-.bars{display:grid;gap:8px;margin-top:10px}
-.bar{display:grid;grid-template-columns:minmax(0,180px) 1fr 50px;gap:10px;align-items:center;font-size:12px}
-.bar .track{height:10px;background:#eef0f6;border-radius:6px;overflow:hidden}
-.bar .fill{height:100%;background:var(--accent);border-radius:6px}
-.ads{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.ad{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
-.ad img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#eef0f6}
-.ad div{padding:10px 12px;font-size:12px}
-.checklist{list-style:none;padding:0;margin:0}
-.checklist li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}
-.checklist input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
-.checklist small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.note{background:#f8f9fe;border:1px dashed #cdd2e6;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);margin-top:12px}
-.foot{margin-top:40px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
-[hidden]{display:none!important}
-@media (max-width:1100px){.scoreboard{grid-template-columns:repeat(3,minmax(0,1fr))}.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}.crm{grid-template-columns:1fr}.detail{position:static}}
-@media (max-width:720px){.main{padding:14px 16px 40px}.campaign-tabs{grid-template-columns:1fr 1fr}.scoreboard{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.funnel{grid-template-columns:1fr 1fr}dl.kv{grid-template-columns:110px 1fr}.lead-row{grid-template-columns:1fr auto}.lead-row .mid{display:none}.topline{flex-wrap:wrap}.topline .pill{white-space:normal}}
-.portal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
-.ph-title{margin:0;font-size:clamp(22px,4vw,30px)}
-.ph-actions{display:flex;align-items:center;gap:12px}
-#c-links h4{margin:12px 0 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#5b6475)}
-#c-links ul{margin:0;padding-left:18px;line-height:1.7;font-size:14px}
-.token-alt{margin-top:18px;font-size:13px}.token-alt summary{color:var(--muted,#5b6475)}
-</style>
-<script src="/assets/portal/perspective.js?v=20261006m" defer></script>
-</head>
-<body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
-<main class="main">
-  <header class="topline">
-    <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · <span data-firm="name">PHILLIPS LAW GROUP</span></small></div></div>
-    <div style="display:flex;gap:8px;align-items:center"><span class="pill" id="feed-pill">Locked</span><button class="btn ghost" id="lock-btn" type="button" hidden>Lock</button></div>
-  </header>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#f6f8fb;color:#1a2433;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:#fff;border-bottom:1px solid #e3e9f2;padding:20px 0;position:sticky;top:0;z-index:10}
+.sys{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.sys small{display:block;font-size:13px;font-weight:500;color:#64748b;letter-spacing:0;margin-top:2px}
+.date{float:right;font-size:13px;color:#64748b;padding-top:6px}
+.hero{padding:28px 0 8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid #e3e9f2;border-radius:14px;padding:16px}
+.kpi .v{font-size:30px;font-weight:800;letter-spacing:-.02em}
+.kpi .l{font-size:13px;font-weight:600;margin-top:4px}
+.kpi .n{font-size:11px;color:#94a3b8;margin-top:4px}
+.kpi.gap .v{color:#b6c2d2}
+nav.tabs{display:flex;gap:4px;margin:20px 0 0;overflow-x:auto}
+nav.tabs button{border:1px solid #e3e9f2;background:#fff;border-radius:10px 10px 0 0;
+  padding:12px 18px;font-size:14px;font-weight:600;color:#475569;cursor:pointer;white-space:nowrap}
+nav.tabs button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab{display:none;background:#fff;border:1px solid #e3e9f2;border-radius:0 14px 14px 14px;
+  padding:24px;margin-bottom:32px}
+.tab.active{display:block}
+.tab h2{font-size:17px;margin:0 0 4px}
+.sec{margin-bottom:28px}
+.sec h3{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:0 0 12px}
+.sec p.body{font-size:15px;line-height:1.65;color:#334155;max-width:72ch;margin:0}
+.sec p.intro{font-size:14px;color:#64748b;margin:0 0 16px;max-width:72ch}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#94a3b8;
+  padding:10px 12px;border-bottom:2px solid #eef2f7}
+td{padding:12px;border-bottom:1px solid #eef2f7;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td .sub{display:block;font-size:12px;color:#94a3b8;margin-top:3px}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;
+  background:#e8f5ec;color:#15803d}
+.pill.warn{background:#fef3e2;color:#b45309}
+.gapnote{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:14px 16px;
+  font-size:13px;color:#64748b;margin-top:12px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.step{background:#f8fafc;border:1px solid #e3e9f2;border-radius:14px;padding:18px;position:relative}
+.step .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+  border-radius:50%;background:var(--accent);color:#fff;font-size:14px;font-weight:800;margin-bottom:10px}
+.step .t{font-size:15px;font-weight:700;margin-bottom:6px}
+.step .b{font-size:13px;line-height:1.55;color:#475569}
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pipecard{background:linear-gradient(135deg,#fff,#f1f5fb);border:1px solid #e3e9f2;border-radius:14px;
+  padding:20px;text-align:center}
+.pipecard .v{font-size:44px;font-weight:800;letter-spacing:-.03em;color:var(--accent)}
+.pipecard .l{font-size:14px;font-weight:700;margin-top:4px}
+.pipecard .n{font-size:12px;color:#94a3b8;margin-top:6px;line-height:1.5}
+.funnel{display:flex;flex-direction:column;gap:10px}
+.fstep{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.fstep .fv{font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:right}
+.fstep .fbarwrap{background:#eef2f7;border-radius:8px;height:44px;position:relative;overflow:hidden}
+.fstep .fbar{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--accent),#3b6a9a);
+  display:flex;align-items:center;min-width:44px}
+.fstep .fl{font-size:13px;font-weight:600;color:#fff;padding:0 14px;white-space:nowrap}
+.fstep .fn{font-size:11px;color:#94a3b8;margin-top:4px;grid-column:2}
+.fstep.gapstep .fbar{background:repeating-linear-gradient(45deg,#f1f5f9,#f1f5f9 10px,#e2e8f0 10px,#e2e8f0 20px)}
+.fstep.gapstep .fl{color:#94a3b8}
+.fstep.gapstep .fv{color:#b6c2d2}
+.notes{display:flex;flex-direction:column;gap:12px}
+.note{border-left:3px solid var(--accent);background:#f8fafc;border-radius:0 12px 12px 0;
+  padding:14px 18px}
+.note .nd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8}
+.note .nt{font-size:15px;font-weight:700;margin:4px 0}
+.note .nb{font-size:14px;line-height:1.6;color:#475569}
+.leadsempty{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;padding:20px;
+  font-size:14px;color:#64748b;text-align:center;line-height:1.6}
+.leadgate{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:18px 20px;
+  font-size:14px;color:#475569;margin:0 0 16px;line-height:1.6}
+.leadgate input{font-size:14px;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;
+  width:min(320px,100%);margin-top:8px}
+.leadgate button{font-size:14px;padding:10px 18px;border:0;border-radius:8px;background:#1a3a5c;
+  color:#fff;cursor:pointer;margin-top:8px}
+.leadgate button:disabled{opacity:.6;cursor:default}
+.leadgate .gate-err{color:#b91c1c;margin:8px 0 0}
+footer{padding:24px 0 48px;color:#94a3b8;font-size:12px;text-align:center}
+@media(max-width:640px){.kpi .v{font-size:24px}.tab{padding:16px}td{padding:10px 8px}
+  .fstep{grid-template-columns:86px 1fr}.fstep .fv{font-size:18px}.pipecard .v{font-size:36px}}
 
-  <section class="gate" id="gate">
-    <div class="eyebrow">PROTECTED CLIENT PORTAL</div>
-    <h2 style="margin-top:10px">Sign in to Perspective</h2>
-    <p id="gate-copy">Sign in with your Phillips Law Group email. We'll email you a 6-digit code.</p>
-    <div id="step-email">
-      <label for="email" class="eyebrow">Phillips email address</label>
-      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@phillipslaw.com">
-      <button class="btn" id="send-code" type="button">Email me a code</button>
-    </div>
-    <div id="step-code" hidden>
-      <label for="code" class="eyebrow">6-digit code</label>
-      <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
-      <button class="btn" id="verify" type="button">Sign in</button>
-      <button class="linkbtn" id="change-email" type="button">Use a different email</button>
-    </div>
-    <p class="err" id="gate-err" role="status" aria-live="polite"></p>
-    <details class="token-alt" id="token-alt" hidden><summary>Owner sign-in</summary>
-      <label for="token" class="eyebrow">Owner key</label>
-      <input id="token" type="password" autocomplete="off" placeholder="Owner key">
-      <button class="btn" id="unlock" type="button">Open Perspective</button>
-    </details>
-  </section>
+#gate{position:fixed;inset:0;background:#f6f8fb;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .card{background:#fff;border:1px solid #e3e9f2;border-radius:18px;padding:40px 44px;max-width:420px;text-align:center;box-shadow:0 12px 40px rgba(26,58,92,.10)}
+#gate h1{font-size:20px;margin:0 0 8px;letter-spacing:-.01em}
+#gate p{font-size:14px;color:#64748b;margin:0 0 20px}
+#gate .cf-turnstile{margin:0 auto}
+#portal-root{visibility:hidden}
+#portal-root.unlocked{visibility:visible}
+</style></head><body>
+<div id="gate"><div class="card">
+<h1>Client portal</h1>
+<p id="gate-msg">Please verify you are human to view this portal.</p>
+<div class="cf-turnstile" data-sitekey="0x4AAAAAAFLVjZtHLNhxmbTc" data-callback="portalUnlock" data-error-callback="portalGateError" data-expired-callback="portalGateError"></div>
+</div></div>
+<div id="portal-root"><header class='top'><div class='wrap'><span class='date'>October 06, 2026</span><div class='sys'>Phillips Intake System<small>Every call, every dollar, every outcome — handled by AI</small></div></div></header><div class='wrap'><div class='hero'><div class='kpis'><div class='kpi'><div class='v'>$230.75</div><div class='l'>Ad spend</div><div class='n'>Meta · Sep 30 baseline</div></div><div class='kpi'><div class='v'>34</div><div class='l'>Ad-placed calls</div><div class='n'>Meta attribution · Sep 30</div></div><div class='kpi'><div class='v'>38</div><div class='l'>Calls on tracking</div><div class='n'>CallRail · Sep 30</div></div><div class='kpi'><div class='v'>30</div><div class='l'>Reached Sofia</div><div class='n'>Vapi · Sep 30</div></div><div class='kpi'><div class='v'>6</div><div class='l'>Human conversations</div><div class='n'>all BTL · Sep 30</div></div><div class='kpi'><div class='v'>$38.46</div><div class='l'>Cost / conversation</div><div class='n'>derived · Sep 30</div></div><div class='kpi'><div class='v'>0</div><div class='l'>Qualified transfers</div><div class='n'>Sep 30</div></div><div class='kpi gap'><div class='v'>—</div><div class='l'>Signed cases</div><div class='n'>awaiting disposition feed</div></div></div></div><nav class='tabs'><button class='active' onclick="show('intake',this)">AI Intake</button><button class='' onclick="show('marketing',this)">Marketing</button><button class='' onclick="show('summary',this)">Summary</button></nav><div class='tab active' id='tab-intake'><h2>AI Intake</h2><div style='height:12px'></div><div class='sec'><h3>How every call is handled</h3><div class='steps'><div class='step'><div class='num'>1</div><div class='t'>Lead comes in</div><div class='b'>Meta and TikTok lead ads capture the lead — no cold calls, no forms to chase.</div></div><div class='step'><div class='num'>2</div><div class='t'>Sofia calls back in minutes</div><div class='b'>The AI intake agent calls back within minutes and qualifies the caller in natural conversation.</div></div><div class='step'><div class='num'>3</div><div class='t'>Real claims transfer live</div><div class='b'>Qualified callers are warm-transferred to Phillips while they&#x27;re still on the line.</div></div><div class='step'><div class='num'>4</div><div class='t'>Nothing slips through</div><div class='b'>Missed or failed transfers are retried automatically during calling hours — up to three attempts.</div></div></div></div><div class='sec'><h3>Pipeline right now</h3><div class='pipe'><div class='pipecard'><div class='v'>0</div><div class='l'>In follow-up</div><div class='n'>Retry sweep Oct 1, 11:18am PT — nothing due</div></div><div class='pipecard'><div class='v'>0</div><div class='l'>Transferred to Phillips</div><div class='n'>qualified transfers · Sep 30 had 2 forwards: 1 internal test, 1 voicemail</div></div></div></div><div class='sec'><h3>Lead board</h3><div style='overflow-x:auto'><table><tr><th>Lead</th><th>Source</th><th>First contact</th><th>Status</th><th>Recording</th><th>Notes</th></tr></table></div><div class='leadsempty'>Lead-level feed connecting — every lead will land here with its Vapi call recording, transcript and disposition. Nothing here is estimated.</div></div><div class='sec'><h3>Follow-up chain</h3><p class='intro'>The follow-up every lead gets — and where each lead stands in it. Live transfer during Phillips business hours; after hours the transfer is booked on the calendar and Sofia calls back at the set time to transfer live.</p><div class='steps'><div class='step'><div class='num'>1</div><div class='t'>Lead lands</div><div class='b'>Webhook, Facebook lead ad, or TikTok lead ad — the same process for every source.</div></div><div class='step'><div class='num'>2</div><div class='t'>Text in 60 seconds</div><div class='b'>Sofia texts right away so the lead knows her call is coming.</div></div><div class='step'><div class='num'>3</div><div class='t'>Sofia calls ~1 minute later</div><div class='b'>The AI intake call runs the 5-factor qualification: Arizona, MVA, injured, not at fault, accident within a year.</div></div><div class='step'><div class='num'>4</div><div class='t'>Live transfer — business hours</div><div class='b'>Qualified callers transfer live to Phillips while still on the line.</div></div><div class='step'><div class='num'>5</div><div class='t'>Scheduled transfer — after hours</div><div class='b'>Booked on the calendar; Sofia gets the trigger, calls at the set time, then transfers live to the firm.</div></div></div><div style='overflow-x:auto'><table><tr><th>Lead</th><th>Came from</th><th>Ad seen</th><th>First Sofia turn</th><th>Follow-up actions</th><th>Transfer state</th></tr></table></div><div class='leadsempty'>Follow-up chain connecting — every lead will show its source, the ad it saw, each follow-up action, and its transfer state.</div></div></div><div class='tab' id='tab-marketing'><h2>Marketing</h2><div style='height:12px'></div><div class='sec'><h3>Every dollar, every outcome</h3><p class='intro'>One chain from ad spend to signed case. Every step traces to a real record — nothing estimated.</p><div class='funnel'><div class='fstep'><div class='fv'>$230.75</div><div><div class='fbarwrap'><div class='fbar' style='width:100%'><span class='fl'>Ad spend</span></div></div><div class='fn'>Meta · Sep 30</div></div></div><div class='fstep'><div class='fv'>34</div><div><div class='fbarwrap'><div class='fbar' style='width:89%'><span class='fl'>Ad-placed calls</span></div></div><div class='fn'>Meta attribution · Sep 30</div></div></div><div class='fstep'><div class='fv'>38</div><div><div class='fbarwrap'><div class='fbar' style='width:100%'><span class='fl'>Calls on tracking</span></div></div><div class='fn'>CallRail · Sep 30</div></div></div><div class='fstep'><div class='fv'>30</div><div><div class='fbarwrap'><div class='fbar' style='width:79%'><span class='fl'>Reached Sofia</span></div></div><div class='fn'>Vapi · Sep 30</div></div></div><div class='fstep'><div class='fv'>6</div><div><div class='fbarwrap'><div class='fbar' style='width:16%'><span class='fl'>Human conversations</span></div></div><div class='fn'>all BTL · Sep 30</div></div></div><div class='fstep'><div class='fv'>0</div><div><div class='fbarwrap'><div class='fbar' style='width:3%'><span class='fl'>Qualified transfers</span></div></div><div class='fn'>Sep 30</div></div></div><div class='fstep gapstep'><div class='fv'>—</div><div><div class='fbarwrap'><div class='fbar' style='width:3%'><span class='fl'>Signed cases</span></div></div><div class='fn'>awaiting disposition feed</div></div></div></div></div><div class='sec'><h3>Campaigns</h3><div style='overflow-x:auto'><table><tr><th>Campaign</th><th>Scale</th><th>State</th><th>Notes</th></tr><tr><td><b>MVA lead-form blitz</b></td><td>$75/day Meta</td><td><span class='pill'>Active · verified Oct 1, 2:15pm PDT</span></td><td>Arizona MVA · Facebook instant forms → Sofia callback</td></tr><tr><td><b>Call Sofia call ads</b></td><td>$50/day Meta</td><td><span class='pill'>Pause ordered 2:27pm — execution unconfirmed</span></td><td>Direct-call — Kyle: never seen them work; funnel is callback-only</td></tr><tr><td><b>Blitz build</b></td><td>$250/day total scope</td><td><span class='pill'>Describe phase · seat audits in progress</span></td><td>FB + TikTok + PMax · $20 test per campaign first, then scale</td></tr><tr><td><b>MVA entry campaign</b></td><td>$40,000 spend</td><td><span class='pill'>Closed</span></td><td>42 intakes · 0 signed — died on contact, not merit</td></tr><tr><td><b>LA County joint venture</b></td><td>Historical</td><td><span class='pill warn'>On file</span></td><td>Results held for the live walkthrough</td></tr><tr><td><b>40K MVA program</b></td><td>Historical</td><td><span class='pill warn'>On file</span></td><td>Leads + dispositions on file · reconciliation in progress</td></tr></table></div></div></div><div class='tab' id='tab-summary'><h2>Summary</h2><div style='height:12px'></div><div class='sec'><h3>Notes</h3><div class='notes'><div class='note'><div class='nd'>Sep 30</div><div class='nt'>Call-first relaunch — day-one baseline</div><div class='nb'>$230.75 ad spend · 34 ad-placed calls · 38 calls on tracking · 30 reached Sofia · 6 human conversations (all BTL) · 0 qualified transfers. Sources: Meta, CallRail, Vapi.</div></div><div class='note'><div class='nd'>Sep 30</div><div class='nt'>Two forwards to Phillips, no claimant transfers yet</div><div class='nb'>Forward #1 was an internal test call; forward #2 reached voicemail and was logged as non-claim. Transfer lines verified live.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Transfer retry engine active</div><div class='nb'>Runs every 15 minutes, 8am–8pm local, up to 3 attempts per missed or failed transfer. Last sweep Oct 1, 11:18am PT — nothing due.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Intake lines live</div><div class='nb'>BTL Sofia line +1 (202) 932-9700 (mass tort + sex abuse) · NIL Sofia line +1 (602) 693-1461 (PI + MVA). Phillips desks: 3976 PI/MVA, 3960 complex tort.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Disposition feed pending</div><div class='nb'>Qualified / declined-with-reason / signed outcomes will post here automatically once the feed connects. Until then this page updates daily by hand — marked as a gap, never estimated.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Funnel is callback-only</div><div class='nb'>Direct-call ads paused per Kyle&#x27;s order — never seen them work. Funnel is Meta/TikTok lead ads → Sofia callback only.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Blitz order out to both seats</div><div class='nb'>Maxed-out blitz: seat audits + full build description, $20 test on every campaign first, then scale. Describe-only — nothing activates without Kyle&#x27;s word.</div></div><div class='note'><div class='nd'>Oct 1</div><div class='nt'>Portal reconnected to verified state</div><div class='nb'>Lead board rebuilt from today&#x27;s transfer feed (20 leads). Campaign table shows last-verified status with as-of stamps. Gaps marked, nothing estimated.</div></div><div class='note'><div class='nd'>Historical</div><div class='nt'>MVA entry campaign — the lesson</div><div class='nb'>$40,000 spend produced 42 intakes and 0 signed cases. It died on contact, not merit — which is why the program relaunched with qualification and warm transfer up front.</div></div><div class='note'><div class='nd'>Historical</div><div class='nt'>LA County joint venture</div><div class='nb'>Results are held for the live walkthrough with the firm.</div></div><div class='note'><div class='nd'>Historical</div><div class='nt'>40K MVA program</div><div class='nb'>Leads and dispositions on file; reconciliation in progress.</div></div><div class='note'><div class='nd'>Standing</div><div class='nt'>Every number verified</div><div class='nb'>Each figure traces to a real record — call logs, campaign reads, transfer receipts. Gaps are marked as gaps.</div></div></div><div class='gapnote'>Disposition outcomes post here automatically once the feed connects — marked as a gap until then, never estimated.</div></div></div></div></div><footer>Every number verified · gaps marked as gaps</footer><script>
+function portalUnlock(token){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('portal-root').classList.add('unlocked');
+}
+function portalGateError(){
+  var p=document.getElementById('gate-msg');
+  if(p)p.textContent='Verification could not load. Please reload the page.';
+}
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    if(typeof turnstile==='undefined'){
+      portalGateError();
+    }
+  },8000);
+});
 
-  <div id="app" hidden>
-    <div class="portal-head">
-      <h1 class="ph-title"><span data-firm="short">Phillips</span> Perspective</h1>
-      <div class="ph-actions"><button class="btn" id="rq-top" type="button" hidden>+ Request a Campaign</button></div>
-    </div>
-    <nav class="campaign-tabs" role="tablist" aria-label="Campaigns" id="campaign-tabs"></nav>
-    <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p><div id="c-links"></div></div><span class="pill" id="c-state"></span></div>
-    <div class="fresh" id="freshness"></div>
 
-    <nav class="section-tabs" role="tablist" aria-label="Sections">
-      <button role="tab" data-view="overview" aria-selected="true">Overview</button>
-      <button role="tab" data-view="leads" aria-selected="false">Leads &amp; AI Intake</button>
-      <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
-      <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
-      <button role="tab" data-view="summary" aria-selected="false">Summary &amp; Daily Handoffs</button>
-      <button role="tab" data-view="proposals" aria-selected="false">Proposals</button>
-      <button role="tab" data-view="requests" aria-selected="false">Request a Campaign</button>
-    </nav>
-    <p class="note" id="no-sections" hidden>There’s nothing to show for your sign-in yet. Contact Marketing Apes.</p>
-
-    <section class="view" data-panel="overview">
-      <div class="scoreboard" id="scoreboard" aria-label="Key campaign measures"></div>
-      <div class="funnel" id="funnel" aria-label="Lead funnel"></div>
-    </section>
-
-    <section class="view" data-panel="leads" hidden>
-      <div class="crm">
-        <div>
-          <div class="toolbar">
-            <input id="q" type="search" placeholder="Search name, phone last 4, ID" aria-label="Search leads">
-            <select id="f-stage" aria-label="Stage"><option value="">All stages</option></select>
-            <select id="f-litify" aria-label="Litify status"><option value="">All Litify statuses</option></select>
-          </div>
-          <div class="lead-list" id="lead-list" role="list"></div>
-          <p class="fresh" id="list-count"></p>
-        </div>
-        <aside class="panel detail" id="lead-detail"><div class="eyebrow">LEAD DETAIL</div><p style="margin-top:10px">Select a lead to see what the AI did, the transfer, and what <span data-firm="short">Phillips</span> reported back.</p></aside>
-      </div>
-    </section>
-
-    <section class="view" data-panel="marketing" hidden>
-      <div class="grid3" id="mk-top"></div>
-      <div class="grid2" style="margin-top:16px">
-        <div class="panel"><div class="eyebrow">CHANNELS</div><h2 style="margin-top:8px">Where the leads came from</h2><div class="tbl-wrap"><table id="mk-channels"></table></div></div>
-        <div class="panel"><div class="eyebrow">LEADS BY WEEK</div><h2 style="margin-top:8px">Volume over time</h2><div class="bars" id="mk-weeks"></div></div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">ADS &amp; CREATIVE</div><h2 style="margin-top:8px">What people saw</h2><div class="ads" id="mk-ads"></div></div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">CHANGE LOG</div><h2 style="margin-top:8px">What changed and why</h2><div class="tbl-wrap"><table id="mk-log"></table></div></div>
-    </section>
-
-    <section class="view" data-panel="litify" hidden>
-      <div class="grid3" id="lt-top"></div>
-      <div class="grid2" style="margin-top:16px">
-        <div class="panel"><div class="eyebrow">WHY LEADS WERE TURNED DOWN</div><h2 style="margin-top:8px">Turn-down reasons</h2><div class="bars" id="lt-reasons"></div></div>
-        <div class="panel"><div class="eyebrow">REFRESH THE MATCH</div><h2 style="margin-top:8px">Your Litify report</h2>
-          <p>Matched from the daily “All Marketing Apes Leads” report. To re-match against a newer export, choose the CSV below. It is read in your browser only and is not uploaded.</p>
-          <div class="toolbar"><input type="file" id="lt-file" accept=".csv,text/csv" aria-label="Litify CSV"><button class="btn ghost" id="lt-save" type="button">Save matched report (CSV)</button></div>
-          <div class="toolbar" id="lt-upload" hidden><label class="eyebrow" for="lt-date">Report date</label><input type="date" id="lt-date"><button class="btn" id="lt-upload-btn" type="button">Load into Perspective</button></div>
-          <p class="fresh" id="lt-fileinfo"></p>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="toolbar"><input id="lq" type="search" placeholder="Search Litify intake, name, phone last 4" aria-label="Search Litify"><select id="l-status" aria-label="Status"><option value="">All statuses</option></select><select id="l-match" aria-label="Match"><option value="">All match states</option><option value="matched">Matched to our lead</option><option value="unmatched">No match yet</option></select></div>
-        <div class="tbl-wrap"><table id="lt-table"></table></div></div>
-    </section>
-
-    <section class="view" data-panel="summary" hidden>
-      <div class="grid2">
-        <div class="panel"><div class="eyebrow">WHERE THINGS STAND</div><h2 style="margin-top:8px" id="sm-head"></h2><div id="sm-body"></div></div>
-        <div class="panel"><div class="eyebrow">NEEDS &amp; NEXT STEPS</div><h2 style="margin-top:8px">Open items</h2><ul class="checklist" id="sm-checklist"></ul><p class="note">Items marked with your firm’s name need your team; “Marketing Apes” items are ours. “Owner not set” or “No due date” means no one has assigned or scheduled it yet.</p></div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">DAILY HANDOFFS</div><h2 style="margin-top:8px">Shared tasks</h2>
-        <p class="note">Everyone with Summary access sees the same list. Checking a task records who checked it and when; it never changes a lead or its Litify outcome.</p>
-        <ul class="checklist" id="sm-tasks"></ul>
-        <form id="task-form" class="toolbar" hidden>
-          <input id="t-title" placeholder="Task" aria-label="Task" maxlength="300" required>
-          <input id="t-assignee" placeholder="Assignee (name or email)" aria-label="Assignee" maxlength="200" required>
-          <input id="t-due" type="date" aria-label="Due date" required>
-          <select id="t-campaign" aria-label="Campaign"><option value="">All campaigns</option></select>
-          <button class="btn" id="t-add" type="submit">Add task</button>
-        </form>
-        <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
-      </div>
-    </section>
-
-    <section class="view" data-panel="proposals" hidden>
-      <div class="panel"><div class="eyebrow">AGREEMENTS &amp; PROPOSALS</div><h2 style="margin-top:8px">What we've signed and what's on the table</h2>
-        <p class="note">You see only the items Marketing Apes has shared with you. “Got it” records that you've read an item, with your name and the time. It is not acceptance, a signature, an amendment or a budget change.</p>
-        <div id="pr-list"></div>
-        <p class="fresh" id="pr-msg" role="status" aria-live="polite"></p>
-      </div>
-      <div class="panel" id="pr-form-wrap" style="margin-top:16px" hidden><div class="eyebrow">OWNER</div><h2 style="margin-top:8px">Add a proposal</h2>
-        <form id="pr-form">
-          <input id="pr-title" placeholder="Title" aria-label="Title" maxlength="200" required style="width:100%;margin-bottom:8px">
-          <input id="pr-summary" placeholder="One-line summary" aria-label="Summary" maxlength="1000" style="width:100%;margin-bottom:8px">
-          <textarea id="pr-body" placeholder="Details (a blank line starts a new paragraph)" aria-label="Details" maxlength="20000" rows="6" style="width:100%;margin-bottom:8px"></textarea>
-          <button class="btn" type="submit">Publish to the portal</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="view" data-panel="requests" hidden>
-      <div class="grid2">
-        <div class="panel"><div class="eyebrow">REQUEST A CAMPAIGN</div><h2 style="margin-top:8px">Tell us what you want more of</h2>
-          <p class="note">Your request is saved with your name and the time. An owner approves or declines it; approving adds it as an inactive draft campaign. Sending it doesn't assign or schedule any setup, and nothing runs or spends until it is launched.</p>
-          <form id="rq-form">
-            <label class="eyebrow" for="rq-case">Case type</label>
-            <input id="rq-case" placeholder="e.g. Depo-Provera, rideshare assault, AZ auto" maxlength="120" required style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-states">States</label>
-            <input id="rq-states" placeholder="e.g. AZ, NV" maxlength="200" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-goal">Signed cases wanted per month</label>
-            <input id="rq-goal" type="number" min="0" max="10000" step="1" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-budget">Budget (optional, USD)</label>
-            <input id="rq-budget" type="number" min="0" step="1" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-notes">Anything else</label>
-            <textarea id="rq-notes" maxlength="2000" rows="4" style="width:100%;margin-bottom:8px"></textarea>
-            <button class="btn" type="submit" id="rq-send">Send request</button>
-          </form>
-          <p class="fresh" id="rq-msg" role="status" aria-live="polite"></p>
-        </div>
-        <div class="panel"><div class="eyebrow">REQUESTS</div><h2 style="margin-top:8px">Requested campaigns</h2><ul class="checklist" id="rq-list"></ul></div>
-      </div>
-    </section>
-
-    <section class="view" data-panel="settings" hidden>
-      <div class="panel"><div class="eyebrow">OWNER ADMIN</div><h2 style="margin-top:8px">What each access level sees</h2>
-        <p>Everyone uses this same portal. Tick the sections each level may open. The server removes everything else before it reaches their browser. A level with nothing ticked can’t sign in.</p>
-        <p class="note">Overview shows campaign totals: leads, funnel, signed, budget, spend and cost per lead/transfer/signed. Marketing adds the channel, ad and invoice detail. Litify Outcomes adds turn-down reasons and details. “Names &amp; phone digits” adds names, the last 4 phone digits and state wherever lead or Litify rows are shown.</p>
-        <div class="tbl-wrap"><table id="set-table"></table></div>
-        <div class="toolbar" style="margin-top:12px"><button class="btn" id="set-save" type="button">Save access levels</button></div>
-        <p class="fresh" id="set-msg" role="status" aria-live="polite"></p>
-        <p class="note">People are added by Marketing Apes only after you approve them, each with one level.</p>
-      </div>
-    </section>
-
-    <p class="foot">Perspective · Marketing Apes for <span data-firm="name">Phillips Law Group</span>. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
-  </div>
-</main>
-</body>
-</html>
+function show(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+var PORTAL_API = "https://legal-web-lead.onrender.com/api/v1/portal/phillips/leads";
+var PORTAL_TOKEN_MEM = "";
+function pesc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function pdate(iso){
+  if(!iso) return "";
+  var d = new Date(iso);
+  if(isNaN(d.getTime())) return String(iso).slice(0,16);
+  var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return M[d.getMonth()]+" "+d.getDate();
+}
+function pnotes(l){
+  var n = l.display_claim || "";
+  if(l.display_state && l.display_state !== "\u2014") n += " \u00b7 " + l.display_state;
+  if(l.city && String(l.city).toLowerCase().indexOf("not captured")===-1) n += " ("+l.city+")";
+  if(l.phone) n += " \u00b7 " + l.phone;
+  if(l.ad_responded_to) n += " \u00b7 Ad: " + String(l.ad_responded_to).slice(0,90);
+  if(l.their_words) n += ' \u00b7 \u201c' + String(l.their_words).slice(0,120) + '\u2026\u201d';
+  return n;
+}
+function pcell(c){
+  c = String(c);
+  if(c.indexOf("http")===0) return "<td><a href='"+pesc(c)+"' target='_blank' rel='noopener'>Listen</a></td>";
+  return "<td>"+pesc(c)+"</td>";
+}
+function renderLeadRows(feed){
+  var html = "";
+  (feed.leads||[]).forEach(function(l){
+    var rec = l.recording_url || "";
+    var recording = rec.indexOf("http")===0 ? rec : (l.transfer_connected ? "On file" : "\u2014");
+    var row = [l.display_name||"?", l.source||"Call", pdate(l.call_started||l.email_date||""), l.status||"\u2014", recording, pnotes(l)];
+    html += "<tr>"+row.map(pcell).join("")+"</tr>";
+  });
+  document.getElementById("leads-tbody").innerHTML = html;
+  var cnt = document.getElementById("leads-count");
+  if(cnt) cnt.textContent = (feed.leads||[]).length + " records";
+}
+function renderChainRows(feed){
+  var html = "";
+  (feed.leads||[]).forEach(function(l){
+    var ad = l.ad_responded_to || "\u2014";
+    if(ad.length > 60) ad = ad.slice(0,60)+"\u2026";
+    var rec = l.recording_url || "";
+    var first = rec.indexOf("http")===0 ? rec : pdate(l.call_started||l.email_date||"");
+    var transfer = l.status || "\u2014";
+    if(l.transferred_to && transfer.indexOf(l.transferred_to)===-1) transfer += " \u2192 "+l.transferred_to;
+    var row = [l.display_name||"?", l.source||"\u2014", ad, first, "feed connecting", transfer];
+    html += "<tr>"+row.map(function(c){
+      c = String(c);
+      if(c.indexOf("http")===0) return "<td><a href='"+pesc(c)+"' target='_blank' rel='noopener'>Listen</a></td>";
+      if(c==="feed connecting") return "<td><span class='pill'>connecting</span></td>";
+      return "<td>"+pesc(c)+"</td>";
+    }).join("")+"</tr>";
+  });
+  document.getElementById("chain-tbody").innerHTML = html;
+}
+function portalLoadLeads(){
+  var input = document.getElementById("portal-token");
+  var err = document.getElementById("portal-token-err");
+  var btn = document.getElementById("portal-token-btn");
+  var token = (PORTAL_TOKEN_MEM || (input && input.value || "")).trim();
+  if(!token){ err.style.display="block"; err.textContent="Enter your portal access token."; return; }
+  err.style.display="none";
+  btn.disabled = true; btn.textContent = "Loading\u2026";
+  fetch(PORTAL_API, {headers: {"Authorization": "Bearer "+token}})
+    .then(function(r){
+      if(r.status===401) throw new Error("That token was not recognized.");
+      if(!r.ok) throw new Error("Lead feed unavailable (HTTP "+r.status+").");
+      return r.json();
+    })
+    .then(function(feed){
+      PORTAL_TOKEN_MEM = token;
+      renderLeadRows(feed);
+      renderChainRows(feed);
+      document.getElementById("leadgate").style.display="none";
+      var cn = document.getElementById("chaingate-note");
+      if(cn) cn.style.display="none";
+    })
+    .catch(function(e){
+      err.style.display="block"; err.textContent=e.message;
+      btn.disabled=false; btn.textContent="Unlock lead board";
+    });
+}
+</script></body></html>
