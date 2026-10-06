@@ -766,6 +766,9 @@
     $('code').addEventListener('keydown', function (e) { if (e.key === 'Enter') verifyCode(); });
     $('change-email').addEventListener('click', function () { $('step-code').hidden = true; $('step-email').hidden = false; $('gate-err').textContent = ''; $('email').focus(); });
     $('token').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+    // The owner key sign-in is not shown to clients; the owner opens it at #owner.
+    var ownerGate = function () { if ($('token-alt')) $('token-alt').hidden = !root.location || root.location.hash !== '#owner'; };
+    ownerGate(); if (root.addEventListener) root.addEventListener('hashchange', ownerGate);
     $('lock-btn').addEventListener('click', lock);
     root.addEventListener('pagehide', lock);
     root.addEventListener('hashchange', route);
