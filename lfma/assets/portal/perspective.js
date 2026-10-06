@@ -376,6 +376,18 @@
   }
 
   // ---------- summary ----------
+  // Campaign pages and ad previews: https only (the server also filters), opened in a new tab without a referrer.
+  function linksHtml(links) {
+    var ok = (links || []).filter(function (l) { return l && /^https:\/\/[A-Za-z0-9.-]+(\/|$)/.test(String(l.url || '')) && l.label; });
+    if (!ok.length) return '';
+    var group = function (kind, title) {
+      var rows = ok.filter(function (l) { return (l.kind === 'ad' ? 'ad' : 'page') === kind; });
+      return rows.length ? '<h4 style="margin:14px 0 6px;font-size:13px">' + title + '</h4><ul class="camp-links" style="padding-left:18px;margin:0;line-height:1.8;font-size:14px">' +
+        rows.map(function (l) { return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener noreferrer">' + esc(l.label) + '</a>' + (l.note ? ' <small>' + esc(l.note) + '</small>' : '') + '</li>'; }).join('') + '</ul>' : '';
+    };
+    return group('page', 'Pages') + group('ad', 'Ad previews');
+  }
+
   function renderSummary() {
     var c = current(), m = metrics(c);
     $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
@@ -386,7 +398,8 @@
       m.spend !== null ? fmtMoney(m.spend) + ' spent' + (m.cpl !== null ? ' · ' + fmtMoney(m.cpl, true) + ' per lead' : '') + '.' : 'Spend not connected for this view.'
     ];
     $('sm-body').innerHTML = (auto.length ? '<ul style="padding-left:18px;margin:6px 0 14px;line-height:1.7;font-size:14px">' + auto.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '') +
-      ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('');
+      ((c.id === 'all' ? [] : c.narrative) || []).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') +
+      linksHtml(c.id === 'all' ? [] : c.links);
     var needs = c.needs || [];
     // An open item shows its owner and due date, or says plainly that neither has been set: never a default owner.
     $('sm-checklist').innerHTML = needs.length ? needs.map(function (n) {
