@@ -13,22 +13,33 @@
   var CONFIG = {
     campaign_id: 'PLG-AZ-MVA-3PATH-2026-10',
     tenant_id: 'BTL', buyer_id: 'phillips', domain_id: 'besttortlawyers.com',
-    // TODO(launch gate): web intake endpoint (Make webhook → BigQuery row → Sofia outbound → Phillips transfer).
-    // Empty = fail closed: nothing is sent and the visitor is told plainly. Must return {status:'received', receipt_id}.
+    // Human-only intake (Kyle 2026-10-06): production relay → Make 6525665 → BigQuery raw event; no calls, texts,
+    // email or buyer delivery. Used only on the production hosts below; anywhere else stays empty = fail closed.
     endpoint: '',
+    production_endpoint: 'https://btl-plg-az-mva-intake.onrender.com/intake',
+    production_hosts: ['besttortlawyers.com', 'www.besttortlawyers.com'],
+    // Safe staging only: the Render relay keeps the Make webhook secret, accepts synthetic tests only,
+    // and cannot trigger calls, texts, email, buyer delivery or ad events.
+    synthetic_endpoint: 'https://btl-plg-az-mva-intake-stage-20261005.onrender.com/intake',
     // Phillips PI/MVA intake DID (legal-web-lead/config/phillips-lane/routes.json, confirmed 2026-09-07).
     firm_phone: { e164: '+16022003976', display: '(602) 200-3976' },
-    // TODO(launch gate): a Phillips-branded Sofia assistant bound to its own number (identity rule: no borrowing NIL/BTL lines).
-    // verified:false => the "Call Sofia" button opens the callback form instead of dialing.
+    // AI voice is OFF until Phillips approves it in writing (indemnification agreement 1(f)).
+    // verified:false => the path B button opens the human callback form instead of dialing.
     sofia_phone: { e164: '', display: '', verified: false },
     consent_version: 'plg-azmva-consent-2026-10-05-v1', // approved by Kyle 2026-10-05
     timeout_ms: 15000
   };
   window.PLG = { firm: CONFIG.firm_phone, sofia: CONFIG.sofia_phone };
+  // The Claim Check chat (path C) listens for submit outcomes and shows them as messages.
+  function emit(state, detail) { try { document.dispatchEvent(new CustomEvent('plg:submit', { detail: Object.assign({ state: state }, detail || {}) })); } catch (e) {} }
 
   var params = new URLSearchParams(location.search);
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-  var SYNTHETIC = params.get('ee_test') === 'synthetic' && (isLocal || /\.onrender\.com$/.test(location.hostname));
+  var isProd = CONFIG.production_hosts.indexOf(location.hostname) >= 0;
+  if (isProd) CONFIG.endpoint = CONFIG.production_endpoint;
+  // Synthetic tests are flagged and fully suppressed (no contact, no delivery) on every host, production included.
+  var SYNTHETIC = params.get('ee_test') === 'synthetic' && (isLocal || isProd || /\.onrender\.com$/.test(location.hostname));
+  if (SYNTHETIC && /\.onrender\.com$/.test(location.hostname)) CONFIG.endpoint = CONFIG.synthetic_endpoint;
   if (SYNTHETIC && isLocal && params.get('ee_endpoint')) CONFIG.endpoint = params.get('ee_endpoint');
 
   var form = document.getElementById('leadForm');
@@ -65,7 +76,7 @@
       document.getElementById('callSub').textContent = CONFIG.sofia_phone.display;
       sofiaBtn.addEventListener('click', function () { track('ee_call_click', false, { call_target: 'sofia' }); });
     } else {
-      document.getElementById('callSub').textContent = 'Tap and Sofia calls you in about a minute';
+      document.getElementById('callSub').textContent = 'A person from the intake team calls you back';
       var cb2 = document.getElementById('openCb'); if (cb2) cb2.hidden = true; // one button until Sofia has her own line
       sofiaBtn.addEventListener('click', function (e) { e.preventDefault(); openCallback(); });
     }
@@ -155,12 +166,13 @@
     if (inFlight) return;
     form.setAttribute('data-tried', '1');
     var r = validate();
-    if (!r.ok) { say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]'); if (f) (f.tagName === 'FIELDSET' ? f.querySelector('input') : f).focus(); return; }
+    if (!r.ok) { emit('invalid', { field: r.first }); say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]'); if (f) (f.tagName === 'FIELDSET' ? f.querySelector('input') : f).focus(); return; }
     var v = r.v;
     track('ee_lead_submit_attempt');
-    if (v.hp || Date.now() - T0 < 2500) { busy(true); setTimeout(function () { busy(false); say('Thanks — we’ve got it.', ''); }, 900); return; } // silent bot trap
+    if (v.hp || Date.now() - T0 < 2500) { busy(true); setTimeout(function () { busy(false); say('Thanks — we’ve got it.', ''); emit('trap'); }, 900); return; } // silent bot trap
     if (!CONFIG.endpoint) {
-      say('Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + CONFIG.firm_phone.display + ' — Phillips Law Group answers 24/7.', 'warn');
+      say('Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + CONFIG.firm_phone.display + '.', 'warn');
+      emit('not_connected');
       return;
     }
     var screening = KIND === 'check' && window.PLG_CHECK ? window.PLG_CHECK.answers() : {};
@@ -179,7 +191,7 @@
       attribution: attribution(),
       test: SYNTHETIC ? { synthetic: true, suppress: ['outbound_calls', 'sms', 'email', 'buyer_delivery', 'ad_events'] } : undefined
     };
-    busy(true); say('');
+    busy(true); say(''); emit('sending');
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, CONFIG.timeout_ms);
     fetch(CONFIG.endpoint, {
@@ -189,15 +201,18 @@
       .then(function (x) {
         clearTimeout(timer);
         var receipt = x.b.receipt_id || x.b.lead_id;
-        if (x.res.ok && receipt && /^(received|accepted|duplicate)$/.test(x.b.status || '')) { track('ee_lead_submit_success', true); showReceipt(receipt); }
+        if (x.res.ok && receipt && /^(received|accepted|duplicate)$/.test(x.b.status || '')) { track('ee_lead_submit_success', true); showReceipt(receipt); emit('received', { ref: refChip(receipt) }); }
         else throw new Error('no_receipt');
       }).catch(function () {
         clearTimeout(timer); track('ee_lead_submit_error'); busy(false);
         say('We couldn’t confirm your request was received. Please try again (it won’t create a duplicate) — or call ' + CONFIG.firm_phone.display + '.', 'err');
+        emit('error');
         btn.focus();
       });
   });
 
+  function refChip(receipt) { return 'PLG·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase(); }
+  window.PLG.normPhone = function (v) { return normPhone(v); };
   function showReceipt(receipt) {
     var body = document.getElementById('formBody');
     var ai = CONSENT_MODE === 'ai';
@@ -207,9 +222,9 @@
       '<h2>Got it. Keep your phone close.</h2><p></p><dl><dt>Reference</dt><dd><span class="ref-chip"></span></dd></dl>' +
       '<a class="btn-call" href="tel:' + CONFIG.firm_phone.e164 + '" data-placement="receipt"><span>Rather talk now? Call ' + CONFIG.firm_phone.display + '</span></a>';
     w.querySelector('p').textContent = ai
-      ? 'Sofia will call you in about a minute to hear what happened, then connect you with Phillips Law Group’s Arizona intake team.'
-      : 'Someone will call you shortly to hear what happened and connect you with Phillips Law Group’s Arizona intake team. Watch for a text from us too.';
-    w.querySelector('.ref-chip').textContent = 'PLG·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase();
+      ? 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.'
+      : 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.';
+    w.querySelector('.ref-chip').textContent = refChip(receipt);
     w.querySelector('.btn-call').addEventListener('click', function () { track('ee_call_click', false, { call_target: 'firm', placement: 'receipt' }); });
     body.appendChild(w); w.focus();
     try { sessionStorage.removeItem(SK); } catch (e) {}
