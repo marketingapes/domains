@@ -81,8 +81,7 @@ function serve() {
       await page.waitForSelector('.cc-agree');
       const legal = await page.textContent('.b.legal');
       assert.match(legal, /By tapping “Yes, call me back,” I agree/, `${w}: consent names the exact button`);
-      assert.ok(!/Sofia|AI\)|AI intake/.test(legal), `${w}: no AI promise in consent`);
-      assert.ok(!/artificial|prerecorded|AI-generated|automated technology/i.test(legal), `${w}: consent never promises artificial, prerecorded or AI voice`);
+      assert.match(legal, /Calls may come from Sofia, an AI intake assistant, using automated technology and an artificial voice, and may be recorded\./, `${w}: approved Sofia disclosure`);
       assert.match(legal, /receive calls and transactional SMS messages about your potential claim from Phillips Law Group and its agents, including Best Tort Lawyers\./, `${w}: verbatim 8/7 TCPA consent`);
       await page.click('.cc-agree'); // immediately: no timing gate
       await page.waitForFunction(() => /your request is in/.test(document.querySelector('#thread').innerText), null, { timeout: 8000 });
@@ -97,7 +96,7 @@ function serve() {
       const pc = received[received.length - 1];
       assert.equal(pc.schema, 'plg.intake.web/v1'); assert.equal(pc.page_id, 'plg-azmva-c-claim-check'); assert.equal(pc.entry_path, 'C_claim_check_chat');
       assert.equal(pc.request_type, 'claim_check'); assert.equal(pc.contact.phone_e164, '+16025550199'); assert.equal(pc.contact.email, null);
-      assert.equal(pc.consent.mode, 'standard'); assert.equal(pc.screening.web_outcome, 'QUALIFIED'); assert.equal(pc.screening.where, 'az');
+      assert.equal(pc.consent.version, 'plg-azmva-consent-2026-10-06-v3'); assert.equal(pc.consent.text, legal.trim()); assert.equal(pc.consent.mode, 'standard'); assert.equal(pc.screening.web_outcome, 'QUALIFIED'); assert.equal(pc.screening.where, 'az');
       assert.deepEqual([pc.screening.accident_when, pc.screening.timeline_rule, pc.screening.timeline_check], ['6_12m', 'under_1y', 'under_1y']);
       assert.deepEqual([pc.attribution.utm_source, pc.attribution.gclid, pc.attribution.landing_path], ['test', 'G-TEST', '/phillips-law/az-accident/claim-check/']);
       assert.equal(pc.test.synthetic, true);
@@ -114,6 +113,8 @@ function serve() {
           assert.equal(await page.isVisible('#openCb'), true, 'B: callback option still offered');
           await page.click('#openCb');
         }
+        const consentText = await page.textContent('#consentT');
+        assert.match(consentText, /Calls may come from Sofia, an AI intake assistant, using automated technology and an artificial voice, and may be recorded\./, `${kind}: Sofia disclosure shown`);
         await page.fill('#full_name', 'Synthetic Tester'); await page.fill('#phone', '6025550199');
         await page.click('#submitBtn');
         await page.waitForFunction(() => /highlighted/.test(document.querySelector('#formStatus').textContent));
@@ -130,7 +131,7 @@ function serve() {
         assert.match(await page.textContent('.receipt'), /A person from Phillips Law Group’s Arizona intake team will call you back[\s\S]*8 AM Arizona time/);
         assert.ok(!/Sofia will|Sofia calls/i.test(await page.textContent('body')), `${kind}: no Sofia call promise`);
         const pa = received[received.length - 1];
-        assert.equal(pa.entry_path, kind === 'A' ? 'A_form_call' : 'B_sofia_ai'); assert.equal(pa.consent.mode, 'standard');
+        assert.equal(pa.entry_path, kind === 'A' ? 'A_form_call' : 'B_sofia_ai'); assert.equal(pa.consent.mode, 'standard'); assert.equal(pa.consent.version, 'plg-azmva-consent-2026-10-06-v3'); assert.equal(pa.consent.text, consentText);
         assert.deepEqual([pa.screening.accident_when, pa.screening.timeline_rule, pa.screening.timeline_check], ['over_1y', 'under_1y', 'over_1y'], `${kind}: timeline preserved`);
         assert.equal(pa.signals, undefined, `${kind}: no honeypot signal for a person`);
       }

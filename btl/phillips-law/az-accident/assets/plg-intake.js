@@ -28,7 +28,7 @@
     // BTL Sofia line (Vapi phone 4d07e1e8 -> assistant d2b58eeb, Kyle 2026-10-06). Sofia screens Arizona
     // accident callers and transfers qualified callers to firm_phone. Path B's main button dials it.
     sofia_phone: { e164: '+16026931461', display: '(602) 693-1461', verified: true },
-    consent_version: 'plg-azmva-consent-2026-10-06-v2', // verbatim 2026-08-07 Phillips package
+    consent_version: 'plg-azmva-consent-2026-10-06-v3', // Sofia disclosure approved by Kyle 2026-10-06
     timeout_ms: 15000
   };
   window.PLG = { firm: CONFIG.firm_phone, sofia: CONFIG.sofia_phone };
@@ -102,10 +102,10 @@
   var btnLabel = (document.getElementById('submitBtn') || {}).textContent || 'Submit';
   btnLabel = btnLabel.trim();
   // TCPA consent: verbatim from the AZ MVA package sent to Phillips (Olivia Lemorrocco) on 2026-08-07, led by the exact button name.
-  // Human callbacks only: no artificial, prerecorded or AI voice is promised or used (Phillips Indemnification Agreement).
+  // Kyle approved adding the Sofia AI callback and recording disclosure on 2026-10-06.
   var PLG_PRIV = '<a href="https://www.phillipslaw.com/disclaimer/" target="_blank" rel="noopener">Privacy Policy</a>';
   var PLG_TERMS = '<a href="https://www.phillipslaw.com/disclaimer/" target="_blank" rel="noopener">Terms of Use</a>';
-  var CONSENT_BODY = 'By providing your phone number, you agree to receive calls and transactional SMS messages about your potential claim from Phillips Law Group and its agents, including Best Tort Lawyers. Message frequency may vary. Message & data rates may apply. Reply STOP to opt out at any time. Consent is not a condition of service. No attorney-client relationship is formed by submitting this form.';
+  var CONSENT_BODY = 'By providing your phone number, you agree to receive calls and transactional SMS messages about your potential claim from Phillips Law Group and its agents, including Best Tort Lawyers. Calls may come from Sofia, an AI intake assistant, using automated technology and an artificial voice, and may be recorded. Message frequency may vary. Message & data rates may apply. Reply STOP to opt out at any time. Consent is not a condition of service. No attorney-client relationship is formed by submitting this form.';
   var CONSENT_TEXT = 'By tapping “' + btnLabel + ',” I agree to the Privacy Policy & Terms of Use. ' + CONSENT_BODY;
   var box = document.getElementById('consentBox');
   if (box) box.innerHTML = '<p class="legal-sm" id="consentT">By tapping “' + btnLabel + ',” I agree to the ' + PLG_PRIV + ' &amp; ' + PLG_TERMS + '. ' + CONSENT_BODY + '</p>';
