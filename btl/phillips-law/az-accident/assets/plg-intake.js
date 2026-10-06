@@ -2,6 +2,8 @@
  * Shared by A (form + call), B (Sofia: call / callback) and C (claim-check chat).
  * Ported from the BTL Paraquat intake (Codex 2026-10-04) — same rules:
  *  - Success shows ONLY after the intake endpoint returns 2xx JSON with a receipt id. No endpoint => fail closed.
+ *    There is no timing or honeypot shortcut to a success message: a filled honeypot is sent and flagged, never dropped.
+ *  - Accident timeline (rule: less than one year) is captured on every path and sent in screening, never used to drop a lead.
  *  - One submission_id per fill, reused on retry (backend dedupes). Button locks while in flight.
  *  - Consent text sent with the record is the exact text shown on the page.
  *  - dataLayer gets non-identifying funnel events only (never name/phone/email/answers).
@@ -132,13 +134,18 @@
       if (!v[name] && fs.hasAttribute('data-required')) { fs.setAttribute('aria-invalid', 'true'); document.getElementById(name + '-e').textContent = 'Choose one — “Not sure” is fine.'; bad.push(name); }
       else { fs.removeAttribute('aria-invalid'); var e = document.getElementById(name + '-e'); if (e) e.textContent = ''; }
     });
-    // honeypot
+    // Honeypot: recorded as a signal for review, never a reason to drop or fake-confirm a request.
     v.hp = form.website ? form.website.value : '';
     return { ok: !bad.length, v: v, first: bad[0] };
   }
   form.addEventListener('input', function () { track('ee_form_start', true); }, { once: true });
   form.addEventListener('change', function () { if (form.getAttribute('data-tried')) validate(); });
-  var T0 = Date.now();
+  // A and B: "More than a year ago" is still sent — the intake team reviews the date on the callback.
+  var whenNote = document.getElementById('accident_when-note');
+  if (whenNote) form.addEventListener('change', function (e) { if (e.target && e.target.name === 'accident_when') whenNote.hidden = e.target.value !== 'over_1y'; });
+  // Timeline rule (Kyle + Michael, PLG): accident less than one year ago. Downstream review enforces it from these fields.
+  var UNDER_1Y = ['under_30d', '1_6m', '6_12m'];
+  function timelineCheck(when) { return UNDER_1Y.indexOf(when) >= 0 ? 'under_1y' : when === 'over_1y' ? 'over_1y' : 'unknown'; }
 
   // ---- Submit ----------------------------------------------------------------------------------
   function uuid() { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }); }
@@ -169,14 +176,16 @@
     if (!r.ok) { emit('invalid', { field: r.first }); say('Please fix the highlighted fields.', 'err'); var f = form.querySelector('[aria-invalid="true"]'); if (f) (f.tagName === 'FIELDSET' ? f.querySelector('input') : f).focus(); return; }
     var v = r.v;
     track('ee_lead_submit_attempt');
-    if (v.hp || Date.now() - T0 < 2500) { busy(true); setTimeout(function () { busy(false); say('Thanks — we’ve got it.', ''); emit('trap'); }, 900); return; } // silent bot trap
     if (!CONFIG.endpoint) {
       say('Online requests aren’t connected yet, so nothing was sent or saved. Please call ' + CONFIG.firm_phone.display + '.', 'warn');
       emit('not_connected');
       return;
     }
     var screening = KIND === 'check' && window.PLG_CHECK ? window.PLG_CHECK.answers() : {};
-    ['accident_type', 'injured', 'what_happened'].forEach(function (k) { if (v[k]) screening[k] = v[k]; });
+    ['accident_type', 'injured', 'accident_when', 'what_happened'].forEach(function (k) { if (v[k]) screening[k] = v[k]; });
+    if (!screening.accident_when && screening.when) screening.accident_when = screening.when; // path C names it "when"
+    screening.timeline_rule = 'under_1y';
+    screening.timeline_check = timelineCheck(screening.accident_when);
     var fp = [PAGE_ID, v.phone, v.full_name.toLowerCase()].join('|');
     var payload = {
       schema: 'plg.intake.web/v1',
@@ -189,6 +198,7 @@
       screening: screening,
       consent: { version: CONFIG.consent_version, mode: CONSENT_MODE, method: 'submit_button_disclosure', captured_at: new Date().toISOString(), page_url: location.origin + location.pathname, text: CONSENT_TEXT, trustedform_cert_url: (form.xxTrustedFormCertUrl && form.xxTrustedFormCertUrl.value) || null },
       attribution: attribution(),
+      signals: v.hp ? { honeypot_filled: true } : undefined,
       test: SYNTHETIC ? { synthetic: true, suppress: ['outbound_calls', 'sms', 'email', 'buyer_delivery', 'ad_events'] } : undefined
     };
     busy(true); say(''); emit('sending');

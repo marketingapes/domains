@@ -20,7 +20,7 @@
 <link rel="icon" href="assets/plg-logo.png">
 <link rel="preload" as="image" href="assets/az-truck-720.webp" media="(max-width:760px)">
 <link rel="preload" as="image" href="assets/az-truck-1088.webp" media="(min-width:761px)">
-<link rel="stylesheet" href="assets/plg.css?v=20261006b">
+<link rel="stylesheet" href="assets/plg.css?v=20261006c">
 </head>
 <body data-page-id="plg-azmva-a-form-call" data-path="A_form_call">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
@@ -83,6 +83,18 @@
               <label><input type="radio" name="injured" value="no">No</label>
             </div>
             <span class="ferr" id="injured-e"></span>
+          </fieldset>
+          <fieldset class="fs full" data-q="accident_when" data-required>
+            <legend>When did it happen?</legend>
+            <div class="opts">
+              <label><input type="radio" name="accident_when" value="under_30d">Last 30 days</label>
+              <label><input type="radio" name="accident_when" value="1_6m">1–6 months ago</label>
+              <label><input type="radio" name="accident_when" value="6_12m">6–12 months ago</label>
+              <label><input type="radio" name="accident_when" value="over_1y">More than a year ago</label>
+              <label class="span2"><input type="radio" name="accident_when" value="not_sure">Not sure of the date</label>
+            </div>
+            <span class="ferr" id="accident_when-e"></span>
+            <span class="fnote" id="accident_when-note" hidden>You can still send your request. A person from the Arizona intake team will go over the date with you when they call.</span>
           </fieldset>
           <div class="field"><label for="full_name">Full name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div>
           <div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
@@ -176,6 +188,6 @@
 <script>
 document.getElementById('famList').addEventListener('toggle',function(e){if(e.target.open){window.dataLayer=window.dataLayer||[];dataLayer.push({event:'ee_familiar_open',item:e.target.getAttribute('data-k'),page_id:'plg-azmva-a-form-call'});}},true);
 </script>
-<script src="assets/plg-intake.js?v=20261006b" defer></script>
+<script src="assets/plg-intake.js?v=20261006c" defer></script>
 </body>
 </html>

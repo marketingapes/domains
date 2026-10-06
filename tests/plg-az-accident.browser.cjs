@@ -57,8 +57,17 @@ function serve() {
       const card0 = await page.locator('#chat').boundingBox();
       const doc0 = await page.evaluate(() => document.documentElement.scrollHeight);
       const tap = async (label) => { const b = page.locator('#dock').getByRole('button', { name: label, exact: true }); await b.first().waitFor({ timeout: 8000 }); await b.first().click(); };
-      for (const l of ['Me', 'Yes, in Arizona', 'Car', 'In the last 30 days', 'Yes', 'ER or hospital', 'Someone else', 'No']) await tap(l);
-      assert.match(await page.textContent('#ccSummaryText'), /8 answers: Me · Yes, in Arizona · Car/, `${w}: collapsed answer summary`);
+      // Timeline rule: less than one year. "More than a year ago" ends the check (no contact step); 6–12 months qualifies.
+      for (const l of ['Me', 'Yes, in Arizona', 'Car']) await tap(l);
+      const whenChoices = await page.locator('#dock .chip').allTextContents();
+      assert.ok(!whenChoices.some((t) => /2 years|24/.test(t)), `${w}: no 6–24 month choice (${whenChoices})`);
+      await tap('More than a year ago');
+      await page.waitForFunction(() => /past 12 months/.test(document.querySelector('#thread').innerText), null, { timeout: 8000 });
+      assert.equal(await page.textContent('#pill'), 'Not a match', `${w}: over one year is not a match`);
+      assert.equal(await page.locator('#dock').getByRole('button', { name: 'Have a person call me back' }).count(), 0, `${w}: no contact step past one year`);
+      await tap('Change my last answer');
+      for (const l of ['6–12 months ago', 'Yes', 'ER or hospital', 'Someone else', 'No']) await tap(l);
+      assert.match(await page.textContent('#ccSummaryText'), /8 answers: Me · Yes, in Arizona · Car · 6–12 months ago/, `${w}: collapsed answer summary`);
       assert.equal(await page.locator('#contactStep').isVisible(), false, `${w}: no traditional form`);
       await tap('Have a person call me back');
       const y0 = await page.evaluate(() => scrollY);
@@ -73,8 +82,7 @@ function serve() {
       const legal = await page.textContent('.b.legal');
       assert.match(legal, /By tapping “Yes, call me back,” I agree/, `${w}: consent names the exact button`);
       assert.ok(!/Sofia|AI\)|AI intake/.test(legal), `${w}: no AI promise in consent`);
-      await page.waitForTimeout(2600); // past the shared 2.5 s bot trap
-      await page.click('.cc-agree');
+      await page.click('.cc-agree'); // immediately: no timing gate
       await page.waitForFunction(() => /your request is in/.test(document.querySelector('#thread').innerText), null, { timeout: 8000 });
       assert.match(await page.textContent('#thread'), /starting at 8 AM Arizona time[\s\S]*Reference: PLG·/);
       const card1 = await page.locator('#chat').boundingBox();
@@ -88,6 +96,7 @@ function serve() {
       assert.equal(pc.schema, 'plg.intake.web/v1'); assert.equal(pc.page_id, 'plg-azmva-c-claim-check'); assert.equal(pc.entry_path, 'C_claim_check_chat');
       assert.equal(pc.request_type, 'claim_check'); assert.equal(pc.contact.phone_e164, '+16025550199'); assert.equal(pc.contact.email, null);
       assert.equal(pc.consent.mode, 'standard'); assert.equal(pc.screening.web_outcome, 'QUALIFIED'); assert.equal(pc.screening.where, 'az');
+      assert.deepEqual([pc.screening.accident_when, pc.screening.timeline_rule, pc.screening.timeline_check], ['6_12m', 'under_1y', 'under_1y']);
       assert.deepEqual([pc.attribution.utm_source, pc.attribution.gclid, pc.attribution.landing_path], ['test', 'G-TEST', '/phillips-law/az-accident/claim-check/']);
       assert.equal(pc.test.synthetic, true);
       await shot(page, `C-${w}x${h}`);
@@ -98,14 +107,24 @@ function serve() {
         assert.equal((await page.textContent('.ca-disclaimer')).trim(), DIS);
         if (kind === 'B') await page.click('#callSofia');
         await page.fill('#full_name', 'Synthetic Tester'); await page.fill('#phone', '6025550199');
-        for (const g of ['accident_type', 'injured']) { const r = page.locator(`#leadForm input[name=${g}]`); if (await r.count()) await r.first().check(); }
-        await page.waitForTimeout(2600);
         await page.click('#submitBtn');
+        await page.waitForFunction(() => /highlighted/.test(document.querySelector('#formStatus').textContent));
+        assert.match(await page.textContent('#accident_when-e'), /Choose one/, `${kind}: timeline is required`);
+        for (const g of ['accident_type', 'injured']) { const r = page.locator(`#leadForm input[name=${g}]`); if (await r.count()) await r.first().check(); }
+        // Over one year is still sent (never silently dropped) and shown a plain human-callback note.
+        await page.locator('#leadForm input[name=accident_when][value=over_1y]').check({ force: true });
+        assert.ok(await page.isVisible('#accident_when-note'), `${kind}: over-one-year note shown`);
+        assert.match(await page.textContent('#accident_when-note'), /A person from the Arizona intake team will go over the date/);
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `${kind} ${w}: no sideways scroll`);
+        await page.locator('#accident_when-note').scrollIntoViewIfNeeded(); await shot(page, `${kind}-${w}x${h}-timeline`);
+        await page.click('#submitBtn'); // immediately after filling: no timing gate
         await page.waitForSelector('.receipt', { timeout: 8000 });
         assert.match(await page.textContent('.receipt'), /A person from Phillips Law Group’s Arizona intake team will call you back[\s\S]*8 AM Arizona time/);
         assert.ok(!/Sofia will|Sofia calls/i.test(await page.textContent('body')), `${kind}: no Sofia call promise`);
         const pa = received[received.length - 1];
         assert.equal(pa.entry_path, kind === 'A' ? 'A_form_call' : 'B_sofia_ai'); assert.equal(pa.consent.mode, 'standard');
+        assert.deepEqual([pa.screening.accident_when, pa.screening.timeline_rule, pa.screening.timeline_check], ['over_1y', 'under_1y', 'over_1y'], `${kind}: timeline preserved`);
+        assert.equal(pa.signals, undefined, `${kind}: no honeypot signal for a person`);
       }
       assert.deepEqual(errors, [], `${w}: zero JS errors`);
       console.log(`${w}x${h}: C chat stable (card ${Math.round(card0.height)}px, doc Δ${doc1 - doc0}, scroll Δ${y1 - y0}), receipts on A/B/C, 0 JS errors`);
@@ -121,8 +140,8 @@ function serve() {
     await page.route(/googletagmanager|fonts\.googleapis|fonts\.gstatic/, (r) => r.abort());
     await page.goto(base);
     await page.fill('#full_name', 'X Y'); await page.fill('#phone', '6025550199');
-    for (const g of ['accident_type', 'injured']) await page.locator(`#leadForm input[name=${g}]`).first().check();
-    await page.waitForTimeout(2600); await page.click('#submitBtn');
+    for (const g of ['accident_type', 'injured', 'accident_when']) await page.locator(`#leadForm input[name=${g}]`).first().check({ force: true });
+    await page.click('#submitBtn');
     await page.waitForFunction(() => /aren’t connected yet|request is in|couldn’t confirm/.test(document.querySelector('#formStatus').textContent + (document.querySelector('.receipt') || {}).textContent));
     const prodEndpoint = await page.evaluate(() => document.querySelector('#formStatus').textContent);
     console.log('production config (local host, no synthetic flag):', posted ? 'POSTED' : 'not posted', '|', prodEndpoint.slice(0, 60));
@@ -146,14 +165,44 @@ function serve() {
     await pp.goto('https://besttortlawyers.com/phillips-law/az-accident/?utm_source=meta&fbclid=FB-TEST');
     assert.equal(await pp.isVisible('#previewFlag'), false, 'no preview flag on production');
     await pp.fill('#full_name', 'Mock Person'); await pp.fill('#phone', '6025550142');
-    for (const g of ['accident_type', 'injured']) await pp.locator(`#leadForm input[name=${g}]`).first().check();
-    await pp.waitForTimeout(2600); await pp.click('#submitBtn');
+    for (const g of ['accident_type', 'injured', 'accident_when']) await pp.locator(`#leadForm input[name=${g}]`).first().check({ force: true });
+    await pp.click('#submitBtn');
     await pp.waitForSelector('.receipt', { timeout: 8000 });
     assert.equal(relayHits.length, 1); assert.equal(relayHits[0].origin, 'https://besttortlawyers.com');
     assert.equal(relayHits[0].p.test, undefined, 'a real production request carries no test flag');
     assert.equal(relayHits[0].p.attribution.fbclid, 'FB-TEST');
+    assert.equal(relayHits[0].p.screening.timeline_check, 'under_1y');
     console.log('production host: posts to the production relay with origin https://besttortlawyers.com, receipt shown');
     await pctx.close();
+
+    // No success without a durable receipt: fast submit, filled honeypot, and a relay failure each show no success.
+    for (const [label, relay, honeypot] of [['relay 503', { status: 503, body: { status: 'failed', receipt_id: null } }, false],
+      ['200 without receipt', { status: 200, body: { status: 'received' } }, false],
+      ['honeypot filled, receipt', { status: 200, body: null }, true]]) {
+      const c = await browser.newContext({ viewport: { width: 390, height: 844 } }); const pg = await c.newPage(); const hits = [];
+      await pg.route(/googletagmanager|fonts\.googleapis|fonts\.gstatic/, (r) => r.abort());
+      await pg.route('https://besttortlawyers.com/**', async (route) => {
+        const r = await fetch(`http://127.0.0.1:${srv.address().port}${new URL(route.request().url()).pathname}`);
+        route.fulfill({ status: r.status, headers: { 'content-type': r.headers.get('content-type') || 'text/html' }, body: Buffer.from(await r.arrayBuffer()) });
+      });
+      await pg.route('https://btl-plg-az-mva-intake.onrender.com/intake', (route) => {
+        const p = JSON.parse(new URLSearchParams(route.request().postData()).get('payload')); hits.push(p);
+        route.fulfill({ status: relay.status, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://besttortlawyers.com' },
+          body: JSON.stringify(relay.body || { status: 'received', receipt_id: 'PLG-' + p.submission_id }) });
+      });
+      await pg.goto('https://besttortlawyers.com/phillips-law/az-accident/');
+      if (honeypot) await pg.evaluate(() => { document.querySelector('#leadForm [name=website]').value = 'autofill'; });
+      await pg.fill('#full_name', 'Mock Person'); await pg.fill('#phone', '6025550142');
+      for (const g of ['accident_type', 'injured', 'accident_when']) await pg.locator(`#leadForm input[name=${g}]`).first().check({ force: true });
+      await pg.click('#submitBtn'); // within milliseconds of page load
+      await pg.waitForFunction(() => document.querySelector('.receipt') || /couldn’t confirm/.test(document.querySelector('#formStatus').textContent), null, { timeout: 8000 });
+      const ok = await pg.locator('.receipt').count();
+      assert.equal(hits.length, 1, `${label}: the request is sent, never swallowed`);
+      if (honeypot) { assert.equal(ok, 1, `${label}: receipt shown only because the relay returned one`); assert.deepEqual(hits[0].signals, { honeypot_filled: true }); }
+      else { assert.equal(ok, 0, `${label}: no success without a receipt`); assert.ok(!/got it/i.test(await pg.textContent('#formStatus'))); }
+      console.log(`no-false-success: ${label} -> ${ok ? 'receipt (from relay)' : 'error shown, no success'}`);
+      await c.close();
+    }
   } finally {
     await browser.close(); srv.close();
   }

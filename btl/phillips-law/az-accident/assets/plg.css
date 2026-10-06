@@ -78,6 +78,9 @@ h1 .hl{color:var(--red)}
 .field [aria-invalid="true"],.fs[aria-invalid="true"] .opts label{border-color:var(--err)}
 .ferr{display:block;color:var(--err);font-size:.84rem;margin-top:5px}
 .ferr:empty{display:none}
+.fnote{display:block;color:var(--muted);font-size:.86rem;margin-top:6px}
+.fnote[hidden]{display:none}
+.opts .span2{grid-column:1/-1}
 .fs{border:0;margin:0;padding:0;min-width:0}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .opts.three{grid-template-columns:repeat(3,1fr)}

@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="icon" href="../assets/plg-logo.png">
 <link rel="preload" as="image" href="../assets/sofia.jpg">
-<link rel="stylesheet" href="../assets/plg.css?v=20261006b">
+<link rel="stylesheet" href="../assets/plg.css?v=20261006c">
 <style>
 body.talk{background:radial-gradient(110% 70% at 85% 0%,#3a1517 0%,#14161b 55%,#0c0d10 100%) fixed,#0c0d10;color:#f4f1ec}
 .talk .brand .wm b{color:#fff}.talk .brand .wm small{color:#ff8a8a}
@@ -108,11 +108,23 @@ body.talk{position:relative;isolation:isolate}
         <div id="formBody">
           <p class="preview-flag" id="previewFlag" hidden></p>
           <h2 id="cbH">Request a free callback</h2>
-          <p class="hint">Just your name and number. A person from the Arizona intake team asks about the accident when they call, starting at 8 AM Arizona time.</p>
+          <p class="hint">When it happened, your name and your number. A person from the Arizona intake team calls you back to go over the details, starting at 8 AM Arizona time.</p>
           <form id="leadForm" novalidate data-page-id="plg-azmva-b-sofia" data-kind="callback" data-consent="standard">
             <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
             <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
             <div class="grid">
+              <fieldset class="fs full" data-q="accident_when" data-required>
+                    <legend>When did it happen?</legend>
+                    <div class="opts">
+                      <label><input type="radio" name="accident_when" value="under_30d">Last 30 days</label>
+                      <label><input type="radio" name="accident_when" value="1_6m">1–6 months ago</label>
+                      <label><input type="radio" name="accident_when" value="6_12m">6–12 months ago</label>
+                      <label><input type="radio" name="accident_when" value="over_1y">More than a year ago</label>
+                      <label class="span2"><input type="radio" name="accident_when" value="not_sure">Not sure of the date</label>
+                    </div>
+                    <span class="ferr" id="accident_when-e"></span>
+                    <span class="fnote" id="accident_when-note" hidden>You can still send your request. A person from the Arizona intake team will go over the date with you when they call.</span>
+                  </fieldset>
               <div class="field full"><label for="full_name">Your name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div>
               <div class="field full"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
             </div>
@@ -153,6 +165,6 @@ body.talk{position:relative;isolation:isolate}
   </div>
 </footer>
 
-<script src="../assets/plg-intake.js?v=20261006b" defer></script>
+<script src="../assets/plg-intake.js?v=20261006c" defer></script>
 </body>
 </html>
