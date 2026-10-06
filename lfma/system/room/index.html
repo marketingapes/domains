@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The room | Law Firm Marketing Apes</title>
+<meta name="description" content="Write three rules. Watch one fictional inquiry die. Hand off the one inside the rules. Mark it. See the next dollar change.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://lawfirmmarketingapes.com/system/room/">
+<link rel="stylesheet" href="/system/system.css">
+<script>
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({
+  event: 'ee_page_view',
+  tenant_id: 'LFMA',
+  brand: 'Law Firm Marketing Apes',
+  domain_id: 'lawfirmmarketingapes.com',
+  page_type: 'system-room',
+  offer: 'one-case-one-door'
+});
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NWVHNTVK');</script>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/system/">
+    <img src="/assets/portal/ape-logo.jpg" alt="">
+    Law Firm Marketing Apes
+  </a>
+  <nav class="nav"><a href="/system/">The standard</a></nav>
+</header>
+<main class="wrap" style="padding-top:28px">
+  <p class="kicker">Illustrative demonstration · about twelve minutes</p>
+  <h1>Bring the matter. Watch the wrong one die.</h1>
+  <p class="lede">The two inquiries on this desk are fictional. They exist so you can see a refusal and a handoff before anyone is contacted and before any media runs. Your words travel with the request. They do not start a campaign.</p>
+
+  <div class="desk">
+    <form id="rules" class="card">
+      <div class="field">
+        <label for="matter">The one matter</label>
+        <textarea id="matter" name="matter" required>Arizona motor-vehicle injury, physically hurt, inside 12 months, no lawyer.</textarea>
+      </div>
+      <div class="field">
+        <label for="geo">Where</label>
+        <input id="geo" name="geo" required value="Arizona">
+      </div>
+      <div class="field">
+        <label for="accept">You will accept</label>
+        <textarea id="accept" required>Arizona
+Physically hurt
+Inside 12 months</textarea>
+      </div>
+      <div class="field">
+        <label for="reject">You will refuse</label>
+        <textarea id="reject" required>Already has a lawyer
+No physical injury
+Outside 12 months</textarea>
+      </div>
+    </form>
+
+    <div>
+      <article class="inquiry" id="card-wrong">
+        <div class="tag" id="tag-wrong">WAITING</div>
+        <h2>Inquiry A</h2>
+        <p>Crash, fourteen months ago. Sore neck. Already has a lawyer.</p>
+        <p class="fine" id="why-wrong"></p>
+      </article>
+      <article class="inquiry" id="card-inside">
+        <div class="tag" id="tag-inside">WAITING</div>
+        <h2>Inquiry B</h2>
+        <p>Arizona. Physically hurt. Three weeks ago. No lawyer.</p>
+        <p class="fine" id="why-inside"></p>
+      </article>
+      <div class="row">
+        <button class="btn" type="button" id="run-wrong">Run the inquiry that should die</button>
+        <button class="btn ghost" type="button" id="run-inside">Run the inquiry inside the rules</button>
+      </div>
+      <div class="card" style="margin-top:14px" id="mark-box" hidden>
+        <p><strong>Mark Inquiry B.</strong> One reason. Marking reject twice with the same reason pauses the next dollar.</p>
+        <div class="field">
+          <label for="reason">Reason</label>
+          <input id="reason" value="Outside the matter we named">
+        </div>
+        <div class="marks">
+          <button class="btn ghost" type="button" data-mark="ACCEPT">Accept</button>
+          <button class="btn ghost" type="button" data-mark="REJECT">Reject</button>
+          <button class="btn ghost" type="button" data-mark="PENDING">Pending</button>
+          <button class="btn" type="button" id="repeat-reject">Reject again, same reason</button>
+        </div>
+      </div>
+      <div class="report" id="report" hidden>
+        <h2>The only page</h2>
+        <dl>
+          <dt>Rules</dt><dd id="out-rules"></dd>
+          <dt>Refused</dt><dd id="out-refused"></dd>
+          <dt>Handed off</dt><dd id="out-handed"></dd>
+          <dt>Your mark</dt><dd id="out-mark"></dd>
+          <dt>The one change</dt><dd id="out-change"></dd>
+        </dl>
+        <p class="pause" id="out-pause" hidden></p>
+      </div>
+    </div>
+  </div>
+
+  <section id="request">
+    <h2>Request the real room</h2>
+    <p class="lede">Kyle reads the brief. This form does not cut an invoice, authorize media, or activate a campaign. The quoted activation is $7,500. Management is $1,500 a month while the marks continue. Media is separate and is not included.</p>
+    <form id="roomForm" class="card" novalidate>
+      <div class="field"><label for="buyer_name">Firm</label><input id="buyer_name" name="buyer_name" required autocomplete="organization"></div>
+      <div class="field"><label for="contact_name">Your name</label><input id="contact_name" name="contact_name" required autocomplete="name"></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" required autocomplete="tel"></div>
+      <input type="hidden" name="type" value="Law firm">
+      <input type="hidden" name="product" value="one-case-one-door">
+      <input type="hidden" name="price_usd" value="7500">
+      <input type="hidden" name="states" id="states" value="Arizona">
+      <input type="hidden" name="case_types" id="case_types">
+      <input type="hidden" name="turn_downs" id="turn_downs">
+      <input type="hidden" name="delivery" value="Deliver to firm intake after a test handoff">
+      <input type="hidden" name="outcome_return" value="Firm marks accept, reject, or pending with one reason">
+      <textarea name="notes" id="notes" hidden></textarea>
+      <label class="check">
+        <input type="checkbox" id="consent" required>
+        <span>I am asking Marketing Apes for a scope of One Case, One Door. I agree to be contacted at the email and phone above about that scope. This is not a request to start ads. Law Firm Marketing Apes is not a law firm. This request does not create an attorney-client relationship.</span>
+      </label>
+      <p id="roomError" hidden></p>
+      <div class="row" style="margin-top:14px">
+        <button class="btn orange" type="submit" id="send" disabled>Request the room</button>
+      </div>
+    </form>
+    <div id="roomSent" hidden></div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <p>Law Firm Marketing Apes is a marketing company operated by Marketing Apes. It is not a law firm and does not give legal advice. The inquiries above are fictional. Flat marketing fees. Media is separate. Nothing on this page is a guarantee of leads or signed cases.</p>
+    <p>Marketing Apes · 2020 Monte Vista Dr, Vista, CA 92083 · <a href="mailto:kyleg@marketingapes.com">kyleg@marketingapes.com</a></p>
+    <p><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/system/">The standard</a></p>
+  </div>
+</footer>
+<script type="module">
+import { SAMPLE_INQUIRIES, evaluateInquiry, buildReport } from '/assets/system-room.mjs';
+import { bindExistingOrderForm } from '/assets/order-intake-client.mjs';
+
+const HOOK = 'https://hook.us2.make.com/dwzmtn5xbkdrt6pjvli9jgy3auppobbi';
+const byId = id => document.getElementById(id);
+const evaluations = [];
+const marks = [];
+let report = null;
+
+function paint(inquiry, result) {
+  const tag = byId('tag-' + inquiry.id);
+  const why = byId('why-' + inquiry.id);
+  const card = byId('card-' + inquiry.id);
+  tag.textContent = result.decision;
+  why.textContent = result.reasons.length ? result.reasons.join(' · ') : 'Inside the rules on this desk.';
+  card.classList.toggle('refused', result.decision === 'REFUSED');
+}
+
+function run(id) {
+  const inquiry = SAMPLE_INQUIRIES.find(item => item.id === id);
+  const result = evaluateInquiry(inquiry);
+  const prior = evaluations.findIndex(item => item.id === id);
+  if (prior >= 0) evaluations.splice(prior, 1);
+  evaluations.push(result);
+  paint(inquiry, result);
+  if (id === 'inside') byId('mark-box').hidden = false;
+  publish();
+}
+
+function publish() {
+  const matter = byId('matter').value.trim();
+  report = buildReport({ matter, evaluations, marks });
+  byId('report').hidden = false;
+  byId('out-rules').textContent = byId('accept').value.trim() + ' / Refuse: ' + byId('reject').value.trim();
+  byId('out-refused').textContent = String(report.refused);
+  byId('out-handed').textContent = String(report.handed);
+  byId('out-mark').textContent = report.marks.map(mark => mark.decision + (mark.reason ? ' — ' + mark.reason : '')).join('; ') || 'None yet';
+  byId('out-change').textContent = report.change;
+  const pause = byId('out-pause');
+  pause.hidden = !report.pause;
+  pause.textContent = report.pause ? report.change : '';
+  byId('states').value = byId('geo').value.trim();
+  byId('case_types').value = matter;
+  byId('turn_downs').value = byId('reject').value.trim();
+  byId('notes').value = [
+    'One Case, One Door room request. Scope only. Not an accepted order, invoice, or approved spend.',
+    'Quoted activation: $7,500, earned when the rules are written and intake accepts a test handoff.',
+    'Monthly management: $1,500 while marks continue. Media is separate, at cost, capped by the firm, and not authorized by this form.',
+    'No signed-case promise. No campaign has been activated. Demonstration inquiries were fictional.',
+    'Matter: ' + matter,
+    'Where: ' + byId('geo').value.trim(),
+    'Accept: ' + byId('accept').value.replace(/\s+/g, ' ').trim(),
+    'Refuse: ' + byId('reject').value.replace(/\s+/g, ' ').trim(),
+    'Refused on the desk: ' + report.refused + '. Handoff: ' + report.handed + '.',
+    'Marks: ' + (byId('out-mark').textContent),
+    'Next dollar: ' + report.change
+  ].join('\n');
+}
+
+byId('run-wrong').addEventListener('click', () => run('wrong'));
+byId('run-inside').addEventListener('click', () => run('inside'));
+document.querySelectorAll('[data-mark]').forEach(button => {
+  button.addEventListener('click', () => {
+    const decision = button.getAttribute('data-mark');
+    const reason = byId('reason').value.trim();
+    if (decision === 'REJECT' && !reason) {
+      byId('reason').focus();
+      return;
+    }
+    marks.push({ decision, reason: decision === 'REJECT' ? reason : '' });
+    publish();
+  });
+});
+byId('repeat-reject').addEventListener('click', () => {
+  const reason = byId('reason').value.trim();
+  if (!reason) { byId('reason').focus(); return; }
+  marks.push({ decision: 'REJECT', reason });
+  publish();
+});
+['matter', 'geo', 'accept', 'reject'].forEach(id => byId(id).addEventListener('input', () => {
+  if (evaluations.length) publish();
+}));
+
+const form = byId('roomForm');
+const button = byId('send');
+form.addEventListener('submit', event => {
+  if (!byId('matter').value.trim() || !byId('geo').value.trim()) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    byId('matter').focus();
+  }
+  publish();
+});
+bindExistingOrderForm({
+  form,
+  errorBox: byId('roomError'),
+  confirmationBox: byId('roomSent'),
+  endpoint: HOOK,
+  tenantId: 'LFMA',
+  domain: 'lawfirmmarketingapes.com',
+  pageVersion: 'lfma-system-room-v1',
+  dataLayer: window.dataLayer
+});
+button.disabled = false;
+</script>
+</body>
+</html>

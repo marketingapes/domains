@@ -1,18 +1,19 @@
 # Law Firm Marketing Apes
 
-> The system we sell to law firms. $5k to build (pages, AI intake, automation, CRM/intake wiring) and $5k to run ads. Not a consumer claim site. Not a law firm.
+> The system we sell to law firms. One Case, One Door: $7,500 activation and $1,500 a month, with media at cost on a separate line. The Legal Engine Snapshot at /engine/ starts at $5,000. Not a consumer claim site. Not a law firm.
 
 ## What this site is
 
 Law Firm Marketing Apes (LFMA) is the firm-facing offer from Marketing Apes LLC. If a firm needs leads, they tell us intake rules and schedule. We customize the stack and run the campaign. If they want the keys, they buy the system.
 
-Canonical page: https://lawfirmmarketingapes.com/
-Offer page: https://lawfirmmarketingapes.com/engine/
-Primary CTA: Request a Legal Engine Snapshot (paid diagnostic, not a free call).
+Canonical page: https://lawfirmmarketingapes.com/system/
+Demonstration: https://lawfirmmarketingapes.com/system/room/
+Snapshot: https://lawfirmmarketingapes.com/engine/
+Primary CTA: Run the demonstration, then request the room. The snapshot remains a separate paid diagnostic.
 
 ## What this site is not
 
-- Not consumer intake (that is DoIHaveAClaim.ai and Nearest Injury Lawyers feeding Best Tort Lawyers)
+- Not consumer intake. Do I Have a Claim, Nearest Injury Lawyers, and Best Tort Lawyers are separate consumer doors, and they are not law firms.
 - Not a promise of signed cases
 - Not Best Tort Lawyers (https://besttortlawyers.com/) — that is the consumer network
 
