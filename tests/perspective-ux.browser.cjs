@@ -1,6 +1,6 @@
 // Perspective portal UX, in a real browser against a mocked Perspective server (synthetic data only):
 // plain email sign-in, the top area (heading, + Request a Campaign, Arizona MVA preview, pages and ad previews,
-// freshness and state), requests from the top, Settings only at the owner-only #admin route, no secrets in the page.
+// freshness and state), requests from the top, no Settings/Admin link (owner-only #admin route by URL), no secrets in the page.
 // Run: node tests/perspective-ux.browser.cjs   (SHOTS=/dir saves screenshots; CHROMIUM=/path overrides the browser)
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
@@ -121,7 +121,7 @@ const leak = (page) => page.evaluate((secrets) => {
       assert.deepEqual(links.map((l) => l[0]), ['A · Form + call', 'Meta N1 · Request a callback']);
       assert.ok(links.every((l) => l[1].startsWith('https://') && l[2] === '_blank' && /noopener/.test(l[3])));
       assert.match(await page.innerText('#freshness'), /Last updated/);
-      assert.equal(await page.isVisible('#admin-link'), false, `${width}: no Admin link for Phillips`);
+      assert.equal(await page.$('#admin-link'), null, `${width}: no Admin/Settings link in the header`);
       const tabs = await page.$$eval('.section-tabs [data-view]', (bs) => bs.map((b) => b.getAttribute('data-view')));
       assert.ok(!tabs.includes('settings'), `${width}: no Settings tab (${tabs})`);
       await shot(page, `${width}-3-top`);
@@ -153,8 +153,8 @@ const leak = (page) => page.evaluate((secrets) => {
       assert.ok(await page.isVisible('#token'), `${width}: owner sign-in reachable`);
       await page.click('#token-alt summary');
       await signIn(page, 'kyle@marketingapes.com');
-      assert.ok(await page.isVisible('#admin-link'), `${width}: owner sees Admin`);
-      await page.click('#admin-link');
+      assert.equal(await page.$('#admin-link'), null, `${width}: no Admin/Settings link even for the owner`);
+      await page.evaluate(() => { location.hash = '#admin'; });   // owner reaches administration by URL only
       await page.waitForSelector('[data-panel="settings"]:not([hidden])');
       assert.match(await page.innerText('[data-panel="settings"]'), /OWNER ADMIN/);
       const otabs = await page.$$eval('.section-tabs [data-view]', (bs) => bs.map((b) => b.getAttribute('data-view')));

@@ -149,7 +149,7 @@ test('one portal: client sections, Settings only at the owner-only #admin route,
   for (const v of ['overview', 'leads', 'marketing', 'litify', 'summary']) assert.match(html, new RegExp(`data-view="${v}"`));
   assert.ok(!/data-view="settings"/.test(html), 'no Settings tab in the navigation');
   assert.match(html, /data-panel="settings"/);
-  assert.match(html, /<a class="linkbtn" id="admin-link" href="#admin" hidden>Admin<\/a>/);
+  assert.ok(!/id="admin-link"/.test(html), 'no Admin/Settings link in the header (owner uses the #admin URL)');
   assert.match(html, /<button class="btn" id="rq-top" type="button" hidden>\+ Request a Campaign<\/button>/);
   assert.match(html, /id="sm-tasks"/);
   const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
