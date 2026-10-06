@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), http = require('node:http');
 
 const ROOT = path.join(__dirname, '..', 'btl');
-const DIS = 'DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California or that a California court would have jurisdiction over.';
+const DIS = 'This advertisement is not for legal services related to an incident that occurred in California or that a California court would have jurisdiction over.';
 
 function serve() {
   const received = [];
@@ -52,7 +52,7 @@ function serve() {
 
       // ---- C: Claim Check chat ----
       await page.goto(base + 'claim-check/' + q);
-      assert.equal((await page.textContent('.ca-disclaimer')).trim(), DIS);
+      assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.textContent('.f-legal')).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion');
       await page.locator('#chat').scrollIntoViewIfNeeded();
       const card0 = await page.locator('#chat').boundingBox();
       const doc0 = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -104,7 +104,7 @@ function serve() {
       // ---- A and B: forms still work and reach a receipt ----
       for (const [p, kind] of [['', 'A'], ['talk-to-sofia/', 'B']]) {
         await page.goto(base + p + q);
-        assert.equal((await page.textContent('.ca-disclaimer')).trim(), DIS);
+        assert.equal(await page.locator('.ca-disclaimer').count(), 0, 'no top disclaimer banner'); assert.ok((await page.textContent('.f-legal')).trim().endsWith(DIS), 'footer disclaimer ends with the California exclusion');
         if (kind === 'B') {
           // Main button dials the BTL Sofia line; the callback form is the second option.
           assert.equal(await page.getAttribute('#callSofia', 'href'), 'tel:+16026931461', 'B: Talk to Sofia dials the Sofia line');
