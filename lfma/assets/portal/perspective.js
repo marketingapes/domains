@@ -96,9 +96,9 @@
   }
 
   // ---------- data selection ----------
-  // Menu order: AZ MVA, LA County, Master, then anything else; "All campaigns" is always last.
+  // Menu order: Arizona MVA, LA County, Handoff, then anything else; "All campaigns" is always last.
   var CAMPAIGN_ORDER = ['mva', 'la', 'handover'];
-  var TAB_LABEL = { mva: 'AZ MVA', la: 'LA County', handover: 'Master' };
+  var TAB_LABEL = { mva: 'Arizona MVA', la: 'LA County', handover: 'Handoff' };
   function campaignRank(id) { var i = CAMPAIGN_ORDER.indexOf(id); return i < 0 ? CAMPAIGN_ORDER.length : i; }
   function campaignsAll() {
     return ((state.feed && state.feed.campaigns) || []).slice().sort(function (a, b) { return campaignRank(a.id) - campaignRank(b.id); });
