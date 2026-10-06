@@ -127,6 +127,33 @@ function serve() {
     const prodEndpoint = await page.evaluate(() => document.querySelector('#formStatus').textContent);
     console.log('production config (local host, no synthetic flag):', posted ? 'POSTED' : 'not posted', '|', prodEndpoint.slice(0, 60));
     await ctx.close();
+    assert.equal(posted, false, 'non-production host without a synthetic flag never posts');
+
+    // Production host: pages post to the production relay (mocked here) with the page origin, and show the receipt.
+    const pctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const pp = await pctx.newPage(); const relayHits = [];
+    await pp.route(/googletagmanager|fonts\.googleapis|fonts\.gstatic/, (r) => r.abort());
+    await pp.route('https://besttortlawyers.com/**', async (route) => {
+      const u = new URL(route.request().url());
+      const r = await fetch(`http://127.0.0.1:${srv.address().port}${u.pathname}`);
+      route.fulfill({ status: r.status, headers: { 'content-type': r.headers.get('content-type') || 'text/html' }, body: Buffer.from(await r.arrayBuffer()) });
+    });
+    await pp.route('https://btl-plg-az-mva-intake.onrender.com/intake', (route) => {
+      const f = new URLSearchParams(route.request().postData()); const p = JSON.parse(f.get('payload'));
+      relayHits.push({ origin: route.request().headers().origin, p });
+      route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': 'https://besttortlawyers.com' }, body: JSON.stringify({ status: 'received', receipt_id: 'PLG-' + p.submission_id }) });
+    });
+    await pp.goto('https://besttortlawyers.com/phillips-law/az-accident/?utm_source=meta&fbclid=FB-TEST');
+    assert.equal(await pp.isVisible('#previewFlag'), false, 'no preview flag on production');
+    await pp.fill('#full_name', 'Mock Person'); await pp.fill('#phone', '6025550142');
+    for (const g of ['accident_type', 'injured']) await pp.locator(`#leadForm input[name=${g}]`).first().check();
+    await pp.waitForTimeout(2600); await pp.click('#submitBtn');
+    await pp.waitForSelector('.receipt', { timeout: 8000 });
+    assert.equal(relayHits.length, 1); assert.equal(relayHits[0].origin, 'https://besttortlawyers.com');
+    assert.equal(relayHits[0].p.test, undefined, 'a real production request carries no test flag');
+    assert.equal(relayHits[0].p.attribution.fbclid, 'FB-TEST');
+    console.log('production host: posts to the production relay with origin https://besttortlawyers.com, receipt shown');
+    await pctx.close();
   } finally {
     await browser.close(); srv.close();
   }

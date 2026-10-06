@@ -13,16 +13,18 @@
   var CONFIG = {
     campaign_id: 'PLG-AZ-MVA-3PATH-2026-10',
     tenant_id: 'BTL', buyer_id: 'phillips', domain_id: 'besttortlawyers.com',
-    // TODO(launch gate): web intake endpoint (Make webhook → BigQuery row → Sofia outbound → Phillips transfer).
-    // Empty = fail closed: nothing is sent and the visitor is told plainly. Must return {status:'received', receipt_id}.
+    // Human-only intake (Kyle 2026-10-06): production relay → Make 6525665 → BigQuery raw event; no calls, texts,
+    // email or buyer delivery. Used only on the production hosts below; anywhere else stays empty = fail closed.
     endpoint: '',
+    production_endpoint: 'https://btl-plg-az-mva-intake.onrender.com/intake',
+    production_hosts: ['besttortlawyers.com', 'www.besttortlawyers.com'],
     // Safe staging only: the Render relay keeps the Make webhook secret, accepts synthetic tests only,
     // and cannot trigger calls, texts, email, buyer delivery or ad events.
     synthetic_endpoint: 'https://btl-plg-az-mva-intake-stage-20261005.onrender.com/intake',
     // Phillips PI/MVA intake DID (legal-web-lead/config/phillips-lane/routes.json, confirmed 2026-09-07).
     firm_phone: { e164: '+16022003976', display: '(602) 200-3976' },
-    // TODO(launch gate): a Phillips-branded Sofia assistant bound to its own number (identity rule: no borrowing NIL/BTL lines).
-    // verified:false => the "Call Sofia" button opens the callback form instead of dialing.
+    // AI voice is OFF until Phillips approves it in writing (indemnification agreement 1(f)).
+    // verified:false => the path B button opens the human callback form instead of dialing.
     sofia_phone: { e164: '', display: '', verified: false },
     consent_version: 'plg-azmva-consent-2026-10-05-v1', // approved by Kyle 2026-10-05
     timeout_ms: 15000
@@ -33,7 +35,10 @@
 
   var params = new URLSearchParams(location.search);
   var isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-  var SYNTHETIC = params.get('ee_test') === 'synthetic' && (isLocal || /\.onrender\.com$/.test(location.hostname));
+  var isProd = CONFIG.production_hosts.indexOf(location.hostname) >= 0;
+  if (isProd) CONFIG.endpoint = CONFIG.production_endpoint;
+  // Synthetic tests are flagged and fully suppressed (no contact, no delivery) on every host, production included.
+  var SYNTHETIC = params.get('ee_test') === 'synthetic' && (isLocal || isProd || /\.onrender\.com$/.test(location.hostname));
   if (SYNTHETIC && /\.onrender\.com$/.test(location.hostname)) CONFIG.endpoint = CONFIG.synthetic_endpoint;
   if (SYNTHETIC && isLocal && params.get('ee_endpoint')) CONFIG.endpoint = params.get('ee_endpoint');
 
