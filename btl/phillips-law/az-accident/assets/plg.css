@@ -254,3 +254,5 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 /* v5 — transparent PLG toolbox logo, no white plate */
 .brand img{height:48px}
 @media(max-width:760px){.brand img{height:40px}}
+/* Phillips SB 37 directive: nationwide disclaimer at the very top, visible without scrolling, 12pt Roman. */
+.ca-disclaimer{margin:0;padding:6px 16px;background:#fff;color:#111;border-bottom:1px solid #ddd;font:12pt/1.35 "Times New Roman",Times,serif;text-align:center}

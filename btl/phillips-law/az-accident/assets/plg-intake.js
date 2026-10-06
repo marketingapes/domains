@@ -69,7 +69,7 @@
       document.getElementById('callSub').textContent = CONFIG.sofia_phone.display;
       sofiaBtn.addEventListener('click', function () { track('ee_call_click', false, { call_target: 'sofia' }); });
     } else {
-      document.getElementById('callSub').textContent = 'Tap and Sofia calls you in about a minute';
+      document.getElementById('callSub').textContent = 'A person from the intake team calls you back';
       var cb2 = document.getElementById('openCb'); if (cb2) cb2.hidden = true; // one button until Sofia has her own line
       sofiaBtn.addEventListener('click', function (e) { e.preventDefault(); openCallback(); });
     }
@@ -211,8 +211,8 @@
       '<h2>Got it. Keep your phone close.</h2><p></p><dl><dt>Reference</dt><dd><span class="ref-chip"></span></dd></dl>' +
       '<a class="btn-call" href="tel:' + CONFIG.firm_phone.e164 + '" data-placement="receipt"><span>Rather talk now? Call ' + CONFIG.firm_phone.display + '</span></a>';
     w.querySelector('p').textContent = ai
-      ? 'Sofia will call you in about a minute to hear what happened, then connect you with Phillips Law Group’s Arizona intake team.'
-      : 'Someone will call you shortly to hear what happened and connect you with Phillips Law Group’s Arizona intake team. Watch for a text from us too.';
+      ? 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.'
+      : 'A person from Phillips Law Group’s Arizona intake team will call you back. Requests received overnight are returned starting at 8 AM Arizona time.';
     w.querySelector('.ref-chip').textContent = 'PLG·' + String(receipt).replace(/[^a-z0-9]/gi, '').slice(-6).toUpperCase();
     w.querySelector('.btn-call').addEventListener('click', function () { track('ee_call_click', false, { call_target: 'firm', placement: 'receipt' }); });
     body.appendChild(w); w.focus();
