@@ -292,3 +292,27 @@ test('pending items show their owner and due date, or say none is set; nothing c
     globalThis.document = oldDocument;
   }
 });
+
+test('campaign pages and ad previews render as https links only, opened without a referrer', async () => {
+  const oldDocument = globalThis.document;
+  const { els, document } = renderDom(['sm-head', 'sm-body', 'sm-checklist', 'sm-tasks', 'task-form', 'rq-form', 'rq-msg', 'rq-list', 'lead-detail']);
+  globalThis.document = document;
+  try {
+    P._state.campaign = 'mva';
+    P._state.feed = P.normalizeFeed({ schema: 'perspective/v1', client: { id: 'syn', name: 'Synthetic Firm', short_name: 'Synthetic' }, transfers: [],
+      access: { sections: ['summary'], owner: false, email: 'basic@example.test' },
+      campaigns: [{ id: 'mva', label: 'MVA', needs: [], links: [
+        { kind: 'page', label: 'A · Form + call', url: 'https://example.onrender.com/a/' },
+        { kind: 'ad', label: 'Meta <N1>', url: 'https://fb.me/abc', note: 'paused' },
+        { kind: 'page', label: 'evil', url: 'javascript:alert(1)' },
+        { kind: 'ad', label: 'plain', url: 'http://example.com/' }] }],
+      tasks: [], requests: [], leads: [] });
+    P._renderSummary();
+    const html = els.get('sm-body').innerHTML;
+    assert.match(html, /<h4[^>]*>Pages<\/h4>/);
+    assert.match(html, /<h4[^>]*>Ad previews<\/h4>/);
+    assert.match(html, /href="https:\/\/example\.onrender\.com\/a\/" target="_blank" rel="noopener noreferrer">A · Form \+ call<\/a>/);
+    assert.match(html, /Meta &lt;N1&gt;<\/a> <small>paused<\/small>/);
+    assert.doesNotMatch(html, /javascript:|http:\/\/example\.com|>evil<|>plain</);
+  } finally { globalThis.document = oldDocument; }
+});
