@@ -1,0 +1,1369 @@
+{
+  "version": 2,
+  "firm": {
+    "name": "Sample Law Firm",
+    "reviewer": "Campaign buyer",
+    "initials": "SF",
+    "accent": "#e9c675",
+    "website": null
+  },
+  "service": {
+    "name": "Best Tort Lawyers",
+    "shortName": "BTL",
+    "identity": "A legal matching service, separate from the receiving law firm.",
+    "claimantCopy": "Tell us what happened. We will help you find a law firm that handles your type of claim."
+  },
+  "scenario": {
+    "name": "Aurora Sample Kit",
+    "headline": "A clearer path to the next conversation.",
+    "adCopy": "Explore how a mass tort inquiry could move from a first conversation to a law firm\u2019s intake team. This fictional product scenario is for demonstration only.",
+    "description": "Imagine a fictional inquiry about the Aurora Sample Kit. Sofia asks two sample questions, checks your permission, and introduces a second AI playing the firm\u2019s intake receptionist.",
+    "questions": [
+      {
+        "id": "use",
+        "label": "In this fictional scenario, did Alex use the Aurora Sample Kit in 2022?",
+        "options": [
+          "Yes \u2014 fictional sample",
+          "No \u2014 fictional sample"
+        ]
+      },
+      {
+        "id": "state",
+        "label": "Which sample state should Sofia include in the handoff?",
+        "options": [
+          "California \u2014 fictional sample",
+          "Arizona \u2014 fictional sample"
+        ]
+      }
+    ]
+  },
+  "phone": {
+    "number": null,
+    "label": "Live Sofia phone demo \u00b7 awaiting approval",
+    "routeApproved": false,
+    "note": "The Sofia-to-second-AI phone route is not connected to this page. Try the clearly labeled browser simulation below; it places no calls."
+  },
+  "proposal": {
+    "title": "Put AI to the test.",
+    "inclusions": [
+      "A branded ad and campaign setup for the agreed market, subject to firm and platform approval",
+      "A branded landing page with agreed request and consent language",
+      "A phone-number plan with inbound AI intake and requested, consented outbound follow-up using Vapi; number and routing need separate approval",
+      "Your firm\u2019s Perspective portal showing campaign source, spend, inquiries, follow-up, attempted/connected handoffs and firm-reported outcomes",
+      "An AI sales guide to explain and demonstrate the package; live calling access and usage need separate approval",
+      "A two-week test. Usage, number/hosting limits and future operating fees require written terms; no unlimited or lifetime access is promised"
+    ],
+    "price": 7500,
+    "priceLabel": "$7,500 total test budget",
+    "mediaNote": "$2,500 Marketing Apes service fee + $5,000 ring-fenced ad budget. The total budget is not service-fee revenue or profit.",
+    "paymentUrl": null,
+    "approved": false,
+    "fee": 2500,
+    "mediaBudget": 5000,
+    "testDuration": "Two-week test",
+    "plannedStart": "Set together after campaign, consent and launch readiness are confirmed.",
+    "startConditional": true,
+    "pitch": "Can we lower your cost per acquisition in two weeks?",
+    "comparison": "Can your agency or marketing team show you this entire process? Try ours.",
+    "channels": [
+      {
+        "name": "Google",
+        "status": "Planned, subject to campaign and platform approval"
+      },
+      {
+        "name": "Facebook",
+        "status": "Planned, subject to campaign and platform approval"
+      },
+      {
+        "name": "TikTok",
+        "status": "Conditional on legal-service policy eligibility; not a promised launch channel"
+      }
+    ],
+    "ongoingOperatingFee": null,
+    "payment": {
+      "providerCandidate": "QuickBooks",
+      "merchantVerified": false,
+      "termsVerified": false,
+      "merchantIdentity": null,
+      "allowedHosts": [
+        "intuit.com",
+        "quickbooks.com"
+      ]
+    }
+  },
+  "contact": {
+    "name": "Kyle",
+    "number": "+16197360356",
+    "display": "619-736-0356",
+    "verified": true,
+    "note": "Marketing Apes business line \u00b7 confirmed in existing site configuration. Text delivery has not been tested."
+  },
+  "selectedCampaign": "talc",
+  "campaigns": [
+    {
+      "id": "talc",
+      "category": "Mass torts",
+      "label": "Talc \u00b7 fictional product",
+      "scenarioName": "Aurora Sample Kit",
+      "firmCriteria": [
+        "Draft only: sample product use and state; no diagnosis collected.",
+        "Replace with receiving firm\u2019s written criteria before launch."
+      ],
+      "questions": [
+        {
+          "id": "use",
+          "label": "In this fictional scenario, did Alex use the Aurora Sample Kit in 2022?",
+          "options": [
+            "Yes \u2014 fictional sample",
+            "No \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include in the handoff?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "availability": "demo-only",
+      "adCopy": "Explore how a fictional mass torts inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "paraquat",
+      "category": "Mass torts",
+      "label": "Paraquat \u00b7 fictional sample",
+      "scenarioName": "Fictional field-product inquiry",
+      "firmCriteria": [
+        "Draft only: sample work setting and state; no diagnosis collected.",
+        "No legal or medical eligibility decision is made."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional work setting should Alex use?",
+          "options": [
+            "Farm \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should be included?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "availability": "demo-only",
+      "adCopy": "Explore how a fictional mass torts inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "church",
+      "category": "Sex abuse",
+      "label": "Church / clergy \u00b7 fictional sample",
+      "scenarioName": "Fictional church-setting inquiry",
+      "firmCriteria": [
+        "Draft only: setting, sample state and preference to speak.",
+        "Firm criteria and appropriate consent safeguards require review."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Select a fictional setting; no names or details are needed.",
+          "options": [
+            "Church / clergy setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which fictional state should Alex use?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "availability": "demo-only",
+      "adCopy": "Explore how a fictional sex abuse inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "medical",
+      "category": "Sex abuse",
+      "label": "Doctor / medical provider \u00b7 fictional sample",
+      "scenarioName": "Fictional medical-setting inquiry",
+      "firmCriteria": [
+        "Draft only: provider setting, sample state and preference to speak.",
+        "No provider identity, graphic account or health information collected."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Select a fictional setting; no provider names or details are needed.",
+          "options": [
+            "Medical-provider setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which fictional state should Alex use?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "availability": "demo-only",
+      "adCopy": "Explore how a fictional sex abuse inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "workers",
+      "category": "Workers\u2019 compensation",
+      "label": "Workers\u2019 compensation \u00b7 fictional sample",
+      "scenarioName": "Fictional workplace inquiry",
+      "firmCriteria": [
+        "Draft only: sample work connection and state.",
+        "No determination of compensability or representation."
+      ],
+      "questions": [
+        {
+          "id": "work",
+          "label": "Was Alex\u2019s fictional inquiry related to work?",
+          "options": [
+            "Yes \u2014 fictional sample",
+            "Unsure \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which fictional state should Alex use?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "availability": "demo-only",
+      "adCopy": "Explore how a fictional workers\u2019 compensation inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "school",
+      "category": "Sex abuse",
+      "label": "School \u00b7 fictional sample",
+      "scenarioName": "Fictional school-setting inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample school setting and state; no alleged person or institution named.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "School setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional sex abuse inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "detention",
+      "category": "Sex abuse",
+      "label": "Detention \u00b7 fictional sample",
+      "scenarioName": "Fictional detention-setting inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample detention setting and state; no graphic accounts.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Detention setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional sex abuse inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "device",
+      "category": "Mass torts",
+      "label": "Medical device \u00b7 fictional sample",
+      "scenarioName": "Fictional device inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample device use and state; no health or diagnosis data.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Fictional device \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional mass torts inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "drug",
+      "category": "Mass torts",
+      "label": "Drug \u00b7 fictional sample",
+      "scenarioName": "Fictional drug inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample product setting and state; no prescriptions or diagnosis data.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Fictional product \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional mass torts inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "premises",
+      "category": "Premises liability",
+      "label": "Premises liability \u00b7 fictional sample",
+      "scenarioName": "Fictional property inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample property setting and state; no fault determination.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Public property setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional premises liability inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "product",
+      "category": "Product liability",
+      "label": "Product liability \u00b7 fictional sample",
+      "scenarioName": "Fictional product inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample product setting and state; no eligibility promise.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Fictional household product \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional product liability inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "nursing",
+      "category": "Nursing-home abuse / neglect",
+      "label": "Nursing-home abuse / neglect \u00b7 fictional sample",
+      "scenarioName": "Fictional care-setting inquiry",
+      "availability": "demo-only",
+      "firmCriteria": [
+        "Draft only: sample care setting and state; no actual health or abuse accounts.",
+        "Actual receiving-firm criteria and appropriate review remain pending."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose Alex\u2019s fictional setting; no names or sensitive details are needed.",
+          "options": [
+            "Care facility setting \u2014 fictional sample",
+            "Other setting \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore how a fictional nursing-home abuse / neglect inquiry could move from a first conversation to a law firm\u2019s intake team. Sample creative for demonstration only; no actual claimant information or firm endorsement."
+    },
+    {
+      "id": "sexual-abuse",
+      "category": "Abuse",
+      "label": "Sexual abuse \u00b7 fictional sample",
+      "scenarioName": "Fictional sexual abuse inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "sexual-abuse",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional sexual abuse inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "depo-provera",
+      "category": "Medication",
+      "label": "Depo-Provera \u00b7 fictional sample",
+      "scenarioName": "Fictional depo-provera inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "depo-provera",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional depo-provera inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "roundup",
+      "category": "Exposure",
+      "label": "Roundup \u00b7 fictional sample",
+      "scenarioName": "Fictional roundup inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "roundup",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional roundup inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "afff",
+      "category": "Exposure",
+      "label": "AFFF firefighting foam \u00b7 fictional sample",
+      "scenarioName": "Fictional afff firefighting foam inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "afff",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional afff firefighting foam inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "hair-relaxer",
+      "category": "Consumer product",
+      "label": "Hair relaxer \u00b7 fictional sample",
+      "scenarioName": "Fictional hair relaxer inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "hair-relaxer",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional hair relaxer inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "hernia-mesh",
+      "category": "Medical device",
+      "label": "Hernia mesh \u00b7 fictional sample",
+      "scenarioName": "Fictional hernia mesh inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "hernia-mesh",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional hernia mesh inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "bard-port",
+      "category": "Medical device",
+      "label": "Bard implanted ports \u00b7 fictional sample",
+      "scenarioName": "Fictional bard implanted ports inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "bard-port",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional bard implanted ports inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "paragard",
+      "category": "Medical device",
+      "label": "Paragard IUD \u00b7 fictional sample",
+      "scenarioName": "Fictional paragard iud inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "paragard",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional paragard iud inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "cpap",
+      "category": "Medical device",
+      "label": "Philips CPAP \u00b7 fictional sample",
+      "scenarioName": "Fictional philips cpap inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "cpap",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional philips cpap inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "exactech",
+      "category": "Medical device",
+      "label": "Exactech implants \u00b7 fictional sample",
+      "scenarioName": "Fictional exactech implants inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "exactech",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional exactech implants inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "suboxone",
+      "category": "Medication",
+      "label": "Suboxone film \u00b7 fictional sample",
+      "scenarioName": "Fictional suboxone film inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "suboxone",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional suboxone film inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "glp-1",
+      "category": "Medication",
+      "label": "GLP-1 medications \u00b7 fictional sample",
+      "scenarioName": "Fictional glp-1 medications inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "glp-1",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional glp-1 medications inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "glp-1-vision",
+      "category": "Medication",
+      "label": "GLP-1 vision claims \u00b7 fictional sample",
+      "scenarioName": "Fictional glp-1 vision claims inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "glp-1-vision",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional glp-1 vision claims inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "tepezza",
+      "category": "Medication",
+      "label": "Tepezza \u00b7 fictional sample",
+      "scenarioName": "Fictional tepezza inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "tepezza",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional tepezza inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "dupixent",
+      "category": "Medication",
+      "label": "Dupixent \u00b7 fictional sample",
+      "scenarioName": "Fictional dupixent inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "dupixent",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional dupixent inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "infant-nutrition",
+      "category": "Consumer product",
+      "label": "Preterm infant nutrition \u00b7 fictional sample",
+      "scenarioName": "Fictional preterm infant nutrition inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "infant-nutrition",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional preterm infant nutrition inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "social-media",
+      "category": "Consumer product",
+      "label": "Social media personal injury \u00b7 fictional sample",
+      "scenarioName": "Fictional social media personal injury inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "social-media",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional social media personal injury inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "uber-assault",
+      "category": "Abuse",
+      "label": "Uber passenger assault \u00b7 fictional sample",
+      "scenarioName": "Fictional uber passenger assault inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "uber-assault",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional uber passenger assault inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "lyft-assault",
+      "category": "Abuse",
+      "label": "Lyft passenger assault \u00b7 fictional sample",
+      "scenarioName": "Fictional lyft passenger assault inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "lyft-assault",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional lyft passenger assault inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "roblox",
+      "category": "Abuse",
+      "label": "Roblox exploitation and assault \u00b7 fictional sample",
+      "scenarioName": "Fictional roblox exploitation and assault inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "roblox",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional roblox exploitation and assault inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "custom",
+      "category": "Custom",
+      "label": "Custom campaign \u00b7 fictional sample",
+      "scenarioName": "Fictional custom campaign inquiry",
+      "availability": "demo-only",
+      "foundationTopic": "custom",
+      "foundationVersion": "2026-09-08.2",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Existing catalog template: receiving-firm criteria and jurisdiction must be reviewed.",
+        "No eligibility determination; medical/claim-review support must be confirmed where applicable."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Which fictional sample setting should Alex use? No actual personal or medical information is needed.",
+          "options": [
+            "Sample setting A \u2014 fictional sample",
+            "Sample setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "Explore a fictional custom campaign inquiry, from a request for help to a permission-based intake introduction. Demonstration only; no eligibility or compensation promise."
+    },
+    {
+      "id": "medmal",
+      "category": "Medical malpractice",
+      "label": "Medical malpractice \u00b7 review required",
+      "scenarioName": "Fictional medical-review inquiry",
+      "availability": "demo-only",
+      "acceptingClaimsVerified": false,
+      "firmCriteria": [
+        "Medical-review support is unconfirmed.",
+        "Receiving-firm jurisdiction and acceptance criteria require review before launch."
+      ],
+      "questions": [
+        {
+          "id": "setting",
+          "label": "Choose a fictional sample setting; no actual diagnosis or provider names are needed.",
+          "options": [
+            "Sample medical setting A \u2014 fictional sample",
+            "Sample medical setting B \u2014 fictional sample"
+          ]
+        },
+        {
+          "id": "state",
+          "label": "Which sample state should Sofia include?",
+          "options": [
+            "California \u2014 fictional sample",
+            "Arizona \u2014 fictional sample"
+          ]
+        }
+      ],
+      "adCopy": "A fictional medical-review conversation for demonstration only. Actual medical-review support and firm acceptance remain to be confirmed."
+    }
+  ],
+  "firmProfiles": {
+    "btl": {
+      "name": "Sample Law Firm",
+      "reviewer": "Campaign buyer",
+      "initials": "SF",
+      "accent": "#e9c675",
+      "website": null
+    }
+  },
+  "title": "BTL Campaign Demonstration",
+  "conditionalCampaigns": [
+    {
+      "id": "medmal",
+      "label": "Medical malpractice",
+      "availability": "review-required",
+      "reason": "Medical-review support and receiving-firm criteria must be confirmed before launch."
+    }
+  ],
+  "removedCategories": [
+    "vehicle campaigns",
+    "wrongful death"
+  ],
+  "caseStudy": {
+    "title": "LA County: 62 intakes. 18 reported signed.",
+    "status": "Historical LA County cohort \u00b7 September 2026 reconciliation",
+    "summary": "The September frozen-cohort reconciliation reports 62 LA County intakes and 18 reported signed using the historical Litify reporting convention.",
+    "metrics": [
+      {
+        "label": "LA County intakes",
+        "value": "62"
+      },
+      {
+        "label": "Reported signed",
+        "value": "18"
+      }
+    ],
+    "period": "September 2026 frozen cohort. September 14, 2026 reconciliation based on the September 10 export, cross-checked with September 3 and 6 exports.",
+    "caveat": "Reported signed follows the historical Litify convention. Executed retainers were not independently audited in this demonstration. Historical results; no guarantee of future performance. These figures do not establish that AI caused the result. No cost-per-signed headline is shown while spend attribution is reconciled.",
+    "sourceUrls": []
+  },
+  "foundation": {
+    "catalogVersion": "2026-09-08.2",
+    "intakeModes": [
+      {
+        "mode": "prequalify",
+        "name": "Prequalification"
+      },
+      {
+        "mode": "open",
+        "name": "Open-ended \u00b7 Form / Call"
+      },
+      {
+        "mode": "ai",
+        "name": "AI-assisted intake"
+      }
+    ],
+    "liveConnected": false
+  },
+  "business": {
+    "brandId": "btl",
+    "name": "Best Tort Lawyers",
+    "provider": "Marketing Apes",
+    "offer": "Configured campaign test",
+    "liveConnected": false
+  },
+  "ecosystem": [
+    {
+      "name": "Best Tort Lawyers",
+      "role": "Matching-service campaign experience",
+      "identity": "btl"
+    },
+    {
+      "name": "DoIHaveAClaim",
+      "role": "Claim-check context",
+      "identity": "dihac"
+    },
+    {
+      "name": "Nearest Injury Lawyers",
+      "role": "Separate matching-service brand",
+      "identity": "nil"
+    }
+  ],
+  "journey": {
+    "defaultEntry": "landing",
+    "entryRoutes": [
+      {
+        "id": "landing",
+        "label": "Ad \u2192 landing-page capture"
+      },
+      {
+        "id": "native",
+        "label": "Facebook native lead form \u2192 Sofia follow-up"
+      }
+    ],
+    "followupConsentText": "For this simulation, fictional Alex chooses to request an AI follow-up from BTL about the selected sample scenario. This does not authorize a real call or text.",
+    "consentVersion": "btl-synthetic-demo-v2",
+    "qualification": {
+      "criteriaApproved": false,
+      "medicalReviewConfirmed": false
+    },
+    "destination": {
+      "kind": "demo_receiver",
+      "firm": "Sample Law Firm",
+      "liveBindingApproved": false
+    },
+    "outcome": {
+      "target": "Firm-reported outcome",
+      "actual": null
+    },
+    "retargeting": {
+      "enabled": false,
+      "availability": "Optional only where campaign and platform policy permit. No health/abuse sensitive-list targeting or sensitive-data events."
+    }
+  },
+  "offer": {
+    "name": "One-time configured campaign test",
+    "durationDays": 14,
+    "recurring": false,
+    "ownershipTransfer": false,
+    "guarantee": null
+  },
+  "budget": {
+    "currency": "USD",
+    "serviceFee": 2500,
+    "mediaBudget": 5000,
+    "total": 7500,
+    "actualSpent": null,
+    "remainingMedia": null
+  },
+  "dashboard": {
+    "sampleSpend": [
+      {
+        "channel": "Facebook",
+        "amount": 120
+      },
+      {
+        "channel": "Google",
+        "amount": 60
+      }
+    ],
+    "inquiries": [
+      {
+        "id": "DEMO-001",
+        "name": "Fictional Alex",
+        "source": "Facebook native form",
+        "followup": "Sample screening complete",
+        "followupComplete": true,
+        "attempted": true,
+        "connected": true,
+        "outcome": "Reported signed \u00b7 sample",
+        "reportedSigned": true
+      },
+      {
+        "id": "DEMO-002",
+        "name": "Fictional Jordan",
+        "source": "Facebook landing page",
+        "followup": "Sample screening complete",
+        "followupComplete": true,
+        "attempted": true,
+        "connected": false,
+        "outcome": "No firm outcome reported \u00b7 sample",
+        "reportedSigned": false
+      },
+      {
+        "id": "DEMO-003",
+        "name": "Fictional Sam",
+        "source": "Google sample request",
+        "followup": "Awaiting follow-up permission \u00b7 sample",
+        "followupComplete": false,
+        "attempted": false,
+        "connected": false,
+        "outcome": "Not yet reported \u00b7 sample",
+        "reportedSigned": false
+      }
+    ]
+  },
+  "salesAgent": {
+    "liveConnected": false,
+    "webCallApproved": false,
+    "state": "Prepared; connection and usage approval pending"
+  }
+}

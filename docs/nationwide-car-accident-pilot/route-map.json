@@ -1,0 +1,107 @@
+{
+  "schema": "marketingapes.pilot-route-draft/v1",
+  "state": "preparation-only",
+  "requestedFocus": "Nationwide car-accident inquiries",
+  "requestedRecipientDisplayName": "Jeffrey Phillips \u2014 identified by Kyle",
+  "recipient": {
+    "legalName": null,
+    "firm": "Phillips \u2014 legal receiving entity and intake acceptance remain unverified",
+    "verified": false,
+    "intakeDestination": null,
+    "destinationType": null,
+    "contactName": "Jeffrey Phillips",
+    "identitySource": "Kyle explicitly clarified Jeffrey Phillips, not Nadrich"
+  },
+  "geography": {
+    "requested": "Nationwide",
+    "approvedStates": null,
+    "jurisdictionAcceptanceVerified": false
+  },
+  "facebookNativeLead": {
+    "pageId": null,
+    "adAccountId": null,
+    "campaignId": null,
+    "formId": null,
+    "creativeApproved": false,
+    "consentText": null,
+    "consentVersion": null,
+    "followupPermissionVerified": false,
+    "activated": false
+  },
+  "qualification": {
+    "firmApprovedCriteria": null,
+    "claimantScreeningApproved": false,
+    "billableDefinition": null,
+    "signedOutcomeDefinition": null,
+    "reuseArizonaCriteria": false,
+    "proposedSelfReportedScreen": [
+      {
+        "id": "injured",
+        "question": "In this fictional car-accident example, does the sample person report being injured?",
+        "options": [
+          "Yes \u2014 fictional self-report",
+          "No \u2014 fictional self-report"
+        ]
+      },
+      {
+        "id": "notAtFault",
+        "question": "In this fictional example, does the sample person report that they were not at fault?",
+        "options": [
+          "Yes \u2014 fictional self-report",
+          "No \u2014 fictional self-report",
+          "Unsure \u2014 fictional self-report"
+        ]
+      }
+    ],
+    "screenDisclaimer": "Self-reports only. No finding of fault, medical diagnosis, legal eligibility, representation or firm acceptance.",
+    "criteriaApprovalPending": true
+  },
+  "vapi": {
+    "inbound": {
+      "phoneNumberId": null,
+      "ownedNumber": null,
+      "assistantId": null,
+      "routeApproved": false
+    },
+    "requestedOutboundFollowup": {
+      "assistantId": null,
+      "onlyAfterVerifiedRequestAndConsent": true,
+      "callbackSchedule": null,
+      "approved": false
+    },
+    "handoff": {
+      "destination": null,
+      "attemptedEvidenceRequired": true,
+      "connectedEvidenceRequired": true,
+      "receiverAcceptanceVerified": false,
+      "approved": false
+    }
+  },
+  "budget": {
+    "mediaAmount": null,
+    "serviceTerms": null,
+    "approved": false
+  },
+  "reporting": {
+    "source": "Verified Facebook lead event when connected",
+    "followup": "Verified Vapi event when connected",
+    "handoffAttempted": "Separate verified event",
+    "handoffConnected": "Separate verified receiver/connection event",
+    "firmOutcome": "Verified firm-reported outcome; definition pending",
+    "actualEventsConnected": false
+  },
+  "sideEffects": {
+    "adsActivated": false,
+    "spendAuthorized": false,
+    "numbersPurchased": false,
+    "routingChanged": false,
+    "callsPlaced": false,
+    "leadsTransferred": false
+  },
+  "coordination": {
+    "existingLiveArizonaOwner": "Claude",
+    "editLiveArizona": false,
+    "replaceArizonaRestriction": false,
+    "publicFirmEndorsementApproved": false
+  }
+}
