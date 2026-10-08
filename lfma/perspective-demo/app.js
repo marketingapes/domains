@@ -2,7 +2,7 @@ const main = document.querySelector('main');
 const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const read = (store,key) => {try{return JSON.parse(store.getItem(key));}catch{return null;}};
 const save = (store,key,value) => {try{store.setItem(key,JSON.stringify(value));}catch{}};
-const base = await fetch('config.json').then(r=>{if(!r.ok)throw new Error('Configuration unavailable');return r.json();});
+const base = await fetch(new URL('./config.json',import.meta.url)).then(r=>{if(!r.ok)throw new Error('Configuration unavailable');return r.json();});
 let config = structuredClone(base), overrides = read(localStorage,'lfma-perspective-public-brand-v1');
 if(overrides){if(typeof overrides.firm==='string')config.firm.name=overrides.firm; if(typeof overrides.firm==='string')config.firm.initials=overrides.firm.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase(); if(typeof overrides.reviewer==='string')config.firm.reviewer=overrides.reviewer;if(/^#[a-f\d]{6}$/i.test(overrides.accent||''))config.firm.accent=overrides.accent;if(typeof overrides.scenario==='string')config.scenario.name=overrides.scenario;if(typeof overrides.headline==='string')config.scenario.headline=overrides.headline;if(typeof overrides.adCopy==='string')config.scenario.adCopy=overrides.adCopy;}
 const fresh=()=>({entry:config.journey.defaultEntry,captureConsent:false,captured:false,campaign:config.selectedCampaign,phase:'idle',answers:{},attempted:false,connected:false,consent:null,source:null,events:[],outcome:'connected'});

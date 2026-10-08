@@ -78,3 +78,9 @@ Next: Keep LFMA package page staged. Verify actual receiving entity/destination 
 Saw: Kyle confirmed the executive Jeffrey Phillips discussion does not block the previously authorized generic product demo. Claude retains ownership of live Arizona.
 Did: Prepared the LFMA-only Perspective/package page for publication. Normal approved execution resolved socket EPERM; build/foundation/287repository tests pass,19targeted Chromium checks pass. Isolated saved-assistant action was rejected by auto-review; direct approval is pending, no POST occurred. Public voice and checkout controls remain unavailable.
 Next: Publish only dedicated LFMA route via the established GitHub auto-deploy, verify exact public assets and unchanged existing routes. No AZ or other-brand/service changes.
+
+
+## 2026-10-08 UTC — Codex (LFMA public slash-path correction)
+Saw: PR257merged as71ad19d; LFMA Render auto-deploydep-db4170mq1p3s73dae420is Live. Four release assets match HTTPS, old LFMA route hashes are unchanged. Public browser check found Render serves /perspective-demo without redirecting, so relative assets resolved at the root.
+Did: Scoped asset URLs to /perspective-demo and resolve config relative to the module URL. No service/redirect config or other route changed.
+Next: Verify both slash URL forms locally, merge the narrow correction after CI and rerun public19checks. Isolated Vapi save remains blocked by auto-review pending direct approval.
