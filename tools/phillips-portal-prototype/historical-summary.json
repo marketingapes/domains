@@ -1,0 +1,39 @@
+{
+  "schema": "phillips.historical-summary/v1",
+  "mode": "DEIDENTIFIED_HISTORICAL_SOURCE_RECEIPT",
+  "source_receipt_as_of": "2026-10-04",
+  "coverage": "INCOMPLETE",
+  "private_source_sha256": "b344ec243751afae4919e022a70b6374a1d8854d841b07c09391d77e6027c5c2",
+  "private_bytes_verified_locally": true,
+  "dispatch_evidence_events": 135,
+  "campaign_events": {
+    "mva": 39,
+    "la": 93,
+    "unassigned_september_email": 3
+  },
+  "api_success_events": 77,
+  "email_lead_record_events": 58,
+  "email_messages": 56,
+  "dated_events": 97,
+  "undated_la_api_events": 38,
+  "explicit_firm_intake_matches": 96,
+  "distinct_campaign_source_keys": 119,
+  "events_missing_source_id": 14,
+  "repeated_source_ids": 2,
+  "separate_firm_intakes": {
+    "total": 384,
+    "marketing_apes": 166,
+    "deadleads": 218
+  },
+  "excluded_unverified_transfer_notifications": 28,
+  "converted_statuses": 19,
+  "verified_signed_proofs": 0,
+  "actual_signed_total": null,
+  "unique_people_total": null,
+  "firm_receipt_total": null,
+  "current_campaign_totals": false,
+  "source_period": "Historical sources through Oct4 firm report; intake-created dates May12\u2013Sep23 are not dispatch dates",
+  "row_population_status": "DEIDENTIFIED_135_EVENT_ROWS_POPULATED",
+  "outbound_enabled": false,
+  "received_timestamp_rows": 78
+}

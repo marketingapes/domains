@@ -1,0 +1,29 @@
+{
+  "mode": "HISTORICAL_REFERENCE_ONLY",
+  "images_visually_checked": true,
+  "contains_lead_pii": false,
+  "assets": [
+    {
+      "campaign": "mva",
+      "filename": "phillips-mva-august-2026-historical-creative.jpeg",
+      "label": "Arizona MVA \u00b7 August 2026 campaign artwork",
+      "limits": "Archived August21 briefing. Planned August24 launch; delivery and individual lead attribution unavailable.",
+      "bytes": 95426,
+      "sha256": "2cd886223ea8594e982c4febb51c139351d8cd043a30a8a9b4267a801efb9126",
+      "library_file_id": "libfile_aff4eed8e40881919d4f50fb9307748b",
+      "attribution": "HISTORICAL_CAMPAIGN_REFERENCE_ONLY",
+      "live_approval": false
+    },
+    {
+      "campaign": "la",
+      "filename": "phillips-la-county-may-2026-facebook-preview.png",
+      "label": "LA County \u00b7 May 2026 Facebook preview",
+      "limits": "Archived May7 Best Tort Lawyers / Phillips preview. Historical campaign association; numerical ad ID and individual lead attribution unavailable.",
+      "bytes": 95417,
+      "sha256": "7ea79db7f1e389bda68c1e1958c064f603af5c50c36866d3d976e9da5bb14b84",
+      "library_file_id": "libfile_d7a48723f17c819189bf7f0d2524f4c9",
+      "attribution": "HISTORICAL_CAMPAIGN_REFERENCE_ONLY",
+      "live_approval": false
+    }
+  ]
+}
