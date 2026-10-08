@@ -1,0 +1,20 @@
+{
+  "readOnly": true,
+  "authenticatedReads": [
+    {
+      "endpoint": "assistant",
+      "status": 200,
+      "records": 26,
+      "matchingSalesAssistantCount": 0
+    },
+    {
+      "endpoint": "phone-number",
+      "status": 200,
+      "records": 7
+    }
+  ],
+  "credentialsReused": true,
+  "credentialsAdded": false,
+  "callsPlaced": false,
+  "assistantCreated": false
+}

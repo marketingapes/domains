@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://lawfirmmarketingapes.com/",
+    "status": 200,
+    "sha256": "2426fd40f2022edea90ebcf5533db4c4d95167b95936fd54681a075ff39ef798",
+    "bytes": 14982
+  },
+  {
+    "url": "https://lawfirmmarketingapes.com/demo/",
+    "status": 200,
+    "sha256": "cfe24095c89a55c280e31b17a711f5d8f0ce57dadc22cd1dd28112ae050cc354",
+    "bytes": 7419
+  },
+  {
+    "url": "https://lawfirmmarketingapes.com/perspective-demo/",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://lawfirmmarketingapes.com/paraquat-pilot/",
+    "status": 200,
+    "sha256": "c7c02f70766a02c26cd964f99666c9e393bbf70aed14b5f1c498a8ca0f565802",
+    "bytes": 19503
+  },
+  {
+    "url": "https://lawfirmmarketingapes.com/portal/",
+    "status": 200,
+    "sha256": "3f643e0c2868e4ee1fa6ef2ba958b7295c1c2b70cec9f514bee7b7d0ba08c8c9",
+    "bytes": 6353
+  }
+]
