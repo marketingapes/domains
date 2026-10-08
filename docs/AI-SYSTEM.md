@@ -54,3 +54,9 @@ Next: Kyle gates in the receipt. Google Ads Editor: finish BTL import (screen lo
 Saw: current portal body retained stale current-state promises and a lead-loader script whose target nodes were absent. Draft PR182 added an aggregate report tab but inherited those claims.
 Did: staged `dot/portal-reporting-truth-20261002`, aggregate-only protected report shell and corrected renderer, synthetic tests. No merge, deployment or token distribution. Full source suite197/197 and foundation pass; Chromium render blocked by local socket permissions.
 Next: review with the corrected legal-web-lead report API and native deferred index; run actual browser and authenticated API checks. Keep access distribution on hold.
+
+
+## 2026-10-08 UTC — Codex (authorized dedicated LFMA demonstration publication)
+Saw: Kyle explicitly authorized this dedicated page’s necessary push/merge and LFMA deploy. Existing /demo/ is occupied; actual GitHub main is dc89609, and its changed LFMA portal files already match live HTTPS bytes.
+Did: Added only lfma/perspective-demo plus private verification docs. Reused the configurable tested demo; generic receiving firm, clear simulation, separate September62/18historical proof, one-time2500fee+5000media proposal, no fixed launch date, verified business contact. Recorded a real44.92-second silent captioned WebM tour and accessible transcript.19local Chromium checks pass. Phone routing/payment/ads remain untouched.
+Next: Verify release checks, authorized GitHub merge/auto-deploy, HTTPS assets/unchanged route hashes and public browser journey. Real phone binding, intake receipts and payment merchant/link/terms remain separate gates.

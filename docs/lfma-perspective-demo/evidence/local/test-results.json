@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-08T21:48:53.087Z",
+  "passed": [
+    "Facebook preview → branded landing; protected phone route",
+    "Sample questions → explicit yes → distinct attempted/connected → proposal",
+    "Reload retains synthetic completed receipt",
+    "Declined handoff never attempted or connected",
+    "Cancellation during pending handoff cannot later connect",
+    "Navigation interrupts pending attempt; back/repeated path stays disconnected",
+    "Reload interrupts pending attempt",
+    "Unavailable receiver preserves attempted yes / connected no and supports retry",
+    "Reset discards sample answers and statuses",
+    "Catalog switches one journey with distinct questions; no vehicle/wrongful-death options",
+    "Personalization is reusable, escaped and persistent; generic review profile",
+    "Responsive at 390, 768 and 1440px; every route fits without horizontal overflow",
+    "Native Facebook capture is an alternative entry, with explicit simulated follow-up permission",
+    "Landing capture preserves separate route and approval/medical-review gates",
+    "A repeated capture starts a fresh sample without carrying prior answers or receiver success",
+    "Public assets contain no named clients, private routes, scores or proof-document links",
+    "Repeated handoff clicks produce one simulated attempt and no eligibility claim",
+    "45-second captioned video plays; transcript, no autoplay and reduced-motion support",
+    "No external requests, browser errors or exposed voice inventory"
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "screenshots": [
+    "01-ad-desktop.png",
+    "02-landing-desktop.png",
+    "03-receiver-desktop.png",
+    "04-perspective-desktop.png",
+    "05-proposal-desktop.png",
+    "06-generic-proposal.png",
+    "07-native-followup.png",
+    "mobile-ad.png",
+    "mobile-landing.png",
+    "mobile-perspective.png",
+    "mobile-proposal.png",
+    "mobile-sofia.png"
+  ]
+}
