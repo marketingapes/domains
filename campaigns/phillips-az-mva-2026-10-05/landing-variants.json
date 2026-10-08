@@ -1,0 +1,55 @@
+{
+  "status": "COPY_PROPOSAL_ONLY_FROZEN_FILES_UNTOUCHED",
+  "activation": false,
+  "owner": "marketingapes/nil-site",
+  "base_sha": "265b5159ae62a94cb9a70752e07d19d59fb5d174",
+  "frozen_pr": 13,
+  "frozen_head": "d7a9bf4fbb7fb8555f28c7bd8b3b4e53af80aca3",
+  "variants": [
+    {
+      "path": "W1",
+      "url": "https://nearestinjurylawyers.com/mva-pi/",
+      "title": "Arizona Vehicle Accident Intake | Phillips Law Group",
+      "description": "Explore Arizona vehicle-accident intake options. Sofia is AI; attorneys review legal questions. No representation or outcome guaranteed.",
+      "hero": "Arizona vehicle-accident intake options",
+      "cta": "Explore intake options",
+      "legal_review": "pending-attorney-review",
+      "robots": "noindex,nofollow",
+      "geography": "Arizona",
+      "not_implemented": "Frozen PR13 files unchanged. Review this proposal separately after receipt hardening; no production deploy."
+    },
+    {
+      "path": "W2",
+      "url": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/",
+      "title": "Arizona Vehicle Accident Intake | Phillips Law Group",
+      "description": "Explore Arizona vehicle-accident intake options. Sofia is AI; attorneys review legal questions. No representation or outcome guaranteed.",
+      "hero": "Organize the basics with Sofia",
+      "cta": "Learn about Sofia",
+      "legal_review": "pending-attorney-review",
+      "robots": "noindex,nofollow",
+      "geography": "Arizona",
+      "not_implemented": "Frozen PR13 files unchanged. Review this proposal separately after receipt hardening; no production deploy."
+    },
+    {
+      "path": "W3",
+      "url": "https://nearestinjurylawyers.com/mva-pi/quiz/",
+      "title": "Arizona Vehicle Accident Intake | Phillips Law Group",
+      "description": "Explore Arizona vehicle-accident intake options. Sofia is AI; attorneys review legal questions. No representation or outcome guaranteed.",
+      "hero": "A few facts for human review",
+      "cta": "Share basic details",
+      "legal_review": "pending-attorney-review",
+      "robots": "noindex,nofollow",
+      "geography": "Arizona",
+      "not_implemented": "Frozen PR13 files unchanged. Review this proposal separately after receipt hardening; no production deploy."
+    }
+  ],
+  "corrections": [
+    "Replace all50states/nationwide claims and social metadata with Arizona wording on this campaign path.",
+    "Preserve pending-attorney-review and staging robots until applicable reviews pass.",
+    "Use neutral invitation rather than implying visitor injury, matched status or automatic qualification.",
+    "No free review/fee/availability/success claims without approved evidence.",
+    "Keep endpoint in legal-web-lead; no new form POSTs, pixels or buyer adapter in planning package.",
+    "State that human legal review decides representation; retain all intake facts for review, no automated rejection."
+  ],
+  "staging_preview": "review.html: no forms, tel links, pixels or network scripts"
+}

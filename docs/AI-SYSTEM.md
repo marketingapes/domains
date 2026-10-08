@@ -54,3 +54,49 @@ Next: Kyle gates in the receipt. Google Ads Editor: finish BTL import (screen lo
 Saw: current portal body retained stale current-state promises and a lead-loader script whose target nodes were absent. Draft PR182 added an aggregate report tab but inherited those claims.
 Did: staged `dot/portal-reporting-truth-20261002`, aggregate-only protected report shell and corrected renderer, synthetic tests. No merge, deployment or token distribution. Full source suite197/197 and foundation pass; Chromium render blocked by local socket permissions.
 Next: review with the corrected legal-web-lead report API and native deferred index; run actual browser and authenticated API checks. Keep access distribution on hold.
+
+## 2026-10-04 12:30 UTC — Codex (Monday Phillips recovery)
+Saw: freshly read draft PR226 remained open at 9e94a4c0 with successful CI; domains main cc45b117, nil-site main265b5159 and legal-web-lead main d19af948. Original outcome patch was saved only in prior task, not remote.
+Did: recovered existing stage/phillips-az-mva-20261005; expanded inert review.html into full all-channel/intake/transfer/outcome demo. 226 release tests and 41 validator tests pass; six source assets match sizes/SHA256. Chromium375/768/1440: no overflow, errors, HTTP requests or live controls. Recovered private patches with exact historical hashes; backend local commit8446be27 in original three files only, full721 pass/5 skipped, focused29; separate35 local Redis tests cover all5 skipped checks. Existing importer37 pass/2 skipped; separate14 local Redis tests cover both. No additive totals/live integration inferred.
+Next: keep PR226 draft and all campaign controls disabled. Private backend publication remains blocked by coordinator-reported prior Forbidden write; no retry. Resolve budget, staffed hours/6am capture, platform/TikTok/tracker/legal/provider evidence, verified MVA crosswalk and canonical importer/portal loader/readback/retention. Existing canonical client fixes source to web_form; aggregate outbox cannot supply per-lead signed proof. Claude installed but signed out; no review claimed. PR13 and protected portal untouched; no merge/deploy/calls/submissions/spend/grants.
+
+
+### 2026-10-04 Phillips MVA completed staged continuation
+
+Continued existing PR226 branch. Built six still formats, three silent20-second video masters, posters/captions, three isolated landing previews and one self-contained playable review artifact; source logo untouched. Campaign validator46 pass; local browser previews/media pass. Private replay plus default-off offline outcome preparation saved as legal-web-lead draft PR16 991531b; backend728 pass/5 skip and existing canonical raw-runtime memory contract checked. Prior Forbidden evidence corrected to read-only GraphQL request; current normal rights allowed authorized draft save. No production bindings, PR13/protected portal changes, merge, deploy, upload, calls, messages, personal submissions, spend or activation. Budget, staffing and applicable release/source/access bindings remain held.
+
+
+### 2026-10-04 Phillips MVA disabled durable-delivery completion
+
+Backend PR16 68db57e now builds same-Redis private atomic journal, strict injected transport, per-destination claim/readback/ack/retry/partial recovery and callable default-off worker factory. Full750pass0skip using all isolated Redis checks; focused53pass. No server/scheduler/live binding. Canonical runtime's durable registry/raw readback requires approved existing integration or minimal evolutionengine scope; no other repo changed, new persistent service, credentials or marketing_events writer. Campaign/demo receipts refreshed; all original launch boundaries remain.
+
+
+### 2026-10-04 Complete authorized Phillips offline system
+
+Continued recovered runtime as evolutionengine draftPR48 07e6c4d: durable Redis identity, real accepted NIL/campaign scope, verified crosswalk enrollment, defaultoff separately authorized private identity/raw readbacks and bounded existing-BigQuery query adapter. Source1217pass; backendPR16 03ec231 private-client/worker integration755pass. Actual complete synthetic system and independent-process Redis proof pass; BigQuery transport MOCK_RAW_ONLY. Earlier source implementation gap complete; no credentials/service/grants/activation. PR42 historic Converted/sent-date-as-Signed and earliest-phone mapping inspected/preserved/excluded. Campaign single review demo refreshed; original artwork, PR13/protected portal unchanged. Remaining live configuration/release/business evidence only.
+
+
+### 2026-10-04 Final exact-head Phillips offline receipts
+
+Source draftPR48 7c748c1:1217 local passes, GitHub Tests and Scope Audit success; test-only pinned SES fixture makes CI offline without runtime changes. Backend draftPR16 30c04b7:755 passes, no configured CI checks. Campaign review receipt pins both final heads and complete synthetic Redis/source/backend/portal proof. Existing Library review will be replaced in place. All release choices and live bindings held; no merge/deploy/activation, protected edits or real personal submissions.
+
+
+### October4 platform-policy documentation correction
+Paid TikTok US MVA PI ineligible per official August2026 policy; preserved reusable media/organic distinction. Added PMax signal/remarketing and sensitive platform-feedback guards; no educational workaround, budget/pricing/live settings change. Existing draftPR226 and Library review updated; source/backend unchanged.
+
+
+### October4 default-off after-hours retention
+BackendPR16 ed6d476:767tests pass including real Redis recovery and complete synthetic MVA integration. Kyle confirms after-hours team; same transfer line unverified. Existing consumer hours unchanged. Separate queue captures authorized NIL MVA requests only after durable consent/readback, no immediate provider call. Frontend deferred-status contract needed before enable; frozen PR13 unchanged. Browser UI inaccessible (no connected Desktop Commander devices); known cron current receipt:cron is diagnostics, not callback proof.
+
+
+Final after-hours evidence update: backendPR16 73999fd768passes/46web; retained-duplicate queue readback required, no false saved receipt or callback-state assertion. Review receipt pins exact final head. All release boundaries unchanged.
+
+Final backend0fc1704 confirms separate website no-reissue policy;768/46web pass. Review/receipt pins this exact head; all live gates unchanged.
+
+Parent-recovered Phillips email operating evidence retained: no staff external-ID entry dependency, daily outcome reports/auditable match, missing callExternalID not webhook failure. Olivia ad/lander approval and Sriyas API roles historical; October approval/afterhoursline unverified. No messages/calls.
+
+Newer client evidence supersedes August email-delivery assumption: October1 two DID/post-transfer summaries plus web-lead API, no new leads byemail/no fallback. June12 approval limited original Arizona Google/mainlander; Aug31 followup contingentLitifyfixes notapproval. October exactassets and afterhoursline stillunverified. No routing change/send.
+
+
+### October4 expanded staged Meta/Google review
+Continued PR226 c997ddb, added all-three website path mapping, held native/call specs and NIL-only PMax exploration without reusing historical BTL identity. Core proposed first spend MetaWebsite W1 + exact Search W1 remains inside5000/14day planning ceiling. Owner withdrew forced deadline burn; optional2000tranche not adopted. Callads exploratory held; GoogleRSA+callasset replaces unavailable newcallonly format. Private offline ten-conversation score requires actual two-way contact, explicit permission, agreed criteria and human/source/outcome evidence; Signed distinct executedretainer proof, conflicting snapshots held.80campaign tests and12inertbrowser checks; source6assets SHAverified. MetaPage read successful, no ad-account reader/writer exposed; live settings/budget/cap/policy/provider/asset/route/hours gates pending. No portal/PR13/runtime edits or activation/messages.

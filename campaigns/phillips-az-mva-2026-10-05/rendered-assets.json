@@ -1,0 +1,150 @@
+{
+  "status": "RENDERED_REVIEW_ONLY",
+  "activation": false,
+  "publication_enabled": false,
+  "upload_enabled": false,
+  "legal_review": "pending-attorney-review",
+  "source_logo_sha256": "b79d238ac48f705910898d9dcffef8281a8b27799609a96e01e513ae86c5fc44",
+  "source_logo_note": "Exact source bytes embedded unchanged; no recreated logo or fabricated people.",
+  "rights_note": "Advertiser-source logo provenance; no new voice/music/stock. Placement/legal/brand review remains required.",
+  "assets": [
+    {
+      "file": "rendered/meta-square-1080x1080.jpg",
+      "bytes": 97723,
+      "sha256": "cf0bd4620698bab1bfec5baaea112d7482acca5cf2a2e4a7321a6dfc39e32b8e",
+      "kind": "still",
+      "width": 1080,
+      "height": 1080,
+      "creative_id": "phillips_mva_process_meta-square_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/meta-portrait-1080x1350.jpg",
+      "bytes": 99873,
+      "sha256": "0e42afc5066b5ff1f2f43bad53da0b47fd1b55d77bb9d46c5702c5bacc49b8c3",
+      "kind": "still",
+      "width": 1080,
+      "height": 1350,
+      "creative_id": "phillips_mva_process_meta-portrait_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/vertical-1080x1920.jpg",
+      "bytes": 110562,
+      "sha256": "c7e5cd6f4d7d9cbbf2496e6fbd3a216a7024dc4af073929d2d56c974346d652f",
+      "kind": "still",
+      "width": 1080,
+      "height": 1920,
+      "creative_id": "phillips_mva_process_vertical_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/pmax-landscape-1200x628.jpg",
+      "bytes": 59735,
+      "sha256": "e299f461e5d6f2dfac237573a201f87c4b680894bee76a132f2b97a8508e42ca",
+      "kind": "still",
+      "width": 1200,
+      "height": 628,
+      "creative_id": "phillips_mva_process_pmax-landscape_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/pmax-square-1200x1200.jpg",
+      "bytes": 112702,
+      "sha256": "a5fba400b03cdda91b592d23fc9a850186be012dfbc4025f78dfbb7b1c62d5b5",
+      "kind": "still",
+      "width": 1200,
+      "height": 1200,
+      "creative_id": "phillips_mva_process_pmax-square_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/pmax-portrait-960x1200.jpg",
+      "bytes": 88462,
+      "sha256": "b53bdaf4605daecb230bdbb92e0c73a94fff0a0cb8413b1c0414a05efd396883",
+      "kind": "still",
+      "width": 960,
+      "height": 1200,
+      "creative_id": "phillips_mva_process_pmax-portrait_review_v1",
+      "alt": "Phillips Arizona intake options: the next step explained, with human review and matching-service disclosures."
+    },
+    {
+      "file": "rendered/vertical-poster.jpg",
+      "bytes": 110562,
+      "sha256": "c7e5cd6f4d7d9cbbf2496e6fbd3a216a7024dc4af073929d2d56c974346d652f",
+      "kind": "poster",
+      "width": 1080,
+      "height": 1920
+    },
+    {
+      "file": "rendered/vertical-20s.mp4",
+      "bytes": 2514691,
+      "sha256": "6435cb9add9ee058cd577a28937ad7010a6d4998d8a5248c134d8495e01d02eb",
+      "kind": "video",
+      "width": 1080,
+      "height": 1920,
+      "duration_seconds": 20,
+      "fps": 30,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio": "none",
+      "creative_id": "phillips_mva_process_vertical_review_v1"
+    },
+    {
+      "file": "rendered/horizontal-poster.jpg",
+      "bytes": 124338,
+      "sha256": "21054a19414dc06b41e05b1e05192c9c152472131f2952aa814c3e314c473325",
+      "kind": "poster",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "file": "rendered/horizontal-20s.mp4",
+      "bytes": 2621615,
+      "sha256": "c6edb28589faf276becf4538451f972f51b5cad8ebf98a1d46dcd8ce2402bd21",
+      "kind": "video",
+      "width": 1920,
+      "height": 1080,
+      "duration_seconds": 20,
+      "fps": 30,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio": "none",
+      "creative_id": "phillips_mva_process_horizontal_review_v1"
+    },
+    {
+      "file": "rendered/square-poster.jpg",
+      "bytes": 97723,
+      "sha256": "cf0bd4620698bab1bfec5baaea112d7482acca5cf2a2e4a7321a6dfc39e32b8e",
+      "kind": "poster",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "file": "rendered/square-20s.mp4",
+      "bytes": 2002050,
+      "sha256": "a00e66bb1559a50970cad2756c7be950b76eb868dc4f6065e26260e110cfe3c8",
+      "kind": "video",
+      "width": 1080,
+      "height": 1080,
+      "duration_seconds": 20,
+      "fps": 30,
+      "codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio": "none",
+      "creative_id": "phillips_mva_process_square_review_v1"
+    },
+    {
+      "file": "rendered/process-captions.srt",
+      "bytes": 966,
+      "sha256": "5294db1f5edcc218a78f3e1b60160c77a31dcd6f32c47558c505aa6f6057c1a1",
+      "kind": "captions"
+    },
+    {
+      "file": "rendered/process-transcript.txt",
+      "bytes": 761,
+      "sha256": "b0136a5e0733152204ca0055c2bad9b423cbebd8ae204583de96b9759fa10bb2",
+      "kind": "transcript"
+    }
+  ]
+}

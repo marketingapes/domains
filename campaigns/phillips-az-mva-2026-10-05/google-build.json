@@ -1,0 +1,168 @@
+{
+  "status": "DRAFT_REVIEW_ONLY",
+  "activation": false,
+  "search": {
+    "account_id": "9871020060",
+    "campaign_id": "24313116842",
+    "budget_id": "15923112622",
+    "preserve_daily_budget_historical": 100,
+    "positive_match": "EXACT",
+    "keyword_candidates": [
+      "[arizona car accident lawyer]",
+      "[arizona accident lawyer]",
+      "[arizona motor vehicle attorney]",
+      "[phoenix car accident lawyer]",
+      "[phoenix accident lawyer]",
+      "[phoenix motor vehicle attorney]",
+      "[car accident attorney arizona]",
+      "[car accident attorney phoenix]"
+    ],
+    "negative_phrase_candidates": [
+      "jobs",
+      "salary",
+      "law school",
+      "internship",
+      "car repair",
+      "rental car",
+      "insurance quote",
+      "news",
+      "police report",
+      "accident video",
+      "car parts",
+      "body shop",
+      "traffic report",
+      "used cars",
+      "driving school"
+    ],
+    "search_partners": false,
+    "display": false,
+    "ai_max_expansion": false,
+    "rsa_data": "google-rsa-review.csv",
+    "note": "review dataset for existing IDs, not a certified Editor import or platform mutation",
+    "primary_destination_path": "W1",
+    "primary_destination_variants": 1,
+    "path_scope": "All three existing RSAs deliberately use W1. W2/W3 remain held website alternatives; new NIL PMax exploration is separately staged with no IDs or budget. Historical BTL PMax is not release-ready."
+  },
+  "pmax": {
+    "account_id": "9455635555",
+    "campaign_id": "24313118384",
+    "budget_id": "15923112925",
+    "preserve_daily_budget_historical": 20,
+    "groups": [
+      {
+        "id": "6754661608",
+        "path": "W1",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/"
+      },
+      {
+        "id": "6754661503",
+        "path": "W2",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/"
+      },
+      {
+        "id": "6754661833",
+        "path": "W3",
+        "final_url": "https://nearestinjurylawyers.com/mva-pi/quiz/"
+      }
+    ],
+    "headlines": [
+      "Phillips Law Group",
+      "Arizona Accident Intake",
+      "Vehicle Accident Questions",
+      "Explore Intake Options",
+      "Human Review of Your Inquiry",
+      "Meet Sofia, AI Intake",
+      "Share the Basic Details",
+      "Arizona Intake Information",
+      "A Clear Next Step",
+      "Learn About the Process",
+      "Sofia Is an AI Assistant",
+      "No Outcome Is Guaranteed",
+      "Organize Accident Details",
+      "Choose an Intake Path",
+      "Attorney Advertising"
+    ],
+    "long_headlines": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group",
+      "Organize basic details with Sofia, an AI intake assistant",
+      "Choose a next step with human review of legal questions",
+      "Learn about the process before requesting contact",
+      "No representation or outcome is guaranteed"
+    ],
+    "descriptions": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group.",
+      "Sofia is an AI intake assistant. Attorneys review legal questions and representation.",
+      "Share basic details for human review. No representation or outcome is guaranteed.",
+      "Nearest Injury Lawyers is a matching service, not a law firm. Explore the next step.",
+      "Attorney advertising. Human review remains part of the intake process."
+    ],
+    "existing_image_ids": {
+      "landscape": [
+        "386521265318",
+        "386521356218",
+        "386697408210"
+      ],
+      "square": [
+        "386621866957",
+        "386521330061",
+        "386621881837"
+      ],
+      "portrait": [
+        "386621860654",
+        "386697408138"
+      ],
+      "logo": [
+        "386691668643"
+      ]
+    },
+    "new_asset_uploads": false,
+    "url_expansion": false,
+    "text_automation": false,
+    "image_automation": false,
+    "video_automation": false,
+    "audience_signals": [],
+    "conversion_action_id": "7564588748",
+    "cross_account_import_verified": false,
+    "rendered_review_assets": [
+      "rendered/pmax-landscape-1200x628.jpg",
+      "rendered/pmax-square-1200x1200.jpg",
+      "rendered/pmax-portrait-960x1200.jpg",
+      "rendered/horizontal-20s.mp4",
+      "rendered/square-20s.mp4",
+      "rendered/vertical-20s.mp4"
+    ],
+    "audience_policy": {
+      "signals_are_targeting_limits": false,
+      "retargeting_only": false,
+      "eligibility_verified": false,
+      "sensitive_interest_remarketing_allowed": false,
+      "note": "PMax can serve outside audience signals. Empty signals and disabled expansion settings do not constrain delivery to retargeting or establish eligibility. Sensitive-interest advertiser-curated remarketing remains restricted; campaign/asset/landing eligibility requires separate review.",
+      "sources": [
+        "https://support.google.com/google-ads/answer/14530785?hl=en",
+        "https://support.google.com/adspolicy/answer/143465?hl=en"
+      ]
+    },
+    "scope_status": "HISTORICAL_BTL_MAPPING_ONLY_NOT_NIL_EXPLORATION",
+    "nil_exploration_spec": "channel-expansion-review.json#google_pmax_exploration"
+  },
+  "shared": {
+    "location": "Arizona PRESENCE",
+    "language": "English",
+    "status": "PAUSED",
+    "sensitive_audiences": [],
+    "customer_match": false,
+    "remarketing": false,
+    "conversion_uploads_enabled": false,
+    "approved_budget": null,
+    "attribution_note": "Saved Google actions: 90-day click / 1-day view. NIL action7716640315 is SUBMIT_LEAD_FORM despite Qualified Lead name; fixed value is not signed revenue. Keep settings; owner must approve reconciliation. Do not edit shared goals.",
+    "platform_feedback_policy": {
+      "status": "HOLD_EVENT_SPECIFIC_POLICY_PRIVACY_REVIEW",
+      "internal_signed_reporting_separate": true,
+      "hashed_identifiers_establish_permission": false,
+      "click_id_import_blanket_exemption": false,
+      "sensitive_enhanced_conversion_uploads_allowed": false,
+      "customer_data_policy_source": "https://support.google.com/adspolicy/answer/7475709?hl=en",
+      "note": "Internal Litify signed-case reporting is separate from platform feedback permission. Event meaning/context can disclose sensitive injury information even with hashed identifiers. Google sensitive-category information is prohibited in enhanced-conversion/store-sales uploads; click-ID-only imports are not blanket exemptions. All feedback remains default-off pending event-specific policy/privacy validation. Current Meta terms were not verified: official pages blocked in research."
+    }
+  }
+}

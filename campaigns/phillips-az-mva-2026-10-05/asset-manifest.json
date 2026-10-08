@@ -1,0 +1,56 @@
+{
+  "status": "REUSE_MANIFEST",
+  "activation": false,
+  "assets": [
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/phillips-logo.webp",
+      "sha256": "b79d238ac48f705910898d9dcffef8281a8b27799609a96e01e513ae86c5fc44",
+      "bytes": 5672,
+      "use_status": "reuse_existing_scope_no_new_publication",
+      "url": "https://nearestinjurylawyers.com/assets/phillips-logo.webp"
+    },
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/social/nil-az-mva-phillips-v2/facebook-feed-1080x1080.jpg",
+      "sha256": "be347665f8105a525e93571e564c1ac7dec6a834e88a5ea5af97ec0ee82ac5a5",
+      "bytes": 172008,
+      "use_status": "source_reuse_only_paid_legal_review_pending",
+      "url": "https://nearestinjurylawyers.com/assets/social/nil-az-mva-phillips-v2/facebook-feed-1080x1080.jpg"
+    },
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/social/nil-az-mva-phillips-v2/instagram-feed-1080x1350.jpg",
+      "sha256": "6f61194fffcc8c01e2eb0908dfecd1475ed1d47f065806cb54e343e580422c9f",
+      "bytes": 202540,
+      "use_status": "source_reuse_only_paid_legal_review_pending",
+      "url": "https://nearestinjurylawyers.com/assets/social/nil-az-mva-phillips-v2/instagram-feed-1080x1350.jpg"
+    },
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/social/nil-az-mva-phillips-v2/story-1080x1920.jpg",
+      "sha256": "abedbbefded2dd47658d1ba3a27ecae9dc15e33588ab752d3c32a242ba0b7ac4",
+      "bytes": 225965,
+      "use_status": "source_reuse_only_paid_legal_review_pending",
+      "url": "https://nearestinjurylawyers.com/assets/social/nil-az-mva-phillips-v2/story-1080x1920.jpg"
+    },
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/social/nil-az-mva-72hr-v1/vertical-master.mp4",
+      "sha256": "5ea868957fa792a7ba333a94ea7dec3fb387dd78526d3cac25ceca8b4fe39770",
+      "bytes": 370165,
+      "use_status": "reuse_existing_scope_no_new_publication",
+      "url": "https://nearestinjurylawyers.com/assets/social/nil-az-mva-72hr-v1/vertical-master.mp4"
+    },
+    {
+      "repository": "marketingapes/nil-site",
+      "path": "assets/social/nil-az-mva-72hr-v1/story-1080x1920.jpg",
+      "sha256": "c431c999c268086dfbed233be05a88429e6ff0588905fa917a773d2378ae3e3c",
+      "bytes": 147516,
+      "use_status": "reuse_existing_scope_no_new_publication",
+      "url": "https://nearestinjurylawyers.com/assets/social/nil-az-mva-72hr-v1/story-1080x1920.jpg"
+    }
+  ],
+  "existing_social_package": "marketingapes/nil-site/social/nil-az-mva-72hr-v1/package.json",
+  "video": "Existing20second1080x1920silentmaster. Educational NIL asset; not Phillips branded paid video. No claim of rendered new video or platform upload."
+}

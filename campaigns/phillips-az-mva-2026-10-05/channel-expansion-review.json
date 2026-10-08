@@ -1,0 +1,303 @@
+{
+  "schema": "ee.phillips_channel_expansion/v1",
+  "status": "DRAFT_NOT_PLATFORM_APPLIED",
+  "activation": false,
+  "spend_authorized_usd": 0,
+  "platform_live_verified": false,
+  "objective": {
+    "qualified_live_conversations_target": 10,
+    "start_target": "2026-10-05",
+    "target_is_guarantee": false,
+    "signed_target_is_guarantee": false,
+    "score_contract": "qualified-conversation-review.mjs",
+    "outcome_import_enabled": false
+  },
+  "budget": {
+    "planning_total_usd": 5000,
+    "planning_days": 14,
+    "meta_website_usd": 3000,
+    "google_search_usd": 2000,
+    "platform_settings_applied": false,
+    "compressed_friday_cap_usd": null,
+    "compressed_friday_cap_status": "DEADLINE_BURN_WITHDRAWN",
+    "friday": "2026-10-09",
+    "unlimited_spend_allowed": false,
+    "variant_budgets_additive": false,
+    "cap_enforcement_verified": false,
+    "release_requires": [
+      "owner-approved funded amount and dates",
+      "current account/object and cumulative-spend readback",
+      "total cap and end-date enforcement verified before release"
+    ],
+    "pacing": "Evidence-based within existing 5000/14-day planning ceiling; no forced Wednesday or Friday burn. Optional 2000 tranche not adopted.",
+    "deadline_burn_authorized": false
+  },
+  "meta_website": {
+    "account_id": "2536177083499794",
+    "page_id": "1275847145612714",
+    "pixel_id": "1464576608376747",
+    "campaign_id": "52603475656795",
+    "adset_id": "52603475689595",
+    "status": "PAUSED",
+    "activation": false,
+    "optimization_proposal": "Website lead event only after generic event and consent verification; qualified conversations remain private",
+    "primary_release_path": "W1",
+    "path_test_strategy": "W2/W3 staged alternatives; release by explicit reviewed change within the same campaign allocation, not additive budgets",
+    "paths": [
+      {
+        "path": "W1",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/",
+        "existing_ad_id": "52603475744195",
+        "proposed_first_release": true,
+        "proposed_incremental_budget_usd": 0,
+        "creative_spec": "meta-build-sheet.csv",
+        "intake_spec": "landing-variants.json",
+        "private_question_spec": "ai-intake-review.json"
+      },
+      {
+        "path": "W2",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/",
+        "existing_ad_id": "52603492387395",
+        "proposed_first_release": false,
+        "proposed_incremental_budget_usd": 0,
+        "creative_spec": "meta-build-sheet.csv",
+        "intake_spec": "landing-variants.json",
+        "private_question_spec": "ai-intake-review.json"
+      },
+      {
+        "path": "W3",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/quiz/",
+        "existing_ad_id": "52603492428795",
+        "proposed_first_release": false,
+        "proposed_incremental_budget_usd": 0,
+        "creative_spec": "meta-build-sheet.csv",
+        "intake_spec": "landing-variants.json",
+        "private_question_spec": "ai-intake-review.json"
+      }
+    ],
+    "asset_spec": "rendered-assets.json",
+    "copy_spec": "meta-build-sheet.csv",
+    "current_ad_account_readback": "UNAVAILABLE",
+    "placement_review": "PENDING",
+    "legal_review": "PENDING"
+  },
+  "meta_native": {
+    "account_id": "2536177083499794",
+    "page_id": "1275847145612714",
+    "form_id": "3518249671686937",
+    "status": "RECEIPT_ONLY_HOLD",
+    "activation": false,
+    "proposed_incremental_budget_usd": 0,
+    "variants": [
+      {
+        "campaign_id": "120254654770780231",
+        "ad_id": "120254654776180231",
+        "copy_spec": "meta-build-sheet.csv"
+      },
+      {
+        "campaign_id": "120254654771580231",
+        "ad_id": "120254654778590231",
+        "copy_spec": "meta-build-sheet.csv"
+      }
+    ],
+    "form_spec": "native-form-review.json",
+    "source_verifier": "PENDING",
+    "callback_enabled": false,
+    "health_questions_allowed": false,
+    "release_gates": [
+      "current Meta lead-ad rules and account eligibility",
+      "attorney approval of exact fields/disclosure/permissions",
+      "verified source receipt plus explicit callback permission",
+      "named recipient/provider and staffed routing proof"
+    ]
+  },
+  "call_exploration": {
+    "status": "EXPLORATORY_HOLD",
+    "activation": false,
+    "proposed_incremental_budget_usd": 0,
+    "meta": {
+      "account_id": "2536177083499794",
+      "campaign_id": "120254652215690231",
+      "ad_id": "120254652218910231",
+      "historical_tracker": "+16025844696",
+      "tracker_reconciled": false,
+      "copy_spec": "meta-build-sheet.csv"
+    },
+    "google": {
+      "account_id": "9871020060",
+      "campaign_id": "24313116842",
+      "format": "RESPONSIVE_SEARCH_AD_WITH_CALL_ASSET",
+      "new_call_only_ad_allowed": false,
+      "call_asset_id": null,
+      "phone_candidate": "+16026931461",
+      "phone_business_domain_verified": false,
+      "schedule": null,
+      "rsa_spec": "google-rsa-review.csv"
+    },
+    "receiving_route": {
+      "nil": "+16026931461",
+      "phillips": "+16022003976",
+      "after_hours_line_verified": false,
+      "consumer_hours_approved": false
+    },
+    "release_gates": [
+      "owner chooses to test call ads after core website/Search evidence",
+      "reconcile tracker without a new live call",
+      "verify phone/business/domain and placement eligibility",
+      "approved receiving hours and same-line staffed answer",
+      "AI/recording/contact consent and attribution review"
+    ],
+    "policy_source": "https://support.google.com/google-ads/answer/16619010?hl=en"
+  },
+  "google_search": {
+    "account_id": "9871020060",
+    "campaign_id": "24313116842",
+    "status": "PAUSED",
+    "activation": false,
+    "primary_path": "W1",
+    "rsa_spec": "google-rsa-review.csv",
+    "keyword_spec": "google-build.json",
+    "match": "EXACT",
+    "geo": "Arizona presence only",
+    "partners": false,
+    "display": false,
+    "expansion": false,
+    "current_account_readback": "UNAVAILABLE",
+    "conversion_action_id": "7716640315",
+    "historical_conversion_semantics": "SUBMIT_LEAD_FORM; not qualified conversation or signed revenue",
+    "qualified_feedback_upload_enabled": false
+  },
+  "google_pmax_exploration": {
+    "status": "EXPLORATORY_HOLD",
+    "activation": false,
+    "proposed_incremental_budget_usd": 0,
+    "account_id": "9871020060",
+    "campaign_id": null,
+    "asset_group_ids": [],
+    "asset_groups": [
+      {
+        "path": "W1",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/",
+        "asset_group_id": null,
+        "asset_spec": "rendered-assets.json",
+        "copy_spec": "google-build.json#pmax"
+      },
+      {
+        "path": "W2",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/talk-to-sofia/",
+        "asset_group_id": null,
+        "asset_spec": "rendered-assets.json",
+        "copy_spec": "google-build.json#pmax"
+      },
+      {
+        "path": "W3",
+        "destination": "https://nearestinjurylawyers.com/mva-pi/quiz/",
+        "asset_group_id": null,
+        "asset_spec": "rendered-assets.json",
+        "copy_spec": "google-build.json#pmax"
+      }
+    ],
+    "headlines": [
+      "Phillips Law Group",
+      "Arizona Accident Intake",
+      "Vehicle Accident Questions",
+      "Explore Intake Options",
+      "Human Review of Your Inquiry",
+      "Meet Sofia, AI Intake",
+      "Share the Basic Details",
+      "Arizona Intake Information",
+      "A Clear Next Step",
+      "Learn About the Process",
+      "Sofia Is an AI Assistant",
+      "No Outcome Is Guaranteed",
+      "Organize Accident Details",
+      "Choose an Intake Path",
+      "Attorney Advertising"
+    ],
+    "long_headlines": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group",
+      "Organize basic details with Sofia, an AI intake assistant",
+      "Choose a next step with human review of legal questions",
+      "Learn about the process before requesting contact",
+      "No representation or outcome is guaranteed"
+    ],
+    "descriptions": [
+      "Explore Arizona vehicle-accident intake options with Phillips Law Group.",
+      "Sofia is an AI intake assistant. Attorneys review legal questions and representation.",
+      "Share basic details for human review. No representation or outcome is guaranteed.",
+      "Nearest Injury Lawyers is a matching service, not a law firm. Explore the next step.",
+      "Attorney advertising. Human review remains part of the intake process."
+    ],
+    "url_expansion": false,
+    "text_automation": false,
+    "image_automation": false,
+    "video_automation": false,
+    "audience_signals": [],
+    "customer_match": false,
+    "remarketing": false,
+    "conversion_action_id": null,
+    "cross_account_import_verified": false,
+    "historical_btl_campaign": {
+      "account_id": "9455635555",
+      "campaign_id": "24313118384",
+      "mutation_allowed": false,
+      "note": "Historical BTL-to-NIL mapping retained only; no identity or conversion reuse without separate verification."
+    },
+    "release_gates": [
+      "owner explicitly funds exploration inside a revised total cap",
+      "NIL account and conversion identity verified",
+      "approved exact media, brand and policy",
+      "generic event/consent and no sensitive audience or feedback inputs"
+    ]
+  },
+  "integration": {
+    "tracking_spec": "tracking-intake-contract.json",
+    "production_changes_applied": false,
+    "protected_pr13_edited": false,
+    "portal_edited": false,
+    "human_review_required": true,
+    "health_data_to_platforms": false,
+    "health_data_for_targeting": false,
+    "ai_eligibility": false,
+    "live_submission_verified": false,
+    "live_call_verified_by_this_build": false
+  },
+  "daily_review": {
+    "automation_enabled": false,
+    "schedule": "owner/team review each staffed day after release; not a new consumer-hours permission",
+    "dimensions": [
+      "campaign",
+      "ad",
+      "intake path",
+      "creative",
+      "platform and private source separately"
+    ],
+    "metrics": [
+      "actual spend",
+      "platform opt-ins",
+      "durable receipts",
+      "contact attempts",
+      "two-way contacts",
+      "human-reviewed qualified live conversations",
+      "verified firm receipts",
+      "firm accepted",
+      "proof-backed signed retainers"
+    ],
+    "unknown_outcomes": "remain unknown; no sent/Converted-to-Signed inference",
+    "optimization": "human decision; record sample, lag, source and consent, do not automatically move money on one lead",
+    "stop_conditions": [
+      "funded cap reached",
+      "consent/source mismatch",
+      "broken truthful receipt",
+      "unverified receiving availability"
+    ],
+    "platform_feedback_enabled": false
+  },
+  "remaining_owner_decisions": [
+    "Confirm funding source and release approval for the existing 5000/14-day ceiling, start/end and cap enforcement; no forced Wednesday/Friday burn",
+    "Exact staffed Arizona consumer receiving hours and same-line after-hours availability",
+    "Approval of exact new assets, landing variants, fields, AI/recording/contact disclosures and recipient/provider",
+    "Firm-agreed qualification criteria and authorized outcome evidence owner",
+    "Account access and verified cap/conversion/phone/source configuration; no new grants inferred"
+  ]
+}
