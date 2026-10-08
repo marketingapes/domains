@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-08T22:01:51.563628+00:00",
+  "result": "PASS",
+  "build": "PASS",
+  "foundation": "PASS",
+  "repositoryTests": {
+    "passed": 287,
+    "failed": 0,
+    "skipped": 0
+  },
+  "initialSandboxSocketError": "EPERM",
+  "resolvedUsing": "Normal approved exec_command with local socket access",
+  "browserChecks": 19,
+  "voiceSave": "BLOCKED_BY_AUTO_REVIEW",
+  "callsPlaced": false,
+  "routingChanged": false
+}

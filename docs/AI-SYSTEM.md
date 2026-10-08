@@ -72,3 +72,9 @@ Next: Keep publication paused. Resolve Jeffery/firm/destination, accepted geogra
 Saw: Kyle identified Jeffrey Phillips, not Nadrich, and proposed Facebook inquiry → self-reported injured/not-at-fault screen → Sofia inbound/requested outbound → Phillips intake → visible source/handoff. Nationwide remains proposed, not approved. Claude owns live Arizona.
 Did: Updated only the private minimal route draft and source note. Destination/acceptance/criteria/consent/geo/budget remain unset; no public endorsement, Arizona restriction replacement, calls, ads, route changes or publication.
 Next: Keep LFMA package page staged. Verify actual receiving entity/destination and approvals before live handoff or nationwide release.
+
+
+## 2026-10-08 UTC — Codex (generic LFMA publication resumed)
+Saw: Kyle confirmed the executive Jeffrey Phillips discussion does not block the previously authorized generic product demo. Claude retains ownership of live Arizona.
+Did: Prepared the LFMA-only Perspective/package page for publication. Normal approved execution resolved socket EPERM; build/foundation/287repository tests pass,19targeted Chromium checks pass. Isolated saved-assistant action was rejected by auto-review; direct approval is pending, no POST occurred. Public voice and checkout controls remain unavailable.
+Next: Publish only dedicated LFMA route via the established GitHub auto-deploy, verify exact public assets and unchanged existing routes. No AZ or other-brand/service changes.
