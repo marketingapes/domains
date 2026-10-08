@@ -1,6 +1,7 @@
 {
-  "at": "2026-10-08T21:48:53.087Z",
+  "at": "2026-10-08T21:55:39.796Z",
   "passed": [
+    "Primary firm Perspective, buyer brief, three sample records and separate voice/actual gates",
     "Facebook preview → branded landing; protected phone route",
     "Sample questions → explicit yes → distinct attempted/connected → proposal",
     "Reload retains synthetic completed receipt",
@@ -18,12 +19,13 @@
     "A repeated capture starts a fresh sample without carrying prior answers or receiver success",
     "Public assets contain no named clients, private routes, scores or proof-document links",
     "Repeated handoff clicks produce one simulated attempt and no eligibility claim",
-    "45-second captioned video plays; transcript, no autoplay and reduced-motion support",
     "No external requests, browser errors or exposed voice inventory"
   ],
   "errors": [],
   "externalRequests": [],
   "screenshots": [
+    "00-perspective-dashboard-desktop.png",
+    "00-sample-record-desktop.png",
     "01-ad-desktop.png",
     "02-landing-desktop.png",
     "03-receiver-desktop.png",
@@ -32,9 +34,11 @@
     "06-generic-proposal.png",
     "07-native-followup.png",
     "mobile-ad.png",
+    "mobile-dashboard.png",
     "mobile-landing.png",
     "mobile-perspective.png",
     "mobile-proposal.png",
+    "mobile-record.png",
     "mobile-sofia.png"
   ]
 }

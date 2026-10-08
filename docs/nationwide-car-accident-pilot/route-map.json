@@ -1,0 +1,78 @@
+{
+  "schema": "marketingapes.pilot-route-draft/v1",
+  "state": "preparation-only",
+  "requestedFocus": "Nationwide car-accident inquiries",
+  "requestedRecipientDisplayName": "Jeffery \u2014 identity unverified",
+  "recipient": {
+    "legalName": null,
+    "firm": null,
+    "verified": false,
+    "intakeDestination": null,
+    "destinationType": null
+  },
+  "geography": {
+    "requested": "Nationwide",
+    "approvedStates": null,
+    "jurisdictionAcceptanceVerified": false
+  },
+  "facebookNativeLead": {
+    "pageId": null,
+    "adAccountId": null,
+    "campaignId": null,
+    "formId": null,
+    "creativeApproved": false,
+    "consentText": null,
+    "consentVersion": null,
+    "followupPermissionVerified": false,
+    "activated": false
+  },
+  "qualification": {
+    "firmApprovedCriteria": null,
+    "claimantScreeningApproved": false,
+    "billableDefinition": null,
+    "signedOutcomeDefinition": null,
+    "reuseArizonaCriteria": false
+  },
+  "vapi": {
+    "inbound": {
+      "phoneNumberId": null,
+      "ownedNumber": null,
+      "assistantId": null,
+      "routeApproved": false
+    },
+    "requestedOutboundFollowup": {
+      "assistantId": null,
+      "onlyAfterVerifiedRequestAndConsent": true,
+      "callbackSchedule": null,
+      "approved": false
+    },
+    "handoff": {
+      "destination": null,
+      "attemptedEvidenceRequired": true,
+      "connectedEvidenceRequired": true,
+      "receiverAcceptanceVerified": false,
+      "approved": false
+    }
+  },
+  "budget": {
+    "mediaAmount": null,
+    "serviceTerms": null,
+    "approved": false
+  },
+  "reporting": {
+    "source": "Verified Facebook lead event when connected",
+    "followup": "Verified Vapi event when connected",
+    "handoffAttempted": "Separate verified event",
+    "handoffConnected": "Separate verified receiver/connection event",
+    "firmOutcome": "Verified firm-reported outcome; definition pending",
+    "actualEventsConnected": false
+  },
+  "sideEffects": {
+    "adsActivated": false,
+    "spendAuthorized": false,
+    "numbersPurchased": false,
+    "routingChanged": false,
+    "callsPlaced": false,
+    "leadsTransferred": false
+  }
+}

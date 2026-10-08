@@ -46,12 +46,12 @@
   "proposal": {
     "title": "Put AI to the test.",
     "inclusions": [
-      "One configurable BTL campaign setup, adapting the existing connected campaign approach",
-      "Google and Facebook campaign creative, subject to campaign and platform approval; TikTok only where eligible",
-      "A branded landing page connected to Sofia\u2019s AI prequalification",
-      "Permission-based firm handoff with concise intake context",
-      "Perspective reporting of source, sample answers and separate handoff statuses",
-      "A two-week test to assess cost per acquisition; no guarantee of improvement"
+      "A branded ad and campaign setup for the agreed market, subject to firm and platform approval",
+      "A branded landing page with agreed request and consent language",
+      "A phone-number plan with inbound AI intake and requested, consented outbound follow-up using Vapi; number and routing need separate approval",
+      "Your firm\u2019s Perspective portal showing campaign source, spend, inquiries, follow-up, attempted/connected handoffs and firm-reported outcomes",
+      "An AI sales guide to explain and demonstrate the package; live calling access and usage need separate approval",
+      "A two-week test. Usage, number/hosting limits and future operating fees require written terms; no unlimited or lifetime access is promised"
     ],
     "price": 7500,
     "priceLabel": "$7,500 total test budget",
@@ -1313,5 +1313,57 @@
     "total": 7500,
     "actualSpent": null,
     "remainingMedia": null
+  },
+  "dashboard": {
+    "sampleSpend": [
+      {
+        "channel": "Facebook",
+        "amount": 120
+      },
+      {
+        "channel": "Google",
+        "amount": 60
+      }
+    ],
+    "inquiries": [
+      {
+        "id": "DEMO-001",
+        "name": "Fictional Alex",
+        "source": "Facebook native form",
+        "followup": "Sample screening complete",
+        "followupComplete": true,
+        "attempted": true,
+        "connected": true,
+        "outcome": "Reported signed \u00b7 sample",
+        "reportedSigned": true
+      },
+      {
+        "id": "DEMO-002",
+        "name": "Fictional Jordan",
+        "source": "Facebook landing page",
+        "followup": "Sample screening complete",
+        "followupComplete": true,
+        "attempted": true,
+        "connected": false,
+        "outcome": "No firm outcome reported \u00b7 sample",
+        "reportedSigned": false
+      },
+      {
+        "id": "DEMO-003",
+        "name": "Fictional Sam",
+        "source": "Google sample request",
+        "followup": "Awaiting follow-up permission \u00b7 sample",
+        "followupComplete": false,
+        "attempted": false,
+        "connected": false,
+        "outcome": "Not yet reported \u00b7 sample",
+        "reportedSigned": false
+      }
+    ]
+  },
+  "salesAgent": {
+    "liveConnected": false,
+    "webCallApproved": false,
+    "state": "Prepared; connection and usage approval pending"
   }
 }

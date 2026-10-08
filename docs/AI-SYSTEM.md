@@ -60,3 +60,9 @@ Next: review with the corrected legal-web-lead report API and native deferred in
 Saw: Kyle explicitly authorized this dedicated page’s necessary push/merge and LFMA deploy. Existing /demo/ is occupied; actual GitHub main is dc89609, and its changed LFMA portal files already match live HTTPS bytes.
 Did: Added only lfma/perspective-demo plus private verification docs. Reused the configurable tested demo; generic receiving firm, clear simulation, separate September62/18historical proof, one-time2500fee+5000media proposal, no fixed launch date, verified business contact. Recorded a real44.92-second silent captioned WebM tour and accessible transcript.19local Chromium checks pass. Phone routing/payment/ads remain untouched.
 Next: Verify release checks, authorized GitHub merge/auto-deploy, HTTPS assets/unchanged route hashes and public browser journey. Real phone binding, intake receipts and payment merchant/link/terms remain separate gates.
+
+
+## 2026-10-08 UTC — Codex (scope changed; publication paused)
+Saw: Kyle clarified a client-Perspective package and then superseded it with a minimal nationwide car-accident Facebook-native/Vapi path for Jeffery; parent is resolving recipient identity and approved intake destination.
+Did: Preserved local Perspective-first package and save-ready buyer-sales assistant draft.19targeted browser checks pass. Removed superseded ad-first video from proposed public assets. No GitHub push/PR/merge, Render deploy, assistant POST, calls, number binding, ads or spend occurred. Added minimal route-map with all unresolved recipient/criteria/consent/geo/budget fields null.
+Next: Keep publication paused. Resolve Jeffery/firm/destination, accepted geography, criteria, consent and budget before any actual call, ad or transfer. Full repo release-check attempt was blocked by sandbox socket EPERM and was not retried after scope change.
