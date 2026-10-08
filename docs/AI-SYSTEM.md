@@ -66,3 +66,9 @@ Next: Verify release checks, authorized GitHub merge/auto-deploy, HTTPS assets/u
 Saw: Kyle clarified a client-Perspective package and then superseded it with a minimal nationwide car-accident Facebook-native/Vapi path for Jeffery; parent is resolving recipient identity and approved intake destination.
 Did: Preserved local Perspective-first package and save-ready buyer-sales assistant draft.19targeted browser checks pass. Removed superseded ad-first video from proposed public assets. No GitHub push/PR/merge, Render deploy, assistant POST, calls, number binding, ads or spend occurred. Added minimal route-map with all unresolved recipient/criteria/consent/geo/budget fields null.
 Next: Keep publication paused. Resolve Jeffery/firm/destination, accepted geography, criteria, consent and budget before any actual call, ad or transfer. Full repo release-check attempt was blocked by sandbox socket EPERM and was not retried after scope change.
+
+
+## 2026-10-08 UTC — Codex (Jeffrey Phillips scope clarified)
+Saw: Kyle identified Jeffrey Phillips, not Nadrich, and proposed Facebook inquiry → self-reported injured/not-at-fault screen → Sofia inbound/requested outbound → Phillips intake → visible source/handoff. Nationwide remains proposed, not approved. Claude owns live Arizona.
+Did: Updated only the private minimal route draft and source note. Destination/acceptance/criteria/consent/geo/budget remain unset; no public endorsement, Arizona restriction replacement, calls, ads, route changes or publication.
+Next: Keep LFMA package page staged. Verify actual receiving entity/destination and approvals before live handoff or nationwide release.

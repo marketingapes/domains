@@ -2,13 +2,15 @@
   "schema": "marketingapes.pilot-route-draft/v1",
   "state": "preparation-only",
   "requestedFocus": "Nationwide car-accident inquiries",
-  "requestedRecipientDisplayName": "Jeffery \u2014 identity unverified",
+  "requestedRecipientDisplayName": "Jeffrey Phillips \u2014 identified by Kyle",
   "recipient": {
     "legalName": null,
-    "firm": null,
+    "firm": "Phillips \u2014 legal receiving entity and intake acceptance remain unverified",
     "verified": false,
     "intakeDestination": null,
-    "destinationType": null
+    "destinationType": null,
+    "contactName": "Jeffrey Phillips",
+    "identitySource": "Kyle explicitly clarified Jeffrey Phillips, not Nadrich"
   },
   "geography": {
     "requested": "Nationwide",
@@ -31,7 +33,28 @@
     "claimantScreeningApproved": false,
     "billableDefinition": null,
     "signedOutcomeDefinition": null,
-    "reuseArizonaCriteria": false
+    "reuseArizonaCriteria": false,
+    "proposedSelfReportedScreen": [
+      {
+        "id": "injured",
+        "question": "In this fictional car-accident example, does the sample person report being injured?",
+        "options": [
+          "Yes \u2014 fictional self-report",
+          "No \u2014 fictional self-report"
+        ]
+      },
+      {
+        "id": "notAtFault",
+        "question": "In this fictional example, does the sample person report that they were not at fault?",
+        "options": [
+          "Yes \u2014 fictional self-report",
+          "No \u2014 fictional self-report",
+          "Unsure \u2014 fictional self-report"
+        ]
+      }
+    ],
+    "screenDisclaimer": "Self-reports only. No finding of fault, medical diagnosis, legal eligibility, representation or firm acceptance.",
+    "criteriaApprovalPending": true
   },
   "vapi": {
     "inbound": {
@@ -74,5 +97,11 @@
     "routingChanged": false,
     "callsPlaced": false,
     "leadsTransferred": false
+  },
+  "coordination": {
+    "existingLiveArizonaOwner": "Claude",
+    "editLiveArizona": false,
+    "replaceArizonaRestriction": false,
+    "publicFirmEndorsementApproved": false
   }
 }
