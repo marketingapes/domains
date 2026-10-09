@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Bingo Bango Bongo badge">
-<rect x="10" y="10" width="300" height="300" rx="40" fill="#ffc23a"/>
-<rect x="10" y="10" width="300" height="300" rx="40" fill="none" stroke="#0f2f24" stroke-width="6"/>
-<circle cx="160" cy="138" r="78" fill="#faf6ec" stroke="#0f2f24" stroke-width="6"/>
-<text x="160" y="166" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="78" fill="#0f2f24">B³</text>
-<text x="160" y="258" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="30" fill="#fff" letter-spacing="1">BINGO BANGO BONGO</text>
-<text x="160" y="288" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="700" font-size="16" fill="#0f2f24">3 points every hole</text>
-</svg>

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64" role="img" aria-label="Crazy Golf Game">
-<circle cx="30" cy="34" r="20" fill="#fff" stroke="#0f2f24" stroke-width="3"/>
-<g fill="#0f2f24" opacity=".35"><circle cx="23" cy="28" r="2"/><circle cx="31" cy="25" r="2"/><circle cx="38" cy="30" r="2"/><circle cx="25" cy="37" r="2"/><circle cx="34" cy="38" r="2"/><circle cx="29" cy="45" r="2"/></g>
-<path d="M44 4v34" stroke="#0f2f24" stroke-width="3" stroke-linecap="round"/><path d="M45 5l16 6-16 7z" fill="#e5483e"/>
-<text x="72" y="33" font-family="Archivo,Arial Narrow,Arial,sans-serif" font-weight="900" font-size="26" letter-spacing="-.5" fill="#0f2f24">CRAZY GOLF</text>
-<text x="73" y="53" font-family="Archivo,Arial,sans-serif" font-weight="800" font-size="13" letter-spacing="5.2" fill="#1d6b45">GAME &#183; EST. 2010</text>
-</svg>
