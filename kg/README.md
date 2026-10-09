@@ -17,7 +17,14 @@ publishes this folder; **any merge to `main` that touches `kg/` deploys live.**
 
 Unlisted, left as is: `hey-mom/`, `i-am-here/`, `love/`, `campaigns/`, `preview/`, `social-preview/`
 (the latter still serves CSS and images used by older pages), `publishing-check-20260907/`.
-Removed: `rizeup/`, `dispatch/`.
+Retired: `rizeup/`, `dispatch/`. Their original content is gone; each folder now holds only a noindex
+stub that redirects to `/`.
+
+**Why the stubs exist:** Render static sites keep serving files from earlier deploys when a later deploy
+simply deletes them (kg-site's build is `echo "kg static"`, publish path `kg`, and deleted paths kept
+returning the Oct 2 copy). Overwriting a path with new content is what replaces it. To retire a page,
+replace its `index.html` with a redirect stub; don't just delete the folder. A Render dashboard
+redirect rule (`/rizeup/*` and `/dispatch/*` to `/`) would also work, but kg-site isn't declared in `render.yaml`.
 
 ## Measurement
 
