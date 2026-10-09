@@ -1,0 +1,9 @@
+PASS four static pages work with API blocked, browser-only labels and disabled buying/voice actions
+PASS confirmed answers create safe personalized artifacts and an immutable illustrative review
+PASS validation blocks markup and MVA synonyms while Other requires specific review
+PASS fictional permission paths, repeated walkthrough and cancellation never create phone receipts
+PASS shared comparison navigation and browser Back preserve only this tab draft
+PASS opener tab and reload cannot inherit or cancel another tab draft; no persistence
+PASS cancel clears fields and frozen versions; Start fresh and repeated actions remain bounded
+PASS expiry has no retry-outage wording; cleared offer requires explicit fresh start
+PASS no APIs, POSTs, external trackers or page errors

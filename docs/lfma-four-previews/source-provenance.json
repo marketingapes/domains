@@ -1,0 +1,23 @@
+{
+  "reviewedSourceCommit": "38be7e93d3b38537d244d698d640baccd7ae046c",
+  "baseMainCommit": "552e9832e5b3ea138d7b807ca261b88c7cf30e73",
+  "sourceAssets": {
+    "story.html": "fb5ea163fe50bb50820a3fe5e4698ff8313a9649b9c1ac799b330d4af086e07f",
+    "build.html": "fb5ea163fe50bb50820a3fe5e4698ff8313a9649b9c1ac799b330d4af086e07f",
+    "test.html": "fb5ea163fe50bb50820a3fe5e4698ff8313a9649b9c1ac799b330d4af086e07f",
+    "offer.html": "fb5ea163fe50bb50820a3fe5e4698ff8313a9649b9c1ac799b330d4af086e07f",
+    "draft-client.js": "d783d7014fd614cdace6fc38924dacc890a542125698d44cd4887540ea1186fa",
+    "four-page-flow.js": "67cb7ecd795f76e87613d998dc4eeb326aabe30ed778d1a2ef09160f6bf7c578",
+    "draft.css": "8ae1f6ec37473e057a6cd123dbe61b9d5560ccce525d8ce7ecbc4f87ae9d79ff",
+    "draft-renderer.js": "a1b6b659a999786f4bf0a53dfd6a4ecad40594bb76f3635b45ae6f20e766705f",
+    "campaign-offer.js": "70334f0f7a8ed66edfcb40c4a9d68decfa0649febe6da3f764a92ef52abe4ec2",
+    "campaign-scope.js": "ed71eee17044383f8a2dce83c6a50857d31bb4c37c3287418f9a9e1f23db2498",
+    "landing-perspectives.js": "3592100703a48a118c45a708aba9d276a07d2d331b9ad6f49c779e285de4b4cf"
+  },
+  "mode": "browser_only_tab_memory",
+  "serverProvisioned": false,
+  "credentialsAdded": false,
+  "liveVoice": false,
+  "checkout": false,
+  "sourceStoreSha256": "d2b127ed44b9f8e66a34a3bc87f6d52448bbe283daf8fa97c4e24930e31ff06f"
+}
