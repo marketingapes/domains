@@ -453,13 +453,14 @@ def main():
     import affiliate_overlay
     affiliate_overlay.SITE = OUT
     affiliate_overlay.main()
-    # v3 rebrand layer (pillars, side games, drills, brand system, photos). Supersedes v2. Idempotent; see v3/build_v3.py.
+    # v4 rebrand layer ("Scratch & Fire"): runs the v3 layer (pillars, side games, drills, photos) with the v4 brand
+    # system on top. Supersedes v2/v3 styling. Idempotent; see v4/build_v4.py.
     import importlib.util
     import pathlib as _pl
-    _spec = importlib.util.spec_from_file_location("build_v3", _pl.Path(__file__).resolve().parent / "v3" / "build_v3.py")
-    _v3 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_v3)
-    _v3.SITE = OUT
-    _v3.main()
+    _spec = importlib.util.spec_from_file_location("build_v4", _pl.Path(__file__).resolve().parent / "v4" / "build_v4.py")
+    _v4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_v4)
+    _v4.SITE = OUT
+    _v4.main()
     for a in arts:
         t = re.sub(r"<[^>]+>", " ", a["body"] + " ".join(q + " " + x for q, x in a["faq"]))
         print(a["slug"], len(re.findall(r"[A-Za-z0-9'’-]+", t)))
