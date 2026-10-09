@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" role="img" aria-label="Illustrated golf hole at golden hour: a flag on a green, a ball on the fringe with a dotted putting line, and a small scorecard showing side games">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset=".55" stop-color="#ffe9b8"/><stop offset="1" stop-color="#e9f5df"/></linearGradient>
+<linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3cbf72"/><stop offset="1" stop-color="#1d6b45"/></linearGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a9d5c"/><stop offset="1" stop-color="#145238"/></linearGradient>
+<radialGradient id="green" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#7ee39f"/><stop offset="1" stop-color="#2a9d5c"/></radialGradient>
+<clipPath id="c"><rect width="640" height="520" rx="36"/></clipPath>
+</defs>
+<g clip-path="url(#c)">
+<rect width="640" height="520" fill="url(#sky)"/>
+<circle cx="470" cy="150" r="62" fill="#ffb13b" opacity=".85"/>
+<path d="M0 260 C120 210 230 240 330 225 S540 190 640 215 V520 H0Z" fill="#8fd3a3" opacity=".7"/>
+<g fill="#2f7d55" opacity=".8"><path d="M70 238 l14 -40 l14 40z"/><path d="M96 236 l11 -30 l11 30z"/><path d="M548 212 l15 -44 l15 44z"/><path d="M578 214 l11 -32 l11 32z"/></g>
+<path d="M0 300 C160 260 260 300 380 285 S560 255 640 270 V520 H0Z" fill="url(#g1)"/>
+<path d="M0 380 C140 350 300 372 420 360 S580 340 640 350 V520 H0Z" fill="url(#g2)"/>
+<ellipse cx="400" cy="372" rx="180" ry="56" fill="url(#green)"/>
+<ellipse cx="400" cy="372" rx="180" ry="56" fill="none" stroke="#c6f06a" stroke-width="3" opacity=".5"/>
+<path d="M120 420 C150 400 210 398 250 410" fill="none" stroke="#f1e4c3" stroke-width="26" stroke-linecap="round" opacity=".9"/>
+<ellipse cx="452" cy="376" rx="12" ry="5" fill="#0f2f24"/>
+<path d="M452 376 V226" stroke="#faf6ec" stroke-width="5" stroke-linecap="round"/>
+<path d="M454 228 l64 20 l-64 22z" fill="#e5483e"/>
+<text x="470" y="254" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="15" fill="#fff">18</text>
+<path d="M312 398 C350 392 410 386 446 378" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+<circle cx="304" cy="400" r="11" fill="#fff" stroke="#0f2f24" stroke-width="2"/>
+<g transform="translate(46 70) rotate(-6)">
+<rect width="210" height="150" rx="14" fill="#faf6ec" stroke="#0f2f24" stroke-width="3"/>
+<rect width="210" height="34" rx="14" fill="#0f2f24"/><rect y="20" width="210" height="14" fill="#0f2f24"/>
+<text x="16" y="23" font-family="Archivo,Arial,sans-serif" font-weight="900" font-size="15" fill="#c6f06a" letter-spacing="1.5">TODAY'S GAMES</text>
+<g font-family="Inter,Arial,sans-serif" font-size="14" font-weight="700" fill="#0f2f24">
+<text x="16" y="62">Wolf</text><text x="150" y="62" fill="#1d6b45">+4</text>
+<text x="16" y="88">Nassau</text><text x="150" y="88" fill="#1d6b45">1 up</text>
+<text x="16" y="114">Skins</text><text x="150" y="114" fill="#e5483e">x3</text>
+<text x="16" y="140">Snake</text><text x="150" y="140">&#9888;</text></g>
+<path d="M14 70 H196 M14 96 H196 M14 122 H196" stroke="#0f2f24" stroke-opacity=".15"/>
+</g>
+</g>
+</svg>

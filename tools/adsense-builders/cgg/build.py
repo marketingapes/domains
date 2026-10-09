@@ -453,6 +453,13 @@ def main():
     import affiliate_overlay
     affiliate_overlay.SITE = OUT
     affiliate_overlay.main()
+    # v2 redesign layer (pillars, side games, drills, new chrome). Idempotent; see v2/build_v2.py.
+    import importlib.util
+    import pathlib as _pl
+    _spec = importlib.util.spec_from_file_location("build_v2", _pl.Path(__file__).resolve().parent / "v2" / "build_v2.py")
+    _v2 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_v2)
+    _v2.SITE = OUT
+    _v2.main()
     for a in arts:
         t = re.sub(r"<[^>]+>", " ", a["body"] + " ".join(q + " " + x for q, x in a["faq"]))
         print(a["slug"], len(re.findall(r"[A-Za-z0-9'’-]+", t)))
