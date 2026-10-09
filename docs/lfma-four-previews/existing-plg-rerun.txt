@@ -1,0 +1,10 @@
+390x844: C chat stable (card 789px, doc Δ0, scroll Δ0), receipts on A/B/C, 0 JS errors
+AssertionError [ERR_ASSERTION]: 375: stable card height (711.46875 -> 723.0625)
+    at /Users/kylegosselin/Library/CloudStorage/GoogleDrive-kyleg@marketingapes.com/Shared drives/Evolution Engine /Codex/2026-10-08/task-6/lfma-four-preview-publication/tests/plg-az-accident.browser.cjs:92:14 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
