@@ -449,6 +449,10 @@ def main():
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{HOST}{u}</loc><lastmod>{UPDATED}</lastmod></url>\n" for u in urls)
     put("sitemap.xml", sm + "</urlset>\n")
+    # Affiliate overlay (gift guide at /offers/, nav link, labelled partner picks). Idempotent.
+    import affiliate_overlay
+    affiliate_overlay.SITE = OUT
+    affiliate_overlay.main()
     for a in arts:
         t = re.sub(r"<[^>]+>", " ", a["body"] + " ".join(q + " " + x for q, x in a["faq"]))
         print(a["slug"], len(re.findall(r"[A-Za-z0-9'’-]+", t)))
