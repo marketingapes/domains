@@ -1,11 +1,12 @@
 /* For Pets Like Blue — shared stylesheet */
 :root{
-  --ink:#2d3142; --ink-soft:#4a4f66; --coral:#ef8354; --coral-deep:#b8491f;
-  --blue:#4f86c6; --blue-deep:#2f5f9e; --cream:#fdf7f4; --butter:#ffd166;
-  --mint:#8fd3b6; --pink:#f7a6b8; --sky:#cfe6f7; --card:#ffffff; --line:#2d3142;
-  --radius:22px; --shadow:6px 6px 0 var(--ink);
-  --head:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
-  --body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* brand kit 2026-10-09: legacy token names mapped to the FPLB palette (see /assets/brand.css) */
+  --ink:#231c15; --ink-soft:#5b4f43; --coral:#c4532a; --coral-deep:#9e3f1d;
+  --blue:#4f86c6; --blue-deep:#2f5f9e; --cream:#fbf6ee; --butter:#f3c65a;
+  --mint:#efdcb4; --pink:#f3d3c4; --sky:#dde9f6; --card:#ffffff; --line:#231c15;
+  --radius:22px; --shadow:5px 5px 0 var(--ink);
+  --head:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -13,7 +14,7 @@ body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);f
 img{max-width:100%;height:auto;display:block}
 a{color:var(--blue-deep);text-underline-offset:3px;text-decoration-thickness:2px}
 a:hover{color:var(--coral-deep)}
-h1,h2,h3{font-family:var(--head);line-height:1.2;font-weight:600;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--head);line-height:1.15;font-weight:560;letter-spacing:-.015em}
 h1{font-size:clamp(2rem,6vw,3.2rem);margin:.2em 0 .3em}
 h2{font-size:clamp(1.45rem,4vw,2rem);margin:1.8em 0 .5em}
 h3{font-size:1.25rem;margin:1.4em 0 .4em}
@@ -39,10 +40,11 @@ h3{font-size:1.25rem;margin:1.4em 0 .4em}
 .hero-art{border:3px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);background:var(--sky)}
 .eyebrow{display:inline-block;background:var(--mint);border:2px solid var(--ink);border-radius:999px;padding:2px 14px;font-weight:800;font-size:.9rem}
 .lead{font-size:1.2rem;color:var(--ink-soft)}
-.btn{display:inline-block;background:var(--coral);color:var(--ink);font-weight:800;text-decoration:none;border:3px solid var(--ink);border-radius:999px;padding:10px 22px;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer;font-family:var(--body);font-size:1rem}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);color:var(--ink)}
+.btn{display:inline-block;background:var(--coral);color:#fff;font-weight:800;text-decoration:none;border:3px solid var(--ink);border-radius:999px;padding:10px 22px;box-shadow:4px 4px 0 var(--ink);transition:transform .15s,box-shadow .15s;cursor:pointer;font-family:var(--body);font-size:1rem}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink);color:#fff}
 .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-.btn.alt{background:var(--butter)}
+.btn.alt{background:var(--butter);color:var(--ink)}
+.btn.alt:hover{color:var(--ink)}
 .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
 
 /* sections */
@@ -129,3 +131,11 @@ tr:last-child td{border-bottom:0}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
 [hidden]{display:none !important}
+
+/* brand kit 2026-10-09: Meet Blue band + real-photo hero */
+.hero-art.photo{background:var(--mint)}
+.hero-art.photo img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:62% 55%}
+.meet-blue{display:grid;gap:22px;align-items:center;background:#fff;border:3px solid var(--ink);border-radius:28px;padding:22px;box-shadow:var(--shadow)}
+.meet-blue img{border-radius:20px;aspect-ratio:1/1;object-fit:cover;width:100%;max-width:320px}
+.meet-blue h2{margin-top:.2em}
+@media (min-width:760px){.meet-blue{grid-template-columns:300px 1fr}}
