@@ -410,8 +410,6 @@ blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:6px solid var(--flag
 .nl .small{color:#8E948D;font-size:.8rem;margin:12px 0 0}
 .nl .msg{color:var(--volt);font-weight:700;margin:10px 0 0}
 .on-light .nl{background:var(--ink)}
-.todo-pill{display:inline-block;font:500 .72rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;border:1px dashed var(--volt);color:var(--volt);padding:3px 8px;margin-top:6px}
-.prose .todo-pill{color:#8A3A12;border-color:#D96A3B}
 .prompt{background:var(--paper);border-top:6px solid var(--flag);padding:24px;border-radius:0 0 4px 4px}
 .prompt q{display:block;font:900 italic 1.45rem/1.1 var(--f);font-stretch:75%;text-transform:uppercase;color:var(--ink);quotes:"\201C" "\201D";padding:14px 0;border-bottom:1px solid var(--rule)}
 

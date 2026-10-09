@@ -102,16 +102,13 @@ b.FOOTER = f"""<footer class="ftr">
 
 
 def newsletter(where):
-    return f"""<div class="nl">
-  <h3>The Weekly Slice</h3>
-  <p>One short email a week: a game to try on Saturday, a drill worth ten minutes, one gear note. Shorter than your pre-shot routine.</p>
-  <form data-newsletter action="#" method="post">
-    <label class="sr" for="nl-{where}">Email address</label>
-    <input id="nl-{where}" type="email" name="email" placeholder="Your email address" autocomplete="email" required>
-    <button class="btn" type="submit">I'm in</button>
-  </form>
-  <p class="msg" aria-live="polite"></p>
-  <p class="small">No spam. Unsubscribe any time, no hard feelings.<br><span class="todo-pill" data-todo="Newsletter form is UI-only: connect a consented list (CGG GMass/ESP + consent record) before launch">TODO(Kyle): connect a consented list before launch</span></p>
+    """No list is connected yet, so nothing here collects an email: it says 'coming soon' and points to X."""
+    return f"""<div class="nl" id="weekly-slice-{where}">
+  <span class="stamp">In the works</span>
+  <h3 style="margin-top:18px">The Weekly Slice</h3>
+  <p>A short weekly email is on the way: a game to try on Saturday, a drill worth ten minutes, one gear note. Shorter than your pre-shot routine. It isn't live yet, so we're not collecting emails.</p>
+  <p>Until then, the fastest way to get the good stuff is X.</p>
+  <p><a class="btn" href="{X_URL}" rel="noopener">Follow @crazygolfgame on X</a></p>
 </div>"""
 
 
@@ -320,6 +317,9 @@ def plate_svg():
 b.plate_svg = plate_svg
 
 
+PLANNER_AFTER = ('<section><h2>After the session</h2><p>Bring your one observation to the next session and turn it into a drill with a score: the '
+                 '<a href="/get-better/putting-ladder-drill/">Putting Ladder</a>, the <a href="/get-better/landing-spot-ladder/">Landing Spot Ladder</a> '
+                 'or the <a href="/get-better/fairway-corridor/">Fairway Corridor</a>.</p></section>')
 # ------------------------------------------------------------------ practice-session planner (hand-made page, restyled; copy and #ad section kept verbatim)
 def planner(doc):
     if "/assets/v4.css" in doc and 'class="planner"' in doc:
@@ -327,7 +327,6 @@ def planner(doc):
     hero = re.search(r'<div class="hero">(.*?)</div><div class="grid">', doc, re.S).group(1)
     grid = re.search(r'<div class="grid">(.*?)</div><p class="note">', doc, re.S).group(1)
     note = re.search(r'</div>(<p class="note">Published.*?</p>)', doc, re.S).group(1)
-    after = re.search(r'(<section><h2>After the session</h2>.*?</section>)', doc, re.S).group(1)
     hero = hero.replace('<p class="eyebrow">', '<p class="kicker">')
     grid = grid.replace('<button type="button" onclick="window.print()">', '<button type="button" class="btn" onclick="window.print()">')
     title = re.search(r"<h1>(.*?)</h1>", hero).group(1)
@@ -335,10 +334,9 @@ def planner(doc):
     trail = [("Home", "/"), ("Get Better", "/get-better/"), ("Practice planner", "/practice-session-planner/")]
     body = f"""<section class="dhero"><div class="wrap">{b.crumbs_html(trail)}<div style="max-width:880px">{hero}</div></div></section>
 <div class="wrap sec tight"><div class="planner">{grid}</div>
-<div class="prose2" style="max-width:780px;margin-top:48px">{after}
+<div class="prose2" style="max-width:780px;margin-top:48px">{PLANNER_AFTER}
 <p><a class="more" href="/get-better/">Drills with a score</a> &nbsp; <a class="more" href="/get-better/putting-ladder-drill/">The Putting Ladder</a></p>
 {note}</div></div>"""
-    body = body.replace('<a class="cta" rel="sponsored" href="/offers/">', '<a class="btn btn-dark" rel="sponsored" href="/offers/">')
     out = page(html.unescape(title).rstrip("."), html.unescape(desc), "/practice-session-planner/", "better", body, [b.crumbs_ld(trail)], b.og_for("ball-pyramid"))
     out = out.replace('<meta property="og:type" content="website">', '<meta property="og:type" content="article">')
     return rechrome(out, "better", "practice-session-planner/index.html")  # same head order as re-runs

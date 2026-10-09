@@ -5,7 +5,7 @@ Runs AFTER build.py on the generated site in <repo>/cgg. Idempotent: every
 insert is guarded by a marker, so running it twice changes nothing.
 
 What it does
-  * Replaces the off-theme Flextail /offers/ page with "Crazy Golf Gift Guide 2026".
+  * Replaces the old single-offer /offers/ page with "Crazy Golf Gift Guide 2026".
   * Adds "Gift Guide" to the main + footer nav on every generated page.
   * Adds an FTC-style #ad disclosure + labelled affiliate callouts to six guides.
   * Updates home / about / privacy copy that described the old single offer.
@@ -16,8 +16,8 @@ Tracking links: ONLY links already issued by the networks are used.
       standard per-click shopper/sub-ID parameter, used for page-level reporting.
   Impact (partner 335485): Best Choice Products base link from the Impact API.
       `subId1` = Impact's standard sub-ID parameter.
-Anything without an issued link is rendered as a visible TODO placeholder.
-Before deploy: `rg -n "TODO\\(Kyle\\)|data-todo" cgg/` must return nothing.
+Only issued links are rendered; unfinished partner cards were dropped before publishing (Kyle, 2026-10-09).
+`rg -n "TODO\\(Kyle\\)|data-todo" cgg/` must return nothing.
 """
 import html, pathlib, re, sys
 
@@ -31,11 +31,6 @@ LINKS = {
     "vice-golf": ("Vice Golf", "https://www.tkqlhce.com/click-101511730-14054834?sid=cgg-{p}"),
     "best-choice-products": ("Best Choice Products", "https://bestchoiceproducts.sjv.io/c/335485/2873487/33479?subId1=cgg-{p}"),
 }
-TODOS = {
-    "mms-personalized": "M&M's (CJ 2603623, joined): generate a CJ link under CGG PID 101511730",
-    "groupon": "Groupon (CJ 5840172, joined): generate a CJ link under CGG PID 101511730 (existing link is the DDM PID)",
-    "golf-partner": "GOLF Partner (Impact 17026, active): generate an Impact tracking link",
-}
 
 
 def aff(offer, page, label):
@@ -44,10 +39,6 @@ def aff(offer, page, label):
     return (f'<a class="btn aff-btn" href="{href}" rel="sponsored noopener" target="_blank" '
             f'data-offer="{offer}">{html.escape(label)}</a> <span class="aff-tag">Affiliate link</span>')
 
-
-def todo(key, label):
-    return (f'<span class="aff-todo" data-todo="{html.escape(TODOS[key], quote=True)}">'
-            f'TODO(Kyle): {html.escape(label)} &middot; {html.escape(TODOS[key])}</span>')
 
 
 def box(offer, page, title, body, label):
@@ -194,11 +185,6 @@ def gift_guide():
   <p>Vice Golf sells golf balls in several colours and finishes and offers personalisation. Check the minimum order and personalisation cut-off dates if you need delivery before the holidays.</p>
   <p class="aff-cta">{aff("vice-golf", P + "-under50", "Shop Vice Golf balls")}</p>
 </div>
-<div class="gift-card">
-  <h3>Personalised golf-colour chocolates</h3>
-  <p>A bag of personalised sweets in club colours is a light-hearted add-on to any golf gift.</p>
-  <p class="aff-cta">{todo("mms-personalized", "link pending")}</p>
-</div>
 
 <h2 id="backyard">Backyard and party games</h2>
 <p>For families and hosts, the best golf gift is often one everyone can play. Backyard sets with portable cups, flags and soft-edged obstacles turn a lawn into a course in minutes, and pack away when the grass needs mowing. Our <a href="/articles/backyard-mini-golf-course/">backyard course guide</a> explains how to lay out nine holes without damaging the lawn.</p>
@@ -245,16 +231,6 @@ def gift_guide():
 
 <h2 id="experiences">Experience gifts and the friend getting serious</h2>
 <p>Not every gift needs wrapping. A round at a local adventure golf course or an hour in a driving-range bay is a great date night or family outing; our <a href="/articles/mini-golf-date-night/">mini golf date night guide</a> has ideas to make it an event. For the friend graduating from putt-putt to the real thing, a good pre-owned club is a thoughtful upgrade.</p>
-<div class="gift-card">
-  <h3>Local mini golf and driving-range deals</h3>
-  <p>Deal sites often list discounted rounds and bay time at local venues; check the expiry date and booking rules before gifting.</p>
-  <p class="aff-cta">{todo("groupon", "link pending")}</p>
-</div>
-<div class="gift-card">
-  <h3>Pre-owned clubs</h3>
-  <p>Inspected second-hand clubs are a sensible first step into full-size golf before committing to a new set.</p>
-  <p class="aff-cta">{todo("golf-partner", "link pending")}</p>
-</div>
 
 <h2 id="black-friday">How to shop the Black Friday and Cyber Monday golf sales</h2>
 <p>In 2026, Black Friday falls on Friday 27 November and Cyber Monday on Monday 30 November. Golf retailers often start promotions earlier in the month. A few habits help you buy well:</p>
@@ -288,7 +264,6 @@ CSS = CSS_MARK + """
 .aff-box h3,.gift-card h3{margin:0 0 6px}
 .aff-cta{margin:10px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .aff-tag{font-size:.8rem;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:2px 8px;background:var(--sun)}
-.aff-todo{display:inline-block;font-family:monospace;font-size:.85rem;background:#ffe0ea;border:2px dashed var(--pink-d);border-radius:10px;padding:6px 10px;color:var(--pink-d)}
 .gift-jump{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
 .gift-jump a{font-family:var(--display);font-weight:600;text-decoration:none;border:3px solid var(--ink);border-radius:999px;padding:6px 12px;background:var(--sky);color:var(--ink)}
 .gift-jump a:hover{background:var(--sun)}
@@ -310,7 +285,7 @@ JS = JS_MARK + """
 
 
 def main():
-    # 1. gift guide replaces Flextail offers page
+    # 1. gift guide at /offers/ (replaced the old single-offer page)
     (SITE / "offers" / "index.html").write_text(gift_guide())
     old_img = SITE / "offers" / "hero.jpg"
     if old_img.exists():

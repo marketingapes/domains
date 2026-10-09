@@ -39,14 +39,27 @@ test('FPLB shopping checklist points at the portrait guide', () => {
   assert.match(html, /href="\/guides\/pet-portrait-selection\/"/);
 });
 
-test('CGG planner connects to existing Flextail shelf without a new tracker URL', () => {
+test('CGG planner carries no sponsored links and sends readers to the drills', () => {
   const html = fs.readFileSync(path.join(ROOT, 'cgg/practice-session-planner/index.html'), 'utf8');
-  assert.match(html, /#ad/);
-  assert.match(html, /rel="sponsored"/);
-  assert.match(html, /href="\/offers\/"/);
-  assert.match(html, /60295/);
-  assert.match(html, /cgg-flex/);
-  assert.doesNotMatch(html, /awin1\.com\/cread\.php/);
+  // the page promises "no affiliate purchase links or sponsored product recommendations"; keep that true
+  assert.match(html, /no affiliate purchase links or sponsored product recommendations/);
+  const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  assert.ok(main.length > 500);
+  assert.doesNotMatch(main, /rel="sponsored|#ad|data-offer/i);
+  assert.doesNotMatch(html, /Flextail|60295|cgg-flex|awin1\.com/i);
+  assert.match(html, /href="\/get-better\/putting-ladder-drill\/"/);
+  assert.match(html, /window\.print\(\)/);
+});
+
+test('CGG ships no unfinished placeholders or email capture that is not connected', () => {
+  for (const rel of ['index.html', 'clubhouse/index.html', 'offers/index.html']) {
+    const html = fs.readFileSync(path.join(ROOT, 'cgg', rel), 'utf8');
+    assert.doesNotMatch(html, /TODO\(Kyle\)|data-todo/);
+    assert.doesNotMatch(html, /type="email"|data-newsletter/);
+  }
+  const home = fs.readFileSync(path.join(ROOT, 'cgg/index.html'), 'utf8');
+  assert.match(home, /In the works/);
+  assert.match(home, /Follow @crazygolfgame on X/);
 });
 
 test('DDM deal checklist adds Tayst discovery without editing Codex worksheet path', () => {
