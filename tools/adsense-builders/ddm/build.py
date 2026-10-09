@@ -4,7 +4,7 @@ import svgs
 from articles1 import A as A1
 from articles2 import A as A2
 
-OUT = "/home/user/domains/ddm"
+OUT = os.environ.get("DDM_OUT") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "ddm")
 HOST = "https://discountdealme.com"
 BRAND = "Discount Deal Me"
 EMAIL = "hello@discountdealme.com"
@@ -22,6 +22,30 @@ BY = {a["slug"]: a for a in ARTS}
 assert len(BY) == len(ARTS) == 12
 
 GTM = "GTM-W3D26R29"
+ASSET_V = "20261009"
+
+# Email opt-in. Posts form-encoded to a private Make webhook that appends one row
+# to the "DDM Subscribers (GMass list)" Google Sheet. No emails are sent by it.
+SIGNUP_HOOK = "https://hook.us2.make.com/slmuyswz99f297vw6uw4a79jlekuqof7"
+SIGNUP_CONSENT_VERSION = "DDM_EMAIL_2026-10-09_V1"
+SIGNUP_CONSENT = ("Yes, email me deal alerts and shopping guides from Discount Deal Me. "
+                  "About one email a week, more around big sales. Some emails include affiliate links (#ad). "
+                  "Unsubscribe any time with one click.")
+
+
+def signup(form_id, title="Get the deals worth your click", lede="One short email with the real deals we found and the ones to skip. About once a week, more around Black Friday and Cyber Monday.", cls=""):
+    e = html.escape
+    return f'''<section class="signup {cls}" aria-labelledby="{form_id}-h">
+<div class="signup-copy"><h2 id="{form_id}-h">{title}</h2><p>{lede}</p></div>
+<form class="signup-form" data-signup="{form_id}" action="{SIGNUP_HOOK}" method="post" novalidate>
+<input type="hidden" name="domain_id" value="ddm"><input type="hidden" name="form" value="{form_id}"><input type="hidden" name="consent_version" value="{SIGNUP_CONSENT_VERSION}">
+<div class="hp" aria-hidden="true"><label for="{form_id}-web">Leave this empty</label><input id="{form_id}-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<div class="signup-row"><label class="sr-only" for="{form_id}-email">Email address</label><input id="{form_id}-email" name="email" type="email" required autocomplete="email" placeholder="Your email address"><button class="btn" type="submit">Sign me up</button></div>
+<label class="signup-consent"><input type="checkbox" name="consent" value="yes" required> <span data-consent-text>{e(SIGNUP_CONSENT)}</span></label>
+<p class="signup-fine">We keep your email in a private list used only for Discount Deal Me emails. We never sell it. See our <a href="/privacy/#email-list">privacy policy</a>.</p>
+<p class="signup-msg" role="status" aria-live="polite"></p>
+</form>
+</section>'''
 
 
 def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=""):
@@ -51,7 +75,7 @@ def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=20260923">
+<link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
 {extra}</head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -73,6 +97,7 @@ def nav(active=""):
 
 
 FOOT = f'''<footer class="site-foot">
+<div class="wrap foot-signup">{signup("footer", title="Deal alerts, minus the hype", lede="A short weekly email with deals we checked against the usual price. Unsubscribe any time.", cls="signup-foot")}</div>
 <div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="36" height="36"><span>Discount<b>Deal</b>Me</span></a>
 <p class="foot-tag">Offers worth the click. Plain-English guides to spotting real deals, stacking discounts and keeping more of your money.</p></div>
@@ -82,14 +107,20 @@ FOOT = f'''<footer class="site-foot">
 </div>
 <div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes. General shopping information only; always check current terms with the retailer.</p></div>
 </footer>
-<script src="/assets/site.js?v=20260923" defer></script>
+<script src="/assets/site.js?v={ASSET_V}" defer></script>
+<script src="/assets/signup.js?v={ASSET_V}" defer></script>
 </body>
 </html>
 '''
 
 
+FOOT_NO_SIGNUP = re.sub(r'<div class="wrap foot-signup">.*?</section></div>\n', '', FOOT, count=1, flags=re.S)
+
+
 def page(title, desc, path, body, active="", **kw):
-    return head(title, desc, path, **kw) + nav(active) + f'<main id="main">\n{body}\n</main>\n' + FOOT
+    # The home page carries its own sign-up section, so skip the footer copy there.
+    foot = FOOT_NO_SIGNUP if active == "home" else FOOT
+    return head(title, desc, path, **kw) + nav(active) + f'<main id="main">\n{body}\n</main>\n' + foot
 
 
 def words(s):
@@ -211,7 +242,9 @@ def home():
 <a class="tool" href="/guides/checkout-comparison/"><strong>Checkout comparison worksheet</strong><span>Compare two sellers side by side, including shipping and return policies, on one printable page.</span></a>
 </div>
 <p class="disclose"><strong>#ad</strong> We also keep a short <a href="/offers/">offers page</a> with a few affiliate links. If you buy through them, Discount Deal Me may earn a commission at no extra cost to you. Articles on this site do not contain affiliate links.</p>
-</section>'''
+</section>
+
+<div class="wrap home-signup">{signup("home")}</div>'''
     return page(BRAND, "Discount Deal Me is a friendly guide to smart shopping: how to spot a real deal, stack coupons, track prices, use cashback, read return policies and budget for sales.", "/", body, "home")
 
 
@@ -294,14 +327,15 @@ def privacy():
     body = f'''<section class="wrap page-head narrow">
 <p class="eyebrow">Legal</p>
 <h1>Privacy policy</h1>
-<p class="byline">Last updated <time datetime="{UPDATED}">{UPDATED_H}</time></p>
+<p class="byline">Last updated <time datetime="2026-10-09">October 9, 2026</time></p>
 </section>
 <section class="wrap narrow prose">
 <p>This policy explains what information is collected when you visit discountdealme.com ("Discount Deal Me", "we", "us"), how it is used, and the choices you have. The site is published by Marketing Apes.</p>
 <h2>Information we collect</h2>
 <p><strong>Information you send us.</strong> If you email us, we receive your email address and whatever you include in your message. We use it only to reply and to keep a record of the conversation.</p>
 <p><strong>Information collected automatically.</strong> Like most websites, our hosting provider and the tools described below receive technical information when you visit, such as your IP address, browser type, device type, pages visited, referring page and the date and time of your visit.</p>
-<p>The articles, about, contact and tools pages do not include sign-up or lead forms. The Deal-o-Meter calculator on our home page runs entirely in your browser; the numbers you type are not sent to us.</p>
+<p><strong>Email sign-up.</strong> If you join our email list, we collect your email address, the page and form you signed up from, the referring page and campaign tags if present, your browser type, the date and time, and the consent wording you agreed to. See <a href="#email-list">Our email list</a> below.</p>
+<p>The site has no other sign-up or lead forms. The Deal-o-Meter calculator on our home page runs entirely in your browser; the numbers you type are not sent to us.</p>
 <h2>Cookies and advertising</h2>
 <p>We use Google AdSense to show ads. Please note:</p>
 <ul>
@@ -313,6 +347,9 @@ def privacy():
 <p>Where required by law, such as for visitors in the European Economic Area, the UK or Switzerland, ads may be shown through a consent management tool that asks for your choice before personalised advertising cookies are used. If you decline, Google may still show non-personalised ads, which use cookies for purposes such as frequency capping and fraud prevention.</p>
 <h2>Analytics and tag management</h2>
 <p>We use Google Tag Manager to load site measurement tools, which may include Google Analytics. These tools use cookies or similar technologies to help us understand how visitors use the site, for example which guides are read most, so we can improve it. Google processes this information under its own privacy policy. You can prevent Google Analytics from using your data with the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Google Analytics opt-out browser add-on</a>, and you can block or delete cookies in your browser settings.</p>
+<h2 id="email-list">Our email list</h2>
+<p>Joining is optional and needs you to tick the consent box. Your sign-up is sent through our automation provider (Make) and stored in a private Google Sheet that only Discount Deal Me can access. We use it only to send Discount Deal Me emails: deal alerts and shopping guides, roughly once a week and more often around major sales. Emails are sent from a Google Workspace mailbox using a mail-merge tool (GMass), which records opens, clicks and unsubscribes so we can honour opt-outs and stop sending to inactive addresses.</p>
+<p>Some emails contain affiliate links marked #ad; if you buy through them we may earn a commission at no extra cost to you. We never sell or rent your email address and do not share it with advertisers. Every email has a one-click unsubscribe link, and you can also ask us to remove you by emailing <a href="mailto:{EMAIL}">{EMAIL}</a>. We delete addresses on request and remove ones that repeatedly bounce.</p>
 <h2>Affiliate links</h2>
 <p>Our separate <a href="/offers/">offers page</a> contains affiliate links marked #ad. When you click one, the affiliate network and retailer may set cookies to record that you came from our site, so a commission can be credited if you make a purchase. Their use of that information is governed by their own privacy policies.</p>
 <h2>How we use information</h2>
@@ -376,7 +413,7 @@ def notfound():
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=20260923">
+<link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
 </head>
 <body>
 {nav()}<main id="main" class="wrap nf">
@@ -551,6 +588,24 @@ tbody tr:hover{background:#fffbe9}
 .nf img{border:3px solid var(--ink);border-radius:24px;margin:0 auto 24px;box-shadow:var(--shadow)}
 .nf .hero-ctas{justify-content:center}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* email sign-up */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.signup{background:var(--paper);border:3px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:clamp(18px,4vw,32px);display:grid;gap:14px;margin:8px 0 40px}
+.signup h2{font-size:clamp(1.4rem,3.4vw,1.9rem);margin:0 0 .25em}
+.signup p{margin:0}
+.signup-row{display:flex;gap:10px;flex-wrap:wrap}
+.signup-row input{flex:1 1 220px;min-height:50px;padding:12px 16px;border:3px solid var(--ink);border-radius:999px;font:inherit;background:var(--cream)}
+.signup-row .btn{min-height:50px}
+.signup-consent{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;line-height:1.45;margin-top:12px;cursor:pointer}
+.signup-consent input{width:20px;height:20px;margin-top:2px;flex:0 0 auto;accent-color:var(--tang)}
+.signup-fine{font-size:.85rem;color:var(--ink-2);margin-top:8px!important}
+.signup-msg{font-weight:700;margin-top:8px!important}
+.signup-msg.is-err{color:var(--tang-d)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.signup-foot{box-shadow:none;margin:0 0 28px;color:var(--ink)}
+.foot-signup{padding-top:8px}
+.home-signup{margin-top:24px}
+@media (min-width:860px){.signup{grid-template-columns:1fr 1.4fr;align-items:start}}
 """
 
 JS = r"""
@@ -599,10 +654,55 @@ JS = r"""
 """
 
 
+SIGNUP_JS = r"""
+// Discount Deal Me email sign-up. Sends one form-encoded POST (no CORS preflight)
+// to a private Make webhook that appends a row to the DDM Subscribers sheet.
+(function () {
+  var forms = document.querySelectorAll('form[data-signup]');
+  if (!forms.length) return;
+  function track(ev, p) { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: ev }, p || {})); }
+  forms.forEach(function (form) {
+    var msg = form.querySelector('.signup-msg');
+    var btn = form.querySelector('button[type=submit]');
+    var sent = false;
+    function say(t, err) { msg.textContent = t; msg.classList.toggle('is-err', !!err); }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (sent) return;
+      var email = form.elements.email.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { say('Please enter a valid email address.', true); form.elements.email.focus(); return; }
+      if (!form.elements.consent.checked) { say('Please tick the box to confirm you want our emails.', true); return; }
+      if (form.elements.website.value) { say('Thanks!'); return; }
+      var q = new URLSearchParams(location.search);
+      var body = new URLSearchParams(new FormData(form));
+      body.set('email', email);
+      body.set('consent', 'yes');
+      body.set('consent_text', form.querySelector('[data-consent-text]').textContent.trim());
+      body.set('page_url', location.href);
+      body.set('referrer', document.referrer || '');
+      body.set('user_agent', navigator.userAgent || '');
+      ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { if (q.get(k)) body.set(k, q.get(k)); });
+      sent = true; btn.disabled = true; say('Signing you up…');
+      fetch(form.action, { method: 'POST', body: body, keepalive: true })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })
+        .then(function () {
+          track('email_signup', { form: form.elements.form.value });
+          form.querySelector('.signup-row').hidden = true;
+          form.querySelector('.signup-consent').hidden = true;
+          say('You\u2019re on the list. Watch your inbox for our next deal email.');
+        })
+        .catch(function () { sent = false; btn.disabled = false; say('That didn\u2019t go through. Please try again in a moment.', true); });
+    });
+  });
+})();
+"""
+
+
 def main():
     svgs.write_all(os.path.join(OUT, "images"))
     write("assets/site.css", CSS.strip() + "\n")
     write("assets/site.js", JS.strip() + "\n")
+    write("assets/signup.js", SIGNUP_JS.strip() + "\n")
     write("index.html", home())
     write("articles/index.html", articles_index())
     for a in ARTS:
