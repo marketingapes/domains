@@ -45,3 +45,14 @@
     if (ball) { ball.classList.remove('spin'); void ball.offsetWidth; ball.classList.add('spin'); }
   });
 })();
+
+/* aff-overlay: affiliate click tracking */
+(function () {
+  var links = document.querySelectorAll('a[rel~="sponsored"]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'affiliate_click', offer: this.getAttribute('data-offer'), href: this.href, page: location.pathname});
+    });
+  }
+})();
