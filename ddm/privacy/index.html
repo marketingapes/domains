@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=20260923">
+<link rel="stylesheet" href="/assets/site.css?v=20261009">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3D26R29" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -37,14 +37,15 @@
 <section class="wrap page-head narrow">
 <p class="eyebrow">Legal</p>
 <h1>Privacy policy</h1>
-<p class="byline">Last updated <time datetime="2026-09-23">September 23, 2026</time></p>
+<p class="byline">Last updated <time datetime="2026-10-09">October 9, 2026</time></p>
 </section>
 <section class="wrap narrow prose">
 <p>This policy explains what information is collected when you visit discountdealme.com ("Discount Deal Me", "we", "us"), how it is used, and the choices you have. The site is published by Marketing Apes.</p>
 <h2>Information we collect</h2>
 <p><strong>Information you send us.</strong> If you email us, we receive your email address and whatever you include in your message. We use it only to reply and to keep a record of the conversation.</p>
 <p><strong>Information collected automatically.</strong> Like most websites, our hosting provider and the tools described below receive technical information when you visit, such as your IP address, browser type, device type, pages visited, referring page and the date and time of your visit.</p>
-<p>The articles, about, contact and tools pages do not include sign-up or lead forms. The Deal-o-Meter calculator on our home page runs entirely in your browser; the numbers you type are not sent to us.</p>
+<p><strong>Email sign-up.</strong> If you join our email list, we collect your email address, the page and form you signed up from, the referring page and campaign tags if present, your browser type, the date and time, and the consent wording you agreed to. See <a href="#email-list">Our email list</a> below.</p>
+<p>The site has no other sign-up or lead forms. The Deal-o-Meter calculator on our home page runs entirely in your browser; the numbers you type are not sent to us.</p>
 <h2>Cookies and advertising</h2>
 <p>We use Google AdSense to show ads. Please note:</p>
 <ul>
@@ -56,6 +57,9 @@
 <p>Where required by law, such as for visitors in the European Economic Area, the UK or Switzerland, ads may be shown through a consent management tool that asks for your choice before personalised advertising cookies are used. If you decline, Google may still show non-personalised ads, which use cookies for purposes such as frequency capping and fraud prevention.</p>
 <h2>Analytics and tag management</h2>
 <p>We use Google Tag Manager to load site measurement tools, which may include Google Analytics. These tools use cookies or similar technologies to help us understand how visitors use the site, for example which guides are read most, so we can improve it. Google processes this information under its own privacy policy. You can prevent Google Analytics from using your data with the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Google Analytics opt-out browser add-on</a>, and you can block or delete cookies in your browser settings.</p>
+<h2 id="email-list">Our email list</h2>
+<p>Joining is optional and needs you to tick the consent box. Your sign-up is sent through our automation provider (Make) and stored in a private Google Sheet that only Discount Deal Me can access. We use it only to send Discount Deal Me emails: deal alerts and shopping guides, roughly once a week and more often around major sales. Emails are sent from a Google Workspace mailbox using a mail-merge tool (GMass), which records opens, clicks and unsubscribes so we can honour opt-outs and stop sending to inactive addresses.</p>
+<p>Some emails contain affiliate links marked #ad; if you buy through them we may earn a commission at no extra cost to you. We never sell or rent your email address and do not share it with advertisers. Every email has a one-click unsubscribe link, and you can also ask us to remove you by emailing <a href="mailto:hello@discountdealme.com">hello@discountdealme.com</a>. We delete addresses on request and remove ones that repeatedly bounce.</p>
 <h2>Affiliate links</h2>
 <p>Our separate <a href="/offers/">offers page</a> contains affiliate links marked #ad. When you click one, the affiliate network and retailer may set cookies to record that you came from our site, so a commission can be credited if you make a purchase. Their use of that information is governed by their own privacy policies.</p>
 <h2>How we use information</h2>
@@ -77,6 +81,17 @@
 </section>
 </main>
 <footer class="site-foot">
+<div class="wrap foot-signup"><section class="signup signup-foot" aria-labelledby="footer-h">
+<div class="signup-copy"><h2 id="footer-h">Deal alerts, minus the hype</h2><p>A short weekly email with deals we checked against the usual price. Unsubscribe any time.</p></div>
+<form class="signup-form" data-signup="footer" action="https://hook.us2.make.com/slmuyswz99f297vw6uw4a79jlekuqof7" method="post" novalidate>
+<input type="hidden" name="domain_id" value="ddm"><input type="hidden" name="form" value="footer"><input type="hidden" name="consent_version" value="DDM_EMAIL_2026-10-09_V1">
+<div class="hp" aria-hidden="true"><label for="footer-web">Leave this empty</label><input id="footer-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<div class="signup-row"><label class="sr-only" for="footer-email">Email address</label><input id="footer-email" name="email" type="email" required autocomplete="email" placeholder="Your email address"><button class="btn" type="submit">Sign me up</button></div>
+<label class="signup-consent"><input type="checkbox" name="consent" value="yes" required> <span data-consent-text>Yes, email me deal alerts and shopping guides from Discount Deal Me. About one email a week, more around big sales. Some emails include affiliate links (#ad). Unsubscribe any time with one click.</span></label>
+<p class="signup-fine">We keep your email in a private list used only for Discount Deal Me emails. We never sell it. See our <a href="/privacy/#email-list">privacy policy</a>.</p>
+<p class="signup-msg" role="status" aria-live="polite"></p>
+</form>
+</section></div>
 <div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="36" height="36"><span>Discount<b>Deal</b>Me</span></a>
 <p class="foot-tag">Offers worth the click. Plain-English guides to spotting real deals, stacking discounts and keeping more of your money.</p></div>
@@ -86,6 +101,7 @@
 </div>
 <div class="wrap foot-base"><p>&copy;2026 Discount Deal Me. Published by Marketing Apes. General shopping information only; always check current terms with the retailer.</p></div>
 </footer>
-<script src="/assets/site.js?v=20260923" defer></script>
+<script src="/assets/site.js?v=20261009" defer></script>
+<script src="/assets/signup.js?v=20261009" defer></script>
 </body>
 </html>

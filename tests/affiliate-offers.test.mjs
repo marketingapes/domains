@@ -26,7 +26,34 @@ test('DDM offers page uses verified Awin publisher and Tayst merchant', () => {
   assert.match(html, /#ad/);
   assert.match(html, /awinmid=62217/);
   assert.match(html, /awinmid=60295/);
-  assert.match(html, /awinmid=111756/);
+  // 111756 (Design It Yourself Gift Baskets) is not a joined Awin programme; 33247 is.
+  assert.doesNotMatch(html, /awinmid=111756/);
+  assert.match(html, /awinmid=33247/);
+});
+
+test('DDM offers page uses CJ links from the DDM CJ property (101511733) only', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'ddm/offers/index.html'), 'utf8');
+  const cj = [...html.matchAll(/href="(https:\/\/www\.(?:dpbolvw\.net|jdoqocy\.com|tkqlhce\.com|anrdoezrs\.net|kqzyfj\.com)\/click-[^"]+)"/g)].map((m) => m[1]);
+  assert.equal(cj.length, 3);
+  for (const href of cj) assert.match(href, /\/click-101511733-/);
+  assert.match(html, /click-101511733-15204586/); // Groupon deal of the day
+  assert.match(html, /click-101511733-17166872/); // All-Clad.com (Home & Cook)
+  assert.match(html, /click-101511733-15733888/); // M&M's evergreen
+});
+
+test('DDM email sign-up is consented, honeypotted and present on home, offers and guides', () => {
+  for (const rel of ['ddm/index.html', 'ddm/offers/index.html', 'ddm/articles/how-to-spot-a-real-deal/index.html']) {
+    const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.equal((html.match(/data-signup="/g) || []).length, 1, rel);
+    assert.match(html, /name="consent" value="yes" required/, rel);
+    assert.match(html, /name="website"/, rel);
+    assert.match(html, /Unsubscribe any time/, rel);
+    assert.match(html, /\/privacy\/#email-list/, rel);
+    assert.match(html, /\/assets\/signup\.js/, rel);
+  }
+  const privacy = fs.readFileSync(path.join(ROOT, 'ddm/privacy/index.html'), 'utf8');
+  assert.match(privacy, /id="email-list"/);
+  assert.ok(fs.existsSync(path.join(ROOT, 'ddm/assets/signup.js')));
 });
 
 test('CGG offers page is the Crazy Golf Gift Guide with labelled, issued affiliate links only', () => {
