@@ -56,6 +56,11 @@ footer{padding:24px 0 80px;font-size:13px;color:var(--mute)}
     <p class="risk">Composting rules vary by product and city. Read theirs, not ours.</p>
   </header>
   <section class="grid">
+    <article class="card" data-expires="2026-10-11T03:59:00Z">
+      <h2>Ending soon: KitchenAid Harvest Event</h2>
+      <p>Up to 25% off select countertop appliances and up to $120 off select stand mixers on kitchenaid.com, no code. Ends Sat Oct 10 at 8:59 PM PT. Select models only, so check your cart price.</p>
+      <p><a class="btn" href="/deals/kitchenaid-harvest-event/">See the KitchenAid deal</a></p>
+    </article>
     <article class="card">
       <h2>Gardenreet — outdoor lighting</h2>
       <p>Low-voltage path and spot lights. Check fixture type and shipping.</p>
@@ -102,6 +107,9 @@ footer{padding:24px 0 80px;font-size:13px;color:var(--mute)}
   <p class="sticky"><a class="btn" rel="sponsored nofollow noopener" data-offer="tayst-sticky" href="https://www.awin1.com/cread.php?awinmid=90529&amp;awinaffid=2572337&amp;clickref=ddm-home&amp;ued=https%3A%2F%2Fwww.tayst.com%2Fpages%2Fcompostable-coffee-kcups">See Tayst coffee</a></p>
 </main>
 <footer class="wrap">Affiliate commission on qualifying purchases. Marketing Apes LLC · (619) 736-0356 · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></footer>
+<script>
+document.querySelectorAll('[data-expires]').forEach(function(el){if(Date.now()>=Date.parse(el.getAttribute('data-expires')))el.hidden=true;});
+</script>
 <script>
 window.dataLayer=window.dataLayer||[];
 document.querySelectorAll('a[rel~="sponsored"]').forEach(function(a){
