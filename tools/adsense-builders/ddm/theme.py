@@ -1,3 +1,5 @@
+# Discount Deal Me design system (2026-10). Neutral palette, one accent, Inter, dense but calm.
+CSS = r"""
 :root{--bg:#ffffff;--surface:#fafafa;--surface-2:#f4f4f5;--line:#e4e4e7;--line-2:#d4d4d8;--ink:#0b0d12;--ink-2:#52525b;--ink-3:#71717a;--acc:#ea580c;--acc-ink:#c2410c;--acc-t:#fff4ed;--ok:#15803d;--r:12px;--r-lg:16px;--shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);--shadow-lg:0 8px 24px rgba(16,24,40,.08);--font:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -329,3 +331,4 @@ td.num,th.num{text-align:right}
 .home-signup{margin-top:56px}
 @media (min-width:860px){.signup{grid-template-columns:1fr 1.3fr;align-items:start}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+"""
