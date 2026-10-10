@@ -1,0 +1,3 @@
+# DRAFT: block crawling until Kyle approves launch. Pages also carry noindex.
+User-agent: *
+Disallow: /
