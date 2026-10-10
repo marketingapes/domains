@@ -1,0 +1,14 @@
+✔ browser port produces the same validated frozen hash, artifacts and offer as reviewed Node engine (5.637958ms)
+✔ browser validation preserves HTML/control, unconfirmed, price and unsupported claim exclusions (2.000334ms)
+✔ duplicate replay, stale revisions, cancellation and review invalidation survive browser crypto port (2.651458ms)
+✔ tab engine retains sliding expiry, immutable read copies and separate session values (0.389291ms)
+✔ browser transport serializes duplicate commands, rejects unknown actions and clears all memory on leave (1.1125ms)
+✔ public package has no backend fetch, provider tools, trackers or persisted bearer (1.099458ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75.484666

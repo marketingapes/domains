@@ -1,12 +1,12 @@
 {
   "name": "Kyle Gosselin",
   "short_name": "KG",
-  "description": "Kyle Gosselin, founder of Marketing Apes.",
+  "description": "Kyle Gosselin: 1 gorilla, all AI. Founder of Marketing Apes.",
   "start_url": "/",
   "display": "browser",
-  "background_color": "#08122B",
-  "theme_color": "#08122B",
+  "background_color": "#20170f",
+  "theme_color": "#20170f",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "/favicon-kmfg.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

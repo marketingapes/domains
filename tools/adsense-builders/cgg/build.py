@@ -449,6 +449,18 @@ def main():
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{HOST}{u}</loc><lastmod>{UPDATED}</lastmod></url>\n" for u in urls)
     put("sitemap.xml", sm + "</urlset>\n")
+    # Affiliate overlay (gift guide at /offers/, nav link, labelled partner picks). Idempotent.
+    import affiliate_overlay
+    affiliate_overlay.SITE = OUT
+    affiliate_overlay.main()
+    # v4 rebrand layer ("Scratch & Fire"): runs the v3 layer (pillars, side games, drills, photos) with the v4 brand
+    # system on top. Supersedes v2/v3 styling. Idempotent; see v4/build_v4.py.
+    import importlib.util
+    import pathlib as _pl
+    _spec = importlib.util.spec_from_file_location("build_v4", _pl.Path(__file__).resolve().parent / "v4" / "build_v4.py")
+    _v4 = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_v4)
+    _v4.SITE = OUT
+    _v4.main()
     for a in arts:
         t = re.sub(r"<[^>]+>", " ", a["body"] + " ".join(q + " " + x for q, x in a["faq"]))
         print(a["slug"], len(re.findall(r"[A-Za-z0-9'’-]+", t)))

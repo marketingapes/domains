@@ -1,52 +1,35 @@
 # kg-site — kylegosselin.com
 
-Lite personal-brand site for Kyle Gosselin (founder, Marketing Apes). Static HTML, no build step,
-no frameworks, no external CSS/JS, no raster images (SVG only). Served by Render as a static site
-with folder-style clean URLs.
+Kyle Gosselin's personal site. Static HTML, no build step, no framework. Render static site `kg-site`
+publishes this folder; **any merge to `main` that touches `kg/` deploys live.**
 
-## Tree
+## Story build (Oct 2026)
 
 | Path | Purpose |
 |---|---|
-| `index.html` | Front door — what I do, proof block, work-with-me CTA |
-| `privacy/index.html` | Plain-English privacy policy (effective 2026-09-03) |
-| `pay/index.html` | Invoice placeholder → redirects to Marketing Apes pricing; `/pay/{invoice}` resolves here |
-| `404.html` | Not-found page |
-| `robots.txt` | **Disallow: /** while in preview |
-| `sitemap.xml` | `/`, `/privacy/`, `/pay/` |
-| `favicon.svg` | KG monogram (white on navy, red dot) |
-| `site.webmanifest` | PWA manifest |
+| `index.html` | Homepage as a scrolling story in 9 chapters, ending in "Work with me" |
+| `now/index.html` | Running log (October 2026) |
+| `assets/story.css`, `assets/story.js` | Shared styles (bronze palette, system fonts) and CTA tracking, reveal, chapter index |
+| `assets/kyle-headshot-*.webp/jpg` | Hero photo (from `lfma/assets/kyle-headshot.png`) |
+| `assets/og-kyle.jpg` | 1200×630 OG/Twitter card |
+| `privacy/`, `pay/`, `snake/`, `404.html` | Unchanged pages (AdSense script removed from privacy and snake) |
+| `robots.txt` / `sitemap.xml` | Allow all; sitemap refreshed 2026-10-09 |
 
-Design base: the Nearest Injury Lawyers house style (same `:root` tokens, dot-grid, header/eyebrow/steps/trust/footer patterns).
+Unlisted, left as is: `hey-mom/`, `i-am-here/`, `love/`, `campaigns/`, `preview/`, `social-preview/`
+(the latter still serves CSS and images used by older pages), `publishing-check-20260907/`.
+Retired: `rizeup/`, `dispatch/`. Their original content is gone; each folder now holds only a noindex
+stub that redirects to `/`.
 
-## Measurement (Evolution Engine)
+**Why the stubs exist:** Render static sites keep serving files from earlier deploys when a later deploy
+simply deletes them (kg-site's build is `echo "kg static"`, publish path `kg`, and deleted paths kept
+returning the Oct 2 copy). Overwriting a path with new content is what replaces it. To retire a page,
+replace its `index.html` with a redirect stub; don't just delete the folder. A Render dashboard
+redirect rule (`/rizeup/*` and `/dispatch/*` to `/`) would also work, but kg-site isn't declared in `render.yaml`.
 
-Every HTML page:
+## Measurement
 
-- `<head>`: `dataLayer.push({event:'ee_page_context', tenant_id:'KG', domain:'kylegosselin.com', page_type:'home'|'privacy'|'pay'|'404'})` **before** the GTM snippet.
-- GTM container `GTM-W3CTJQ` (head script + noscript iframe first in body).
-- Every element with class `cta` pushes `ee_cta_click` `{cta_id, cta_text, destination, tenant_id, domain, landing_page_url}` on click.
-- The pay button (`data-pay`) additionally pushes `ee_pay_redirect` with `invoice_ref` parsed from `/pay/{invoice}`.
-- Social icons push `ee_social_click` `{social_platform}`.
-
-CTA ids: `hero_pricing`, `hero_email`, `work_pricing`, `work_email`, `pay_redirect`, `404_home`, `404_email`.
-Outbound pricing links carry `utm_source=kylegosselin.com&utm_medium=site&utm_campaign=kg-home|kg-pay`.
-
-## Render setup
-
-- Static Site → this repo, branch `main`, publish directory `.` (no build command).
-- Custom domain `kylegosselin.com` (+ `www` redirect).
-- Rewrite rule so invoice links land on the placeholder: `/pay/*` → `/pay/index.html` (200 rewrite).
-- Render serves `404.html` automatically for missing paths.
-
-## Cutover checklist (preview → live)
-
-- [ ] Remove `<meta name="robots" content="noindex,nofollow">` from every page (set to `index,follow`).
-- [ ] Remove / retext the `.build-state` banner (`PREVIEW BUILD · NOT YET LIVE`) in the header of every page.
-- [ ] `robots.txt`: `Disallow: /` → `Allow: /` and add `Sitemap: https://kylegosselin.com/sitemap.xml`.
-- [ ] Fill in the four social links in the footer (`href="#"` placeholders: linkedin, x, instagram, youtube).
-- [ ] Confirm GTM-W3CTJQ container is published with GA4 + Meta + TikTok tags reading `ee_page_context` / `ee_cta_click` / `ee_pay_redirect` / `ee_social_click`.
-- [ ] Verify events in GA4 DebugView and the Evolution Engine sheet/BigQuery sink.
-- [ ] Point `/pay/` at the ma-control tenant once live (replace the pricing redirect; keep `ee_pay_redirect`).
-- [ ] Add DNS: Render A/CNAME + Google Search Console verification; submit sitemap.
-- [ ] Add OG image (SVG-only rule lifts at cutover if a raster is needed).
+- GA4 `G-2KRKVE3Y3R` (gtag) and GTM `GTM-W3CTJQ`, with `ee_page_context` pushed before GTM.
+- Any element with `data-cta` fires a GA4 event and an `ee_cta_click` dataLayer push.
+  GA4 event names: `call_my_ai` (tel:+12138787408), `book_call` (Google Calendar booking), `follow_x` (x.com/kylepractor),
+  and `cta_<name>` for the rest. `data-loc` is sent as `cta_location`.
+- Mark `call_my_ai`, `book_call`, and `follow_x` as key events in GA4 to count conversions.

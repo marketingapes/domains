@@ -1,0 +1,2 @@
+390px: email-first sign-in, top area (heading, + Request a Campaign, Arizona MVA preview, links, freshness), request pending review, Phillips refused at #admin, owner admin reachable, 0 JS errors
+1280px: email-first sign-in, top area (heading, + Request a Campaign, Arizona MVA preview, links, freshness), request pending review, Phillips refused at #admin, owner admin reachable, 0 JS errors

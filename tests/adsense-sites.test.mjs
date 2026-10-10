@@ -82,8 +82,11 @@ for (const b of BRANDS) {
       const html = read(path.join(dir, rel));
       const slug = rel.split('/')[1];
       assert.ok(words(text(html)) >= 700, `${rel} has ${words(text(html))} words`);
-      assert.ok(fs.existsSync(path.join(dir, 'images', `${slug}.svg`)), `images/${slug}.svg missing`);
-      assert.ok(html.includes(`/images/${slug}.svg`), `${rel} does not show its hero image`);
+      // FPLB uses real photos for article heroes (images/photos/<slug>-1200.jpg); every
+      // other brand keeps its original SVG illustration.
+      const hero = b === 'fplb' ? `/images/photos/${slug}-1200.jpg` : `/images/${slug}.svg`;
+      assert.ok(fs.existsSync(path.join(dir, hero)), `${b}${hero} missing`);
+      assert.ok(html.includes(hero), `${rel} does not show its hero image`);
       assert.ok((html.match(/<h2/g) || []).length >= 4, `${rel} needs 4+ H2`);
     }
   });
