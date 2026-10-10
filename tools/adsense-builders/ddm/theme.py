@@ -217,6 +217,20 @@ p{margin:0 0 1em}
 @media(min-width:1040px){.art-layout{grid-template-columns:minmax(0,1fr) 300px}.art-side{position:sticky;top:90px;align-self:start}}
 .art-hero{margin:0 0 28px;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
 .art-side{display:grid;gap:16px}
+/* images */
+.deal{overflow:hidden}
+.deal-media{margin:-18px -18px 2px;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.deal-media.is-contain{background:#fff}
+.deal-media img{display:block;width:100%;height:100%;object-fit:cover}
+.gcard-img img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+@media(min-width:1040px){.guide-grid .gcard-big .gcard-img img{height:100%;min-height:300px}}
+.hero-photo{margin:-22px -22px 18px;aspect-ratio:2/1;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.hero-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.hero-panel{overflow:hidden}
+.art-hero img{display:block;width:100%;height:auto}
+.art-diagram{margin:28px 0;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--surface)}
+.art-diagram img{display:block;width:100%;height:auto}
+.art-diagram figcaption{padding:10px 14px;font-size:.85rem;color:var(--ink-3);border-top:1px solid var(--line)}
 .side-card{border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;background:#fff}
 .side-p{font-size:.875rem;color:var(--ink-2)}
 .side-deals{list-style:none;margin:0 0 12px;padding:0}

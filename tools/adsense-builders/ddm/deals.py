@@ -5,6 +5,7 @@ commission, EPC or any other number about what Discount Deal Me earns.
 """
 import math
 import datetime, html, json, os
+import images
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FEED = json.load(open(os.path.join(HERE, "deals_feed.json")))
@@ -102,6 +103,7 @@ def public_feed():
             "score": d["score"], "score_parts": d["score_parts"],
             "summary_ai": d["summary_ai"], "network_terms": n["terms"], "network": n["name"],
             "url": tracked(d, "ddm-finder"), "event_page": d.get("event_page", ""),
+            "image": images.deal_image(d)[0], "image_alt": images.deal_image(d)[1],
         })
     return {"source": FEED["source"], "checked_at": CHECKED_AT, "score_formula": "/how-we-pick-deals/#deal-score",
             "disclosure": "Links are affiliate links. Discount Deal Me may earn a commission; it never changes your price or the Deal Score.",
@@ -142,7 +144,7 @@ def card(d, sid, compact=False, heading="h3"):
                f'<button type="button" class="code-copy" data-copy="{E(code)}">Copy</button></div>') if code else ""
     event = f'<a class="deal-more" href="{d["event_page"]}">Read our full breakdown</a>' if d.get("event_page") else ""
     return f'''<article class="deal{' deal-compact' if compact else ''}" id="{d["id"] if not compact else ""}" data-deal="{d["id"]}" data-cat="{E(d["category"])}" data-ends="{n["ends"]}" data-score="{d["score"]}" data-code="{1 if code else 0}" data-local="{1 if "local" in d.get("conditions", []) else 0}">
-<div class="deal-top"><span class="deal-merchant">{E(d["merchant"])}</span><span class="deal-cat">{E(d["category"])}</span>{score_badge(d)}</div>
+{"" if compact else images.deal_img_tag(d)}<div class="deal-top"><span class="deal-merchant">{E(d["merchant"])}</span><span class="deal-cat">{E(d["category"])}</span>{score_badge(d)}</div>
 <{heading} class="deal-title">{E(d["title"])}</{heading}>
 <p class="deal-meta">{"".join(meta)}</p>
 <p class="ai"><span class="ai-tag" title="Written by an AI model from the network terms below. Numbers and dates are checked against those terms.">AI summary</span> {E(d["summary_ai"])}</p>
