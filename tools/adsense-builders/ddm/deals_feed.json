@@ -1,0 +1,724 @@
+{
+ "source": "CJ link-search, DDM property 101511733",
+ "checked_at": "2026-10-10T15:10:30Z",
+ "deals": [
+  {
+   "link_id": "17342552",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to 25% off select countertop appliances",
+   "value": {
+    "kind": "pct",
+    "amount": 25,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/",
+   "summary_ai": "KitchenAid's Harvest Event takes up to 25% off select countertop appliances on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and \"up to\" means many models get less, so compare the cart price.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Harvest Event: Save up to 25% on select Countertop Appliances",
+    "terms": "Harvest Event: Save up to 25% on select Countertop Appliances. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-09-27T04:00:00Z",
+    "ends": "2026-10-11T03:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17342552-1787624400000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/sale"
+   }
+  },
+  {
+   "link_id": "17342535",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to $120 off select stand mixers",
+   "value": {
+    "kind": "usd",
+    "amount": 120,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/",
+   "summary_ai": "Select KitchenAid stand mixers are up to $120 off during the Harvest Event. It applies to new orders on kitchenaid.com only; check which mixer models carry the full discount before you pick a size.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Harvest Event: Save up to $120 off select Stand Mixers",
+    "terms": "Harvest Event: Save up to $120 off select Stand Mixers. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-09-27T04:00:00Z",
+    "ends": "2026-10-11T03:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17342535-1787624400000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/stand-mixers.html"
+   }
+  },
+  {
+   "link_id": "17342541",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to 35% off select food processors",
+   "value": {
+    "kind": "pct",
+    "amount": 35,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/",
+   "summary_ai": "The deepest percentage in the Harvest Event: up to 35% off select KitchenAid food processors. Same exclusions as the main sale (no closeout, commercial or refurbished models).",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Harvest Event: Save up to 35% on select Food Processors",
+    "terms": "Harvest Event: Save up to 35% on select Food Processors. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-09-27T04:00:00Z",
+    "ends": "2026-10-11T03:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17342541-1787624401000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/food-processors/food-processor-and-chopper-products"
+   }
+  },
+  {
+   "link_id": "17342548",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to $250 off select coffee machines",
+   "value": {
+    "kind": "usd",
+    "amount": 250,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/",
+   "summary_ai": "KitchenAid lists up to $250 off select coffee products in the Harvest Event. The biggest dollar figure usually applies to the priciest espresso models, so check the saving on the exact machine you want.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Harvest Event: Save up to $250 off select Coffee",
+    "terms": "Harvest Event: Save up to $250 off select Coffee. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-09-27T04:00:00Z",
+    "ends": "2026-10-11T03:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17342548-1787624400000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/coffee-products/coffee-collection"
+   }
+  },
+  {
+   "link_id": "17342536",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to 30% off select stand mixer attachments",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/",
+   "summary_ai": "Already own a KitchenAid mixer? Select attachments are up to 30% off in the Harvest Event, which can be a cheaper upgrade than a new mixer.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Harvest Event: Save up to 30% on select Stand Mixer Attachments",
+    "terms": "Harvest Event: Save up to 30% on select Stand Mixer Attachments. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-09-27T04:00:00Z",
+    "ends": "2026-10-11T03:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17342536-1787624400000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/stand-mixers/attachments.html"
+   }
+  },
+  {
+   "link_id": "17360704",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Up to 50% off select refurbished appliances",
+   "value": {
+    "kind": "pct",
+    "amount": 50,
+    "upto": true
+   },
+   "conditions": [
+    "select",
+    "refurbished"
+   ],
+   "event_page": "/deals/kitchenaid-harvest-event/#refurb",
+   "summary_ai": "KitchenAid's refurbished sale lists up to 50% off select refurbished countertop appliances. It can't be combined with other offers and excludes in-home delivery products; check the refurbished warranty before buying.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season.",
+    "terms": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season. \"Ends 10/12/2026 11:59PM EST. Excludes in-home delivery products. Discount taken off regular price excluding taxes, shipping, gift wrapping, and engraving. Only valid on select refurbished orders on kitchenaid.com. Offer subject to change. No cash value. Cannot be combined with other offers or rebates. While Supplies Last.*",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-05T04:00:00Z",
+    "ends": "2026-10-13T04:00:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17360704-1790993713000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/sale/deal-of-the-week"
+   }
+  },
+  {
+   "link_id": "17107552",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Free delivery and 60-day returns",
+   "value": {
+    "kind": "perk"
+   },
+   "conditions": [
+    "restrictions"
+   ],
+   "summary_ai": "An ongoing store policy rather than a sale: KitchenAid advertises free delivery and 60-day returns on kitchenaid.com, with restrictions and exclusions. Useful when comparing it with other sellers.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "advertiser_name": "ShopKitchenAid.com",
+    "link_name": "Free Delivery + 60 Day Returns!",
+    "terms": "Free Delivery + 60 Day Returns. Restrictions and exclusions apply. offer subject to change. For full details, visit: https://www.kitchenaid.com/countertop-appliances/return-policy",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2025-06-17T07:00:00Z",
+    "ends": "2030-01-01T08:00:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17107552-1753748256000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/sale"
+   }
+  },
+  {
+   "link_id": "17361837",
+   "merchant": "Rowenta",
+   "sold_by": "brand",
+   "category": "Home",
+   "title": "$100 off the Compact Steam Pro steam station",
+   "value": {
+    "kind": "usd",
+    "amount": 100,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Rowenta lists $100 off its Compact Steam Pro professional-grade steam station, a short sale valid Oct 8-Oct 11, 2026. It's a single-product offer, so compare the final price with other retailers.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "Rowenta - Compact Steam Pro Steam Station Professional-Grade - $100 Off",
+    "terms": "The Rowenta Compact Steam Pro Steam Station Professional-Grade delivers 6.8-bar pressure and up to 380 g/min steam output for fast, professional results. Offer valid Oct 8-Oct 11, 2026.",
+    "promotion_type": "",
+    "code": "",
+    "starts": "2026-10-08T05:00:00Z",
+    "ends": "2026-10-12T04:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17361837-1791326700000",
+    "destination": "https://www.rowentausa.com/compact-steam-pro-steam-generator-iron-professional-grade.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "17361836",
+   "merchant": "Rowenta",
+   "sold_by": "brand",
+   "category": "Home",
+   "title": "$40 off the Freemove Force cordless steam iron",
+   "value": {
+    "kind": "usd",
+    "amount": 40,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "The Rowenta Freemove Force cordless steam iron is $40 off on rowentausa.com, valid Oct 6-Oct 19, 2026. One product, no code listed in the network terms.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "Rowenta - Freemove Force Cordless Steam Iron - $40 Off",
+    "terms": "The Rowenta Freemove Force Cordless Steam Iron heats up in 30 seconds and delivers powerful steam with total freedom of movement. Offer valid Oct 6-Oct 19, 2026.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-06T05:00:00Z",
+    "ends": "2026-10-20T04:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17361836-1791326700000",
+    "destination": "https://www.rowentausa.com/freemove-force-cordless-steam-iron.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "17361829",
+   "merchant": "Rowenta",
+   "sold_by": "brand",
+   "category": "Home",
+   "title": "Up to $84 off fans",
+   "value": {
+    "kind": "usd",
+    "amount": 84,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Rowenta fans are up to $84 off through Oct 31, 2026, from desk fans to outdoor models. The top figure applies to specific models, so check the one you want.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "Rowenta - Fans - Up to $84 Off",
+    "terms": "Rowenta fans deliver powerful performance with whisper-quiet operation, from desk fans to outdoor models. Find the right fit for your space. Offer valid Oct 1-Oct 31, 2026.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T05:00:00Z",
+    "ends": "2026-11-01T03:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17361829-1791326698000",
+    "destination": "https://www.rowentausa.com/fans.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "17129175",
+   "merchant": "T-fal",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Free shipping on orders $99.99+",
+   "value": {
+    "kind": "free_shipping",
+    "min": 99.99
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "T-fal.com ships free on orders of $99.99 and above. Worth knowing if you are close to that total; not worth padding a cart for.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "Free Shipping T-fal.com",
+    "terms": "Free shipping on orders $99.99 and above at T-fal.com",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2025-07-24T17:14:00Z",
+    "ends": "2026-12-31T05:00:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17129175-1770250140000",
+    "destination": "https://www.t-fal.com/"
+   }
+  },
+  {
+   "link_id": "17240828",
+   "merchant": "T-fal",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "20% off your first order with email sign-up",
+   "value": {
+    "kind": "pct",
+    "amount": 20,
+    "upto": false
+   },
+   "conditions": [
+    "signup",
+    "new_customers"
+   ],
+   "summary_ai": "T-fal offers 20% off a first order when you join its newsletter. You trade your email address for the discount, and it only applies once.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "T-fal – 20% Off Your First Order with Email Signup",
+    "terms": "Join the T-fal newsletter and enjoy 20% off your first order. Discover cookware, appliances, and kitchen must-haves.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-02-01T05:02:00Z",
+    "ends": "2027-01-01T04:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17240828-1776205184000",
+    "destination": "https://t.lt02.net/lp/fam6E4Jn/t-fal-email-signup/?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WcFqx_US_TEF_CWB_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "17125210",
+   "merchant": "Peet's Coffee",
+   "sold_by": "brand",
+   "category": "Coffee & food",
+   "title": "5% off sitewide",
+   "code_note": "Affiliate-exclusive code",
+   "value": {
+    "kind": "pct",
+    "amount": 5,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "An affiliate-exclusive 5% off sitewide at Peets.com, including subscriptions (limited to 3 recurring payments). No minimum, one use per customer, and it combines with shipping discounts.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "advertiser_name": "Peet's Coffee",
+    "link_name": "Peets.com Affiliate Exclusive 5% off Sitewide offer",
+    "terms": "Peets.com Exclusive 5% off Sitewide offer at Peets.com with code WEBFRIEND5 Details: Exclusive for affiliates to promote For Peets.com Online Store 5% off entire order Applies to subscriptions and one-time purchases Limited to 3 recurring payments No minimum purchase requirement All customers One use per customer Combines with shipping discounts",
+    "promotion_type": "Coupon",
+    "code": "WEBFRIEND5",
+    "starts": "2025-07-11T04:00:00Z",
+    "ends": "2027-01-01T07:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17125210-1760760270000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "13921671",
+   "merchant": "Peet's Coffee",
+   "sold_by": "brand",
+   "category": "Coffee & food",
+   "title": "Free shipping on orders $49+",
+   "value": {
+    "kind": "free_shipping",
+    "min": 49
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "Peets.com gives free ground shipping on orders over $49 within the continental US, applied automatically at checkout.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "advertiser_name": "Peet's Coffee",
+    "link_name": "Free Shipping on all orders $49+ at Peets.com",
+    "terms": "Valid for free ground shipping on orders over $49 within the continental US. Discount applied automatically at checkout with qualifying purchase.",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2025-10-22T20:13:00Z",
+    "ends": "2030-01-01T07:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-13921671-1761189413000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "13970947",
+   "merchant": "Peet's Coffee",
+   "sold_by": "brand",
+   "category": "Coffee & food",
+   "title": "30% off a new coffee subscription",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": false
+   },
+   "conditions": [
+    "new_customers"
+   ],
+   "summary_ai": "30% off the first order of a new Peet's coffee subscription. It applies to the first order only, so check the regular subscription price you'll pay after that.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "advertiser_name": "Peet's Coffee",
+    "link_name": "30% Off New Coffee Subscriptions at Peets.com",
+    "terms": "30% Off first order of a new coffee subscriptions at peets.com with code NEWSUB30 at Peets.com",
+    "promotion_type": "Coupon",
+    "code": "NEWSUB30",
+    "starts": "2023-10-03T01:25:00Z",
+    "ends": "2027-01-01T07:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-13970947-1785379467000",
+    "destination": "https://www.peets.com/pages/subscriptions"
+   }
+  },
+  {
+   "link_id": "17358487",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "One World Observatory NYC: up to 50% off",
+   "region": "NYC area",
+   "value": {
+    "kind": "pct",
+    "amount": 50,
+    "upto": true
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "A Groupon flash sale on One World Observatory tickets in New York, up to 50% off for a limited time. Groupon lists it for the NYC, New Jersey and Philadelphia-area markets; read the voucher's fine print and dates.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "One World Observatory NYC Flash Sale October 2026",
+    "terms": "One World Observatory NYC - up to 50% off flash sale, limited time only. Markets: NYC, Long Island, Westchester, North & Central NJ, Fairfield County, Philadelphia, Allentown/Reading.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T04:00:00Z",
+    "ends": "2026-11-01T03:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17358487-1790852400000",
+    "destination": "https://www.groupon.com/deals/gl-one-world-observatory-9"
+   }
+  },
+  {
+   "link_id": "17358489",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "View Boston Observation Deck: up to 40% off",
+   "region": "Boston and Northeast",
+   "value": {
+    "kind": "pct",
+    "amount": 40,
+    "upto": true
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Up to 40% off View Boston Observation Deck tickets through Groupon, a limited-time flash sale aimed at Boston and nearby Northeast markets. Check the voucher's valid dates before buying.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "View Boston Observation Deck Flash Sale October 2026",
+    "terms": "View Boston Observation Deck - up to 40% off flash sale, limited time only. Markets: Boston, Worcester, Springfield, Providence, Hartford, Portland ME, Albany, Syracuse, NYC, Long Island, North & Central NJ, Philadelphia, Allentown/Reading.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T04:00:00Z",
+    "ends": "2026-11-01T03:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17358489-1790852400000",
+    "destination": "https://www.groupon.com/deals/gl-view-boston-observation-deck-2"
+   }
+  },
+  {
+   "link_id": "17358492",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "Aquarium of the Pacific: up to 33% off tickets",
+   "region": "Southern California",
+   "value": {
+    "kind": "pct",
+    "amount": 33,
+    "upto": true
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Up to 33% off Aquarium of the Pacific (Long Beach, CA) tickets on Groupon. Listed for Southern California markets; compare with the aquarium's own ticket price first.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Aquarium of the Pacific October 2026",
+    "terms": "Aquarium of the Pacific (Long Beach, CA) - make a splash with up to 33% off tickets. New Jelly Dreamscapes exhibit. Markets: Los Angeles, Orange County, Inland Empire, San Diego, Ventura County, Santa Barbara, Bakersfield.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T04:00:00Z",
+    "ends": "2026-12-19T04:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17358492-1790852400000",
+    "destination": "https://www.groupon.com/deals/gl-aquarium-of-the-pacific"
+   }
+  },
+  {
+   "link_id": "17358482",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Memberships",
+   "title": "Costco membership with a $20 or $40 shop card",
+   "value": {
+    "kind": "perk"
+   },
+   "conditions": [
+    "membership"
+   ],
+   "summary_ai": "A one-year Costco membership through Groupon that includes a $20 or $40 Digital Costco Shop Card, extended through Oct 25. It's not eligible for Groupon's sitewide promo codes.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Costco Membership + Digital Shop Card (Extended) October 2026",
+    "terms": "Get a one-year Costco membership that includes a $20 or $40 Digital Costco Shop Card. Extended through Oct 25. Not eligible for sitewide promo codes.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T04:00:00Z",
+    "ends": "2026-10-26T03:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17358482-1790852400000",
+    "destination": "https://www.groupon.com/deals/n-costco-membership"
+   }
+  },
+  {
+   "link_id": "17361800",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Memberships",
+   "title": "BJ's Wholesale Club membership for $10",
+   "value": {
+    "kind": "price_from",
+    "amount": 10
+   },
+   "conditions": [
+    "membership"
+   ],
+   "summary_ai": "Groupon lists a BJ's Wholesale Club membership for just $10. Check what membership tier it covers and whether it renews at full price.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Now Just $10: Membership Savings Start Here (Join Now)",
+    "terms": "Now Just $10: Membership Savings Start Here (Join Now)",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-07T07:00:00Z",
+    "ends": "2026-11-03T07:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17361800-1791323023000",
+    "destination": "https://www.groupon.com/deals/n-bjs-wholesale-club-inner-circle-membership-16"
+   }
+  },
+  {
+   "link_id": "17358481",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "AMF, Lucky Strike and Bowlero bowling from $29 for 2",
+   "value": {
+    "kind": "price_from",
+    "amount": 29
+   },
+   "conditions": [],
+   "summary_ai": "Bowling at AMF, Lucky Strike and Bowlero via Groupon, with AMF starting at $29 for 2 people across 300+ locations. Groupon says it's eligible for sitewide promo codes.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Lucky Strike, Bowlero & AMF Bowling New Lower Prices",
+    "terms": "Right Up Your Alley - save at Lucky Strike, AMF & Bowlero with new lower prices. AMF bowling starts at $29 for 2 people, 300+ locations nationwide. Eligible for sitewide promo codes.",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-10-01T04:00:00Z",
+    "ends": "2026-12-17T04:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17358481-1790852400000",
+    "destination": "https://www.groupon.com/landing/amf-bowlero-bowlmor"
+   }
+  },
+  {
+   "link_id": "17240919",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "40% off Regal movie tickets",
+   "value": {
+    "kind": "pct",
+    "amount": 40,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Save 40% on Regal movie tickets through Groupon, including Premiere and premium-format tickets, plus a discount on popcorn and snacks. Check which theaters and formats your voucher covers.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Save 40% on Regal Movie Tickets — Including Premiere & Premium Format Tickets — Plus Discount On Popcorn and Snacks!",
+    "terms": "Save 40% on Regal Movie Tickets — Including Premiere & Premium Format Tickets — Plus Discount On Popcorn and Snacks!",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-01-29T05:00:00Z",
+    "ends": "2027-01-01T05:00:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17240919-1787000589000",
+    "destination": "https://www.groupon.com/deals/regal-cinemas-premiere-ticket-2023"
+   }
+  },
+  {
+   "link_id": "15890985",
+   "merchant": "Sockwell",
+   "sold_by": "brand",
+   "category": "Apparel",
+   "title": "Up to 30% off closeouts",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Sockwell's closeout section is up to 30% off, no code required. Closeouts mean limited sizes and colors.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7200770",
+    "advertiser_name": "Sockwell",
+    "link_name": "Save Up to 30% on Closeouts at SockWellUSA.com. No code required. Limited time offer!",
+    "terms": "Save Up to 30% on Closeouts at SockWellUSA.com. No code required. Limited time offer!",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2024-09-19T14:30:00Z",
+    "ends": "2050-09-19T18:30:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-15890985-1782343890000",
+    "destination": "https://sockwellusa.com/collections/sale"
+   }
+  },
+  {
+   "link_id": "15890984",
+   "merchant": "Sockwell",
+   "sold_by": "brand",
+   "category": "Apparel",
+   "title": "Free shipping on orders $75+",
+   "value": {
+    "kind": "free_shipping",
+    "min": 75
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "Free shipping on Sockwell orders of $75 or more, no code required.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7200770",
+    "advertiser_name": "Sockwell",
+    "link_name": "Enjoy Free Shipping on Orders of $75+ at SockWellUSA.com. No code required.",
+    "terms": "Enjoy Free Shipping on Orders of $75+ at SockWellUSA.com. No code required.",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2024-09-19T09:30:00Z",
+    "ends": "2050-09-19T18:30:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-15890984-1782343923000",
+    "destination": "https://sockwellusa.com"
+   }
+  },
+  {
+   "link_id": "17363630",
+   "merchant": "Budget Pet Care",
+   "sold_by": "brand",
+   "category": "Pets",
+   "title": "30% off flea and tick protection + free shipping",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": false
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Budget Pet Care's 10.10 sale takes 30% off flea and tick protection with free shipping when you use the code. Make sure the product and dose match your pet's weight and your vet's advice.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4250177",
+    "advertiser_name": "Budget Pet Care",
+    "link_name": "10.10 Sale",
+    "terms": "Stock Up for Less This 10.10 Sale! Get 30% OFF Flea & Tick Protection + Free Shipping - Shop Now with OCTSALE!",
+    "promotion_type": "Coupon",
+    "code": "OCTSALE",
+    "starts": "2026-10-09T03:47:00Z",
+    "ends": "2026-10-14T18:30:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17363630-1791543274000",
+    "destination": "https://www.budgetpetcare.com/frontline-plus-for-dogs/dog-flea-and-tick-treatment-3.aspx?utm_source=cjbanner&utm_campaign=10-10-sale&Coupon_no=OCTSALE"
+   }
+  }
+ ]
+}
