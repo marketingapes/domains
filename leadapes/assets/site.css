@@ -196,3 +196,26 @@ footer{border-top:1px solid var(--line);padding:3rem 0 6.5rem;color:var(--muted)
   form.req{padding:2.2rem}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* v1.1: industries grid, 4 buyer types, rotating Softía demo */
+.ind-grid{display:grid;gap:1rem;grid-template-columns:1fr}
+.ind{border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.3rem 1.4rem;background:rgba(16,28,24,.55);transition:border-color .2s,transform .2s}
+.ind:hover{border-color:var(--lime);transform:translateY(-2px)}
+.ind h3{margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
+.ind h3::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--lime);flex:none}
+.ind .chips li{font-size:.85rem;padding:.38rem .7rem}
+.demo-label{font:700 .7rem/1 var(--sans)!important;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)!important;margin:0 0 .6rem!important}
+.transcript{transition:opacity .35s ease}
+.transcript.fade{opacity:0}
+.seg{grid-template-columns:1fr 1fr}
+@media (min-width:700px){
+  .ind-grid{grid-template-columns:repeat(3,1fr)}
+  .seg{grid-template-columns:repeat(4,1fr)}
+  .seg label{padding:.85rem .7rem;font-size:.88rem}
+  .buyer-grid.four{grid-template-columns:repeat(2,1fr)}
+}
+@media (min-width:1100px){.buyer-grid.four{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:700px){.seg{grid-template-columns:1fr 1fr}.seg label{font-size:.92rem;padding:.85rem 1rem}}
+.hero h1{font-size:clamp(2.5rem,9.5vw,4.9rem)}
+.hero h1 em{white-space:normal}
+@media (min-width:980px){.hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(380px,.8fr)}}

@@ -1,4 +1,4 @@
-/* Lead Apes v1 draft. Request form posts to the same Make lead hook the Marketing Apes
+/* Lead Apes v1.1 draft (any-business lead gen). Request form posts to the same Make lead hook the Marketing Apes
    and LFMA forms use, with notify_email = kyleg@marketingapes.com. On failure it falls
    back to a pre-filled mailto. */
 (function () {
@@ -18,6 +18,40 @@
     });
   });
 
+
+  // Rotating Softía demo exchanges (illustrative examples, not real calls).
+  var DEMOS = [
+    { label: 'Example: home services inquiry', lines: [
+      ['ai', 'Thanks for calling. What can we help with today?'],
+      ['caller', "My AC stopped working and it's hot in here."],
+      ['ai', "Sorry to hear that. What's your ZIP code, and do you own the home?"]] },
+    { label: 'Example: dental inquiry', lines: [
+      ['ai', 'Hi, thanks for reaching out. Are you looking for a new dentist or a specific treatment?'],
+      ['caller', "I'm missing a tooth and asking about implants."],
+      ['ai', 'Got it. Have you had a consultation before, and which days work best for you?']] },
+    { label: 'Example: insurance inquiry', lines: [
+      ['ai', 'Thanks for calling. Are you shopping for new coverage or reviewing a current policy?'],
+      ['caller', 'New life insurance. I just had a baby.'],
+      ['ai', 'Congratulations. Which state are you in, and roughly what coverage are you thinking about?']] }
+  ];
+  var tr = document.getElementById('transcript'), lab = document.getElementById('demo-label');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function esc(t) { var x = document.createElement('div'); x.textContent = t; return x.innerHTML; }
+  function render(i) {
+    var d = DEMOS[i];
+    lab.textContent = d.label;
+    tr.innerHTML = d.lines.map(function (l) {
+      return '<li class="' + l[0] + '"><b>' + (l[0] === 'ai' ? 'Softía' : 'Caller') + '</b>' + esc(l[1]) + '</li>';
+    }).join('');
+  }
+  if (tr && lab && !reduce) {
+    var di = 0;
+    setInterval(function () {
+      tr.classList.add('fade');
+      setTimeout(function () { di = (di + 1) % DEMOS.length; render(di); tr.classList.remove('fade'); }, 350);
+    }, 6000);
+  }
+
   function collect() {
     var d = {};
     new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
@@ -25,8 +59,8 @@
   }
   function summary(d) {
     return [
-      'Tort/case type: ' + (d.tort || ''),
-      'States: ' + (d.states || ''),
+      'Industry / what they sell: ' + (d.industry || ''),
+      'Market: ' + (d.market || ''),
       'Monthly volume: ' + (d.monthly_volume || ''),
       'Buyer type: ' + (d.buyer_type || ''),
       'Name: ' + (d.name || ''),
@@ -37,7 +71,7 @@
     ].join('\n');
   }
   function mailto(d) {
-    return 'mailto:' + TO + '?subject=' + encodeURIComponent('Lead Apes lead request: ' + (d.tort || '') + ' / ' + (d.states || '')) +
+    return 'mailto:' + TO + '?subject=' + encodeURIComponent('Lead Apes lead request: ' + (d.industry || '') + ' / ' + (d.market || '')) +
       '&body=' + encodeURIComponent(summary(d));
   }
 
@@ -61,7 +95,7 @@
       source_url: location.href,
       current_url: location.href,
       referrer: document.referrer || '',
-      notes: 'LEAD APES LEAD REQUEST (buyer inquiry, not a claimant) | ' + summary(d).replace(/\n/g, ' | '),
+      notes: 'LEAD APES LEAD REQUEST (buyer inquiry, not a consumer lead) | ' + summary(d).replace(/\n/g, ' | '),
       lead_summary: summary(d)
     });
     btn.disabled = true; btn.textContent = 'Sending…'; err.hidden = true;
