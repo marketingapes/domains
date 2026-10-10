@@ -6,7 +6,7 @@ guides/checkout-comparison/ is generated from worksheet.py (restyled Oct 10, 202
 """
 import os, re, html, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-import svgs, deals, theme, client, events, worksheet
+import svgs, deals, theme, client, events, worksheet, images
 from articles1 import A as A1
 from articles2 import A as A2
 
@@ -29,7 +29,7 @@ BY = {a["slug"]: a for a in ARTS}
 assert len(BY) == len(ARTS) == 12
 
 GTM = "GTM-W3D26R29"
-ASSET_V = "20261010"
+ASSET_V = "20261010b"
 e = html.escape
 
 # Email opt-in. Posts form-encoded to a private Make webhook that appends one row
@@ -147,7 +147,7 @@ def write(rel, content):
 
 def guide_card(a, big=False):
     return f'''<a class="gcard{' gcard-big' if big else ''}" href="/articles/{a["slug"]}/">
-<span class="gcard-img"><img src="/images/{a["slug"]}.svg" alt="" loading="lazy" width="1200" height="675"></span>
+<span class="gcard-img"><img src="{images.guide_img(a["slug"], "640")}" srcset="{images.guide_img(a["slug"], "640")} 640w, {images.guide_img(a["slug"], "1200")} 1200w" sizes="{'(min-width:1040px) 600px, 100vw' if big else '(min-width:1040px) 380px, (min-width:640px) 50vw, 100vw'}" alt="{e(images.guide_alt(a["slug"]))}" loading="lazy" decoding="async" width="640" height="360"></span>
 <span class="gcard-body"><span class="gcard-cat">{a["cat"]}</span><span class="gcard-title">{a["title"]}</span><span class="gcard-desc">{a["desc"]}</span></span>
 </a>'''
 
@@ -183,6 +183,7 @@ def home():
 <p class="try">Try: <a href="/deals/?q=ending+soon">ending soon</a> <a href="/deals/?q=kitchen">kitchen</a> <a href="/deals/?q=no+code">no code</a> <a href="/deals/?q=free+shipping">free shipping</a> <a href="/deals/?q=tickets">tickets</a></p>
 </div>
 <aside class="hero-panel" aria-label="How every deal is handled">
+<figure class="hero-photo"><img src="/images/photos/hero-1200.webp" srcset="/images/photos/hero-640.webp 640w, /images/photos/hero-1200.webp 1200w" sizes="(min-width:960px) 480px, 100vw" alt="{e(images.hero()["alt"])}" width="1200" height="800" fetchpriority="high" decoding="async"></figure>
 <ol class="pipeline">
 <li><span class="step">1</span><div><b>Pulled from the source</b><p>Offers come from the merchant's own affiliate program feed, with the network's start and end dates.</p></div></li>
 <li><span class="step">2</span><div><b>Scored by formula</b><p>A 0&ndash;100 Deal Score from savings size, certainty, ease and deadline. Our commission is never an input.</p></div></li>
@@ -376,9 +377,10 @@ def article_page(a):
 </header>
 <div class="art-layout">
 <div class="art-main">
-<figure class="art-hero"><img src="/images/{a["slug"]}.svg" alt="{e(svgs.ART[a["slug"]][0])}" width="1200" height="675"></figure>
+<figure class="art-hero"><img src="{images.guide_img(a["slug"], "1200")}" srcset="{images.guide_img(a["slug"], "640")} 640w, {images.guide_img(a["slug"], "1200")} 1200w" sizes="(min-width:1040px) 760px, 100vw" alt="{e(images.guide_alt(a["slug"]))}" width="1200" height="675" fetchpriority="high" decoding="async"></figure>
 <div class="prose">
 {a["body"]}
+<figure class="art-diagram"><img src="/images/{a["slug"]}.svg" alt="{e(svgs.ART[a["slug"]][0])}" loading="lazy" width="1200" height="675"><figcaption>At a glance: {e(a["short"])}</figcaption></figure>
 <section class="faq" aria-labelledby="faq-h"><h2 id="faq-h">Frequently asked questions</h2>{faq}</section>
 <div class="art-foot">Discount Deal Me writes general shopping guides. Guides contain no affiliate links and no coupon codes, and we are not affiliated with the stores mentioned in general terms. Always check current prices and terms with the retailer.</div>
 </div>
@@ -436,6 +438,8 @@ def about():
 </ul>
 <h2>How the site is funded</h2>
 <p>Discount Deal Me earns affiliate commissions when you buy through the labelled deal links, and shows advertising served by Google AdSense. Neither changes the price you pay. Merchants do not pay to be listed and do not review what we write, and our guides contain no affiliate links. More detail is on <a href="/how-we-pick-deals/#money">how we make money</a>.</p>
+<h2 id="image-credits">Image credits</h2>
+<p>Deal photos of products, venues and attractions come from each merchant's own product feed in its affiliate program. Other photos are from <a href="https://unsplash.com/license" rel="nofollow noopener">Unsplash</a>, used under the Unsplash License. Thanks to {images.credit_names()}.</p>
 <h2>Get in touch</h2>
 <p>Questions, corrections and deal problems are always welcome. Visit the <a href="/contact/">contact page</a> or email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </section>'''

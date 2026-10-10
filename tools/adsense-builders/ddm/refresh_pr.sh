@@ -2,6 +2,7 @@
 # One-command DDM deal refresh: pull CJ -> rebuild feed -> build site -> release checks -> open a PR.
 # Never merges. Run from anywhere; works in a temporary worktree off origin/main.
 # Needs: CJ_API_TOKEN (or RENDER_API_KEY + RENDER_ENV_GROUP_ID), git push access, gh CLI.
+# Deal images are kept: see images.py. New deals fall back to a category photo until added to images.json.
 # Options: --min-hours N (default 12)  --draft  --no-pr (build and test only)
 set -euo pipefail
 MIN_HOURS=12; DRAFT=""; NOPR=""
@@ -23,6 +24,10 @@ PULL="$WT/.cj_pull.json"
 python3 -B $B/cj_pull.py "$PULL"
 python3 -B $B/refresh_deals.py "$PULL" --min-hours "$MIN_HOURS" | tee "$WT/.refresh.log"
 rm -f "$PULL"
+# Images: carried-over deals keep their committed WebP files (ddm/images/deals/<link_id>.webp, keyed in images.json).
+# Create any file listed in images.json that is missing; new deals without an entry use their category photo.
+python3 -B $B/images.py fetch | grep -v '^  wrote' || echo "image fetch had failures; affected deals use category photos"
+python3 -B $B/images.py check | tee -a "$WT/.refresh.log"
 python3 -B $B/build.py >/dev/null
 if git diff --quiet; then echo "No deal changes; nothing to do."; exit 0; fi
 git add -A ddm $B/deals_feed.json
