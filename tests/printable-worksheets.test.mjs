@@ -6,7 +6,7 @@ import vm from 'node:vm';
 for (const path of ['ddm/guides/checkout-comparison/index.html', 'px/guides/pillow-cover-fit/index.html']) {
   test(`${path} prints long and multiline values as plain text without duplicate outputs`, () => {
     const html = readFileSync(path, 'utf8');
-    const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+    const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].filter(m => m[1].includes('beforeprint'));
     assert.equal(scripts.length, 1);
     const values = ['Return terms '.repeat(100), '<img src=x onerror=alert(1)>\nsecond line', ''];
     const inserted = [];

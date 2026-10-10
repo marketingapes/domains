@@ -1,157 +1,7 @@
 {
  "source": "CJ link-search, DDM property 101511733",
- "checked_at": "2026-10-10T15:10:30Z",
+ "checked_at": "2026-10-10T16:06:20Z",
  "deals": [
-  {
-   "link_id": "17342552",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to 25% off select countertop appliances",
-   "value": {
-    "kind": "pct",
-    "amount": 25,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "KitchenAid's Harvest Event takes up to 25% off select countertop appliances on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and \"up to\" means many models get less, so compare the cart price.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Harvest Event: Save up to 25% on select Countertop Appliances",
-    "terms": "Harvest Event: Save up to 25% on select Countertop Appliances. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-09-27T04:00:00Z",
-    "ends": "2026-10-11T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17342552-1787624400000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/sale"
-   }
-  },
-  {
-   "link_id": "17342535",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to $120 off select stand mixers",
-   "value": {
-    "kind": "usd",
-    "amount": 120,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "Select KitchenAid stand mixers are up to $120 off during the Harvest Event. It applies to new orders on kitchenaid.com only; check which mixer models carry the full discount before you pick a size.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Harvest Event: Save up to $120 off select Stand Mixers",
-    "terms": "Harvest Event: Save up to $120 off select Stand Mixers. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-09-27T04:00:00Z",
-    "ends": "2026-10-11T03:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17342535-1787624400000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/stand-mixers.html"
-   }
-  },
-  {
-   "link_id": "17342541",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to 35% off select food processors",
-   "value": {
-    "kind": "pct",
-    "amount": 35,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "The deepest percentage in the Harvest Event: up to 35% off select KitchenAid food processors. Same exclusions as the main sale (no closeout, commercial or refurbished models).",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Harvest Event: Save up to 35% on select Food Processors",
-    "terms": "Harvest Event: Save up to 35% on select Food Processors. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-09-27T04:00:00Z",
-    "ends": "2026-10-11T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17342541-1787624401000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/food-processors/food-processor-and-chopper-products"
-   }
-  },
-  {
-   "link_id": "17342548",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to $250 off select coffee machines",
-   "value": {
-    "kind": "usd",
-    "amount": 250,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "KitchenAid lists up to $250 off select coffee products in the Harvest Event. The biggest dollar figure usually applies to the priciest espresso models, so check the saving on the exact machine you want.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Harvest Event: Save up to $250 off select Coffee",
-    "terms": "Harvest Event: Save up to $250 off select Coffee. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-09-27T04:00:00Z",
-    "ends": "2026-10-11T03:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17342548-1787624400000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/coffee-products/coffee-collection"
-   }
-  },
-  {
-   "link_id": "17342536",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to 30% off select stand mixer attachments",
-   "value": {
-    "kind": "pct",
-    "amount": 30,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "Already own a KitchenAid mixer? Select attachments are up to 30% off in the Harvest Event, which can be a cheaper upgrade than a new mixer.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Harvest Event: Save up to 30% on select Stand Mixer Attachments",
-    "terms": "Harvest Event: Save up to 30% on select Stand Mixer Attachments. Ends 10/10/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-09-27T04:00:00Z",
-    "ends": "2026-10-11T03:59:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-17342536-1787624400000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/stand-mixers/attachments.html"
-   }
-  },
   {
    "link_id": "17360704",
    "merchant": "KitchenAid",
@@ -179,7 +29,7 @@
     "code": "",
     "starts": "2026-10-05T04:00:00Z",
     "ends": "2026-10-13T04:00:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-17360704-1790993713000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17360704-1790993713000",
     "destination": "https://www.kitchenaid.com/countertop-appliances/sale/deal-of-the-week"
    }
   },
@@ -260,7 +110,7 @@
     "code": "",
     "starts": "2026-10-06T05:00:00Z",
     "ends": "2026-10-20T04:59:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-17361836-1791326700000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17361836-1791326700000",
     "destination": "https://www.rowentausa.com/freemove-force-cordless-steam-iron.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -289,7 +139,7 @@
     "code": "",
     "starts": "2026-10-01T05:00:00Z",
     "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17361829-1791326698000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17361829-1791326698000",
     "destination": "https://www.rowentausa.com/fans.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -317,7 +167,7 @@
     "code": "",
     "starts": "2025-07-24T17:14:00Z",
     "ends": "2026-12-31T05:00:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17129175-1770250140000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17129175-1770250140000",
     "destination": "https://www.t-fal.com/"
    }
   },
@@ -347,7 +197,7 @@
     "code": "",
     "starts": "2026-02-01T05:02:00Z",
     "ends": "2027-01-01T04:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17240828-1776205184000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17240828-1776205184000",
     "destination": "https://t.lt02.net/lp/fam6E4Jn/t-fal-email-signup/?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WcFqx_US_TEF_CWB_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -375,7 +225,7 @@
     "code": "WEBFRIEND5",
     "starts": "2025-07-11T04:00:00Z",
     "ends": "2027-01-01T07:59:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-17125210-1760760270000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17125210-1760760270000",
     "destination": "https://www.peets.com/collections/all-coffees"
    }
   },
@@ -403,7 +253,7 @@
     "code": "",
     "starts": "2025-10-22T20:13:00Z",
     "ends": "2030-01-01T07:59:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-13921671-1761189413000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-13921671-1761189413000",
     "destination": "https://www.peets.com/collections/all-coffees"
    }
   },
@@ -432,7 +282,7 @@
     "code": "NEWSUB30",
     "starts": "2023-10-03T01:25:00Z",
     "ends": "2027-01-01T07:59:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-13970947-1785379467000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-13970947-1785379467000",
     "destination": "https://www.peets.com/pages/subscriptions"
    }
   },
@@ -462,7 +312,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17358487-1790852400000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17358487-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-one-world-observatory-9"
    }
   },
@@ -492,7 +342,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-17358489-1790852400000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17358489-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-view-boston-observation-deck-2"
    }
   },
@@ -522,7 +372,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-12-19T04:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17358492-1790852400000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17358492-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-aquarium-of-the-pacific"
    }
   },
@@ -549,7 +399,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-10-26T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17358482-1790852400000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17358482-1790852400000",
     "destination": "https://www.groupon.com/deals/n-costco-membership"
    }
   },
@@ -577,7 +427,7 @@
     "code": "",
     "starts": "2026-10-07T07:00:00Z",
     "ends": "2026-11-03T07:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17361800-1791323023000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17361800-1791323023000",
     "destination": "https://www.groupon.com/deals/n-bjs-wholesale-club-inner-circle-membership-16"
    }
   },
@@ -603,7 +453,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-12-17T04:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17358481-1790852400000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17358481-1790852400000",
     "destination": "https://www.groupon.com/landing/amf-bowlero-bowlmor"
    }
   },
@@ -659,7 +509,7 @@
     "code": "",
     "starts": "2024-09-19T14:30:00Z",
     "ends": "2050-09-19T18:30:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-15890985-1782343890000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-15890985-1782343890000",
     "destination": "https://sockwellusa.com/collections/sale"
    }
   },
@@ -716,8 +566,200 @@
     "code": "OCTSALE",
     "starts": "2026-10-09T03:47:00Z",
     "ends": "2026-10-14T18:30:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17363630-1791543274000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17363630-1791543274000",
     "destination": "https://www.budgetpetcare.com/frontline-plus-for-dogs/dog-flea-and-tick-treatment-3.aspx?utm_source=cjbanner&utm_campaign=10-10-sale&Coupon_no=OCTSALE"
+   }
+  },
+  {
+   "link_id": "17178120",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "Chuck E. Cheese: up to 43% off",
+   "value": {
+    "kind": "pct",
+    "amount": 43,
+    "upto": true
+   },
+   "conditions": [],
+   "summary_ai": "Up to 43% off Chuck E. Cheese through Groupon vouchers. The top discount applies to select vouchers, so compare the voucher price with paying at the counter and check which locations accept it.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Chuck E. Cheese",
+    "terms": "Epic Fun, Made Easy. Get Up to 43% Off Chuck E. Cheese",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2025-10-17T04:55:00Z",
+    "ends": "2026-12-31T06:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17178120-1787000589000",
+    "destination": "https://www.groupon.com/deals/chuck-e-cheese-2024?redemptionLocationId=413b3af9-6cd1-bfdf-8e3a-015a71eba0db"
+   }
+  },
+  {
+   "link_id": "17292666",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "Escapology private escape room: up to 40% off",
+   "value": {
+    "kind": "pct",
+    "amount": 40,
+    "upto": true
+   },
+   "conditions": [],
+   "summary_ai": "Up to 40% off a private escape room at Escapology, sold as a Groupon voucher. Check that your nearest Escapology location is included and read the booking rules before you buy.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "advertiser_name": "Groupon North America",
+    "link_name": "Escape the Ordinary: Up to 40% Off Private Escape Room at Escapology",
+    "terms": "Escape the Ordinary: Up to 40% Off Private Escape Room at Escapology",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-01-01T08:00:00Z",
+    "ends": "2028-01-01T07:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17292666-1787000589000",
+    "destination": "https://www.groupon.com/landing/escapology"
+   }
+  },
+  {
+   "link_id": "17323642",
+   "merchant": "Peet's Coffee",
+   "sold_by": "brand",
+   "category": "Coffee & food",
+   "title": "10% off loose leaf tea subscriptions + free shipping",
+   "value": {
+    "kind": "pct",
+    "amount": 10,
+    "upto": false
+   },
+   "conditions": [
+    "restrictions"
+   ],
+   "summary_ai": "10% off plus free shipping when you subscribe to Mighty Leaf loose leaf tea at peets.com. It only applies to subscriptions, so check the delivery schedule and how to pause or cancel.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "advertiser_name": "Peet's Coffee",
+    "link_name": "Get 10% Off Loose Leaf Tea Subscriptions",
+    "terms": "Get 10% Off plus Free Shipping when you subscribe for Mighty Leaf Loose Leaf tea at peets.com",
+    "promotion_type": "Sale/Discount",
+    "code": "",
+    "starts": "2026-07-16T07:00:00Z",
+    "ends": "2028-01-01T07:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17323642-1784182537000",
+    "destination": "https://www.peets.com/collections/all-tea"
+   }
+  },
+  {
+   "link_id": "17030268",
+   "merchant": "Sockwell",
+   "sold_by": "brand",
+   "category": "Apparel",
+   "title": "20% off your first order",
+   "value": {
+    "kind": "pct",
+    "amount": 20,
+    "upto": false
+   },
+   "conditions": [
+    "new_customers"
+   ],
+   "summary_ai": "20% off your first order at SockwellUSA.com with code NEWSOCKS20. First orders only, and Sockwell describes it as a limited-time offer.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7200770",
+    "advertiser_name": "Sockwell",
+    "link_name": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+    "terms": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+    "promotion_type": "Coupon",
+    "code": "NEWSOCKS20",
+    "starts": "2025-02-14T15:30:00Z",
+    "ends": "2050-02-14T15:30:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17030268-1762295974000",
+    "destination": "https://sockwellusa.com/"
+   }
+  },
+  {
+   "link_id": "17111922",
+   "merchant": "SINGER",
+   "sold_by": "brand",
+   "category": "Home",
+   "title": "10% off at singer.com",
+   "value": {
+    "kind": "pct",
+    "amount": 10,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "10% off at singer.com with code SEW10NOW. The network terms are short and list no exclusions, so confirm the discount shows in your cart before paying.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7111284",
+    "advertiser_name": "SINGER Sewing Machines",
+    "link_name": "Singer 10% Discount Coupon",
+    "terms": "10% off no expire date",
+    "promotion_type": "Coupon",
+    "code": "SEW10NOW",
+    "starts": "2025-06-25T16:42:00Z",
+    "ends": "2027-01-01T05:00:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17111922-1755112374000",
+    "destination": "https://www.singer.com/"
+   }
+  },
+  {
+   "link_id": "17129146",
+   "merchant": "Rowenta",
+   "sold_by": "brand",
+   "category": "Home",
+   "title": "Free shipping on orders $99.99+",
+   "value": {
+    "kind": "free_shipping",
+    "min": 99.99
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "Free shipping on Rowenta orders of $99.99 or more at rowentausa.com, applied without a code.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
+    "link_name": "Free Shipping Rowentausa.com",
+    "terms": "Free shipping on orders $99.99 and above at Rowentausa.com",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2025-07-24T17:14:00Z",
+    "ends": "2026-12-31T05:00:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17129146-1776204605000",
+    "destination": "https://www.rowentausa.com/?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "15541103",
+   "merchant": "Berkel",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Free shipping at Berkel's US store",
+   "value": {
+    "kind": "free_shipping"
+   },
+   "conditions": [],
+   "summary_ai": "Free shipping at Berkel's US online store, according to its affiliate program. The network terms are brief, so confirm shipping is free for your address at checkout.",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "6093076",
+    "advertiser_name": "Berkel USA",
+    "link_name": "Berkel - Free Shipping",
+    "terms": "Free shipping",
+    "promotion_type": "Free Shipping",
+    "code": "",
+    "starts": "2023-05-24T19:36:00Z",
+    "ends": "2028-01-01T05:00:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-15541103-1685505101000",
+    "destination": "https://www.theberkelworld.com/us"
    }
   }
  ]

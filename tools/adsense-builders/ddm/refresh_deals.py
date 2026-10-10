@@ -1,6 +1,9 @@
 """Merge a CJ link-search pull with the editorial layer into deals_feed.json.
 
-Usage: python3 refresh_deals.py <cj_pull.json>
+Usage: python3 refresh_deals.py <cj_pull.json> [--min-hours N]
+
+Deals ending within N hours of the pull (default 12) are left out, and deals that have
+not started yet are skipped until a later refresh.
 
 <cj_pull.json> is {"pulled_at_utc": ISO, "website_id": "101511733", "links": [ ...CJ link-search rows... ]}.
 The pull is made outside the repo (it needs the CJ token). This script never reads credentials,
@@ -20,14 +23,16 @@ def iso(cj):
     return datetime.datetime.strptime(cj[:19], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def main(pull_path):
+def main(pull_path, min_hours=12.0):
     pull = json.load(open(pull_path))
     assert pull.get("website_id") == PROPERTY, "pull must come from the DDM CJ property"
     rows = {}
     for r in pull["links"]:
         rows.setdefault(r["link-id"], r)
     ed = json.load(open(os.path.join(HERE, "deals_editorial.json")))
-    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_dt = datetime.datetime.now(datetime.timezone.utc)
+    now = now_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    cutoff = (now_dt + datetime.timedelta(hours=min_hours)).strftime("%Y-%m-%dT%H:%M:%SZ")
     out, dropped = [], []
     for e in ed["deals"]:
         r = rows.get(e["link_id"])
@@ -37,6 +42,13 @@ def main(pull_path):
         ends = iso(r.get("promotion-end-date"))
         if ends and ends <= now:
             dropped.append((e["link_id"], "ended"))
+            continue
+        if ends and ends <= cutoff:
+            dropped.append((e["link_id"], f"ends within {min_hours:g}h ({ends})"))
+            continue
+        starts = iso(r.get("promotion-start-date"))
+        if starts and starts > now:
+            dropped.append((e["link_id"], f"not started yet ({starts})"))
             continue
         assert f"/click-{PROPERTY}-" in r["clickUrl"], r["clickUrl"]
         out.append(dict(e, network={
@@ -54,4 +66,9 @@ def main(pull_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("pull")
+    ap.add_argument("--min-hours", type=float, default=12.0)
+    a = ap.parse_args()
+    main(a.pull, a.min_hours)

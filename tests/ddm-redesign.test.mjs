@@ -91,3 +91,14 @@ test('DDM redesign: builder output is reproducible', () => {
   const after = ['index.html', 'deals/index.html', 'data/deals.json', 'assets/site.css'].map(snap);
   assert.deepEqual(after, before);
 });
+
+test('DDM redesign: promo codes come only from the network coupon-code field', () => {
+  const editorial = read(path.join(BUILDER, 'deals_editorial.json'));
+  assert.doesNotMatch(editorial, /"code"\s*:/, 'codes must not be typed into the editorial layer');
+  const byId = new Map(internal.deals.map((d) => [d.link_id, d]));
+  for (const d of pub.deals) {
+    const n = byId.get(d.id.replace(/^cj-/, '')).network;
+    assert.equal(d.code, n.code, `${d.id} code differs from the network record`);
+    if (d.code) assert.match(d.code, /^[A-Z0-9]{3,20}$/);
+  }
+});

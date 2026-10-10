@@ -2,11 +2,11 @@
 
 Run: python3 tools/adsense-builders/ddm/build.py   (writes into ./ddm)
 Refresh deals first with refresh_deals.py when a new CJ pull is available.
-Hand-maintained page that this builder does NOT touch: guides/checkout-comparison/ (byte-pinned by tests).
+guides/checkout-comparison/ is generated from worksheet.py (restyled Oct 10, 2026).
 """
 import os, re, html, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-import svgs, deals, theme, client, events
+import svgs, deals, theme, client, events, worksheet
 from articles1 import A as A1
 from articles2 import A as A2
 
@@ -639,6 +639,13 @@ def checklist_page():
     return page("Deal checklist", "A four-point checklist to run before you pay: same item, final total, promotion restrictions and return terms. Printable, and nothing you tick is saved.", "/deal-checklist/", body, "")
 
 
+# ---------------------------------------------------------------- checkout worksheet
+def checkout_page():
+    html_ = page("Compare the checkout, then the return.", "A two-seller worksheet for the amount due now, recurring charges and the deadlines that matter if you return an item.",
+                 "/guides/checkout-comparison/", worksheet.body(), "articles", og_type="article", extra=worksheet.STYLE)
+    return html_.replace("</main>\n", "</main>\n" + worksheet.SCRIPT, 1)
+
+
 # ---------------------------------------------------------------- 404
 def notfound():
     body = f'''<section class="wrap nf">
@@ -662,6 +669,7 @@ def main():
     write("deals/kitchenaid-harvest-event/index.html", events.kitchenaid(head, nav, FOOT))
     write("offers/index.html", offers_page())
     write("deal-checklist/index.html", checklist_page())
+    write("guides/checkout-comparison/index.html", checkout_page())
     write("articles/index.html", articles_index())
     for a in ARTS:
         write(f'articles/{a["slug"]}/index.html', article_page(a))
@@ -703,7 +711,7 @@ Sitemap: {HOST}/sitemap.xml
     urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
             ("/articles/", SITE_UPDATED)] + [(f'/articles/{a["slug"]}/', UPDATED) for a in ARTS] + [
             ("/about/", SITE_UPDATED), ("/contact/", SITE_UPDATED), ("/privacy/", SITE_UPDATED), ("/terms/", SITE_UPDATED),
-            ("/deal-checklist/", SITE_UPDATED), ("/guides/checkout-comparison/", UPDATED), ("/offers/", SITE_UPDATED)]
+            ("/deal-checklist/", SITE_UPDATED), ("/guides/checkout-comparison/", SITE_UPDATED), ("/offers/", SITE_UPDATED)]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         f"  <url><loc>{HOST}{u}</loc><lastmod>{d}</lastmod></url>\n" for u, d in urls) + "</urlset>\n"
     write("sitemap.xml", sm)

@@ -7,8 +7,6 @@ import { createHash } from 'node:crypto';
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 const CODEX_WORKSHEETS = {
-  'ddm/guides/checkout-comparison/index.html':
-    '1e621c789ea0470e43b0601f43fbc23243065dbf9b399e864f5bf83f8e306622',
   'px/guides/pillow-cover-fit/index.html':
     '85fbf42d6acbfdc9ac6f16e331399748cd8e2929d828ab276964203746af505a',
 };
@@ -19,6 +17,26 @@ test('Codex worksheet paths keep the PR 63 bytes', () => {
     const sha = createHash('sha256').update(local).digest('hex');
     assert.equal(sha, expected);
   }
+});
+
+test('DDM checkout worksheet keeps its content after the Oct 10 2026 restyle', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'ddm/guides/checkout-comparison/index.html'), 'utf8');
+  for (const s of [
+    'Compare the checkout, then the return.',
+    'Amount due now = item subtotal &minus; applied discount + shipping + tax + mandatory fees.',
+    'Do not subtract an advertised coupon until it is actually applied.',
+    'Two-seller comparison', 'Return-policy record', 'Make the decision you can explain',
+    'not a seller&rsquo;s promise or a return authorization',
+    'Prepared September 20, 2026',
+  ]) assert.ok(html.includes(s), s);
+  for (const side of ['A', 'B']) {
+    for (const k of ['item', 'qty', 'sub', 'discount', 'ship', 'tax', 'fee', 'calc', 'total', 'recurring', 'policy', 'start', 'deadline', 'exclude', 'cost', 'refund']) {
+      assert.match(html, new RegExp(`<label for="${side}${k}">[^<]+</label><input id="${side}${k}" type="text" autocomplete="off">`));
+    }
+  }
+  assert.match(html, /<textarea id="decision"/);
+  assert.match(html, /href="\/assets\/site\.css/);
+  assert.doesNotMatch(html, /rel="sponsored"|click-101511733|awin1\.com/);
 });
 
 test('FPLB portrait guide is useful, disclosed, and does not add a new tracker URL', () => {
