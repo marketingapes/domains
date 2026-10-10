@@ -1,4 +1,4 @@
-/* Lead Apes v1.1 draft (any-business lead gen). Request form posts to the same Make lead hook the Marketing Apes
+/* Lead Apes v1.2 draft (lead gen OS, Softía at the center). Request form posts to the same Make lead hook the Marketing Apes
    and LFMA forms use, with notify_email = kyleg@marketingapes.com. On failure it falls
    back to a pre-filled mailto. */
 (function () {
@@ -62,6 +62,7 @@
       'Industry / what they sell: ' + (d.industry || ''),
       'Market: ' + (d.market || ''),
       'Monthly volume: ' + (d.monthly_volume || ''),
+      'Wants: ' + (d.want || ''),
       'Buyer type: ' + (d.buyer_type || ''),
       'Name: ' + (d.name || ''),
       'Company: ' + (d.company || ''),
@@ -71,7 +72,7 @@
     ].join('\n');
   }
   function mailto(d) {
-    return 'mailto:' + TO + '?subject=' + encodeURIComponent('Lead Apes lead request: ' + (d.industry || '') + ' / ' + (d.market || '')) +
+    return 'mailto:' + TO + '?subject=' + encodeURIComponent('Lead Apes demo request: ' + (d.industry || '') + ' / ' + (d.market || '')) +
       '&body=' + encodeURIComponent(summary(d));
   }
 
@@ -87,15 +88,15 @@
     var btn = form.querySelector('button[type=submit]');
     var payload = Object.assign({}, d, {
       tenant_id: 'LEADAPES',
-      product: 'lead-request',
-      type: 'lead_buyer_request',
+      product: 'lead-gen-os',
+      type: 'os_demo_request',
       buyer_name: d.company || d.name,
       contact_name: d.name,
       notify_email: TO,
       source_url: location.href,
       current_url: location.href,
       referrer: document.referrer || '',
-      notes: 'LEAD APES LEAD REQUEST (buyer inquiry, not a consumer lead) | ' + summary(d).replace(/\n/g, ' | '),
+      notes: 'LEAD APES OS DEMO REQUEST (business inquiry, not a consumer lead) | ' + summary(d).replace(/\n/g, ' | '),
       lead_summary: summary(d)
     });
     btn.disabled = true; btn.textContent = 'Sending…'; err.hidden = true;
@@ -108,7 +109,7 @@
         if (dock) dock.classList.add('away');
       })
       .catch(function () {
-        btn.disabled = false; btn.textContent = 'Request leads';
+        btn.disabled = false; btn.textContent = 'Get the OS: request a demo';
         document.getElementById('form-err-mail').href = mailto(d);
         err.hidden = false;
       });
