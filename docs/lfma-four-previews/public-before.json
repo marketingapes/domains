@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-09T12:49:15.468671+00:00",
+  "base": "https://lawfirmmarketingapes.com",
+  "assets": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "2426fd40f2022edea90ebcf5533db4c4d95167b95936fd54681a075ff39ef798",
+      "bytes": 14982
+    },
+    {
+      "path": "/demo/",
+      "status": 200,
+      "sha256": "cfe24095c89a55c280e31b17a711f5d8f0ce57dadc22cd1dd28112ae050cc354",
+      "bytes": 7419
+    },
+    {
+      "path": "/perspective-demo/",
+      "status": 200,
+      "sha256": "c0a1049e338e1903670aa4ddf37b86f65256da8785790ca997e1030aa27ff9b2",
+      "bytes": 2887
+    },
+    {
+      "path": "/perspective-demo/app.js",
+      "status": 200,
+      "sha256": "9008449c14c4a7c185e1dc184242421795fc9a1dae540146becbb32affc4fca3",
+      "bytes": 37599
+    },
+    {
+      "path": "/perspective-demo/config.json",
+      "status": 200,
+      "sha256": "62e51418d605929a27169e4ee612ac90266000a5bc47fc99ea8145ccc5ecaf4c",
+      "bytes": 53371
+    },
+    {
+      "path": "/perspective-demo/style.css",
+      "status": 200,
+      "sha256": "d67313c3395336bcd837dd41d5459ea85b7356e9daf1ac9f974a163b6d2166a0",
+      "bytes": 13829
+    },
+    {
+      "path": "/perspective-preview/",
+      "status": 200,
+      "sha256": "d8e2242e9cc398b7cdb795ab4c314ae8a63c5e0629a1479829f07115b2801c7b",
+      "bytes": 92699
+    },
+    {
+      "path": "/perspective-preview/app.js",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/perspective-preview/config.json",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/perspective-preview/style.css",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/portal/",
+      "status": 200,
+      "sha256": "3f643e0c2868e4ee1fa6ef2ba958b7295c1c2b70cec9f514bee7b7d0ba08c8c9",
+      "bytes": 6353
+    },
+    {
+      "path": "/paraquat-pilot/",
+      "status": 200,
+      "sha256": "c7c02f70766a02c26cd964f99666c9e393bbf70aed14b5f1c498a8ca0f565802",
+      "bytes": 19503
+    },
+    {
+      "path": "/assets/portal/ape-logo.jpg",
+      "status": 200,
+      "sha256": "5dcc03152b3881cd3d943bf36260c514703f07e45a452f75da1cdc77c5426dab",
+      "bytes": 35253
+    },
+    {
+      "path": "/perspective-options/story.html",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/perspective-options/build.html",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/perspective-options/test.html",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    },
+    {
+      "path": "/perspective-options/offer.html",
+      "status": 404,
+      "sha256": "7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6",
+      "bytes": 10
+    }
+  ]
+}

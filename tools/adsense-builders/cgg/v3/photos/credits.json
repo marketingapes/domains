@@ -1,0 +1,623 @@
+{
+ "green-aerial-bunkers": {
+  "alt": "Aerial view of a putting green ringed by bunkers and pine trees",
+  "source": "Wikimedia Commons",
+  "title": "File:Putting green at the Royal Canberra Golf Club 3.JPG",
+  "artist": "Neuroxic",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_3.JPG",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    536,
+    49086
+   ],
+   "1600": [
+    1600,
+    1071,
+    136312
+   ],
+   "2400": [
+    2400,
+    1607,
+    252120
+   ]
+  }
+ },
+ "green-aerial-flag": {
+  "alt": "Aerial view of a green with a kidney-shaped bunker and the flag in the hole",
+  "source": "Wikimedia Commons",
+  "title": "File:Putting green at the Royal Canberra Golf Club 4.JPG",
+  "artist": "Neuroxic",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_4.JPG",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    536,
+    30514
+   ],
+   "1600": [
+    1600,
+    1071,
+    129752
+   ]
+  }
+ },
+ "green-aerial-sand": {
+  "alt": "Aerial view of a green with two round bunkers",
+  "source": "Wikimedia Commons",
+  "title": "File:Putting green at the Royal Canberra Golf Club 1.JPG",
+  "artist": "Neuroxic",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_1.JPG",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    536,
+    39488
+   ],
+   "1600": [
+    1600,
+    1071,
+    132234
+   ]
+  }
+ },
+ "green-aerial-heart": {
+  "alt": "Aerial view of a raised green guarded by two bunkers",
+  "source": "Wikimedia Commons",
+  "title": "File:Putting green at the Royal Canberra Golf Club 5.JPG",
+  "artist": "Neuroxic",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Putting_green_at_the_Royal_Canberra_Golf_Club_5.JPG",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    536,
+    48554
+   ],
+   "1600": [
+    1600,
+    1071,
+    193030
+   ]
+  }
+ },
+ "links-pebble-beach": {
+  "alt": "A green and bunkers above the sea at Pebble Beach Golf Links",
+  "source": "Wikimedia Commons",
+  "title": "File:Pebble Beach Golf Links 02.jpg",
+  "artist": "Tewy",
+  "license": "CC BY 2.5",
+  "license_url": "https://creativecommons.org/licenses/by/2.5",
+  "page": "https://commons.wikimedia.org/wiki/File:Pebble_Beach_Golf_Links_02.jpg",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    600,
+    21246
+   ],
+   "1600": [
+    1600,
+    1200,
+    81524
+   ]
+  }
+ },
+ "ball-by-cup": {
+  "alt": "A golf ball resting a few inches from the hole",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf ball near hole.jpg",
+  "artist": "Photos2Use",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_ball_near_hole.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-golf-ball-golfing-green-2808865/",
+  "sizes": {
+   "800": [
+    800,
+    450,
+    84374
+   ],
+   "1600": [
+    1156,
+    650,
+    212950
+   ]
+  }
+ },
+ "tee-box-view": {
+  "alt": "View down a tree-lined fairway from the tee box",
+  "source": "Wikimedia Commons",
+  "title": "File:Tee box at The Ridges at Village Creek State Park golf course near Wynne, Arkansas.jpg",
+  "artist": "Brandonrush",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Tee_box_at_The_Ridges_at_Village_Creek_State_Park_golf_course_near_Wynne,_Arkansas.jpg",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    36098
+   ],
+   "1600": [
+    1600,
+    1067,
+    152462
+   ]
+  }
+ },
+ "putt-to-cup": {
+  "alt": "A putter and ball on the green a short way from the cup",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf putting on green.jpg",
+  "artist": "Woodypino",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_putting_on_green.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-putting-hole-golf-ball-golfer-1866106/",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    63894
+   ],
+   "1600": [
+    1600,
+    1067,
+    226604
+   ]
+  }
+ },
+ "putting-stance": {
+  "alt": "A golfer's shoes and putter at address on the green, with the hole in the foreground",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf putter on green.jpg",
+  "artist": "Semevent",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_putter_on_green.jpg",
+  "credit_line": "https://pixabay.com/nl/photos/golf-spelen-golf-club-golfbaan-2461342/",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    84416
+   ],
+   "1600": [
+    1156,
+    770,
+    193242
+   ]
+  }
+ },
+ "ball-on-green": {
+  "alt": "A golf ball on a smooth green with pine trees behind",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf ball on the green.jpg",
+  "artist": "Moneyfool",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_ball_on_the_green.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-ball-green-2217600/",
+  "sizes": {
+   "800": [
+    800,
+    451,
+    23962
+   ],
+   "1600": [
+    1600,
+    902,
+    59760
+   ]
+  }
+ },
+ "driver-at-address": {
+  "alt": "A driver behind a teed-up ball on a misty morning",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf-driver 1.jpg",
+  "artist": "Skitterphoto",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf-driver_1.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-driver-sport-play-ball-game-3469394/",
+  "sizes": {
+   "800": [
+    800,
+    534,
+    25770
+   ],
+   "1600": [
+    1600,
+    1068,
+    73844
+   ]
+  }
+ },
+ "clubs-in-bag": {
+  "alt": "Irons standing in a golf bag",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf bag and clubs.jpg",
+  "artist": "Alejandrocuadro",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_bag_and_clubs.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-golf-clubs-golfing-golfer-1909115/",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    30424
+   ],
+   "1600": [
+    1600,
+    1067,
+    88274
+   ]
+  }
+ },
+ "glove-balls-putter": {
+  "alt": "A golf glove, a ball and a putter laid out on the grass",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf balls and glove.jpg",
+  "artist": "Gerarddm",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_balls_and_glove.jpg",
+  "credit_line": "https://pixabay.com/nl/photos/golf-golfclub-pas-green-golf-bal-1208900/",
+  "sizes": {
+   "800": [
+    800,
+    600,
+    101282
+   ],
+   "1600": [
+    1156,
+    867,
+    252306
+   ]
+  }
+ },
+ "clubhouse-pines": {
+  "alt": "A clubhouse behind a bunker and tall pines at Isle Dauphin Country Club",
+  "source": "Wikimedia Commons",
+  "title": "File:Alabama's Coastal Connection - Lone Golfer at Isle Dauphin Country Club - NARA - 7716837.jpg",
+  "artist": "A. E. Crane, U.S. Department of Transportation",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Alabama%27s_Coastal_Connection_-_Lone_Golfer_at_Isle_Dauphin_Country_Club_-_NARA_-_7716837.jpg",
+  "credit_line": "U.S. National Archives and Records Administration",
+  "sizes": {
+   "800": [
+    800,
+    530,
+    69360
+   ],
+   "1600": [
+    1600,
+    1061,
+    205820
+   ]
+  }
+ },
+ "scorecard-vintage": {
+  "alt": "A vintage golf scorecard from Benvenue Country Club",
+  "source": "Wikimedia Commons",
+  "title": "File:Benvenue Country Club, Rocky Mount, N.C. Golf Score Card - DPLA - 2ee7d8c8e1eb03c2ce2308b51db72e3f (page 2).jpg",
+  "artist": "This file was contributed to Wikimedia Commons by Braswell Memorial Library as part of a cooperation project. The donation was facilitated by the Digital Public Library of America, via its partner North Carolina Digital Heritage Center.\nRecord in source catalog\nDPLA identifier: 2ee7d8c8e1eb03c2ce2308b51db72e3f",
+  "license": "Public domain",
+  "license_url": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Benvenue_Country_Club,_Rocky_Mount,_N.C._Golf_Score_Card_-_DPLA_-_2ee7d8c8e1eb03c2ce2308b51db72e3f_(page_2).jpg",
+  "credit_line": "This file was contributed to Wikimedia Commons by Braswell Memorial Library as part of a cooperation project. The donation was facilitated by the Digital Public Library of America, via its partner North Carolina Digital Heritage Center.\nRecord in source catalog\nDPLA identifier: 2ee7d8c8e1eb03c2ce2308b51db72e3f",
+  "sizes": {
+   "800": [
+    800,
+    374,
+    41272
+   ],
+   "1600": [
+    1600,
+    748,
+    128910
+   ]
+  }
+ },
+ "scorecard-cart": {
+  "alt": "A scorecard clipped to a golf cart",
+  "source": "Wikimedia Commons",
+  "title": "File:Score card (golf).jpg",
+  "artist": "Dan Perry",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Score_card_(golf).jpg",
+  "credit_line": "Foxford Hills Golf Club, Cary, Illinois",
+  "sizes": {
+   "800": [
+    800,
+    600,
+    39896
+   ],
+   "1600": [
+    1600,
+    1200,
+    102500
+   ]
+  }
+ },
+ "bag-on-fairway": {
+  "alt": "A stand bag on a hillside fairway under a big sky",
+  "source": "Wikimedia Commons",
+  "title": "File:Lonely golf bag, waiting... (49848623301).jpg",
+  "artist": "bluesbby from Mountain View, USA",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Lonely_golf_bag,_waiting..._(49848623301).jpg",
+  "credit_line": "lonely golf bag, waiting...",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    71184
+   ],
+   "1600": [
+    1600,
+    1067,
+    227048
+   ]
+  }
+ },
+ "putter-by-green": {
+  "alt": "A putter beside a ball on the fringe of a green",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf putter by green.jpg",
+  "artist": "Dubistas",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_putter_by_green.jpg",
+  "credit_line": "https://pixabay.com/nl/photos/golf-feng-shui-golf-panorama-golf-1179908/",
+  "sizes": {
+   "800": [
+    800,
+    1002,
+    54984
+   ],
+   "1600": [
+    1600,
+    2005,
+    138528
+   ]
+  }
+ },
+ "ball-on-tee": {
+  "alt": "A ball on a tee in freshly mown grass",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf ball with tee.jpg",
+  "artist": "HeungSoon",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_ball_with_tee.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-golf-course-grass-sport-green-3685620/",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    55228
+   ],
+   "1600": [
+    1600,
+    1067,
+    158024
+   ]
+  }
+ },
+ "ball-macro": {
+  "alt": "Close-up of the dimples on a golf ball",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf-ball up close.jpg",
+  "artist": "TBIT",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf-ball_up_close.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-ball-golf-ball-abstract-946439/",
+  "sizes": {
+   "800": [
+    800,
+    600,
+    12016
+   ],
+   "1600": [
+    1600,
+    1200,
+    71182
+   ]
+  }
+ },
+ "indoor-putters": {
+  "alt": "Putters lined up on an indoor carpet putting surface",
+  "source": "Wikimedia Commons",
+  "title": "File:Indoor golf in Japan 2.jpg",
+  "artist": "Syced",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Indoor_golf_in_Japan_2.jpg",
+  "credit_line": "Own work",
+  "sizes": {
+   "800": [
+    680,
+    511,
+    92482
+   ],
+   "1600": [
+    982,
+    739,
+    199608
+   ]
+  }
+ },
+ "ball-red-tee": {
+  "alt": "A ball on a red tee in the grass",
+  "source": "Wikimedia Commons",
+  "title": "File:Golf on the tee.jpg",
+  "artist": "Kenny",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golf_on_the_tee.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-golfer-tee-ball-course-3291685/",
+  "sizes": {
+   "800": [
+    800,
+    450,
+    16102
+   ],
+   "1600": [
+    1600,
+    900,
+    38460
+   ]
+  }
+ },
+ "green-at-sun": {
+  "alt": "A green with the flag and hills under a bright sky",
+  "source": "Wikimedia Commons",
+  "title": "File:Golfing on green sun.jpg",
+  "artist": "Janbaby",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Golfing_on_green_sun.jpg",
+  "credit_line": "https://pixabay.com/photos/golf-sunset-sport-golfer-bat-1758094/",
+  "sizes": {
+   "800": [
+    800,
+    450,
+    28234
+   ],
+   "1600": [
+    1600,
+    900,
+    89450
+   ]
+  }
+ },
+ "mini-three-holes": {
+  "alt": "Three holes at Rich's miniature golf, Wyoming, Pennsylvania (1984)",
+  "source": "Library of Congress",
+  "title": "Three holes at Rich's miniature golf, Wyoming, Pennsylvania (1984)",
+  "artist": "John Margolies",
+  "license": "No known restrictions on publication",
+  "license_url": "https://www.loc.gov/rr/print/res/723_marg.html",
+  "page": "https://www.loc.gov/item/2017705405/",
+  "credit_line": "John Margolies Roadside America photograph archive (1972-2008), Library of Congress, Prints and Photographs Division",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    49436
+   ],
+   "1600": [
+    938,
+    625,
+    66986
+   ]
+  }
+ },
+ "mini-pyramid": {
+  "alt": "Pyramid hole at Royal Oak miniature golf, Royal Oak, Michigan (1986)",
+  "source": "Library of Congress",
+  "title": "Pyramid hole at Royal Oak miniature golf, Royal Oak, Michigan (1986)",
+  "artist": "John Margolies",
+  "license": "No known restrictions on publication",
+  "license_url": "https://www.loc.gov/rr/print/res/723_marg.html",
+  "page": "https://www.loc.gov/item/2017704567/",
+  "credit_line": "John Margolies Roadside America photograph archive (1972-2008), Library of Congress, Prints and Photographs Division",
+  "sizes": {
+   "800": [
+    800,
+    532,
+    82382
+   ],
+   "1600": [
+    932,
+    620,
+    117190
+   ]
+  }
+ },
+ "mini-ramps": {
+  "alt": "Golf ramps at Penguin Turtle miniature golf, Lenox, Massachusetts (1984)",
+  "source": "Library of Congress",
+  "title": "Golf ramps at Penguin Turtle miniature golf, Lenox, Massachusetts (1984)",
+  "artist": "John Margolies",
+  "license": "No known restrictions on publication",
+  "license_url": "https://www.loc.gov/rr/print/res/723_marg.html",
+  "page": "https://www.loc.gov/item/2017705205/",
+  "credit_line": "John Margolies Roadside America photograph archive (1972-2008), Library of Congress, Prints and Photographs Division",
+  "sizes": {
+   "800": [
+    800,
+    533,
+    59278
+   ],
+   "1600": [
+    939,
+    626,
+    85084
+   ]
+  }
+ },
+ "mini-windmill": {
+  "alt": "Windmill hole at Royal Oak miniature golf, Royal Oak, Michigan (1986)",
+  "source": "Library of Congress",
+  "title": "Windmill hole at Royal Oak miniature golf, Royal Oak, Michigan (1986)",
+  "artist": "John Margolies",
+  "license": "No known restrictions on publication",
+  "license_url": "https://www.loc.gov/rr/print/res/723_marg.html",
+  "page": "https://www.loc.gov/item/2017704560/",
+  "credit_line": "John Margolies Roadside America photograph archive (1972-2008), Library of Congress, Prints and Photographs Division",
+  "sizes": {
+   "800": [
+    800,
+    532,
+    50930
+   ],
+   "1600": [
+    933,
+    621,
+    70464
+   ]
+  }
+ },
+ "mini-indoor": {
+  "alt": "Homowack indoor miniature golf, Mamakating, New York (1977)",
+  "source": "Library of Congress",
+  "title": "Homowack indoor miniature golf, Mamakating, New York (1977)",
+  "artist": "John Margolies",
+  "license": "No known restrictions on publication",
+  "license_url": "https://www.loc.gov/rr/print/res/723_marg.html",
+  "page": "https://www.loc.gov/item/2017712918/",
+  "credit_line": "John Margolies Roadside America photograph archive (1972-2008), Library of Congress, Prints and Photographs Division",
+  "sizes": {
+   "800": [
+    800,
+    532,
+    32802
+   ],
+   "1600": [
+    946,
+    629,
+    45396
+   ]
+  }
+ }
+}

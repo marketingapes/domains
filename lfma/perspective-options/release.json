@@ -1,0 +1,79 @@
+{
+  "version": "lfma-four-previews-20261009-browser1",
+  "reviewedSourceCommit": "38be7e93d3b38537d244d698d640baccd7ae046c",
+  "mode": "browser_only_tab_memory",
+  "voiceConnected": false,
+  "checkout": false,
+  "assets": [
+    {
+      "name": "browser-api.js",
+      "sha256": "2abc598b7adf61e91f52ab386167ee822edd8399bc1bbd2ea052a072e4d15b3f",
+      "bytes": 910
+    },
+    {
+      "name": "browser-catalog.js",
+      "sha256": "c9b77b3bfd3a8f66548891d2630a17b7f76ee6babbc945adc4a4a3caaf9a84ab",
+      "bytes": 4889
+    },
+    {
+      "name": "browser-store.js",
+      "sha256": "0550a2dbf1cf6e754513955019d75907a586c0b4a57aac8f37de25fe570ec49f",
+      "bytes": 7289
+    },
+    {
+      "name": "build.html",
+      "sha256": "bf61548be55ca1408d54f3ea02f0f5a8b86fa6498e0ee396a3f01cc97d4e1128",
+      "bytes": 13213
+    },
+    {
+      "name": "campaign-offer.js",
+      "sha256": "70334f0f7a8ed66edfcb40c4a9d68decfa0649febe6da3f764a92ef52abe4ec2",
+      "bytes": 608
+    },
+    {
+      "name": "campaign-scope.js",
+      "sha256": "ed71eee17044383f8a2dce83c6a50857d31bb4c37c3287418f9a9e1f23db2498",
+      "bytes": 2082
+    },
+    {
+      "name": "draft-client.js",
+      "sha256": "d19d5ab5833c8a43b17a2379f1827dba60ac7bf38e1b4ae45e1547874b517864",
+      "bytes": 13036
+    },
+    {
+      "name": "draft-renderer.js",
+      "sha256": "a1b6b659a999786f4bf0a53dfd6a4ecad40594bb76f3635b45ae6f20e766705f",
+      "bytes": 4623
+    },
+    {
+      "name": "draft.css",
+      "sha256": "8ae1f6ec37473e057a6cd123dbe61b9d5560ccce525d8ce7ecbc4f87ae9d79ff",
+      "bytes": 9111
+    },
+    {
+      "name": "four-page-flow.js",
+      "sha256": "67cb7ecd795f76e87613d998dc4eeb326aabe30ed778d1a2ef09160f6bf7c578",
+      "bytes": 7041
+    },
+    {
+      "name": "landing-perspectives.js",
+      "sha256": "3592100703a48a118c45a708aba9d276a07d2d331b9ad6f49c779e285de4b4cf",
+      "bytes": 2273
+    },
+    {
+      "name": "offer.html",
+      "sha256": "bf61548be55ca1408d54f3ea02f0f5a8b86fa6498e0ee396a3f01cc97d4e1128",
+      "bytes": 13213
+    },
+    {
+      "name": "story.html",
+      "sha256": "bf61548be55ca1408d54f3ea02f0f5a8b86fa6498e0ee396a3f01cc97d4e1128",
+      "bytes": 13213
+    },
+    {
+      "name": "test.html",
+      "sha256": "bf61548be55ca1408d54f3ea02f0f5a8b86fa6498e0ee396a3f01cc97d4e1128",
+      "bytes": 13213
+    }
+  ]
+}

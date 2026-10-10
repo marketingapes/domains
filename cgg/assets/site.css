@@ -149,3 +149,18 @@ figcaption{font-size:.92rem;color:var(--ink-2);margin-top:8px}
 .site-footer a:hover{color:var(--sun)}
 .copy{font-size:.88rem;margin-top:18px;color:#a9cdbb}
 @media(min-width:760px){.foot{grid-template-columns:1.5fr 1fr;align-items:start}}
+
+/* aff-overlay */
+.aff-disclosure{background:var(--paper);border:3px dashed var(--ink);border-radius:14px;padding:10px 14px;font-size:.92rem;margin:12px 0 4px}
+.aff-disclosure.big{font-size:1rem}.aff-disclosure p{margin:0}
+.aff-box,.gift-card{background:var(--paper);border:3px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin:22px 0}
+.aff-box{background:#fffdf3}
+.aff-label{font-family:var(--display);font-weight:600;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--pink-d);margin:0 0 4px}
+.aff-box h3,.gift-card h3{margin:0 0 6px}
+.aff-cta{margin:10px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.aff-tag{font-size:.8rem;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:2px 8px;background:var(--sun)}
+.aff-todo{display:inline-block;font-family:monospace;font-size:.85rem;background:#ffe0ea;border:2px dashed var(--pink-d);border-radius:10px;padding:6px 10px;color:var(--pink-d)}
+.gift-jump{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.gift-jump a{font-family:var(--display);font-weight:600;text-decoration:none;border:3px solid var(--ink);border-radius:999px;padding:6px 12px;background:var(--sky);color:var(--ink)}
+.gift-jump a:hover{background:var(--sun)}
+.page-body h2[id]{scroll-margin-top:90px}

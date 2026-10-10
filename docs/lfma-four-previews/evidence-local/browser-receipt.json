@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-09T12:56:56.205Z",
+  "base": "http://127.0.0.1:51489",
+  "passed": [
+    "four static pages work with API blocked, browser-only labels and disabled buying/voice actions",
+    "confirmed answers create safe personalized artifacts and an immutable illustrative review",
+    "validation blocks markup and MVA synonyms while Other requires specific review",
+    "fictional permission paths, repeated walkthrough and cancellation never create phone receipts",
+    "shared comparison navigation and browser Back preserve only this tab draft",
+    "opener tab and reload cannot inherit or cancel another tab draft; no persistence",
+    "cancel clears fields and frozen versions; Start fresh and repeated actions remain bounded",
+    "expiry has no retry-outage wording; cleared offer requires explicit fresh start",
+    "no APIs, POSTs, external trackers or page errors"
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "apiRequests": [],
+  "outboundRequests": [],
+  "mode": "browser_only_tab_memory",
+  "voiceConnected": false,
+  "checkout": false
+}

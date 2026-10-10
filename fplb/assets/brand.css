@@ -1,0 +1,55 @@
+/* For Pets Like Blue: brand tokens + shared header/footer (brand kit 2026-10-09).
+   Source of truth: /workspace/profit-plan/fplb/brand/BRAND.md. Load AFTER page CSS. */
+:root{
+  --fplb-blue:#4f86c6;      /* logo circle, brand blue */
+  --fplb-blue-deep:#2f5f9e; /* links, text-safe blue */
+  --fplb-heart:#ef8354;     /* logo heart, small accents only */
+  --fplb-clay:#c4532a;      /* primary CTA, emphasis */
+  --fplb-clay-deep:#9e3f1d; /* CTA hover, links on paper */
+  --fplb-butter:#f3c65a;    /* highlights, badges, focus */
+  --fplb-lab:#efdcb4;       /* Blue's coat, warm panels */
+  --fplb-paper:#fbf6ee;     /* page background */
+  --fplb-cream:#f3eadc;     /* cards on paper, notes */
+  --fplb-line:#eadfcd;      /* hairlines */
+  --fplb-ink:#231c15;       /* text */
+  --fplb-ink-2:#5b4f43;     /* secondary text */
+  --fplb-ink-3:#8a7d6f;     /* captions (large text only) */
+  --fplb-night:#1c1611;     /* footer, dark bands */
+  --fplb-serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --fplb-sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --fplb-radius:22px;
+}
+
+/* shared header */
+.fplb-head{position:sticky;top:0;z-index:40;display:block;max-width:none;margin:0;padding:0;background:rgba(251,246,238,.94);backdrop-filter:blur(8px);border:0;border-bottom:1px solid var(--fplb-line);font-family:var(--fplb-sans)}
+.fplb-head .fplb-in{width:min(1180px,calc(100% - 2.5rem));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:.75rem 1.25rem;padding:.7rem 0;flex-wrap:wrap}
+.fplb-brand{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--fplb-ink);font:600 1.12rem/1 var(--fplb-serif);letter-spacing:-.01em}
+.fplb-brand img{width:38px;height:38px;display:block;transition:transform .3s}
+.fplb-brand:hover img{transform:rotate(-12deg)}
+.fplb-brand em{font-style:italic;color:var(--fplb-clay)}
+.fplb-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:.25rem;margin:0;padding:0}
+.fplb-nav a{display:block;padding:.45rem .85rem;border-radius:999px;text-decoration:none;color:var(--fplb-ink);font:600 .95rem/1.2 var(--fplb-sans);border:0;background:transparent;transform:none}
+.fplb-nav a:hover{background:var(--fplb-cream);color:var(--fplb-ink);transform:none}
+.fplb-nav a[aria-current="page"]{background:var(--fplb-ink);color:#fff}
+.fplb-nav a.fplb-story{color:var(--fplb-clay-deep)}
+.fplb-nav a.fplb-story[aria-current="page"]{color:#fff}
+@media (max-width:640px){.fplb-head{position:static}.fplb-nav a{padding:.4rem .65rem;font-size:.9rem}}
+
+/* shared footer */
+.fplb-foot{display:block;max-width:none;margin:3rem 0 0;padding:3rem 0 2.5rem;background:var(--fplb-night);color:#cdbfac;border:0;font:400 .9rem/1.65 var(--fplb-sans)}
+.fplb-foot .fplb-in{width:min(1180px,calc(100% - 2.5rem));margin:0 auto}
+.fplb-foot .fplb-top{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;padding-bottom:1.25rem;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:1.25rem}
+.fplb-foot .fplb-brand{color:#fff;text-decoration:none}
+.fplb-foot .fplb-brand em{color:var(--fplb-butter)}
+.fplb-foot .fplb-mission{margin:.35rem 0 0;color:#e8dcc9;max-width:46ch;font:italic 400 1.05rem/1.4 var(--fplb-serif)}
+.fplb-foot ul{list-style:none;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;margin:0;padding:0}
+.fplb-foot a{color:#f4ebdd;font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.fplb-foot a:hover{color:var(--fplb-butter)}
+.fplb-foot ul a{text-decoration:none}
+.fplb-foot p,.fplb-foot .fplb-note{margin:0 0 .7rem;max-width:78ch;font-size:.88rem}
+.fplb-foot strong{color:#fff}
+.fplb-foot .fplb-legal{color:#a99a86;font-size:.8rem;margin-top:1rem}
+
+/* shared utility: in-page disclosure box */
+.fplb-disclose{background:var(--fplb-cream);border-left:4px solid var(--fplb-clay);border-radius:12px;padding:.85rem 1rem;font:400 .92rem/1.55 var(--fplb-sans);color:var(--fplb-ink-2)}
+:where(a,button,input,summary):focus-visible{outline:3px solid var(--fplb-butter);outline-offset:3px}
