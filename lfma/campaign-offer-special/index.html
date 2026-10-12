@@ -306,6 +306,8 @@ table.cost tr:last-child th, table.cost tr:last-child td { border-bottom: 0; }
 .pg small { font-size: 11px; color: #5b6660; }
 .seam-img { width: 100%; border-radius: 14px; display: block; }
 
+.sofia-how { text-align: left; margin: 14px auto 16px; padding-left: 20px; max-width: 460px; display: grid; gap: 8px; font-size: 15px; line-height: 1.45; }
+.sofia-how b { color: var(--neon); }
 /* Sofia walkthrough */
 .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .flow li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: start; padding: 12px; background: var(--panel-2); border-radius: 10px; }
@@ -497,7 +499,12 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <div class="demo-line">
       <span class="sublabel">Live demo line · call Sofia now</span>
       <a class="num" href="tel:+16692099040">(669) 209-9040</a>
-      <p>Play a claimant and try to trip her up. This line demonstrates how Sofia screens. It isn't a firm campaign, and the call is recorded.</p>
+      <p>Play a claimant and try to trip her up, or just ask her how she works. This is a demo line, not a firm campaign, and the call is recorded.</p>
+      <ol class="sofia-how">
+        <li><b>She asks the questions.</b> The caller tells her what happened.</li>
+        <li><b>If they qualify,</b> she transfers them live to your intake team, or books a callback.</li>
+        <li><b>Setup is easy.</b> You tell me your torts, states and criteria. Once it's set, I'll ask your team to make a few test calls, and we keep testing until she does exactly what you need.</li>
+      </ol>
       <button type="button" class="btn ghost small" id="copyNum">Copy number</button>
     </div>
   </section>
