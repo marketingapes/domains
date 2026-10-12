@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perspective Preview | Law Firm Marketing Apes</title>
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+<style>
+/* Layout: one centered column; header, source strip, overview, then two tabs. Wide screens split the AI CRM tab into list + detail. Deliberate single light look. */
+:root {
+  --canvas: #faf8f3;
+  --surface: #ffffff;
+  --sunk: #f3f0e8;
+  --ink: #15201a;
+  --muted: #5b685f;
+  --line: #e5e0d4;
+  --green: #1e8a4c;
+  --green-ink: #146b39;
+  --green-soft: #e4f2e9;
+  --amber: #8a5a0b;
+  --amber-soft: #fbf0d9;
+  --amber-line: #e9cf98;
+  --display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--canvas); }
+body { margin: 0; color: var(--ink); font: 400 15px/1.5 var(--display); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 48px; display: grid; gap: 16px; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.mono { font-family: var(--mono); }
+.label { font: 600 11px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* Header */
+.top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+.mark { width: 48px; height: 48px; border-radius: 50%; background: var(--green-soft); display: grid; place-items: center; border: 2px solid var(--green); flex: none; }
+.mark img { width: 30px; height: auto; display: block; }
+.brand h1 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+.brand h1 span { color: var(--green); }
+.brand small { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.seg { display: inline-flex; background: var(--sunk); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 7px 12px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(21,32,26,.12); }
+
+.banner { border-radius: 12px; padding: 10px 14px; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+.banner b { white-space: nowrap; }
+.banner.demo { background: var(--green-soft); color: var(--green-ink); border: 1px solid #bfe0cb; }
+.banner.pending { background: var(--amber-soft); color: var(--amber); border: 1px solid var(--amber-line); }
+
+/* Campaign + flow */
+.bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+.picker { display: grid; gap: 4px; min-width: 0; }
+.picker select { min-height: 44px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface); padding: 0 36px 0 12px; font-weight: 600; max-width: 100%; }
+.flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.flow span { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.flow i { font-style: normal; color: var(--green); }
+
+/* Source strip */
+.sources { display: flex; flex-wrap: wrap; gap: 6px; }
+.src { background: var(--sunk); border-radius: 999px; padding: 5px 10px; display: inline-flex; gap: 6px; align-items: center; font-size: 12px; }
+.src b { font-size: 12px; }
+.src .st { font: 600 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; }
+.src .st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.st.demo { color: var(--green-ink); }
+.st.off { color: var(--amber); }
+.src small { color: var(--muted); font-size: 12px; }
+
+/* Overview */
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 820px) { .tiles { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.tiles .tile.key { grid-column: 1 / -1; }
+@media (min-width: 820px) { .tiles .tile.key { grid-column: auto; } }
+.ctx { font-size: 13px; color: var(--muted); }
+.player { display: flex; align-items: center; gap: 10px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 10px 12px; background: var(--sunk); color: var(--muted); font-size: 13px; }
+.player button { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); cursor: not-allowed; flex: none; }
+.player .track2 { flex: 1; height: 6px; border-radius: 3px; background: var(--line); min-width: 40px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.tile .v { font: 800 28px/1.1 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.tile .v.unknown { color: var(--amber); font-size: 20px; }
+.tile.key { border: 1.5px solid var(--green); }
+.tile small { font-size: 12px; color: var(--muted); }
+.group-note { font: 600 11px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--green-ink); }
+.group-note.off { color: var(--amber); }
+
+/* Tabs */
+.tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); }
+.tab { border: 0; background: transparent; padding: 10px 14px; font-weight: 700; font-size: 15px; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; cursor: pointer; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--green); }
+.panel { display: grid; gap: 14px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.card-h { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.card-h h2 { font-size: 17px; font-weight: 800; }
+.cols { display: grid; gap: 14px; }
+@media (min-width: 820px) { .cols.two { grid-template-columns: 1fr 1fr; } }
+
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--display); border-radius: 999px; padding: 5px 10px; border: 1px solid var(--line); background: var(--sunk); color: var(--ink); white-space: nowrap; }
+.pill.ok { background: var(--green-soft); border-color: #bfe0cb; color: var(--green-ink); }
+.pill.warn { background: var(--amber-soft); border-color: var(--amber-line); color: var(--amber); }
+
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 8px 14px; margin: 0; font-size: 14px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; min-width: 0; font-weight: 600; }
+
+/* Ad cards */
+.ads { display: grid; gap: 10px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .ads { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ad { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; background: var(--surface); min-width: 0; }
+.ad-plate { background: var(--green); color: #fff; font: 800 15px/1.25 var(--display); padding: 18px 14px; min-height: 86px; display: flex; align-items: flex-end; }
+.ad-body { padding: 12px 14px; display: grid; gap: 8px; }
+.ad-stats { display: flex; gap: 14px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.ad-stats b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 0 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600; font-size: 13px; }
+.btn:disabled { color: var(--muted); background: var(--sunk); cursor: not-allowed; }
+
+/* Funnel */
+.funnel { display: grid; gap: 8px; }
+.frow { display: grid; grid-template-columns: 150px 1fr 48px; gap: 10px; align-items: center; font-size: 14px; }
+@media (max-width: 480px) { .frow { grid-template-columns: 110px 1fr 40px; font-size: 13px; } }
+.track { height: 14px; background: var(--sunk); border-radius: 4px; overflow: hidden; }
+.track i { display: block; height: 100%; background: var(--green); border-radius: 0 4px 4px 0; }
+.frow b { text-align: right; font-variant-numeric: tabular-nums; }
+.frow .src-tag { display: block; font-size: 11px; color: var(--muted); }
+
+/* Empty states */
+.empty { border: 1.5px dashed var(--amber-line); background: var(--amber-soft); color: var(--amber); border-radius: 14px; padding: 18px; text-align: center; font-size: 14px; display: grid; gap: 4px; }
+.empty b { color: var(--ink); }
+
+/* AI CRM */
+.crm { display: grid; gap: 14px; }
+@media (min-width: 900px) { .crm { grid-template-columns: 340px 1fr; align-items: start; } }
+.leads { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.lead { width: 100%; text-align: left; border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; cursor: pointer; }
+.lead[aria-current="true"] { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+.lead b { font-size: 14px; }
+.lead small { color: var(--muted); font-size: 12px; grid-column: 1 / 2; }
+.lead .pill { grid-row: 1 / 3; grid-column: 2; align-self: center; }
+.detail-h { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.detail-h h2 { font-size: 20px; font-weight: 800; margin-right: auto; }
+.sofia { display: flex; gap: 12px; align-items: flex-start; background: var(--sunk); border-radius: 12px; padding: 12px; }
+.ph { width: 56px; height: 56px; border-radius: 50%; border: 2px dashed var(--amber-line); background: var(--amber-soft); color: var(--amber); display: grid; place-items: center; text-align: center; font: 600 8px/1.2 var(--mono); letter-spacing: .04em; text-transform: uppercase; flex: none; padding: 4px; }
+.sofia p { font-size: 14px; }
+.sofia .q { color: var(--muted); font-size: 13px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.note { font-size: 12px; color: var(--muted); }
+
+footer { font-size: 12px; color: var(--muted); text-align: center; padding-top: 8px; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="mark"><img id="mascot" alt="Marketing Apes mascot" src="data:image/png;base64,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"></span>
+      <div><h1>Perspective<span>.</span></h1><small>Law Firm Marketing Apes · One Gorilla + AI</small></div>
+    </div>
+    <div class="seg" role="group" aria-label="Preview mode">
+      <button type="button" id="mDemo" aria-pressed="true">Fictional demo</button>
+      <button type="button" id="mPend" aria-pressed="false">Connections pending</button>
+    </div>
+  </header>
+
+  <div class="banner demo" id="banner"></div>
+
+  <section aria-labelledby="ov-h" class="card">
+    <div class="card-h"><h2 id="ov-h">Results</h2><span class="group-note" id="ovNote"></span></div>
+    <p class="ctx" id="ctx"></p>
+    <div class="tiles" id="tiles"></div>
+    <div class="sources" id="sources" aria-label="Data sources"></div>
+  </section>
+
+  <label class="picker"><span class="label">Campaign</span><select id="campaign"></select></label>
+
+  <div class="tabs" role="tablist" aria-label="Views">
+    <button type="button" class="tab" role="tab" id="tMk" aria-controls="pMk" aria-selected="true">Marketing</button>
+    <button type="button" class="tab" role="tab" id="tCrm" aria-controls="pCrm" aria-selected="false" tabindex="-1">AI CRM</button>
+  </div>
+
+  <section class="panel" role="tabpanel" id="pMk" aria-labelledby="tMk">
+    <div class="cols two">
+      <div class="card">
+        <div class="card-h"><h2>Spend and status</h2><span class="group-note" id="spNote"></span></div>
+        <dl class="kv" id="spend"></dl>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Lead performance</h2><span class="group-note" id="lpNote"></span></div>
+        <div id="funnel"></div>
+        <p class="note">Each step counts only what its own source confirms. Signed comes only from the firm's CRM.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" role="tabpanel" id="pCrm" aria-labelledby="tCrm" hidden>
+    <div id="crm"></div>
+  </section>
+
+  <footer>Perspective preview by Law Firm Marketing Apes. No calls, messages, transfers or data leave this page. Sofia is an AI assistant, not a lawyer.</footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var CAMPAIGNS = [
+    { id: 'a', name: 'Demo campaign A · mass tort', status: 'Active', spend: 1840, budget: 5000,
+      funnel: { leads: 62, conversations: 41, qualified: 17, transfers: 11, signed: 2 },
+      ads: [
+        { name: 'Demo ad 1', headline: 'Find out first if you may qualify.', status: 'Active', spend: 960, leads: 34 },
+        { name: 'Demo ad 2', headline: 'Ask Sofia, our AI assistant, in a private chat.', status: 'Active', spend: 620, leads: 19 },
+        { name: 'Demo ad 3', headline: 'A short video: what happens when you reach out.', status: 'Paused', spend: 260, leads: 9 }
+      ],
+      leads: [
+        { id: 'Demo inquiry 001', when: 'Today, 2:14 AM', status: 'Transferred', tone: 'ok', ad: 'Demo ad 1', conversation: 'Yes, 3 min with Sofia', recording: 'connected', next: 'Your intake team follows up', transfer: 'Transferred live to your intake line', signed: 'Not confirmed yet', summary: 'Caller described the exposure and timeline, reports a diagnosis and has no current lawyer.' },
+        { id: 'Demo inquiry 002', when: 'Today, 9:05 AM', status: 'Follow-up', tone: 'warn', ad: 'Demo ad 2', conversation: 'No, no answer yet', recording: 'none', next: 'Second call attempt this afternoon (consent on file)', transfer: 'Not transferred', signed: 'Not confirmed', summary: '' },
+        { id: 'Demo inquiry 003', when: 'Yesterday, 6:40 PM', status: 'Not a fit', tone: '', ad: 'Demo ad 1', conversation: 'Yes, 2 min with Sofia', recording: 'none', next: 'None. Closed kindly', transfer: 'Not transferred', signed: 'Not applicable', summary: 'Caller already has a lawyer for this matter.' },
+        { id: 'Demo inquiry 004', when: 'Mon, 11:20 AM', status: 'Signed', tone: 'ok', ad: 'Demo ad 3', conversation: 'Yes, 4 min with Sofia', recording: 'connected', next: 'None. Case with your team', transfer: 'Transferred live to your intake line', signed: 'Signed, confirmed in the firm CRM (fictional)', summary: 'Caller met the screening criteria and asked to speak with the firm.' },
+        { id: 'Demo inquiry 005', when: 'Mon, 8:02 AM', status: 'Qualified', tone: 'ok', ad: 'Demo ad 2', conversation: 'Yes, 3 min with Sofia', recording: 'connected', next: 'Transfer missed. Callback booked for 10 AM', transfer: 'Transfer attempted, intake line busy', signed: 'Not confirmed', summary: 'Caller met the screening criteria. Intake line did not pick up.' }
+      ] },
+    { id: 'b', name: 'Demo campaign B · car accident', status: 'Paused', spend: 740, budget: 2000,
+      funnel: { leads: 23, conversations: 14, qualified: 5, transfers: 3, signed: null },
+      ads: [
+        { name: 'Demo ad 1', headline: 'Hurt in a car accident? Find out first.', status: 'Paused', spend: 520, leads: 17 },
+        { name: 'Demo ad 2', headline: 'Not sure you need a lawyer? Ask Sofia.', status: 'Paused', spend: 220, leads: 6 }
+      ],
+      leads: [
+        { id: 'Demo inquiry 101', when: 'Last Fri, 4:12 PM', status: 'Transferred', tone: 'ok', ad: 'Demo ad 1', conversation: 'Yes, 2 min with Sofia', recording: 'connected', next: 'Waiting on your CRM status', transfer: 'Transferred live to your intake line', signed: 'Unknown: firm CRM not reporting for this campaign', summary: 'Caller was not at fault and was treated at an urgent care.' },
+        { id: 'Demo inquiry 102', when: 'Last Thu, 1:30 PM', status: 'Follow-up', tone: 'warn', ad: 'Demo ad 2', conversation: 'No, no answer yet', recording: 'none', next: 'Final text sent (consent on file)', transfer: 'Not transferred', signed: 'Not confirmed', summary: '' }
+      ] }
+  ];
+  var PENDING = [{ id: 'p1', name: 'Your first campaign · awaiting connection' }];
+  var state = { mode: 'demo', campaign: 'a', tab: 'mk', lead: 0 };
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  var money = function (n) { return '$' + n.toLocaleString('en-US'); };
+  var demo = function () { return state.mode === 'demo'; };
+  function camp() { return CAMPAIGNS.filter(function (c) { return c.id === state.campaign; })[0] || CAMPAIGNS[0]; }
+
+  function renderMode() {
+    $('mDemo').setAttribute('aria-pressed', String(demo()));
+    $('mPend').setAttribute('aria-pressed', String(!demo()));
+    var b = $('banner'); b.className = 'banner ' + (demo() ? 'demo' : 'pending'); b.textContent = '';
+    b.appendChild(el('b', null, demo() ? 'Fictional demo.' : 'Connections pending.'));
+    b.appendChild(el('span', null, demo() ? 'Every number and lead here is made up to show the layout. Nothing is live.' : 'Nothing is connected yet. "Unknown" means not connected, not zero.'));
+    var sel = $('campaign'); sel.textContent = '';
+    (demo() ? CAMPAIGNS : PENDING).forEach(function (c) { var o = el('option', null, c.name); o.value = c.id; sel.appendChild(o); });
+    if (demo()) sel.value = state.campaign;
+  }
+
+  function renderSources() {
+    var box = $('sources'); box.textContent = '';
+    ['Meta Ads', 'Landing page', 'Sofia calls', 'Firm CRM'].forEach(function (n) {
+      var d = el('span', 'src'); d.appendChild(el('b', null, n));
+      d.appendChild(el('span', 'st ' + (demo() ? 'demo' : 'off'), demo() ? 'Fictional demo' : 'Not connected'));
+      box.appendChild(d);
+    });
+  }
+
+  function tile(label, value, sub, key) {
+    var t = el('div', 'tile' + (key ? ' key' : ''));
+    t.appendChild(el('span', 'label', label));
+    t.appendChild(el('span', 'v' + (value === null ? ' unknown' : ''), value === null ? 'Unknown' : value));
+    t.appendChild(el('small', null, sub));
+    return t;
+  }
+  function note(id) { var n = $(id); n.textContent = demo() ? 'Fictional demo' : 'Not connected'; n.className = 'group-note' + (demo() ? '' : ' off'); }
+
+  function renderOverview() {
+    note('ovNote');
+    var box = $('tiles'); box.textContent = '';
+    if (!demo()) {
+      $('ctx').textContent = 'Your first campaign · no dates yet · nothing connected, so every result is unknown, not zero.';
+      box.appendChild(tile('Spend', null, 'Meta Ads not connected'));
+      box.appendChild(tile('Leads', null, 'Meta Ads and page not connected'));
+      box.appendChild(tile('Qualified leads', null, 'Sofia not connected'));
+      box.appendChild(tile('Transfers', null, 'Sofia not connected'));
+      box.appendChild(tile('Confirmed signed cases', null, 'Firm CRM not connected', true));
+      return;
+    }
+    var c = camp(), f = c.funnel;
+    $('ctx').textContent = c.name + ' · fictional demo period · Spend and leads: Meta Ads and the page. Qualified and transfers: Sofia. Signed: firm CRM only.';
+    box.appendChild(tile('Spend', money(c.spend), 'Meta Ads · of ' + money(c.budget)));
+    box.appendChild(tile('Leads', String(f.leads), 'Meta Ads + page'));
+    box.appendChild(tile('Qualified leads', String(f.qualified), 'Sofia screen'));
+    box.appendChild(tile('Transfers', String(f.transfers), 'Sofia calls'));
+    box.appendChild(tile('Confirmed signed cases', f.signed === null ? null : String(f.signed), f.signed === null ? 'Firm CRM not reporting' : 'Firm CRM', true));
+  }
+
+  function renderMarketing() {
+    note('spNote'); note('lpNote');
+    var kv = $('spend'); kv.textContent = '';
+    var c = camp();
+    var rows = demo()
+      ? [['Spend to date', money(c.spend)], ['Budget', money(c.budget)], ['Status', c.status], ['Data as of', 'Sample data, not live']]
+      : [['Spend to date', 'Unknown'], ['Budget', 'Unknown'], ['Status', 'Unknown'], ['Data as of', 'Not connected']];
+    rows.forEach(function (r) { kv.appendChild(el('dt', null, r[0])); var dd = el('dd', null, r[1]); if (r[0] === 'Status' && demo()) { dd.textContent = ''; dd.appendChild(el('span', 'pill ' + (c.status === 'Active' ? 'ok' : 'warn'), c.status)); } kv.appendChild(dd); });
+
+    var fb = $('funnel'); fb.textContent = '';
+    if (!demo()) { fb.appendChild(emptyBox('Lead performance is unknown.', 'It fills in once Meta Ads, Sofia and the firm CRM are connected.')); }
+    else {
+      var f = c.funnel, wrap = el('div', 'funnel');
+      [['Leads', f.leads, 'Meta + page'], ['Talked with Sofia', f.conversations, 'Sofia calls'], ['Qualified', f.qualified, 'Sofia screen'], ['Transferred', f.transfers, 'Sofia calls'], ['Signed', f.signed, 'Firm CRM']].forEach(function (r) {
+        var row = el('div', 'frow');
+        var lab = el('span', null, r[0]); lab.appendChild(el('span', 'src-tag', r[2])); row.appendChild(lab);
+        var tr = el('div', 'track'); var bar = el('i'); bar.style.width = r[1] === null ? '0' : Math.max(2, r[1] / f.leads * 100) + '%'; tr.appendChild(bar);
+        tr.title = r[0] + ': ' + (r[1] === null ? 'unknown' : r[1]) + ' (fictional demo)'; row.appendChild(tr);
+        row.appendChild(el('b', null, r[1] === null ? '?' : String(r[1])));
+        wrap.appendChild(row);
+      });
+      fb.appendChild(wrap);
+      if (f.signed === null) fb.appendChild(el('p', 'note', '? = unknown. The firm CRM isn\'t reporting signed cases for this campaign.'));
+    }
+
+  }
+
+  function emptyBox(title, text) { var d = el('div', 'empty'); d.appendChild(el('b', null, title)); d.appendChild(el('span', null, text)); return d; }
+
+  function renderCrm() {
+    var box = $('crm'); box.textContent = '';
+    if (!demo()) {
+      box.appendChild(emptyBox('No leads yet.', 'Leads, Sofia conversations and transfers appear here once the campaign and Sofia are connected.'));
+      return;
+    }
+    var c = camp(), leads = c.leads;
+    if (state.lead >= leads.length) state.lead = 0;
+    var grid = el('div', 'crm');
+    var listCard = el('div', 'card');
+    var lh = el('div', 'card-h'); lh.appendChild(el('h2', null, 'Leads')); lh.appendChild(el('span', 'group-note', 'Fictional demo')); listCard.appendChild(lh);
+    var ul = el('ul', 'leads');
+    leads.forEach(function (l, i) {
+      var li = el('li'), b = el('button', 'lead'); b.type = 'button';
+      b.setAttribute('aria-current', String(i === state.lead));
+      b.appendChild(el('b', null, l.id + ' (fictional)'));
+      b.appendChild(el('span', 'pill ' + l.tone, l.status));
+      b.appendChild(el('small', null, l.when + ' · ' + l.ad));
+      b.addEventListener('click', function () { state.lead = i; renderCrm(); var d = $('leadDetail'); if (d && window.innerWidth < 900) d.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    listCard.appendChild(ul);
+
+    var l = leads[state.lead];
+    var det = el('div', 'card'); det.id = 'leadDetail';
+    var dh = el('div', 'detail-h'); dh.appendChild(el('h2', null, l.id + ' (fictional)')); dh.appendChild(el('span', 'pill ' + l.tone, l.status)); det.appendChild(dh);
+    det.appendChild(el('span', 'group-note', 'Fictional demo record'));
+    var kv = el('dl', 'kv');
+    [['Received', l.when], ['Source ad', l.ad + ' (fictional label, no link connected)'], ['Conversation', l.conversation], ['Transfer', l.transfer], ['Next action', l.next], ['Signed', l.signed]].forEach(function (r) { kv.appendChild(el('dt', null, r[0])); kv.appendChild(el('dd', null, r[1])); });
+    det.appendChild(kv);
+    var sof = el('div', 'sofia');
+    sof.appendChild(el('div', 'ph', 'Sofia image pending'));
+    var st = el('div'); st.appendChild(el('span', 'label', 'Sofia summary'));
+    st.appendChild(el('p', l.summary ? null : 'q', l.summary || 'No conversation yet, so there\'s no summary.'));
+    sof.appendChild(st); det.appendChild(sof);
+    var pl = el('div', 'player'); pl.setAttribute('aria-label', 'Call recording player, disabled');
+    var pb = el('button', null, '▶'); pb.type = 'button'; pb.disabled = true; pb.setAttribute('aria-label', 'Play recording, unavailable'); pl.appendChild(pb);
+    pl.appendChild(el('span', 'track2'));
+    pl.appendChild(el('span', null, 'No authorized recording connected'));
+    det.appendChild(pl);
+    grid.appendChild(listCard); grid.appendChild(det);
+    box.appendChild(grid);
+  }
+
+  function selectTab(t, focus) {
+    state.tab = t;
+    var mk = t === 'mk';
+    $('tMk').setAttribute('aria-selected', String(mk)); $('tCrm').setAttribute('aria-selected', String(!mk));
+    $('tMk').tabIndex = mk ? 0 : -1; $('tCrm').tabIndex = mk ? -1 : 0;
+    $('pMk').hidden = !mk; $('pCrm').hidden = mk;
+    if (focus) (mk ? $('tMk') : $('tCrm')).focus();
+  }
+  $('tMk').addEventListener('click', function () { selectTab('mk'); });
+  $('tCrm').addEventListener('click', function () { selectTab('crm'); });
+  [$('tMk'), $('tCrm')].forEach(function (b) {
+    b.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); selectTab(state.tab === 'mk' ? 'crm' : 'mk', true); } });
+  });
+  $('campaign').addEventListener('change', function () { if (demo()) { state.campaign = this.value; state.lead = 0; } renderAll(false); });
+  $('mDemo').addEventListener('click', function () { state.mode = 'demo'; renderAll(true); });
+  $('mPend').addEventListener('click', function () { state.mode = 'pending'; renderAll(true); });
+
+  function renderAll(modeChanged) {
+    if (modeChanged) renderMode();
+    renderSources(); renderOverview(); renderMarketing(); renderCrm();
+  }
+  renderAll(true);
+})();
+</script>
+
+</body>
+</html>
