@@ -362,6 +362,17 @@ table.cost tr:last-child th, table.cost tr:last-child td { border-bottom: 0; }
 .out .key b { color: var(--neon); }
 
 /* Offer */
+.ways { width: 100%; max-width: 620px; display: grid; gap: 12px; text-align: left; }
+.ways-h { margin: 0; text-align: center; font-weight: 700; font-size: 18px; }
+.ways-h em { color: var(--neon); font-style: normal; }
+.ways-grid { display: grid; gap: 10px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .ways-grid { grid-template-columns: repeat(3, 1fr); } }
+.way { border: 1px solid var(--neon-line); border-radius: 14px; padding: 14px; background: var(--bg); display: grid; gap: 6px; align-content: start; }
+.way .way-n { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; justify-self: start; padding: 0; line-height: 1; background: var(--neon) !important; color: #04110a !important; opacity: 1 !important; font-weight: 800; font-size: 14px; }
+.way b { font-size: 16px; }
+.way p { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.ways-data { margin: 0; font-size: 15px; line-height: 1.5; border-left: 3px solid var(--neon); padding: 4px 0 4px 12px; }
+.ways-data b { color: var(--neon); }
 .offer { background: linear-gradient(180deg, var(--panel), var(--bg)); border: 1px solid var(--neon-line); border-radius: 24px; padding: 28px 22px; display: grid; gap: 18px; justify-items: center; text-align: center; }
 .price { font: 900 clamp(56px, 16vw, 96px)/1 var(--display); font-stretch: 120%; color: var(--neon); font-variant-numeric: tabular-nums; }
 .price-split { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -516,7 +527,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <ol class="beats how">
       <li><b>You tell me the torts</b><p class="body">Which torts you're going after, the states you take and your criteria.</p></li>
       <li><b>I review and invoice</b><p class="body">Once the scope is clear, I send the invoice. The build starts after payment is verified.</p></li>
-      <li><b>I build your landing page</b><p class="body">Built around your criteria, with three ways in: a standard form, a call with Sofia or a chat with Sofia.</p></li>
+      <li><b>I build three ways in</b><p class="body">A regular page where Sofia calls them back, a Sofia page branded with your logo, and a chat with Sofia. All built around your criteria.</p></li>
       <li><b>Two weeks, October 19–30</b><p class="body">Facebook and Instagram ads run, and we count how many qualified cases you sign, from your own records.</p></li>
       <li><b>Like it? Keep going</b><p class="body">If you like the campaign, we keep going, by agreement.</p></li>
     </ol>
@@ -637,10 +648,19 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       <div class="price-split"><span class="pill">+ $5,000 that goes straight into your ads</span><span class="pill">$7,500 total</span></div>
       <p class="fine">Two weeks: October 19–30, 2026</p>
       <ul class="incl">
-        <li><b>The ads:</b> Facebook and Instagram, plus your landing page with form, call or chat</li>
+        <li><b>The ads:</b> Facebook and Instagram, sending people to three ways in</li>
         <li><b>Sofia:</b> prequalifies every lead and hands the good ones to your intake</li>
         <li><b>Perspective:</b> see every lead, call, transfer and signed case</li>
       </ul>
+      <div class="ways">
+        <p class="ways-h">Is your market ready? <em>I test three ways in.</em></p>
+        <div class="ways-grid">
+          <div class="way"><span class="way-n">1</span><b>Regular page</b><p>They fill out a simple form. Sofia calls them back in minutes.</p></div>
+          <div class="way"><span class="way-n">2</span><b>Branded Sofia</b><p>A Sofia page with your firm's logo. They call her right there.</p></div>
+          <div class="way"><span class="way-n">3</span><b>Chat</b><p>They chat with Sofia on the page, no call needed.</p></div>
+        </div>
+        <p class="ways-data"><b>On top of all that, you get the tested data:</b> which way in brings the most qualified leads and signed cases for your torts, and at what cost. It's yours to keep.</p>
+      </div>
       <p class="sign1">Sign one case, and for most firms it has paid for itself.</p>
       <div class="actions"><a class="btn" href="#build">Tell me your tort</a><a class="btn ghost" href="/campaign-offer-special/perspective/" target="_blank" rel="noopener">See Perspective</a></div>
       <p class="fine">Like it? We keep going. No automatic renewal, and terms are in writing before we start.</p>
