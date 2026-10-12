@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NWVHNTVK');</script>
+<!-- End Google Tag Manager -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Campaign Offer Special | Law Firm Marketing Apes</title>
@@ -8,6 +11,9 @@
 <link rel="canonical" href="https://lawfirmmarketingapes.com/campaign-offer-special/">
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NWVHNTVK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -876,8 +882,9 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     if (probs.length) document.getElementById(probs[0][0]).focus();
     return !probs.length;
   }
+  function track(ev, extra) { try { var o = { event: ev, page_id: 'lfma-campaign-offer-special' }; for (var k in (extra || {})) o[k] = extra[k]; (window.dataLayer = window.dataLayer || []).push(o); } catch (x) {} }
   function showStep(n, focus) {
-    state.step = n;
+    state.step = n; track('lfma_offer_step', { step: n });
     document.querySelectorAll('.ask-step').forEach(function (el) { el.hidden = Number(el.getAttribute('data-step')) !== n; });
     document.getElementById('stepLabel').textContent = 'Step ' + n + ' of 3';
     document.getElementById('barFill').style.width = (n / 3 * 100) + '%';
@@ -1027,6 +1034,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     sending = true; btn.disabled = true;
     sendToKyle(env, r).then(function () {
       title.textContent = 'Got it' + first + '. I\'ll reach out.';
+      track('lfma_offer_request', { known_tort: !!r.supported });
       noteEl.textContent = 'Your answers went to Kyle by email. Nothing is charged.';
     }).catch(function () {
       title.textContent = 'Not sent yet';
@@ -1079,6 +1087,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     document.getElementById('sofiaPending').hidden = true;
   }
 
+  document.querySelectorAll('a.way-demo').forEach(function (a, i) { a.addEventListener('click', function () { track('lfma_demo_click', { way: ['form', 'sofia', 'chat'][i] || String(i) }); }); });
+  document.querySelectorAll('a[href^="tel:+16692099040"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap'); }); });
   document.getElementById('copyNum').addEventListener('click', function () {
     var btn = this;
     function done(ok) { btn.textContent = ok ? 'Copied' : '(669) 209-9040'; setTimeout(function () { btn.textContent = 'Copy number'; }, 1800); }
