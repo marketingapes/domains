@@ -1,4 +1,4 @@
-/* Lead Apes v1.2 draft (lead gen OS, Softía at the center). Request form posts to the same Make lead hook the Marketing Apes
+/* Lead Apes v1.2 draft (lead gen OS, Sofia at the center). Request form posts to the same Make lead hook the Marketing Apes
    and LFMA forms use, with notify_email = kyleg@marketingapes.com. On failure it falls
    back to a pre-filled mailto. */
 (function () {
@@ -19,7 +19,7 @@
   });
 
 
-  // Rotating Softía demo exchanges (illustrative examples, not real calls).
+  // Rotating Sofia demo exchanges (illustrative examples, not real calls).
   var DEMOS = [
     { label: 'Example: home services inquiry', lines: [
       ['ai', 'Thanks for calling. What can we help with today?'],
@@ -41,7 +41,7 @@
     var d = DEMOS[i];
     lab.textContent = d.label;
     tr.innerHTML = d.lines.map(function (l) {
-      return '<li class="' + l[0] + '"><b>' + (l[0] === 'ai' ? 'Softía' : 'Caller') + '</b>' + esc(l[1]) + '</li>';
+      return '<li class="' + l[0] + '"><b>' + (l[0] === 'ai' ? 'Sofia' : 'Caller') + '</b>' + esc(l[1]) + '</li>';
     }).join('');
   }
   if (tr && lab && !reduce) {

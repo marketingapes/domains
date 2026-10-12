@@ -197,7 +197,7 @@ footer{border-top:1px solid var(--line);padding:3rem 0 6.5rem;color:var(--muted)
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-/* v1.1: industries grid, 4 buyer types, rotating Softía demo */
+/* v1.1: industries grid, 4 buyer types, rotating Sofia demo */
 .ind-grid{display:grid;gap:1rem;grid-template-columns:1fr}
 .ind{border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.3rem 1.4rem;background:rgba(16,28,24,.55);transition:border-color .2s,transform .2s}
 .ind:hover{border-color:var(--lime);transform:translateY(-2px)}
@@ -220,7 +220,7 @@ footer{border-top:1px solid var(--line);padding:3rem 0 6.5rem;color:var(--muted)
 .hero h1 em{white-space:normal}
 @media (min-width:980px){.hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(380px,.8fr)}}
 
-/* v1.2: the OS map, Softía at the center */
+/* v1.2: the OS map, Sofia at the center */
 .hero .lede strong{font-weight:700}
 .os{background:radial-gradient(70% 60% at 50% 45%,rgba(210,244,138,.08),transparent 70%),var(--ink)}
 .os-map{position:relative;display:grid;gap:1rem;grid-template-columns:1fr;grid-template-areas:"core" "traffic" "follow" "db" "report" "ops"}
