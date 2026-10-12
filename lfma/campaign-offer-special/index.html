@@ -376,6 +376,13 @@ table.cost tr:last-child th, table.cost tr:last-child td { border-bottom: 0; }
 .ways-note { margin: 0; text-align: center; font-size: 13px; color: var(--muted); }
 .ways-data { margin: 0; font-size: 15px; line-height: 1.5; border-left: 3px solid var(--neon); padding: 4px 0 4px 12px; }
 .ways-data b { color: var(--neon); }
+.creds { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.cred { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--neon-line); border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink, #eaf5ee); text-decoration: none; background: rgba(61,255,138,.06); }
+.cred i { width: 8px; height: 8px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+a.cred:hover { border-color: var(--neon); }
+.creds-lg { justify-content: flex-start; margin: 4px 0 6px; }
+.creds-lg .cred { font-size: 15px; padding: 9px 16px; }
+.hero .creds { margin-top: 6px; }
 .offer { background: linear-gradient(180deg, var(--panel), var(--bg)); border: 1px solid var(--neon-line); border-radius: 24px; padding: 28px 22px; display: grid; gap: 18px; justify-items: center; text-align: center; }
 .price { font: 900 clamp(56px, 16vw, 96px)/1 var(--display); font-stretch: 120%; color: var(--neon); font-variant-numeric: tabular-nums; }
 .price-split { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
@@ -471,6 +478,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <p class="lede">Meet Sofia, the AI intake assistant behind my campaigns. Call her yourself, then tell me which torts you're going after.</p>
     <div class="actions"><a class="btn" href="#sofia">Meet Sofia</a><a class="btn ghost" href="#build">Tell me your torts</a></div>
     <p class="caption">Test window October 19–30, 2026 · $7,500</p>
+    <div class="creds" aria-label="Partner status"><a class="cred" href="https://www.google.com/partners/agency?id=4951017547" target="_blank" rel="noopener"><i aria-hidden="true"></i>Google Premier Partner 2026</a><span class="cred"><i aria-hidden="true"></i>Meta Business Partner</span></div>
   </header>
 
   <!-- Result -->
@@ -725,6 +733,23 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   </section>
 
+  <!-- Credentials and compliance -->
+  <section id="trust" aria-labelledby="trust-h">
+    <span class="eyebrow">Certified · compliance built in</span>
+    <h2 id="trust-h">Certified on the platforms. <em>Careful with your leads.</em></h2>
+    <div class="creds creds-lg" aria-label="Partner status"><a class="cred" href="https://www.google.com/partners/agency?id=4951017547" target="_blank" rel="noopener"><i aria-hidden="true"></i>Google Premier Partner 2026</a><span class="cred"><i aria-hidden="true"></i>Meta Business Partner</span></div>
+    <ul class="incl wide comp">
+      <li><b>Consent, by channel:</b> calls and texts are separate checkboxes, never prechecked, saved with the exact wording the person saw</li>
+      <li><b>TrustedForm on every form:</b> a certificate of each consent, so you can prove it</li>
+      <li><b>Sofia says she's AI:</b> every call opens that way. She's not a lawyer, gives no legal advice and promises no outcome</li>
+      <li><b>Calls are recorded and disclosed,</b> and "stop" is honored on the spot</li>
+      <li><b>Attorney advertising and "not a law firm" disclosures</b> on every page</li>
+      <li><b>Your counsel approves</b> the ads, the page and Sofia's screening questions before anything runs</li>
+      <li><b>Your data stays yours:</b> leads, recordings, transcripts and the tested data</li>
+    </ul>
+    <p class="fine">These are the safeguards I build in. Your firm's counsel makes the final call on what complies in your states.</p>
+  </section>
+
   <!-- Story -->
   <section aria-labelledby="story-h">
     <span class="eyebrow">AI-optimized, not AI takeover</span>
@@ -740,7 +765,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   <footer>
     <p>I build and run this system as One Gorilla + AI (Law Firm Marketing Apes): my strategy, with AI supporting the execution. Sofia is an AI intake assistant, not an attorney, and gives no legal advice. Ad and page previews are templates; each firm's counsel approves all advertising and screening criteria.</p>
-    <p>Past results don't guarantee future results. What you send here goes to Kyle by email. Nothing is charged.</p>
+    <p>Google Premier Partner 2026 · Meta Business Partner. Past results don't guarantee future results. What you send here goes to Kyle by email. Nothing is charged.</p>
   </footer>
 </div>
 
