@@ -687,16 +687,6 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
         <p class="stale" id="staleNote" hidden>Out of date: your answers changed after this was saved. Press Send me the details again to update it.</p>
         <dl id="resultList"></dl>
         <div class="gaps" id="gaps" hidden></div>
-        <div class="invoice" id="invoice" hidden>
-          <div class="inv-head"><b>Your invoice details</b><span class="tag wait">Draft · not sent</span></div>
-          <dl>
-            <dt>Service fee</dt><dd>$2,500</dd>
-            <dt>Media budget</dt><dd>$5,000</dd>
-            <dt>Total</dt><dd><b>$7,500</b></dd>
-            <dt>Test window</dt><dd>Oct 19–30, 2026 · 10 business days</dd>
-          </dl>
-          <p class="fine">Next, I confirm the details with you and send the invoice. The build starts after payment is verified.</p>
-        </div>
         <p class="fine" id="saveNote"></p>
         <div class="actions" style="justify-content:flex-start"><button type="button" class="btn ghost small" id="copyReq">Copy request</button><button type="button" class="btn ghost small" id="editBtn">Edit answers</button></div>
       </div>
@@ -966,14 +956,13 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     lastEnvelope = env;
     document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
     var dl = document.getElementById('resultList'); dl.textContent = '';
-    [['Status', r.supported ? 'Ready for your invoice.' : 'I review this with you first.'],
+    [['Status', r.supported ? 'I know this tort. Ready to build.' : 'I review this with you first.'],
      ['Tort', r.tpl && TORTS[r.tpl].label.toLowerCase() !== g('fBrief').toLowerCase() ? TORTS[r.tpl].label + ' (you wrote: ' + g('fBrief') + ')' : (r.tpl ? TORTS[r.tpl].label : g('fBrief'))],
      ['States', g('fStates')], ['Firm', g('fFirm')], ['Contact', g('fName') + ' · ' + g('fEmail') + (g('fPhone') ? ' · ' + g('fPhone') : '')]
     ].forEach(function (x) { dl.appendChild(el('dt', null, x[0])); dl.appendChild(el('dd', null, x[1])); });
     var gaps = document.getElementById('gaps'); gaps.textContent = '';
     if (!r.supported) { gaps.hidden = false; gaps.appendChild(el('b', null, 'Before the invoice')); var gl = el('ul'); r.notes.forEach(function (x) { gl.appendChild(el('li', null, x)); }); gaps.appendChild(gl); }
     else gaps.hidden = true;
-    document.getElementById('invoice').hidden = !r.supported;
     var first = g('fName') ? ', ' + g('fName').split(/\s+/)[0] : '';
     var btn = document.getElementById('buildBtn'), title = document.getElementById('resultTitle'), noteEl = document.getElementById('saveNote');
     markFresh();
