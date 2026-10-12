@@ -111,7 +111,7 @@ h3{font:700 22px/1.2 var(--serif);color:var(--ink);margin:0 0 8px}
 .clock{font:700 clamp(30px,5vw,44px)/1 var(--serif);color:var(--gold);margin-bottom:10px;font-variant-numeric:tabular-nums}
 .vm{display:inline-block;margin-top:10px;font:700 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#ff9b73}
 
-/* Softía */
+/* Sofia */
 .softia .phone{background:linear-gradient(160deg,#2b1d12,#20170f);color:#f5efe6;border-radius:28px;padding:28px;box-shadow:0 30px 60px rgba(32,23,15,.28);position:relative;overflow:hidden}
 .softia .phone::before{content:"";position:absolute;width:320px;height:320px;right:-120px;top:-120px;border-radius:50%;background:radial-gradient(circle,rgba(233,187,98,.28),transparent 70%)}
 .phone .num{display:block;font:700 clamp(34px,7vw,52px)/1 var(--serif);color:var(--gold-l);text-decoration:none;margin:10px 0 18px;letter-spacing:-.01em}
