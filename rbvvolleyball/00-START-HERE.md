@@ -329,6 +329,13 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-10-12 — Photo uploaded to RBV library
+
+- Asset: `images/lauren-september-athlete-of-the-month-cf19972bbb54.png`.
+- Content commit: `e890b86526cbcc77695a291183a38379d20508fc`.
+- Photo is not automatically placed on a page or in the gallery.
+
+
 ## 2026-10-12 — Page updated: index.html
 
 - Published approved page change.
