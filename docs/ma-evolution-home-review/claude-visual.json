@@ -1,0 +1,71 @@
+{
+  "headline_lines": [
+    "Smarter ads.",
+    "Faster follow-up.",
+    "See what becomes business."
+  ],
+  "hero_support": "Practical Google Ads and Facebook advertising, connected to lead capture, prompt follow-up and clear reporting, so you can see which marketing actually turns into business.",
+  "manage_line": "Want one partner for your digital presence? Marketing Apes can manage your domain, site, ads, AI conversations, follow-up, social publishing and reporting, scoped around your authorized accounts and what your business needs.",
+  "engine_title": "How the Evolution Engine connects it",
+  "workflow": [
+    {
+      "title": "Audience",
+      "copy": "Start with who you serve and where."
+    },
+    {
+      "title": "Campaign & page",
+      "copy": "Google and Facebook ads matched to focused pages."
+    },
+    {
+      "title": "Conversation & follow-up",
+      "copy": "AI chat, voice and prompt follow-up, where scoped."
+    },
+    {
+      "title": "Business outcome",
+      "copy": "Track which leads become business, then refine."
+    }
+  ],
+  "adaptation_title": "One system, adapted to your audience",
+  "adaptation_note": "Illustrative drafts. Each message is written for your business, keeps your brand, and is reviewed before anything goes live.",
+  "audience_drafts": [
+    {
+      "id": "law-firm",
+      "label": "Law firm",
+      "headline": "Hurt in an accident? Get answers.",
+      "message": "Tell us what happened. We'll connect you with the right next step."
+    },
+    {
+      "id": "home-services",
+      "label": "Home services",
+      "headline": "Need it fixed? Request a quote.",
+      "message": "Share the job details, and the team follows up promptly with options."
+    },
+    {
+      "id": "agency",
+      "label": "Agency (white-label)",
+      "headline": "Your brand. Our connected delivery.",
+      "message": "Offer ads, follow-up and reporting under your name, within an agreed white-label scope."
+    }
+  ],
+  "packages_title": "Three ways to work together",
+  "packages": [
+    {
+      "id": "campaign-sprint",
+      "name": "Campaign Sprint",
+      "description": "One offer, ads, landing page, follow-up and reporting, launched and measured."
+    },
+    {
+      "id": "run-my-marketing",
+      "name": "Run My Marketing",
+      "description": "Ongoing, scoped optimization of ads, site, AI conversations, follow-up, social and reporting."
+    },
+    {
+      "id": "build-my-system",
+      "name": "Build My System",
+      "description": "Scoped domain installation, approved integrations and a clean handoff to your team."
+    }
+  ],
+  "founder_line": "I'm Kyle Gosselin, 20 years in marketing. I direct the strategy; AI handles the repetitive work.",
+  "scope_note": "Every engagement is scoped individually; white-label by agreement. The form prepares an email for you to send.",
+  "visual_direction": "Monochrome, generous whitespace, black-and-white ape logo top left. Hero: illustrative 3D connected-platform render beside the headline. Below, a clean four-node workflow graph labeled illustrative. Two screenshot cards, LFMA and LeadApes, labeled existing websites. Then a three-tab audience switcher showing prepared example drafts. Minimal text, large type. No sticky bars."
+}
