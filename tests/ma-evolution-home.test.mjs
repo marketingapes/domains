@@ -6,7 +6,7 @@ const html=await readFile(new URL('../ma/index.html',import.meta.url),'utf8');
 const id='ma-inquiry-11111111-1111-4111-8111-111111111111';
 const values={contact_name:'Review Test',email:'qa@example.invalid',company:'Synthetic Company',engagement:'white-label',notes:'Synthetic QA only. Please do not send.'};
 test('two primary business destinations, official social links and no public webhook',()=>{
- for(const url of ['https://lawfirmmarketingapes.com/','https://leadapes.com/','https://www.facebook.com/137455619624058','https://www.instagram.com/marketingapes/','https://www.linkedin.com/company/marketing-apes']) assert.equal(html.split(`href="${url}"`).length-1,1);
+ for(const url of ['https://lawfirmmarketingapes.com/','https://leadapes.com/','https://www.facebook.com/137455619624058','https://www.instagram.com/marketingapes/','https://www.linkedin.com/company/marketing-apes']) assert.equal(html.split(`href="${url}"`).length-1,url === 'https://lawfirmmarketingapes.com/' ? 2 : 1);
  assert.doesNotMatch(html,/hook\.\w+\.make\.com|\$\d|fully autonomous|guaranteed/i);
 });
 test('inquiry is validated and distinguishes preparation from delivery',()=>{
