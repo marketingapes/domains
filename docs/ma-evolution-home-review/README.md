@@ -1,4 +1,12 @@
-# Marketing Apes homepage — review only
+# Marketing Apes homepage — authorized homepage release
+
+Kyle subsequently authorized actual Claude to tell the Evolution Engine story and launch the homepage live. This release retains the reviewed visual design and manual contact route. Only homepage source/assets and their verification/documentation are included; the staged inquiry backend remains on a separate unpublished branch.
+
+Claude authored the six final public copy blocks in an independent authenticated session: https://claude.ai/chat/acba6e63-801a-416f-ba32-8433031f732c . The exact response is preserved in `claude-story.json`; the page uses those values. The LFMA task's Claude conversation was not modified. Dynamic branding is framed as coordinated audience-aware drafts, preserving brand identity and requiring review before live changes.
+
+The following original review handoff records the inspected contracts and preparations. Its initial release-approval gate was superseded by Kyle's explicit homepage launch instruction; backend deployment and automatic Make inquiry delivery remain separately gated.
+
+# Original review handoff
 
 Built in an independent clone of marketingapes/domains, branch `review/ma-evolution-home`, based on `a3cba29f757c394a7cf7ad98156b47aea9b92f4d` (includes Tom's published page). No push, PR, merge, deployment, account change, automated message, call or Make execution is part of this work.
 
