@@ -6,9 +6,9 @@ const home = await readFile(new URL('../kg/index.html', import.meta.url), 'utf8'
 const now = await readFile(new URL('../kg/now/index.html', import.meta.url), 'utf8');
 const posts = await readFile(new URL('../docs/tex-network-posts.md', import.meta.url), 'utf8');
 
-test('KG home and now point at the Tex launch page', () => {
+test('KG home and now preserve Tex links without a homepage video', () => {
   assert.match(home, /https:\/\/marketingapes\.com\/tex\//);
-  assert.match(home, /tex-teaser\.mp4/);
+  assert.doesNotMatch(home, /<video\b|tex-teaser\.mp4/);
   assert.match(now, /https:\/\/marketingapes\.com\/tex\//);
   assert.match(home, /fourteen behind it/);
   assert.doesNotMatch(home, /\bRex\b/);
