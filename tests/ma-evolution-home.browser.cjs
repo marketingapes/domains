@@ -17,7 +17,7 @@ for(const width of [360,390,768,1440]){
  const overflow=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
  assert.ok(overflow.scroll<=overflow.client,`overflow at ${width}`);
  assert.equal(await page.locator('nav.destinations a').count(),2);
- assert.equal(await page.locator('a[href="https://lawfirmmarketingapes.com/"]').count(),1);
+ assert.equal(await page.locator('a[href="https://lawfirmmarketingapes.com/"]').count(),2);
  assert.equal(await page.locator('a[href="https://leadapes.com/"]').count(),1);
  assert.equal(await page.locator('form').count(),1);
  await page.getByRole('button',{name:'Law firm',exact:true}).click();assert.equal(await page.locator('#draft-for').textContent(),'Law firm');assert.match(await page.locator('#draft-headline').textContent(),/Get answers/);
