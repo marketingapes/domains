@@ -533,9 +533,6 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
         <li><b>Quiz:</b> screening against the firm's own criteria. <a href="https://besttortlawyers.com/paraquat/quiz/" target="_blank" rel="noopener">See it</a></li>
       </ol>
       <p>Perspective compares the paths: qualified inquiries, cost and the outcomes your firm confirms. Sofia follows up only with leads who consent and never decides legal eligibility. No result is guaranteed.</p>
-      <a class="num" href="tel:+12138787408">(213) 878-7408</a>
-      <div class="actions"><a class="btn small" href="tel:+12138787408">Call Sofia to test</a><button class="btn ghost small" id="copyNum" type="button">Copy number</button></div>
-      <p>This is a demo line, not a firm campaign.</p>
     </div>
   </section>
 
@@ -1091,7 +1088,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   document.querySelectorAll('a.way-demo').forEach(function (a, i) { a.addEventListener('click', function () { track('lfma_demo_click', { way: ['form', 'sofia', 'chat'][i] || String(i) }); }); });
   document.querySelectorAll('a[href^="tel:+12138787408"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap'); }); });
-  document.getElementById('copyNum').addEventListener('click', function () {
+  var copyNum = document.getElementById('copyNum');
+  if (copyNum) copyNum.addEventListener('click', function () {
     var btn = this;
     function done(ok) { btn.textContent = ok ? 'Copied' : '(213) 878-7408'; setTimeout(function () { btn.textContent = 'Copy number'; }, 1800); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('+12138787408').then(function () { done(true); }, function () { done(false); });
