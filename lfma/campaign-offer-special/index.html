@@ -437,7 +437,25 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 }
 </style>
 
+<!--
+  INTEGRATION SEAM — local builder assets (Codex/Kyle bind and review this separately).
+  This page makes no network calls and has no backend. To bind locally generated assets, either:
+    1) fill the JSON block below, or
+    2) set window.MA_BUILDER_SEAM = { assets: {...}, onBuild: function (envelope) {...} } before the main script runs.
+  Recognized asset keys (all optional):
+    brandGorilla            image URL or data URI for the Marketing Apes gorilla illustration
+    adPreview.<templateKey>   image URL/data URI replacing the template ad preview (only when the visitor confirms that template)
+    pagePreview.<templateKey> image URL/data URI replacing the template page preview (same rule)
+    sofiaPortrait           owner-approved LeadApes Sofia image (slot shows "pending" until bound)
+  templateKey is one of: depo, glp, juv, sa, hair.
+  onBuild(envelope) receives the locally saved request when "Save my request" is pressed.
 
+  LOCAL REQUEST SEAM — window.MA_LOCAL_REQUEST
+    .fields  map of request keys to form element ids
+    .read()  returns the raw, unnormalized field values (strings) for Codex to normalize and validate locally
+  Saved requests also go to localStorage key "ma_local_requests" in this browser only. No network calls.
+-->
+<script type="application/json" id="ma-builder-assets">{}</script>
 
 <div class="wrap">
   <div class="brand"><span>Law Firm Marketing Apes</span><small>One Gorilla <b>+ AI</b></small></div>
@@ -507,16 +525,14 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     </div>
     <p class="caption">Sofia is AI, and the portrait is her brand image. The chat is an example with a fictional caller.</p>
     <div class="demo-line">
-      <span class="sublabel">Call Sofia to test</span>
-      <a class="num" href="tel:+12138787408" aria-label="Call Sofia to test at (213) 878-7408">(213) 878-7408</a>
-      <a class="btn small" href="tel:+12138787408">Call Sofia to test</a>
-      <p>Play a claimant and try to trip her up, or just ask her how she works. This is a demo line, not a firm campaign.</p>
+      <span class="sublabel">Here’s our strategy.</span>
+      <p>Paraquat demo: three ways in, tested side by side.</p>
       <ol class="sofia-how">
-        <li><b>She asks the questions.</b> The caller tells her what happened.</li>
-        <li><b>If they qualify,</b> she transfers them live to your intake team, or books a callback.</li>
-        <li><b>Setup is easy.</b> You tell me your torts, states and criteria. Once it's set, I'll ask your team to make a few test calls, and we keep testing until she does exactly what you need.</li>
+        <li><b>Landing page:</b> a form with the firm's contact details. Leads who consent get an AI follow-up. <a href="https://besttortlawyers.com/paraquat/" target="_blank" rel="noopener">See it</a></li>
+        <li><b>Talk to Sofia:</b> a direct conversation with Sofia before the firm's intake. <a href="https://besttortlawyers.com/paraquat/talk-to-sofia/" target="_blank" rel="noopener">See it</a></li>
+        <li><b>Quiz:</b> screening against the firm's own criteria. <a href="https://besttortlawyers.com/paraquat/quiz/" target="_blank" rel="noopener">See it</a></li>
       </ol>
-      <button type="button" class="btn ghost small" id="copyNum">Copy number</button>
+      <p>Perspective compares the paths: qualified inquiries, cost and the outcomes your firm confirms. Sofia follows up only with leads who consent and never decides legal eligibility. No result is guaranteed.</p>
     </div>
   </section>
 
@@ -579,9 +595,9 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
           <span id="sofiaPending">Sofia image pending<br>owner-approved LeadApes asset</span>
         </div>
         <div class="grow">
-          <p><b>Sofia screens on your criteria.</b> She lets the caller tell the story, then checks the qualification criteria you give me for <b>the Paraquat demo</b>. I don't invent criteria.</p>
+          <p><b>Sofia screens on your criteria.</b> She lets the caller tell the story, then checks the qualification criteria you give me for <b class="curTort">your campaign</b>. I don't invent criteria.</p>
           <ul class="mini">
-            <li><span class="tag ok">Live demo</span> The Paraquat example pages linked in the offer below: landing page, Sofia conversation and quiz.</li>
+            <li><span class="tag ok">Works here</span> Text walkthrough of her script, in the campaign preview below.</li>
             <li><span class="tag wait">Unverified</span> Live voice calls for this campaign.</li>
           </ul>
         </div>
@@ -607,7 +623,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <div class="win" role="tabpanel" id="pp-tx" aria-labelledby="pt-tx" hidden>
       <div class="win-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Demo preview</span><span class="tag wait">Handoff unconnected</span></div>
       <div class="win-body">
-        <div class="bub s"><span class="who">Sofia to your intake line · demo</span>"I have Demo Lead 01 here, possible Paraquat claim in Ohio. Here they are."</div>
+        <div class="bub s"><span class="who">Sofia to your intake line · demo</span>"I have Demo Lead 01 here, possible <span class="curTort">claim</span> claim in Ohio. Here they are."</div>
         <ul class="mini">
           <li>The announcement stays under 10 seconds: name, claim type, state.</li>
           <li>Your intake line answers, and Sofia steps out of the call.</li>
@@ -644,68 +660,82 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       <span class="eyebrow">Is it time to own your marketing and intake?</span>
       <h2 id="offer-h">The ads. Sofia. <em>Perspective.</em></h2>
       <div class="price">$2,500</div>
-      <p class="sublabel">$2,500 campaign fee</p>
       <p class="ask">All of it, set up and run for you.</p>
-      <div class="price-split"><span class="pill">$5,000 minimum ad budget for the October 19–30 sprint</span><span class="pill">12 calendar days across two business weeks</span></div>
+      <div class="price-split"><span class="pill">+ $5,000 that goes straight into your ads</span><span class="pill">$7,500 total</span></div>
       <p class="fine">Two weeks: October 19–30, 2026</p>
-      <p class="notice">If ad spend reaches $2,500 with zero leads, we pause and refund the remaining unused ad budget. The separate $2,500 build and management fee is retained.</p>
       <ul class="incl">
         <li><b>The ads:</b> Facebook and Instagram, sending people to three ways in</li>
         <li><b>Sofia:</b> prequalifies every lead and hands the good ones to your intake</li>
         <li><b>Perspective:</b> see every lead, call, transfer and signed case</li>
       </ul>
       <div class="ways">
-        <p class="ways-h">Here’s our strategy. <em>A Paraquat example.</em></p>
-        <p class="ways-note">An affordable test of how your audience responds to three intake approaches. Same ads, three paths in:</p>
+        <p class="ways-h">Is your market ready? <em>I test three ways in.</em></p>
         <div class="ways-grid">
-          <div class="way"><span class="way-n">1</span><b>Traditional landing page</b><p>A form plus your firm's contact details. Leads who consent get an AI follow-up from Sofia.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=form" target="_blank" rel="noopener">See the demo →</a></div>
-          <div class="way"><span class="way-n">2</span><b>Talk to Sofia first</b><p>A direct conversation with Sofia before your firm's intake.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/talk-to-sofia/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=sofia" target="_blank" rel="noopener">See the demo →</a></div>
-          <div class="way"><span class="way-n">3</span><b>Quiz or chat</b><p>A short screening against your firm's own criteria.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/quiz/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=chat" target="_blank" rel="noopener">See the demo →</a></div>
+          <div class="way"><span class="way-n">1</span><b>Regular page</b><p>They fill out a simple form. Sofia calls them back in minutes.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=form" target="_blank" rel="noopener">See the demo →</a></div>
+          <div class="way"><span class="way-n">2</span><b>Branded Sofia</b><p>A Sofia page with your firm's logo. They call her right there.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/talk-to-sofia/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=sofia" target="_blank" rel="noopener">See the demo →</a></div>
+          <div class="way"><span class="way-n">3</span><b>Chat</b><p>They chat with Sofia on the page, no call needed.</p><a class="way-demo" href="https://besttortlawyers.com/paraquat/quiz/?utm_source=lfma&amp;utm_medium=demo&amp;utm_campaign=campaign-offer-special&amp;utm_content=chat" target="_blank" rel="noopener">See the demo →</a></div>
         </div>
-        <p class="ways-note">These are Paraquat example pages. Your version carries your torts, your criteria and your logo.</p>
-        <p class="ways-data"><b>Then we compare.</b> Perspective shows which path your audience responds to: qualified inquiries, cost and the outcomes your firm confirms from its own records. We keep optimizing toward what works. Sofia follows up only with leads who consented, and transfers only people who meet your firm's intake criteria. She doesn't decide legal eligibility, and no result is guaranteed.</p>
+        <p class="ways-note">These are live paraquat pages, not mockups. Try one as a claimant: you see exactly what your leads see, and I see your test come through. Your version carries your torts, your criteria and your logo.</p>
+        <p class="ways-data"><b>On top of all that, you get the tested data:</b> which way in brings the most qualified leads and signed cases for your torts, and at what cost. It's yours to keep.</p>
       </div>
       <p class="sign1">Sign one case, and for most firms it has paid for itself.</p>
-      <p class="body">Ready to test it? I can invoice you today with two line items: $2,500 campaign fee, plus $5,000 media. $7,500 total. Track performance in Perspective, with the goal of lowering your cost per signed case. Target launch: Monday, October 19, once payment, campaign approval, and your team’s intake connection are complete.</p>
-      <div class="actions"><a class="btn" href="#build">Request a live build</a><a class="btn ghost" href="/campaign-offer-special/perspective/" target="_blank" rel="noopener">See Perspective</a></div>
+      <div class="actions"><a class="btn" href="#build">Tell me your tort</a><a class="btn ghost" href="/campaign-offer-special/perspective/" target="_blank" rel="noopener">See Perspective</a></div>
       <p class="fine">Like it? We keep going. No automatic renewal, and terms are in writing before we start.</p>
-      <p class="fine">Want it running inside your firm instead? I can implement it with your team, on a scope and price we agree in writing.</p>
     </div>
   </section>
 
-  <!-- Request a live build with Kyle -->
+  <!-- Builder -->
   <section id="build" aria-labelledby="build-h">
     <span class="eyebrow">Start here</span>
-    <h2 id="build-h">Request a live build <em>with Kyle.</em></h2>
-    <p class="body">Tell me who you are, your website and the tort you want to run. I review every request myself, scope it with you and build it personally. Sending this doesn't charge you, start a campaign or set anything up.</p>
+    <h2 id="build-h">Tell me your <em>tort.</em></h2>
+    <p class="body">That's all I need to start. No brief, no long form. Tell me the tort and where you take cases, and I go from there.</p>
 
-    <form class="askcard" id="firmForm" method="post" novalidate data-endpoint="/lfma-owner-request" data-page-id="lfma-campaign-offer-special" aria-labelledby="build-h">
+    <form class="askcard" id="firmForm" novalidate>
       <div class="ask-top">
         <span class="ask-av"><img src="data:image/jpeg;base64,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" alt=""></span>
-        <div class="ask-prog"><span>Six fields · Kyle reviews every request</span></div>
+        <div class="ask-prog"><span id="stepLabel">Step 1 of 3</span><div class="bar"><i id="barFill"></i></div></div>
       </div>
-      <fieldset id="ownerFields" disabled style="border:0;margin:0;padding:0;min-width:0">
-        <legend class="sublabel">Your request</legend>
+
+      <div class="ask-step" data-step="1">
+        <label class="ask-q" for="fBrief">What tort are you going after?</label>
+        <input id="fBrief" name="tort" autocomplete="off" placeholder="e.g. Depo-Provera">
+        <div class="match" id="match" aria-live="polite"></div>
+      </div>
+
+      <div class="ask-step" data-step="2" hidden>
+        <p class="ask-q">Where do you take these cases?</p>
         <div class="fields">
-          <div class="field"><label for="oName">Your name</label><input id="oName" name="name" autocomplete="name" maxlength="120" required></div>
-          <div class="field"><label for="oFirm">Firm name</label><input id="oFirm" name="firm" autocomplete="organization" maxlength="160" required></div>
-          <div class="field wide"><label for="oWebsite">Firm website <span>(full address, starting with https://)</span></label><input id="oWebsite" name="website" type="url" inputmode="url" autocomplete="url" maxlength="300" placeholder="https://yourfirm.com" required></div>
-          <div class="field wide"><label for="oTort">Tort you want to run</label><textarea id="oTort" name="tort" rows="3" maxlength="300" placeholder="e.g. Paraquat, and the states you take" required></textarea></div>
-          <div class="field"><label for="oEmail">Work email</label><input id="oEmail" name="email" type="email" autocomplete="email" maxlength="254" required></div>
-          <div class="field"><label for="oPhone">Phone</label><input id="oPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" required></div>
+          <div class="field"><label for="fStates">States</label><input id="fStates" name="states" placeholder="e.g. CA, TX"></div>
+          <div class="field"><label for="fFirm">Firm name</label><input id="fFirm" name="firm" autocomplete="organization" placeholder="Firm name"></div>
         </div>
-      </fieldset>
+      </div>
+
+      <div class="ask-step" data-step="3" hidden>
+        <p class="ask-q">How do I reach you?</p>
+        <div class="fields">
+          <div class="field"><label for="fName">Your name</label><input id="fName" name="name" autocomplete="name" placeholder="First and last name"></div>
+          <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" autocomplete="email" placeholder="you@firm.com"></div>
+          <div class="field"><label for="fPhone">Phone <span>(optional)</span></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-0100"></div>
+        </div>
+      </div>
+
       <p class="err" id="formErr" role="alert"></p>
-      <p class="fine" id="formStatus" role="status" aria-live="polite">The request form needs JavaScript. You can always call Kyle at (619) 736-0356.</p>
-      <div class="ask-nav"><button type="submit" class="btn" id="sendBtn" disabled>Send request</button></div>
-      <p class="fine">Kyle reviews and scopes every request personally. Sending it doesn't charge you, create a campaign or set up Sofia for your firm. Your details go to Kyle as a text alert through a messaging provider; this site's request ledger keeps only a hashed reference, which expires within two hours. By sending, you agree Kyle may contact you by phone or email about this request.</p>
+      <div class="ask-nav">
+        <button type="button" class="btn ghost small" id="backBtn" hidden>Back</button>
+        <button type="button" class="btn" id="nextBtn">Next</button>
+        <button type="submit" class="btn" id="buildBtn" hidden>Send me the details</button>
+      </div>
+
+      <div class="result" id="result" hidden tabindex="-1">
+        <span class="eyebrow" id="resultTitle">Request saved</span>
+        <p class="stale" id="staleNote" hidden>Out of date: your answers changed after this was saved. Press Send me the details again to update it.</p>
+        <dl id="resultList"></dl>
+        <div class="gaps" id="gaps" hidden></div>
+        <p class="fine" id="saveNote"></p>
+        <div class="actions" style="justify-content:flex-start"><button type="button" class="btn ghost small" id="copyReq">Copy request</button><button type="button" class="btn ghost small" id="editBtn">Edit answers</button></div>
+      </div>
     </form>
 
-    <div class="demo-line" id="callKyle">
-      <span class="sublabel">Prefer to talk? Call Kyle directly</span>
-      <a class="num" href="tel:+16197360356">(619) 736-0356</a>
-      <p>This is Kyle's line, not Sofia's demo line.</p>
-    </div>
   </section>
 
   <!-- Credentials and compliance -->
@@ -736,34 +766,306 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     </ol>
   </section>
 
-  
+  <div hidden><pre id="envelope">{}</pre><span id="seamStatus"></span></div>
 
   <footer>
     <p>I build and run this system as One Gorilla + AI (Law Firm Marketing Apes): my strategy, with AI supporting the execution. Sofia is an AI intake assistant, not an attorney, and gives no legal advice. Ad and page previews are templates; each firm's counsel approves all advertising and screening criteria.</p>
-    <p>Google Premier Partner 2026 · Meta Business Partner. Past results don't guarantee future results. Build requests sent with the form go to Kyle for his personal review, only while the request line is connected. Nothing is charged or set up.</p>
+    <p>Google Premier Partner 2026 · Meta Business Partner. Past results don't guarantee future results. What you send here goes to Kyle by email. Nothing is charged.</p>
   </footer>
 </div>
 
 <script>
 (function () {
   'use strict';
-  // Page behaviour after the obsolete local builder was removed: package tabs, mascot fallback, Sofia portrait,
-  // demo-line copy button and analytics events. No form values, names or contact details are ever pushed.
-  var PAGE_ID = 'lfma-campaign-offer-special';
-  function track(ev, extra) { try { var o = { event: ev, page_id: PAGE_ID }; for (var k in (extra || {})) o[k] = extra[k]; (window.dataLayer = window.dataLayer || []).push(o); } catch (x) {} }
 
-  var gorilla = document.getElementById('brandGorilla');
-  if (gorilla) gorilla.addEventListener('error', function () { this.hidden = true; document.getElementById('gorillaSvg').hidden = false; });
+  // ---- Integration seam (see comment at top) ----
+  var seam = window.MA_BUILDER_SEAM || {};
+  var assets = seam.assets || {};
+  try {
+    var raw = document.getElementById('ma-builder-assets').textContent.trim();
+    if (raw && raw !== '{}') { var parsed = JSON.parse(raw); for (var k in parsed) if (!(k in assets)) assets[k] = parsed[k]; }
+  } catch (e) { /* malformed seam JSON: fall back to templates */ }
+  var assetsBound = Object.keys(assets).length > 0;
+  document.getElementById('brandGorilla').addEventListener('error', function () { this.hidden = true; document.getElementById('gorillaSvg').hidden = false; });
+  if (assets.brandGorilla) {
+    var gi = document.getElementById('brandGorilla');
+    gi.src = assets.brandGorilla; gi.hidden = false;
+    document.getElementById('gorillaSvg').hidden = true;
+  }
+  document.getElementById('seamStatus').textContent = assetsBound
+    ? 'Builder assets: bound locally (' + Object.keys(assets).join(', ') + ').'
+    : 'Builder assets: templates in use (none bound).';
 
-  function tabset(listId) {
+  var COHORT = {
+    depo: 'Depo Info, Mar 26–31, 2026: 34 leads at $5.49 CPL.',
+    glp: 'GLP–Vision, Mar 20–31, 2026: 155 leads at $4.53 CPL.',
+    juv: 'CA Juvenile Detention Abuse, Sep 17–24, 2026: 35 leads at $8.06 CPL.',
+    sa: 'LA County Sex Abuse, May 5–29, 2026: 67 leads at $19.91 CPL.'
+  };
+  var TORTS = {
+    depo: { label: 'Depo-Provera', re: /depo|provera|meningioma/i,
+      plate: 'Used the Depo-Provera shot? Later diagnosed with a meningioma?',
+      body: 'You may qualify for a claim. Answer a few private questions and find out first.',
+      aud: 'Women who used the injection and were later diagnosed with a meningioma. Lead forms let them tell the story on their own time, often late at night.',
+      screen: ['How long were you on the shot, and about what years?', 'What did your doctor diagnose?', 'About when was that diagnosis?', 'Which state do you live in?', 'Do you already have a lawyer for this?'] },
+    glp: { label: 'GLP-1 vision loss', re: /glp|semaglutide|ozempic|wegovy|tirzepatide|mounjaro|naion/i,
+      plate: 'Took a GLP-1 medication and had sudden vision loss?',
+      body: 'Some people on these medications have reported sudden vision loss. Find out first if you may qualify.',
+      aud: 'Adults prescribed semaglutide or tirzepatide who later had sudden vision loss. Many are still in treatment and want a quick, private check.',
+      screen: ['Which medication were you prescribed, and for how long?', 'What happened with your vision, and what did the eye doctor call it?', 'About when did that happen?', 'Which state do you live in?', 'Do you already have a lawyer for this?'] },
+    juv: { label: 'Juvenile detention abuse', re: /juvenile|detention|probation camp/i,
+      plate: 'Harmed while held in a juvenile facility? You may have options.',
+      body: 'Survivors may be able to bring a claim, even years later. Private, at your pace.',
+      aud: 'Adults who were held in juvenile halls or camps as minors. These calls need extra care: survivor-paced, private and never rushed.',
+      screen: ['Which facility were you held in, and about what years?', 'Only share what you are comfortable with. In general terms, what happened there?', 'Which state was the facility in?', 'Which state do you live in now?', 'Do you already have a lawyer for this?'] },
+    sa: { label: 'Institutional sex abuse', re: /sex(ual)? abuse|clergy|foster care|institutional abuse/i,
+      plate: 'Abused in a county-run facility or program? Find out first.',
+      body: 'Survivors may be able to bring a claim. Private, at your pace, no pressure.',
+      aud: 'Adults who were abused as children in county-run facilities, foster placements or programs. The intake has to be trauma-aware and let the person lead.',
+      screen: ['Which facility or program was it, and about what years?', 'Only share what you are comfortable with. In general terms, what happened?', 'Which county or state was it in?', 'Which state do you live in now?', 'Do you already have a lawyer for this?'] },
+    hair: { label: 'Hair relaxer', re: /relaxer|straightener/i,
+      plate: 'Used chemical hair relaxers for years? Diagnosed with uterine cancer?',
+      body: 'Long-term relaxer users with certain diagnoses may qualify. Find out first.',
+      aud: 'Women with years of chemical relaxer use and a uterine or ovarian cancer diagnosis. I haven\'t run a past campaign for this tort, so the first days test the hypothesis.',
+      screen: ['Which relaxer products did you use, and for about how many years?', 'What did your doctor diagnose?', 'About when was that diagnosis?', 'Which state do you live in?', 'Do you already have a lawyer for this?'] }
+  };
+  var GENERIC = { plate: 'Hurt and not sure you have a claim? Find out first.', body: 'Answer a few private questions. If it looks like a fit, the firm\'s intake team follows up.' };
+  var CHANNELS = [['Facebook and Instagram lead form + landing page', 'Current pilot', 'ok'], ['Google Search', 'Future · optional', ''], ['TikTok', 'Future · optional', ''], ['Your existing lead vendors', 'Future · optional', '']];
+  var FLOW_STEPS = ['Request', 'Review and invoice', 'Verified payment', 'Build page, ads and intake', 'Connect and test', 'Launch'];
+  var BRAND = '#1f6f4a';
+  var state = { step: 1, talk: 1 };
+  var g = function (id) { return document.getElementById(id).value.trim(); };
+
+  // ---- Local request seam: Codex normalizes and validates these raw fields locally ----
+  var FIELD_IDS = { tort: 'fBrief', target_states: 'fStates', firm_name: 'fFirm', requester_name: 'fName', requester_email: 'fEmail', requester_phone: 'fPhone' };
+  function rawFields() { var o = {}; for (var k in FIELD_IDS) o[k] = document.getElementById(FIELD_IDS[k]).value; return o; }
+  window.MA_LOCAL_REQUEST = { fields: FIELD_IDS, read: rawFields, normalized: false };
+
+  function detect() { var t = g('fBrief'); return t ? Object.keys(TORTS).filter(function (k) { return TORTS[k].re.test(t); }) : []; }
+  function review() {
+    var m = detect(), notes = [];
+    if (!m.length) notes.push('This tort is new to me. That\'s fine: I review it with you and confirm the scope before any invoice.');
+    else if (m.length > 1) notes.push('That reads as more than one tort (' + m.map(function (k) { return TORTS[k].label; }).join(', ') + '). One tort per test, so we pick one together.');
+    if (!g('fStates')) notes.push('I still need the states you take.');
+    return { matches: m, notes: notes, supported: m.length === 1 && !!g('fStates'), tpl: m.length === 1 ? m[0] : null };
+  }
+
+  var lastEnvelope = null;
+  function markStale() {
+    var res = document.getElementById('result');
+    if (res.hidden || res.classList.contains('is-stale')) return;
+    lastEnvelope = null;
+    res.classList.add('is-stale');
+    document.getElementById('resultTitle').textContent = 'Out of date';
+    document.getElementById('staleNote').hidden = false;
+    document.getElementById('copyReq').disabled = true;
+    document.getElementById('envelope').textContent = '// Out of date. Press Send me the details to regenerate.';
+  }
+  function markFresh() {
+    document.getElementById('result').classList.remove('is-stale');
+    document.getElementById('staleNote').hidden = true;
+    document.getElementById('copyReq').disabled = false;
+  }
+
+  // ---- Stepper ----
+  var STEP_NEEDS = {
+    1: function () { return g('fBrief') ? [] : [['fBrief', 'Tell me the tort, even just a word or two.']]; },
+    2: function () { var p = []; if (!g('fStates')) p.push(['fStates', 'Add the states you take.']); if (!g('fFirm')) p.push(['fFirm', 'Add your firm name.']); return p; },
+    3: function () { var p = []; if (!g('fName')) p.push(['fName', 'Add your name.']); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('fEmail'))) p.push(['fEmail', 'Add a work email like you@firm.com.']); return p; }
+  };
+  function check(n) {
+    var probs = STEP_NEEDS[n]();
+    ['fBrief', 'fStates', 'fFirm', 'fName', 'fEmail'].forEach(function (id) { document.getElementById(id).removeAttribute('aria-invalid'); });
+    probs.forEach(function (x) { document.getElementById(x[0]).setAttribute('aria-invalid', 'true'); });
+    document.getElementById('formErr').textContent = probs.map(function (x) { return x[1]; }).join(' ');
+    if (probs.length) document.getElementById(probs[0][0]).focus();
+    return !probs.length;
+  }
+  function track(ev, extra) { try { var o = { event: ev, page_id: 'lfma-campaign-offer-special' }; for (var k in (extra || {})) o[k] = extra[k]; (window.dataLayer = window.dataLayer || []).push(o); } catch (x) {} }
+  function showStep(n, focus) {
+    state.step = n; track('lfma_offer_step', { step: n });
+    document.querySelectorAll('.ask-step').forEach(function (el) { el.hidden = Number(el.getAttribute('data-step')) !== n; });
+    document.getElementById('stepLabel').textContent = 'Step ' + n + ' of 3';
+    document.getElementById('barFill').style.width = (n / 3 * 100) + '%';
+    document.getElementById('backBtn').hidden = n === 1;
+    document.getElementById('nextBtn').hidden = n === 3;
+    document.getElementById('buildBtn').hidden = n !== 3;
+    document.getElementById('formErr').textContent = '';
+    if (focus) { var f = document.querySelector('.ask-step[data-step="' + n + '"] input'); if (f) f.focus(); }
+  }
+  document.getElementById('nextBtn').addEventListener('click', function () { if (check(state.step)) showStep(state.step + 1, true); });
+  document.getElementById('backBtn').addEventListener('click', function () { showStep(state.step - 1, true); });
+  document.getElementById('editBtn').addEventListener('click', function () { showStep(1, true); });
+  document.getElementById('firmForm').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && state.step < 3) { e.preventDefault(); document.getElementById('nextBtn').click(); }
+  });
+
+  // ---- Plan preview ----
+  var FLOW = [
+    ['Lead arrives', 'Facebook or Instagram form, or the landing page, tagged with its ad and state.', 'Routing not connected', 'wait'],
+    ['Consent check', 'Follow-up only happens where the lead gave consent.', 'Configured per firm', 'wait'],
+    ['Sofia screens', 'She lets the person talk, then checks your criteria.', 'Text walkthrough here', 'ok'],
+    ['Not a fit', 'A kind close. Nothing reaches your intake team.', 'Script ready', 'ok'],
+    ['Qualified', 'Short handoff to your intake line: name, claim, state.', 'Handoff unconnected', 'wait'],
+    ['No answer', 'Follow-up texts and call attempts, only with consent.', 'Configured at setup', 'wait'],
+    ['Reported', 'Every outcome lands in the Perspective report.', 'Layout preview', '']
+  ];
+  function initials(n) { var w = n.split(/\s+/).filter(Boolean); return (w.length > 1 ? w[0][0] + w[1][0] : (w[0] || 'YF').slice(0, 2)).toUpperCase(); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function renderMatch(r) {
+    var box = document.getElementById('match'); box.textContent = '';
+    if (!g('fBrief')) { box.hidden = true; return; }
+    box.hidden = false;
+    var tag, msg;
+    if (r.matches.length === 1) {
+      var k = r.matches[0];
+      tag = el('span', 'tag ok', 'Got it');
+      msg = TORTS[k].label + '. ' + (COHORT[k] ? 'I\'ve run campaigns for this one.' : 'I have a starting template for this one.') + ' Not what you meant? Just change your answer.';
+    } else if (r.matches.length > 1) {
+      tag = el('span', 'tag wait', 'Pick one'); msg = r.notes[0];
+    } else {
+      tag = el('span', 'tag', 'New one'); msg = 'I haven\'t run this tort yet. Keep going, and I review it with you before any invoice.';
+    }
+    box.appendChild(tag); box.appendChild(el('p', null, msg));
+  }
+
+  function render() {
+    var r = review(); renderMatch(r);
+    if (!document.getElementById('plan')) return;
+    var tpl = r.tpl ? TORTS[r.tpl] : null;
+    var name = g('fFirm') || 'Your Firm';
+    var caseLabel = tpl ? tpl.label : (g('fBrief') || 'your campaign');
+    document.getElementById('pAudience').textContent = tpl
+      ? tpl.aud + ' This is my starting hypothesis. I check it with you before the build.'
+      : 'I build the audience with you once I review your tort.';
+    document.getElementById('pMarkets').textContent = (g('fStates') ? 'Target states: ' + g('fStates') + '.' : 'Target states: not given yet.') +
+      (tpl && COHORT[r.tpl] ? ' Historical reference, not a forecast: ' + COHORT[r.tpl] : '');
+    var ul = document.getElementById('pChannels'); ul.textContent = '';
+    CHANNELS.forEach(function (c) { var li = el('li'); li.appendChild(el('span', null, c[0])); li.appendChild(el('span', 'tag ' + c[2], c[1])); ul.appendChild(li); });
+    swapSlot('adSlot', tpl && assets.adPreview && assets.adPreview[r.tpl], 'Ad preview');
+    swapSlot('pgSlot', tpl && assets.pagePreview && assets.pagePreview[r.tpl], 'Page preview');
+    var copy = tpl || GENERIC;
+    document.querySelectorAll('.firmName').forEach(function (e) { e.textContent = name; });
+    document.querySelectorAll('.curTort').forEach(function (e) { e.textContent = caseLabel; });
+    var av = document.getElementById('adAv'); av.textContent = initials(name); av.style.background = BRAND;
+    document.getElementById('adBody').textContent = copy.body;
+    var plate = document.getElementById('adPlate'); plate.textContent = copy.plate; plate.style.background = BRAND;
+    document.getElementById('pgHead').textContent = copy.plate;
+    document.getElementById('pgBtn').style.background = BRAND;
+    document.getElementById('previewNote').textContent = (tpl ? 'Starting copy for ' + tpl.label + '. ' : 'Generic example copy until I review your tort. ') +
+      'Examples illustrate the package. Nothing is built until payment is verified, and your counsel approves the final copy.';
+    var fl = document.getElementById('pFlow'); fl.textContent = '';
+    FLOW.forEach(function (x) { var li = el('li'); li.appendChild(el('b', null, x[0])); li.appendChild(el('span', 'tag ' + x[3], x[2])); li.appendChild(el('p', null, x[1])); fl.appendChild(li); });
+    drawTalk(tpl);
+  }
+  function swapSlot(id, src, alt) {
+    var slot = document.getElementById(id), tpl = slot.firstElementChild, img = slot.querySelector('img.seam-img');
+    if (src) { if (!img) { img = document.createElement('img'); img.className = 'seam-img'; slot.appendChild(img); } img.src = src; img.alt = alt; img.hidden = false; tpl.hidden = true; }
+    else { if (img) img.hidden = true; tpl.hidden = false; }
+  }
+
+  // ---- Sofia text walkthrough: template suggestions only; never invented criteria ----
+  function drawTalk(tpl) {
+    var box = document.getElementById('talk'); box.textContent = '';
+    var lines = tpl ? tpl.screen : [];
+    var all = ['Hi, this is Sofia, an AI assistant for ' + (g('fFirm') || 'the firm') + '. This call is recorded. In your own words, what happened?'].concat(lines);
+    var n = Math.min(state.talk, all.length);
+    for (var i = 0; i < n; i++) { box.appendChild(bubble('s', i === 0 ? 'Sofia' : 'Sofia · starting question', all[i])); box.appendChild(bubble('c', 'Claimant', 'Claimant answers in their own words')); }
+    if (!lines.length) box.appendChild(bubble('s', 'Sofia', 'Once I review your tort, your criteria set what Sofia checks. I don\'t invent criteria.'));
+    var done = n >= all.length;
+    if (done && lines.length) box.appendChild(bubble('s', 'Sofia', 'Your own criteria replace these starting questions before launch.'));
+    document.getElementById('talkCount').textContent = 'Step ' + n + ' of ' + all.length + (tpl ? ' · starting questions for ' + tpl.label : ' · waiting on your tort');
+    var next = document.getElementById('talkNext'); next.disabled = done; next.style.opacity = done ? .5 : 1;
+  }
+  function bubble(cls, who, text) { var d = el('div', 'bub ' + cls); d.appendChild(el('span', 'who', who)); d.appendChild(document.createTextNode(text)); return d; }
+  if (document.getElementById('talkNext')) document.getElementById('talkNext').addEventListener('click', function () { state.talk++; drawTalk(review().tpl ? TORTS[review().tpl] : null); });
+  if (document.getElementById('talkReset')) document.getElementById('talkReset').addEventListener('click', function () { state.talk = 1; drawTalk(review().tpl ? TORTS[review().tpl] : null); });
+
+  Object.keys(FIELD_IDS).forEach(function (k) {
+    var e = document.getElementById(FIELD_IDS[k]);
+    e.addEventListener('input', function () { state.talk = 1; markStale(); render(); });
+  });
+
+  // ---- Send the request to Kyle (Make webhook -> email). No invoice or charge happens here. ----
+  var HOOK = 'https://hook.us2.make.com/2mvwbgxa755d9vvbkfhdcin9nrstepk4';
+  var sending = false;
+  function sendToKyle(env, r) {
+    var q = env.request_raw;
+    var msg = 'CAMPAIGN OFFER SPECIAL | Tort: ' + q.tort.trim() + ' | States: ' + q.target_states.trim() +
+      ' | Status: ' + (r.supported ? 'known tort, ready for invoice' : 'review first (' + r.notes.join(' ') + ')') +
+      ' | Offer: $2,500 + $5,000 ads = $7,500, Oct 19-30, 2026';
+    var body = new URLSearchParams({ name: q.requester_name.trim(), firm: q.firm_name.trim(), email: q.requester_email.trim(),
+      phone: q.requester_phone.trim(), message: msg, source: 'lfma/campaign-offer-special', submitted_at: env.created_at });
+    return fetch(HOOK, { method: 'POST', body: body }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); });
+  }
+  document.getElementById('firmForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (sending) return;
+    for (var n = 1; n <= 3; n++) { if (!check(n)) { showStep(n); check(n); lastEnvelope = null; document.getElementById('result').hidden = true; document.getElementById('envelope').textContent = '{}'; return; } }
+    var r = review(), raw = rawFields();
+    var env = {
+      type: 'campaign_request', version: 'preview-4', status: 'sent_to_kyle', created_at: new Date().toISOString(),
+      request_raw: raw, normalized: false,
+      review: { state: r.supported ? 'scope_supported' : 'review_needed_before_billing', notes: r.notes, tort_match: r.tpl },
+      invoice_draft: r.supported ? { status: 'draft_not_sent', lines: [{ item: 'Service fee', usd: 2500 }, { item: 'Media budget', usd: 5000 }], total_usd: 7500, window: '2026-10-19..2026-10-30', billing: 'not_connected' } : null,
+      payment: { status: 'not_connected', build_requires: 'verified payment' },
+      flow: FLOW_STEPS, pilot: { channel: 'facebook_instagram', other_channels: 'future_optional_not_included' },
+      term: { window: '2026-10-19..2026-10-30', business_days: 10, calendar_days: 12, review: '2026-10-30', continuation: 'by agreement only' },
+      pricing: { service_fee_usd: 2500, media_usd: 5000, total_usd: 7500, auto_renew: false },
+      routing: { via: 'Make', connected: false }, provider_campaigns: 'none_created', builder_assets_bound: assetsBound
+    };
+    lastEnvelope = env;
+    document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
+    var dl = document.getElementById('resultList'); dl.textContent = '';
+    [['Status', r.supported ? 'I know this tort. Ready to build.' : 'I review this with you first.'],
+     ['Tort', r.tpl && TORTS[r.tpl].label.toLowerCase() !== g('fBrief').toLowerCase() ? TORTS[r.tpl].label + ' (you wrote: ' + g('fBrief') + ')' : (r.tpl ? TORTS[r.tpl].label : g('fBrief'))],
+     ['States', g('fStates')], ['Firm', g('fFirm')], ['Contact', g('fName') + ' · ' + g('fEmail') + (g('fPhone') ? ' · ' + g('fPhone') : '')]
+    ].forEach(function (x) { dl.appendChild(el('dt', null, x[0])); dl.appendChild(el('dd', null, x[1])); });
+    var gaps = document.getElementById('gaps'); gaps.textContent = '';
+    if (!r.supported) { gaps.hidden = false; gaps.appendChild(el('b', null, 'Before the invoice')); var gl = el('ul'); r.notes.forEach(function (x) { gl.appendChild(el('li', null, x)); }); gaps.appendChild(gl); }
+    else gaps.hidden = true;
+    var first = g('fName') ? ', ' + g('fName').split(/\s+/)[0] : '';
+    var btn = document.getElementById('buildBtn'), title = document.getElementById('resultTitle'), noteEl = document.getElementById('saveNote');
+    markFresh();
+    var res = document.getElementById('result'); res.hidden = false;
+    title.textContent = 'Sending…'; noteEl.textContent = 'Sending your answers to Kyle.';
+    sending = true; btn.disabled = true;
+    sendToKyle(env, r).then(function () {
+      title.textContent = 'Got it' + first + '. I\'ll reach out.';
+      track('generate_lead', { form_id: 'lfma_offer_request', known_tort: !!r.supported });
+      noteEl.textContent = 'Your answers went to Kyle by email. Nothing is charged.';
+    }).catch(function () {
+      title.textContent = 'Not sent yet';
+      noteEl.textContent = 'Something went wrong sending this. Please press Send me the details again.';
+    }).then(function () { sending = false; btn.disabled = false; res.focus(); });
+    if (typeof seam.onBuild === 'function') { try { seam.onBuild(env); } catch (x) { /* seam errors stay local */ } }
+  });
+
+  document.getElementById('copyReq').addEventListener('click', function () {
+    var btn = this; if (!lastEnvelope) return;
+    var e = lastEnvelope, q = e.request_raw, text = [
+      'Campaign request (not sent)',
+      'Tort: ' + q.tort.trim(), 'States: ' + q.target_states.trim(), 'Firm: ' + q.firm_name.trim(),
+      'Contact: ' + q.requester_name.trim() + ', ' + q.requester_email.trim() + (q.requester_phone.trim() ? ', ' + q.requester_phone.trim() : ''),
+      'Status: ' + (e.invoice_draft ? 'ready for invoice' : 'review first'),
+      'Test: Oct 19–30, 2026 (10 business days), $2,500 service fee + $5,000 media = $7,500'
+    ].join('\n');
+    function done(ok) { btn.textContent = ok ? 'Copied' : 'Select the summary to copy'; setTimeout(function () { btn.textContent = 'Copy request'; }, 1800); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    else done(false);
+  });
+  showStep(1);
+
+  // ---- Package screens tabs ----
+  function tabset(listId, getPanel) {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('#' + listId + ' [role="tab"]'));
     function select(t, focus) {
       tabs.forEach(function (o) {
         var on = o === t;
         o.setAttribute('aria-selected', String(on));
         o.tabIndex = on ? 0 : -1;
-        var p = document.getElementById(o.getAttribute('aria-controls'));
-        if (p) p.hidden = !on;
+        getPanel(o).hidden = !on;
       });
       if (focus) t.focus();
     }
@@ -775,215 +1077,28 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       });
     });
   }
-  tabset('pkgTabs');
-
-  var sp = document.getElementById('sofiaPortrait');
-  if (sp) { sp.src = 'data:image/jpeg;base64,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'; sp.hidden = false; var pend = document.getElementById('sofiaPending'); if (pend) pend.hidden = true; }
+  tabset('pkgTabs', function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+  tabset('pvTabs', function (t) { return document.querySelector('.pv[data-p="' + t.getAttribute('data-v') + '"]'); });
+  if (!assets.sofiaPortrait) assets.sofiaPortrait = 'data:image/jpeg;base64,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';
+  if (assets.sofiaPortrait) {
+    var sp = document.getElementById('sofiaPortrait');
+    sp.src = assets.sofiaPortrait; sp.hidden = false;
+    document.getElementById('sofiaPending').hidden = true;
+  }
 
   document.querySelectorAll('a.way-demo').forEach(function (a, i) { a.addEventListener('click', function () { track('lfma_demo_click', { way: ['form', 'sofia', 'chat'][i] || String(i) }); }); });
-  document.querySelectorAll('a[href="tel:+12138787408"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap'); }); });
-  document.querySelectorAll('a[href="tel:+16197360356"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_owner_call_tap'); }); });
-  var copy = document.getElementById('copyNum');
-  if (copy) copy.addEventListener('click', function () {
+  document.querySelectorAll('a[href^="tel:+12138787408"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap'); }); });
+  var copyNum = document.getElementById('copyNum');
+  if (copyNum) copyNum.addEventListener('click', function () {
     var btn = this;
     function done(ok) { btn.textContent = ok ? 'Copied' : '(213) 878-7408'; setTimeout(function () { btn.textContent = 'Copy number'; }, 1800); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('+12138787408').then(function () { done(true); }, function () { done(false); });
     else done(false);
   });
+
+  render();
 })();
 </script>
 
-<script>
-/* LFMA owner request client (inlined on the LFMA homepage and offer page).
-   One six-field form -> same-origin POST /lfma-owner-request only (fixed; any other endpoint is refused).
-   No storage of any kind, no third-party requests, no SMS or email composer. An unchanged retry reuses the
-   same request_id; any change starts a new one. A reply counts only if it echoes the exact request_id sent.
-   Values are cleared only after a matching ACCEPTED reply AND only if the form still holds what was sent. */
-(function (root, factory) {
-  'use strict';
-  var api = factory();
-  if (typeof module === 'object' && module && module.exports) module.exports = api;
-  else root.LFMAOwnerRequest = api;
-  if (typeof document !== 'undefined' && typeof window !== 'undefined' && document.getElementById('firmForm')) api.bind(document, window);
-}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  'use strict';
-  var ENDPOINT = '/lfma-owner-request';
-  var FIELDS = ['name', 'firm', 'website', 'tort', 'email', 'phone'];
-  var MAX = { name: 120, firm: 160, website: 300, tort: 300, email: 254, phone: 40 };
-  var LABEL = { name: 'your name', firm: 'your firm name', website: 'your firm website', tort: 'the tort', email: 'your work email', phone: 'your phone number' };
-  var CONTROL = /[\u0000-\u001f\u007f\u2028\u2029]/;
-  var KYLE = '(619) 736-0356';
-  var MSG = {
-    checking: 'Checking whether the request line is open…',
-    ready: 'The request line is open. Kyle reviews every request personally.',
-    unavailable: 'The request form isn’t connected right now, so nothing can be sent from here. Call Kyle at ' + KYLE + '.',
-    temporary: 'We couldn’t take your request just now. Try again shortly (it won’t be duplicated), or call Kyle at ' + KYLE + '.',
-    invalid: 'Please fix the highlighted fields.',
-    sending: 'Sending your request…',
-    accepted: 'Request received. A text alert to Kyle was accepted by the messaging provider, and he reviews every request personally. Nothing is charged or set up.',
-    acceptedEdited: 'Your earlier request was received and a text alert to Kyle was accepted by the messaging provider. Your newer edits were kept; press Send request to send them as a new request.',
-    uncertain: 'Your request was recorded, but we can’t confirm the alert reached Kyle. Please call him at ' + KYLE + '. Pressing Send request again won’t create a duplicate.',
-    inProgress: 'Your request is still being processed. Press Send request again in a moment to check; it won’t be sent twice.',
-    failed: 'Your request was recorded, but the text alert to Kyle failed. Please call him at ' + KYLE + '.',
-    network: 'We couldn’t confirm whether your request arrived. Press Send request again: it reuses the same reference, so it won’t be duplicated. Or call Kyle at ' + KYLE + '.',
-    rate: 'Too many requests right now. Please call Kyle at ' + KYLE + '.',
-    conflict: 'Your answers changed after sending. Press Send request again to send the updated request.',
-    rejected: 'Please check your answers and try again, or call Kyle at ' + KYLE + '.'
-  };
-
-  function normalize(values) {
-    var o = {};
-    FIELDS.forEach(function (k) { o[k] = String(values && values[k] != null ? values[k] : '').trim(); });
-    return o;
-  }
-  function websiteOk(s) {
-    if (!/^https?:\/\/[^\s\/?#]/i.test(s) || /\s/.test(s)) return false;
-    try { var u = new URL(s); return (u.protocol === 'https:' || u.protocol === 'http:') && !!u.hostname && !u.username && !u.password; }
-    catch (e) { return false; }
-  }
-  function phoneOk(s) { return /^[0-9+().\- ]{7,40}$/.test(s) && (s.match(/[0-9]/g) || []).length >= 7; }
-  function validate(v) {
-    var errs = [], bad = {};
-    FIELDS.forEach(function (k) {
-      var msg = null;
-      if (!v[k]) msg = 'Add ' + LABEL[k] + '.';
-      else if (v[k].length > MAX[k]) msg = 'Shorten ' + LABEL[k] + ' to ' + MAX[k] + ' characters.';
-      else if (CONTROL.test(v[k])) msg = 'Remove line breaks or special characters from ' + LABEL[k] + '.';
-      if (msg) { errs.push([k, msg]); bad[k] = true; }
-    });
-    if (!bad.website && !websiteOk(v.website)) errs.push(['website', 'Use your full website address, starting with https:// or http://.']);
-    if (!bad.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) errs.push(['email', 'Add a work email like you@firm.com.']);
-    if (!bad.phone && !phoneOk(v.phone)) errs.push(['phone', 'Add a phone number with at least 7 digits.']);
-    return errs;
-  }
-  function canonical(v) { return JSON.stringify(FIELDS.map(function (k) { return v[k]; })); }
-  function body(id, v) { var o = { request_id: id }; FIELDS.forEach(function (k) { o[k] = v[k]; }); return JSON.stringify(o); }
-
-  // A state reply is trusted only when it echoes the exact request_id that was sent.
-  function classify(r, sentId) {
-    var s = r.status, d = r.data || {}, st = d.state, same = d.request_id === sentId;
-    if ((s === 201 || s === 200) && st === 'ACCEPTED') return same ? 'accepted' : 'unknown';
-    if (s === 202 && st === 'UNCERTAIN') return same ? 'uncertain' : 'unknown';
-    if (s === 202 && st === 'IN_PROGRESS') return same ? 'in_progress' : 'unknown';
-    if (s === 502 && st === 'FAILED') return same ? 'failed' : 'unknown';
-    if (s === 503) return d.error === 'unavailable' ? 'unavailable' : 'temporary';
-    if (s === 429) return 'rate';
-    if (s === 409) return 'conflict';
-    if (s === 400 || s === 413 || s === 415) return 'rejected';
-    return 'unknown';
-  }
-
-  /** deps: { fetch, ui, uuid?, endpoint? (must equal /lfma-owner-request), timeoutMs?, track? }
-   *  ui:   { read(), setAvailable(ok), setBusy(b), status(text, kind), invalid([[field, msg]]), clear() } */
-  function createController(deps) {
-    if (deps.endpoint !== undefined && deps.endpoint !== ENDPOINT) throw new Error('endpoint must be ' + ENDPOINT);
-    var fetchFn = deps.fetch, ui = deps.ui;
-    var newId = deps.uuid || function () { return globalThis.crypto.randomUUID(); };
-    var timeoutMs = deps.timeoutMs || 15000;
-    var track = deps.track || function () {};
-    var available = false, inflight = false, requestId = null, lastKey = null;
-
-    async function request(method, payload) {
-      var abort = new AbortController();
-      var timer = setTimeout(function () { abort.abort(); }, timeoutMs);
-      try {
-        var opts = { method: method, headers: { 'Accept': 'application/json' }, credentials: 'same-origin', cache: 'no-store', redirect: 'error', signal: abort.signal };
-        if (payload !== undefined) { opts.headers['Content-Type'] = 'application/json'; opts.body = payload; }
-        var res = await fetchFn(ENDPOINT, opts);
-        var data = null;
-        try { data = await res.json(); } catch (e) { data = null; }
-        return { status: res.status, data: data };
-      } finally { clearTimeout(timer); }
-    }
-
-    function setAvailable(ok) { available = ok; ui.setAvailable(ok); }
-
-    async function checkAvailability() {
-      ui.status(MSG.checking, '');
-      var ok = false;
-      try { var r = await request('GET'); ok = r.status === 200 && !!r.data && r.data.available === true; } catch (e) { ok = false; }
-      setAvailable(ok);
-      ui.status(ok ? MSG.ready : MSG.unavailable, ok ? '' : 'err');
-      return ok;
-    }
-
-    function apply(outcome, sentKey) {
-      if (outcome === 'accepted') {
-        requestId = null; lastKey = null;                       // the sent request is done; any next send is new
-        if (canonical(normalize(ui.read())) === sentKey) { ui.clear(); ui.invalid([]); ui.status(MSG.accepted, 'ok'); }
-        else ui.status(MSG.acceptedEdited, 'ok');               // edits made while sending are preserved
-      }
-      else if (outcome === 'uncertain') ui.status(MSG.uncertain, 'err');
-      else if (outcome === 'in_progress') ui.status(MSG.inProgress, '');
-      else if (outcome === 'failed') ui.status(MSG.failed, 'err');
-      else if (outcome === 'unavailable') { setAvailable(false); ui.status(MSG.unavailable, 'err'); }
-      else if (outcome === 'temporary') ui.status(MSG.temporary, 'err');
-      else if (outcome === 'rate') ui.status(MSG.rate, 'err');
-      else if (outcome === 'conflict') { requestId = null; lastKey = null; ui.status(MSG.conflict, 'err'); }
-      else if (outcome === 'rejected') ui.status(MSG.rejected, 'err');
-      else ui.status(MSG.network, 'err');
-      track(outcome);
-    }
-
-    async function submit() {
-      if (inflight) return 'busy';
-      if (!available) { ui.status(MSG.unavailable, 'err'); return 'unavailable'; }
-      var v = normalize(ui.read());
-      var errs = validate(v);
-      ui.invalid(errs);
-      if (errs.length) { ui.status(MSG.invalid, 'err'); return 'invalid'; }
-      var key = canonical(v);
-      if (!requestId || key !== lastKey) { requestId = newId(); lastKey = key; }
-      var sentId = requestId;
-      inflight = true; ui.setBusy(true); ui.status(MSG.sending, '');
-      var outcome;
-      try { outcome = classify(await request('POST', body(sentId, v)), sentId); }
-      catch (e) { outcome = 'network'; }
-      finally { inflight = false; ui.setBusy(false); }
-      apply(outcome, key);
-      return outcome;
-    }
-
-    return { checkAvailability: checkAvailability, submit: submit, get requestId() { return requestId; } };
-  }
-
-  function bind(doc, win) {
-    var $ = function (id) { return doc.getElementById(id); };
-    var form = $('firmForm');
-    if (!form) return null;
-    var IDS = { name: 'oName', firm: 'oFirm', website: 'oWebsite', tort: 'oTort', email: 'oEmail', phone: 'oPhone' };
-    var pageId = form.getAttribute('data-page-id') || '';
-    var open = false, busy = false;
-    function sync() { $('ownerFields').disabled = !open || busy; $('sendBtn').disabled = !open || busy; }
-    var ui = {
-      read: function () { var o = {}; for (var k in IDS) o[k] = $(IDS[k]).value; return o; },
-      setAvailable: function (ok) { open = ok; sync(); },
-      setBusy: function (b) { busy = b; sync(); form.setAttribute('aria-busy', b ? 'true' : 'false'); },
-      status: function (text, kind) { var s = $('formStatus'); s.textContent = text; s.setAttribute('data-kind', kind || ''); },
-      invalid: function (errs) {
-        for (var k in IDS) $(IDS[k]).removeAttribute('aria-invalid');
-        errs.forEach(function (e) { $(IDS[e[0]]).setAttribute('aria-invalid', 'true'); });
-        $('formErr').textContent = errs.map(function (e) { return e[1]; }).join(' ');
-        if (errs.length) $(IDS[errs[0][0]]).focus();
-      },
-      clear: function () { for (var k in IDS) $(IDS[k]).value = ''; }
-    };
-    if (form.getAttribute('data-endpoint') !== ENDPOINT) {   // refuse any other configured endpoint, without fetching
-      ui.setAvailable(false);
-      ui.status(MSG.unavailable, 'err');
-      return null;
-    }
-    var ctl = createController({
-      fetch: win.fetch.bind(win), ui: ui, endpoint: ENDPOINT,
-      track: function (outcome) { try { (win.dataLayer = win.dataLayer || []).push({ event: 'lfma_owner_request', outcome: outcome, page_id: pageId }); } catch (e) {} }
-    });
-    form.addEventListener('submit', function (e) { e.preventDefault(); ctl.pending = ctl.submit(); });
-    ctl.ready = ctl.checkAvailability();
-    return ctl;
-  }
-
-  return { ENDPOINT: ENDPOINT, FIELDS: FIELDS, MSG: MSG, normalize: normalize, validate: validate, createController: createController, bind: bind };
-}));
-</script>
 </body>
 </html>

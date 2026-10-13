@@ -36,9 +36,16 @@ test('public system copy stays inside the claim boundary', async () => {
   const home = await text('lfma/index.html');
   assert.match(home, /href="\/campaign-offer-special\/perspective\/"/);
   assert.match(home, /<form[^>]*\bid="firmForm"/);
-  assert.match(home, /<fieldset id="ownerFields" disabled\b/);
-  assert.match(home, /href="tel:\+16197360356"/);
-  assert.match(home, /href="tel:\+12138787408"/);
+  assert.match(home, /id="fBrief"/);
+  assert.match(home, /id="fStates"/);
+  assert.match(home, /function sendToKyle\(/);
+  assert.match(home, /Here’s our strategy\./);
+  for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
+  assert.doesNotMatch(home, />Call Sofia to test</);
+  assert.doesNotMatch(home, /href="tel:\+12138787408"/);
+  assert.doesNotMatch(home, /6692099040|\(669\) 209-9040/);
+  assert.doesNotMatch(home, /LA County abuse claims, May 2026/);
+  assert.doesNotMatch(home, /ownerFields|lfma-owner-request/);
   assert.doesNotMatch(home, /\/lfma-request\/client\.mjs/);
 });
 
