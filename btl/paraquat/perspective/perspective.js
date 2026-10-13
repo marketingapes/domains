@@ -12,7 +12,7 @@
   var STATUSES = { received: 'Received', screening: 'Screening', review: 'Firm review', followup: 'Follow-up', handed_off: 'Handed off', not_a_fit: 'Not a fit' };
   var CONNECTIONS = { intake: 'Intake', sofia: 'Sofia activity', ad_spend: 'Ad spend' };
   function count(v) { return Number.isSafeInteger(v) && v >= 0 ? v : null; }
-  function cleanFeed(v) {
+  function cleanFeed(v, nowMs) {
     if (!v || v.schema !== 'paraquat-perspective/v1' || v.campaign_id !== CAMPAIGN || v.synthetic !== false) throw new Error('Unverified feed');
     // Enumerated labels and numeric counts only. Ignore every extra key, including lead records.
     var out = { counts: { leads: count(v.counts && v.counts.leads), calls: count(v.counts && v.counts.calls), followups: count(v.counts && v.counts.followups) }, sources: [], statuses: [], connections: {}, as_of: null };
@@ -26,6 +26,13 @@
     Object.keys(CONNECTIONS).forEach(function (k) { out.connections[k] = v.connections && v.connections[k] === true; });
     if (!out.connections.intake) { out.counts.leads = null; out.sources = []; out.statuses = []; }
     if (!out.connections.sofia) { out.counts.calls = null; out.counts.followups = null; }
+    var age = (nowMs === undefined ? Date.now() : nowMs) - Date.parse(out.as_of);
+    if (!out.as_of || age > 15 * 60 * 1000 || age < -2 * 60 * 1000) {
+      out.as_of = null; out.counts = {leads:null,calls:null,followups:null};
+      out.sources = []; out.statuses = []; out.connections = {intake:false,sofia:false,ad_spend:false};
+    }
+    // The verified public backend withholds cohorts smaller than ten.
+    if (out.counts.leads !== null && out.counts.leads < 10) out.counts.leads = null;
     return out;
   }
   function allowedEndpoint(v) {
@@ -33,7 +40,7 @@
     try { var u = new URL(v); return u.protocol === 'https:' && u.origin === 'https://legal-web-lead.onrender.com' && u.pathname === '/api/v1/portal/paraquat/overview' && !u.search && !u.hash && !u.username && !u.password; } catch (_) { return false; }
   }
   function bind(win) {
-    var doc = win.document, mode = 'live', generation = 0, abort;
+    var doc = win.document, mode = 'live', generation = 0, abort, expiry;
     function $(id) { return doc.getElementById(id); }
     function n(v) { return v === null ? '—' : String(v); }
     function list(id, rows, labels, empty) {
@@ -56,7 +63,7 @@
     function example(k){$('timeline').textContent='';EXAMPLES[k].forEach(function(t){var li=doc.createElement('li');li.textContent=t;$('timeline').appendChild(li);});}
     Object.keys(SOURCES).forEach(function(k){var b=doc.createElement('button');b.type='button';b.className='btn ghost';b.textContent=SOURCES[k];b.onclick=function(){example(k);};$('examples').appendChild(b);});
     async function load() {
-      var own=++generation; if(abort)abort.abort();abort=new AbortController();
+      var own=++generation; clearTimeout(expiry); if(abort)abort.abort();abort=new AbortController();
       render(EMPTY,false);$('dataNote').textContent='Checking connected data…';
       var timer=setTimeout(function(){abort.abort();},10000);
       try {
@@ -66,11 +73,15 @@
         var r=await win.fetch(c.feed_url,{cache:'no-store',credentials:'omit',redirect:'error',signal:abort.signal});
         if(!r.ok)throw new Error('unavailable'); var f=cleanFeed(await r.json());
         if(own!==generation||mode!=='live')return;
-        render(f,false);$('dataNote').textContent='Connected aggregate overview. Claimant information stays private.';
+        render(f,false);
+        $('dataNote').textContent=f.connections.intake?'Intake snapshot connected. Small-cohort totals may be withheld for privacy; unverified metrics remain unavailable.':'No current intake snapshot. Live totals are unavailable; the snapshot may be missing or expired.';
+        if (f.as_of && f.connections.intake) expiry=setTimeout(function(){
+          if(own===generation&&mode==='live'){render(EMPTY,false);$('dataNote').textContent='The intake snapshot has expired. Live totals are unavailable until a fresh snapshot is published.';}
+        },Math.max(0,Date.parse(f.as_of)+15*60*1000-Date.now()+1));
       } catch (_) {if(own===generation&&mode==='live')$('dataNote').textContent='Connected totals are not available yet. Explore the synthetic examples to see how the paths fit together.';}
       finally{clearTimeout(timer);}
     }
-    function change(next){mode=next;++generation;if(abort)abort.abort();$('liveMode').setAttribute('aria-pressed',String(next==='live'));$('demoMode').setAttribute('aria-pressed',String(next==='demo'));$('syntheticPanel').hidden=next!=='demo';if(next==='live')load();else{render(DEMO,true);$('dataNote').textContent='SYNTHETIC EXAMPLES · fictional records, separate from connected totals. No calls or messages were sent.';var k=new URLSearchParams(win.location.search).get('source');example(EXAMPLES[k]?k:'form');}}
+    function change(next){mode=next;++generation;clearTimeout(expiry);if(abort)abort.abort();$('liveMode').setAttribute('aria-pressed',String(next==='live'));$('demoMode').setAttribute('aria-pressed',String(next==='demo'));$('syntheticPanel').hidden=next!=='demo';if(next==='live')load();else{render(DEMO,true);$('dataNote').textContent='SYNTHETIC EXAMPLES · fictional records, separate from connected totals. No calls or messages were sent.';var k=new URLSearchParams(win.location.search).get('source');example(EXAMPLES[k]?k:'form');}}
     $('liveMode').onclick=function(){change('live');};$('demoMode').onclick=function(){change('demo');};$('refresh').onclick=function(){change(mode);};load();
   }
   return {cleanFeed:cleanFeed,allowedEndpoint:allowedEndpoint,bind:bind};
