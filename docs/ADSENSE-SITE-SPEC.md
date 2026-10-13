@@ -140,6 +140,22 @@ copyright risk). Each brand needs:
 
 Photos can be swapped in later (Leonardo) without changing layout.
 
+### Exception: licensed stock photos (h2m, approved by Kyle 2026-10-13)
+
+`h2m` (hair2makeup.com) may use licensed stock photos from Pexels or Unsplash
+(free licences that allow commercial use) for visible images, under these rules:
+
+- Self-host every photo in `h2m/assets/img/` as optimized webp at fixed sizes,
+  with `width`/`height` and `srcset` set and `loading="lazy"` below the fold.
+  No hotlinking.
+- Keep a row for every photo in `h2m/assets/img/CREDITS.md` (source URL and
+  photographer), and show a visible credit line under hero photos.
+- No visible brands, logos or product packaging you lack rights to, and no
+  identifiable celebrities. Check each photo by eye before use.
+- Give every photo descriptive alt text. Card images placed next to a title may use `alt=""`.
+- Keep the SVG set in `images/` (logo, og card, `images/<slug>.svg`) because
+  `og:image` and the tests still reference it.
+
 ## Design
 
 Fun and on-brand, not a generic template: distinct palette + Google Font pairing

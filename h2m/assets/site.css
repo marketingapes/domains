@@ -1,4 +1,7 @@
 /* Hair 2 Makeup: editorial theme */
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 700;font-display:swap;src:url(/assets/fonts/Inter.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display";font-style:normal;font-weight:400 700;font-display:swap;src:url(/assets/fonts/PlayfairDisplay.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display";font-style:italic;font-weight:400 700;font-display:swap;src:url(/assets/fonts/PlayfairDisplay-Italic.woff2) format("woff2")}
 :root{
   --ink:#141414; --muted:#5a5652; --accent:#8a2c3b; --accent-dark:#6b1f2c;
   --bg:#ffffff; --paper:#f6f3ef; --line:#e3ded8;

@@ -5,7 +5,8 @@ Files were cropped and resized to webp (600/1200w; home hero 600/1000w at 4:5).
 
 | File | Pexels photo | Photographer |
 |---|---|---|
-| home-hero, bridal-trial-run-guide | https://www.pexels.com/photo/38707937/ | Anastasiia Klochko |
+| bridal-trial-run-guide | https://www.pexels.com/photo/38707937/ | Anastasiia Klochko |
+| home-hero | https://www.pexels.com/photo/3065171/ | Engin Akyurt |
 | event-day-prep-timeline | https://www.pexels.com/photo/32427366/ | Alexander Mass |
 | how-to-book-a-hair-and-makeup-artist | https://www.pexels.com/photo/15983864/ | Danik Prihodko |
 | how-to-brief-your-stylist | https://www.pexels.com/photo/7819732/ | Mikhail Nilov |
@@ -19,3 +20,6 @@ Files were cropped and resized to webp (600/1200w; home hero 600/1000w at 4:5).
 | prom-hair-and-makeup-planning | https://www.pexels.com/photo/26918815/ | Felix Young |
 | event-day-emergency-kit | https://www.pexels.com/photo/9185875/ | Timur Weber |
 | offers-hero | https://www.pexels.com/photo/2533266/ | Suzy Hazelwood |
+
+## Fonts
+Playfair Display and Inter (latin subset woff2) are self-hosted in `h2m/assets/fonts/` under the SIL Open Font License 1.1 (from Google Fonts).
