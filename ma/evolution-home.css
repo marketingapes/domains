@@ -9,8 +9,10 @@
 
 /* Current LFMA campaign palette; original MA wordmark and page structure retained. */
 :root{--paper:#050806;--ink:#e9f3ec;--muted:#94a69b;--line:#1d2c23;--white:#0b120e}
-.masthead .brand img,.vegas-label img{mix-blend-mode:normal;border-radius:50%}.hero h1 span:last-child{color:#3dff8a}.vegas-label{color:#3dff8a}.vegas-date{border-color:#3dff8a}.vegas-date strong{color:#ffc95c}.vegas-cta{background:#3dff8a;color:#050806;box-shadow:0 8px 26px #3dff8a20}.vegas-cta:hover{background:#a1ffc6}.hero-art .vegas-ape{width:100%;height:auto;border-radius:24px;animation:vegas-float 7s ease-in-out infinite}.hero-art figcaption{color:#94a69b}.hero-art .mini-dot{background:#3dff8a}.destination img{filter:none}.draft-preview{color:#e9f3ec}.engine{background:#0b120e;color:#e9f3ec}.flow-node{background:#0b120e}.flow-grid li:last-child .flow-node{background:#3dff8a;color:#050806}
+.masthead .brand img,.vegas-label img{mix-blend-mode:normal;border-radius:50%}.hero h1 span:last-child{color:#3dff8a}.vegas-label{color:#3dff8a}.vegas-date{border-color:#3dff8a}.vegas-date strong{color:#ffc95c}.vegas-cta{background:#3dff8a;color:#050806;box-shadow:0 8px 26px #3dff8a20}.vegas-cta:hover{background:#a1ffc6}.hero-art .vegas-portrait{width:100%;height:auto;border-radius:24px;animation:vegas-float 7s ease-in-out infinite}.hero-art figcaption{color:#94a69b}.hero-art .mini-dot{background:#3dff8a}.destination img{filter:none}.draft-preview{color:#e9f3ec}.engine{background:#0b120e;color:#e9f3ec}.flow-node{background:#0b120e}.flow-grid li:last-child .flow-node{background:#3dff8a;color:#050806}
 @keyframes vegas-float{50%{transform:translateY(-7px)}}
-@media(prefers-reduced-motion:reduce){.hero-art .vegas-ape{animation:none}}
+@media(prefers-reduced-motion:reduce){.hero-art .vegas-portrait{animation:none}}
 
 .draft-preview,.package,.field input,.field textarea,.field select{background:#0b120e}.audiences button{color:#e9f3ec;border-color:#1d2c23}.audiences button[aria-pressed=true]{background:#3dff8a;color:#050806;border-color:#3dff8a}
+
+.hero-art picture{mix-blend-mode:normal;max-height:none}.hero-art .vegas-portrait{aspect-ratio:4/5;object-fit:cover}
