@@ -54,20 +54,14 @@ test('intro pitch video is present with poster and no autoplay', () => {
   assert.doesNotMatch(html, /autoplay/i);
 });
 
-test('homepage is the Tex video + form, not the eight-slide deck', () => {
+test('homepage preserves MA tracking and contact identity with the Evolution Engine story', () => {
   assert.equal((home.match(/GTM-NMVJ33/g) || []).length, 2);
-  assert.doesNotMatch(home, /GTM-W3CTJQ/);
-  assert.doesNotMatch(home, /GTM-PENDING/);
+  assert.doesNotMatch(home, /GTM-W3CTJQ|GTM-PENDING|generate_lead/);
   assert.match(home, /ee_page_context/);
-  assert.match(home, /tex-new-script\.mp4/);
-  assert.match(home, /id="want-more"/);
-  assert.match(home, /Hi, I['’]m Tex/);
-  assert.match(home, /what can we build/i);
-  assert.doesNotMatch(home, /data-slide="/);
-  assert.doesNotMatch(home, /aria-label="Main navigation"/);
+  assert.match(home, /Evolution Engine/);
+  assert.match(home, /mailto:kyleg@marketingapes\.com/);
+  assert.match(home, /tel:\+16197360356/);
   assert.match(plan, /id="planner"/);
-  assert.match(plan, /GTM-W3CTJQ/);
-  assert.doesNotMatch(home, /generate_lead/);
 });
 
 test('sitemap lists intro only as the new public URL', () => {

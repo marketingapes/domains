@@ -39,8 +39,8 @@ test('teaser video is present with poster and no autoplay', () => {
   assert.doesNotMatch(html, /autoplay/i);
 });
 
-test('intro and home point at /tex/; sitemap lists it', () => {
+test('intro and redesigned home retain the Tex demo route; sitemap lists it', () => {
   assert.match(intro, /href="\/tex\/"/);
-  assert.match(home, /tex-new-script\.mp4/);
+  assert.match(home, /href="\/tex\/"/);
   assert.match(sitemap, /https:\/\/marketingapes\.com\/tex\//);
 });
