@@ -34,7 +34,12 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.match(room, /hook\.us2\.make\.com\/dwzmtn5xbkdrt6pjvli9jgy3auppobbi/);
   assert.match(room, /fictional/i);
   const home = await text('lfma/index.html');
-  assert.match(home, /href="\/system\/"/);
+  assert.match(home, /href="\/campaign-offer-special\/perspective\/"/);
+  assert.match(home, /<form[^>]*\bid="firmForm"/);
+  assert.match(home, /<fieldset id="ownerFields" disabled\b/);
+  assert.match(home, /href="tel:\+16197360356"/);
+  assert.match(home, /href="tel:\+12138787408"/);
+  assert.doesNotMatch(home, /\/lfma-request\/client\.mjs/);
 });
 
 test('the wrong inquiry dies and the inside inquiry is handed off', () => {
