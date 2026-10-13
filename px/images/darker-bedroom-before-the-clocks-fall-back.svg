@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Bedroom window with blackout curtains drawn against early morning light">
+<rect width="1200" height="675" fill="#232a5c"/>
+<rect x="380" y="90" width="440" height="380" rx="8" fill="#f6c76b"/>
+<circle cx="600" cy="330" r="70" fill="#ffe7a8"/>
+<rect x="330" y="70" width="540" height="20" rx="10" fill="#c9cdf0"/>
+<path d="M340 90 h250 v400 q-60 20 -125 0 t-125 0z" fill="#3b4382"/>
+<path d="M610 90 h250 v400 q-60 20 -125 0 t-125 0z" fill="#3b4382"/>
+<rect x="200" y="520" width="800" height="90" rx="20" fill="#e9e6f7"/>
+<rect x="240" y="490" width="200" height="50" rx="18" fill="#ffffff"/>
+<circle cx="1040" cy="150" r="40" fill="#e9e6f7"/><circle cx="1058" cy="138" r="36" fill="#232a5c"/>
+</svg>
