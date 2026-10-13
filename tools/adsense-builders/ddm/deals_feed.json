@@ -1,38 +1,7 @@
 {
  "source": "CJ link-search, DDM property 101511733",
- "checked_at": "2026-10-10T16:06:20Z",
+ "checked_at": "2026-10-13T15:42:19Z",
  "deals": [
-  {
-   "link_id": "17360704",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to 50% off select refurbished appliances",
-   "value": {
-    "kind": "pct",
-    "amount": 50,
-    "upto": true
-   },
-   "conditions": [
-    "select",
-    "refurbished"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/#refurb",
-   "summary_ai": "KitchenAid's refurbished sale lists up to 50% off select refurbished countertop appliances. It can't be combined with other offers and excludes in-home delivery products; check the refurbished warranty before buying.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season.",
-    "terms": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season. \"Ends 10/12/2026 11:59PM EST. Excludes in-home delivery products. Discount taken off regular price excluding taxes, shipping, gift wrapping, and engraving. Only valid on select refurbished orders on kitchenaid.com. Offer subject to change. No cash value. Cannot be combined with other offers or rebates. While Supplies Last.*",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-05T04:00:00Z",
-    "ends": "2026-10-13T04:00:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17360704-1790993713000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/sale/deal-of-the-week"
-   }
-  },
   {
    "link_id": "17107552",
    "merchant": "KitchenAid",
@@ -56,35 +25,8 @@
     "code": "",
     "starts": "2025-06-17T07:00:00Z",
     "ends": "2030-01-01T08:00:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17107552-1753748256000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17107552-1753748256000",
     "destination": "https://www.kitchenaid.com/countertop-appliances/sale"
-   }
-  },
-  {
-   "link_id": "17361837",
-   "merchant": "Rowenta",
-   "sold_by": "brand",
-   "category": "Home",
-   "title": "$100 off the Compact Steam Pro steam station",
-   "value": {
-    "kind": "usd",
-    "amount": 100,
-    "upto": false
-   },
-   "conditions": [],
-   "summary_ai": "Rowenta lists $100 off its Compact Steam Pro professional-grade steam station, a short sale valid Oct 8-Oct 11, 2026. It's a single-product offer, so compare the final price with other retailers.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "4685883",
-    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
-    "link_name": "Rowenta - Compact Steam Pro Steam Station Professional-Grade - $100 Off",
-    "terms": "The Rowenta Compact Steam Pro Steam Station Professional-Grade delivers 6.8-bar pressure and up to 380 g/min steam output for fast, professional results. Offer valid Oct 8-Oct 11, 2026.",
-    "promotion_type": "",
-    "code": "",
-    "starts": "2026-10-08T05:00:00Z",
-    "ends": "2026-10-12T04:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361837-1791326700000",
-    "destination": "https://www.rowentausa.com/compact-steam-pro-steam-generator-iron-professional-grade.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
   {
@@ -110,7 +52,7 @@
     "code": "",
     "starts": "2026-10-06T05:00:00Z",
     "ends": "2026-10-20T04:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361836-1791326700000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17361836-1791326700000",
     "destination": "https://www.rowentausa.com/freemove-force-cordless-steam-iron.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -139,7 +81,7 @@
     "code": "",
     "starts": "2026-10-01T05:00:00Z",
     "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361829-1791326698000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17361829-1791326698000",
     "destination": "https://www.rowentausa.com/fans.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -197,7 +139,7 @@
     "code": "",
     "starts": "2026-02-01T05:02:00Z",
     "ends": "2027-01-01T04:59:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-17240828-1776205184000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17240828-1776205184000",
     "destination": "https://t.lt02.net/lp/fam6E4Jn/t-fal-email-signup/?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WcFqx_US_TEF_CWB_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
@@ -225,7 +167,7 @@
     "code": "WEBFRIEND5",
     "starts": "2025-07-11T04:00:00Z",
     "ends": "2027-01-01T07:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17125210-1760760270000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17125210-1760760270000",
     "destination": "https://www.peets.com/collections/all-coffees"
    }
   },
@@ -253,7 +195,7 @@
     "code": "",
     "starts": "2025-10-22T20:13:00Z",
     "ends": "2030-01-01T07:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-13921671-1761189413000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-13921671-1761189413000",
     "destination": "https://www.peets.com/collections/all-coffees"
    }
   },
@@ -282,7 +224,7 @@
     "code": "NEWSUB30",
     "starts": "2023-10-03T01:25:00Z",
     "ends": "2027-01-01T07:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-13970947-1785379467000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-13970947-1785379467000",
     "destination": "https://www.peets.com/pages/subscriptions"
    }
   },
@@ -342,7 +284,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17358489-1790852400000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17358489-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-view-boston-observation-deck-2"
    }
   },
@@ -372,7 +314,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-12-19T04:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17358492-1790852400000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17358492-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-aquarium-of-the-pacific"
    }
   },
@@ -399,7 +341,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-10-26T03:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17358482-1790852400000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17358482-1790852400000",
     "destination": "https://www.groupon.com/deals/n-costco-membership"
    }
   },
@@ -427,7 +369,7 @@
     "code": "",
     "starts": "2026-10-07T07:00:00Z",
     "ends": "2026-11-03T07:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17361800-1791323023000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17361800-1791323023000",
     "destination": "https://www.groupon.com/deals/n-bjs-wholesale-club-inner-circle-membership-16"
    }
   },
@@ -453,7 +395,7 @@
     "code": "",
     "starts": "2026-10-01T04:00:00Z",
     "ends": "2026-12-17T04:59:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-17358481-1790852400000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17358481-1790852400000",
     "destination": "https://www.groupon.com/landing/amf-bowlero-bowlmor"
    }
   },
@@ -480,7 +422,7 @@
     "code": "",
     "starts": "2026-01-29T05:00:00Z",
     "ends": "2027-01-01T05:00:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17240919-1787000589000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17240919-1787000589000",
     "destination": "https://www.groupon.com/deals/regal-cinemas-premiere-ticket-2023"
    }
   },
@@ -509,7 +451,7 @@
     "code": "",
     "starts": "2024-09-19T14:30:00Z",
     "ends": "2050-09-19T18:30:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-15890985-1782343890000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-15890985-1782343890000",
     "destination": "https://sockwellusa.com/collections/sale"
    }
   },
@@ -537,7 +479,7 @@
     "code": "",
     "starts": "2024-09-19T09:30:00Z",
     "ends": "2050-09-19T18:30:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-15890984-1782343923000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-15890984-1782343923000",
     "destination": "https://sockwellusa.com"
    }
   },
@@ -566,7 +508,7 @@
     "code": "OCTSALE",
     "starts": "2026-10-09T03:47:00Z",
     "ends": "2026-10-14T18:30:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17363630-1791543274000",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17363630-1791543274000",
     "destination": "https://www.budgetpetcare.com/frontline-plus-for-dogs/dog-flea-and-tick-treatment-3.aspx?utm_source=cjbanner&utm_campaign=10-10-sale&Coupon_no=OCTSALE"
    }
   },
@@ -593,7 +535,7 @@
     "code": "",
     "starts": "2025-10-17T04:55:00Z",
     "ends": "2026-12-31T06:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17178120-1787000589000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17178120-1787000589000",
     "destination": "https://www.groupon.com/deals/chuck-e-cheese-2024?redemptionLocationId=413b3af9-6cd1-bfdf-8e3a-015a71eba0db"
    }
   },
@@ -620,7 +562,7 @@
     "code": "",
     "starts": "2026-01-01T08:00:00Z",
     "ends": "2028-01-01T07:59:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-17292666-1787000589000",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17292666-1787000589000",
     "destination": "https://www.groupon.com/landing/escapology"
    }
   },
@@ -649,7 +591,7 @@
     "code": "",
     "starts": "2026-07-16T07:00:00Z",
     "ends": "2028-01-01T07:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17323642-1784182537000",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17323642-1784182537000",
     "destination": "https://www.peets.com/collections/all-tea"
    }
   },
@@ -678,7 +620,7 @@
     "code": "NEWSOCKS20",
     "starts": "2025-02-14T15:30:00Z",
     "ends": "2050-02-14T15:30:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17030268-1762295974000",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17030268-1762295974000",
     "destination": "https://sockwellusa.com/"
    }
   },
@@ -758,7 +700,7 @@
     "code": "",
     "starts": "2023-05-24T19:36:00Z",
     "ends": "2028-01-01T05:00:00Z",
-    "click_url": "https://www.tkqlhce.com/click-101511733-15541103-1685505101000",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-15541103-1685505101000",
     "destination": "https://www.theberkelworld.com/us"
    }
   }
