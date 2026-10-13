@@ -6,11 +6,15 @@ phone bindings, paid ads, Make and outbound calls are untouched.
 
 ## Read-only aggregate contract
 
-Proposed backend-owned GET route:
+Backend-owned GET route:
 `https://legal-web-lead.onrender.com/api/v1/portal/paraquat/overview`
 
-This route is NOT claimed connected. `config.json` deliberately has `feed_url: null`
-until the backend owner implements and verifies it. Then set that exact URL.
+`config.json` now points to this route following backend PR #27 in
+marketingapes/legal-web-lead. The public backend withholds cohorts below ten,
+returns no source/status breakdowns, and keeps Sofia metrics unverified.
+Snapshots expire after 15 minutes; stale/missing snapshots produce unavailable
+metrics. The browser clears an expired snapshot without starting a publisher.
+Recurring publication is not enabled by this frontend change.
 Existing infrastructure uses a protected Make intake receipt; don't send test leads
 to it or trigger scenario 6500405 to test this frontend.
 
