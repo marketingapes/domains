@@ -31,11 +31,11 @@ function answers(obj) {
 
 // ---------- views ----------
 function signin() {
-  return `<section class="signin"><p class="eyebrow">PRIVATE WORKSPACE</p><h1>Sign in.</h1><p class="note">Enter the email approved for this Perspective. A 6-digit code is emailed to you; it works once, for 10 minutes.</p>
-  <form id="login"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email" value="${esc(email)}">
+  return `<section class="signin"><p class="eyebrow">PERSPECTIVE · PARAQUAT · LIVE</p><h1>See the campaign.<br><em>As it happens.</em></h1><p class="note">Your name and email, and a 6-digit code lands in your inbox. It works once, for 10 minutes. You will see real Paraquat records as they come in.</p>
+  <form id="login">${email ? '' : '<label for="name">Name</label><input id="name" name="name" required maxlength="70" autocomplete="name">'}<label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email" value="${esc(email)}">
   <div id="code-wrap" ${email ? '' : 'hidden'}><label for="code">6-digit code</label><input id="code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></div>
-  <div class="actions" style="margin-top:18px"><button class="button" type="submit">${email ? 'Open Perspective' : 'Email me a code'}</button>${email ? '<button class="quiet" type="button" id="resend">Send a new code</button>' : ''}</div>
-  ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}</form></section>`;
+  <div class="actions" style="margin-top:18px"><button class="button" type="submit">${email ? 'Open Perspective' : 'Show me'}</button>${email ? '<button class="quiet" type="button" id="resend">Send a new code</button><button class="quiet" type="button" id="restart">Different email</button>' : ''}</div>
+  ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}<p class="note" style="margin-top:14px">Private · no index · no spam. Already approved? Just enter your email.</p></form></section>`;
 }
 function freshness(f) {
   const n = f.data_notes || {};
@@ -50,7 +50,21 @@ function dashboard() {
   <section class="panel"><div class="section-head"><div><p class="eyebrow">CLICK A LEAD</p><h2>The story behind the totals.</h2></div>${badge(c.test_leads ? c.test_leads + ' TEST lead' + (c.test_leads > 1 ? 's' : '') + ' shown, excluded from totals' : 'No test leads', 'test')}</div>
   ${leads.length ? `<div class="lead-list">${leads.map(l => { const [stage, cls] = stageOf(l); const name = l.name || (l.has_web ? 'Web inquiry' : 'Inbound caller'); const src = l.sources.length ? sourceLabel(l.sources[0].kind) : (l.calls.length ? (l.calls[0].demo_line ? 'Demo line call' : 'Called (202) 932-9700') : 'Transfer leg only');
     return `<button class="lead-row ${l.is_test ? 'test' : ''}" data-lead="${esc(l.lead_uid)}" aria-label="Open ${esc(name)}"><span><small>${esc(when(l.first_seen))}${l.phone_last4 ? ' · …' + esc(l.phone_last4) : ''}</small><b>${esc(name)}${l.is_test ? ' · TEST' : ''}</b><small>${esc(src)}${l.state ? ' · ' + esc(l.state) : ''}</small></span><span><small>Sofia</small><b>${l.calls.length ? l.calls.length + ' call' + (l.calls.length > 1 ? 's' : '') + (l.sofia_outcome ? ' · ' + esc(l.sofia_outcome) : '') : 'No call yet'}</b></span><span><small>Intake handoff</small><b>Attempted: ${l.handoff_attempted ? 'yes' : 'no'}</b><small>Connected: ${l.handoff_connected ? 'yes' : 'no'}</small></span><span><small>Status</small><b>${badge(stage, cls)}</b><small>Open the path →</small></span></button>`; }).join('')}</div>` : '<p class="empty">No Paraquat records yet. The first form, quiz or call will appear here.</p>'}
-  <p class="note" style="margin-top:20px">A connected handoff means the transfer leg was answered on the receiving line. It is not an eligibility decision or a signed case.</p></section>`;
+  <p class="note" style="margin-top:20px">A connected handoff means the transfer leg was answered on the receiving line. It is not an eligibility decision or a signed case.</p></section>
+  ${walkthrough()}`;
+}
+function walkthrough() {
+  const steps = [
+    ['01 · The ad', 'One Paraquat ad. Every click carries its own ID into everything below.', 'https://besttortlawyers.com/paraquat/quiz/', 'See the campaign page ↗'],
+    ['02 · The page', 'Three ways in: a form, a guided quiz, or a call. Nothing sits in an inbox.', 'https://besttortlawyers.com/paraquat/', 'Open the page ↗'],
+    ['03 · Sofia', 'The AI intake guide screens against the firm\'s criteria, one question at a time, and records the call.', 'https://besttortlawyers.com/paraquat/talk-to-sofia/', 'Meet Sofia ↗'],
+    ['04 · The handoff', 'A qualified caller is transferred live to the intake line. The transfer leg is tracked and recorded separately.', null, null],
+    ['05 · This Perspective', 'Source, answers, Sofia outcome, transfer result, recording — one record per person, as it happens.', null, null],
+  ];
+  return `<section class="panel" id="how" style="margin-top:28px"><div class="section-head"><div><p class="eyebrow">HOW THE DOTS CONNECT</p><h2>Every record above came through this.</h2></div></div>
+  <ol class="record-chain">${steps.map(([t, x, href, label]) => `<li><span>${esc(t.slice(0, 2))}</span><div><b>${esc(t.slice(5))}</b><p>${esc(x)}${href ? ` <a href="${esc(href)}" target="_blank" rel="noopener">${esc(label)}</a>` : ''}</p></div></li>`).join('')}</ol></section>
+  <div class="dashboard-bottom"><section class="dark-card"><p class="eyebrow">WHY THESE NUMBERS</p><h2>I'm getting these results<br>because I connected all the dots.</h2><p>Click, page, Sofia, the handoff and what your team does next — one loop, measured end to end. That's what lowers cost per acquisition month after month: evolving the marketing, not handing it to AI.</p><p class="note">One gorilla + AI. I bring the strategy and direct the system; AI does the repetitive work.</p></section>
+  <section class="panel"><p class="eyebrow">I CAN DO THIS FOR YOU</p><h2>Your tort.<br>Your Perspective.</h2><p>Same loop, your firm's criteria, your intake line. Watch your own records fill this workspace instead of mine.</p><div class="actions"><a class="button" href="https://lawfirmmarketingapes.com/campaign-offer-special/" target="_blank" rel="noopener">Request a campaign ↗</a><a class="button secondary" href="tel:+12029329700">Call Sofia now</a></div><p class="note" style="margin-top:14px">(202) 932-9700 is the live Paraquat line. Use made-up details; your test call becomes a record here.</p></section></div>`;
 }
 function record() {
   const l = feed.leads.find(x => x.lead_uid === selected); if (!l) { selected = null; return dashboard(); }
@@ -107,13 +121,15 @@ main.addEventListener('submit', async e => {
   const f = e.target; email = f.elements.email.value.trim().toLowerCase(); const code = (f.elements.code?.value || '').replace(/\D/g, '');
   try {
     if (code.length === 6) { const j = await post('/verify', { email, code }); session = j.session; sessionStorage.setItem(KEY, session); lastError = ''; await load(); }
-    else { await post('/login', { email }); lastError = ''; render(); document.querySelector('#code')?.focus(); }
+    else { const name = (f.elements.name?.value || '').trim(); await post(name ? '/register' : '/login', name ? { name, email } : { email }); lastError = ''; render(); document.querySelector('#code')?.focus(); }
   } catch (err) { lastError = err.message; render(); }
 });
 main.addEventListener('click', async e => {
   const t = e.target.closest('button, a'); if (!t) return;
   if (t.id === 'resend') { try { await post('/login', { email }); lastError = 'A new code was sent.'; } catch (err) { lastError = err.message; } return render(); }
   if (t.id === 'back') { selected = null; return render(); }
+  if (t.id === 'restart') { email = ''; lastError = ''; return render(); }
+  if (t.id === 'tour') { selected = null; render(); document.querySelector('#how')?.scrollIntoView({ behavior: 'smooth' }); return; }
   if (t.dataset.lead) { selected = t.dataset.lead; render(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.play) {
     const [uid, idx] = t.dataset.play.split(':'); t.disabled = true; t.textContent = 'Loading recording…';
