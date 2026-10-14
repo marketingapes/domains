@@ -61,15 +61,15 @@
     $('qPrompt').textContent = st.q();
     $('qHelp').textContent = st.help || ''; $('qHelp').hidden = !st.help;
     var box = $('qChoices'); box.innerHTML = '';
-    say($('qSay'), (ack ? ack + ' ' : '') + st.q(), function () {
-      st.c.forEach(function (c, n) {
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'choice';
-        b.setAttribute('aria-pressed', A[st.id] === c[0] ? 'true' : 'false');
-        b.innerHTML = '<span class="k" aria-hidden="true">' + (n + 1) + '</span><span></span>'; b.lastChild.textContent = c[1];
-        b.onclick = function () { pick(idx, c); }; box.appendChild(b);
-      });
-      var f = box.querySelector('button'); if (f && path.length) f.focus({ preventScroll: true });
+    // Answer controls are ready immediately; cosmetic typing must never block intake.
+    $('qSay').textContent = (ack ? ack + ' ' : '') + st.q();
+    st.c.forEach(function (c, n) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'choice';
+      b.setAttribute('aria-pressed', A[st.id] === c[0] ? 'true' : 'false');
+      b.innerHTML = '<span class="k" aria-hidden="true">' + (n + 1) + '</span><span></span>'; b.lastChild.textContent = c[1];
+      b.onclick = function () { pick(idx, c); }; box.appendChild(b);
     });
+    var f = box.querySelector('button'); if (f && path.length) f.focus({ preventScroll: true });
   }
   function pick(idx, c) {
     var st = STEPS[idx];
