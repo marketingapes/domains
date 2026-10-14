@@ -89,7 +89,7 @@ const adHref = a => `${FUNNEL}${a.path}?utm_source=perspective-demo&utm_medium=a
 function adset() {
   return `<section class="panel" id="ads" style="margin-top:22px"><div class="section-head"><div><p class="eyebrow">THE AD SET · PREVIEW</p><h2>Three ads. Three doors.</h2></div>${badge('Preview · marketing ready · not a live ad', 'test')}</div>
   <div class="ad-grid">${ADS.map(a => `<article class="ad"><div class="ad-head"><span class="ad-avatar">B</span><div><b>Best Tort Lawyers</b><small>Sponsored · <em>Preview</em></small></div></div><p class="ad-primary">${esc(a.primary)}</p>
-    <a class="ad-art" href="${esc(adHref(a))}" target="_blank" rel="noopener" aria-label="Ad ${a.n}: ${esc(a.cta)}"><span class="ad-pin">Ad ${a.n} · ${esc(a.door)}</span><strong>${a.art}</strong></a>
+    <a class="ad-art has-img" href="${esc(adHref(a))}" target="_blank" rel="noopener" aria-label="Ad ${a.n}: ${esc(a.cta)}"><img src="/portal/paraquat/ads/${esc(a.content)}.jpg" alt="${esc(a.headline)}" width="1200" height="628" loading="lazy"><span class="ad-pin">Ad ${a.n} · ${esc(a.door)}</span></a>
     <div class="ad-foot"><div><small>BESTTORTLAWYERS.COM</small><b>${esc(a.headline)}</b></div><a class="ad-cta" href="${esc(adHref(a))}" target="_blank" rel="noopener">${esc(a.cta)}</a></div></article>`).join('')}</div>
   <p class="note" style="margin-top:16px">Each ad opens the real page in a new tab. Your path lands in <a href="#records" data-view="records">Where it lands</a> as one lead within about a minute; a Sofia handoff shows its CallRail transfer leg within 15 minutes.</p></section>`;
 }
