@@ -6,6 +6,7 @@ const body = document.body, hub = body.dataset.hub, client = body.dataset.client
 const KEY = 'perspective-session-' + client;
 const RELOAD_SECONDS = 60;                      // how often this page re-reads the feed while open (not real time)
 let session = sessionStorage.getItem(KEY) || '', feed = null, lastError = '', selected = null, timer = null, email = '', signinOpen = false, signedUp = '';
+let view = location.hash === '#records' ? 'records' : 'ads';   // 1 · the ads first, 2 · where it lands
 try { signedUp = sessionStorage.getItem(KEY + ':signup') || ''; } catch (e) {}
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -47,7 +48,7 @@ function signin() {
 }
 function signup() {
   if (signedUp) return `<section class="panel signup"><p class="eyebrow">YOU'RE ON THE LIST</p><h2>Thanks${signedUp ? ', ' + esc(signedUp) : ''}. Watch the records fill in below.</h2><p class="note">I'll reach out about your tort. Meanwhile, click an ad and go through it like a client.</p></section>`;
-  return `<section class="panel signup"><p class="eyebrow">WANT THIS FOR YOUR TORT?</p><h2>Name and email. That's it.</h2>
+  return `<section class="panel signup"><p class="eyebrow">WANT THIS FOR YOUR TORT?</p><h2>Name and email. That's it.</h2><p class="note">Optional — the demo works either way.</p>
   <form id="signup"><div class="signup-row"><input name="name" required maxlength="70" autocomplete="name" placeholder="Your name" aria-label="Name"><input name="email" type="email" required autocomplete="email" placeholder="you@firm.com" aria-label="Email"><button class="button" type="submit">Show me</button></div>
   ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}<p class="note" style="margin-top:10px">No code, no spam. The demo below is live either way.</p></form></section>`;
 }
@@ -55,11 +56,20 @@ function freshness(f) {
   const n = f.data_notes || {};
   return `<div class="freshness"><div><b>Last updated</b>${esc(when(f.generated_at))} · this page re-reads every ${RELOAD_SECONDS}s</div><div><b>Form, quiz, callback</b>${esc(n.web || '')}</div><div><b>Sofia calls</b>${esc(n.sofia || '')}</div><div><b>Transfer legs (CallRail)</b>${esc(n.transfer || '')}</div><div><b>Firm outcomes</b>${esc(n.firm || '')}</div></div>`;
 }
+function tabs() {
+  return `<nav class="tabs" aria-label="Demo steps"><a href="#ads" class="${view === 'ads' ? 'on' : ''}" data-view="ads"><span>1</span>Demo ad preview</a><a href="#records" class="${view === 'records' ? 'on' : ''}" data-view="records"><span>2</span>Where it lands</a></nav>`;
+}
+function adsView() {
+  return `${tabs()}<div class="dashboard-intro" id="dashboard"><div><p class="eyebrow">DEMO AD PREVIEW · PARAQUAT-PILOT-001</p><h1>Pick an ad.<br><em>Go through it like a client.</em></h1><p class="lede">Three Preview ads, three doors into the live Paraquat funnel: the quiz, a call with Sofia, or the form page. Use made-up details. Then open <a href="#records" data-view="records">Where it lands</a>.</p></div></div>
+  ${adset()}
+  <div class="actions" style="margin-top:22px"><a class="button" href="#records" data-view="records">Next: see where it lands →</a></div>
+  ${feed && feed.viewer.email ? '' : signup()}`;
+}
 function dashboard() {
+  if (view === 'ads') return adsView();
   const f = feed, c = f.counts, leads = f.leads;
   const metrics = [['Leads', c.leads], ['Sofia calls', c.sofia_calls], ['Handoffs attempted', c.handoffs_attempted], ['Handoffs connected', c.handoffs_connected], ['Firm-reported signed', c.firm_reported_signed == null ? '—' : c.firm_reported_signed]];
-  return `<div class="dashboard-intro" id="dashboard"><div><p class="eyebrow">YOUR PERSPECTIVE · PARAQUAT-PILOT-001</p><h1>Here is what is happening<br><em>in your campaign.</em></h1><p class="lede">Every Paraquat inquiry and Sofia call, one lead per phone number. Click a lead to follow its path from source to handoff.</p></div><aside class="dark-card"><p class="eyebrow">CONNECTED RECORDS</p><h2>Know what happened.<br>Know what needs attention.</h2><p>Where did the request come from? What did the person say? Did Sofia hand them to a person? Was the transfer answered?</p><p class="note">${f.viewer.email ? 'Signed in as ' + esc(f.viewer.email) + ' · ' + esc(f.viewer.role) : 'Open demo · live records · no claimant names, answers or recordings'}</p></aside></div>
-  ${f.viewer.email ? '' : signup()}
+  return `${tabs()}<div class="dashboard-intro" id="dashboard"><div><p class="eyebrow">WHERE IT LANDS · PARAQUAT-PILOT-001</p><h1>Now look where it lands.<br><em>Your lead is in here.</em></h1><p class="lede">Every Paraquat inquiry and Sofia call, one lead per phone number. Click a lead for Sofia's status, the handoff and the recording. Came through a door just now? It shows within about a minute.</p></div><aside class="dark-card"><p class="eyebrow">CONNECTED RECORDS</p><h2>Know what happened.<br>Know what needs attention.</h2><p>Where did the request come from? What did the person say? Did Sofia hand them to a person? Was the transfer answered?</p><p class="note">${f.viewer.email ? 'Signed in as ' + esc(f.viewer.email) + ' · ' + esc(f.viewer.role) : 'Open demo · live records · no claimant names, answers or recordings'}</p></aside></div>
   ${freshness(f)}
   <section class="metric-grid" aria-label="Campaign totals">${metrics.map(([l, v]) => `<article class="panel"><b>${esc(v)}</b><span>${esc(l)}</span><small>${l === 'Firm-reported signed' ? 'Not connected' : 'TEST leads excluded'}</small></article>`).join('')}</section>
   <section class="panel"><div class="section-head"><div><p class="eyebrow">AI CRM · LIVE RECORDS</p><h2>Click a lead for its path and recording.</h2></div>${badge(c.test_leads ? c.test_leads + ' TEST lead' + (c.test_leads > 1 ? 's' : '') + ' shown, excluded from totals' : 'No test leads', 'test')}</div>
@@ -77,16 +87,15 @@ const ADS = [
 ];
 const adHref = a => `${FUNNEL}${a.path}?utm_source=perspective-demo&utm_medium=ad-preview&utm_campaign=PARAQUAT-PILOT-001&utm_content=${a.content}`;
 function adset() {
-  return `<section class="panel" id="ads" style="margin-top:28px"><div class="section-head"><div><p class="eyebrow">THE AD SET · PREVIEW</p><h2>Three ads. Three doors. Click one and go through it like a client.</h2></div>${badge('Preview · marketing ready · not a live ad', 'test')}</div>
+  return `<section class="panel" id="ads" style="margin-top:22px"><div class="section-head"><div><p class="eyebrow">THE AD SET · PREVIEW</p><h2>Three ads. Three doors.</h2></div>${badge('Preview · marketing ready · not a live ad', 'test')}</div>
   <div class="ad-grid">${ADS.map(a => `<article class="ad"><div class="ad-head"><span class="ad-avatar">B</span><div><b>Best Tort Lawyers</b><small>Sponsored · <em>Preview</em></small></div></div><p class="ad-primary">${esc(a.primary)}</p>
     <a class="ad-art" href="${esc(adHref(a))}" target="_blank" rel="noopener" aria-label="Ad ${a.n}: ${esc(a.cta)}"><span class="ad-pin">Ad ${a.n} · ${esc(a.door)}</span><strong>${a.art}</strong></a>
     <div class="ad-foot"><div><small>BESTTORTLAWYERS.COM</small><b>${esc(a.headline)}</b></div><a class="ad-cta" href="${esc(adHref(a))}" target="_blank" rel="noopener">${esc(a.cta)}</a></div></article>`).join('')}</div>
-  <p class="note" style="margin-top:16px">Use made-up details. Your path lands above as one lead within about a minute; a Sofia handoff shows its CallRail transfer leg within 15 minutes.</p></section>`;
+  <p class="note" style="margin-top:16px">Each ad opens the real page in a new tab. Your path lands in <a href="#records" data-view="records">Where it lands</a> as one lead within about a minute; a Sofia handoff shows its CallRail transfer leg within 15 minutes.</p></section>`;
 }
 function walkthrough() {
-  const dots = [['The ad', '#ads', 'the set above'], ['The page', FUNNEL, 'besttortlawyers.com/paraquat'], ['Sofia', FUNNEL + 'talk-to-sofia/', '(202) 932-9700'], ['The handoff', null, 'live transfer to the intake line, tracked in CallRail'], ['Perspective', '#dashboard', 'this workspace']];
-  return `${adset()}
-  <section class="panel" id="how" style="margin-top:28px"><div class="section-head"><div><p class="eyebrow">HOW THE DOTS CONNECT</p><h2>Every record above came through this.</h2></div></div>
+  const dots = [['The ad', '#ads', 'the preview set'], ['The page', FUNNEL, 'besttortlawyers.com/paraquat'], ['Sofia', FUNNEL + 'talk-to-sofia/', '(202) 932-9700'], ['The handoff', null, 'live transfer to the intake line, tracked in CallRail'], ['Perspective', '#dashboard', 'this workspace']];
+  return `<section class="panel" id="how" style="margin-top:28px"><div class="section-head"><div><p class="eyebrow">HOW THE DOTS CONNECT</p><h2>Every record above came through this.</h2></div></div>
   <p class="dots">${dots.map(([t, href, x]) => `<span><b>${esc(t)}</b> <small>${href ? `<a href="${esc(href)}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(x)}</a>` : esc(x)}</small></span>`).join('<i aria-hidden="true">→</i>')}</p></section>
   <div class="dashboard-bottom"><section class="dark-card"><p class="eyebrow">WHY THESE NUMBERS</p><h2>I'm getting these results because I connected all the dots.</h2><p>Let a gorilla and AI show you how to consistently lower your CPA — by evolving your marketing, not making it just AI.</p><p class="note">One Gorilla + AI.</p></section>
   <section class="panel"><p class="eyebrow">YOUR TORT · YOUR PERSPECTIVE</p><div class="actions"><a class="button" href="https://lawfirmmarketingapes.com/campaign-offer-special/" target="_blank" rel="noopener">Request a campaign</a><a class="button secondary" href="tel:+12029329700">Call Sofia</a></div><p class="note" style="margin-top:14px">(202) 932-9700 is the live Paraquat line, inbound and outbound.</p></section></div>`;
@@ -131,7 +140,7 @@ function render() {
   document.querySelector('#refresh').hidden = signinOpen; document.querySelector('#lock').hidden = !signed; document.querySelector('#owner').hidden = signed || signinOpen;
   document.querySelector('#banner-status').textContent = feed ? (signed ? 'Full view · last updated ' : 'Open demo · last updated ') + when(feed.generated_at) : (lastError || 'Loading…');
   document.querySelector('#footer-updated').textContent = feed ? 'Last updated ' + when(feed.generated_at) : '';
-  main.innerHTML = signinOpen ? signin() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : dashboard();
+  main.innerHTML = signinOpen ? signin() : (view === 'ads' && !selected) ? adsView() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : dashboard();
   if (!timer) timer = setInterval(load, RELOAD_SECONDS * 1000);
 }
 async function post(path, data) {
@@ -159,9 +168,10 @@ main.addEventListener('click', async e => {
   const t = e.target.closest('button, a'); if (!t) return;
   if (t.id === 'resend') { try { await post('/login', { email }); lastError = 'A new code was sent.'; } catch (err) { lastError = err.message; } return render(); }
   if (t.id === 'back') { selected = null; return render(); }
+  if (t.dataset.view) { e.preventDefault(); view = t.dataset.view; selected = null; try { history.replaceState(null, '', '#' + view); } catch (x) {} render(); window.scrollTo({ top: 0 }); return; }
   if (t.id === 'restart') { email = ''; lastError = ''; signinOpen = false; return render(); }
   if (t.id === 'tour') { selected = null; render(); document.querySelector('#how')?.scrollIntoView({ behavior: 'smooth' }); return; }
-  if (t.dataset.lead) { selected = t.dataset.lead; render(); window.scrollTo({ top: 0 }); return; }
+  if (t.dataset.lead) { view = 'records'; selected = t.dataset.lead; render(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.play) {
     const [uid, idx] = t.dataset.play.split(':'); t.disabled = true; t.textContent = 'Loading recording…';
     try {
@@ -172,6 +182,8 @@ main.addEventListener('click', async e => {
   }
 });
 document.querySelector('#refresh').addEventListener('click', load);
+window.addEventListener('hashchange', () => { const v = location.hash === '#records' ? 'records' : location.hash === '#ads' ? 'ads' : null; if (v && v !== view) { view = v; selected = null; render(); } });
+document.querySelector('header nav').addEventListener('click', e => { const a = e.target.closest('a[data-view]'); if (a) { e.preventDefault(); view = a.dataset.view; selected = null; render(); window.scrollTo({ top: 0 }); } });
 document.querySelector('#lock').addEventListener('click', () => { session = ''; selected = null; sessionStorage.removeItem(KEY); load(); });
 document.querySelector('#owner').addEventListener('click', () => { signinOpen = true; lastError = ''; render(); });
 load();
