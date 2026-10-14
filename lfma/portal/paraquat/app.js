@@ -1,11 +1,12 @@
-/* Paraquat private Perspective. One clean workspace: sign in with an emailed code, see every Paraquat inquiry and
+/* Paraquat Perspective. Open demo by default (no code; Kyle 2026-10-14): every Paraquat inquiry and
  * Sofia call as ONE lead per phone number, click a lead for its path, play the real recordings.
  * The page ships with zero data. Everything comes from GET <hub>/portal/paraquat/basic with the session header.
  * The session lives in sessionStorage only; Lock or closing the tab clears it. Nothing here places calls or sends texts. */
 const body = document.body, hub = body.dataset.hub, client = body.dataset.client, main = document.querySelector('#main');
 const KEY = 'perspective-session-' + client;
 const RELOAD_SECONDS = 60;                      // how often this page re-reads the feed while open (not real time)
-let session = sessionStorage.getItem(KEY) || '', feed = null, lastError = '', selected = null, timer = null, email = '';
+let session = sessionStorage.getItem(KEY) || '', feed = null, lastError = '', selected = null, timer = null, email = '', signinOpen = false, signedUp = '';
+try { signedUp = sessionStorage.getItem(KEY + ':signup') || ''; } catch (e) {}
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const badge = (label, cls = '') => `<span class="badge ${cls}">${esc(label)}</span>`;
@@ -15,10 +16,17 @@ const LABEL = {who:'Asking for',diagnosis:"Parkinson's diagnosis",lawyer:'Lawyer
   parkinsons_dx:"Parkinson's diagnosed",dx_year:'Diagnosis year',represented_or_signed:'Lawyer already involved',workplace_exposure:'Workplace exposure',exposure_role:'Role',product:'Product',mixed_with_water:'Mixed with water',retail_purchase:'Retail purchase',first_exposure_year:'First exposure',last_exposure_year:'Last exposure',age_at_first_exposure:'Age at first exposure',minor_full_season:'Full season as a minor',area_size:'Area size',exposure_description:'Exposure description',job_description:'Job description',meth_use:'Methamphetamine',provider_name:'Provider',provider_city_state:'Provider city/state',contact_method:'Contact method',contact_permission:'Contact permission',opt_out:'Opted out',human_requested:'Asked for a person',screen_outcome:'Sofia outcome',asking_for:'Asking for',pnc_living:'Person living',exposure_state:'State',dq_reasons:'Disqualifiers',firm_review_reasons:'Firm review reasons'};
 
 function sourceLabel(s) { return ({quiz_inquiry:'Guided quiz', web_inquiry:'Page form', callback_request:'Callback request'})[s] || (s || 'Inquiry'); }
+const ENDED = {'customer-ended-call':'caller hung up','assistant-forwarded-call':'transferred','assistant-ended-call':'Sofia ended the call','silence-timed-out':'silence timeout','voicemail':'voicemail','customer-did-not-answer':'no answer','assistant-error':'system error'};
+function callStatus(c) {
+  const o = (c.outcome || '').toUpperCase(), e = ENDED[c.ended_reason] || (c.ended_reason || '').replace(/-/g, ' ');
+  const label = {INCOMPLETE:'Incomplete', FIRM_REVIEW:'Verified · firm review', QUALIFIED:'Verified', NOT_A_FIT:'Not a fit', OFF_TOPIC:'Off topic', OPTED_OUT:'Opted out'}[o] || (o ? o.toLowerCase() : 'No outcome');
+  return c.transferred ? `${label} · transferred` : e ? `${label} · ${e}` : label;
+}
+function latestCall(l) { return l.calls.length ? l.calls[l.calls.length - 1] : null; }
 function stageOf(l) {
   if (l.handoff_connected) return ['Transferred · connected', 'ok'];
   if (l.handoff_attempted) return ['Transfer attempted', 'gray'];
-  if (l.sofia_outcome) return ['Sofia · ' + l.sofia_outcome, l.sofia_outcome === 'QUALIFIED' ? 'ok' : 'gray'];
+  const lc = latestCall(l); if (lc) return ['Sofia · ' + callStatus(lc), (lc.outcome === 'QUALIFIED' || lc.outcome === 'FIRM_REVIEW') ? 'ok' : 'gray'];
   if (l.web_outcome) return ['Web · ' + l.web_outcome, 'neutral'];
   return ['Received', 'neutral'];
 }
@@ -31,11 +39,17 @@ function answers(obj) {
 
 // ---------- views ----------
 function signin() {
-  return `<section class="signin"><p class="eyebrow">PERSPECTIVE · PARAQUAT · LIVE</p><h1>See the campaign.<br><em>As it happens.</em></h1><p class="note">Your name and email, and a 6-digit code lands in your inbox. It works once, for 10 minutes. You will see real Paraquat records as they come in.</p>
-  <form id="login">${email ? '' : '<label for="name">Name</label><input id="name" name="name" required maxlength="70" autocomplete="name">'}<label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email" value="${esc(email)}">
+  return `<section class="signin"><p class="eyebrow">OWNER SIGN-IN</p><h1>Full view.</h1><p class="note">Approved emails only: a 6-digit code lands in your inbox. Everyone else already has the open demo — <button class="quiet" type="button" id="restart">back to it</button>.</p>
+  <form id="login"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email" value="${esc(email)}">
   <div id="code-wrap" ${email ? '' : 'hidden'}><label for="code">6-digit code</label><input id="code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code"></div>
-  <div class="actions" style="margin-top:18px"><button class="button" type="submit">${email ? 'Open Perspective' : 'Show me'}</button>${email ? '<button class="quiet" type="button" id="resend">Send a new code</button><button class="quiet" type="button" id="restart">Different email</button>' : ''}</div>
-  ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}<p class="note" style="margin-top:14px">Private · no index · no spam. Already approved? Just enter your email.</p></form></section>`;
+  <div class="actions" style="margin-top:18px"><button class="button" type="submit">${email ? 'Open full view' : 'Send my code'}</button>${email ? '<button class="quiet" type="button" id="resend">Send a new code</button>' : ''}</div>
+  ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}</form></section>`;
+}
+function signup() {
+  if (signedUp) return `<section class="panel signup"><p class="eyebrow">YOU'RE ON THE LIST</p><h2>Thanks${signedUp ? ', ' + esc(signedUp) : ''}. Watch the records fill in below.</h2><p class="note">I'll reach out about your tort. Meanwhile, click an ad and go through it like a client.</p></section>`;
+  return `<section class="panel signup"><p class="eyebrow">WANT THIS FOR YOUR TORT?</p><h2>Name and email. That's it.</h2>
+  <form id="signup"><div class="signup-row"><input name="name" required maxlength="70" autocomplete="name" placeholder="Your name" aria-label="Name"><input name="email" type="email" required autocomplete="email" placeholder="you@firm.com" aria-label="Email"><button class="button" type="submit">Show me</button></div>
+  ${lastError ? `<p class="error">${esc(lastError)}</p>` : ''}<p class="note" style="margin-top:10px">No code, no spam. The demo below is live either way.</p></form></section>`;
 }
 function freshness(f) {
   const n = f.data_notes || {};
@@ -44,12 +58,13 @@ function freshness(f) {
 function dashboard() {
   const f = feed, c = f.counts, leads = f.leads;
   const metrics = [['Leads', c.leads], ['Sofia calls', c.sofia_calls], ['Handoffs attempted', c.handoffs_attempted], ['Handoffs connected', c.handoffs_connected], ['Firm-reported signed', c.firm_reported_signed == null ? '—' : c.firm_reported_signed]];
-  return `<div class="dashboard-intro" id="dashboard"><div><p class="eyebrow">YOUR PERSPECTIVE · PARAQUAT-PILOT-001</p><h1>Here is what is happening<br><em>in your campaign.</em></h1><p class="lede">Every Paraquat inquiry and Sofia call, one lead per phone number. Click a lead to follow its path from source to handoff.</p></div><aside class="dark-card"><p class="eyebrow">CONNECTED RECORDS</p><h2>Know what happened.<br>Know what needs attention.</h2><p>Where did the request come from? What did the person say? Did Sofia hand them to a person? Was the transfer answered?</p><p class="note">Signed in as ${esc(f.viewer.email)} · ${esc(f.viewer.role)}</p></aside></div>
+  return `<div class="dashboard-intro" id="dashboard"><div><p class="eyebrow">YOUR PERSPECTIVE · PARAQUAT-PILOT-001</p><h1>Here is what is happening<br><em>in your campaign.</em></h1><p class="lede">Every Paraquat inquiry and Sofia call, one lead per phone number. Click a lead to follow its path from source to handoff.</p></div><aside class="dark-card"><p class="eyebrow">CONNECTED RECORDS</p><h2>Know what happened.<br>Know what needs attention.</h2><p>Where did the request come from? What did the person say? Did Sofia hand them to a person? Was the transfer answered?</p><p class="note">${f.viewer.email ? 'Signed in as ' + esc(f.viewer.email) + ' · ' + esc(f.viewer.role) : 'Open demo · live records · no claimant names, answers or recordings'}</p></aside></div>
+  ${f.viewer.email ? '' : signup()}
   ${freshness(f)}
   <section class="metric-grid" aria-label="Campaign totals">${metrics.map(([l, v]) => `<article class="panel"><b>${esc(v)}</b><span>${esc(l)}</span><small>${l === 'Firm-reported signed' ? 'Not connected' : 'TEST leads excluded'}</small></article>`).join('')}</section>
   <section class="panel"><div class="section-head"><div><p class="eyebrow">AI CRM · LIVE RECORDS</p><h2>Click a lead for its path and recording.</h2></div>${badge(c.test_leads ? c.test_leads + ' TEST lead' + (c.test_leads > 1 ? 's' : '') + ' shown, excluded from totals' : 'No test leads', 'test')}</div>
   ${leads.length ? `<div class="lead-list">${leads.map(l => { const [stage, cls] = stageOf(l); const name = l.name || (l.has_web ? 'Web inquiry' : 'Inbound caller'); const src = l.sources.length ? sourceLabel(l.sources[0].kind) : (l.calls.length ? (l.calls[0].demo_line ? 'Demo line call' : 'Called (202) 932-9700') : 'Transfer leg only');
-    return `<button class="lead-row ${l.is_test ? 'test' : ''}" data-lead="${esc(l.lead_uid)}" aria-label="Open ${esc(name)}"><span><small>${esc(when(l.first_seen))}${l.phone_last4 ? ' · …' + esc(l.phone_last4) : ''}</small><b>${esc(name)}${l.is_test ? ' · TEST' : ''}</b><small>${esc(src)}${l.state ? ' · ' + esc(l.state) : ''}</small></span><span><small>Sofia</small><b>${l.calls.length ? l.calls.length + ' call' + (l.calls.length > 1 ? 's' : '') + (l.sofia_outcome ? ' · ' + esc(l.sofia_outcome) : '') : 'No call yet'}</b></span><span><small>Intake handoff</small><b>Attempted: ${l.handoff_attempted ? 'yes' : 'no'}</b><small>Connected: ${l.handoff_connected ? 'yes' : 'no'}</small></span><span><small>Status</small><b>${badge(stage, cls)}</b><small>Open the path →</small></span></button>`; }).join('')}</div>` : '<p class="empty">No Paraquat records yet. The first form, quiz or call will appear here.</p>'}
+    return `<button class="lead-row ${l.is_test ? 'test' : ''}" data-lead="${esc(l.lead_uid)}" aria-label="Open ${esc(name)}"><span><small>Last activity ${esc(when(l.last_activity || l.first_seen))}${l.phone_last4 ? ' · …' + esc(l.phone_last4) : ''}</small><b>${esc(name)}${l.is_test ? ' · TEST' : ''}</b><small>${esc(src)}${l.state ? ' · ' + esc(l.state) : ''} · first seen ${esc(when(l.first_seen))}</small></span><span><small>Sofia · ${l.calls.length} call${l.calls.length === 1 ? '' : 's'}</small><b>${latestCall(l) ? esc(callStatus(latestCall(l))) : 'No call yet'}</b>${latestCall(l) ? `<small>latest ${esc(when(latestCall(l).at))}</small>` : ''}</span><span><small>Intake handoff</small><b>Attempted: ${l.handoff_attempted ? 'yes' : 'no'}</b><small>Connected: ${l.handoff_connected ? 'yes' : 'no'}</small></span><span><small>Status</small><b>${badge(stage, cls)}</b><small>Open the path →</small></span></button>`; }).join('')}</div>` : '<p class="empty">No Paraquat records yet. The first form, quiz or call will appear here.</p>'}
   <p class="note" style="margin-top:20px">A connected handoff means the transfer leg was answered on the receiving line. It is not an eligibility decision or a signed case.</p></section>
   ${walkthrough()}`;
 }
@@ -82,7 +97,7 @@ function record() {
   const steps = [];
   for (const s of l.sources) steps.push([sourceLabel(s.kind), when(s.at) + (s.outcome ? ' · quiz outcome ' + s.outcome : '') + (s.is_test ? ' · TEST record' : '')]);
   for (const c of l.calls) {
-    steps.push(['Sofia call' + (c.demo_line ? ' (demo line)' : ' on (202) 932-9700'), when(c.at) + ' · ' + secs(c.seconds) + (c.outcome ? ' · ' + c.outcome : '') + ' · ended: ' + (c.ended_reason || '—')]);
+    steps.push(['Sofia call' + (c.demo_line ? ' (demo line)' : ' on (202) 932-9700'), when(c.at) + ' · ' + secs(c.seconds) + ' · ' + callStatus(c)]);
     steps.push(['Handoff attempted', c.transferred ? 'Yes · Sofia transferred to the BTL team line (619) 853-0048' : 'No']);
     for (const t of c.transfer_legs) steps.push(['Receiver ' + (t.answered ? 'connected' : 'not connected'), when(t.at) + ' · ' + secs(t.seconds) + (t.voicemail ? ' · voicemail' : '') + ' · CallRail transfer leg']);
     if (c.transferred && !c.transfer_legs.length) steps.push(['Receiver', 'Transfer leg not in CallRail yet (polled every 15 minutes)']);
@@ -93,7 +108,7 @@ function record() {
   ${l.is_test ? `<div class="sample-notice"><b>Test record.</b> ${esc(l.test_label || 'Fictional test lead.')}</div>` : ''}
   <div class="perspective-grid"><section class="panel"><h2>The accountability chain</h2><ol class="record-chain">${steps.map(([t, x], i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><div><b>${esc(t)}</b><p>${esc(x)}</p></div></li>`).join('')}</ol>
   ${l.sources.map(s => `<div class="call-card"><h3>${esc(sourceLabel(s.kind))} · ${esc(when(s.at))}</h3><p class="note">Page ${esc(s.page || '—')}</p>${answers(s.screening)}</div>`).join('')}
-  ${l.calls.map(c => `<div class="call-card"><h3>Sofia call · ${esc(when(c.at))}</h3><p class="note">${c.demo_line ? 'Demo line (213)' : 'Line (202) 932-9700'} · ${esc(secs(c.seconds))} · ${esc(c.outcome || 'no outcome')} · ${esc(c.ended_reason || '')}</p>${answers(c.answers)}
+  ${l.calls.map(c => `<div class="call-card"><h3>Sofia call · ${esc(when(c.at))}</h3><p class="note">${c.demo_line ? 'Demo line (213)' : 'Line (202) 932-9700'} · ${esc(secs(c.seconds))} · ${esc(callStatus(c))}</p>${answers(c.answers)}
     ${c.has_recording ? `<button class="button secondary" data-play="${esc(l.lead_uid)}:${c.index}">Play the Sofia recording</button><div id="audio-${c.index}"></div>` : '<p class="note">No Sofia recording available for your access level, or none stored.</p>'}
     ${c.transfer_legs.map(t => `<div class="status-row"><small>CallRail transfer leg · ${esc(when(t.at))}</small><b>${t.answered ? 'Answered' : 'Not answered'} · ${esc(secs(t.seconds))}${t.player ? ` · <a href="${esc(t.player)}" target="_blank" rel="noopener">Open CallRail recording ↗</a>` : ''}</b></div>`).join('')}</div>`).join('')}
   </section><aside><div class="panel"><p class="eyebrow">STATUS</p><div class="status-row"><small>Source</small><b>${esc(l.sources.length ? sourceLabel(l.sources[0].kind) : (l.calls.length ? 'Inbound call' : '—'))}</b></div><div class="status-row"><small>Sofia</small><b>${esc(l.sofia_outcome || (l.calls.length ? 'No outcome' : 'No call yet'))}</b></div><div class="status-row"><small>Handoff attempted</small><b>${l.handoff_attempted ? 'Yes' : 'No'}</b></div><div class="status-row"><small>Receiver connected</small><b>${l.handoff_connected ? 'Yes' : 'No'}</b></div><div class="status-row"><small>Firm outcome</small><b>Not connected</b></div></div>
@@ -103,10 +118,9 @@ function record() {
 
 // ---------- data ----------
 async function load() {
-  if (!session) return render();
   try {
-    const r = await fetch(hub + '/portal/' + client + '/basic', { headers: { Authorization: 'Bearer ' + session }, cache: 'no-store', credentials: 'omit' });
-    if (r.status === 401) { session = ''; sessionStorage.removeItem(KEY); lastError = 'Your session ended. Sign in again.'; return render(); }
+    const r = await fetch(hub + '/portal/' + client + '/basic', { headers: session ? { Authorization: 'Bearer ' + session } : {}, cache: 'no-store', credentials: 'omit' });
+    if (r.status === 401 && session) { session = ''; sessionStorage.removeItem(KEY); lastError = 'Your session ended; showing the open demo.'; return load(); }
     if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || 'Portal data unavailable');
     feed = await r.json(); lastError = '';
   } catch (e) { lastError = e.message || 'Could not load'; }
@@ -114,11 +128,11 @@ async function load() {
 }
 function render() {
   const signed = !!session;
-  document.querySelector('#refresh').hidden = !signed; document.querySelector('#lock').hidden = !signed;
-  document.querySelector('#banner-status').textContent = signed ? (feed ? 'Connected records · last updated ' + when(feed.generated_at) : (lastError || 'Loading…')) : 'Sign in to view connected records';
+  document.querySelector('#refresh').hidden = signinOpen; document.querySelector('#lock').hidden = !signed; document.querySelector('#owner').hidden = signed || signinOpen;
+  document.querySelector('#banner-status').textContent = feed ? (signed ? 'Full view · last updated ' : 'Open demo · last updated ') + when(feed.generated_at) : (lastError || 'Loading…');
   document.querySelector('#footer-updated').textContent = feed ? 'Last updated ' + when(feed.generated_at) : '';
-  main.innerHTML = !signed ? signin() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : dashboard();
-  if (signed && !timer) timer = setInterval(load, RELOAD_SECONDS * 1000);
+  main.innerHTML = signinOpen ? signin() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : dashboard();
+  if (!timer) timer = setInterval(load, RELOAD_SECONDS * 1000);
 }
 async function post(path, data) {
   const r = await fetch(hub + '/portal/' + client + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), cache: 'no-store', credentials: 'omit' });
@@ -127,18 +141,25 @@ async function post(path, data) {
   return j;
 }
 main.addEventListener('submit', async e => {
-  if (e.target.id !== 'login') return; e.preventDefault();
-  const f = e.target; email = f.elements.email.value.trim().toLowerCase(); const code = (f.elements.code?.value || '').replace(/\D/g, '');
+  const f = e.target;
+  if (f.id === 'signup') {
+    e.preventDefault(); const name = f.elements.name.value.trim(), em = f.elements.email.value.trim().toLowerCase();
+    try { await post('/register', { name, email: em }); signedUp = name.split(' ')[0]; try { sessionStorage.setItem(KEY + ':signup', signedUp); } catch (x) {} lastError = ''; }
+    catch (err) { lastError = err.message; }
+    return render();
+  }
+  if (f.id !== 'login') return; e.preventDefault();
+  email = f.elements.email.value.trim().toLowerCase(); const code = (f.elements.code?.value || '').replace(/\D/g, '');
   try {
-    if (code.length === 6) { const j = await post('/verify', { email, code }); session = j.session; sessionStorage.setItem(KEY, session); lastError = ''; await load(); }
-    else { const name = (f.elements.name?.value || '').trim(); await post(name ? '/register' : '/login', name ? { name, email } : { email }); lastError = ''; render(); document.querySelector('#code')?.focus(); }
+    if (code.length === 6) { const j = await post('/verify', { email, code }); session = j.session; sessionStorage.setItem(KEY, session); lastError = ''; signinOpen = false; await load(); }
+    else { await post('/login', { email }); lastError = ''; render(); document.querySelector('#code')?.focus(); }
   } catch (err) { lastError = err.message; render(); }
 });
 main.addEventListener('click', async e => {
   const t = e.target.closest('button, a'); if (!t) return;
   if (t.id === 'resend') { try { await post('/login', { email }); lastError = 'A new code was sent.'; } catch (err) { lastError = err.message; } return render(); }
   if (t.id === 'back') { selected = null; return render(); }
-  if (t.id === 'restart') { email = ''; lastError = ''; return render(); }
+  if (t.id === 'restart') { email = ''; lastError = ''; signinOpen = false; return render(); }
   if (t.id === 'tour') { selected = null; render(); document.querySelector('#how')?.scrollIntoView({ behavior: 'smooth' }); return; }
   if (t.dataset.lead) { selected = t.dataset.lead; render(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.play) {
@@ -151,5 +172,6 @@ main.addEventListener('click', async e => {
   }
 });
 document.querySelector('#refresh').addEventListener('click', load);
-document.querySelector('#lock').addEventListener('click', () => { session = ''; feed = null; selected = null; sessionStorage.removeItem(KEY); clearInterval(timer); timer = null; render(); });
+document.querySelector('#lock').addEventListener('click', () => { session = ''; selected = null; sessionStorage.removeItem(KEY); load(); });
+document.querySelector('#owner').addEventListener('click', () => { signinOpen = true; lastError = ''; render(); });
 load();
