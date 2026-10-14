@@ -21,7 +21,7 @@ test('reject other campaigns and synthetic feeds in connected mode',()=>{
 test('all three consumer pages link to intake options without the reporting overview; static phone fallback is correct',async()=>{
  for(const p of ['btl/paraquat/index.html','btl/paraquat/talk-to-sofia/index.html','btl/paraquat/quiz/index.html']){
  const h=await readFile(new URL('../'+p,import.meta.url),'utf8');for(const path of ['/paraquat/','/paraquat/talk-to-sofia/','/paraquat/quiz/'])assert.ok(h.includes('href="'+path),p+' '+path);
- assert.doesNotMatch(h,/12029329700|Perspective overview|Paraquat demo paths/);
+ assert.doesNotMatch(h,/12138787408|878-7408|Perspective overview|Paraquat demo paths/);if(p!=='btl/paraquat/index.html')assert.ok(h.includes('tel:+12029329700'),p+' must use the 202 consumer line');
  }
 });
 
