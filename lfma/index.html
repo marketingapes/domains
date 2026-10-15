@@ -671,6 +671,17 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   </section>
 
   <!-- Builder -->
+  <!-- Free demo (added Oct 14, 2026 per Kyle) -->
+  <section id="demo" class="center" aria-labelledby="demo-h">
+    <span class="eyebrow">Free demo</span>
+    <h2 id="demo-h">A Gorilla + AI just automated <em>legal marketing and intake.</em></h2>
+    <p class="body">Oops — maybe you should have listened. An evolution is coming.</p>
+    <p class="body">Want to see a demo of a full campaign build? Just enter your info below and Kyle will reach out and book a demo. All up to you.</p>
+    <div class="actions"><a class="btn" href="#build" id="demoCta">Request a free demo</a></div>
+    <p class="fine">With the gorilla — he does not bite…</p>
+  </section>
+  <script>document.getElementById('demoCta').addEventListener('click', function () { window.__lfmaIntent = 'demo'; });</script>
+
   <section id="build" aria-labelledby="build-h">
     <span class="eyebrow">Start here</span>
     <h2 id="build-h">Tell me your <em>tort.</em></h2>
@@ -978,11 +989,12 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   var sending = false;
   function sendToKyle(env, r) {
     var q = env.request_raw;
-    var msg = 'CAMPAIGN OFFER SPECIAL | Tort: ' + q.tort.trim() + ' | States: ' + q.target_states.trim() +
+    var msg = (window.__lfmaIntent === 'demo' ? 'FREE DEMO REQUEST | ' : '') + 'CAMPAIGN OFFER SPECIAL | Tort: ' + q.tort.trim() + ' | States: ' + q.target_states.trim() +
       ' | Status: ' + (r.supported ? 'known tort, ready for invoice' : 'review first (' + r.notes.join(' ') + ')') +
       ' | Offer: $2,500 + $5,000 ads = $7,500, Oct 19-30, 2026';
     var body = new URLSearchParams({ name: q.requester_name.trim(), firm: q.firm_name.trim(), email: q.requester_email.trim(),
       phone: q.requester_phone.trim(), message: msg, source: 'lfma/campaign-offer-special', submitted_at: env.created_at });
+    if (window.__lfmaIntent) body.set('intent', window.__lfmaIntent);
     return fetch(HOOK, { method: 'POST', body: body }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); });
   }
   document.getElementById('firmForm').addEventListener('submit', function (e) {
