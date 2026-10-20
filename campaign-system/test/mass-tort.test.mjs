@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,readFile,rm} from 'node:fs/promises';
+import {mkdtemp,readFile,rm,symlink,mkdir,access} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -117,5 +117,27 @@ test('one command emits local assets/checklist; gate fails; overwrite and reposi
     await assert.rejects(run([input,output]),/EEXIST/);
     await assert.rejects(run([input,fileURLToPath(new URL('../should-not-write',import.meta.url))]),/outside the repository/);
     assert.equal(await readFile(join(output,'sofia.html'),'utf8').then(x=>x.includes('No AI service is connected')),true);
+  } finally {await rm(parent,{recursive:true,force:true});}
+});
+test('canonical output confinement rejects symlinks into the repo and live/generated subtrees before writes',async()=>{
+  const parent=await mkdtemp(join(tmpdir(),'btl-kit-symlink-'));
+  const input=fileURLToPath(new URL('../examples/mass-tort.draft.json',import.meta.url));
+  try {
+    for(const [name,destination] of [['repo','../../'],['generated','../../btl/campaigns/'],['live','../../btl/paraquat/']]) {
+      const link=join(parent,name),source=fileURLToPath(new URL(destination,import.meta.url));
+      await symlink(source,link,'dir');
+      // Test both a new direct child and a path with multiple missing parents.
+      for(const suffix of ['should-not-write','missing-parent/review']) {
+        await assert.rejects(run([input,join(link,suffix)]),/outside the repository/);
+        await assert.rejects(access(join(source,suffix.split('/')[0])),{code:'ENOENT'});
+      }
+    }
+    const outside=join(parent,'outside');await mkdir(outside);
+    const alias=join(parent,'outside-alias');await symlink(outside,alias,'dir');
+    assert.equal(await run([input,join(alias,'review')]),0);
+    assert.equal(JSON.parse(await readFile(join(outside,'review','manifest.json'))).dryRun,true);
+    await assert.rejects(run([input,join(alias,'review')]),{code:'EEXIST'});
+    await assert.rejects(run([input,join(outside,'absent-parent','review')]),{code:'ENOENT'});
+    await assert.rejects(access(join(outside,'absent-parent')),{code:'ENOENT'});
   } finally {await rm(parent,{recursive:true,force:true});}
 });

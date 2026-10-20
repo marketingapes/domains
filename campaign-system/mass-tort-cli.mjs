@@ -1,5 +1,5 @@
-import {readFile, mkdir, writeFile} from 'node:fs/promises';
-import {resolve, relative, isAbsolute, join} from 'node:path';
+import {readFile, mkdir, writeFile, realpath} from 'node:fs/promises';
+import {resolve, relative, isAbsolute, join, dirname, basename, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createPlan} from './model.mjs';
 import {renderIntakePage} from './pages.mjs';
@@ -17,12 +17,29 @@ export function dryRun(kit) {
   return {manifest,readiness,assets};
 }
 
+async function outputTarget(output) {
+  const root=await realpath(fileURLToPath(new URL('../',import.meta.url)));
+  let ancestor=resolve(output);
+  const missing=[];
+  // Resolve every existing component, including symlinks, before checking containment.
+  // Missing parents are inspected but never created recursively.
+  for(;;) {
+    try {ancestor=await realpath(ancestor);break;}
+    catch(e) {
+      if(e.code!=='ENOENT'||dirname(ancestor)===ancestor)throw e;
+      missing.unshift(basename(ancestor));ancestor=dirname(ancestor);
+    }
+  }
+  const target=join(ancestor,...missing),rel=relative(root,target);
+  if(rel===''||(!rel.startsWith('..'+sep)&&!isAbsolute(rel))) throw Error('Output must be outside the repository (for example /tmp/btl-review-001).');
+  return target; // Write through the resolved path, not the caller's symlink alias.
+}
+
 export async function run(args) {
   const [input,output,gate='DRAFT']=args;
   if(!input||!output||!['DRAFT','REVIEW_READY','LAUNCH_READY'].includes(gate)||args.length>3) throw Error('Usage: node campaign-system/mass-tort-cli.mjs INPUT.json OUTPUT_DIRECTORY [DRAFT|REVIEW_READY|LAUNCH_READY]');
   // A new output directory only. Never overwrite source, generated studios or live pages.
-  const root=fileURLToPath(new URL('../',import.meta.url)),target=resolve(output),rel=relative(root,target);
-  if(rel===''||(!rel.startsWith('..'+(process.platform==='win32'?'\\':'/'))&&!isAbsolute(rel))) throw Error('Output must be outside the repository (for example /tmp/btl-review-001).');
+  const target=await outputTarget(output);
   const kit=JSON.parse(await readFile(input,'utf8'));
   const result=dryRun(kit);
   if(result.readiness.errors.length) {console.log(JSON.stringify(result.readiness,null,2));return 2;}
