@@ -1,5 +1,7 @@
 # Shared domain campaign studio
 
+BTL MASS_TORT operator jobs: see [MASS-TORT.md](MASS-TORT.md) for the versioned template, single-command local dry run and separate review/launch readiness gates. Existing studio behavior is preserved.
+
 Built September 8, 2026. One public, secret-free source produces seven branded campaign studios and 25 topic previews per brand. This is a working demo/planning release, not a live lead collection or autonomous advertising release.
 
 ## Build and verify

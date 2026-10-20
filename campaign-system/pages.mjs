@@ -1,8 +1,10 @@
 import {brands,topics,intakeModes} from './catalog.mjs';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const list=(xs,empty)=>xs.length?`<ul>${xs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<p class="muted">${empty}</p>`;
-export function renderIntakePage(p,mode){
- const b=brands.find(x=>x.id===p.brand),t=topics.find(x=>x.id===p.topic),m=intakeModes.find(x=>x.mode===mode);
+export function renderIntakePage(p,mode,{brandOverlay}={}){
+ const baseBrand=brands.find(x=>x.id===p.brand),t=topics.find(x=>x.id===p.topic),m=intakeModes.find(x=>x.mode===mode);
+ if(brandOverlay && (!/^#[0-9a-f]{6}$/i.test(brandOverlay.color)||typeof brandOverlay.name!=='string'))throw Error('Invalid brand overlay.');
+ const b=baseBrand&&brandOverlay?{...baseBrand,name:brandOverlay.name,color:brandOverlay.color}:baseBrand;
  if(!b||!t||!m)throw Error('Unknown intake page.');
  const criteria=p.criteria||{qualifies:[],disqualifies:[]};
  let action='';
