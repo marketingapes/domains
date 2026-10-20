@@ -1,0 +1,47 @@
+/* Perspective demo styles — SSDI-PILOT-001. Adapted from /paraquat/perspective/perspective.css conventions. */
+:root{--ink:#111827;--ink-2:#374151;--muted:#6b7280;--paper:#f6f1e7;--card:#fffdf8;--line:#e4dccd;--line-2:#d9d2c5;--gold:#c6a15b;--gold-ink:#8a6a2b;--amber-bg:#fdf3dc;--amber-ink:#7a5410;--sans:-apple-system,BlinkMacSystemFont,"Inter","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--serif:"Iowan Old Style","Baskerville","Palatino Linotype","Book Antiqua",Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.main{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:26px 0 60px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand strong{font-family:var(--serif);font-weight:500;font-size:1.5rem;display:block;line-height:1.1}
+.brand small{font-size:.64rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.pill{display:inline-flex;align-items:center;font-size:.74rem;font-weight:700;border-radius:999px;padding:5px 12px;white-space:nowrap}
+.pill.warn{color:var(--amber-ink);background:var(--amber-bg);border:1px solid rgba(198,161,91,.5)}
+.paths{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+.paths a{text-decoration:none;font-weight:600;font-size:.9rem;border:1.5px solid var(--line-2);background:#fff;border-radius:999px;padding:8px 16px}
+.paths a:hover{border-color:var(--ink)}
+.intro h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,4vw,2.7rem);margin:6px 0 8px;letter-spacing:-.01em}
+.intro p{margin:0;color:var(--ink-2);max-width:640px}
+.eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:42px;padding:0 18px;border-radius:999px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;font-size:.9rem;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line-2)}
+.btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.overview-note{color:var(--muted);font-size:.9rem;min-height:1.3em}
+.scoreboard{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.score{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.s-label{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block}
+.s-num{font-family:var(--serif);font-size:2rem;font-weight:500;display:block;line-height:1.15}
+.s-note{font-size:.8rem;color:var(--muted)}
+.fresh{color:var(--muted);font-size:.82rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.panel h2{font-family:var(--serif);font-weight:400;font-size:1.3rem;margin:4px 0 10px}
+.panel p{color:var(--ink-2);margin:0 0 8px}
+.checklist{list-style:none;margin:0;padding:0}
+.checklist li{padding:7px 0;border-bottom:1px dashed var(--line-2);color:var(--ink-2)}
+.checklist li:last-child{border-bottom:0}
+.demo-controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.demo-controls button{min-height:42px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line-2);background:#fff;font-weight:600;cursor:pointer}
+.demo-controls button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.timeline{list-style:none;margin:8px 0 0;padding:0}
+.timeline li{display:flex;gap:14px;padding:10px 0;border-bottom:1px dashed var(--line-2)}
+.timeline li:last-child{border-bottom:0}
+.timeline time{flex:none;width:170px;color:var(--muted);font-size:.84rem}
+.timeline .what b{display:block;font-size:.96rem}
+.timeline .what span{color:var(--ink-2);font-size:.9rem}
+.status-tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.05em;border-radius:999px;padding:2px 9px;background:var(--amber-bg);color:var(--amber-ink);margin-left:8px;vertical-align:middle}
+.foot{margin-top:26px;color:var(--muted);font-size:.78rem;line-height:1.6}
+@media(max-width:760px){.scoreboard{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.timeline li{flex-direction:column;gap:2px}.timeline time{width:auto}}
