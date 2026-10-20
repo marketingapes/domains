@@ -9,12 +9,12 @@ window.SSDI_DISPLAY=Object.freeze({
   },
   "campaign_id": "SSDI-PILOT-001",
   "questions": [
-    "What is the fictional person\u2019s work status?",
-    "Does the sample include work covered by Social Security?",
-    "How long are the limitations expected to last?",
-    "What stage is this fictional claim at?",
-    "Which state belongs to the sample?",
-    "Does the sample mention an existing lawyer?"
+    "Are you currently working?",
+    "Have you worked in jobs covered by Social Security?",
+    "How long do you expect the limitations to last?",
+    "Where are you in the SSDI process?",
+    "Which state is the inquiry from?",
+    "Are you already working with a lawyer?"
   ],
   "samples": {
     "standard": {
