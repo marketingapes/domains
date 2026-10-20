@@ -79,3 +79,5 @@ names, phone numbers, emails, states and answers are never pushed.
 - No live ad spend, no prospect outreach, no sends to anyone.
 - All copy carries attorney-advertising and "not a law firm" disclosures;
   Sofia copy discloses she is AI and gives no legal advice.
+
+Status (Oct 20, 2026): Version A build complete; PR #328 open against main, pending Domain release checks.
