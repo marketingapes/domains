@@ -9,12 +9,12 @@ import {dryRun,run} from '../mass-tort-cli.mjs';
 const draft=()=>createMassTortKit({topic:'talc',start:'2026-11-01',campaignId:'fixture-talc-001'});
 const stamp=k=>{k.evidence.snapshot=kitSnapshot(k);return k;};
 function approve(k,group) {
-  for(const a of Object.values(k.evidence[group])) Object.assign(a,{verified:true,evidenceRef:'private-review/fixture-receipt',reviewer:'Fixture reviewer',reviewedAt:'2026-10-20T10:00:00Z'});
+  for(const a of Object.values(k.evidence[group])) Object.assign(a,{snapshot:kitSnapshot(k),verified:true,evidenceRef:'private-review/fixture-receipt',reviewer:'Fixture reviewer',reviewedAt:'2026-10-20T10:00:00Z'});
   return stamp(k);
 }
 function review() {
   const k=draft();
-  k.firm.name='Fixture Firm';k.firm.color='#731a42';
+  Object.assign(k.firm,{id:'fixture-firm',name:'Fixture Firm',color:'#731a42',logoRef:'assets/fixture-logo.svg'});
   for(const p of k.pages) {p.previewRef=`review/${p.path}.html`;p.copyVersion='copy-v1';}
   for(const c of k.concepts) Object.assign(c,{headline:'Fixture headline',body:'Fixture copy for validation only',imageRef:'review/image.png',videoStoryboardRef:'review/storyboard.pdf'});
   k.bindings.existingTestLine={id:'fixture-line',revision:'line-v1'};
@@ -34,7 +34,7 @@ function launch() {
   k.reporting.actualRef='private-review/fixture-reconciliation';
   k.budget={mediaCents:100,approvalRef:'private-review/fixture-budget'};
   for(const c of k.concepts)c.videoRef='review/fixture-video.mp4';
-  return approve(k,'launch');
+  return approve(approve(k,'review'),'launch');
 }
 test('named MASS_TORT only: rejects MVA, PI, SSDI, auto/truck, custom and unsupported topics',()=>{
   for(const topic of ['mva','personal-injury','ssdi','auto','truck','custom','sexual-abuse',undefined]) assert.throws(()=>createMassTortKit({topic,start:'2026-11-01',campaignId:'fixture-001'}));
@@ -59,6 +59,14 @@ test('review readiness needs real deliverable references, a labeled test line an
   const k=review();assert.equal(validateMassTortKit(k).status,'REVIEW_READY');
   assert.equal(validateMassTortKit(k).launchReady,false);
   k.concepts[0].imageRef='';stamp(k);assert.equal(validateMassTortKit(k).reviewReady,false);
+});
+test('branded REVIEW_READY requires firm identity, display name and approved local logo reference',()=>{
+  for(const field of ['id','name','logoRef']) {
+    const k=review();k.firm[field]='';approve(k,'review');
+    assert.equal(validateMassTortKit(k).reviewReady,false,field);
+  }
+  const k=review();k.firm.logoRef='https://unapproved.invalid/logo.svg';approve(k,'review');
+  assert.equal(validateMassTortKit(k).status,'INVALID');
 });
 test('launch readiness requires every launch prerequisite, not a status flag or review approval',()=>{
   const k=launch();assert.equal(validateMassTortKit(k).status,'LAUNCH_READY');
@@ -87,6 +95,29 @@ test('cross-campaign evidence, missing consent and a sample passed off as actual
   const sample=launch();sample.reporting.actualRef=sample.reporting.sampleRef;stamp(sample);
   assert.equal(validateMassTortKit(sample).launchReady,false);
 });
+test('global restamp or one refreshed attestation cannot revive old approvals after material changes',()=>{
+  for(const mutate of [
+    k=>k.consent.callsText+=' changed',
+    k=>k.destinations.firm.id='fixture-new-firm-destination',
+    k=>k.firm.color='#123456',
+    k=>{k.campaignId='fixture-talc-002';k.identity.source=`btl:mass-tort:${k.campaignId}`;for(const p of k.pages)p.pageId=`${k.campaignId}-${p.path}`;}
+  ]) {
+    const k=launch();mutate(k);stamp(k);
+    let r=validateMassTortKit(k);
+    assert.equal(r.reviewReady,false);assert.equal(r.launchReady,false);
+    assert.equal(r.reviewBlockers.length,Object.keys(k.evidence.review).length);
+    assert.equal(r.launchBlockers.length,Object.keys(k.evidence.launch).length);
+    // Refreshing a single launch check must not refresh any other review/launch check.
+    k.evidence.launch.consent.snapshot=kitSnapshot(k);
+    r=validateMassTortKit(k);
+    assert.equal(r.reviewReady,false);assert.equal(r.launchReady,false);
+    assert.equal(r.reviewBlockers.length,Object.keys(k.evidence.review).length);
+    assert.equal(r.launchBlockers.length,Object.keys(k.evidence.launch).length-1);
+    // Even all launch attestations do not bless old page/branding/ad approvals.
+    approve(k,'launch');assert.equal(validateMassTortKit(k).reviewReady,false);
+    approve(k,'review');assert.equal(validateMassTortKit(k).status,'LAUNCH_READY');
+  }
+});
 test('unsafe public reporting, remote assets/endpoints and known Make gaps cannot pass',()=>{
   for(const mutate of [k=>k.reporting.publicMinCohort=9,k=>k.reporting.maxAgeMinutes=16,k=>k.reporting.unknownValues='zero',k=>k.reporting.publicAggregatesOnly=false,k=>k.bindings.makeHook.id='https://hook.example/secret',k=>k.firm.logoRef='../borrowed.svg',k=>k.firm.color='red;display:none']) {
     const k=launch();mutate(k);stamp(k);assert.equal(validateMassTortKit(k).status,'INVALID');
@@ -104,6 +135,18 @@ test('dry run reuses all three studio modes, escapes firm brand, emits source ID
     assert.match(r.assets[name],/&lt;script&gt;evil\(\)&lt;\/script&gt;/);
     assert.match(r.assets[name],/#731a42/);assert.match(r.assets[name],/Preview only/);
     assert.doesNotMatch(r.assets[name],/fetch\(|XMLHttpRequest|tel:|https:\/\/hook/);
+  }
+});
+test('dry run preserves full screening rules, included/excluded geography and firm display name',()=>{
+  const k=draft();
+  k.firm.name='Firm '.repeat(30)+'FINAL_FIRM';
+  k.geography.included=['Included '.repeat(30),'FINAL_INCLUDED_JURISDICTION'];
+  k.geography.excluded=['Excluded '.repeat(80),'FINAL_EXCLUDED_JURISDICTION'];
+  k.screening.qualifies=['Q'.repeat(2490),'FINAL_QUALIFICATION'];
+  k.screening.disqualifies=['A'.repeat(2490),'CRITICAL_FINAL_EXCLUSION'];
+  const r=dryRun(k);
+  for(const name of ['form.html','quiz.html','sofia.html']) {
+    for(const value of [...k.screening.qualifies,...k.screening.disqualifies,k.geography.included.join(', '),k.geography.excluded.join(', '),k.firm.name])assert.ok(r.assets[name].includes(value),`${name}: must preserve complete content`);
   }
 });
 test('one command emits local assets/checklist; gate fails; overwrite and repository output are refused',async()=>{

@@ -10,6 +10,11 @@ export function dryRun(kit) {
   const readiness=validateMassTortKit(kit);
   if(readiness.errors.length) return {readiness,manifest:null,assets:{}};
   const plan=createPlan({brand:kit.brand,topic:kit.topic,start:kit.start,firm:kit.firm.name,location:kit.geography.included.join(', '),excludedGeo:kit.geography.excluded.join(', '),qualifies:kit.screening.qualifies.join('\n'),disqualifies:kit.screening.disqualifies.join('\n'),campaignClass:'major_mass_tort'});
+  // The legacy studio model bounds free-form planning strings. This validated adapter
+  // must render every campaign rule and jurisdiction losslessly without changing it.
+  plan.firm=kit.firm.name;
+  plan.criteria={qualifies:[...kit.screening.qualifies],disqualifies:[...kit.screening.disqualifies],verified:false};
+  plan.geo={location:kit.geography.included.join(', '),excluded:kit.geography.excluded.join(', '),radiusMiles:null,verified:false};
   const assets={};
   for(const page of kit.pages) assets[`${page.path}.html`]=renderIntakePage(plan,page.studioMode,{brandOverlay:{name:kit.firm.name||'Firm brand awaiting approval',color:kit.firm.color}});
   assets['ads.html']=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex,nofollow"><title>BTL ad concept review</title><style>body{font:18px/1.6 system-ui;max-width:960px;margin:auto;padding:24px;background:#f4f6f8;color:#153b51}article{padding:24px;background:white;border:1px solid #ccd8dd;border-radius:16px;margin:24px 0}p{overflow-wrap:anywhere}</style><h1>${esc(kit.firm.name||"Firm brand awaiting approval")} · Ad concept review</h1><p>Draft slots only. No ad is uploaded or activated. No medical/legal eligibility or performance claim is supplied.</p>${kit.concepts.map(c=>`<article><h2>${esc(c.id)}</h2><h3>${esc(c.headline||'Headline awaiting campaign copy review')}</h3><p>${esc(c.body||'Body awaiting campaign copy review')}</p><p>Image: ${esc(c.imageRef||'Awaiting deliverable')}</p><p>Video storyboard: ${esc(c.videoStoryboardRef||'Awaiting deliverable')}</p><p>Final video: ${esc(c.videoRef||'Awaiting deliverable')}</p></article>`).join('')}</html>`;

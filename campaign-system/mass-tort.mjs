@@ -26,7 +26,7 @@ export const LAUNCH_CHECKS = {
   budget: 'Obtain campaign-specific budget approval; catalog estimate is not authorization',
   activation: 'Obtain explicit activation approval separately from review readiness'
 };
-const attestation = () => ({verified:false, evidenceRef:'', reviewer:'', reviewedAt:''});
+const attestation = () => ({snapshot:'', verified:false, evidenceRef:'', reviewer:'', reviewedAt:''});
 const checks = names => Object.fromEntries(Object.keys(names).map(k=>[k,attestation()]));
 const binding = () => ({id:'', revision:''});
 const allowedTopics = topics.filter(t=>t.mdl!==null).map(t=>t.id);
@@ -104,20 +104,20 @@ export function validateMassTortKit(kit) {
   requireValue(!/https?:\/\/|Bearer\s|-----BEGIN|\bsk_[a-z0-9]+/i.test(JSON.stringify(kit)),'Public kit must contain references/IDs, never URLs, tokens or keys',errors);
   requireValue(kit.pages.length===3 && exemplar.pages.every(p=>kit.pages.some(v=>v.path===p.path&&v.studioMode===p.studioMode&&v.pageId===p.pageId)),'Exactly three campaign-specific form/quiz/Sofia paths must map to existing studio modes',errors);
   requireValue(kit.concepts.length===3 && new Set(kit.concepts.map(c=>c.id)).size===3,'Exactly three distinct ad concepts are required',errors);
-  const reviewed=kit.evidence.snapshot===kitSnapshot(kit);
+  const snapshot=kitSnapshot(kit),reviewed=kit.evidence.snapshot===snapshot;
   const attest=(group,names,target)=>{
     for(const [key,label] of Object.entries(names)) {
       const a=kit.evidence[group][key];
-      requireValue(reviewed && a.verified===true && ref(a.evidenceRef) && present(a.reviewer) && /^\d{4}-\d{2}-\d{2}T/.test(a.reviewedAt) && Number.isFinite(Date.parse(a.reviewedAt)),`${group}.${key}: ${label} (current snapshot + evidence + reviewer + date required)`,target);
+      requireValue(reviewed && a.snapshot===snapshot && a.verified===true && ref(a.evidenceRef) && present(a.reviewer) && /^\d{4}-\d{2}-\d{2}T/.test(a.reviewedAt) && Number.isFinite(Date.parse(a.reviewedAt)),`${group}.${key}: ${label} (individual current snapshot + evidence + reviewer + date required)`,target);
     }
   };
   for(const p of kit.pages) requireValue(ref(p.previewRef)&&present(p.copyVersion),`pages.${p.path}: polished preview reference and copy version required`,reviewBlockers);
   for(const c of kit.concepts) requireValue(present(c.headline)&&present(c.body)&&ref(c.imageRef)&&ref(c.videoStoryboardRef),`concepts.${c.id}: copy, image preview and video storyboard required`,reviewBlockers);
   requireValue(ref(kit.bindings.existingTestLine.id)&&ref(kit.bindings.existingTestLine.revision),'Existing labeled test line ID/revision required; never provision a number',reviewBlockers);
   requireValue(ref(kit.reporting.sampleRef)&&kit.reporting.sampleLabel==='SYNTHETIC SAMPLE — not production performance','Honest labeled sample report required',reviewBlockers);
+  requireValue(present(kit.firm.id)&&present(kit.firm.name)&&ref(kit.firm.logoRef),'Firm identity, display name and approved logo reference required for branded review',reviewBlockers);
   attest('review',REVIEW_CHECKS,reviewBlockers);
   requireValue(kit.templateOnly===false,'Replace template placeholders and explicitly confirm campaign-specific configuration');
-  requireValue(present(kit.firm.id)&&present(kit.firm.name)&&ref(kit.firm.logoRef),'Firm identity and approved logo reference required');
   requireValue(present(kit.identity.tenantId)&&present(kit.identity.domainId),'Bound tenant/domain identity required; never borrow a tenant');
   requireValue(kit.geography.included.length>0 && kit.geography.included.every(present) && kit.geography.excluded.every(present),'Explicit included geography and exclusions required (empty exclusions means none, subject to firm approval)');
   requireValue(present(kit.screening.version)&&kit.screening.qualifies.length>0&&kit.screening.disqualifies.length>0&&[...kit.screening.qualifies,...kit.screening.disqualifies].every(present),'Versioned campaign-specific qualifications and disqualifications required');

@@ -149,24 +149,28 @@
     "snapshot": "",
     "review": {
       "pagesPolished": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "adPreviews": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "existingTestLine": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "honestSampleReport": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
@@ -175,84 +179,98 @@
     },
     "launch": {
       "firmCriteria": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "geography": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "copy": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "consent": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "bindings": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "persistentReceipt": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "leadCallOutcome": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "scheduling": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "handoff": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "safeguards": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "actualReporting": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "publicReportPrivacy": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "budget": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
         "reviewedAt": ""
       },
       "activation": {
+        "snapshot": "",
         "verified": false,
         "evidenceRef": "",
         "reviewer": "",
