@@ -1,0 +1,1 @@
+{"campaign_id":"SSDI-PILOT-001","feed_url":"PLACEHOLDER — no SSDI overview route exists yet; at wiring, point this at the legal-web-lead route that serves schema ssdi-perspective/v1 (mirroring /api/v1/portal/paraquat/overview)","schema":"ssdi-perspective-config/v1"}
