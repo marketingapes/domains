@@ -12,6 +12,15 @@ function approve(k,group) {
   for(const a of Object.values(k.evidence[group])) Object.assign(a,{snapshot:kitSnapshot(k),verified:true,evidenceRef:'private-review/fixture-receipt',reviewer:'Fixture reviewer',reviewedAt:'2026-10-20T10:00:00Z'});
   return stamp(k);
 }
+const approveAll=k=>approve(approve(k,'review'),'launch');
+function assertOnlyBlocker(k,expected) {
+  const r=validateMassTortKit(approveAll(k));
+  assert.deepEqual(r.errors,[]);
+  assert.equal(r.launchReady,false);
+  const blockers=[...r.reviewBlockers,...r.launchBlockers];
+  assert.equal(blockers.length,1,JSON.stringify(blockers));
+  assert.match(blockers[0],expected);
+}
 function review() {
   const k=draft();
   Object.assign(k.firm,{id:'fixture-firm',name:'Fixture Firm',color:'#731a42',logoRef:'assets/fixture-logo.svg'});
@@ -74,8 +83,18 @@ test('launch readiness requires every launch prerequisite, not a status flag or 
     const c=structuredClone(k);c.evidence.launch[key].verified=false;
     assert.equal(validateMassTortKit(c).launchReady,false,key);
   }
-  for(const mutate of [c=>c.templateOnly=true,c=>c.screening.version='',c=>c.consent.version='',c=>c.bindings.vapiAssistant.id='',c=>c.destinations.calendar.id='',c=>c.destinations.timezone='bad-zone',c=>c.budget.mediaCents=null,c=>c.reporting.actualRef='',c=>c.firm.logoRef='']) {
-    const c=structuredClone(k);mutate(c);stamp(c);assert.equal(validateMassTortKit(c).launchReady,false);
+  for(const [mutate,expected] of [
+    [c=>c.templateOnly=true,/^Replace template placeholders/],
+    [c=>c.screening.version='',/^Versioned campaign-specific qualifications/],
+    [c=>c.consent.version='',/^Exact consent version and calls\/SMS text required$/],
+    [c=>c.bindings.vapiAssistant.id='',/^bindings\.vapiAssistant:/],
+    [c=>c.destinations.calendar.id='',/^destinations\.calendar:/],
+    [c=>c.destinations.timezone='bad-zone',/^Valid scheduling timezone required$/],
+    [c=>c.budget.mediaCents=null,/^Explicit media budget and approval required/],
+    [c=>c.reporting.actualRef='',/^Actual reconciled reporting reference required/],
+    [c=>c.firm.logoRef='',/^Firm identity, display name and approved logo reference required for branded review$/]
+  ]) {
+    const c=structuredClone(k);mutate(c);assertOnlyBlocker(c,expected);
   }
 });
 test('any content change invalidates evidence, JSON key ordering does not',()=>{
@@ -90,10 +109,11 @@ test('cross-campaign evidence, missing consent and a sample passed off as actual
   for(const p of moved.pages)p.pageId=`${moved.campaignId}-${p.path}`;
   assert.equal(validateMassTortKit(moved).reviewReady,false);
   for(const field of ['version','callsText','smsText']) {
-    const k=launch();k.consent[field]='';stamp(k);assert.equal(validateMassTortKit(k).launchReady,false);
+    const k=launch();k.consent[field]='';
+    assertOnlyBlocker(k,/^Exact consent version and calls\/SMS text required$/);
   }
-  const sample=launch();sample.reporting.actualRef=sample.reporting.sampleRef;stamp(sample);
-  assert.equal(validateMassTortKit(sample).launchReady,false);
+  const sample=launch();sample.reporting.actualRef=sample.reporting.sampleRef;
+  assertOnlyBlocker(sample,/^Actual reconciled reporting reference required, separate from the synthetic sample$/);
 });
 test('global restamp or one refreshed attestation cannot revive old approvals after material changes',()=>{
   for(const mutate of [
@@ -122,8 +142,8 @@ test('unsafe public reporting, remote assets/endpoints and known Make gaps canno
   for(const mutate of [k=>k.reporting.publicMinCohort=9,k=>k.reporting.maxAgeMinutes=16,k=>k.reporting.unknownValues='zero',k=>k.reporting.publicAggregatesOnly=false,k=>k.bindings.makeHook.id='https://hook.example/secret',k=>k.firm.logoRef='../borrowed.svg',k=>k.firm.color='red;display:none']) {
     const k=launch();mutate(k);stamp(k);assert.equal(validateMassTortKit(k).status,'INVALID');
   }
-  const k=launch();k.bindings.makeScenario.id='6437227';stamp(k);
-  assert.equal(validateMassTortKit(k).launchReady,false);
+  const k=launch();k.bindings.makeScenario.id='6437227';
+  assertOnlyBlocker(k,/^Make 6437227 lacks outboundVapi\/save-before-ack guarantee:/);
 });
 test('dry run reuses all three studio modes, escapes firm brand, emits source IDs and never sets activation',()=>{
   const k=draft();k.firm.name='<script>evil()</script>';k.firm.color='#731a42';
