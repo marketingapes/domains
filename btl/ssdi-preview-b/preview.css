@@ -35,3 +35,12 @@
 .creative.quiz,.photo-quiz{--photo:url('/assets/lanes/sex-abuse-la-county/card-1.jpg')}
 .creative.sofia,.photo-sofia{--photo:url('/assets/sofia/sofia-portrait-440x784.jpg')}
 .creative.sofia::before,.photo-sofia{background-position:center 22%}
+
+/* Campaign landing pages (quiz, Sofia, ads): branded header label, card-first layout, one honest note. */
+.header-tag{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#f4f7fb;font-weight:700}
+.campaign-page{padding:36px 0 56px}.campaign-card{max-width:900px;margin:0 auto}
+.campaign-card .journey-head h1{font-size:clamp(30px,4vw,42px);margin-bottom:10px}.campaign-card .journey-head p{font-size:16px;color:var(--ink);margin-bottom:14px}
+.page-note{font-size:13px;line-height:1.5;background:#fef3c7;border-left:4px solid var(--orange);border-radius:5px;padding:10px 14px}
+.campaign-card .journey-head p.page-note,.page-intro p.page-note{font-size:13px;color:var(--ink);margin:0}
+.sofia-copy{align-self:center}.sofia-copy .landing-actions{margin-bottom:18px}.call-topics{margin:0 0 20px;padding-left:20px;line-height:1.7}
+@media(max-width:620px){.campaign-page{padding:20px 0 40px}.header-tag{display:block;margin-top:10px;font-size:10px}}
