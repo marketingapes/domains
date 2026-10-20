@@ -7,7 +7,7 @@
 
 /* Generated illustrative photography; each third is one distinct ad scene. */
 .creative{color:#fff;isolation:isolate;min-height:320px;justify-content:flex-end;gap:16px;background:#122b3e!important}
-.creative::before{content:"";position:absolute;inset:0;z-index:-2;background-image:url(ad-photos-generated.png);background-size:300% 100%;background-repeat:no-repeat;background-position:var(--photo-position) center}
+.creative::before{content:"";position:absolute;inset:0;z-index:-2;background-image:var(--photo);background-size:cover;background-repeat:no-repeat;background-position:center}
 .creative.form{--photo-position:0%}.creative.quiz{--photo-position:50%}.creative.sofia{--photo-position:100%}
 .creative::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#061b2b8c 0%,#061b2b00 38%,#061b2bce 100%)}
 .creative .tiny{position:absolute;top:22px;left:24px;color:white;text-shadow:0 1px 4px #000}
@@ -20,7 +20,7 @@
 .page-intro.has-photo{display:grid;grid-template-columns:1.05fr .95fr;column-gap:48px;align-items:center;padding-top:45px;padding-bottom:45px}
 .page-intro.has-photo>.eyebrow,.page-intro.has-photo>h1,.page-intro.has-photo>p,.page-intro.has-photo>.landing-actions{grid-column:1}
 .page-intro.has-photo>.eyebrow{align-self:end;margin-bottom:10px}.page-intro.has-photo>h1{margin-bottom:12px}.page-intro.has-photo>p{margin-bottom:16px}
-.landing-photo{grid-column:2;grid-row:1/5;min-height:350px;border-radius:18px;background-image:url(ad-photos-generated.png);background-size:300% 100%;background-position:var(--photo-position) center;position:relative;overflow:hidden;box-shadow:0 15px 40px #122b3e14}
+.landing-photo{grid-column:2;grid-row:1/5;min-height:350px;border-radius:18px;background-image:var(--photo);background-size:cover;background-position:center;position:relative;overflow:hidden;box-shadow:0 15px 40px #122b3e14}
 .photo-form{--photo-position:0%}.photo-quiz{--photo-position:50%}.photo-sofia{--photo-position:100%}
 .landing-photo span{position:absolute;left:0;right:0;bottom:0;background:#122b3ec9;color:white;padding:8px 12px;font-size:10px;text-align:center}
 .landing-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.landing-actions .micro{display:block;width:100%;margin:0}
@@ -29,3 +29,9 @@
 @keyframes sample-reveal{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:620px){.page-intro.has-photo{grid-template-columns:1fr;padding-top:30px;padding-bottom:30px;gap:0}.landing-photo{grid-column:1;grid-row:auto;min-height:280px;margin-top:24px}.page-intro.has-photo>h1{font-size:38px}}
 @media(prefers-reduced-motion:reduce){.question,.bubble,.receipt{animation:none}.choice,.quiz-progress span{transition:none}.choice:hover{transform:none}}
+
+/* Reuse validated, same-origin campaign images without binary uploads. */
+.creative.form,.photo-form{--photo:url('/assets/lanes/sex-abuse-la-county/card-3.jpg')}
+.creative.quiz,.photo-quiz{--photo:url('/assets/lanes/sex-abuse-la-county/card-1.jpg')}
+.creative.sofia,.photo-sofia{--photo:url('/assets/sofia/sofia-portrait-440x784.jpg')}
+.creative.sofia::before,.photo-sofia{background-position:center 22%}
