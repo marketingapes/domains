@@ -17,11 +17,27 @@ const labels = {
   firm: "Firm delivery",
   fallback: "Fallback destination",
 };
-const get = (obj, path) => path.split(".").reduce((v, k) => v?.[k], obj);
+function target(obj, path) {
+  const keys = path.split(".");
+  if (["pages", "concepts"].includes(keys[0])) {
+    const collection = keys.shift(),
+      id = decodeURIComponent(keys.shift());
+    obj = obj[collection].find(
+      (record) => record[collection === "pages" ? "path" : "id"] === id,
+    );
+  }
+  return { obj, keys };
+}
+const recordPath = (collection, id, key) =>
+  `${collection}.${encodeURIComponent(id).replaceAll(".", "%2E")}.${key}`;
+const get = (obj, path) => {
+  const record = target(obj, path);
+  return record.keys.reduce((v, k) => v?.[k], record.obj);
+};
 const set = (obj, path, value) => {
-  const keys = path.split("."),
-    last = keys.pop();
-  keys.reduce((v, k) => v[k], obj)[last] = value;
+  const record = target(obj, path),
+    last = record.keys.pop();
+  record.keys.reduce((v, k) => v[k], record.obj)[last] = value;
 };
 const lines = (s) =>
   s
@@ -120,7 +136,15 @@ function buildDynamicFields() {
     "firm",
     "fallback",
   ]);
-  for (const [i, name] of ["Form", "Quiz", "Sofia"].entries()) {
+}
+function recordFields() {
+  $("page-fields").replaceChildren();
+  $("concept-fields").replaceChildren();
+  for (const [path, name] of [
+    ["form", "Form"],
+    ["quiz", "Quiz"],
+    ["sofia", "Sofia"],
+  ]) {
     const row = document.createElement("div");
     row.className = "sub-card";
     const title = document.createElement("h3");
@@ -129,25 +153,31 @@ function buildDynamicFields() {
     const grid = document.createElement("div");
     grid.className = "field-grid";
     grid.append(
-      field("Polished preview reference", `pages.${i}.previewRef`, {
-        placeholder: "Private reviewed asset reference",
-      }),
-      field("Copy version", `pages.${i}.copyVersion`, {
+      field(
+        "Polished preview reference",
+        recordPath("pages", path, "previewRef"),
+        {
+          placeholder: "Private reviewed asset reference",
+        },
+      ),
+      field("Copy version", recordPath("pages", path, "copyVersion"), {
         placeholder: "Campaign copy version",
       }),
     );
     row.append(grid);
     $("page-fields").append(row);
   }
-  for (const [i, name] of ["Education", "Process", "Human review"].entries()) {
+  for (const [i, concept] of kit.concepts.entries()) {
     const row = document.createElement("div");
     row.className = "sub-card";
     const title = document.createElement("h3");
-    title.textContent = `Concept ${i + 1} · ${name}`;
+    title.textContent = `Concept ${i + 1} · ${concept.id}`;
     row.append(title);
     row.append(
-      field("Headline", `concepts.${i}.headline`),
-      field("Body copy", `concepts.${i}.body`, { rows: 3 }),
+      field("Headline", recordPath("concepts", concept.id, "headline")),
+      field("Body copy", recordPath("concepts", concept.id, "body"), {
+        rows: 3,
+      }),
     );
     const grid = document.createElement("div");
     grid.className = "field-grid";
@@ -157,7 +187,7 @@ function buildDynamicFields() {
       ["Final video reference", "videoRef"],
     ])
       grid.append(
-        field(label, `concepts.${i}.${key}`, {
+        field(label, recordPath("concepts", concept.id, key), {
           placeholder: "Private asset reference · no remote URLs",
         }),
       );
@@ -166,6 +196,7 @@ function buildDynamicFields() {
   }
 }
 function populate() {
+  recordFields();
   for (const input of form.querySelectorAll("[name]")) {
     if (input.name === "campaignSpecific") {
       input.checked = !kit.templateOnly;
@@ -204,7 +235,13 @@ async function fresh({ topic, keepBrand = false } = {}) {
       ? "New tort profile created. Campaign rules, consent, geography, routing, budget, creative and approvals were cleared."
       : "Local generator connected. Inputs stay in memory; download your configuration to keep it. All provider connections remain unconnected.";
   } catch (e) {
-    error(e.message);
+    if (token === version) {
+      if (kit) populate();
+      $("connection-state").textContent = kit
+        ? "Profile switch failed. The previous campaign and visible identity were restored."
+        : "Local generator unavailable. No profile was created.";
+      error(e.message);
+    }
   } finally {
     form.inert = false;
     $("generate").disabled = !kit;
@@ -282,7 +319,12 @@ async function edit(event) {
       $("connection-state").textContent =
         "Firm changed. A new isolated campaign was created; screening, consent, geography, routing, budget, creative and approvals were cleared.";
     } catch (e) {
-      error(e.message);
+      if (token === version) {
+        populate();
+        $("connection-state").textContent =
+          "Firm switch failed. The previous campaign and visible identity were restored.";
+        error(e.message);
+      }
     } finally {
       form.inert = false;
       $("generate").disabled = !kit;
@@ -453,7 +495,8 @@ function showResults(data) {
   );
   evidenceRows();
   $("results-heading").tabIndex = -1;
-  $("results-heading").focus();
+  $("results-heading").focus({ preventScroll: true });
+  $("results-heading").scrollIntoView({ block: "start", behavior: "instant" });
 }
 form.addEventListener("input", edit);
 $("build-fee").addEventListener("input", () => {

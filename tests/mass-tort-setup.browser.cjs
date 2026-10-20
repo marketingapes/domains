@@ -27,13 +27,11 @@ const { pathToFileURL } = require("node:url");
   const fill = (page, name, value) =>
     page.locator(`[name="${name}"]`).fill(value);
   const importKit = async (page, k) =>
-    page
-      .locator("#import")
-      .setInputFiles({
-        name: "fixture.json",
-        mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify(k)),
-      });
+    page.locator("#import").setInputFiles({
+      name: "fixture.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(k)),
+    });
   const fixture = () => {
     const k = createMassTortKit({
       topic: "talc",
@@ -113,7 +111,7 @@ const { pathToFileURL } = require("node:url");
         external = [];
       page.on("pageerror", (e) => errors.push(String(e)));
       page.on("console", (msg) => {
-        if (msg.type() === "error" && !msg.text().includes("422"))
+        if (msg.type() === "error" && !/422|503/.test(msg.text()))
           errors.push(msg.text());
       });
       await context.route("**/*", (route) => {
@@ -202,7 +200,23 @@ const { pathToFileURL } = require("node:url");
       await page.getByRole("button", { name: "Ads", exact: true }).click();
       await frame.locator("article").nth(2).waitFor();
       assert.equal(await frame.locator("article").count(), 3);
-      await page.locator("#results").scrollIntoViewIfNeeded();
+      await page
+        .locator("#results-heading")
+        .evaluate((el) =>
+          el.scrollIntoView({ block: "start", behavior: "instant" }),
+        );
+      assert.ok(
+        await page
+          .locator("#results-heading")
+          .evaluate(
+            (el) =>
+              el.getBoundingClientRect().top >=
+              document
+                .querySelector(innerWidth < 761 ? ".sidebar" : ".topbar")
+                .getBoundingClientRect().bottom,
+          ),
+        `${width}: review heading clears sticky navigation`,
+      );
       await shot(page, `review-${width}`);
       assert.equal(
         await page.evaluate(
@@ -323,11 +337,145 @@ const { pathToFileURL } = require("node:url");
           .evaluate((el) => el === document.activeElement),
         true,
       );
+      // Reordered valid arrays keep page paths and concept IDs attached to their own controls.
+      const reordered = fixture();
+      for (const p of reordered.pages) p.copyVersion = `copy-${p.path}`;
+      for (const c of reordered.concepts) c.headline = `Headline for ${c.id}`;
+      reordered.pages.reverse();
+      reordered.concepts.reverse();
+      await importKit(page, reordered);
+      await page.waitForFunction(
+        () =>
+          document.querySelector('[name="pages.form.copyVersion"]').value ===
+          "copy-form",
+      );
+      for (const path of ["form", "quiz", "sofia"])
+        assert.equal(
+          await page.locator(`[name="pages.${path}.previewRef"]`).inputValue(),
+          `review/${path}.html`,
+        );
+      for (const id of ["education", "process", "human-review"])
+        assert.equal(
+          await page.locator(`[name="concepts.${id}.headline"]`).inputValue(),
+          `Headline for ${id}`,
+        );
+      await fill(page, "pages.form.previewRef", "review/edited-form.html");
+      await fill(
+        page,
+        "concepts.education.headline",
+        "Edited education headline",
+      );
+      await page.getByRole("button", { name: "Generate review pack" }).click();
+      await page.locator("#results").waitFor({ state: "visible" });
+      const reorderedDownload = page.waitForEvent("download");
+      await page
+        .getByRole("link", { name: "↓ campaign.json", exact: true })
+        .click();
+      const exported = JSON.parse(
+        await readFile(await (await reorderedDownload).path(), "utf8"),
+      );
+      assert.deepEqual(
+        exported.pages.map((p) => p.path),
+        ["sofia", "quiz", "form"],
+      );
+      assert.equal(
+        exported.pages.find((p) => p.path === "form").previewRef,
+        "review/edited-form.html",
+      );
+      assert.equal(
+        exported.pages.find((p) => p.path === "sofia").previewRef,
+        "review/sofia.html",
+      );
+      assert.equal(
+        exported.concepts.find((c) => c.id === "education").headline,
+        "Edited education headline",
+      );
+      assert.equal(
+        exported.concepts.find((c) => c.id === "human-review").headline,
+        "Headline for human-review",
+      );
+      // A failed profile switch restores the old visible identity and its matching content.
+      await page.route(origin + "/api/new", (route) =>
+        route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: JSON.stringify({
+            error: "Synthetic profile service unavailable",
+          }),
+        }),
+      );
+      await page.locator("#topic").selectOption("paraquat");
+      await page.waitForFunction(
+        () => !document.querySelector("#campaign-form").inert,
+      );
+      assert.equal(await page.locator("#topic").inputValue(), "talc");
+      assert.equal(
+        await page.locator('[name="screening.qualifies"]').inputValue(),
+        "Synthetic firm-supplied rule",
+      );
+      assert.match(
+        await page.locator("#connection-state").innerText(),
+        /previous campaign and visible identity were restored/,
+      );
+      await fill(page, "firm.id", "fixture-failed-switch");
+      await page.waitForFunction(
+        () => !document.querySelector("#campaign-form").inert,
+      );
+      assert.equal(
+        await page.locator('[name="firm.id"]').inputValue(),
+        "fixture-firm",
+      );
+      assert.equal(
+        await page.locator('[name="consent.version"]').inputValue(),
+        "fixture-consent-v1",
+      );
+      assert.equal(await page.locator("#generate").isEnabled(), true);
+      await page.getByRole("button", { name: "Generate review pack" }).click();
+      await page.locator("#results").waitFor({ state: "visible" });
+      const rollbackDownload = page.waitForEvent("download");
+      await page
+        .getByRole("link", { name: "↓ campaign.json", exact: true })
+        .click();
+      const rolledBack = JSON.parse(
+        await readFile(await (await rollbackDownload).path(), "utf8"),
+      );
+      assert.equal(rolledBack.topic, "talc");
+      assert.equal(rolledBack.firm.id, "fixture-firm");
+      assert.deepEqual(rolledBack.screening.qualifies, [
+        "Synthetic firm-supplied rule",
+      ]);
+      await page.unroute(origin + "/api/new");
+      await fill(page, "firm.id", "fixture-recovered-firm");
+      await page.waitForFunction(
+        () => !document.querySelector("#campaign-form").inert,
+      );
+      assert.equal(
+        await page.locator('[name="firm.id"]').inputValue(),
+        "fixture-recovered-firm",
+      );
+      assert.equal(
+        await page.locator('[name="screening.qualifies"]').inputValue(),
+        "",
+      );
+      await fill(
+        page,
+        "screening.qualifies",
+        "Synthetic rule before recovered tort change",
+      );
+      await page.locator("#topic").selectOption("paraquat");
+      await page.waitForFunction(
+        () => !document.querySelector("#campaign-form").inert,
+      );
+      assert.equal(await page.locator("#topic").inputValue(), "paraquat");
+      assert.equal(
+        await page.locator('[name="screening.qualifies"]').inputValue(),
+        "",
+      );
       assert.deepEqual(external, []);
       assert.deepEqual(errors, []);
       await context.close();
       console.log(
-        `PASS ${width}px: setup, generation, downloads, four previews, isolation, evidence, escaping, error focus, no external requests`,
+        `PASS ${width}px: setup, generation, downloads, four previews, isolation, evidence, escaping, error focus, failed-switch rollback/recovery, reordered import/export, sticky heading visibility, no external requests`,
       );
     }
   } finally {

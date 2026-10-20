@@ -635,6 +635,9 @@ iframe.mobile {
   font-size: 12px;
   line-height: 1.7;
 }
+#results-heading {
+  scroll-margin-top: 24px;
+}
 .results summary {
   cursor: pointer;
   font-size: 14px;
