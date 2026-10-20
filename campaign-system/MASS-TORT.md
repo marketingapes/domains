@@ -2,6 +2,29 @@
 
 One campaign job extends `catalog.mjs`, `model.mjs` and `pages.mjs`. This operator-only adapter does not change the public studio, domain manifests, generated studios, existing pages or provider integrations. BTL is the tenant/platform; `firm` is the campaign’s brand overlay. MVA is a separate product. SSDI is benefits-specific and is never a mass-tort template.
 
+## Local firm setup interface
+
+```sh
+node campaign-system/setup-server.mjs
+```
+
+Open the printed `http://127.0.0.1:<port>` address. An optional port argument selects a specific local port. The dependency-free server binds only to loopback, serves an allowlisted UI/catalog and reuses `createMassTortKit()` and `dryRun()` for all configuration and artifact validation. Same-origin JSON is required; cross-origin/Host-spoofed requests, oversized input and other routes are refused. There are no provider connection, activation, filesystem-output, case-acceptance or retainer endpoints.
+
+The mobile/desktop interface accepts firm name, ID, color and approved local logo reference; a named mass tort; firm-supplied criteria/geography; exact versioned consent; existing routing and provider IDs/revisions; three ad concepts and asset references; reporting references and a separate media budget. Unsupported single-tort categories require a separately validated template. Changing tort or a configured firm identity starts a new isolated campaign and clears old rules, consent, geography, routing, creative, budgets and evidence. Other material edits preserve the old evidence hashes so they correctly become stale; the UI never stamps or approves them.
+
+Generate a review pack to view form/quiz/Sofia/ad previews in an opaque-origin sandbox and download `campaign.json`, the existing manifest/readiness JSON and four HTML artifacts. `review-pack.json` bundles these plus **planning-only** Facebook-starter/build-fee notes; it is not an activation contract. The build fee has no default or committed meaning; fee and media remain separate while commercial terms are clarified. Expansion is a later phase with separate channel/budget approvals. Imported campaign JSON is revalidated by the existing validator. Supplied current human attestations are identified as such, never as independently tested connections. Every provider remains unconnected in this workspace.
+
+Inputs live only in browser/request memory: no localStorage, cookies, telemetry, server persistence or remote asset fetching. Download before leaving. Changing any input hides old previews and revokes download links until regenerated; late build responses cannot restore stale artifacts. Logo/media references are carried as references only; the workspace does not assemble images/logos/videos or turn concept slots into finished creative. Imported text is rendered as text, not executable HTML/SVG. Use public business setup details and private opaque evidence references, never claimant data or secrets. Do not expose this local operator server as a hosted service; authentication and hosted data handling are outside this draft.
+
+Browser QA follows the repository’s Playwright stack:
+
+```sh
+# With Playwright 1.56.1 and Chromium installed, as in the existing CI job:
+SHOTS=/tmp/btl-setup-shots node tests/mass-tort-setup.browser.cjs
+```
+
+Set `CHROMIUM` to a complete installed browser executable when needed. The browser check uses synthetic data at 390px and 1440px; it tests setup, JSON export/import, all four previews, firm/tort isolation, stale evidence, malicious text, invalid logo handling, focus, overflow, empty browser storage and zero external requests. `campaign-system/test/setup-server.test.mjs` is included in normal release checks. CI runs browser QA and uploads its screenshots/log.
+
 From the repository root, copy `campaign-system/examples/mass-tort.draft.json` to a private working file. It contains **template placeholders**, no prospective client or claimant data, no legal/medical criteria and no inherited budget. Choose a unique campaign ID and update all three page IDs and `identity.source` to match. Use an existing named mass-tort catalog topic; `createMassTortKit({topic,start,campaignId})` creates a fresh blank profile. Changing torts requires a fresh profile and human firm review; never copy criteria, consent approvals or evidence from another campaign.
 
 ```sh
