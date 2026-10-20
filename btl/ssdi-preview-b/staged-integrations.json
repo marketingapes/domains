@@ -1,0 +1,18 @@
+{
+  "schema": "ssdi.synthetic-preview/v1",
+  "version": "1.0.1",
+  "variant": "B",
+  "campaign_id": "SSDI-PILOT-001",
+  "brand": "YOUR BRAND HERE",
+  "mode": "synthetic_offline_only",
+  "network_enabled": false,
+  "scope": {"default": "application", "branches": ["application", "appeal"], "firm_confirmed": false},
+  "geography": {"example": "nationwide", "firm_approved_states": null},
+  "offer": {"service_fee_usd": 2500, "media": "separately agreed", "purchase_enabled": false},
+  "source_tags": {"quiz": "ssdi-preview-quiz", "sofia": "ssdi-preview-sofia", "form": "ssdi-preview-form"},
+  "sofia": {"provider": "Vapi (planned only)", "assistant_id": null, "phone_id": null, "transfer_destination": null, "voice_enabled": false, "recording_enabled": false, "human_review_required": true},
+  "trustedform": {"enabled": false, "certificate": null},
+  "perspective": {"implementation": "in-memory synthetic receipts", "database": null, "authentication": false, "owner_toggle": "fictional demonstration only", "restricted_view": "no contact, answers, or recordings"},
+  "analytics": {"enabled": false, "pixels": [], "medical_or_work_data": "never analytics"},
+  "live_acceptance": "BLOCKED_BY_DESIGN: firm criteria/geography/scope, counsel copy approval, receiving team and transfer IDs, verified consent/privacy/receipts, integration authorization and separate publication/activation approval remain required"
+}
