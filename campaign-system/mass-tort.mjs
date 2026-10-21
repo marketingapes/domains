@@ -1,3 +1,4 @@
+import {emptyExperience} from './campaign-experience.mjs';
 // Operator-only adapter for the existing planning contract. No provider calls or activation.
 import {createHash} from 'node:crypto';
 import {topics} from './catalog.mjs';
@@ -87,10 +88,21 @@ export function validateMassTortKit(kit) {
   let exemplar;
   try {exemplar=createMassTortKit({topic:kit?.topic,start:kit?.start,campaignId:kit?.campaignId});}
   catch(e) {errors.push(e.message);}
-  if (exemplar) shape(kit,exemplar,'kit',errors);
+  if (exemplar) {
+    const base={...kit};delete base.experience;
+    shape(base,exemplar,'kit',errors);
+    if(kit?.experience!==undefined)shape(kit.experience,{...emptyExperience(),faqs:[{question:'',answer:'',approvalRef:''}]},'kit.experience',errors);
+  }
   const result=()=>({schema:SCHEMA,status:errors.length?'INVALID':reviewBlockers.length?'DRAFT':launchBlockers.length?'REVIEW_READY':'LAUNCH_READY',reviewReady:!errors.length&&!reviewBlockers.length,launchReady:!errors.length&&!reviewBlockers.length&&!launchBlockers.length,errors,reviewBlockers,launchBlockers});
   if(errors.length) return result();
   const requireValue=(ok,message,target=launchBlockers)=>{if(!ok)target.push(message);};
+  if(kit.experience) {
+    const e=kit.experience;
+    requireValue(e.headline.length<=180&&e.intro.length<=800&&e.faqs.length<=12&&e.nextSteps.length<=8&&e.nextSteps.every(s=>present(s)&&s.length<=300),'Campaign experience copy exceeds review limits',errors);
+    requireValue(!e.imageRef||/^[a-z0-9][a-z0-9_/-]*\.(png|webp|jpg)$/i.test(e.imageRef)&&!e.imageRef.split('/').includes('..'),'Experience image must be a local owned asset reference',errors);
+    requireValue(!e.imageRef||present(e.imageAlt),'Descriptive image alt text required',errors);
+    requireValue((!e.faqs.length||present(e.faqVersion))&&e.faqs.every(f=>present(f.question)&&present(f.answer)&&ref(f.approvalRef)&&f.question.length<=240&&f.answer.length<=1200),'Every FAQ requires a question, approved answer and review reference',errors);
+  }
   requireValue(kit.schema===SCHEMA && kit.product==='MASS_TORT' && kit.brand==='btl','Only btl.mass-tort-kit/v1, BTL and MASS_TORT are supported',errors);
   requireValue(kit.screening.topic===kit.topic,'Screening topic mismatch; never copy another tort’s criteria',errors);
   requireValue(kit.screening.humanReviewRequired===true,'Firm human review must remain required',errors);

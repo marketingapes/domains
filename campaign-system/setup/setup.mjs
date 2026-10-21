@@ -1,3 +1,4 @@
+const emptyExperience=()=>({headline:'',intro:'',imageRef:'',imageAlt:'',faqVersion:'',nextSteps:[],faqs:[]});
 const $ = (id) => document.getElementById(id),
   form = $("campaign-form");
 let kit = null,
@@ -198,6 +199,7 @@ function recordFields() {
 function populate() {
   recordFields();
   for (const input of form.querySelectorAll("[name]")) {
+    input.setCustomValidity("");
     if (input.name === "campaignSpecific") {
       input.checked = !kit.templateOnly;
       continue;
@@ -205,6 +207,7 @@ function populate() {
     let value = get(kit, input.name);
     if (input.name === "budget.mediaCents")
       value = value === null ? "" : (value / 100).toFixed(2);
+    if(input.name==="experience.faqs"){input.value=JSON.stringify(value??[],null,2);continue;}
     input.value = Array.isArray(value) ? value.join("\n") : (value ?? "");
   }
   summarize();
@@ -249,6 +252,7 @@ async function fresh({ topic, keepBrand = false } = {}) {
 }
 function hasSensitiveInputs() {
   return (
+    Object.values(kit.experience||{}).some(v=>v.length) ||
     kit.screening.qualifies.length ||
     kit.screening.disqualifies.length ||
     kit.screening.version ||
@@ -337,9 +341,13 @@ async function edit(event) {
     kit.identity.source = `btl:mass-tort:${value}`;
     for (const p of kit.pages) p.pageId = `${value}-${p.path}`;
   } else {
-    if (Array.isArray(get(kit, input.name))) value = lines(value);
+    if(input.name==="experience.faqs") {
+      try {value=JSON.parse(value);input.setCustomValidity("");}
+      catch {input.setCustomValidity("Enter a JSON array of approved FAQ records.");$("connection-state").textContent="FAQ JSON is incomplete. Finish editing before generating.";return;}
+    } else if (input.name==="experience.nextSteps"||Array.isArray(get(kit, input.name))) value = lines(value);
     if (input.name === "budget.mediaCents")
       value = value === "" ? null : Math.round(Number(value) * 100);
+    if(input.name.startsWith("experience."))kit.experience ||= emptyExperience();
     set(kit, input.name, value);
   }
   summarize();
@@ -366,7 +374,7 @@ function preview(name) {
   // All HTML comes from the reviewed renderer; no imported HTML or remote media is loaded.
   // The iframe has an opaque origin and its own deny-network policy.
   const policy =
-    "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'\">";
+    "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'\">";
   const html = result.assets[name];
   $("preview").srcdoc = html.includes("<head>")
     ? html.replace("<head>", "<head>" + policy)
