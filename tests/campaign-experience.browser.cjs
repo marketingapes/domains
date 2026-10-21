@@ -18,7 +18,7 @@ const {pathToFileURL}=require('node:url');
  const origin=`http://127.0.0.1:${server.address().port}`,shots=process.env.SHOTS||'/tmp/btl-experience-shots',receipts=[];
  await mkdir(shots,{recursive:true});let browser;
  try {
-  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM||'/usr/bin/chromium'});
+  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM?{executablePath:process.env.CHROMIUM}:{})});
   for(const width of [390,1440]) {
    const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),page=await context.newPage(),external=[],errors=[],requests=[];
    context.on('request',r=>requests.push({url:r.url(),method:r.method()}));
