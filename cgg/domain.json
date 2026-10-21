@@ -9,8 +9,8 @@
     "intended_canonical_hostname": "crazygolfgame.com",
     "intended_canonical_url_rule": "https://crazygolfgame.com/<path>",
     "intended_hosting": "render",
-    "current_hosting_state": "siteground_noindex",
-    "current_hosting_matches_intent": false
+    "current_hosting_state": "render",
+    "current_hosting_matches_intent": true
   },
   "web": {
     "site": {

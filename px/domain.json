@@ -9,8 +9,8 @@
     "intended_canonical_hostname": "pillowexchange.com",
     "intended_canonical_url_rule": "https://pillowexchange.com/<path>",
     "intended_hosting": "render",
-    "current_hosting_state": "siteground_noindex",
-    "current_hosting_matches_intent": false
+    "current_hosting_state": "render",
+    "current_hosting_matches_intent": true
   },
   "web": {
     "site": {
