@@ -1,3 +1,5 @@
+import {readFileSync} from 'node:fs';
+import {emptyExperience} from './campaign-experience.mjs';
 import {readFile, mkdir, writeFile, realpath} from 'node:fs/promises';
 import {resolve, relative, isAbsolute, join, dirname, basename, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -6,6 +8,18 @@ import {renderIntakePage} from './pages.mjs';
 import {validateMassTortKit,kitSnapshot,REVIEW_CHECKS,LAUNCH_CHECKS} from './mass-tort.mjs';
 
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Exact allowlist: a campaign cannot cause arbitrary file reads or remote asset loading.
+export function resolveOwnedAssets(kit) {
+  const data=(name,type)=>`data:${type};base64,${readFileSync(new URL('../btl/assets/'+name,import.meta.url)).toString('base64')}`;
+  const result={};
+  if(kit.firm.logoRef==='btl/assets/btl-seal.svg'&&kit.firm.id==='btl')result.logo=data('btl-seal.svg','image/svg+xml');
+  if(kit.topic==='paraquat'&&kit.experience?.imageRef==='btl/assets/paraquat-field-usda-nrcs.jpg') {
+    result.image=data('paraquat-field-usda-nrcs.jpg','image/jpeg');
+    result.small=data('paraquat-field-usda-nrcs-900.jpg','image/jpeg');
+    result.credit='USDA NRCS · public-domain agricultural landscape; not evidence of herbicide use.';
+  }
+  return result;
+}
 export function dryRun(kit) {
   const readiness=validateMassTortKit(kit);
   if(readiness.errors.length) return {readiness,manifest:null,assets:{}};
@@ -16,7 +30,9 @@ export function dryRun(kit) {
   plan.criteria={qualifies:[...kit.screening.qualifies],disqualifies:[...kit.screening.disqualifies],verified:false};
   plan.geo={location:kit.geography.included.join(', '),excluded:kit.geography.excluded.join(', '),radiusMiles:null,verified:false};
   const assets={};
-  for(const page of kit.pages) assets[`${page.path}.html`]=renderIntakePage(plan,page.studioMode,{brandOverlay:{name:kit.firm.name||'Firm brand awaiting approval',color:kit.firm.color}});
+  const ownedAssets=resolveOwnedAssets(kit);
+  const campaign={...kit,experience:kit.experience||emptyExperience()};
+  for(const page of kit.pages) assets[`${page.path}.html`]=renderIntakePage(plan,page.studioMode,{brandOverlay:{name:kit.firm.name||'Firm brand awaiting approval',color:kit.firm.color},campaign,ownedAssets});
   assets['ads.html']=`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex,nofollow"><title>BTL ad concept review</title><style>body{font:18px/1.6 system-ui;max-width:960px;margin:auto;padding:24px;background:#f4f6f8;color:#153b51}article{padding:24px;background:white;border:1px solid #ccd8dd;border-radius:16px;margin:24px 0}p{overflow-wrap:anywhere}</style><h1>${esc(kit.firm.name||"Firm brand awaiting approval")} · Ad concept review</h1><p>Draft slots only. No ad is uploaded or activated. No medical/legal eligibility or performance claim is supplied.</p>${kit.concepts.map(c=>`<article><h2>${esc(c.id)}</h2><h3>${esc(c.headline||'Headline awaiting campaign copy review')}</h3><p>${esc(c.body||'Body awaiting campaign copy review')}</p><p>Image: ${esc(c.imageRef||'Awaiting deliverable')}</p><p>Video storyboard: ${esc(c.videoStoryboardRef||'Awaiting deliverable')}</p><p>Final video: ${esc(c.videoRef||'Awaiting deliverable')}</p></article>`).join('')}</html>`;
   const manifest={schema:'btl.mass-tort-build/v1',campaignId:kit.campaignId,product:kit.product,firmBrand:kit.firm,snapshot:kitSnapshot(kit),dryRun:true,activation:false,readiness:readiness.status,artifacts:Object.keys(assets),pages:kit.pages.map(p=>({path:p.path,studioMode:p.studioMode,pageId:p.pageId,file:`${p.path}.html`})),intakeContract:kit.bindings.intakeContract,identity:kit.identity,bindings:kit.bindings,destinations:kit.destinations,checklist:{review:REVIEW_CHECKS,launch:LAUNCH_CHECKS}};
   return {manifest,readiness,assets};

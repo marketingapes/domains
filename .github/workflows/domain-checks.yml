@@ -49,6 +49,7 @@ jobs:
         run: |
           set -o pipefail
           SHOTS="$RUNNER_TEMP/btl-setup-shots" node tests/mass-tort-setup.browser.cjs 2>&1 | tee mass-tort-browser.log
+          SHOTS="$RUNNER_TEMP/btl-experience-shots" node tests/campaign-experience.browser.cjs 2>&1 | tee -a mass-tort-browser.log
       - name: Preserve validation receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -59,5 +60,6 @@ jobs:
             perspective-browser.log
             mass-tort-browser.log
             ${{ runner.temp }}/btl-setup-shots
+            ${{ runner.temp }}/btl-experience-shots
           if-no-files-found: warn
           retention-days: 7

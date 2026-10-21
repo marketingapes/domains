@@ -283,9 +283,18 @@
             </div>
             <p class="muted">
               Form, quiz and Sofia previews share this campaign’s rules. Sofia
-              remains a scripted demo. Asset references are not imported or
-              published.
+              remains a scripted demo. Only allowlisted owned illustrations are embedded locally; nothing is published.
             </p>
+            <div class="field-grid">
+              <label>Shared campaign headline<input name="experience.headline" maxlength="180"></label>
+              <label>Introduction<textarea name="experience.intro" maxlength="800"></textarea></label>
+              <label>Owned image reference<input name="experience.imageRef" placeholder="btl/assets/paraquat-field-usda-nrcs.jpg"></label>
+              <label>Image description<input name="experience.imageAlt"></label>
+              <label>Next steps · one per line<textarea name="experience.nextSteps"></textarea></label>
+              <label>FAQ copy version<input name="experience.faqVersion"></label>
+              <label>Approved FAQs · JSON array<textarea name="experience.faqs" rows="6" placeholder='[{"question":"…","answer":"…","approvalRef":"review/copy-v1"}]'></textarea></label>
+            </div>
+            <p class="muted">FAQs require a review reference. Unknown questions always go to human review. Only the owned Paraquat USDA illustration and BTL seal are allowlisted; other firm/tort assets require review and assembly. No claimant images are assumed.</p>
             <div id="page-fields"></div>
             <div id="concept-fields"></div>
           </section>
