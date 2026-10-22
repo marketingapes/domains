@@ -1,20 +1,30 @@
-/* BTL survivor lane runtime (candidate v2, 2026-09-29) — sex-abuse-la-county
-   Mirrors the Paraquat funnel: qualifier.js (landing dropdowns), prequal.js (quiz, one question at a time)
-   and intake.js (contact/callback forms) — with these lane rules:
-   - Reads window.EE_LANE (set inline on every page, before GTM). Phone is driven by EE_LANE (placeholder until bound).
-   - Pushes ONLY {event, tenant, lane, page} to dataLayer. Never names, phones, answers, outcomes or reasons.
-   - intake_endpoint is null: forms validate, fire ee_call_request, then show a calm confirmation with the phone line.
-     Nothing is posted anywhere.
-   - Outcomes: NOT_A_FIT (a hard check hit), FIRM_REVIEW (uncertain / prefer not to say), QUALIFIED. QUALIFIED and
-     FIRM_REVIEW read the same; the visitor is never told which answer mattered.
-   - Qualification criteria below are ASSUMED (criteria_status: assumed) and pending attorney review.
-   - Trauma-informed: no question asks what happened; every question has "Prefer not to say". */
+/* BTL survivor lane runtime v3 (2026-10-21, local draft) — sex-abuse-la-county
+   Three paths share this file: callback form (landing), quiz (one question at a time) and talk-to-Sofia.
+   - Reads window.EE_LANE (inline on every page, before GTM).
+   - Pushes ONLY {event, tenant, lane, page} to dataLayer. Never names, phones, answers or outcomes.
+   - No automated verdict. Screening rules for every program are PENDING attorney approval, so the page never
+     says or implies that anyone qualifies or does not. A person reviews every request.
+   - Transport: EE_LANE.intake_endpoint. null = nothing is sent, and the page says so. Success is shown only
+     for a receipt that says saved:true with a lead id. Retries reuse the same submission id.
+   - Consent: explicit, unchecked checkboxes whose text and version come from CAMPAIGN below; the server
+     checks the text hash, so edited text can never be recorded as consent.
+   - Call links are bound only when EE_LANE.phone_status is "verified_for_program". Otherwise they stay hidden. */
 (function () {
   'use strict';
   var L = window.EE_LANE || {};
-  // Phones are bound per tenant in EE_LANE on the page (Kyle-authorized 2026-09-29).
-  var TEL = L.phone_tel || '';
-  var DISPLAY = L.phone_display || '';
+  var CAMPAIGN = {
+    schema: 'btl.abuse.intake/v1',
+    campaign_id: 'btl-ca-abuse-la-county-v1',
+    question_bank_version: '2026-09-29.live-ids.1',
+    consent: {
+      version: 'btl-abuse-callback-consent-draft-2026-10-21.1',
+      calls_text: 'I agree that Phillips Law Group and its intake team, including Sofia, an AI assistant, may call me at the number I entered about this request. Calls may be recorded. Consent is not a condition of any service. I can say stop or opt out at any time.',
+      sms_text: 'I agree that Phillips Law Group may text me at this number about this request. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of any service.'
+    }
+  };
+  var PAGE_PATH = { landing: '/sex-abuse-la-county/', quiz: '/sex-abuse-la-county/quiz/', sofia: '/sex-abuse-la-county/talk-to-sofia/' }[L.page] || '';
+  var SOURCE = { landing: 'form', quiz: 'quiz', sofia: 'sofia' }[L.page] || 'form';
+  var PHONE_OK = L.phone_status === 'verified_for_program' && /^\+1[2-9]\d{9}$/.test(L.phone_tel || '');
 
   window.dataLayer = window.dataLayer || [];
   var fired = {};
@@ -27,13 +37,24 @@
   function each(sel, fn, root) { Array.prototype.forEach.call((root || document).querySelectorAll(sel), fn); }
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---- phone line: shown only when verified for this program ----
   function bindPhones(root) {
-    if (!TEL) return;
-    each('a[data-ee-tel]', function (a) { a.setAttribute('href', 'tel:' + TEL); }, root);
-    each('[data-ee-phone-text]', function (el) { el.textContent = DISPLAY; }, root);
+    each('[data-ee-call]', function (el) { el.hidden = !PHONE_OK; }, root);
+    each('[data-ee-call-pending]', function (el) { el.hidden = PHONE_OK; }, root);
+    if (!PHONE_OK) return;
+    each('a[data-ee-tel]', function (a) { a.setAttribute('href', 'tel:' + L.phone_tel); }, root);
+    each('[data-ee-phone-text]', function (el) { el.textContent = L.phone_display || ''; }, root);
   }
   bindPhones();
   ev('ee_page_view', true);
+
+  // ---- connection notice: shown before anyone types, not only after submitting ----
+  each('[data-ee-offline]', function (el) { el.hidden = !!L.intake_endpoint; });
+
+  // ---- consent text: one source, rendered into every form ----
+  each('[data-consent-text]', function (el) {
+    el.textContent = CAMPAIGN.consent[el.getAttribute('data-consent-text') + '_text'] || '';
+  });
 
   document.addEventListener('click', function (e) {
     var t = e.target && e.target.closest ? e.target.closest('a,button') : null;
@@ -42,220 +63,129 @@
     else if (t.hasAttribute('data-ee-sofia')) ev('ee_sofia_start');
   });
 
-  // ---- states ----
-  var STATES = 'AL Alabama|AK Alaska|AZ Arizona|AR Arkansas|CA California|CO Colorado|CT Connecticut|DE Delaware|DC District of Columbia|FL Florida|GA Georgia|HI Hawaii|ID Idaho|IL Illinois|IN Indiana|IA Iowa|KS Kansas|KY Kentucky|LA Louisiana|ME Maine|MD Maryland|MA Massachusetts|MI Michigan|MN Minnesota|MS Mississippi|MO Missouri|MT Montana|NE Nebraska|NV Nevada|NH New Hampshire|NJ New Jersey|NM New Mexico|NY New York|NC North Carolina|ND North Dakota|OH Ohio|OK Oklahoma|OR Oregon|PA Pennsylvania|RI Rhode Island|SC South Carolina|SD South Dakota|TN Tennessee|TX Texas|UT Utah|VT Vermont|VA Virginia|WA Washington|WV West Virginia|WI Wisconsin|WY Wyoming';
-  each('select[data-ee-state]', function (sel) {
-    STATES.split('|').forEach(function (s) { var o = document.createElement('option'); o.value = s.slice(0, 2); o.textContent = s.slice(3); sel.appendChild(o); });
-  });
+  // ---- approved question IDs (reused from the live page); rules are not here and are pending ----
+  var STEPS = [
+    { id: 'age', label: 'Age at the time', q: 'How old were you at the time?', help: 'Just the age range. You won’t be asked what happened.',
+      c: [['under18', 'Under 18'], ['18plus', '18 or older'], ['prefer_not', 'Prefer not to say']] },
+    { id: 'where', label: 'Type of place', q: 'What kind of place was it?', help: 'Pick the closest one. If it wasn’t in LA County, that’s okay to say.',
+      c: [['juvenile', 'Juvenile hall or probation camp'], ['foster', 'Foster placement or group home'], ['school', 'School'], ['youth', 'Church, youth program or other organization'], ['other_la', 'Somewhere else in LA County'], ['outside', 'Not in LA County'], ['prefer_not', 'Prefer not to say']] },
+    { id: 'when', label: 'Timeframe', q: 'About when was it?', help: 'A rough idea is fine.',
+      c: [['pre1990', 'Before 1990'], ['1990_2004', '1990 – 2004'], ['2005_2019', '2005 – 2019'], ['2020_on', '2020 or later'], ['not_sure', 'Not sure'], ['prefer_not', 'Prefer not to say']] },
+    { id: 'lawyer', label: 'Lawyer for this', q: 'Do you already have a lawyer for this?', help: 'If you’ve talked to a lawyer but didn’t sign anything, choose “No.”',
+      c: [['no', 'No'], ['yes', 'Yes, a lawyer is handling it'], ['not_sure', 'Not sure'], ['prefer_not', 'Prefer not to say']] }
+  ];
+  var ANSWERS = {}; // question_id -> { answer_id, confirmed_at }
 
-  // ---- lane criteria (ASSUMED) ----
-  var QUIZ = {
- "steps": [
-  {
-   "id": "age",
-   "q": "How old were you at the time?",
-   "help": "Just the age range. You won’t be asked what happened.",
-   "c": [
-    [
-     "under18",
-     "Under 18"
-    ],
-    [
-     "18plus",
-     "18 or older",
-     "dq"
-    ],
-    [
-     "prefer_not",
-     "Prefer not to say"
-    ]
-   ],
-   "label": "Age at the time"
-  },
-  {
-   "id": "where",
-   "q": "What kind of place was it?",
-   "help": "In Los Angeles County. Pick the closest one.",
-   "c": [
-    [
-     "juvenile",
-     "Juvenile hall or probation camp"
-    ],
-    [
-     "foster",
-     "Foster placement or group home"
-    ],
-    [
-     "school",
-     "School"
-    ],
-    [
-     "youth",
-     "Church, youth program or other organization"
-    ],
-    [
-     "other_la",
-     "Somewhere else in LA County"
-    ],
-    [
-     "outside",
-     "Not in LA County",
-     "dq"
-    ],
-    [
-     "prefer_not",
-     "Prefer not to say"
-    ]
-   ],
-   "label": "Type of place"
-  },
-  {
-   "id": "when",
-   "q": "About when was it?",
-   "help": "A rough idea is fine.",
-   "c": [
-    [
-     "pre1990",
-     "Before 1990"
-    ],
-    [
-     "1990_2004",
-     "1990 – 2004"
-    ],
-    [
-     "2005_2019",
-     "2005 – 2019"
-    ],
-    [
-     "2020_on",
-     "2020 or later"
-    ],
-    [
-     "not_sure",
-     "Not sure"
-    ],
-    [
-     "prefer_not",
-     "Prefer not to say"
-    ]
-   ],
-   "label": "Timeframe"
-  },
-  {
-   "id": "lawyer",
-   "q": "Do you already have a lawyer for this?",
-   "help": "If you’ve talked to a lawyer but didn’t sign anything, choose “No.”",
-   "c": [
-    [
-     "no",
-     "No"
-    ],
-    [
-     "yes",
-     "Yes, a lawyer is handling it",
-     "dq"
-    ],
-    [
-     "not_sure",
-     "Not sure"
-    ],
-    [
-     "prefer_not",
-     "Prefer not to say"
-    ]
-   ],
-   "label": "Lawyer for this"
+  // ---- hashing for the consent text (SubtleCrypto; secure contexts only) ----
+  function sha256(text) {
+    if (!window.crypto || !crypto.subtle || !window.TextEncoder) return Promise.reject(new Error('no_crypto'));
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+    });
   }
- ]
-};
-  var STEPS = (typeof QUIZ !== 'undefined' && QUIZ.steps) || [];
-  var DQ = 'dq', RV = 'review';
-  function flagOf(step, value) {
-    var c = step.c.filter(function (x) { return x[0] === value; })[0];
-    if (!c) return null;
-    if (c[2]) return c[2];
-    return (value === 'prefer_not' || value === 'not_sure') ? RV : null;
+  function newId() {
+    if (window.crypto && crypto.randomUUID) return 'sub-' + crypto.randomUUID();
+    return 'sub-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
   }
-  function outcomeOf(A) {
-    var dq = false, rv = false;
-    STEPS.forEach(function (s) { var f = A[s.id] ? flagOf(s, A[s.id]) : null; if (f === DQ) dq = true; if (f === RV) rv = true; });
-    return dq ? 'NOT_A_FIT' : rv ? 'FIRM_REVIEW' : 'QUALIFIED';
+  function attribution() {
+    var out = {}, q = new URLSearchParams(location.search);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) { var v = q.get(k); if (v) out[k] = v.slice(0, 120); });
+    if (q.get('fbclid')) out.fbclid_present = 'yes';
+    return out;
   }
-  function qualificationEvents(o) {
-    // Once per page load. Only the event name reaches dataLayer — never the answers or the reason.
-    if (fired.ee_qualification_complete) return;
-    ev('ee_qualification_complete', true);
-    ev(o === 'NOT_A_FIT' ? 'ee_disqualified' : 'ee_qualified', true);
-  }
-  var TEXT_OK = 'Thank you. Based on what you’ve shared, you may potentially qualify for a free, confidential review by Phillips Law Group. The firm’s attorneys would decide whether to review it — nothing is guaranteed. You still don’t need to describe what happened.';
-  var TEXT_NO = 'Thank you for trusting us with this. Based on what you’ve shared, we may not be able to help through this page right now. That isn’t a judgment about you or about what happened, and it isn’t a legal opinion. You can still call and talk it through, and support is always available.';
 
-  // ---- contact / callback forms (validate, fire ee_call_request, calm confirmation; nothing is sent) ----
+  // ---- form validation ----
   function setErr(el, msg) {
     var e = $(el.id + '-e');
     if (e) e.textContent = msg || '';
     if (msg) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
   }
+  function digits(v) { var d = (v || '').replace(/\D/g, ''); return d.length === 11 && d.charAt(0) === '1' ? d.slice(1) : d; }
   function validate(form) {
     var bad = [];
-    each('select[data-q]', function (s) {
-      if (!s.value) { setErr(s, 'Choose an answer — “Prefer not to say” is fine.'); bad.push(s); } else setErr(s, '');
-    }, form);
-    each('input[required]:not([type=checkbox]),select[required]', function (el) {
+    each('input[required]:not([type=checkbox])', function (el) {
       if (el.type === 'tel') {
-        var d = (el.value || '').replace(/\D/g, '');
-        if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
-        if (!/^[2-9]\d{2}[2-9]\d{6}$/.test(d)) { setErr(el, 'Please enter a 10-digit U.S. phone number.'); bad.push(el); } else setErr(el, '');
-      } else if (!(el.value || '').trim()) {
-        setErr(el, el.getAttribute('data-msg') || 'This field is needed so Sofia can reach you.'); bad.push(el);
-      } else setErr(el, '');
+        if (!/^[2-9]\d{2}[2-9]\d{6}$/.test(digits(el.value))) { setErr(el, 'Please enter a 10-digit U.S. phone number.'); bad.push(el); } else setErr(el, '');
+      } else if (!(el.value || '').trim()) { setErr(el, el.getAttribute('data-msg') || 'This field is needed so we can reach you.'); bad.push(el); } else setErr(el, '');
     }, form);
     each('input[type=email]', function (el) {
       var v = (el.value || '').trim();
       if (v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { setErr(el, 'Check the email address, or leave it blank.'); bad.push(el); } else setErr(el, '');
     }, form);
     each('input[type=checkbox][required]', function (el) {
-      if (!el.checked) { setErr(el, 'Please check the box so Sofia is allowed to call you back.'); bad.push(el); } else setErr(el, '');
+      if (!el.checked) { setErr(el, 'Please check this box so the firm is allowed to call you about this request.'); bad.push(el); } else setErr(el, '');
     }, form);
     return bad;
   }
-  function confirm(form, outcome) {
-    var done = $(form.getAttribute('data-done'));
-    form.reset();                      // no contact details linger on the page
-    form.hidden = true;
-    each('[data-hide-on-done]', function (x) { x.hidden = true; }, form.parentNode);
-    if (!done) return;
-    var msg = done.querySelector('[data-r-msg]');
-    if (msg && outcome) msg.textContent = outcome === 'NOT_A_FIT' ? TEXT_NO : TEXT_OK;
-    done.hidden = false;
-    var h = done.querySelector('[tabindex="-1"]') || done;
+
+  // ---- transport: honest result only ----
+  function post(body) {
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
+    return fetch(L.intake_endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), credentials: 'omit', signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, json: j }; }); })
+      .finally(function () { clearTimeout(timer); });
+  }
+  // A receipt counts as saved only when it is exactly the server's receipt for THIS submission:
+  // expected schema and campaign, the same submission id, a well-formed lead and consent record id,
+  // and dispatch disabled. Anything else stays "not confirmed".
+  var LEAD_RE = /^MA-BTL-ABUSE-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  function isSaved(r, submissionId) {
+    var j = r && r.json;
+    return !!(r && r.status === 200 && j && j.ok === true && j.saved === true &&
+      j.schema === CAMPAIGN.schema && j.campaign_id === CAMPAIGN.campaign_id &&
+      typeof submissionId === 'string' && j.submission_id === submissionId &&
+      typeof j.lead_id === 'string' && LEAD_RE.test(j.lead_id) &&
+      typeof j.consent_record_id === 'string' && /^CR-[0-9a-f]{24}$/.test(j.consent_record_id) &&
+      j.status === 'saved_pending_human_review' && j.dispatch === 'disabled' && j.eligibility === 'not_assessed');
+  }
+  function done(form, state) {
+    var box = $(form.getAttribute('data-done'));
+    if (state === 'saved') {
+      form.reset(); form.hidden = true;
+      each('[data-hide-on-done]', function (x) { x.hidden = true; }, form.parentNode);
+    }
+    if (!box) return;
+    each('[data-state]', function (el) { el.hidden = el.getAttribute('data-state') !== state; }, box);
+    box.hidden = false;
+    var h = box.querySelector('[data-state="' + state + '"] [tabindex="-1"]') || box;
     h.focus();
   }
   each('form[data-ee-form]', function (form) {
-    var kind = form.getAttribute('data-ee-form');
     var status = form.querySelector('.status');
-    form.addEventListener('change', function (e) {
-      if (kind === 'landing' && e.target.matches('select[data-q]')) ev('ee_quiz_start', true);
-      if (form.getAttribute('data-tried')) validate(form);
-    });
+    var submissionId = null, lastPayload = null;
+    form.addEventListener('change', function () { if (form.getAttribute('data-tried')) validate(form); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       form.setAttribute('data-tried', '1');
       var bad = validate(form);
       if (bad.length) { if (status) { status.className = 'status err'; status.textContent = 'Please check the highlighted fields.'; } bad[0].focus(); return; }
-      if (status) { status.className = 'status'; status.textContent = ''; }
-      var outcome = null;
-      if (kind === 'landing') {
-        var A = {};
-        each('select[data-q]', function (s) { A[s.getAttribute('data-q')] = s.value; }, form);
-        outcome = outcomeOf(A);
-        qualificationEvents(outcome);
-      } else if (kind === 'quiz') {
-        outcome = window.__laneOutcome || null;
-      }
-      ev('ee_call_request');
-      // intake_endpoint is null for this lane: nothing is transmitted.
-      confirm(form, outcome);
+      var kind = form.getAttribute('data-ee-form');
+      var answers = kind === 'quiz' ? STEPS.map(function (s) { var a = ANSWERS[s.id]; return a ? { question_id: s.id, answer_id: a.answer_id, source: 'quiz', confirmed_at: a.confirmed_at } : null; }).filter(Boolean) : [];
+      if (kind === 'quiz' && answers.length !== STEPS.length) { if (status) { status.className = 'status err'; status.textContent = 'Please answer each question first — “Prefer not to say” is fine.'; } return; }
+      var calls = form.querySelector('input[name=consent_calls]'), sms = form.querySelector('input[name=consent_sms]');
+      var contact = { first_name: (form.first_name.value || '').trim(), phone: digits(form.phone.value), email: form.email ? (form.email.value || '').trim() : '' };
+      var payloadKey = JSON.stringify([answers, contact, !!(calls && calls.checked), !!(sms && sms.checked)]);
+      if (payloadKey !== lastPayload) { submissionId = newId(); lastPayload = payloadKey; } // same content retries keep the same id
+      if (!L.intake_endpoint) { ev('ee_lead_not_sent'); done(form, 'not_sent'); return; }
+      var button = form.querySelector('button[type=submit]');
+      if (button) button.disabled = true;
+      if (status) { status.className = 'status'; status.textContent = 'Saving your request…'; }
+      Promise.all([sha256(CAMPAIGN.consent.calls_text), sha256(CAMPAIGN.consent.sms_text)]).then(function (h) {
+        return post({
+          schema: CAMPAIGN.schema, campaign_id: CAMPAIGN.campaign_id, tenant: 'BTL', submission_id: submissionId, page_path: PAGE_PATH,
+          question_bank_version: CAMPAIGN.question_bank_version, answers: answers,
+          consent: { version: CAMPAIGN.consent.version, calls: !!(calls && calls.checked), sms: !!(sms && sms.checked), calls_text_sha256: h[0], sms_text_sha256: sms && sms.checked ? h[1] : undefined },
+          contact: contact, attribution: attribution(), simulated: L.simulated === true
+        });
+      }).then(function (r) {
+        if (button) button.disabled = false;
+        if (isSaved(r, submissionId)) { if (status) status.textContent = ''; ev('ee_lead_saved'); done(form, 'saved'); return; }
+        if (status) { status.className = 'status err'; status.textContent = 'We couldn’t confirm your request was saved. Nothing has been decided. Please try again.'; }
+      }, function () {
+        if (button) button.disabled = false;
+        if (status) { status.className = 'status err'; status.textContent = 'We couldn’t confirm your request was saved. Please check your connection and try again.'; }
+      });
     });
   });
 
@@ -266,37 +196,35 @@
       cbPanel.hidden = false; openCb.setAttribute('aria-expanded', 'true');
       var f = cbPanel.querySelector('input'); setTimeout(function () { if (f) f.focus(); cbPanel.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); }, 30);
     };
-    openCb.addEventListener('click', function () {
-      if (cbPanel.hidden) open(); else { cbPanel.hidden = true; openCb.setAttribute('aria-expanded', 'false'); }
-    });
+    openCb.addEventListener('click', function () { if (cbPanel.hidden) open(); else { cbPanel.hidden = true; openCb.setAttribute('aria-expanded', 'false'); } });
     if (/[?&]callback=1/.test(location.search)) open();
   }
 
-  // ---- quiz: pre-qual one question at a time (prequal.js pattern) → result/summary → contact ----
+  // ---- quiz: one question at a time → summary (no verdict) → contact ----
   var root = $('quiz');
-  if (!root || !$('qStep') || !STEPS.length) return;
-  var A = {}, path = [];
+  if (!root || !$('qStep')) return;
+  var path = [];
   var ACK = ['Thank you.', 'Got it.', 'Okay.', 'Thanks for sharing that.'];
   function show(step) { ['qStep', 'resultStep', 'contactStep'].forEach(function (s) { $(s).hidden = s !== step; }); }
   function say(el, text, cb) {
     if (reduce) { el.textContent = text; if (cb) cb(); return; }
     el.innerHTML = '<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>';
-    setTimeout(function () { el.textContent = text; if (cb) cb(); }, 420);
+    setTimeout(function () { el.textContent = text; if (cb) cb(); }, 300);
   }
   function render(idx, ack) {
     var st = STEPS[idx]; show('qStep');
-    $('qCount').textContent = 'Question ' + (path.length + 1) + ' of ' + STEPS.length;
-    $('qBar').style.width = Math.min(96, path.length / STEPS.length * 100) + '%';
+    $('qCount').textContent = 'Question ' + (idx + 1) + ' of ' + STEPS.length;
+    $('qBar').style.width = Math.round(idx / STEPS.length * 100) + '%';
     $('qBack').hidden = !path.length;
     $('qPrompt').textContent = st.q;
-    $('qHelp').textContent = st.help || ''; $('qHelp').hidden = !st.help;
+    $('qHelp').textContent = st.help || '';
     var box = $('qChoices'); box.innerHTML = '';
     var intro = idx === 0 && !path.length ? 'You don’t need to describe what happened, and you can stop at any time. ' : '';
-    say($('qSay'), intro + (ack ? ack + ' ' : '') + st.q, function () {
+    say($('qSay'), intro + (ack ? ack : ''), function () {
       st.c.forEach(function (c, n) {
         var b = document.createElement('button'); b.type = 'button';
         b.className = 'choice' + (c[0] === 'prefer_not' ? ' pn' : '');
-        b.setAttribute('aria-pressed', A[st.id] === c[0] ? 'true' : 'false');
+        b.setAttribute('aria-pressed', ANSWERS[st.id] && ANSWERS[st.id].answer_id === c[0] ? 'true' : 'false');
         b.innerHTML = '<span class="k" aria-hidden="true">' + (n + 1) + '</span><span></span>'; b.lastChild.textContent = c[1];
         b.onclick = function () { pick(idx, c); }; box.appendChild(b);
       });
@@ -304,56 +232,31 @@
     });
   }
   function pick(idx, c) {
-    var st = STEPS[idx];
     ev('ee_quiz_start', true);
-    A[st.id] = c[0]; path.push(idx);
-    if (flagOf(st, c[0]) === DQ) return finish();
+    ANSWERS[STEPS[idx].id] = { answer_id: c[0], confirmed_at: new Date().toISOString().replace(/\.\d+Z$/, '.000Z') };
+    path.push(idx);
     if (idx + 1 >= STEPS.length) return finish();
     render(idx + 1, ACK[path.length % ACK.length]);
   }
-  function back() {
-    var last = path.pop(); if (last == null) return;
-    delete A[STEPS[last].id];
-    render(last);
-  }
-  function summary() {
+  function back() { var last = path.pop(); if (last == null) return; render(last); }
+  function finish() {
+    show('resultStep');
+    ev('ee_quiz_complete', true);
     var ul = $('rSum'); ul.innerHTML = '';
     STEPS.forEach(function (s) {
-      if (!A[s.id]) return;
-      var c = s.c.filter(function (x) { return x[0] === A[s.id]; })[0];
-      var li = document.createElement('li'), a = document.createElement('span'), b = document.createElement('strong');
-      a.textContent = s.label; b.textContent = c[1]; li.appendChild(a); li.appendChild(b); ul.appendChild(li);
+      var a = ANSWERS[s.id]; if (!a) return;
+      var c = s.c.filter(function (x) { return x[0] === a.answer_id; })[0];
+      var li = document.createElement('li'), k = document.createElement('span'), v = document.createElement('strong');
+      k.textContent = s.label; v.textContent = c[1]; li.appendChild(k); li.appendChild(v); ul.appendChild(li);
     });
-  }
-  function finish() {
-    var o = outcomeOf(A); window.__laneOutcome = o;
-    show('resultStep');
-    qualificationEvents(o);
-    var acts = $('rActions'); acts.innerHTML = '';
-    function act(label, cls, fn, tel) {
-      var b = document.createElement(tel ? 'a' : 'button');
-      if (tel) { b.setAttribute('data-ee-tel', ''); b.href = 'tel:' + TEL; } else { b.type = 'button'; b.onclick = fn; }
-      b.className = cls; b.textContent = label; acts.appendChild(b);
-    }
-    $('rRainn').hidden = o !== 'NOT_A_FIT';
-    if (o === 'NOT_A_FIT') {
-      $('rSummary').hidden = true;
-      say($('rSay'), TEXT_NO);
-      act('Call Sofia anyway · ' + DISPLAY, 'next', null, true);
-      act('Have a person note it anyway', 'choice', toContact);
-      act('Start over', 'choice', restart);
-    } else {
-      summary(); $('rSummary').hidden = false;
-      say($('rSay'), 'Thank you. Based on what you’ve shared, you may potentially qualify for a free, confidential review by an independent law firm. Nothing is guaranteed. Call me now, or leave a safe way to reach you.');
-      act('Call Sofia now · ' + DISPLAY, 'next', null, true);
-      act('Leave my details for a private callback', 'choice', toContact);
-    }
+    $('rOutside').hidden = !(ANSWERS.where && ANSWERS.where.answer_id === 'outside');
+    say($('rSay'), 'Thank you. Nothing on this page decides whether you qualify. A person at Phillips Law Group reviews every request, and you can correct any answer.');
     $('rBack').focus({ preventScroll: true });
   }
-  function toContact() { show('contactStep'); var f = $('first_name'); if (f) f.focus(); root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); }
-  function restart() { A = {}; path = []; window.__laneOutcome = null; render(0); }
   $('qBack').onclick = back;
   $('rBack').onclick = back;
+  $('rContinue').onclick = function () { show('contactStep'); var f = $('first_name'); if (f) f.focus(); root.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' }); };
+  $('rRestart').onclick = function () { ANSWERS = {}; path = []; render(0); };
   var cBack = $('cBack'); if (cBack) cBack.onclick = function () { show('resultStep'); };
   document.addEventListener('keydown', function (e) {
     if ($('qStep').hidden || /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
