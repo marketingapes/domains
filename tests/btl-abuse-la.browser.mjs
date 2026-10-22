@@ -187,14 +187,14 @@ await check("all campaign pages use a plain firm wordmark without the product th
   }
 });
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
-await check('form and quiz have distinct palettes and readable text/button contrast', async()=>{
+await check('restored image-led form and quiz retain readable text/button contrast', async()=>{
   const backgrounds=[];
   for(const path of ['/sex-abuse-la-county/','/sex-abuse-la-county/quiz/']){
     await open(path);
     const colors=await page.evaluate(()=>{const body=getComputedStyle(document.body),button=getComputedStyle(document.querySelector('.submit')||document.querySelector('.next'));return{ink:body.color,paper:body.backgroundColor,buttonInk:button.color,buttonPaper:button.backgroundColor}});
     assert.ok(contrast(colors.ink,colors.paper)>=4.5,`${path} body contrast`);assert.ok(contrast(colors.buttonInk,colors.buttonPaper)>=4.5,`${path} action contrast`);backgrounds.push(colors.paper);
   }
-  assert.notEqual(backgrounds[0],backgrounds[1]);
+  assert.equal(await page.evaluate(()=>document.body.className),'lp');
   assert.equal(await page.evaluate(()=>document.querySelector('.top').getBoundingClientRect().bottom<=document.querySelector('.hero').getBoundingClientRect().top+1),true,'header and hero must not overlap');
 });
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];

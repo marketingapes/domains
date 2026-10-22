@@ -28,3 +28,8 @@ test('LA runtime cannot assess eligibility and requires the matching saved recei
   assert.match(s,/saved_pending_human_review/);assert.match(s,/not_assessed/);assert.match(s,/submission_id/);assert.match(s,/consent_record_id/);
   assert.match(s,/if \(!L\.intake_endpoint\)/);
 });
+
+test('requested image-led design is restored without changing Sofia or transport',()=>{
+  for(const p of ['index.html','quiz/index.html']){const s=read(p);assert.match(s,/<body class="lp">/);assert.doesNotMatch(s,/form-experience|quiz-experience/);assert.match(s,/hero-900\.jpg/)}
+  assert.match(read('lane.css'),/hero/);
+});
