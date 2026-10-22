@@ -91,9 +91,9 @@
     }
   ],
   "missing_final_deliverables": [
-    "Final MP4 (H.264) exports: the local ffmpeg is broken (missing libx265) and no encoder was installed; earlier MP4s elsewhere still say four questions and must not be used",
     "Voice-over or captions track, if wanted",
     "Firm and attorney approval of all creative before any upload"
   ],
-  "question_bank_version": "2026-10-22.kyle-screening.1"
+  "question_bank_version": "2026-10-22.kyle-screening.1",
+  "mp4_exports": "out-2026-10-22-mp4-final2/receipt.json (Chromium MediaRecorder H.264; Homebrew ffmpeg broken: built against libx265.215, x265 4.3 ships libx265.217)"
 }
