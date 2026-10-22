@@ -401,3 +401,30 @@ body.talk{background:radial-gradient(120% 80% at 80% 0%,#243049 0%,var(--bg) 58%
   .lp .hero:before{height:110px;background:linear-gradient(180deg,rgba(246,241,231,0) 0,rgba(246,241,231,0) 30px,rgba(246,241,231,.82) 50px,var(--paper) 110px),url(/assets/lanes/sex-abuse-la-county/hero-900.jpg) center 35%/cover no-repeat}
 }
 @media(min-width:900px){.lp .hero:before{background-image:linear-gradient(180deg,rgba(246,241,231,.34) 0%,rgba(246,241,231,.66) 46%,rgba(246,241,231,.92) 78%,var(--paper) 100%),url(/assets/lanes/sex-abuse-la-county/hero.jpg)}}
+
+/* ---------- v3 local draft (2026-10-21): explicit consent, quiz card, honest receipts ---------- */
+fieldset.consent{border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 14px 10px;margin:16px 0 14px;background:#fff}
+fieldset.consent legend{font-weight:650;font-size:.93rem;padding:0 6px}
+.ck-row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;margin:8px 0}
+.ck-row input{width:24px;height:24px;margin:2px 0 0;accent-color:var(--cta)}
+.ck-row label{font-size:.88rem;line-height:1.45;color:var(--ink-2)}
+.consent-version{margin:8px 0 0;font-size:.78rem;color:var(--muted)}
+.call-pending{margin:14px 0 0;font-size:.92rem;color:var(--warn-ink);background:var(--warn-bg);border-radius:var(--r-sm);padding:10px 14px;max-width:46rem}
+.quiz{padding:22px}
+.q-say{min-height:1.5em;margin:12px 0 6px;color:var(--ink-2)}
+.q-prompt{font-family:var(--serif);font-weight:400;font-size:1.55rem;line-height:1.2;margin:4px 0 6px}
+.choices{display:grid;gap:10px;margin:14px 0 4px}
+.r-sum{list-style:none;margin:12px 0;padding:0;border-top:1px solid var(--line)}
+.r-sum li{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.r-sum li span{color:var(--muted)}
+.r-actions{display:grid;gap:10px;margin-top:16px}
+.receipt [data-state] h3{margin:6px 0 4px}
+@media (min-width:768px){.r-actions{grid-template-columns:1fr 1fr}}
+.offline-note{margin:0 0 14px;padding:10px 14px;border-radius:var(--r-sm);background:var(--warn-bg);color:var(--warn-ink);font-size:.9rem}
+
+/* Voice-first preview: disabled primary remains visible; callback is secondary. */
+.voice-unavailable:disabled{opacity:.7;cursor:not-allowed;box-shadow:none;transform:none;color:#132033}
+.voice-unavailable .button-copy{padding:1rem 1.4rem}
+#openCb .button-copy strong{font-size:.93rem;text-transform:none;white-space:normal}
+#openCb{margin-top:18px}
+@media(max-width:48rem){.talk h1{max-width:calc(100% - 9.4rem)}}
