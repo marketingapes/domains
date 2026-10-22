@@ -3,8 +3,16 @@
   "status": "draft_local_only",
   "campaign_id": "btl-ca-abuse-la-county-v1",
   "tenant": "BTL",
-  "firm": { "id": "phillips-law-group", "name": "Phillips Law Group", "logo_ref": "/assets/phillips-logo.webp" },
-  "program_priority": ["la-county-juvenile-detention", "ca-juvenile-detention-other", "ca-womens-prison"],
+  "firm": {
+    "id": "phillips-law-group",
+    "name": "Phillips Law Group",
+    "logo_ref": "/assets/phillips-logo.webp"
+  },
+  "program_priority": [
+    "la-county-juvenile-detention",
+    "ca-juvenile-detention-other",
+    "ca-womens-prison"
+  ],
   "criteria_status": "pending_attorney_approval",
   "question_bank_version": "2026-09-29.live-ids.1",
   "consent_version": "btl-abuse-callback-consent-draft-2026-10-21.1",
@@ -12,7 +20,14 @@
     "service_fee_cents": 250000,
     "media_budget_cents": 500000,
     "currency": "USD",
-    "channels": { "facebook": "first", "instagram": "off", "tiktok": "off", "google": "off", "youtube": "off", "programmatic": "off" },
+    "channels": {
+      "facebook": "first",
+      "instagram": "off",
+      "tiktok": "off",
+      "google": "off",
+      "youtube": "off",
+      "programmatic": "off"
+    },
     "outcome_promise": "none",
     "statement": "Campaign build and management for a fixed fee plus a media budget. No number of signed cases, retainers or outcomes is promised."
   },
@@ -21,12 +36,16 @@
     "quiz": "https://besttortlawyers.com/sex-abuse-la-county/quiz/",
     "voice": "https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/?callback=1"
   },
-  "attribution": { "utm_source": "facebook", "utm_medium": "paid_social", "utm_campaign": "btl-ca-abuse-la-county-v1" },
+  "attribution": {
+    "utm_source": "facebook",
+    "utm_medium": "paid_social",
+    "utm_campaign": "btl-ca-abuse-la-county-v1"
+  },
   "ads": [
     {
       "angle_id": "la-review-form",
       "path": "form",
-      "primary_text": "Sexually abused as a minor at an LA County juvenile hall, camp or other facility? California changed its laws, and you may still have options even if it was years ago. Ask for a free, confidential review by Phillips Law Group. You don’t need to describe what happened.",
+      "primary_text": "Information about confidential legal review requests concerning LA County juvenile halls, camps and other juvenile facilities. Ask Phillips Law Group for a free review. A person reviews each request. No account of what happened is required.",
       "headline": "Free, confidential review",
       "description": "Attorney advertising. No outcome guaranteed.",
       "cta": "LEARN_MORE",
@@ -54,6 +73,20 @@
       "image_alt": "Wide view of the Los Angeles basin and hills in soft golden-hour light"
     }
   ],
-  "forbidden_claims": ["qualif", "guarantee", "settlement", "compensation", "win", "million", "eligible", "you have a case", "call now", "today only"],
-  "required_disclosures": ["Attorney advertising", "No outcome guaranteed"]
+  "forbidden_claims": [
+    "qualif",
+    "guarantee",
+    "settlement",
+    "compensation",
+    "win",
+    "million",
+    "eligible",
+    "you have a case",
+    "call now",
+    "today only"
+  ],
+  "required_disclosures": [
+    "Attorney advertising",
+    "No outcome guaranteed"
+  ]
 }

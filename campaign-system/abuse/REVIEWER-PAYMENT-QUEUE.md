@@ -16,3 +16,5 @@ Corrections:
 The store adapter must provide durable atomic setNx before production use. This memory store is a fixture, not a durable queue or worker. Completion records indicate local build evidence, not a provider effect. There is no invoice webhook, authenticated payment connector, worker lease/executor or live activation path in this module. Capabilities are process-local and require re-verification after restart. Do not treat a callback that merely echoes input as an authoritative settlement reader.
 
 Validation: node --test campaign-system/test/abuse-campaign.test.mjs tests/phillips-5-lane.test.mjs (21 pass); node --test campaign-system/test/*.test.mjs (42 pass). Tests use fictional evidence only. No real payment was verified.
+
+Creative copy review: the form ad now uses neutral informational wording rather than asserting the viewer experienced abuse or making an unsourced claim about a change in California law. The offer, destination, existing photos and legal review requirement are unchanged. This is draft copy, not ad-policy approval.
