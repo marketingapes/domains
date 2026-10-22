@@ -1,0 +1,281 @@
+{
+  "schema": "btl.mass-tort-kit/v1",
+  "product": "MASS_TORT",
+  "brand": "btl",
+  "topic": "talc",
+  "campaignId": "template-talc-review-001",
+  "start": "2026-11-01",
+  "templateOnly": true,
+  "identity": {
+    "tenantId": "",
+    "domainId": "",
+    "source": "btl:mass-tort:template-talc-review-001",
+    "submissionKey": "submission_id",
+    "leadKey": "lead_id",
+    "dedupeScope": "tenant+domain+campaign+submission"
+  },
+  "firm": {
+    "id": "",
+    "name": "",
+    "logoRef": "",
+    "color": "#153b51"
+  },
+  "geography": {
+    "included": [],
+    "excluded": []
+  },
+  "screening": {
+    "topic": "talc",
+    "version": "",
+    "qualifies": [],
+    "disqualifies": [],
+    "humanReviewRequired": true
+  },
+  "consent": {
+    "version": "",
+    "callsText": "",
+    "smsText": "",
+    "method": "explicit_unchecked_channel_choice"
+  },
+  "pages": [
+    {
+      "path": "form",
+      "studioMode": "open",
+      "pageId": "template-talc-review-001-form",
+      "previewRef": "",
+      "copyVersion": ""
+    },
+    {
+      "path": "quiz",
+      "studioMode": "prequalify",
+      "pageId": "template-talc-review-001-quiz",
+      "previewRef": "",
+      "copyVersion": ""
+    },
+    {
+      "path": "sofia",
+      "studioMode": "ai",
+      "pageId": "template-talc-review-001-sofia",
+      "previewRef": "",
+      "copyVersion": ""
+    }
+  ],
+  "concepts": [
+    {
+      "id": "education",
+      "headline": "",
+      "body": "",
+      "imageRef": "",
+      "videoStoryboardRef": "",
+      "videoRef": ""
+    },
+    {
+      "id": "process",
+      "headline": "",
+      "body": "",
+      "imageRef": "",
+      "videoStoryboardRef": "",
+      "videoRef": ""
+    },
+    {
+      "id": "human-review",
+      "headline": "",
+      "body": "",
+      "imageRef": "",
+      "videoStoryboardRef": "",
+      "videoRef": ""
+    }
+  ],
+  "bindings": {
+    "intakeContract": "btl.intake.web/v1",
+    "makeScenario": {
+      "id": "",
+      "revision": ""
+    },
+    "makeHook": {
+      "id": "",
+      "revision": ""
+    },
+    "vapiAssistant": {
+      "id": "",
+      "revision": ""
+    },
+    "existingTestLine": {
+      "id": "",
+      "revision": ""
+    },
+    "bigQuery": {
+      "id": "",
+      "revision": ""
+    },
+    "perspective": {
+      "id": "",
+      "revision": ""
+    }
+  },
+  "destinations": {
+    "calendar": {
+      "id": "",
+      "revision": ""
+    },
+    "transfer": {
+      "id": "",
+      "revision": ""
+    },
+    "firm": {
+      "id": "",
+      "revision": ""
+    },
+    "fallback": {
+      "id": "",
+      "revision": ""
+    },
+    "timezone": ""
+  },
+  "reporting": {
+    "sampleRef": "",
+    "actualRef": "",
+    "sampleLabel": "SYNTHETIC SAMPLE — not production performance",
+    "unknownValues": "null",
+    "publicMinCohort": 10,
+    "maxAgeMinutes": 15,
+    "publicAggregatesOnly": true
+  },
+  "budget": {
+    "mediaCents": null,
+    "approvalRef": ""
+  },
+  "evidence": {
+    "snapshot": "",
+    "review": {
+      "pagesPolished": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "adPreviews": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "existingTestLine": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "honestSampleReport": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      }
+    },
+    "launch": {
+      "firmCriteria": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "geography": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "copy": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "consent": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "bindings": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "persistentReceipt": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "leadCallOutcome": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "scheduling": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "handoff": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "safeguards": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "actualReporting": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "publicReportPrivacy": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "budget": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      },
+      "activation": {
+        "snapshot": "",
+        "verified": false,
+        "evidenceRef": "",
+        "reviewer": "",
+        "reviewedAt": ""
+      }
+    }
+  }
+}
