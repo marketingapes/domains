@@ -7,9 +7,15 @@ export function createPaymentEventAdapter({ store, resolveInvoice, publicKeys = 
     async receive({ raw, signature, keyId }) {
       if (typeof raw !== 'string' || Buffer.byteLength(raw) > 32768) throw Error('payment_body_invalid');
       if (!Object.hasOwn(publicKeys, keyId)) throw Error('payment_signing_key_unconfigured');
-      const key = createPublicKey(publicKeys[keyId]);
+      // Keys are trusted server configuration, with an explicit tenant/campaign authority profile.
+      // This local package supports fixture keys only; a signature alone never makes a real payment.
+      const profile = publicKeys[keyId];
+      if (!profile || profile.mode !== 'fixture' || !profile.tenant || !profile.firm_id || !profile.campaign_id) throw Error('payment_key_profile_invalid');
+      const key = createPublicKey(profile.public_key);
       if (key.asymmetricKeyType !== 'ed25519' || !/^[0-9a-f]{128}$/.test(signature || '') || !verify(null, Buffer.from(raw), key, Buffer.from(signature,'hex'))) throw Error('payment_signature_invalid');
       const e = JSON.parse(raw);
+      if (e?.fixture !== true) throw Error('live_payment_relay_disabled');
+      if (e.tenant !== profile.tenant || e.firm_id !== profile.firm_id || e.campaign_id !== profile.campaign_id) throw Error('payment_key_scope_mismatch');
       const allowed = ['schema','event_id','tenant','firm_id','campaign_id','order_id','invoice_id','reference','amount_cents','currency','status','source','occurred_at','fixture'];
       if (Object.keys(e).some(k => !allowed.includes(k)) || e.schema !== 'btl.payment-relay/v1' || !/^pay-[a-zA-Z0-9_-]{8,80}$/.test(e.event_id || '') || !/^[A-Za-z0-9_-]{6,80}$/.test(e.reference || '') || typeof e.fixture !== 'boolean' || !Number.isSafeInteger(e.amount_cents) || e.amount_cents <= 0) throw Error('payment_event_invalid');
       const time = Date.parse(e.occurred_at);
@@ -29,6 +35,7 @@ export function createPaymentEventAdapter({ store, resolveInvoice, publicKeys = 
       return { accepted:true, event_id:e.event_id, fixture:e.fixture, activation:false, settlement_scope:scope };
     },
     async readSettlement(query, { fixture = false } = {}) {
+      if (fixture !== true) return null; // No production settlement authority in this local package.
       const scope = sha(JSON.stringify([query.tenant,query.campaign_id,query.invoice_id,fixture]));
       if (await store.get(`payment:v1:${scope}:hold`)) return null;
       const receipt = await store.get(`payment:v1:${scope}:settlement:${query.reference}`);

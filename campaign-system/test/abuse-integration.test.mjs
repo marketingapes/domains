@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm,readFile} from 'node:fs/promises';
+import {mkdtemp,rm,readFile,chmod,symlink} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {generateKeyPairSync,sign} from 'node:crypto';
+import {generateKeyPairSync,sign,createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {createDiskStore} from '../abuse/durable-store.mjs';
 import {createPaymentEventAdapter} from '../abuse/payment-events.mjs';
@@ -23,18 +23,28 @@ test('disk NX is atomic across processes, survives reopening, and refuses mutabl
   const a=await createDiskStore(dir),first=await a.get('claim');first.winner=99;assert.notEqual((await a.get('claim')).winner,99);
   const b=await createDiskStore(dir);assert.deepEqual(await b.get('claim'),await a.get('claim'));
   const lock=await a.withLock('task',async()=>{assert.equal((await b.withLock('task',()=>assert.fail())).busy,true);return'finished'});assert.equal(lock.value,'finished');
+  const append=i=>new Promise((resolve,reject)=>{const code=`import {createDiskStore} from ${JSON.stringify(moduleUrl)}; const s=await createDiskStore(${JSON.stringify(dir)});for(let n=0;n<100;n++){try{await s.push('events',{id:${i}});process.exit(0)}catch(e){if(!e.message.includes('append_busy'))throw e;await new Promise(r=>setTimeout(r,2))}}process.exit(1);`;const c=spawn(process.execPath,['--input-type=module','-e',code],{stdio:'ignore'});c.on('exit',v=>v?reject(Error('append failed')):resolve());c.on('error',reject)});
+  await Promise.all(Array.from({length:6},(_,i)=>append(i)));
+  assert.deepEqual((await a.range('events')).map(x=>x.id).sort(),[0,1,2,3,4,5]);
+  const hash=createHash('sha256').update('linked-key').digest('hex');await symlink(join(dir,'nonexistent-fixture'),join(dir,hash+'.json'));
+  await assert.rejects(a.get('linked-key'),e=>e.code==='ELOOP');
+  await chmod(dir,0o755);await assert.rejects(createDiskStore(dir),/private_and_owned/);await chmod(dir,0o700);
 }));
 
 test('signed payment relay: exact raw signature, scope, timestamp, replay conflict and refund hold',async()=>{
   // Ephemeral mock keypair: never persisted or configured on a provider.
   const {privateKey,publicKey}=generateKeyPairSync('ed25519');const key=publicKey.export({type:'spki',format:'pem'});
   const store=memoryStore(),o=order(),inv=draftInvoice(o),now=Date.parse('2026-10-22T15:00:00Z');
-  const adapter=createPaymentEventAdapter({store,resolveInvoice:async id=>id===inv.invoice_id?{order:o,invoice:inv}:null,publicKeys:{fixture:key},now:()=>now});
+  const profile={public_key:key,mode:'fixture',tenant:o.tenant,firm_id:o.firm_id,campaign_id:o.campaign_id};
+  const adapter=createPaymentEventAdapter({store,resolveInvoice:async id=>id===inv.invoice_id?{order:o,invoice:inv}:null,publicKeys:{fixture:profile},now:()=>now});
   const event={schema:'btl.payment-relay/v1',event_id:'pay-fixture-00000001',tenant:o.tenant,firm_id:o.firm_id,campaign_id:o.campaign_id,order_id:o.order_id,invoice_id:inv.invoice_id,reference:'FIXTURE-SETTLEMENT-001',amount_cents:inv.total_cents,currency:inv.currency,status:'settled',source:'processor_settlement',occurred_at:'2026-10-22T14:59:00Z',fixture:true};
   const pack=e=>{const raw=JSON.stringify(e);return{raw,signature:sign(null,Buffer.from(raw),privateKey).toString('hex'),keyId:'fixture'}};
   await assert.rejects(adapter.receive({...pack(event),raw:JSON.stringify({...event,amount_cents:1})}),/signature/);
   await assert.rejects(adapter.receive({...pack(event),keyId:'missing'}),/unconfigured/);
   await assert.rejects(adapter.receive(pack({...event,tenant:'NIL'})),/scope/);
+  await assert.rejects(adapter.receive(pack({...event,fixture:false})),/live_payment_relay_disabled/,'even a valid fixture signature cannot mint real payment authority');
+  const bareKey=createPaymentEventAdapter({store,publicKeys:{fixture:key},resolveInvoice:async()=>({order:o,invoice:inv}),now:()=>now});
+  await assert.rejects(bareKey.receive(pack(event)),/key_profile_invalid/);
   await assert.rejects(adapter.receive(pack({...event,occurred_at:'2026-10-22T14:00:00Z'})),/stale/);
   await assert.rejects(adapter.receive(pack({...event,unexpected:'untrusted'})),/invalid/);
   await adapter.receive(pack(event));await adapter.receive(pack(event));

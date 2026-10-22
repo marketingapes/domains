@@ -1,18 +1,24 @@
 // Local disk adapter for deterministic drafts and fictional fixtures. Not a Render deployment.
 // setNx publishes a fully fsynced file by atomic hard-link; interrupted writes never publish JSON.
-import { mkdir, open, readFile, rename, link, unlink, rm, lstat } from 'node:fs/promises';
+import { mkdir, open, rename, link, unlink, rm, lstat } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
+import { constants } from 'node:fs';
 
 export async function createDiskStore(directory) {
   const root = resolve(directory);
   await mkdir(root, { recursive: true, mode: 0o700 });
   const stat = await lstat(root);
   if (!stat.isDirectory() || stat.isSymbolicLink()) throw Error('store_directory_invalid');
+  if ((stat.mode & 0o077) !== 0 || (typeof process.getuid === 'function' && stat.uid !== process.getuid())) throw Error('store_directory_must_be_private_and_owned');
   const file = key => join(root, createHash('sha256').update(key).digest('hex') + '.json');
   const missing = e => e.code === 'ENOENT';
   async function get(key) {
-    try { const entry = JSON.parse(await readFile(file(key), 'utf8')); if (entry.key !== key) throw Error('store_key_conflict'); return entry.value; }
+    try {
+      const handle = await open(file(key), constants.O_RDONLY | constants.O_NOFOLLOW);
+      let entry; try { entry = JSON.parse(await handle.readFile('utf8')); } finally { await handle.close(); }
+      if (entry.key !== key) throw Error('store_key_conflict'); return entry.value;
+    }
     catch (e) { if (missing(e)) return null; throw e; }
   }
   async function write(key, value, nx) {
