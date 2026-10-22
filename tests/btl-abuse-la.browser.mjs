@@ -142,7 +142,7 @@ await check("quiz → summary → saved with four question IDs", async () => {
   await answerQuiz(); await sleep(600); // the summary line is typed in after a short pause
   const text = await evaluate("document.getElementById('rSay').textContent + ' ' + document.getElementById('rSum').innerText");
   assert.equal(await evaluate("document.getElementById('rOutside').hidden"), true);
-  assert.match(text, /Nothing on this page decides whether you qualify/);
+  assert.match(text, /Nothing on this page decides eligibility/);
   assert.doesNotMatch(text, /may potentially qualify|not be able to help|disqualif/i);
   assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 4);
   await click("#rContinue"); await fillContact("quizForm"); await click("#quizForm button[type=submit]"); await sleep(600);

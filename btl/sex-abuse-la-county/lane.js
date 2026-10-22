@@ -250,7 +250,7 @@
       k.textContent = s.label; v.textContent = c[1]; li.appendChild(k); li.appendChild(v); ul.appendChild(li);
     });
     $('rOutside').hidden = !(ANSWERS.where && ANSWERS.where.answer_id === 'outside');
-    say($('rSay'), 'Thank you. Nothing on this page decides whether you qualify. A person at Phillips Law Group reviews every request, and you can correct any answer.');
+    say($('rSay'), 'Thank you. Nothing on this page decides eligibility. A person at Phillips Law Group reviews every request, and you can correct any answer.');
     $('rBack').focus({ preventScroll: true });
   }
   $('qBack').onclick = back;
