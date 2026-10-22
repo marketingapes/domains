@@ -5,7 +5,9 @@ import path from 'node:path';
 
 // Phillips 5-lane go-live candidate — identity separation, tracking contract, survivor-lane safety.
 const LANES = [
-  {tenant: 'BTL', dir: 'btl/sex-abuse-la-county', survivor: true},
+  // LA County (v3 local draft, 2026-10-21) is held to the gated contract below instead: measurement off by
+  // default, no ungated noscript, no automated qualification events, and no phone until one is verified.
+  {tenant: 'BTL', dir: 'btl/sex-abuse-la-county', survivor: true, gated: true},
   {tenant: 'BTL', dir: 'btl/sex-abuse-ca-womens-prisons', survivor: true},
   {tenant: 'BTL', dir: 'btl/rideshare-sex-abuse', survivor: true},
   {tenant: 'NIL', dir: 'nil/mva-pi', survivor: false},
@@ -64,7 +66,8 @@ test('tracking contract on every page', () => {
   for (const l of LANES) for (const p of PAGES) {
     const f = `${l.dir}/${p}`, s = read(f), id = ID[l.tenant];
     assert.ok(s.includes(`googletagmanager.com/gtm.js`) && s.includes(id.gtm), `${f} GTM`);
-    assert.ok(s.includes(`ns.html?id=${id.gtm}`), `${f} GTM noscript`);
+    if (l.gated) assert.ok(!s.includes(`ns.html?id=${id.gtm}`) && /L\.measurement!=="on"/.test(s), `${f} measurement must be gated and default off`);
+    else assert.ok(s.includes(`ns.html?id=${id.gtm}`), `${f} GTM noscript`);
     assert.match(s, /window\.EE_LANE\s*=/, `${f} EE_LANE`);
     assert.match(s, new RegExp(`tenant\\s*:\\s*["']${l.tenant}["']`), `${f} tenant`);
     assert.ok(s.includes(id.ga4), `${f} GA4 property`);
@@ -80,8 +83,9 @@ test('tracking contract on every page', () => {
 test('page events are wired (non-identifying)', () => {
   for (const l of LANES) {
     const all = laneFiles(l.dir).map(read).join('\n');
-    for (const e of ['ee_page_view', 'ee_quiz_start', 'ee_qualification_complete', 'ee_qualified', 'ee_disqualified', 'ee_sofia_start', 'ee_call_request'])
-      assert.ok(all.includes(e), `${l.dir} missing ${e}`);
+    const events = l.gated ? ['ee_page_view', 'ee_quiz_start', 'ee_quiz_complete', 'ee_lead_saved', 'ee_lead_not_sent', 'ee_sofia_start', 'ee_call_request'] : ['ee_page_view', 'ee_quiz_start', 'ee_qualification_complete', 'ee_qualified', 'ee_disqualified', 'ee_sofia_start', 'ee_call_request'];
+    for (const e of events) assert.ok(all.includes(e), `${l.dir} missing ${e}`);
+    if (l.gated) for (const e of ['ee_qualification_complete', 'ee_qualified', 'ee_disqualified']) assert.ok(!all.includes(`'${e}'`), `${l.dir} still emits ${e}`);
   }
 });
 
@@ -97,7 +101,8 @@ test('bound tenant phones; no wrong-tenant, internal, or placeholder numbers', (
   for (const l of LANES) {
     for (const p of PAGES) {
       const f = `${l.dir}/${p}`, s = read(f);
-      assert.ok(TENANT_PHONE[l.tenant].test(s), `${f} missing bound ${l.tenant} number`);
+      if (l.gated) assert.ok(!TENANT_PHONE[l.tenant].test(s) && /phone_status:"unverified_for_program"/.test(s), `${f} must not show an unverified line`);
+      else assert.ok(TENANT_PHONE[l.tenant].test(s), `${f} missing bound ${l.tenant} number`);
       assert.ok(!TENANT_PHONE[OTHER[l.tenant]].test(s), `${f} contains the other tenant's number`);
     }
     for (const f of laneFiles(l.dir)) {
