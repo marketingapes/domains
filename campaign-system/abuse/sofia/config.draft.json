@@ -1,0 +1,22 @@
+{
+  "schema": "btl.sofia-config-draft/v1",
+  "status": "local_unbound_not_provider_imported",
+  "campaign_id": "btl-ca-abuse-la-county-v1",
+  "template_reference": "08c54f48-2d2e-4302-a62b-d17893a7cb5f",
+  "assistant_reference": "a058ae66-c7d4-458f-b978-1e139d727aee",
+  "dispatch": "disabled",
+  "phone_binding": null,
+  "recording_enabled": false,
+  "recording_consent": "separate affirmative recording consent plus provider receipt required",
+  "context_source": "existing authenticated call-bound adapter.context, never client answers alone",
+  "allowed_question_ids": ["age", "where", "when", "lawyer"],
+  "prior_answer_rule": "Confirm or correct by question ID; only ask approved unanswered questions; prefer_not accepted",
+  "human_review": "required",
+  "eligibility": "not_assessed",
+  "on_suppression_unverified": "stop",
+  "on_opt_out": "write shared suppression and confirm before acknowledging; end conversation",
+  "on_human_request": "offer human review, no transfer-completed claim without receipt",
+  "failed_handoff_owner": "intake-operations",
+  "transfer_destination": null,
+  "staffed_hours": null
+}

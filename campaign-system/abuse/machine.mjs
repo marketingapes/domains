@@ -114,14 +114,18 @@ export function createPaymentAuthority({ readSettlement, mode = 'fixture', now =
       if (r.amount_cents !== invoice.total_cents || r.currency !== invoice.currency) return { verified: false, reason: 'amount_mismatch' };
       const received = Date.parse(r.received_at), checked = Date.parse(r.verified_at);
       if (!Number.isFinite(received) || !Number.isFinite(checked) || received > checked || checked > t || t - checked > maxAgeMs || !r.verified_by) return { verified: false, reason: 'verification_stale_or_invalid' };
-      if ((mode === 'fixture') !== (r.fixture === true)) return { verified: false, reason: 'fixture_mode_mismatch' };
+      if (typeof r.fixture !== 'boolean' || (mode === 'fixture') !== r.fixture) return { verified: false, reason: 'fixture_mode_mismatch' };
       const proof = freeze({ verified: true, fixture: mode === 'fixture', note: mode === 'fixture' ? 'FIXTURE — not a real payment' : 'Verified by injected trusted settlement reader; activation remains off', scope: binding });
-      issued.set(proof, { binding, expires: Math.min(checked + maxAgeMs, t + maxAgeMs) });
+      issued.set(proof, { binding, reference, expires: Math.min(checked + maxAgeMs, t + maxAgeMs) });
       return proof;
     },
-    assert(order, invoice, proof) {
+    async assert(order, invoice, proof) {
       const p = proof && issued.get(proof);
       if (!p || p.expires <= now() || p.binding !== scope(order, invoice)) throw new Error('payment_not_verified_for_scope');
+      // A newly received refund/dispute must revoke a still-unexpired capability.
+      const r = await readSettlement({ tenant:order.tenant, firm_id:order.firm_id, campaign_id:order.campaign_id, order_id:order.order_id, invoice_id:invoice.invoice_id, reference:p.reference });
+      const received = Date.parse(r?.received_at), checked = Date.parse(r?.verified_at);
+      if (!r || r.status !== 'settled' || !['processor_settlement','bank_statement'].includes(r.source) || !r.verified_by || !Number.isFinite(received) || !Number.isFinite(checked) || received > checked || checked > now() || now() - checked > maxAgeMs || r.tenant !== order.tenant || r.firm_id !== order.firm_id || r.campaign_id !== order.campaign_id || r.order_id !== order.order_id || r.invoice_id !== invoice.invoice_id || r.reference !== p.reference || r.amount_cents !== invoice.total_cents || r.currency !== invoice.currency || r.fixture !== proof.fixture) throw new Error('payment_reverification_failed');
       return proof;
     },
   });
@@ -135,7 +139,7 @@ export function createBuildQueue(store, authority = createPaymentAuthority(), { 
   const keyFor = (order, invoice, step) => `build:v2:${mode}:${scope(order, invoice)}:${step}`;
   return {
     async enqueue(order, invoice, payment) {
-      authority.assert(order, invoice, payment);
+      await authority.assert(order, invoice, payment);
       if (payment.fixture !== (mode === 'fixture')) throw new Error('queue_payment_mode_mismatch');
       const created = [];
       for (const step of BUILD_STEPS) {

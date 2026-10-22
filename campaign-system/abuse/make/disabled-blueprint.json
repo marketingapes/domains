@@ -1,0 +1,94 @@
+{
+  "name": "BTL CA abuse \u2014 isolated signed-event relay \u2014 DISABLED DRAFT",
+  "metadata": {
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 1,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": true,
+      "confidential": true,
+      "dataloss": false,
+      "dlq": true,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "us2.make.com"
+  },
+  "scheduling": {
+    "type": "on-demand"
+  },
+  "flow": [
+    {
+      "id": 1,
+      "module": "scenario-service:StartSubscenario",
+      "version": 2,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "expect": []
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:MakeRequest",
+      "version": 4,
+      "parameters": {
+        "authenticationType": "noAuth",
+        "tlsType": ""
+      },
+      "filter": {
+        "name": "HARD STOP \u2014 configure, review and separately authorize before replacing",
+        "conditions": [
+          [
+            {
+              "a": "0",
+              "o": "text:equal",
+              "b": "1"
+            }
+          ]
+        ]
+      },
+      "mapper": {
+        "url": "https://example.invalid/dispatch-disabled/btl-abuse/event",
+        "method": "post",
+        "contentType": "json",
+        "inputMethod": "jsonString",
+        "jsonStringBodyContent": "{{1.signed_event_json}}",
+        "headers": [],
+        "parseResponse": false,
+        "stopOnHttpError": true,
+        "timeout": 15,
+        "allowRedirects": false,
+        "shareCookies": false,
+        "requestCompressedContent": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "scenario-service:ReturnData",
+      "version": 2,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        }
+      }
+    }
+  ]
+}

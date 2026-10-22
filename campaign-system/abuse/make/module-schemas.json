@@ -1,0 +1,1132 @@
+{
+  "source": "Make module_spec read-only 2026-10-22",
+  "modules": [
+    {
+      "module": "scenario-service:StartSubscenario",
+      "version": 2,
+      "configurationSchema": {
+        "type": "object",
+        "properties": {
+          "parameters": {
+            "type": "object"
+          },
+          "mapper": {
+            "type": "object"
+          },
+          "data": {
+            "type": "object"
+          },
+          "flags": {
+            "type": "object"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "filters": {
+            "type": "array"
+          },
+          "restore": {
+            "type": "object",
+            "description": "Human labels for the opaque ids in `parameters`, e.g. {\"parameters\": {\"spreadsheetId\": {\"label\": \"...\"}}}."
+          }
+        }
+      },
+      "dynamic": []
+    },
+    {
+      "module": "http:MakeRequest",
+      "version": 4,
+      "configurationSchema": {
+        "type": "object",
+        "properties": {
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "authenticationType": {
+                "type": "string",
+                "title": "Authentication type",
+                "description": "Select the authentication type for an API call or authenticated webhook.",
+                "oneOf": [
+                  {
+                    "title": "No authentication",
+                    "const": "noAuth"
+                  },
+                  {
+                    "title": "API key",
+                    "const": "apiKeyConnection"
+                  },
+                  {
+                    "title": "Basic auth",
+                    "const": "basicAuthConnection"
+                  },
+                  {
+                    "title": "OAuth 2.0",
+                    "const": "oAuth"
+                  },
+                  {
+                    "title": "API key (Legacy)",
+                    "const": "apiKey"
+                  },
+                  {
+                    "title": "Basic auth (Legacy)",
+                    "const": "basicAuth"
+                  }
+                ]
+              },
+              "tlsType": {
+                "type": "string",
+                "title": "Transport layer security (TLS)",
+                "description": "Select the TLS handshake method if required by the API's security settings. API key and Basic auth connections do not use this setting.",
+                "oneOf": [
+                  {
+                    "title": "Empty",
+                    "const": ""
+                  },
+                  {
+                    "title": "Mutual TLS",
+                    "const": "mTls"
+                  },
+                  {
+                    "title": "TLS",
+                    "const": "tls"
+                  }
+                ],
+                "default": "",
+                "x-advanced": true
+              },
+              "proxyKeychain": {
+                "type": "number",
+                "title": "Proxy",
+                "description": "Add an intermediary service to route your requests through, if required by your network. API key and Basic auth connections do not use this setting.",
+                "x-fetch": "api://keys/proxy",
+                "default": "",
+                "x-advanced": true
+              }
+            },
+            "required": [
+              "authenticationType"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "authenticationType": {
+                      "const": "apiKeyConnection"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "apiKeyAccount": {
+                      "type": "number",
+                      "title": "Connection",
+                      "description": "Select a saved HTTP connection. Credentials and allowed service URLs are configured in the connection.",
+                      "x-fetch": "api://connections/http-v4-apikey"
+                    }
+                  },
+                  "required": [
+                    "apiKeyAccount"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "authenticationType": {
+                      "const": "basicAuthConnection"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "basicAuthAccount": {
+                      "type": "number",
+                      "title": "Connection",
+                      "description": "Select a saved HTTP connection. Credentials and allowed service URLs are configured in the connection.",
+                      "x-fetch": "api://connections/http-v4-basicauth"
+                    }
+                  },
+                  "required": [
+                    "basicAuthAccount"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "authenticationType": {
+                      "const": "oAuth"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "oAuthAccount": {
+                      "type": "number",
+                      "title": "Credentials",
+                      "description": "For more information on how to create an OAuth 2.0 connection to HTTP, see the [online Help](https://apps.make.com/oauth-20-authentication-type).",
+                      "x-fetch": "api://connections/oauth2"
+                    }
+                  },
+                  "required": [
+                    "oAuthAccount"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "authenticationType": {
+                      "const": "apiKey"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "apiKeyKeychain": {
+                      "type": "number",
+                      "title": "Credentials",
+                      "description": "For more information on how to create an API key connection to HTTP, see the [online Help](https://apps.make.com/api-key-authentication-type).",
+                      "x-fetch": "api://keys/apikeyauth"
+                    }
+                  },
+                  "required": [
+                    "apiKeyKeychain"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "authenticationType": {
+                      "const": "basicAuth"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "basicAuthKeychain": {
+                      "type": "number",
+                      "title": "Credentials",
+                      "description": "For more information on how to create a basic auth connection to HTTP, see the [online Help](https://apps.make.com/basic-auth-authentication-type).",
+                      "x-fetch": "api://keys/basicauth"
+                    }
+                  },
+                  "required": [
+                    "basicAuthKeychain"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tlsType": {
+                      "const": "mTls"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "caCertificateKeychain": {
+                      "type": "number",
+                      "title": "CA certificate",
+                      "description": "Optional field, can be left empty.",
+                      "x-fetch": "api://keys/cacert",
+                      "default": ""
+                    },
+                    "clientIdentityKeychain": {
+                      "type": "number",
+                      "title": "Client identity",
+                      "x-fetch": "api://keys/clientcertauth"
+                    }
+                  },
+                  "required": [
+                    "clientIdentityKeychain"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "tlsType": {
+                      "const": "tls"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "caCertificateKeychain": {
+                      "type": "number",
+                      "title": "CA certificate",
+                      "x-fetch": "api://keys/cacert"
+                    }
+                  },
+                  "required": [
+                    "caCertificateKeychain"
+                  ]
+                }
+              }
+            ]
+          },
+          "mapper": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "title": "URL",
+                "description": "Enter the URL of an API endpoint (including the base URL), webhook, or webpage, beginning with `https://`, or map a variable or formula that resolves to an HTTPS URL."
+              },
+              "method": {
+                "type": "string",
+                "title": "Method",
+                "description": "Select the HTTP request method.",
+                "oneOf": [
+                  {
+                    "title": "GET",
+                    "const": "get"
+                  },
+                  {
+                    "title": "HEAD",
+                    "const": "head"
+                  },
+                  {
+                    "title": "POST",
+                    "const": "post"
+                  },
+                  {
+                    "title": "PUT",
+                    "const": "put"
+                  },
+                  {
+                    "title": "PATCH",
+                    "const": "patch"
+                  },
+                  {
+                    "title": "DELETE",
+                    "const": "delete"
+                  },
+                  {
+                    "title": "OPTIONS",
+                    "const": "options"
+                  }
+                ]
+              },
+              "headers": {
+                "type": "array",
+                "title": "Headers",
+                "description": "Add custom headers to provide additional metadata or instructions for the request.",
+                "items": {
+                  "type": "object",
+                  "title": "Header",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name",
+                      "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                    },
+                    "value": {
+                      "type": "string",
+                      "title": "Value"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              },
+              "queryParameters": {
+                "type": "array",
+                "title": "Query parameters",
+                "description": "Add parameters to specify or customize your request. This is mostly for GET and DELETE methods.",
+                "items": {
+                  "type": "object",
+                  "title": "Parameter",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "value": {
+                      "type": "string",
+                      "title": "Value"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ]
+                }
+              },
+              "contentType": {
+                "type": "string",
+                "title": "Body content type",
+                "description": "Select the format for the body of the request. This is mostly for POST, PUT, and PATCH methods or webhooks.",
+                "oneOf": [
+                  {
+                    "title": "Empty",
+                    "const": ""
+                  },
+                  {
+                    "title": "application/json",
+                    "const": "json"
+                  },
+                  {
+                    "title": "multipart/form-data (supports file uploads)",
+                    "const": "multipart"
+                  },
+                  {
+                    "title": "application/x-www-form-urlencoded",
+                    "const": "urlEncoded"
+                  },
+                  {
+                    "title": "Custom",
+                    "const": "custom"
+                  }
+                ],
+                "default": ""
+              },
+              "parseResponse": {
+                "type": "boolean",
+                "title": "Parse response",
+                "description": "This structures the output data so that it’s easy to map. All mappable items will be available after you run the module once.",
+                "default": true,
+                "x-nested": {
+                  "type": "object",
+                  "properties": {
+                    "paginationType": {
+                      "type": "string",
+                      "title": "Pagination type",
+                      "description": "If an API returns results split across multiple pages, you can use pagination to retrieve them all at once.",
+                      "oneOf": [
+                        {
+                          "title": "Empty",
+                          "const": ""
+                        },
+                        {
+                          "title": "Offset-based",
+                          "const": "offsetBased"
+                        },
+                        {
+                          "title": "Page-based",
+                          "const": "pageBased"
+                        },
+                        {
+                          "title": "URL or link-based",
+                          "const": "urlBased"
+                        },
+                        {
+                          "title": "Token or cursor-based",
+                          "const": "tokenBased"
+                        }
+                      ],
+                      "default": ""
+                    }
+                  },
+                  "required": [],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "paginationType": {
+                            "const": "offsetBased"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "paginationResponseConfig": {
+                            "type": "object",
+                            "title": "Pagination response config",
+                            "properties": {
+                              "itemsPath": {
+                                "type": "string",
+                                "title": "Items path",
+                                "description": "Enter the path to the array of items. For example, `results` or `result.users`. If the entire response is an array, use `emptyarray` pill."
+                              }
+                            },
+                            "required": []
+                          },
+                          "paginationRequestConfig": {
+                            "type": "object",
+                            "title": "Pagination request config",
+                            "properties": {
+                              "offsetParamName": {
+                                "type": "string",
+                                "title": "Offset parameter name",
+                                "description": "Enter the query parameter name that defines the number of items to skip. For example, `offset` or `skip`.",
+                                "default": "offset"
+                              },
+                              "initialOffsetValue": {
+                                "type": "number",
+                                "title": "Initial offset value",
+                                "description": "Enter the number to start the request at. This is typically `0` or `1`. You can also use this field to return items beyond Make’s 10,000 limit.",
+                                "default": "0"
+                              },
+                              "pageSizeParamName": {
+                                "type": "string",
+                                "title": "Page size parameter name",
+                                "description": "Enter the query parameter name that defines the page size. For example, `limit` or `per_page`."
+                              },
+                              "pageSizeParamValue": {
+                                "type": "number",
+                                "title": "Page size parameter value",
+                                "description": "Enter the maximum number of items to retrieve per page.",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "offsetParamName",
+                              "initialOffsetValue"
+                            ]
+                          },
+                          "paginationOutputFormat": {
+                            "type": "string",
+                            "title": "Output format",
+                            "oneOf": [
+                              {
+                                "title": "Array of items",
+                                "const": "items"
+                              },
+                              {
+                                "title": "Array of pages",
+                                "const": "pages"
+                              }
+                            ]
+                          },
+                          "limit": {
+                            "type": "number",
+                            "title": "Limit",
+                            "description": "Enter the maximum number of items to return.",
+                            "default": 100,
+                            "minimum": 1,
+                            "maximum": 10000
+                          }
+                        },
+                        "required": [
+                          "paginationOutputFormat",
+                          "limit"
+                        ]
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "paginationType": {
+                            "const": "pageBased"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "paginationResponseConfig": {
+                            "type": "object",
+                            "title": "Pagination response config",
+                            "properties": {
+                              "itemsPath": {
+                                "type": "string",
+                                "title": "Items path",
+                                "description": "Enter the path to the array of items. For example, `results` or `result.users`. If the entire response is an array, use `emptyarray` pill."
+                              }
+                            },
+                            "required": []
+                          },
+                          "paginationRequestConfig": {
+                            "type": "object",
+                            "title": "Pagination request config",
+                            "properties": {
+                              "pageNumberParamName": {
+                                "type": "string",
+                                "title": "Page parameter name",
+                                "description": "Enter the query parameter name that defines the page number. For example, `page` or `page_number`.",
+                                "default": "page"
+                              },
+                              "initialPageNumberValue": {
+                                "type": "number",
+                                "title": "Initial page value",
+                                "description": "Enter the page number to start the request at. This is typically `0` or `1`. You can also use this field to return items beyond Make’s 10,000 limit.",
+                                "default": 1
+                              },
+                              "pageSizeParamName": {
+                                "type": "string",
+                                "title": "Page size parameter name",
+                                "description": "Enter the query parameter name that defines the page size. For example, `limit` or `per_page`."
+                              },
+                              "pageSizeParamValue": {
+                                "type": "number",
+                                "title": "Page size parameter value",
+                                "description": "Enter the maximum number of items to retrieve per page.",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "pageNumberParamName",
+                              "initialPageNumberValue"
+                            ]
+                          },
+                          "paginationOutputFormat": {
+                            "type": "string",
+                            "title": "Output format",
+                            "oneOf": [
+                              {
+                                "title": "Array of items",
+                                "const": "items"
+                              },
+                              {
+                                "title": "Array of pages",
+                                "const": "pages"
+                              }
+                            ]
+                          },
+                          "limit": {
+                            "type": "number",
+                            "title": "Limit",
+                            "description": "Enter the maximum number of items to return.",
+                            "default": 100,
+                            "minimum": 1,
+                            "maximum": 10000
+                          }
+                        },
+                        "required": [
+                          "paginationOutputFormat",
+                          "limit"
+                        ]
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "paginationType": {
+                            "const": "urlBased"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "paginationResponseConfig": {
+                            "type": "object",
+                            "title": "Pagination response config",
+                            "properties": {
+                              "itemsPath": {
+                                "type": "string",
+                                "title": "Items path",
+                                "description": "Enter the path to the array of items. For example, `results` or `result.users`. If the entire response is an array, use `emptyarray` pill."
+                              },
+                              "nextPageUrlPath": {
+                                "type": "string",
+                                "title": "Next page URL/link path",
+                                "description": "Enter the path to the full URL for the next page. For example, `links.next` or `meta.next_page_url`."
+                              }
+                            },
+                            "required": [
+                              "itemsPath",
+                              "nextPageUrlPath"
+                            ]
+                          },
+                          "paginationRequestConfig": {
+                            "type": "object",
+                            "title": "Pagination request config",
+                            "properties": {
+                              "pageSizeParamName": {
+                                "type": "string",
+                                "title": "Page size parameter name",
+                                "description": "Enter the query parameter name that defines the page size. For example, `limit` or `per_page`."
+                              },
+                              "pageSizeParamValue": {
+                                "type": "number",
+                                "title": "Page size parameter value",
+                                "description": "Enter the maximum number of items to retrieve per page.",
+                                "minimum": 1
+                              }
+                            },
+                            "required": []
+                          },
+                          "paginationOutputFormat": {
+                            "type": "string",
+                            "title": "Output format",
+                            "oneOf": [
+                              {
+                                "title": "Array of items",
+                                "const": "items"
+                              },
+                              {
+                                "title": "Array of pages",
+                                "const": "pages"
+                              }
+                            ]
+                          },
+                          "limit": {
+                            "type": "number",
+                            "title": "Limit",
+                            "description": "Enter the maximum number of items to return.",
+                            "default": 100,
+                            "minimum": 1,
+                            "maximum": 10000
+                          }
+                        },
+                        "required": [
+                          "paginationOutputFormat",
+                          "limit"
+                        ]
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "paginationType": {
+                            "const": "tokenBased"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "paginationResponseConfig": {
+                            "type": "object",
+                            "title": "Pagination response config",
+                            "properties": {
+                              "itemsPath": {
+                                "type": "string",
+                                "title": "Items path",
+                                "description": "Enter the path to the array of items. For example, `results` or `result.users`. If the entire response is an array, use `emptyarray` pill."
+                              },
+                              "nextPageTokenPath": {
+                                "type": "string",
+                                "title": "Next page token/cursor path",
+                                "description": "Enter the path to the token or cursor value for the next page. For example, `next_cursor` or `meta.next`."
+                              }
+                            },
+                            "required": [
+                              "itemsPath",
+                              "nextPageTokenPath"
+                            ]
+                          },
+                          "paginationRequestConfig": {
+                            "type": "object",
+                            "title": "Pagination request config",
+                            "properties": {
+                              "pageTokenParamName": {
+                                "type": "string",
+                                "title": "Page token/cursor parameter name",
+                                "description": "Enter the query parameter name that defines the last item in the current page or the next page’s starting point. For example, `pageToken` or `cursor`.",
+                                "default": "pageToken"
+                              },
+                              "initialPageTokenParamValue": {
+                                "type": "string",
+                                "title": "Initial page token value",
+                                "description": "This is typically used when working with items beyond Make’s 10,000 limit."
+                              },
+                              "pageSizeParamName": {
+                                "type": "string",
+                                "title": "Page size parameter name",
+                                "description": "Enter the query parameter name that defines the page size. For example, `limit` or `per_page`."
+                              },
+                              "pageSizeParamValue": {
+                                "type": "number",
+                                "title": "Page size parameter value",
+                                "description": "Enter the maximum number of items to retrieve per page.",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "pageTokenParamName"
+                            ]
+                          },
+                          "paginationOutputFormat": {
+                            "type": "string",
+                            "title": "Output format",
+                            "oneOf": [
+                              {
+                                "title": "Array of items",
+                                "const": "items"
+                              },
+                              {
+                                "title": "Array of pages",
+                                "const": "pages"
+                              }
+                            ]
+                          },
+                          "limit": {
+                            "type": "number",
+                            "title": "Limit",
+                            "description": "Enter the maximum number of items to return.",
+                            "default": 100,
+                            "minimum": 1,
+                            "maximum": 10000
+                          }
+                        },
+                        "required": [
+                          "paginationOutputFormat",
+                          "limit"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              "stopOnHttpError": {
+                "type": "boolean",
+                "title": "Return error if HTTP request fails",
+                "description": "The module will treat 4xx and 5xx responses as errors.",
+                "default": true,
+                "x-advanced": true
+              },
+              "timeout": {
+                "type": "number",
+                "title": "Timeout",
+                "description": "Enter the maximum time to wait for the response, in seconds.",
+                "default": 40,
+                "minimum": 1,
+                "maximum": 300,
+                "x-advanced": true
+              },
+              "allowRedirects": {
+                "type": "boolean",
+                "title": "Allow redirects",
+                "description": "Automatically follow HTTP redirection responses, with a maximum of 10.",
+                "default": true,
+                "x-advanced": true
+              },
+              "shareCookies": {
+                "type": "boolean",
+                "title": "Share cookies with other HTTP modules",
+                "default": false,
+                "x-advanced": true
+              },
+              "requestCompressedContent": {
+                "type": "boolean",
+                "title": "Request compressed content",
+                "description": "Request the response data in a compressed format for faster transfer. This adds the `Accept-Encoding` header to the request.",
+                "default": true,
+                "x-advanced": true
+              }
+            },
+            "required": [
+              "url",
+              "method",
+              "parseResponse",
+              "stopOnHttpError",
+              "allowRedirects",
+              "shareCookies",
+              "requestCompressedContent"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "contentType": {
+                      "const": "json"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "inputMethod": {
+                      "type": "string",
+                      "title": "Body input method",
+                      "oneOf": [
+                        {
+                          "title": "Data structure",
+                          "const": "dataStructure"
+                        },
+                        {
+                          "title": "JSON string",
+                          "const": "jsonString"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "inputMethod"
+                  ],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "inputMethod": {
+                            "const": "dataStructure"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "bodyDataStructure": {
+                            "type": "number",
+                            "title": "Body structure",
+                            "description": "Use a data structure to easily define the body of your request. JSON reserved characters placed within values will be escaped automatically."
+                          }
+                        },
+                        "required": [
+                          "bodyDataStructure"
+                        ]
+                      }
+                    },
+                    {
+                      "if": {
+                        "properties": {
+                          "inputMethod": {
+                            "const": "jsonString"
+                          }
+                        }
+                      },
+                      "then": {
+                        "type": "object",
+                        "properties": {
+                          "jsonStringBodyContent": {
+                            "type": "string",
+                            "title": "Body content",
+                            "description": "Make sure to escape any JSON reserved characters placed within values."
+                          }
+                        },
+                        "required": [
+                          "jsonStringBodyContent"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "contentType": {
+                      "const": "multipart"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "multipartBodyContent": {
+                      "type": "array",
+                      "title": "Body content",
+                      "items": {
+                        "type": "object",
+                        "title": "Field",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name"
+                          },
+                          "multipartFieldType": {
+                            "type": "string",
+                            "title": "Field type",
+                            "oneOf": [
+                              {
+                                "title": "Text",
+                                "const": "text"
+                              },
+                              {
+                                "title": "File",
+                                "const": "file"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "multipartFieldType"
+                        ],
+                        "allOf": [
+                          {
+                            "if": {
+                              "properties": {
+                                "multipartFieldType": {
+                                  "const": "text"
+                                }
+                              }
+                            },
+                            "then": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "title": "Value"
+                                }
+                              },
+                              "required": []
+                            }
+                          },
+                          {
+                            "if": {
+                              "properties": {
+                                "multipartFieldType": {
+                                  "const": "file"
+                                }
+                              }
+                            },
+                            "then": {
+                              "type": "object",
+                              "properties": {
+                                "data": {
+                                  "type": "string",
+                                  "title": "Data"
+                                },
+                                "fileName": {
+                                  "type": "string",
+                                  "title": "File name"
+                                }
+                              },
+                              "required": []
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "multipartBodyContent"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "contentType": {
+                      "const": "urlEncoded"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "urlEncodedBodyContent": {
+                      "type": "array",
+                      "title": "Body content",
+                      "items": {
+                        "type": "object",
+                        "title": "Field",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name"
+                          },
+                          "value": {
+                            "type": "string",
+                            "title": "Value"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "urlEncodedBodyContent"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "contentType": {
+                      "const": "custom"
+                    }
+                  }
+                },
+                "then": {
+                  "type": "object",
+                  "properties": {
+                    "contentTypeValue": {
+                      "type": "string",
+                      "title": "Content type value"
+                    },
+                    "rawBodyContent": {
+                      "type": "string",
+                      "title": "Body content"
+                    }
+                  },
+                  "required": [
+                    "contentTypeValue",
+                    "rawBodyContent"
+                  ]
+                }
+              }
+            ]
+          },
+          "data": {
+            "type": "object"
+          },
+          "flags": {
+            "type": "object"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "filters": {
+            "type": "array"
+          },
+          "restore": {
+            "type": "object",
+            "description": "Human labels for the opaque ids in `parameters`, e.g. {\"parameters\": {\"spreadsheetId\": {\"label\": \"...\"}}}."
+          }
+        }
+      },
+      "dynamic": [
+        {
+          "path": "/mapper/bodyDataStructure",
+          "dependsOn": [
+            "/mapper/contentType",
+            "/mapper/inputMethod",
+            "/mapper/url",
+            "/mapper/method",
+            "/mapper/bodyDataStructure"
+          ],
+          "resolution": "schema"
+        }
+      ]
+    },
+    {
+      "module": "scenario-service:ReturnData",
+      "version": 2,
+      "configurationSchema": {
+        "type": "object",
+        "properties": {
+          "parameters": {
+            "type": "object"
+          },
+          "mapper": {
+            "type": "object"
+          },
+          "data": {
+            "type": "object"
+          },
+          "flags": {
+            "type": "object"
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "filters": {
+            "type": "array"
+          },
+          "restore": {
+            "type": "object",
+            "description": "Human labels for the opaque ids in `parameters`, e.g. {\"parameters\": {\"spreadsheetId\": {\"label\": \"...\"}}}."
+          }
+        }
+      },
+      "dynamic": []
+    }
+  ]
+}

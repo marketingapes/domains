@@ -67,7 +67,7 @@ async function body(req) {
     });
   });
 }
-export function createSetupServer() {
+export function createSetupServer({ extension = null } = {}) {
   const server = createServer(async (req, res) => {
     try {
       const origin = `http://127.0.0.1:${server.address().port}`;
@@ -78,6 +78,8 @@ export function createSetupServer() {
       if (req.headers.origin && req.headers.origin !== origin)
         return json(res, 403, { error: "Cross-origin access is refused." });
       const path = new URL(req.url, origin).pathname;
+      // Optional local campaign workbench shares this server's host/origin boundary.
+      if (extension && await extension({ req, res, path, origin, json, body, headers })) return;
       if (req.method === "GET" && path === "/favicon.ico") {
         res.writeHead(204, headers);
         res.end();
