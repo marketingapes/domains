@@ -130,11 +130,13 @@ export function createPaymentAuthority({ readSettlement, mode = 'fixture', now =
 // ---------------------------------------------------------------- idempotent build queue
 export const BUILD_STEPS = ['pages', 'ads', 'sofia_context', 'templates', 'perspective', 'readiness'];
 /** Atomic setNx is required. Completion receipts are write-once, never read/overwrite races. */
-export function createBuildQueue(store, authority = createPaymentAuthority()) {
-  const keyFor = (order, invoice, step) => `build:v2:${scope(order, invoice)}:${step}`;
+export function createBuildQueue(store, authority = createPaymentAuthority(), { mode = 'fixture' } = {}) {
+  if (!['fixture', 'connected'].includes(mode)) throw new Error('queue_mode_invalid');
+  const keyFor = (order, invoice, step) => `build:v2:${mode}:${scope(order, invoice)}:${step}`;
   return {
     async enqueue(order, invoice, payment) {
       authority.assert(order, invoice, payment);
+      if (payment.fixture !== (mode === 'fixture')) throw new Error('queue_payment_mode_mismatch');
       const created = [];
       for (const step of BUILD_STEPS) {
         const key = keyFor(order, invoice, step);

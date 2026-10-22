@@ -85,6 +85,23 @@ test('queue binds tenant, campaign, specification, invoice and immutable order',
   assert.equal((await q.status(o)).jobs[0].evidence_ref, winner.evidence_ref);
 });
 
+test('fixture jobs and connected jobs never share a queue namespace or payment capability', async () => {
+  const o = order(), inv = draftInvoice(o), store = memoryStore();
+  const fixtureAuthority = authorityFor(o, inv);
+  const fixtureQueue = createBuildQueue(store, fixtureAuthority);
+  const fixtureProof = await fixtureAuthority.verify(o, inv, 'FIXTURE-0001');
+  await fixtureQueue.enqueue(o, inv, fixtureProof);
+  // Injected mock only: this does not verify a real settlement or call a connector.
+  const mockConnectedAuthority = authorityFor(o, inv, { fixture: false }, { mode: 'connected' });
+  const connectedQueue = createBuildQueue(store, mockConnectedAuthority, { mode: 'connected' });
+  const connectedProof = await mockConnectedAuthority.verify(o, inv, 'FIXTURE-0001');
+  assert.equal((await connectedQueue.status(o)).jobs.every(j => j.state === 'not_queued'), true);
+  await assert.rejects(createBuildQueue(store, fixtureAuthority, { mode: 'connected' }).enqueue(o, inv, fixtureProof), /queue_payment_mode_mismatch/);
+  await assert.rejects(createBuildQueue(store, mockConnectedAuthority).enqueue(o, inv, connectedProof), /queue_payment_mode_mismatch/);
+  assert.equal((await connectedQueue.enqueue(o, inv, connectedProof)).created.length, BUILD_STEPS.length);
+  assert.equal((await fixtureQueue.status(o)).jobs.every(j => j.fixture === true), true);
+});
+
 test('expired payment capabilities cannot enqueue and partial queue retry resumes safely', async () => {
   let t = fixedNow;
   const o = order(), inv = draftInvoice(o), a = authorityFor(o, inv, {}, { now: () => t });
