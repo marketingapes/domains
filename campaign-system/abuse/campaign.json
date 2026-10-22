@@ -1,0 +1,59 @@
+{
+  "schema": "btl.abuse-campaign-package/v1",
+  "status": "draft_local_only",
+  "campaign_id": "btl-ca-abuse-la-county-v1",
+  "tenant": "BTL",
+  "firm": { "id": "phillips-law-group", "name": "Phillips Law Group", "logo_ref": "/assets/phillips-logo.webp" },
+  "program_priority": ["la-county-juvenile-detention", "ca-juvenile-detention-other", "ca-womens-prison"],
+  "criteria_status": "pending_attorney_approval",
+  "question_bank_version": "2026-09-29.live-ids.1",
+  "consent_version": "btl-abuse-callback-consent-draft-2026-10-21.1",
+  "offer": {
+    "service_fee_cents": 250000,
+    "media_budget_cents": 500000,
+    "currency": "USD",
+    "channels": { "facebook": "first", "instagram": "off", "tiktok": "off", "google": "off", "youtube": "off", "programmatic": "off" },
+    "outcome_promise": "none",
+    "statement": "Campaign build and management for a fixed fee plus a media budget. No number of signed cases, retainers or outcomes is promised."
+  },
+  "pages": {
+    "form": "https://besttortlawyers.com/sex-abuse-la-county/",
+    "quiz": "https://besttortlawyers.com/sex-abuse-la-county/quiz/",
+    "voice": "https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/?callback=1"
+  },
+  "attribution": { "utm_source": "facebook", "utm_medium": "paid_social", "utm_campaign": "btl-ca-abuse-la-county-v1" },
+  "ads": [
+    {
+      "angle_id": "la-review-form",
+      "path": "form",
+      "primary_text": "Sexually abused as a minor at an LA County juvenile hall, camp or other facility? California changed its laws, and you may still have options even if it was years ago. Ask for a free, confidential review by Phillips Law Group. You don’t need to describe what happened.",
+      "headline": "Free, confidential review",
+      "description": "Attorney advertising. No outcome guaranteed.",
+      "cta": "LEARN_MORE",
+      "image": "/assets/lanes/sex-abuse-la-county/card-1.jpg",
+      "image_alt": "An adult seen from the side, sitting by a sunlit window holding a cup of tea"
+    },
+    {
+      "angle_id": "la-four-questions",
+      "path": "quiz",
+      "primary_text": "Four short, private questions — never about what happened. Every question has “Prefer not to say.” A person at Phillips Law Group reviews every request for a free, confidential review.",
+      "headline": "Four private questions. No details needed.",
+      "description": "Attorney advertising. Sofia is AI. No outcome guaranteed.",
+      "cta": "LEARN_MORE",
+      "image": "/assets/lanes/sex-abuse-la-county/card-3.jpg",
+      "image_alt": "An open journal and pen on a wooden table in warm window light"
+    },
+    {
+      "angle_id": "la-private-callback",
+      "path": "voice",
+      "primary_text": "Prefer to talk? Ask for a private callback about abuse as a minor at an LA County facility. Sofia, Phillips Law Group’s AI intake assistant, asks only the basics, and a person reviews every request. You can stop at any time.",
+      "headline": "Ask for a private callback",
+      "description": "Attorney advertising. Sofia is AI. No outcome guaranteed.",
+      "cta": "LEARN_MORE",
+      "image": "/assets/lanes/sex-abuse-la-county/band.jpg",
+      "image_alt": "Wide view of the Los Angeles basin and hills in soft golden-hour light"
+    }
+  ],
+  "forbidden_claims": ["qualif", "guarantee", "settlement", "compensation", "win", "million", "eligible", "you have a case", "call now", "today only"],
+  "required_disclosures": ["Attorney advertising", "No outcome guaranteed"]
+}

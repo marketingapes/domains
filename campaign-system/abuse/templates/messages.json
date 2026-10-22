@@ -1,0 +1,58 @@
+{
+  "schema": "btl.abuse.message-templates/v1",
+  "status": "draft_not_sendable",
+  "campaign_id": "btl-ca-abuse-la-county-v1",
+  "send": false,
+  "rules": {
+    "suppression": "Read the shared suppression registry immediately before every send; suppressed or unverifiable means do not send. Any STOP/opt-out writes the shared registry first.",
+    "dedupe": "One send per (lead_id, template_id, trigger_event_id). The trigger is a stored event id from the adapter timeline, never a timer.",
+    "retry": "At most 2 retries on a provider error with no delivery receipt, 10 then 60 minutes later, under the same dedupe key. Never retry after a delivery or an opt-out.",
+    "quiet_hours": "Texts only 8am–8pm in the recipient's local time; otherwise defer to the next window.",
+    "content": "Never mention abuse, a facility, a case or eligibility in a text or email preview line. No outcome or qualification language.",
+    "owner_on_failure": "intake-operations (Phillips Law Group) via the failed-handoff alert below; Marketing Apes ops is the backup owner."
+  },
+  "templates": [
+    {
+      "template_id": "sms-request-received",
+      "channel": "sms",
+      "requires_consent": "sms",
+      "trigger": "lead.saved",
+      "body": "Phillips Law Group: we received your private request. A person will review it; nothing has been decided. Reply STOP to opt out, HELP for help. Msg & data rates may apply.",
+      "contains_opt_out": true
+    },
+    {
+      "template_id": "sms-missed-callback",
+      "channel": "sms",
+      "requires_consent": "sms",
+      "trigger": "call.no_answer",
+      "body": "Phillips Law Group: we tried to reach you about your private request. Reply with a good time, or reply STOP to opt out. HELP for help.",
+      "contains_opt_out": true
+    },
+    {
+      "template_id": "sms-opt-out-confirmation",
+      "channel": "sms",
+      "requires_consent": "none_transactional_opt_out",
+      "trigger": "lead.suppressed",
+      "body": "Phillips Law Group: you will not receive more texts. Reply START to resubscribe.",
+      "contains_opt_out": true
+    },
+    {
+      "template_id": "email-request-received",
+      "channel": "email",
+      "requires_consent": "email_provided",
+      "trigger": "lead.saved",
+      "subject": "We received your request",
+      "body": "Hello {{first_name}},\n\nWe received your private request. A person at Phillips Law Group will review it. Nothing has been decided, and you do not need to describe what happened.\n\nIf you did not make this request, or do not want to be contacted, reply \"stop\" or use the link below and we will not contact you again.\n\nPhillips Law Group · Attorney advertising\nSupport: RAINN 1-800-656-4673 (not affiliated)\n\n{{unsubscribe_link}}",
+      "contains_opt_out": true
+    },
+    {
+      "template_id": "internal-failed-handoff",
+      "channel": "internal_email",
+      "requires_consent": "not_applicable_internal",
+      "trigger": "handoff.failed",
+      "subject": "[BTL CA program] Handoff needs an owner — {{lead_id}}",
+      "body": "Lead {{lead_id}} could not be handed off ({{reason}}). Owner: intake-operations. No contact details or answers are included here; open the private Perspective view.",
+      "contains_opt_out": false
+    }
+  ]
+}

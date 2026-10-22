@@ -1,0 +1,26 @@
+{
+  "schema": "btl.make-change-draft/v1",
+  "status": "LOCAL DRAFT — not applied, not run, no scenario edit",
+  "scenario_id": 6311519,
+  "scenario_role": "legacy BTL native lead forms → reserve Render → Vapi assistant a058ae66-c7d4-458f-b978-1e139d727aee → bind call",
+  "finding": "The existing filter excludes the two MVA forms but has no positive allowlist, so any other form on the page is treated as California abuse.",
+  "proposed_change": {
+    "where": "the first filter after the lead-retrieval module, before any Render reserve or Vapi call module",
+    "add_condition": {
+      "type": "AND",
+      "left": "{{form_id of the retrieved lead}}",
+      "operator": "text:equal (one OR group per allowed id)",
+      "right": "LA_ABUSE_FORM_IDS"
+    },
+    "LA_ABUSE_FORM_IDS": "PENDING — the exact Meta form IDs for the LA County abuse forms must be read from the page and confirmed by Kyle; none are invented here",
+    "keep": ["existing MVA exclusions", "existing Vapi assistant binding", "existing reserve/bind modules"],
+    "unmatched_forms": "stop the route (no reserve, no call) and record an unmatched-form event for human review"
+  },
+  "later_option_not_in_this_change": "When the dispatch-disabled adapter is mounted and approved, forward the lead to POST /api/v1/btl/abuse/save instead of reserving a generic BTL lane call.",
+  "destinations": {
+    "complex_tort_desk": "602-200-3960 (unconfirmed runtime override and staffed hours)",
+    "mva_desk": "602-200-3976 (MVA only — never used for abuse)",
+    "status": "pending confirmation; no destination change is drafted"
+  },
+  "do_not": ["edit or run 6311519 now", "replay or discard SMS scenario 6561782 executions", "repeat the 6198978 contact filter already applied 2026-10-21 18:03 UTC", "reassign Sofia template 08c54f48-2d2e-4302-a62b-d17893a7cb5f"]
+}
