@@ -427,3 +427,4 @@ fieldset.consent legend{font-weight:650;font-size:.93rem;padding:0 6px}
 .voice-unavailable .button-copy{padding:1rem 1.4rem}
 #openCb .button-copy strong{font-size:.93rem;text-transform:none;white-space:normal}
 #openCb{margin-top:18px}
+@media(max-width:48rem){.talk h1{max-width:calc(100% - 9.4rem)}}

@@ -174,6 +174,7 @@ await check("voice-first preview has a disabled primary action and secondary clo
   assert.equal(await evaluate("document.getElementById('cbPanel').hidden"), true);
   assert.match(await page.textContent('#openCb'), /callback instead/i);
   assert.equal(await page.locator('[src*="phillips-logo"]').count(), 0);
+  assert.equal(await page.evaluate(()=>document.getElementById('heroH').getBoundingClientRect().right+8 <= document.querySelector('.portrait').getBoundingClientRect().left), true, 'heading clears the mobile portrait');
   await click('#openCb');
   assert.equal(await evaluate("document.getElementById('cbPanel').hidden"), false);
 });
