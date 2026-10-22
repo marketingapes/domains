@@ -78,6 +78,7 @@ const visibleState = (box) => evaluate(`[...document.querySelectorAll('#${box} [
 const statusText = () => evaluate("[...document.querySelectorAll('form .status')].map(s=>s.textContent).join(' ')");
 const results = [];
 const check = (name, fn) => fn().then(() => results.push([name, "pass"]), (e) => results.push([name, "FAIL", e.message.slice(0, 300)]));
+const contrast=(a,b)=>{const l=s=>{const rgb=s.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};const x=l(a),y=l(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
 
 async function fillContact(form, { email = false } = {}) {
   await fill(`#${form} #first_name`, "Avery"); await fill(`#${form} #phone`, "3105550142");
@@ -186,6 +187,15 @@ await check("all campaign pages use a plain firm wordmark without the product th
   }
 });
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
+await check('form and quiz have distinct palettes and readable text/button contrast', async()=>{
+  const backgrounds=[];
+  for(const path of ['/sex-abuse-la-county/','/sex-abuse-la-county/quiz/']){
+    await open(path);
+    const colors=await page.evaluate(()=>{const body=getComputedStyle(document.body),button=getComputedStyle(document.querySelector('.submit')||document.querySelector('.next'));return{ink:body.color,paper:body.backgroundColor,buttonInk:button.color,buttonPaper:button.backgroundColor}});
+    assert.ok(contrast(colors.ink,colors.paper)>=4.5,`${path} body contrast`);assert.ok(contrast(colors.buttonInk,colors.buttonPaper)>=4.5,`${path} action contrast`);backgrounds.push(colors.paper);
+  }
+  assert.notEqual(backgrounds[0],backgrounds[1]);
+});
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];
 for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/", "sofia"]]) {
   for (const [w, h, mobile] of sizes) {
