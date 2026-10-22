@@ -207,6 +207,17 @@ await check('restored image-led form and quiz retain readable text/button contra
   assert.equal(await page.evaluate(()=>document.body.className),'lp');
   assert.equal(await page.evaluate(()=>document.querySelector('.top').getBoundingClientRect().bottom<=document.querySelector('.hero').getBoundingClientRect().top+1),true,'header and hero must not overlap');
 });
+await check("mobile header: the Talk to Sofia button sits fully above the hero and is the element hit at its centre", async () => {
+  for (const [path, w, h] of [["/sex-abuse-la-county/", 375, 812], ["/sex-abuse-la-county/quiz/", 375, 812], ["/sex-abuse-la-county/", 320, 640], ["/sex-abuse-la-county/quiz/", 768, 1024]]) {
+    await open(path, { width: w, height: h, mobile: true });
+    const r = await page.evaluate(() => {
+      const keep = document.querySelector(".top nav a.keep"); const box = keep.getBoundingClientRect();
+      const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+      return { visible: box.width > 0 && box.height > 0, hitIsKeep: !!hit && keep.contains(hit), keepBottom: box.bottom, heroTop: document.querySelector(".hero").getBoundingClientRect().top };
+    });
+    assert.deepEqual([r.visible, r.hitIsKeep, r.keepBottom <= r.heroTop + 1], [true, true, true], `${path} ${w}px ${JSON.stringify(r)}`);
+  }
+});
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];
 for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/", "sofia"]]) {
   for (const [w, h, mobile] of sizes) {

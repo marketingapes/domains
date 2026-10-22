@@ -428,3 +428,7 @@ fieldset.consent legend{font-weight:650;font-size:.93rem;padding:0 6px}
 #openCb .button-copy strong{font-size:.93rem;text-transform:none;white-space:normal}
 #openCb{margin-top:18px}
 @media(max-width:48rem){.talk h1{max-width:calc(100% - 9.4rem)}}
+/* Mobile header fix (2026-10-22): the 760px rule's fixed height overrode the 640px wrap, so the
+   "Talk to Sofia" row spilled under the hero. Let the wrapped header size itself and sit above the hero. */
+.lp .top{position:relative;z-index:2}
+@media(max-width:640px){.lp .top{height:auto;padding:12px 0}}
