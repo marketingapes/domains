@@ -15,7 +15,7 @@
   var CAMPAIGN = {
     schema: 'btl.abuse.intake/v1',
     campaign_id: 'btl-ca-abuse-la-county-v1',
-    question_bank_version: '2026-09-29.live-ids.1',
+    question_bank_version: '2026-10-22.kyle-screening.1',
     consent: {
       version: 'btl-abuse-callback-consent-draft-2026-10-21.1',
       calls_text: 'I agree that Phillips Law Group and its intake team, including Sofia, an AI assistant, may call me at the number I entered about this request. Calls may be recorded. Consent is not a condition of any service. I can say stop or opt out at any time.',
@@ -68,6 +68,10 @@
   var STEPS = [
     { id: 'age', label: 'Age at the time', q: 'How old were you at the time?', help: 'Just the age range. You won’t be asked what happened.',
       c: [['under18', 'Under 18'], ['18plus', '18 or older'], ['prefer_not', 'Prefer not to say']] },
+    { id: 'current_age', label: 'Age now', q: 'How old are you now?', help: 'This helps the right person review your request. Nobody is turned away because of age.',
+      c: [['under_30', 'Under 30'], ['30_40', '30 – 40'], ['41_50', '41 – 50'], ['over_50', 'Over 50'], ['prefer_not', 'Prefer not to say']] },
+    { id: 'claim_type', label: 'Kind of setting', q: 'Which best describes where it happened?', help: 'Pick the closest one. “Not sure” and “Prefer not to say” are fine.',
+      c: [['la_juvenile_detention', 'LA County juvenile hall or probation camp'], ['ca_juvenile_detention_other', 'Another California juvenile facility'], ['ca_womens_prison', 'A California women’s prison'], ['other_institution', 'Another institution or program'], ['not_sure', 'Not sure'], ['prefer_not', 'Prefer not to say']] },
     { id: 'where', label: 'Type of place', q: 'What kind of place was it?', help: 'Pick the closest one. If it wasn’t in LA County, that’s okay to say.',
       c: [['juvenile', 'Juvenile hall or probation camp'], ['foster', 'Foster placement or group home'], ['school', 'School'], ['youth', 'Church, youth program or other organization'], ['other_la', 'Somewhere else in LA County'], ['outside', 'Not in LA County'], ['prefer_not', 'Prefer not to say']] },
     { id: 'when', label: 'Timeframe', q: 'About when was it?', help: 'A rough idea is fine.',
@@ -162,7 +166,8 @@
       var bad = validate(form);
       if (bad.length) { if (status) { status.className = 'status err'; status.textContent = 'Please check the highlighted fields.'; } bad[0].focus(); return; }
       var kind = form.getAttribute('data-ee-form');
-      var answers = kind === 'quiz' ? STEPS.map(function (s) { var a = ANSWERS[s.id]; return a ? { question_id: s.id, answer_id: a.answer_id, source: 'quiz', confirmed_at: a.confirmed_at } : null; }).filter(Boolean) : [];
+      var optional = []; each('select[data-q]', function (sel) { if (sel.value) optional.push({ question_id: sel.getAttribute('data-q'), answer_id: sel.value, source: SOURCE, confirmed_at: new Date().toISOString().replace(/\.\d+Z$/, '.000Z') }); }, form);
+      var answers = kind === 'quiz' ? STEPS.map(function (s) { var a = ANSWERS[s.id]; return a ? { question_id: s.id, answer_id: a.answer_id, source: 'quiz', confirmed_at: a.confirmed_at } : null; }).filter(Boolean) : optional;
       if (kind === 'quiz' && answers.length !== STEPS.length) { if (status) { status.className = 'status err'; status.textContent = 'Please answer each question first — “Prefer not to say” is fine.'; } return; }
       var calls = form.querySelector('input[name=consent_calls]'), sms = form.querySelector('input[name=consent_sms]');
       var contact = { first_name: (form.first_name.value || '').trim(), phone: digits(form.phone.value), email: form.email ? (form.email.value || '').trim() : '' };

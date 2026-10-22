@@ -16,7 +16,7 @@ const { chromium } = createRequire(import.meta.url)(process.env.PLAYWRIGHT);
 const pkg = loadPackage();
 const BTL = new URL('../../../btl/', import.meta.url).pathname;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const CTA = { form: 'Ask for a free, confidential review', quiz: 'Answer four private questions', voice: 'Preview talking with Sofia' };
+const CTA = { form: 'Ask for a free, confidential review', quiz: 'Answer six private questions', voice: 'Preview talking with Sofia' };
 const SECOND = { form: 'You don’t need to describe what happened.', quiz: 'Every question has “Prefer not to say.”', voice: 'Sofia is AI. Live voice is not connected yet.' };
 
 function still(ad, w, h) {

@@ -134,7 +134,7 @@ test('message templates: unsendable drafts with consent, STOP, suppression, dedu
 });
 
 test('creative manifest: every angle has images and a draft video from committed lane photos; finals listed as missing', () => {
-  const dir = new URL('../abuse/creative/out-2026-10-21/', import.meta.url);
+  const dir = new URL('../abuse/creative/out-2026-10-22/', import.meta.url);
   const m = JSON.parse(readFileSync(new URL('manifest.json', dir), 'utf8'));
   assert.equal(m.blocked_external_requests, 0);
   for (const ad of pkg.ads) {
@@ -150,4 +150,12 @@ test('Make correction draft invents no form IDs and keeps every do-not', () => {
   assert.match(d.status, /not applied/);
   assert.match(d.proposed_change.LA_ABUSE_FORM_IDS, /^PENDING/);
   assert.equal(/\d{15,}/.test(JSON.stringify(d.proposed_change)), false, 'no form id literal');
+});
+
+test('ad copy and quiz page name the same number of questions as the quiz runtime (six)', async () => {
+  const { loadPackage, checkAdsAgainstPages } = await import('../abuse/machine.mjs');
+  assert.deepEqual(checkAdsAgainstPages().problems, []);
+  const drift = loadPackage(); drift.ads[1].primary_text = drift.ads[1].primary_text.replace('Six short', 'Four short');
+  assert.ok(checkAdsAgainstPages(drift).problems.some((p) => p === 'la-four-questions: says 4 questions but the quiz has 6'));
+  assert.equal(loadPackage().question_bank_version, '2026-10-22.kyle-screening.1');
 });

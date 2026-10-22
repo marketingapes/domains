@@ -1,0 +1,99 @@
+{
+  "campaign_id": "btl-ca-abuse-la-county-v1",
+  "status": "DRAFT \u2014 not uploaded, not approved",
+  "creative_revision": "wordmark-voice-first-v2",
+  "branding": "plain text wordmark; no logo image",
+  "blocked_external_requests": 0,
+  "assets": [
+    {
+      "angle_id": "la-review-form",
+      "kind": "image",
+      "format": "feed-1x1",
+      "file": "la-review-form-feed-1x1.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-1.jpg"
+    },
+    {
+      "angle_id": "la-review-form",
+      "kind": "image",
+      "format": "feed-4x5",
+      "file": "la-review-form-feed-4x5.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-1.jpg"
+    },
+    {
+      "angle_id": "la-review-form",
+      "kind": "image",
+      "format": "story-9x16",
+      "file": "la-review-form-story-9x16.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-1.jpg"
+    },
+    {
+      "angle_id": "la-review-form",
+      "kind": "video_draft",
+      "format": "720x900 webm ~9.5s",
+      "file": "la-review-form-motion-4x5.webm",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-1.jpg"
+    },
+    {
+      "angle_id": "la-four-questions",
+      "kind": "image",
+      "format": "feed-1x1",
+      "file": "la-four-questions-feed-1x1.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-3.jpg"
+    },
+    {
+      "angle_id": "la-four-questions",
+      "kind": "image",
+      "format": "feed-4x5",
+      "file": "la-four-questions-feed-4x5.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-3.jpg"
+    },
+    {
+      "angle_id": "la-four-questions",
+      "kind": "image",
+      "format": "story-9x16",
+      "file": "la-four-questions-story-9x16.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-3.jpg"
+    },
+    {
+      "angle_id": "la-four-questions",
+      "kind": "video_draft",
+      "format": "720x900 webm ~9.5s",
+      "file": "la-four-questions-motion-4x5.webm",
+      "source_image": "/assets/lanes/sex-abuse-la-county/card-3.jpg"
+    },
+    {
+      "angle_id": "la-talk-sofia",
+      "kind": "image",
+      "format": "feed-1x1",
+      "file": "la-talk-sofia-feed-1x1.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/band.jpg"
+    },
+    {
+      "angle_id": "la-talk-sofia",
+      "kind": "image",
+      "format": "feed-4x5",
+      "file": "la-talk-sofia-feed-4x5.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/band.jpg"
+    },
+    {
+      "angle_id": "la-talk-sofia",
+      "kind": "image",
+      "format": "story-9x16",
+      "file": "la-talk-sofia-story-9x16.png",
+      "source_image": "/assets/lanes/sex-abuse-la-county/band.jpg"
+    },
+    {
+      "angle_id": "la-talk-sofia",
+      "kind": "video_draft",
+      "format": "720x900 webm ~9.5s",
+      "file": "la-talk-sofia-motion-4x5.webm",
+      "source_image": "/assets/lanes/sex-abuse-la-county/band.jpg"
+    }
+  ],
+  "missing_final_deliverables": [
+    "Final MP4 (H.264) exports: the local ffmpeg is broken (missing libx265) and no encoder was installed; earlier MP4s elsewhere still say four questions and must not be used",
+    "Voice-over or captions track, if wanted",
+    "Firm and attorney approval of all creative before any upload"
+  ],
+  "question_bank_version": "2026-10-22.kyle-screening.1"
+}

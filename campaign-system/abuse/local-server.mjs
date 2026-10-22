@@ -61,7 +61,7 @@ export async function createWorkbench({ directory, backendDir=backendDefault }={
     const previous=await store.get('fixture-seed-id');if(previous)return perspective.lead(previous);
     const c=adapter.campaign;const at=new Date().toISOString();
     const receipt=await saveFixture({schema:'btl.abuse.intake/v1',campaign_id:c.campaign_id,submission_id:'sub-local-workbench-fixture-0001',page_path:'/sex-abuse-la-county/quiz/',question_bank_version:c.question_bank.version,
-      answers:[['age','under18'],['where','juvenile'],['when','2005_2019'],['lawyer','prefer_not']].map(([question_id,answer_id])=>({question_id,answer_id,source:'quiz',confirmed_at:at})),
+      answers:[['age','under18'],['current_age','30_40'],['claim_type','la_juvenile_detention'],['where','juvenile'],['when','2005_2019'],['lawyer','prefer_not']].map(([question_id,answer_id])=>({question_id,answer_id,source:'quiz',confirmed_at:at})),
       consent:{version:c.consent.version,calls:true,sms:true,calls_text_sha256:c.consent.calls_sha256,sms_text_sha256:c.consent.sms_sha256},
       contact:{phone:'+13105550142'},attribution:{utm_source:'facebook',utm_campaign:c.campaign_id,utm_content:'la-four-questions'}});
     await store.setNx('fixture-seed-id',receipt.lead_id);return perspective.lead(receipt.lead_id);

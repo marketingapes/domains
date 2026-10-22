@@ -47,12 +47,12 @@ try{
   check(`actual local adapter receipt ${form}`,true);
  }
  await page.goto(origin+initial.ads.find(a=>a.path==='quiz').local_url);
- for(const index of [0,0,2,0]){const prompt=await page.locator('#qPrompt').innerText();await page.locator('#qChoices button').nth(index).click();await page.waitForFunction(previous=>document.querySelector('#qStep').hidden||document.querySelector('#qPrompt').textContent!==previous,prompt);}
- check('four real quiz answers summarized',await page.locator('#rSum li').count()===4);
+ for(const index of [0,1,0,0,2,0]){const prompt=await page.locator('#qPrompt').innerText();await page.locator('#qChoices button').nth(index).click();await page.waitForFunction(previous=>document.querySelector('#qStep').hidden||document.querySelector('#qPrompt').textContent!==previous,prompt);}
+ check('six real quiz answers summarized',await page.locator('#rSum li').count()===6);
  await page.click('#rContinue');await page.fill('#quizForm #first_name','Fictional Quiz');await page.fill('#quizForm #phone','3105550146');await page.check('#quizForm #consent_calls');
  const pending=page.waitForResponse(r=>r.url().endsWith('/abuse/api/intake')&&r.request().method()==='POST');await page.click('#quizForm button[type=submit]');const response=await pending,body=response.request().postDataJSON(),receipt=await response.json();
  check('actual quiz adapter receipt',response.ok()&&receipt.saved===true&&receipt.simulated===true&&receipt.dispatch==='disabled');
- check('approved quiz answer IDs preserved',JSON.stringify(body.answers.map(a=>[a.question_id,a.answer_id]))===JSON.stringify([['age','under18'],['where','juvenile'],['when','2005_2019'],['lawyer','no']]));
+ check('approved quiz answer IDs preserved',JSON.stringify(body.answers.map(a=>[a.question_id,a.answer_id]))===JSON.stringify([['age','under18'],['current_age','30_40'],['claim_type','la_juvenile_detention'],['where','juvenile'],['when','2005_2019'],['lawyer','no']]));
  check('quiz attribution reaches intake',body.attribution.utm_content==='la-four-questions'&&body.attribution.utm_campaign==='btl-ca-abuse-la-county-v1');
  for(const route of ['/privacy-policy/','/sms-terms/','/terms-and-conditions/']){const response=await page.goto(origin+route);check(`existing policy reachable ${route}`,response.ok());}
  const aggregate=await(await page.request.get(origin+'/abuse/api/snapshot')).json();

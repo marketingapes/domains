@@ -38,6 +38,14 @@ export function checkAdsAgainstPages(pkg = loadPackage()) {
   laneHas(`campaign_id: '${pkg.campaign_id}'`, 'the campaign id');
   laneHas(`question_bank_version: '${pkg.question_bank_version}'`, 'the question bank version');
   laneHas(`version: '${pkg.consent_version}'`, 'the consent version');
+  // Any number of questions named in ad copy or the quiz page must equal the quiz steps in the runtime.
+  const steps = (lane.slice(lane.indexOf('var STEPS = ['), lane.indexOf('];', lane.indexOf('var STEPS = ['))).match(/\{ id: '/g) || []).length;
+  const WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
+  const counted = (text) => [...String(text).toLowerCase().matchAll(/\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(?:short,?\s+)?(?:private\s+)?questions\b/g)].map((m) => WORDS[m[1]] ?? Number(m[1]));
+  const quizHtml = existsSync(new URL('btl/sex-abuse-la-county/quiz/index.html', ROOT)) ? readFileSync(new URL('btl/sex-abuse-la-county/quiz/index.html', ROOT), 'utf8') : '';
+  for (const [where, text] of [['quiz page', quizHtml], ...pkg.ads.map((ad) => [ad.angle_id, `${ad.primary_text} ${ad.headline} ${ad.description}`])]) {
+    for (const n of counted(text)) if (n !== steps) problems.push(`${where}: says ${n} questions but the quiz has ${steps}`);
+  }
   const paths = pkg.ads.map((a) => a.path).sort();
   if (JSON.stringify(paths) !== JSON.stringify(['form', 'quiz', 'voice'])) problems.push('each of form, quiz and voice needs exactly one ad');
   for (const ad of pkg.ads) {
