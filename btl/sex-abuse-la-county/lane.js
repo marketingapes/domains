@@ -41,6 +41,7 @@
   function bindPhones(root) {
     each('[data-ee-call]', function (el) { el.hidden = !PHONE_OK; }, root);
     each('[data-ee-call-pending]', function (el) { el.hidden = PHONE_OK; }, root);
+    each('[data-ee-voice-gate]', function (el) { el.hidden = PHONE_OK; }, root);
     if (!PHONE_OK) return;
     each('a[data-ee-tel]', function (a) { a.setAttribute('href', 'tel:' + L.phone_tel); }, root);
     each('[data-ee-phone-text]', function (el) { el.textContent = L.phone_display || ''; }, root);

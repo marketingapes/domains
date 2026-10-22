@@ -12,7 +12,7 @@ test('every ad maps to exactly one of form / quiz / voice, carries campaign attr
   const r = checkAdsAgainstPages();
   assert.deepEqual(r.problems, []);
   assert.deepEqual(r.links.map((l) => [l.path, new URL(l.url).pathname, new URL(l.url).searchParams.get('utm_content')]), [
-    ['form', '/sex-abuse-la-county/', 'la-review-form'], ['quiz', '/sex-abuse-la-county/quiz/', 'la-four-questions'], ['voice', '/sex-abuse-la-county/talk-to-sofia/', 'la-private-callback']]);
+    ['form', '/sex-abuse-la-county/', 'la-review-form'], ['quiz', '/sex-abuse-la-county/quiz/', 'la-four-questions'], ['voice', '/sex-abuse-la-county/talk-to-sofia/', 'la-talk-sofia']]);
 });
 
 test('ad checks catch drift: forbidden claims, missing disclosure, wrong page, extra channel', () => {
@@ -23,7 +23,7 @@ test('ad checks catch drift: forbidden claims, missing disclosure, wrong page, e
   bad.offer.channels.tiktok = 'on';
   const r = checkAdsAgainstPages(bad);
   for (const want of ['forbidden claim "qualif"', 'forbidden claim "compensation"', 'missing disclosure', 'each of form, quiz and voice', 'only Facebook may be on']) assert.ok(r.problems.some((p) => p.includes(want)), want);
-  assert.equal(adUrl(pkg, pkg.ads[2]).includes('callback=1'), true);
+  assert.equal(adUrl(pkg, pkg.ads[2]).includes('callback=1'), false, 'voice ad must land on voice-first, not an opened callback form');
 });
 
 test('order → draft invoice: $2,500 fee + $5,000 media, never sent; no contact details in the order', () => {

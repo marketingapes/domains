@@ -421,3 +421,9 @@ fieldset.consent legend{font-weight:650;font-size:.93rem;padding:0 6px}
 .receipt [data-state] h3{margin:6px 0 4px}
 @media (min-width:768px){.r-actions{grid-template-columns:1fr 1fr}}
 .offline-note{margin:0 0 14px;padding:10px 14px;border-radius:var(--r-sm);background:var(--warn-bg);color:var(--warn-ink);font-size:.9rem}
+
+/* Voice-first preview: disabled primary remains visible; callback is secondary. */
+.voice-unavailable:disabled{opacity:.7;cursor:not-allowed;box-shadow:none;transform:none;color:#132033}
+.voice-unavailable .button-copy{padding:1rem 1.4rem}
+#openCb .button-copy strong{font-size:.93rem;text-transform:none;white-space:normal}
+#openCb{margin-top:18px}

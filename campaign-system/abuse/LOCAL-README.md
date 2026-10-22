@@ -77,3 +77,11 @@ Parent can supply references/fixtures only; no secrets or claimant data:
 - Sanitized Perspective/BigQuery field schema and receipt examples for lead↔call↔recording↔handoff↔outcome joins, plus authorized viewer policy. Runtime values remain null without those linked receipts.
 
 Retainer extension is optional and unimplemented; no approved client retainer/template was supplied. Nothing in this package signs a document or reports a signed case.
+
+## Parent review corrections (wordmark / voice-first / consent / links)
+
+All three campaign pages and all twelve active PNG/WebM creatives use a plain text Phillips Law Group wordmark. The previous shared image was a promotional toolbox photograph; no replacement official logo was verified locally. Protected lanes/shared source assets are unchanged. The voice angle is now `la-talk-sofia`, landing on `/sex-abuse-la-county/talk-to-sofia/` without `callback=1`. Its primary live action is visibly disabled while the line is unverified; callback is a separate, initially closed secondary option. Six matching wordmark MP4 drafts are included in the portable root.
+
+Parent's reproduced opt-out/consent bugs are fixed: fixture phones are canonicalized, intake updates are serialized per phone, old idempotent submissions cannot overwrite newer SMS choices, and cached consent must match the latest persisted intake event. Stale cache means hold, and an opt-out event is checked before draft preparation. Backend snapshot remains untouched.
+
+Local ad URLs now derive from attributed destination URLs and preserve all four UTMs. Privacy Policy, SMS Terms and Terms reuse existing committed BTL pages. Their legal text is not invented or changed; the local server removes tracking scripts and disables external contact actions. Browser tests exercise the real four-question quiz, saved receipt, question/answer IDs and attribution.

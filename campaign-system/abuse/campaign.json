@@ -6,7 +6,8 @@
   "firm": {
     "id": "phillips-law-group",
     "name": "Phillips Law Group",
-    "logo_ref": "/assets/phillips-logo.webp"
+    "logo_ref": null,
+    "branding": "plain_text_wordmark"
   },
   "program_priority": [
     "la-county-juvenile-detention",
@@ -34,7 +35,7 @@
   "pages": {
     "form": "https://besttortlawyers.com/sex-abuse-la-county/",
     "quiz": "https://besttortlawyers.com/sex-abuse-la-county/quiz/",
-    "voice": "https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/?callback=1"
+    "voice": "https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/"
   },
   "attribution": {
     "utm_source": "facebook",
@@ -63,11 +64,11 @@
       "image_alt": "An open journal and pen on a wooden table in warm window light"
     },
     {
-      "angle_id": "la-private-callback",
+      "angle_id": "la-talk-sofia",
       "path": "voice",
-      "primary_text": "Prefer to talk? Ask for a private callback about abuse as a minor at an LA County facility. Sofia, Phillips Law Group’s AI intake assistant, asks only the basics, and a person reviews every request. You can stop at any time.",
-      "headline": "Ask for a private callback",
-      "description": "Attorney advertising. Sofia is AI. No outcome guaranteed.",
+      "primary_text": "A private way to talk with Sofia, Phillips Law Group’s AI intake assistant, about review requests concerning LA County juvenile facilities. Sofia asks only a few basic questions; a person reviews each request. Preview the voice-first path. Live voice is not connected yet; callback requests are a separate option.",
+      "headline": "Talk with Sofia · voice preview",
+      "description": "Attorney advertising. Sofia is AI. Live voice unavailable in this preview. No outcome guaranteed.",
       "cta": "LEARN_MORE",
       "image": "/assets/lanes/sex-abuse-la-county/band.jpg",
       "image_alt": "Wide view of the Los Angeles basin and hills in soft golden-hour light"
@@ -88,5 +89,6 @@
   "required_disclosures": [
     "Attorney advertising",
     "No outcome guaranteed"
-  ]
+  ],
+  "creative_revision": "wordmark-voice-first-v2"
 }

@@ -30,17 +30,32 @@ export async function createWorkbench({ directory, backendDir=backendDefault }={
   const perspective=createAbusePerspective({adapter,historical});
   const workflow=createLocalWorkflow({store});
   async function requireFixture(id){const view=await adapter.timeline(id);if(view.simulated!==true)throw Error('fixture_lead_required');return view}
+  const lastIntakeEvent=view=>view.events.filter(e=>e.type==='lead.saved'||e.type==='lead.resubmitted').at(-1)?.event_id;
+  async function fixtureMetadata(id,view=undefined){
+    const current=view||await requireFixture(id),meta=await store.get('fixture-meta:'+id);
+    // A missing/stale cache must not authorize a draft after a later intake was committed.
+    return meta?.intake_event_id&&meta.intake_event_id===lastIntakeEvent(current)?meta:null;
+  }
   const outbox=createDraftOutbox({store,
-    contextForLead:async id=>{const t=await requireFixture(id),meta=await store.get('fixture-meta:'+id);return {...t,tenant:'BTL',consent:meta?.consent,timezone:meta?.timezone}},
-    suppressionForLead:async id=>{const meta=await store.get('fixture-meta:'+id);if(!meta)return'unverified';return(await suppression.contactSuppression({phone:meta.phone})).suppressed?'suppressed':'clear'}
+    contextForLead:async id=>{const t=await requireFixture(id),meta=await fixtureMetadata(id,t);return {...t,tenant:'BTL',consent:meta?.consent,timezone:meta?.timezone}},
+    suppressionForLead:async id=>{const t=await requireFixture(id);if(t.events.some(e=>e.type==='lead.suppressed'))return'suppressed';const meta=await fixtureMetadata(id,t);if(!meta)return'unverified';return(await suppression.contactSuppression({phone:meta.phone})).suppressed?'suppressed':'clear'}
   });
   async function saveFixture(payload){
     const digits=String(payload?.contact?.phone||'').replace(/\D/g,'');
     if(!/^1?[2-9]\d{2}55501\d{2}$/.test(digits))throw Error('fictional_555_0100_to_0199_phone_required');
-    const clean={...payload,simulated:true,contact:{first_name:'Fictional demo claimant',phone:payload.contact.phone,email:''}};
-    const receipt=await adapter.save(clean);
-    await store.set('fixture-meta:'+receipt.lead_id,{phone:clean.contact.phone,consent:{calls:clean.consent.calls,sms:clean.consent.sms,email:false},timezone:'America/Los_Angeles'});
-    return receipt;
+    const phone='+1'+(digits.length===11?digits.slice(1):digits);
+    const clean={...payload,simulated:true,contact:{first_name:'Fictional demo claimant',phone,email:''}};
+    const saved=await store.withLock('fixture-intake:'+sha(phone),async()=>{
+      const receipt=await adapter.save(clean);
+      // An old idempotent replay must never replace a newer SMS consent choice.
+      if(receipt.duplicate!==true){
+        const view=await requireFixture(receipt.lead_id);
+        await store.set('fixture-meta:'+receipt.lead_id,{phone,consent:{calls:clean.consent.calls,sms:clean.consent.sms,email:false},timezone:'America/Los_Angeles',intake_event_id:lastIntakeEvent(view)});
+      }
+      return receipt;
+    });
+    if(saved.busy)throw Error('fixture_intake_busy_retry_same_submission');
+    return saved.value;
   }
   async function seedFixture(){
     const previous=await store.get('fixture-seed-id');if(previous)return perspective.lead(previous);
@@ -58,9 +73,17 @@ export async function createWorkbench({ directory, backendDir=backendDefault }={
   };
   const server=createSetupServer({extension:async({req,res,path,origin,json,body,headers})=>{
     if(req.method==='GET'&&staticFiles[path]){const [name,type]=staticFiles[path];res.writeHead(200,{...headers,'Content-Type':type});res.end(await readFile(new URL(name,import.meta.url)));return true}
+    if(req.method==='GET'&&['/privacy-policy/','/sms-terms/','/terms-and-conditions/'].includes(path)){
+      // Reuse committed policy text. Only tracking/contact actions are removed for local review.
+      const original=await readFile(new URL('btl'+path+'index.html',root),'utf8');
+      const local=original.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi,'')
+        .replace(/(<a\b[^>]*?)\shref="(?:https?:|tel:|mailto:)[^"]*"/gi,'$1 aria-disabled="true" tabindex="-1"')
+        .replace(/<body([^>]*)>/,'<body$1><p role="note" style="padding:16px;background:#fff1ce;color:#573d00">Existing BTL policy page · local preview. Tracking and external contact actions are disabled.</p>');
+      res.writeHead(200,{...headers,'Content-Type':'text/html; charset=utf-8','X-Robots-Tag':'noindex, nofollow','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; script-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"});res.end(local);return true;
+    }
     const lane='/sex-abuse-la-county/';
     const page=path===lane||path===lane+'quiz/'||path===lane+'talk-to-sofia/';
-    const asset=/^\/assets\/(phillips-logo\.webp|btl-seal\.svg|sofia\/sofia-portrait-440x784\.jpg|lanes\/sex-abuse-la-county\/[a-zA-Z0-9_.-]+\.(jpg|webp|png))$/.test(path);
+    const asset=/^\/assets\/(btl-seal\.svg|sofia\/sofia-portrait-440x784\.jpg|lanes\/sex-abuse-la-county\/[a-zA-Z0-9_.-]+\.(jpg|webp|png))$/.test(path);
     const laneCode=path===lane+'lane.js'||path===lane+'lane.css';
     if(req.method==='GET'&&(page||asset||laneCode)){
       const file=new URL('btl'+path+(page?'index.html':''),root);
@@ -70,7 +93,8 @@ export async function createWorkbench({ directory, backendDir=backendDefault }={
     }
     if(!path.startsWith('/abuse/api/'))return false;
     if(req.method==='GET'&&path==='/abuse/api/snapshot'){
-      json(res,200,{status:'local_fixture_only',runtime:{source:'unconnected live provider/warehouse',metrics:{leads:null,calls:null,recordings:null,accepted_handoffs:null,signed:null,joined_cps:null}},historical:{...historical,as_of:'2026-10-21'},readiness:readiness(),templates:loadTemplates(),ads:pkg.ads.map(ad=>({...ad,destination:checkAdsAgainstPages().links.find(l=>l.angle_id===ad.angle_id).url,local_url:new URL(pkg.pages[ad.path]).pathname+new URL(pkg.pages[ad.path]).search})),local:await perspective.aggregate()});return true;
+      const links=checkAdsAgainstPages().links;
+      json(res,200,{status:'local_fixture_only',runtime:{source:'unconnected live provider/warehouse',metrics:{leads:null,calls:null,recordings:null,accepted_handoffs:null,signed:null,joined_cps:null}},historical:{...historical,as_of:'2026-10-21'},readiness:readiness(),templates:loadTemplates(),ads:pkg.ads.map(ad=>{const destination=links.find(l=>l.angle_id===ad.angle_id).url;const attributed=new URL(destination);return{...ad,destination,local_url:attributed.pathname+attributed.search}}),local:await perspective.aggregate()});return true;
     }
     if(req.method!=='POST'){json(res,404,{error:'Local route not found'});return true}
     if(req.headers.origin!==origin){json(res,403,{error:'Same-origin JSON required'});return true}

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Talk to Sofia — LA County Childhood Sexual Abuse — Confidential Review | Phillips Law Group</title>
-<meta name="description" content="Sexual abuse as a minor at a juvenile hall, probation camp, foster placement, school or youth program in Los Angeles County? California changed its laws. Talk to Sofia confidentially — you don’t need to describe what happened.">
+<meta name="description" content="Confidential review requests concerning LA County juvenile facilities. Meet Sofia, an AI intake assistant. Every request needs human review; no details of what happened are required.">
 <link rel="canonical" href="https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0b1220">
@@ -20,7 +20,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://besttortlawyers.com/sex-abuse-la-county/talk-to-sofia/">
 <meta name="twitter:card" content="summary_large_image">
-<!-- Lane config (BUILD-SPEC v5). Phone is bound: lane.js rewrites every call link from phone_tel + phone_display.
+<!-- Lane config (local draft). Phone is UNVERIFIED: lane.js exposes call links only after program verification.
      meta_pixel_direct: flip to true only if GTM-PHC7459M has no Meta tag. GA4 (property 423835322) fires via GTM; measurement ID pending. -->
 <script>window.EE_LANE={tenant:"BTL",lane:"btl-sex-abuse-la-county",page:"sofia",
   gtm:"GTM-PHC7459M",ga4_property:"423835322",ga4_measurement:null,
@@ -43,16 +43,15 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
 <script>(function(L){if(!L||L.measurement!=="on"||!L.channels||L.channels.tiktok!==true||!L.tiktok_pixel)return;
 !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load(L.tiktok_pixel);ttq.page()}(window,document,'ttq');})(window.EE_LANE);</script>
 <link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
-<link rel="icon" href="/assets/phillips-logo.webp" type="image/webp">
 <link rel="stylesheet" href="/sex-abuse-la-county/lane.css?v=20261021d1">
 </head>
 <body class="talk">
 <!-- GTM noscript iframe removed in this draft: it cannot be gated and would load with measurement off. Restore only with an approved measurement switch. -->
-<a class="skip" href="#openCb">Skip to the callback request</a>
+<a class="skip" href="#voiceOptions">Skip to voice options</a>
 
 <div class="wrap">
 <header class="top">
-  <a class="brand" href="/" aria-label="Phillips Law Group home"><span class="seal"><img src="/assets/phillips-logo.webp" width="74" height="42" alt="Phillips Law Group"></span><span class="wm"><b>Phillips Law Group</b><small>Personal injury law firm</small></span></a>
+  <a class="brand" href="/" aria-label="Phillips Law Group home"><span class="wm"><b>Phillips Law Group</b><small>Personal injury law firm</small></span></a>
   <span class="top-note">Free confidential review</span>
 </header>
 
@@ -68,20 +67,21 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
         <li>You can stop at any time, or ask for a person.</li>
       </ul>
 
-      <div class="cta">
+      <div class="cta" id="voiceOptions">
         <a class="sofia-button" id="callSofia" data-ee-tel data-ee-call hidden aria-describedby="callNote">
           <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span>
-          <span class="button-copy"><strong>Call Sofia Now</strong><small data-ee-phone-text></small></span>
+          <span class="button-copy"><strong>Talk with Sofia</strong><small data-ee-phone-text></small></span>
           <span class="arrow" aria-hidden="true">›</span>
         </a>
+        <button class="sofia-button voice-unavailable" id="voiceUnavailable" type="button" disabled data-ee-voice-gate aria-describedby="voicePending"><span class="button-copy"><strong>Talk with Sofia</strong><small>Live voice is unavailable in this preview</small></span></button>
         <p class="desk-line" data-ee-call hidden>Sofia’s line: <b data-ee-phone-text></b></p>
-        <p class="call-pending" data-ee-call-pending>Sofia’s phone line for this program is still being verified, so no number is shown yet. You can leave a safe way to reach you instead.</p>
+        <p class="call-pending" id="voicePending" data-ee-call-pending>Live conversation is not available yet. No call will start from this preview. Once the program’s voice connection is verified, this will be the direct way to talk with Sofia.</p>
         <button class="cb-button" type="button" id="openCb" aria-expanded="false" aria-controls="cbPanel" data-ee-sofia>
           <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5v5.4l3.6 2.1-.8 1.4L11 13.2V7z"/></svg></span>
-          <span class="button-copy"><strong>Request a Callback</strong><small>Leave a name and number. Sofia calls you.</small></span>
+          <span class="button-copy"><strong>Prefer a callback instead?</strong><small>Leave a request for human review. No call is scheduled here.</small></span>
           <span class="arrow" aria-hidden="true">›</span>
         </button>
-        <p class="call-note" id="callNote">Calls with Sofia may be recorded and processed by our AI voice provider. Sofia is AI, not an attorney.</p>
+        <p class="call-note" id="callNote">Sofia is AI, not an attorney. Recording is off in this preview. Any future recording requires a separate consent step.</p>
       </div>
 
       <div class="cb-panel" id="cbPanel" hidden>
@@ -134,7 +134,7 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
 <footer class="foot">
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><img src="/assets/phillips-logo.webp" width="63" height="36" alt="Phillips Law Group"><span class="wm"><b>Phillips Law Group</b><small>Personal injury law firm</small></span></div>
+      <div class="f-brand"><span class="wm"><b>Phillips Law Group</b><small>Personal injury law firm</small></span></div>
       <nav class="f-links" aria-label="Footer">
         <a href="/sex-abuse-la-county/">Overview</a>
         <a href="/sex-abuse-la-county/quiz/">Free review</a>
@@ -144,7 +144,7 @@ window.fbq('init',L.meta_pixel);window.fbq('track','PageView');})(window.EE_LANE
         <a href="/sms-terms/">SMS Terms</a>
       </nav>
     </div>
-    <p class="f-legal"><strong>ATTORNEY ADVERTISING. Phillips Law Group is a law firm.</strong> Sofia is an AI intake assistant, not a person and not an attorney; she cannot determine legal eligibility. Using this website, calling, requesting a callback or speaking with Sofia does not create an attorney-client relationship. Phillips Law Group evaluates potential matters under its own criteria; any attorney-client relationship requires that firm’s acceptance and a separate written agreement. Talking with Sofia and requesting a review are free. No review, acceptance, representation, compensation or outcome is guaranteed. Prior results do not guarantee a similar outcome. Laws and time limits vary. Voice conversations may be recorded and processed by our AI voice provider. Support: RAINN 1-800-656-4673 (not affiliated). In an emergency, call 911. © 2026 Phillips Law Group</p>
+    <p class="f-legal"><strong>ATTORNEY ADVERTISING. Phillips Law Group is a law firm.</strong> Sofia is an AI intake assistant, not a person and not an attorney; she cannot determine legal eligibility. Using this website, calling, requesting a callback or speaking with Sofia does not create an attorney-client relationship. Phillips Law Group evaluates potential matters under its own criteria; any attorney-client relationship requires that firm’s acceptance and a separate written agreement. Talking with Sofia and requesting a review are free. No review, acceptance, representation, compensation or outcome is guaranteed. Prior results do not guarantee a similar outcome. Laws and time limits vary. Voice conversations may be recorded and processed by our AI voice provider. Support: RAINN 1-800-656-4673 (not affiliated). In an emergency, call 911. Photographs are illustrative only; they do not depict any claimant, facility or event. © 2026 Phillips Law Group</p>
   </div>
 </footer>
 <!-- EE status — lane: btl-sex-abuse-la-county | page: sofia | criteria_status: pending_attorney_approval | disclaimer_status: pending-attorney-review | phone_status: unverified_for_program (202 line not verified for LA; not repurposed) | intake_endpoint: null until the dispatch-disabled adapter is reviewed and mounted | local draft 2026-10-21 -->

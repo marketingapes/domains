@@ -167,9 +167,26 @@ await check("no call links while the line is unverified", async () => {
     assert.equal(await evaluate("document.body.innerHTML.includes('932-9700')"), false, p);
   }
 });
+await check("voice-first preview has a disabled primary action and secondary closed callback", async () => {
+  await open('/sex-abuse-la-county/talk-to-sofia/');
+  assert.equal(await page.isVisible('#voiceUnavailable'), true);
+  assert.equal(await page.isDisabled('#voiceUnavailable'), true);
+  assert.equal(await evaluate("document.getElementById('cbPanel').hidden"), true);
+  assert.match(await page.textContent('#openCb'), /callback instead/i);
+  assert.equal(await page.locator('[src*="phillips-logo"]').count(), 0);
+  await click('#openCb');
+  assert.equal(await evaluate("document.getElementById('cbPanel').hidden"), false);
+});
+await check("all campaign pages use a plain firm wordmark without the product thumbnail", async () => {
+  for (const p of ['/sex-abuse-la-county/','/sex-abuse-la-county/quiz/','/sex-abuse-la-county/talk-to-sofia/']) {
+    await open(p);
+    assert.equal(await page.locator('img[src*="phillips-logo"],link[href*="phillips-logo"]').count(), 0);
+    assert.match(await page.textContent('.brand .wm b'), /^Phillips Law Group$/);
+  }
+});
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];
-for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/?callback=1", "sofia"]]) {
+for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/", "sofia"]]) {
   for (const [w, h, mobile] of sizes) {
     await check(`layout ${name} ${w}x${h}`, async () => {
       await open(path, { width: w, height: h, mobile });
