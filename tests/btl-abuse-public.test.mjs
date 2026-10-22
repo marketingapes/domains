@@ -28,3 +28,23 @@ test('LA runtime cannot assess eligibility and requires the matching saved recei
   assert.match(s,/saved_pending_human_review/);assert.match(s,/not_assessed/);assert.match(s,/submission_id/);assert.match(s,/consent_record_id/);
   assert.match(s,/if \(!L\.intake_endpoint\)/);
 });
+
+test('requested image-led design is restored without changing Sofia or transport',()=>{
+  for(const p of ['index.html','quiz/index.html']){const s=read(p);assert.match(s,/<body class="lp">/);assert.doesNotMatch(s,/form-experience|quiz-experience/);assert.match(s,/hero-900\.jpg/)}
+  assert.match(read('lane.css'),/hero/);
+});
+
+test('template: two quiz questions (where it happened, facility name), optional on the form, no age, never a rejection', () => {
+  const lane = read('lane.js');
+  assert.match(lane, /question_bank_version: '2026-10-22\.template\.2'/);
+  const steps = lane.slice(lane.indexOf('var STEPS = ['), lane.indexOf('];', lane.indexOf('var STEPS = [')));
+  assert.deepEqual([...steps.matchAll(/id: '([a-z_]+)'/g)].map((m) => m[1]), ['claim_type', 'facility']);
+  assert.doesNotMatch(lane, /current_age|turned away'|not eligible|disqualif/i);
+  for (const v of ['la_juvenile_detention', 'ca_juvenile_detention_other', 'ca_womens_prison']) assert.ok(lane.includes(`'${v}'`), v);
+  assert.match(lane, /function facilityProblem/);
+  const form = read('index.html');
+  assert.match(form, /data-q="claim_type"/); assert.match(form, /data-q-text="facility"/);
+  assert.doesNotMatch(form, /current_age/);
+  assert.match(read('quiz/index.html'), /Answer two short questions/);
+  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261022t2/);
+});

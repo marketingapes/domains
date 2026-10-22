@@ -86,8 +86,9 @@ async function fillContact(form, { email = false } = {}) {
   await click(`#${form} #consent_calls`);
 }
 async function answerQuiz() {
-  for (const key of ["1", "1", "3", "1"]) { await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press(key); await sleep(450); }
-  await page.waitForFunction(() => document.querySelectorAll("#rSum li").length === 4 && /decides/.test(document.getElementById("rSay").textContent), null, { timeout: 5000 });
+  await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press("1"); await sleep(450);
+  await page.waitForSelector("#qText", { timeout: 5000 }); await page.fill("#qText", "Fictional Valley Juvenile Hall"); await page.click("#qTextGo"); await sleep(300);
+  await page.waitForFunction(() => document.querySelectorAll("#rSum li").length === 2 && /decides/.test(document.getElementById("rSay").textContent), null, { timeout: 5000 });
 }
 
 // ---------- disconnected (as committed): notice visible before typing; submit says nothing was sent ----------
@@ -119,6 +120,29 @@ await check("landing exact receipt → saved", async () => {
   const last = posted[posted.length - 1].body;
   assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.calls, last.consent.sms, last.consent.calls_text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, true, false, 64]);
 });
+await check("quiz facility step refuses contact details or a story and accepts Not sure", async () => {
+  await open("/sex-abuse-la-county/quiz/?ep=good");
+  await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press("1"); await sleep(450);
+  await page.waitForSelector("#qText", { timeout: 5000 });
+  for (const bad of ["call 310 555 0142", "a@b.test", "It was there. Then it happened."]) {
+    await page.fill("#qText", bad); await page.click("#qTextGo"); await sleep(150);
+    assert.notEqual(await evaluate("document.getElementById('qText-e').textContent"), "", bad);
+    assert.equal(await evaluate("document.getElementById('resultStep').hidden"), true, bad);
+  }
+  await page.click("#qChoices button.choice:not(.pn)"); await sleep(450);
+  assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 2);
+  assert.match(await evaluate("document.getElementById('rSum').innerText"), /Not sure/);
+});
+await check("landing optional setting and facility are sent only when given, with the current question-bank version", async () => {
+  await open("/sex-abuse-la-county/?ep=good");
+  await page.selectOption("#f_claim_type", "ca_womens_prison"); await page.fill("#f_facility", "Fictional Valley Hall");
+  await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
+  assert.deepEqual(await visibleState("landDone"), ["saved"]);
+  const last = posted[posted.length - 1].body;
+  assert.equal(last.question_bank_version, "2026-10-22.template.2");
+  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.answer_text ?? null, a.source]), [["claim_type", "ca_womens_prison", null, "form"], ["facility", "named", "Fictional Valley Hall", "form"]]);
+  assert.doesNotMatch(await evaluate("document.getElementById('landDone').innerText"), /separate|review group|turned away|not eligible|qualif/i, "the receipt shows no routing or rejection language");
+});
 for (const variant of ["wrongsub", "badlead", "dispatch", "noconsent", "schema", "campaign", "notsaved", "qualified", "http500"]) {
   await check(`landing wrong receipt (${variant}) → not saved`, async () => {
     await open(`/sex-abuse-la-county/?ep=${variant}`);
@@ -145,11 +169,11 @@ await check("quiz → summary → saved with four question IDs", async () => {
   assert.equal(await evaluate("document.getElementById('rOutside').hidden"), true);
   assert.match(text, /Nothing on this page decides eligibility/);
   assert.doesNotMatch(text, /may potentially qualify|not be able to help|disqualif/i);
-  assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 4);
+  assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 2);
   await click("#rContinue"); await fillContact("quizForm"); await click("#quizForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("quizDone"), ["saved"]);
   const last = posted[posted.length - 1].body;
-  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.source]), [["age", "under18", "quiz"], ["where", "juvenile", "quiz"], ["when", "2005_2019", "quiz"], ["lawyer", "no", "quiz"]]);
+  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.answer_text ?? null, a.source]), [["claim_type", "la_juvenile_detention", null, "quiz"], ["facility", "named", "Fictional Valley Juvenile Hall", "quiz"]]);
   assert.equal(last.page_path, "/sex-abuse-la-county/quiz/");
 });
 await check("quiz cannot submit without all answers", async () => {
@@ -187,15 +211,26 @@ await check("all campaign pages use a plain firm wordmark without the product th
   }
 });
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
-await check('form and quiz have distinct palettes and readable text/button contrast', async()=>{
+await check('restored image-led form and quiz retain readable text/button contrast', async()=>{
   const backgrounds=[];
   for(const path of ['/sex-abuse-la-county/','/sex-abuse-la-county/quiz/']){
     await open(path);
     const colors=await page.evaluate(()=>{const body=getComputedStyle(document.body),button=getComputedStyle(document.querySelector('.submit')||document.querySelector('.next'));return{ink:body.color,paper:body.backgroundColor,buttonInk:button.color,buttonPaper:button.backgroundColor}});
     assert.ok(contrast(colors.ink,colors.paper)>=4.5,`${path} body contrast`);assert.ok(contrast(colors.buttonInk,colors.buttonPaper)>=4.5,`${path} action contrast`);backgrounds.push(colors.paper);
   }
-  assert.notEqual(backgrounds[0],backgrounds[1]);
+  assert.equal(await page.evaluate(()=>document.body.className),'lp');
   assert.equal(await page.evaluate(()=>document.querySelector('.top').getBoundingClientRect().bottom<=document.querySelector('.hero').getBoundingClientRect().top+1),true,'header and hero must not overlap');
+});
+await check("mobile header: the Talk to Sofia button sits fully above the hero and is the element hit at its centre", async () => {
+  for (const [path, w, h] of [["/sex-abuse-la-county/", 375, 812], ["/sex-abuse-la-county/quiz/", 375, 812], ["/sex-abuse-la-county/", 320, 640], ["/sex-abuse-la-county/quiz/", 768, 1024]]) {
+    await open(path, { width: w, height: h, mobile: true });
+    const r = await page.evaluate(() => {
+      const keep = document.querySelector(".top nav a.keep"); const box = keep.getBoundingClientRect();
+      const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+      return { visible: box.width > 0 && box.height > 0, hitIsKeep: !!hit && keep.contains(hit), keepBottom: box.bottom, heroTop: document.querySelector(".hero").getBoundingClientRect().top };
+    });
+    assert.deepEqual([r.visible, r.hitIsKeep, r.keepBottom <= r.heroTop + 1], [true, true, true], `${path} ${w}px ${JSON.stringify(r)}`);
+  }
 });
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];
 for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/", "sofia"]]) {
