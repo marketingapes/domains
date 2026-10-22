@@ -15,7 +15,7 @@
     "ca-womens-prison"
   ],
   "criteria_status": "pending_attorney_approval",
-  "question_bank_version": "2026-10-22.kyle-screening.1",
+  "question_bank_version": "2026-10-22.template.2",
   "consent_version": "btl-abuse-callback-consent-draft-2026-10-21.1",
   "offer": {
     "service_fee_cents": 250000,
@@ -56,8 +56,8 @@
     {
       "angle_id": "la-four-questions",
       "path": "quiz",
-      "primary_text": "Six short, private questions — never about what happened. Every question has “Prefer not to say.” A person at Phillips Law Group reviews every request for a free, confidential review.",
-      "headline": "Six private questions. No details needed.",
+      "primary_text": "Two short, private questions — where it happened and the facility, never what happened. Every question has “Prefer not to say.” A person at Phillips Law Group reviews every request for a free, confidential review.",
+      "headline": "Two private questions. No details needed.",
       "description": "Attorney advertising. Sofia is AI. No outcome guaranteed.",
       "cta": "LEARN_MORE",
       "image": "/assets/lanes/sex-abuse-la-county/card-3.jpg",

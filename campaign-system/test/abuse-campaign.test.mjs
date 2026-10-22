@@ -134,7 +134,7 @@ test('message templates: unsendable drafts with consent, STOP, suppression, dedu
 });
 
 test('creative manifest: every angle has images and a draft video from committed lane photos; finals listed as missing', () => {
-  const dir = new URL('../abuse/creative/out-2026-10-22/', import.meta.url);
+  const dir = new URL('../abuse/creative/out-2026-10-22-template/', import.meta.url);
   const m = JSON.parse(readFileSync(new URL('manifest.json', dir), 'utf8'));
   assert.equal(m.blocked_external_requests, 0);
   for (const ad of pkg.ads) {
@@ -152,20 +152,20 @@ test('Make correction draft invents no form IDs and keeps every do-not', () => {
   assert.equal(/\d{15,}/.test(JSON.stringify(d.proposed_change)), false, 'no form id literal');
 });
 
-test('ad copy and quiz page name the same number of questions as the quiz runtime (six)', async () => {
+test('ad copy and quiz page name the same number of questions as the quiz runtime (two)', async () => {
   const { loadPackage, checkAdsAgainstPages } = await import('../abuse/machine.mjs');
   assert.deepEqual(checkAdsAgainstPages().problems, []);
-  const drift = loadPackage(); drift.ads[1].primary_text = drift.ads[1].primary_text.replace('Six short', 'Four short');
-  assert.ok(checkAdsAgainstPages(drift).problems.some((p) => p === 'la-four-questions: says 4 questions but the quiz has 6'));
-  assert.equal(loadPackage().question_bank_version, '2026-10-22.kyle-screening.1');
+  const drift = loadPackage(); drift.ads[1].primary_text = drift.ads[1].primary_text.replace('Two short', 'Four short');
+  assert.ok(checkAdsAgainstPages(drift).problems.some((p) => p === 'la-four-questions: says 4 questions but the quiz has 2'));
+  assert.equal(loadPackage().question_bank_version, '2026-10-22.template.2');
 });
 
-test('final six-question MP4 drafts: H.264, exact sizes, ~9.5 s, one 4:5 and one 9:16 per angle, built from the six-question sources', async () => {
+test('final template MP4 drafts: H.264, exact sizes, ~9.5 s, one 4:5 and one 9:16 per angle, built from the two-question sources', async () => {
   const { inspectMp4 } = await import('../abuse/creative/mp4-inspect.mjs');
-  const dir = new URL('../abuse/creative/out-2026-10-22-mp4-final2/', import.meta.url);
+  const dir = new URL('../abuse/creative/out-2026-10-22-template-mp4/', import.meta.url);
   const receipt = JSON.parse(readFileSync(new URL('receipt.json', dir), 'utf8'));
   assert.equal(receipt.external_requests, 0);
-  assert.equal(receipt.question_bank_version, '2026-10-22.kyle-screening.1');
+  assert.equal(receipt.question_bank_version, '2026-10-22.template.2');
   for (const ad of loadPackage().ads) for (const [fmt, w, h] of [['4x5', 1080, 1350], ['9x16', 1080, 1920]]) {
     const file = `${ad.angle_id}-${fmt}-draft.mp4`;
     const info = inspectMp4(new URL(file, dir).pathname);
