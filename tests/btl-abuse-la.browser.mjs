@@ -195,6 +195,7 @@ await check('form and quiz have distinct palettes and readable text/button contr
     assert.ok(contrast(colors.ink,colors.paper)>=4.5,`${path} body contrast`);assert.ok(contrast(colors.buttonInk,colors.buttonPaper)>=4.5,`${path} action contrast`);backgrounds.push(colors.paper);
   }
   assert.notEqual(backgrounds[0],backgrounds[1]);
+  assert.equal(await page.evaluate(()=>document.querySelector('.top').getBoundingClientRect().bottom<=document.querySelector('.hero').getBoundingClientRect().top+1),true,'header and hero must not overlap');
 });
 const sizes = [[375, 812, true], [768, 1024, true], [1440, 1000, false]];
 for (const [path, name] of [["/sex-abuse-la-county/", "landing"], ["/sex-abuse-la-county/quiz/", "quiz"], ["/sex-abuse-la-county/talk-to-sofia/", "sofia"]]) {

@@ -490,3 +490,5 @@ body.quiz-experience{--paper:#eef3eb;--paper-2:#e2eadd;--card:#fffefa;--ink:#263
  .quiz-experience h1{font-size:2.5rem}
  .quiz-experience .ai-badge{margin-top:10px}
 }
+body.form-experience .top,body.quiz-experience .top{height:auto;min-height:76px;padding:18px 0}
+@media(max-width:760px){body.form-experience .top,body.quiz-experience .top{padding:18px 0;gap:14px}.form-experience .hero,.quiz-experience .hero{padding-top:26px}}
