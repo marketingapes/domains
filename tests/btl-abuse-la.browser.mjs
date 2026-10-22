@@ -86,8 +86,8 @@ async function fillContact(form, { email = false } = {}) {
   await click(`#${form} #consent_calls`);
 }
 async function answerQuiz() {
-  for (const key of ["1", "1", "3", "1"]) { await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press(key); await sleep(450); }
-  await page.waitForFunction(() => document.querySelectorAll("#rSum li").length === 4 && /decides/.test(document.getElementById("rSay").textContent), null, { timeout: 5000 });
+  for (const key of ["1", "2", "1", "1", "3", "1"]) { await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press(key); await sleep(450); }
+  await page.waitForFunction(() => document.querySelectorAll("#rSum li").length === 6 && /decides/.test(document.getElementById("rSay").textContent), null, { timeout: 5000 });
 }
 
 // ---------- disconnected (as committed): notice visible before typing; submit says nothing was sent ----------
@@ -119,6 +119,16 @@ await check("landing exact receipt → saved", async () => {
   const last = posted[posted.length - 1].body;
   assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.calls, last.consent.sms, last.consent.calls_text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, true, false, 64]);
 });
+await check("landing optional age and setting are sent only when chosen, with the current question-bank version", async () => {
+  await open("/sex-abuse-la-county/?ep=good");
+  await page.selectOption("#f_current_age", "41_50"); await page.selectOption("#f_claim_type", "ca_womens_prison");
+  await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
+  assert.deepEqual(await visibleState("landDone"), ["saved"]);
+  const last = posted[posted.length - 1].body;
+  assert.equal(last.question_bank_version, "2026-10-22.kyle-screening.1");
+  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.source]), [["current_age", "41_50", "form"], ["claim_type", "ca_womens_prison", "form"]]);
+  assert.doesNotMatch(await evaluate("document.getElementById('landDone').innerText"), /separate|review group|turned away|not eligible|qualif/i, "the receipt shows no routing or rejection language");
+});
 for (const variant of ["wrongsub", "badlead", "dispatch", "noconsent", "schema", "campaign", "notsaved", "qualified", "http500"]) {
   await check(`landing wrong receipt (${variant}) → not saved`, async () => {
     await open(`/sex-abuse-la-county/?ep=${variant}`);
@@ -145,11 +155,11 @@ await check("quiz → summary → saved with four question IDs", async () => {
   assert.equal(await evaluate("document.getElementById('rOutside').hidden"), true);
   assert.match(text, /Nothing on this page decides eligibility/);
   assert.doesNotMatch(text, /may potentially qualify|not be able to help|disqualif/i);
-  assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 4);
+  assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 6);
   await click("#rContinue"); await fillContact("quizForm"); await click("#quizForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("quizDone"), ["saved"]);
   const last = posted[posted.length - 1].body;
-  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.source]), [["age", "under18", "quiz"], ["where", "juvenile", "quiz"], ["when", "2005_2019", "quiz"], ["lawyer", "no", "quiz"]]);
+  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.source]), [["age", "under18", "quiz"], ["current_age", "30_40", "quiz"], ["claim_type", "la_juvenile_detention", "quiz"], ["where", "juvenile", "quiz"], ["when", "2005_2019", "quiz"], ["lawyer", "no", "quiz"]]);
   assert.equal(last.page_path, "/sex-abuse-la-county/quiz/");
 });
 await check("quiz cannot submit without all answers", async () => {
