@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { loadPackage, checkAdsAgainstPages, adUrl, createOrder, draftInvoice, verifyPayment, createBuildQueue, memoryStore, readiness, checkTemplates, loadTemplates, BUILD_STEPS } from '../abuse/machine.mjs';
+import { loadPackage, checkAdsAgainstPages, adUrl, createOrder, draftInvoice, verifyPayment, createPaymentAuthority, createBuildQueue, memoryStore, readiness, checkTemplates, loadTemplates, BUILD_STEPS } from '../abuse/machine.mjs';
 import { LAUNCH_CHECKS } from '../mass-tort.mjs';
 
 const pkg = loadPackage();
@@ -34,26 +34,68 @@ test('order → draft invoice: $2,500 fee + $5,000 media, never sent; no contact
   assert.throws(() => createOrder({ orderId: 'ord-fictional-0003', firmId: 'another-firm', contactRef: 'crm:1' }), /firm_mismatch/);
 });
 
-test('payment is verified only by an exact authoritative record', () => {
-  const inv = draftInvoice(order());
-  assert.equal(verifyPayment(inv, record(inv)).verified, true);
-  for (const [over, reason] of [[{ source: 'client_said_paid' }, 'source_not_authoritative'], [{ amount_cents: 250000 }, 'amount_mismatch'], [{ currency: 'CAD' }, 'amount_mismatch'], [{ invoice_id: 'inv-other' }, 'invoice_mismatch'], [{ reference: '' }, 'reference_missing'], [{ verified_by: '' }, 'verification_incomplete'], [{ received_at: 'yesterday' }, 'verification_incomplete']]) {
-    assert.deepEqual(verifyPayment(inv, record(inv, over)), { verified: false, reason }, reason);
-  }
-  assert.equal(verifyPayment(inv, null).reason, 'no_payment_record');
+const fixedNow = Date.parse('2026-10-21T20:06:00Z');
+const settlement = (o, inv, over = {}) => ({ ...record(inv), status: 'settled', tenant: o.tenant, firm_id: o.firm_id, campaign_id: o.campaign_id, order_id: o.order_id, ...over });
+const authorityFor = (o, inv, over = {}, options = {}) => createPaymentAuthority({ now: () => fixedNow, readSettlement: async () => settlement(o, inv, over), ...options });
+
+test('client payment fields and fixture receipts alone never establish authority', async () => {
+  const o = order(), inv = draftInvoice(o);
+  assert.equal(verifyPayment(inv, record(inv)).verified, false);
+  assert.equal((await createPaymentAuthority().verify(o, inv, 'FIXTURE-0001')).verified, false);
+  await assert.rejects(createBuildQueue(memoryStore()).enqueue(o, inv, { verified: true }), /payment_not_verified/);
 });
 
-test('build queue: blocked without verified payment; idempotent; completion needs evidence; activation stays false', async () => {
-  const o = order(); const inv = draftInvoice(o); const q = createBuildQueue(memoryStore());
-  await assert.rejects(q.enqueue(o, inv, { verified: false }), /payment_not_verified/);
-  const p = verifyPayment(inv, record(inv));
-  assert.deepEqual((await q.enqueue(o, inv, p)).created, BUILD_STEPS);
-  assert.deepEqual((await q.enqueue(o, inv, p)).created, [], 'a retry creates nothing');
+test('trusted reader must return settled, current, exact scoped evidence', async () => {
+  const o = order(), inv = draftInvoice(o);
+  for (const over of [{ status: 'refunded' }, { source: 'client_said_paid' }, { amount_cents: 250000 }, { currency: 'CAD' }, { invoice_id: 'inv-other' }, { tenant: 'other' }, { firm_id: 'other' }, { campaign_id: 'other' }, { order_id: 'other' }, { reference: 'OTHER-0001' }, { verified_by: '' }, { verified_at: '2026-10-21T20:07:00Z' }, { verified_at: '2026-10-21T19:00:00Z' }, { received_at: '2026-10-21T20:06:00Z' }, { fixture: false }]) {
+    const a = authorityFor(o, inv, over);
+    assert.equal((await a.verify(o, inv, 'FIXTURE-0001')).verified, false, JSON.stringify(over));
+  }
+  const a = authorityFor(o, inv);
+  const proof = await a.verify(o, inv, 'FIXTURE-0001');
+  assert.equal(proof.fixture, true);
+  assert.match(proof.note, /not a real payment/);
+  await assert.rejects(createBuildQueue(memoryStore(), a).enqueue(o, inv, { ...proof }), /payment_not_verified/);
+  await assert.rejects(createBuildQueue(memoryStore(), authorityFor(o, inv)).enqueue(o, inv, proof), /payment_not_verified/);
+});
+
+test('queue binds tenant, campaign, specification, invoice and immutable order', async () => {
+  const o = order(), inv = draftInvoice(o), a = authorityFor(o, inv), store = memoryStore(), q = createBuildQueue(store, a);
+  const proof = await a.verify(o, inv, 'FIXTURE-0001');
+  for (const change of [{ tenant: 'another' }, { campaign_id: 'another' }, { spec_revision: 'another' }, { order_id: 'ord-fictional-0002' }]) {
+    const other = { ...o, ...change };
+    await assert.rejects(q.enqueue(other, draftInvoice(other), proof), /scope/);
+    assert.equal((await q.status(other)).jobs.every(j => j.state === 'not_queued'), true);
+  }
+  await assert.rejects(q.enqueue(o, { ...inv, total_cents: 1 }, proof), /invoice_order_mismatch/);
+  assert.throws(() => { o.offer.media_budget_cents = 1; }, TypeError);
+  assert.throws(() => { inv.lines[0].amount_cents = 1; }, TypeError);
+  const retries = await Promise.all(Array.from({ length: 12 }, () => q.enqueue(o, inv, proof)));
+  assert.equal(retries.reduce((n, r) => n + r.created.length, 0), BUILD_STEPS.length);
   await assert.rejects(q.complete(o, 'pages', ''), /evidence_required/);
-  for (const step of BUILD_STEPS) await q.complete(o, step, `local:${step}`);
-  assert.equal((await q.complete(o, 'pages', 'again')).duplicate, true);
+  const race = await Promise.allSettled([q.complete(o, 'pages', 'local:one'), q.complete(o, 'pages', 'local:two')]);
+  assert.equal(race.filter(r => r.status === 'fulfilled').length, 1);
+  assert.match(race.find(r => r.status === 'rejected').reason.message, /conflict/);
+  const winner = race.find(r => r.status === 'fulfilled').value;
+  assert.equal((await q.complete(o, 'pages', winner.evidence_ref)).duplicate, true);
+  for (const step of BUILD_STEPS.filter(s => s !== 'pages')) await q.complete(o, step, `local:${step}`);
   const s = await q.status(o);
-  assert.deepEqual([s.built, s.activation, s.jobs.every((j) => j.fixture === true)], [true, false, true]);
+  assert.deepEqual([s.built, s.activation, s.jobs.every(j => j.fixture === true)], [true, false, true]);
+  s.jobs[0].evidence_ref = 'local:tamper';
+  assert.equal((await q.status(o)).jobs[0].evidence_ref, winner.evidence_ref);
+});
+
+test('expired payment capabilities cannot enqueue and partial queue retry resumes safely', async () => {
+  let t = fixedNow;
+  const o = order(), inv = draftInvoice(o), a = authorityFor(o, inv, {}, { now: () => t });
+  const proof = await a.verify(o, inv, 'FIXTURE-0001');
+  const backing = memoryStore(); let count = 0;
+  const failing = { ...backing, async setNx(k, v) { if (++count === 3) throw new Error('fixture_store_unavailable'); return backing.setNx(k, v); } };
+  const q = createBuildQueue(failing, a);
+  await assert.rejects(q.enqueue(o, inv, proof), /fixture_store_unavailable/);
+  assert.equal((await q.enqueue(o, inv, proof)).created.length, BUILD_STEPS.length - 2);
+  t += 300000;
+  await assert.rejects(q.enqueue(o, inv, proof), /payment_not_verified/);
 });
 
 test('readiness uses the existing 14 launch checks; every one is blocked with an exact reason', () => {
@@ -61,7 +103,11 @@ test('readiness uses the existing 14 launch checks; every one is blocked with an
   assert.equal(Object.keys(LAUNCH_CHECKS).length, 14);
   assert.deepEqual([r.total, r.verified, r.launch_ready], [14, 0, false]);
   assert.ok(r.checks.every((c) => c.status === 'blocked' && c.blocker));
-  assert.equal(readiness({ verifiedChecks: Object.fromEntries(Object.keys(LAUNCH_CHECKS).map((k) => [k, 'yes'])) }).verified, 0, 'only literal true counts');
+  assert.equal(readiness({ verifiedChecks: Object.fromEntries(Object.keys(LAUNCH_CHECKS).map((k) => [k, 'yes'])) }).verified, 0, 'caller values do not count');
+});
+
+test('caller booleans cannot authorize launch', () => {
+  assert.equal(readiness({ verifiedChecks: Object.fromEntries(Object.keys(LAUNCH_CHECKS).map(k => [k, true])) }).launch_ready, false);
 });
 
 test('message templates: unsendable drafts with consent, STOP, suppression, dedupe, retry and an owner; no sensitive words', () => {

@@ -10,6 +10,8 @@ import { createHash } from 'node:crypto';
 import { LAUNCH_CHECKS } from '../mass-tort.mjs';
 
 const ROOT = new URL('../../', import.meta.url);
+const freeze = (v) => { if (v && typeof v === 'object') { for (const x of Object.values(v)) freeze(x); Object.freeze(v); } return v; };
+const canonical = (v) => JSON.stringify(v, (_, x) => x && !Array.isArray(x) && typeof x === 'object' ? Object.fromEntries(Object.keys(x).sort().map(k => [k, x[k]])) : x);
 const sha = (v) => createHash('sha256').update(String(v)).digest('hex');
 export const loadPackage = () => JSON.parse(readFileSync(new URL('./campaign.json', import.meta.url), 'utf8'));
 
@@ -65,9 +67,9 @@ export function createOrder({ orderId, firmId, pkg = loadPackage(), contactRef }
   if (!ORDER_ID.test(orderId || '')) throw new Error('order_id_invalid');
   if (firmId !== pkg.firm.id) throw new Error('firm_mismatch');
   if (!contactRef || /@|\d{3}\D?\d{3}\D?\d{4}/.test(contactRef)) throw new Error('contact_ref_must_be_an_opaque_reference');
-  return Object.freeze({ schema: 'btl.order/v1', order_id: orderId, firm_id: firmId, campaign_id: pkg.campaign_id, contact_ref: contactRef,
+  return freeze({ tenant: pkg.tenant, spec_revision: sha(canonical(pkg)), schema: 'btl.order/v1', order_id: orderId, firm_id: firmId, campaign_id: pkg.campaign_id, contact_ref: contactRef,
     offer: { service_fee_cents: pkg.offer.service_fee_cents, media_budget_cents: pkg.offer.media_budget_cents, currency: pkg.offer.currency },
-    channels: pkg.offer.channels, outcome_promise: 'none', status: 'onboarding', activation: false });
+    channels: structuredClone(pkg.offer.channels), outcome_promise: 'none', status: 'onboarding', activation: false });
 }
 
 /** A draft only: never sent, never created at a payment provider. */
@@ -77,59 +79,92 @@ export function draftInvoice(order) {
     { code: 'media_budget', description: 'Facebook media budget, spent only after separate activation approval', amount_cents: order.offer.media_budget_cents },
   ];
   const total = lines.reduce((n, l) => n + l.amount_cents, 0);
-  return Object.freeze({ schema: 'btl.invoice-draft/v1', invoice_id: `inv-${sha(order.order_id).slice(0, 16)}`, order_id: order.order_id, currency: order.offer.currency,
+  return freeze({ tenant: order.tenant, campaign_id: order.campaign_id, spec_revision: order.spec_revision, schema: 'btl.invoice-draft/v1', invoice_id: `inv-${sha(canonical(order)).slice(0, 24)}`, order_id: order.order_id, currency: order.offer.currency,
     lines, total_cents: total, status: 'draft_not_sent', sent: false, provider_invoice_id: null });
 }
 
+/** Record fields alone never establish authority. This legacy helper fails closed. */
+export function verifyPayment() {
+  return { verified: false, reason: 'trusted_payment_verifier_required' };
+}
+
+const scope = (order, invoice) => {
+  if (!order?.tenant || !order?.campaign_id || !order?.spec_revision || !ORDER_ID.test(order.order_id || '')) throw new Error('order_scope_missing');
+  if (canonical(invoice) !== canonical(draftInvoice(order))) throw new Error('invoice_order_mismatch');
+  return sha(canonical({ order, invoice }));
+};
+
 /**
- * Payment counts only when an authoritative record matches the invoice exactly. A client's "I paid",
- * a screenshot or a partial amount is never verification.
+ * Construct ONLY in the trusted server composition root, never with request-supplied callbacks.
+ * readSettlement must independently fetch authenticated settlement evidence, not echo client JSON.
+ * No connector is installed here. Default is blocked. Fixture mode cannot issue real-payment proof.
+ * Capabilities are process-local: persisted jobs must be reverified after restart, not deserialized.
  */
-export function verifyPayment(invoice, record) {
-  const refuse = (reason) => ({ verified: false, reason });
-  if (!record || typeof record !== 'object') return refuse('no_payment_record');
-  if (!['processor_settlement', 'bank_statement'].includes(record.source)) return refuse('source_not_authoritative');
-  if (record.invoice_id !== invoice.invoice_id) return refuse('invoice_mismatch');
-  if (record.currency !== invoice.currency || record.amount_cents !== invoice.total_cents) return refuse('amount_mismatch');
-  if (!/^[A-Za-z0-9_-]{6,80}$/.test(record.reference || '')) return refuse('reference_missing');
-  if (!record.verified_by || !Number.isFinite(Date.parse(record.received_at)) || !Number.isFinite(Date.parse(record.verified_at))) return refuse('verification_incomplete');
-  if (record.fixture === true) return { verified: true, reason: null, fixture: true, note: 'FIXTURE — not a real payment' };
-  return { verified: true, reason: null, fixture: false };
+export function createPaymentAuthority({ readSettlement, mode = 'fixture', now = () => Date.now(), maxAgeMs = 300000 } = {}) {
+  if (!['fixture', 'connected'].includes(mode) || !Number.isFinite(maxAgeMs) || maxAgeMs <= 0) throw new Error('authority_config_invalid');
+  const issued = new WeakMap();
+  return Object.freeze({
+    async verify(order, invoice, reference) {
+      const binding = scope(order, invoice);
+      if (typeof readSettlement !== 'function') return { verified: false, reason: 'trusted_payment_verifier_required' };
+      const r = await readSettlement({ tenant: order.tenant, firm_id: order.firm_id, campaign_id: order.campaign_id, order_id: order.order_id, invoice_id: invoice.invoice_id, reference });
+      const t = now();
+      if (!r || r.status !== 'settled' || !['processor_settlement', 'bank_statement'].includes(r.source)) return { verified: false, reason: 'settlement_unverified' };
+      if (r.tenant !== order.tenant || r.firm_id !== order.firm_id || r.campaign_id !== order.campaign_id || r.order_id !== order.order_id || r.invoice_id !== invoice.invoice_id || r.reference !== reference || !/^[A-Za-z0-9_-]{6,80}$/.test(reference || '')) return { verified: false, reason: 'settlement_scope_mismatch' };
+      if (r.amount_cents !== invoice.total_cents || r.currency !== invoice.currency) return { verified: false, reason: 'amount_mismatch' };
+      const received = Date.parse(r.received_at), checked = Date.parse(r.verified_at);
+      if (!Number.isFinite(received) || !Number.isFinite(checked) || received > checked || checked > t || t - checked > maxAgeMs || !r.verified_by) return { verified: false, reason: 'verification_stale_or_invalid' };
+      if ((mode === 'fixture') !== (r.fixture === true)) return { verified: false, reason: 'fixture_mode_mismatch' };
+      const proof = freeze({ verified: true, fixture: mode === 'fixture', note: mode === 'fixture' ? 'FIXTURE — not a real payment' : 'Verified by injected trusted settlement reader; activation remains off', scope: binding });
+      issued.set(proof, { binding, expires: Math.min(checked + maxAgeMs, t + maxAgeMs) });
+      return proof;
+    },
+    assert(order, invoice, proof) {
+      const p = proof && issued.get(proof);
+      if (!p || p.expires <= now() || p.binding !== scope(order, invoice)) throw new Error('payment_not_verified_for_scope');
+      return proof;
+    },
+  });
 }
 
 // ---------------------------------------------------------------- idempotent build queue
 export const BUILD_STEPS = ['pages', 'ads', 'sofia_context', 'templates', 'perspective', 'readiness'];
-/** store: get/setNx (memory or the service's store). One job per (order, step); a retry never duplicates. */
-export function createBuildQueue(store) {
+/** Atomic setNx is required. Completion receipts are write-once, never read/overwrite races. */
+export function createBuildQueue(store, authority = createPaymentAuthority()) {
+  const keyFor = (order, invoice, step) => `build:v2:${scope(order, invoice)}:${step}`;
   return {
     async enqueue(order, invoice, payment) {
-      if (!payment || payment.verified !== true) throw new Error('payment_not_verified');
+      authority.assert(order, invoice, payment);
       const created = [];
       for (const step of BUILD_STEPS) {
-        const key = `build:${order.order_id}:${step}`;
-        if (await store.setNx(key, { order_id: order.order_id, invoice_id: invoice.invoice_id, step, state: 'queued', fixture: payment.fixture === true })) created.push(step);
+        const key = keyFor(order, invoice, step);
+        if (await store.setNx(key, { tenant: order.tenant, campaign_id: order.campaign_id, spec_revision: order.spec_revision, order_id: order.order_id, invoice_id: invoice.invoice_id, step, state: 'queued', fixture: payment.fixture === true })) created.push(step);
       }
       return { order_id: order.order_id, created, activation: false };
     },
-    async complete(order, step, evidenceRef) {
+    async complete(order, step, evidenceRef, invoice = draftInvoice(order)) {
       if (!BUILD_STEPS.includes(step)) throw new Error('step_unknown');
-      const key = `build:${order.order_id}:${step}`;
+      if (typeof evidenceRef !== 'string' || !/^(local|receipt):[a-zA-Z0-9_./:-]{1,200}$/.test(evidenceRef)) throw new Error('evidence_required');
+      const key = keyFor(order, invoice, step);
       const job = await store.get(key);
       if (!job) throw new Error('job_missing');
-      if (job.state === 'done') return { ...job, duplicate: true };
-      if (!evidenceRef) throw new Error('evidence_required');
       const done = { ...job, state: 'done', evidence_ref: evidenceRef };
-      await store.set(key, done);
-      return done;
+      if (await store.setNx(`${key}:completion`, done)) return done;
+      const existing = await store.get(`${key}:completion`);
+      if (!existing || existing.evidence_ref !== evidenceRef) throw new Error('completion_evidence_conflict');
+      return { ...existing, duplicate: true };
     },
-    async status(order) {
+    async status(order, invoice = draftInvoice(order)) {
       const jobs = [];
-      for (const step of BUILD_STEPS) jobs.push((await store.get(`build:${order.order_id}:${step}`)) || { step, state: 'not_queued' });
-      return { order_id: order.order_id, jobs, built: jobs.every((j) => j.state === 'done'), activation: false };
+      for (const step of BUILD_STEPS) {
+        const key = keyFor(order, invoice, step);
+        jobs.push((await store.get(`${key}:completion`)) || (await store.get(key)) || { step, state: 'not_queued' });
+      }
+      return { order_id: order.order_id, jobs, built: jobs.every(j => j.state === 'done'), activation: false };
     },
   };
 }
-export const memoryStore = () => { const m = new Map(); return { async get(k) { return m.get(k) ?? null; }, async set(k, v) { m.set(k, v); }, async setNx(k, v) { if (m.has(k)) return false; m.set(k, v); return true; } }; };
+export const memoryStore = () => { const m = new Map(); return { async get(k) { return structuredClone(m.get(k) ?? null); }, async set(k, v) { m.set(k, structuredClone(v)); }, async setNx(k, v) { if (m.has(k)) return false; m.set(k, structuredClone(v)); return true; } }; };
 
 // ---------------------------------------------------------------- readiness against the existing 14 launch checks
 export const KNOWN_BLOCKERS = {
@@ -148,9 +183,11 @@ export const KNOWN_BLOCKERS = {
   budget: 'Media budget requires verified payment and separate approval.',
   activation: 'Not requested. Dispatch, measurement and provider actions are off.',
 };
-export function readiness({ verifiedChecks = {} } = {}) {
-  const checks = Object.keys(LAUNCH_CHECKS).map((key) => ({ key, requirement: LAUNCH_CHECKS[key], status: verifiedChecks[key] === true ? 'verified' : 'blocked', blocker: verifiedChecks[key] === true ? null : KNOWN_BLOCKERS[key] }));
-  return { total: checks.length, verified: checks.filter((c) => c.status === 'verified').length, launch_ready: checks.every((c) => c.status === 'verified'), checks };
+export function readiness() {
+  // No authoritative launch evidence reader is configured in this local package.
+  // Caller booleans, fixture receipts and finished build jobs cannot authorize activation.
+  const checks = Object.keys(LAUNCH_CHECKS).map(key => ({ key, requirement: LAUNCH_CHECKS[key], status: 'blocked', blocker: KNOWN_BLOCKERS[key] }));
+  return { total: checks.length, verified: 0, launch_ready: false, checks };
 }
 
 // ---------------------------------------------------------------- message templates
