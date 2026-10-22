@@ -34,14 +34,17 @@ test('requested image-led design is restored without changing Sofia or transport
   assert.match(read('lane.css'),/hero/);
 });
 
-test('Kyle screening: six quiz questions incl. current age and claim type, optional on the form, never a rejection', () => {
+test('template: two quiz questions (where it happened, facility name), optional on the form, no age, never a rejection', () => {
   const lane = read('lane.js');
-  assert.match(lane, /question_bank_version: '2026-10-22\.kyle-screening\.1'/);
-  for (const id of ['current_age', 'claim_type']) assert.match(lane, new RegExp(`id: '${id}'`));
-  for (const v of ['under_30', '30_40', '41_50', 'over_50', 'la_juvenile_detention', 'ca_juvenile_detention_other', 'ca_womens_prison']) assert.ok(lane.includes(`'${v}'`), v);
-  assert.doesNotMatch(lane, /turned away'|not eligible|disqualif/i);
+  assert.match(lane, /question_bank_version: '2026-10-22\.template\.2'/);
+  const steps = lane.slice(lane.indexOf('var STEPS = ['), lane.indexOf('];', lane.indexOf('var STEPS = [')));
+  assert.deepEqual([...steps.matchAll(/id: '([a-z_]+)'/g)].map((m) => m[1]), ['claim_type', 'facility']);
+  assert.doesNotMatch(lane, /current_age|turned away'|not eligible|disqualif/i);
+  for (const v of ['la_juvenile_detention', 'ca_juvenile_detention_other', 'ca_womens_prison']) assert.ok(lane.includes(`'${v}'`), v);
+  assert.match(lane, /function facilityProblem/);
   const form = read('index.html');
-  assert.match(form, /data-q="current_age"/); assert.match(form, /data-q="claim_type"/);
-  assert.doesNotMatch(form.match(/<select id="f_current_age"[^>]*>/)[0], /required/, 'optional on the form');
-  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261022s1/);
+  assert.match(form, /data-q="claim_type"/); assert.match(form, /data-q-text="facility"/);
+  assert.doesNotMatch(form, /current_age/);
+  assert.match(read('quiz/index.html'), /Answer two short questions/);
+  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261022t2/);
 });
