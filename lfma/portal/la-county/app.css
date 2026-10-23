@@ -17,3 +17,4 @@ td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 td:first-child{white-space:nowrap}
 .panel+.panel{margin-top:18px}
+.section-label{margin:34px 0 10px}
