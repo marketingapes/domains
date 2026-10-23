@@ -80,9 +80,11 @@ const results = [];
 const check = (name, fn) => fn().then(() => results.push([name, "pass"]), (e) => results.push([name, "FAIL", e.message.slice(0, 300)]));
 const contrast=(a,b)=>{const l=s=>{const rgb=s.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};const x=l(a),y=l(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
 
+// The landing form shows first name, phone and call consent; email, the two questions and SMS consent sit in an optional section.
+async function openMore(form) { if (form === "laneForm") await evaluate("(()=>{const d=document.getElementById('moreDetails'); if (d) d.open = true;})()"); }
 async function fillContact(form, { email = false } = {}) {
   await fill(`#${form} #first_name`, "Avery"); await fill(`#${form} #phone`, "3105550142");
-  if (email) await fill(`#${form} #email`, "avery@example.test");
+  if (email) { await openMore(form); await fill(`#${form} #email`, "avery@example.test"); }
   await click(`#${form} #consent_calls`);
 }
 async function answerQuiz() {
@@ -104,7 +106,7 @@ for (const [path, form, box, email] of [["/sex-abuse-la-county/", "laneForm", "l
 // ---------- consent is required ----------
 await check("call consent required", async () => {
   await open("/sex-abuse-la-county/?ep=good");
-  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142"); await fill("#laneForm #email", "avery@example.test");
+  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142"); await openMore("laneForm"); await fill("#laneForm #email", "avery@example.test");
   const before = posted.length;
   await click("#laneForm button[type=submit]"); await sleep(300);
   assert.equal(posted.length, before, "nothing posted without the call consent box");
@@ -135,6 +137,7 @@ await check("quiz facility step refuses contact details or a story and accepts N
 });
 await check("landing optional setting and facility are sent only when given, with the current question-bank version", async () => {
   await open("/sex-abuse-la-county/?ep=good");
+  await openMore("laneForm");
   await page.selectOption("#f_claim_type", "ca_womens_prison"); await page.fill("#f_facility", "Fictional Valley Hall");
   await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("landDone"), ["saved"]);
@@ -209,6 +212,16 @@ await check("all campaign pages use a plain firm wordmark without the product th
     assert.equal(await page.locator('img[src*="phillips-logo"],link[href*="phillips-logo"]').count(), 0);
     assert.match(await page.textContent('.brand .wm b'), /^Phillips Law Group$/);
   }
+});
+await check("landing opt-in is minimal: two visible fields and one consent box; the rest is optional and collapsed", async () => {
+  await open("/sex-abuse-la-county/");
+  const r = await evaluate(`(()=>{const f=document.getElementById('laneForm');const vis=e=>e.checkVisibility();
+    return {visible:[...f.querySelectorAll('input,select')].filter(vis).map(e=>e.id),required:[...f.querySelectorAll('[required]')].map(e=>e.id),open:document.getElementById('moreDetails').open};})()`);
+  assert.deepEqual(r, { visible: ["first_name", "phone", "consent_calls"], required: ["first_name", "phone", "consent_calls"], open: false });
+  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142"); await click("#laneForm #consent_calls");
+  await openMore("laneForm"); await fill("#laneForm #f_facility", "call me at 310 555 0142"); await evaluate("document.getElementById('moreDetails').open=false");
+  await click("#laneForm button[type=submit]"); await sleep(300);
+  assert.equal(await evaluate("document.getElementById('moreDetails').open"), true, "a problem inside the optional section opens it");
 });
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
 await check('restored image-led form and quiz retain readable text/button contrast', async()=>{
