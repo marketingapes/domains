@@ -80,11 +80,9 @@ const results = [];
 const check = (name, fn) => fn().then(() => results.push([name, "pass"]), (e) => results.push([name, "FAIL", e.message.slice(0, 300)]));
 const contrast=(a,b)=>{const l=s=>{const rgb=s.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};const x=l(a),y=l(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
 
-// The landing form shows first name and phone; email and the two questions sit in an optional section. Consent is given by submitting.
-async function openMore(form) { if (form === "laneForm") await evaluate("(()=>{const d=document.getElementById('moreDetails'); if (d) d.open = true;})()"); }
-async function fillContact(form, { email = false } = {}) {
+// Every contact form is first name and phone only. Consent is given by submitting.
+async function fillContact(form) {
   await fill(`#${form} #first_name`, "Avery"); await fill(`#${form} #phone`, "3105550142");
-  if (email) { await openMore(form); await fill(`#${form} #email`, "avery@example.test"); }
 }
 async function answerQuiz() {
   await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press("1"); await sleep(450);
@@ -93,11 +91,11 @@ async function answerQuiz() {
 }
 
 // ---------- disconnected (as committed): notice visible before typing; submit says nothing was sent ----------
-for (const [path, form, box, email] of [["/sex-abuse-la-county/", "laneForm", "landDone", true], ["/sex-abuse-la-county/talk-to-sofia/?callback=1", "talkCb", "talkDone", false]]) {
+for (const [path, form, box] of [["/sex-abuse-la-county/", "laneForm", "landDone"], ["/sex-abuse-la-county/talk-to-sofia/?callback=1", "talkCb", "talkDone"]]) {
   await check(`disconnected ${path}`, async () => {
     await open(path);
     assert.equal(await evaluate(`!document.querySelector('[data-ee-offline]').hidden`), true, "offline notice shown before entry");
-    await fillContact(form, { email }); await click(`#${form} button[type=submit]`); await sleep(300);
+    await fillContact(form); await click(`#${form} button[type=submit]`); await sleep(300);
     assert.deepEqual(await visibleState(box), ["not_sent"]);
     assert.equal(await evaluate("document.body.innerText.includes('Your request is saved')"), false);
   });
@@ -118,7 +116,7 @@ await check("consent notice sits under every submit button and there are no chec
 await check("landing exact receipt → saved", async () => {
   await open("/sex-abuse-la-county/?ep=good");
   assert.equal(await evaluate("document.querySelector('[data-ee-offline]').hidden"), true);
-  await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
+  await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("landDone"), ["saved"]);
   const last = posted[posted.length - 1].body;
   assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.version, last.consent.method, last.consent.calls, last.consent.sms, last.consent.text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, "btl-abuse-submit-consent-draft-2026-10-23.1", "submit", true, true, 64]);
@@ -136,21 +134,19 @@ await check("quiz facility step refuses contact details or a story and accepts N
   assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 2);
   assert.match(await evaluate("document.getElementById('rSum').innerText"), /Not sure/);
 });
-await check("landing optional setting and facility are sent only when given, with the current question-bank version", async () => {
+await check("landing sends contact only (no answers) with the current question-bank version", async () => {
   await open("/sex-abuse-la-county/?ep=good");
-  await openMore("laneForm");
-  await page.selectOption("#f_claim_type", "ca_womens_prison"); await page.fill("#f_facility", "Fictional Valley Hall");
-  await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
+  await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("landDone"), ["saved"]);
   const last = posted[posted.length - 1].body;
   assert.equal(last.question_bank_version, "2026-10-22.template.2");
-  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.answer_text ?? null, a.source]), [["claim_type", "ca_womens_prison", null, "form"], ["facility", "named", "Fictional Valley Hall", "form"]]);
+  assert.deepEqual([last.answers, Object.keys(last.contact).sort(), last.contact.email], [[], ["email", "first_name", "phone"], ""]);
   assert.doesNotMatch(await evaluate("document.getElementById('landDone').innerText"), /separate|review group|turned away|not eligible|qualif/i, "the receipt shows no routing or rejection language");
 });
 for (const variant of ["wrongsub", "badlead", "dispatch", "noconsent", "schema", "campaign", "notsaved", "qualified", "http500"]) {
   await check(`landing wrong receipt (${variant}) → not saved`, async () => {
     await open(`/sex-abuse-la-county/?ep=${variant}`);
-    await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
+    await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
     assert.deepEqual(await visibleState("landDone"), []);
     assert.match(await statusText(), /couldn’t confirm/);
     assert.equal(await evaluate("window.dataLayer.some(e=>e.event==='ee_lead_saved')"), false);
@@ -158,7 +154,7 @@ for (const variant of ["wrongsub", "badlead", "dispatch", "noconsent", "schema",
 }
 await check("retry keeps the same submission id; edited content gets a new one", async () => {
   await open("/sex-abuse-la-county/?ep=http500");
-  await fillContact("laneForm", { email: true });
+  await fillContact("laneForm");
   await click("#laneForm button[type=submit]"); await sleep(500); await click("#laneForm button[type=submit]"); await sleep(500);
   const [a, b] = posted.slice(-2).map((p) => p.body.submission_id);
   assert.equal(a, b);
@@ -214,15 +210,13 @@ await check("all campaign pages use a plain firm wordmark without the product th
     assert.match(await page.textContent('.brand .wm b'), /^Phillips Law Group$/);
   }
 });
-await check("landing opt-in is minimal: two visible fields, no checkbox; the rest is optional and collapsed", async () => {
-  await open("/sex-abuse-la-county/");
-  const r = await evaluate(`(()=>{const f=document.getElementById('laneForm');const vis=e=>e.checkVisibility();
-    return {visible:[...f.querySelectorAll('input,select')].filter(vis).map(e=>e.id),required:[...f.querySelectorAll('[required]')].map(e=>e.id),open:document.getElementById('moreDetails').open};})()`);
-  assert.deepEqual(r, { visible: ["first_name", "phone"], required: ["first_name", "phone"], open: false });
-  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142");
-  await openMore("laneForm"); await fill("#laneForm #f_facility", "call me at 310 555 0142"); await evaluate("document.getElementById('moreDetails').open=false");
-  await click("#laneForm button[type=submit]"); await sleep(300);
-  assert.equal(await evaluate("document.getElementById('moreDetails').open"), true, "a problem inside the optional section opens it");
+await check("every contact form is name and phone only, and each page shows the Phillips team photo", async () => {
+  for (const [path, form] of [["/sex-abuse-la-county/", "laneForm"], ["/sex-abuse-la-county/quiz/", "quizForm"], ["/sex-abuse-la-county/talk-to-sofia/", "talkCb"]]) {
+    await open(path);
+    const r = await evaluate(`(()=>{const f=document.getElementById('${form}');const img=document.querySelector('.c-team img');
+      return {fields:[...f.querySelectorAll('input,select,textarea')].map(e=>e.id),required:[...f.querySelectorAll('[required]')].map(e=>e.id),team:img?img.getAttribute('src'):null,disclaimer:getComputedStyle(document.querySelector('.sb37')).fontSize};})()`);
+    assert.deepEqual(r, { fields: ["first_name", "phone"], required: ["first_name", "phone"], team: "/assets/lanes/sex-abuse-la-county/plg-team.webp", disclaimer: "12px" }, path);
+  }
 });
 // ---------- layout, accessibility basics and screenshots at 375, 768 and 1440 ----------
 await check('restored image-led form and quiz retain readable text/button contrast', async()=>{

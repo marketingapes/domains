@@ -34,7 +34,7 @@ test('requested image-led design is restored without changing Sofia or transport
   assert.match(read('lane.css'),/hero/);
 });
 
-test('template: two quiz questions (where it happened, facility name), optional on the form, no age, never a rejection', () => {
+test('template: two quiz questions (where it happened, facility name), name and phone only on the form, no age, never a rejection', () => {
   const lane = read('lane.js');
   assert.match(lane, /question_bank_version: '2026-10-22\.template\.2'/);
   const steps = lane.slice(lane.indexOf('var STEPS = ['), lane.indexOf('];', lane.indexOf('var STEPS = [')));
@@ -43,7 +43,7 @@ test('template: two quiz questions (where it happened, facility name), optional 
   for (const v of ['la_juvenile_detention', 'ca_juvenile_detention_other', 'ca_womens_prison']) assert.ok(lane.includes(`'${v}'`), v);
   assert.match(lane, /function facilityProblem/);
   const form = read('index.html');
-  assert.match(form, /data-q="claim_type"/); assert.match(form, /data-q-text="facility"/);
+  assert.doesNotMatch(form, /data-q=|data-q-text=|id="email"/, 'landing form is name and phone only; the questions live on the quiz');
   assert.doesNotMatch(form, /current_age/);
   assert.match(read('quiz/index.html'), /Answer two short questions/);
   for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261023c1/);
