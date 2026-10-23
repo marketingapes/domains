@@ -46,5 +46,5 @@ test('template: two quiz questions (where it happened, facility name), optional 
   assert.match(form, /data-q="claim_type"/); assert.match(form, /data-q-text="facility"/);
   assert.doesNotMatch(form, /current_age/);
   assert.match(read('quiz/index.html'), /Answer two short questions/);
-  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261022t2/);
+  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261023c1/);
 });
