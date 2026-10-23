@@ -1,7 +1,7 @@
 # CURRENT-BRIEF.md
 
 Living file. Every AI reads this before touching anything.
-Updated: 2026-09-05 (Friday fail line + dummy charge) by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
+Updated: 2026-10-23 (Glassman SSDI + Bard PowerPort live, request form, invoice workflow) by Claude. Previous: 2026-09-05 by Grok (PM). Chat is disposable. This file + Drive BOARDROOM are the restart point.
 
 **Hard fail:** if Marketing Apes has not collected or contractually locked **≥$100,000 by Friday 2026-09-11**, this operator path has failed and Kyle takes a full-time job. No Night League, no TNT, no extra OS. Cash or it is over.
 
@@ -152,6 +152,26 @@ Live demos:
 - Cloudflare Workers / Wrangler — **do not add** until cutover is stable
 - Meta spend, real lead contact, signed-case writeback from Phillips/Canopy
 - `$1M` as a buyable SKU
+
+## 4a. GLASSMAN (Jeffrey Glassman Injury Lawyers, Boston) — live as of 2026-10-23 (Claude)
+
+Buyer: Jeff Glassman (jeff@) + Dan Verrilli (dverrilli@, intake/ops). Call 2026-10-23 10:30 PT: Jeff "I'll take like 2 or 3" campaigns. Offer on record: $2,500 setup at cost + $5,000 ad spend per campaign; stop-loss at $2,500 spend, refund unused $2,500.
+
+**Live (all 200 on BTL, Glassman brand, generated from `btl/<folder>/build_pages.py` — edit the Python, run it, commit; never hand-edit the HTML):**
+- SSDI `/glassman-ssdi/` (+ quiz.html, sofia.html, form.html, ads.html). Sofia (669) 209-9040 = Vapi assistant 32e90752 v2, verify-then-transfer to Kyle's cell (tool fe1a10b9). Campaign id GLASSMAN-SSDI-PILOT-001.
+- Bard PowerPort `/glassman-bard-powerport/` (same five pages). Sofia (661) 471-3263 = Vapi assistant 073e4115 on number 6fdeb5a3 (was "TEST claimant actor"). Campaign id GLASSMAN-BARD-POWERPORT-001.
+- Campaign request form `/glassman/request/` → Make hook 2975055 → scenario 6752688 → sheet "Campaign Requests — Glassman" (19NB-ZHcl…) + email Kyle + confirmation to requester. Invoice adapter: Zapier workflow `glassman-campaign-invoice` (01a16a3d-…) → QBO find/create customer → invoice (items 53 MA Test Fee $2,500 + 28 Total Ad Spend Budget $5,000, ×campaigns) → send. Make calls it next (wire pending, see blockers).
+- Web intake (both torts): form/quiz → Make hook 2974404 → scenario 6750837 → BTL WEB LEADS sheet (claim_type SSDI / BARD POWERPORT) + email Kyle. Proven with synthetic lead 10:03 PT.
+- Meta (act_411567125842274, page 222081604317115, pixel 673552078259404): SSDI campaign 120254995779610231 / ad set 120254995783810231 / ads ×3 — ALL PAUSED. Previews: fb.me/2ahrjZP0A0MggOl (quiz) · fb.me/28nhUKVia7eHIRq (sofia) · fb.me/1VJLMU1uJpEuN2J (form). Bard Meta campaign NOT built yet.
+- GTM-PHC7459M on every page; events ee_page_view / ee_lead_submit_attempt / ee_lead_submit_success (page_id, campaign_id, door). No PII.
+
+**Launch gates (do not unpause until all true):** criteria + states signed off by counsel · firm transfer number → new Vapi transferCall tool swapped into both assistants · payment received · TrustedForm script on form pages · ad set geo/age set to Jeff's states.
+
+**Not built:** Glassman Perspective view (leads are in sheet + email only) · Sofia end-of-call → ledger · Bard Meta campaign · Make → Zapier invoice call.
+
+**Gotchas learned 2026-10-23:** btl-site Render auto-deploy did not fire on 4 merges — trigger manually (srv-da5m24ijobas73f5rhqg). Meta rejects `degrees_of_freedom_spec.standard_enhancements` (subcode 3858504). QBO Zapier create_invoice: never pass `makeRecurring`/`bundle_item` as strings (forces recurring schema); record ids come back as `Id`. Vapi free-number cap reached — reuse idle test numbers.
+
+Receipts: Drive › Glassman folder (CALL PLAN, BUILD RECEIPT 1–2, LIVE RECEIPT 1–2, VAPI ROLLBACK, PLAN PAGE).
 
 ## 5. Today’s scoreboard
 
