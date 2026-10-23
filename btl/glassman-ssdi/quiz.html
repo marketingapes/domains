@@ -1,10 +1,15 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SSDI Eligibility Check · Jeffrey Glassman Injury Lawyers</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="site.css">
-<meta name="robots" content="noindex">
-<!-- Google Tag Manager (BTL web container GTM-PHC7459M). Non-identifying events only: ee_page_view, ee_form_start, ee_lead_submit_success (page_id, campaign_id, door). No PII pushed. -->
+<meta name="description" content="Six quick questions about where you are in the Social Security Disability process. See your next step right away.">
+<meta name="robots" content="noindex,follow">
+<meta property="og:title" content="SSDI Eligibility Check · Jeffrey Glassman Injury Lawyers"><meta property="og:type" content="website"><meta property="og:image" content="https://besttortlawyers.com/glassman-ssdi/img/boston.jpg">
+<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="site.css?v=2">
+
+<!-- Google Tag Manager (BTL web container GTM-PHC7459M). Non-identifying events only: ee_page_view, ee_lead_submit_attempt, ee_lead_submit_success (page_id, campaign_id, door). No PII pushed. -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -13,84 +18,113 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_page_view',page_id:'glassman-ssdi-quiz',campaign_id:'GLASSMAN-SSDI-PILOT-001',tenant_id:'glassman'});</script>
 </head><body>
-<div class="bar"><div class="in"><span><b>No Fee Unless We Win.</b> Free consultation.</span><a href="tel:+16177777777">(617) 777-7777</a></div></div>
-<div class="nav"><div class="in"><a href="index.html"><img src="img/logo.svg" alt="Jeffrey Glassman Injury Lawyers"></a><a class="call" href="sofia.html">Talk to us now</a></div></div>
-
-<section style="background:var(--bg2)"><div class="in">
-  <div class="card" id="quiz" data-campaign="GLASSMAN-SSDI-PILOT-001" data-door="quiz">
-    <p class="eyebrow" style="color:var(--blue-ink)">Social Security Disability · six quick questions</p>
-    <div class="prog"><i id="bar"></i></div>
-
-    <div class="q on" data-k="status"><h2 class="qh">Where are you in the process?</h2><p class="qs">There's no wrong answer. This tells us which path fits.</p>
-      <div class="opts"><button data-v="not_applied">I haven't applied yet</button><button data-v="applied_waiting">I applied and I'm waiting</button><button data-v="denied">I applied and was denied</button><button data-v="appealing">I'm already appealing a denial</button></div></div>
-
-    <div class="q" data-k="condition"><h2 class="qh">Is a medical condition keeping you from working?</h2><p class="qs">Physical or mental. You don't need to describe it here.</p>
-      <div class="opts"><button data-v="yes_12">Yes, and it's expected to last a year or more</button><button data-v="yes_short">Yes, but probably less than a year</button><button data-v="no">No</button></div></div>
-
-    <div class="q" data-k="work"><h2 class="qh">Have you worked and paid into Social Security in recent years?</h2><p class="qs">Most jobs with a paycheck count. A rough answer is fine.</p>
-      <div class="opts"><button data-v="yes_5of10">Yes, roughly 5 of the last 10 years or more</button><button data-v="some">Some, but less than that</button><button data-v="no">No, or not sure</button></div></div>
-
-    <div class="q" data-k="age"><h2 class="qh">Are you under full retirement age?</h2><p class="qs">Full retirement age is 66 to 67 depending on birth year.</p>
-      <div class="opts"><button data-v="yes">Yes</button><button data-v="no">No</button><button data-v="unsure">Not sure</button></div></div>
-
-    <div class="q" data-k="denial_timing"><h2 class="qh">If you were denied, how long ago?</h2><p class="qs">Appeals have deadlines. We check this first.</p>
-      <div class="opts"><button data-v="under_60">Within the last 60 days</button><button data-v="over_60">More than 60 days ago</button><button data-v="na">I wasn't denied</button></div></div>
-
-    <div class="q" data-k="lawyer"><h2 class="qh">Is another lawyer already handling this claim?</h2><p class="qs">Last one.</p>
-      <div class="opts"><button data-v="no">No</button><button data-v="yes">Yes</button></div></div>
-
-    <div class="q" data-k="result">
-      <div id="res"></div>
-      <form id="cap" novalidate>
-        <div class="grid2">
-          <div class="f"><label for="first">First name</label><input id="first" name="first_name" autocomplete="given-name" required><span class="err"></span></div>
-          <div class="f"><label for="last">Last name</label><input id="last" name="last_name" autocomplete="family-name" required><span class="err"></span></div>
-          <div class="f"><label for="phone">Best phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required><span class="err"></span></div>
-          <div class="f"><label for="state">State you live in</label><select id="state" name="state" required><option value="">Choose</option><option>MA</option><option>NH</option><option>RI</option><option>CT</option><option>ME</option><option>VT</option><option>NY</option><option value="other">Other</option></select><span class="err"></span></div>
-        </div>
-        <div class="consent">
-          <label><input type="checkbox" id="c_call" name="consent_call"> <span>I agree that Jeffrey Glassman Injury Lawyers and its service providers may call me at the number above about my disability inquiry, including by automated dialing or an AI assistant. Consent is not a condition of service.</span></label>
-          <label><input type="checkbox" id="c_sms" name="consent_sms"> <span>I agree to receive text messages about my case. Msg & data rates may apply. Reply STOP to opt out.</span></label>
-        </div>
-        <span class="err" id="cerr"></span>
-        <button class="cta" type="submit" id="send" style="border:0;cursor:pointer;width:100%">Send my answers to the team</button>
-        <p class="fine">By submitting you agree to the firm's <a href="https://www.jeffreysglassman.com/">privacy policy and terms</a>. Attorney advertising. This check is not a benefits decision; the SSA decides eligibility.</p>
-      </form>
-      <div class="ok" id="done" hidden><b>Received.</b>A member of the disability team will call you back. If you'd rather talk now, call <a href="tel:+16692099040">(669) 209-9040</a>.</div>
-    </div>
-    <p style="margin:18px 0 0"><button class="back" id="back" hidden>← Back</button></p>
+<div class="bar"><div class="in"><span><b>No Fee Unless We Win.</b> Free consultation, 24/7.</span><a href="tel:+16177777777">(617) 777-7777</a></div></div>
+<div class="nav"><div class="in"><a href="./" aria-label="Jeffrey Glassman Injury Lawyers"><img src="img/logo.svg" alt="Jeffrey Glassman Injury Lawyers"></a><nav class="links"><a href="quiz.html">Eligibility check</a><a href="form.html">Request a callback</a><a class="call" href="sofia.html">Talk to us now</a></nav></div></div>
+<header class="hero"><div class="in hero-grid">
+  <div class="hero-copy">
+    <p class="eyebrow">Social Security Disability · two-minute check</p>
+    <h1>Six questions. Then you know your next step.</h1>
+    <p class="lede">Applying, waiting, or denied: answer six quick questions and see where you stand. No medical details, no Social Security number, no cost.</p>
+    <ul class="chips"><li>No fee unless we win</li><li>Instant result</li><li>A person reviews every answer</li></ul>
   </div>
-</div></section>
-
-<footer><div class="in"><div>Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110 · (617) 777-7777</div><div>Attorney advertising. Not legal advice. Not affiliated with the Social Security Administration.</div></div></footer>
-
-<script>
+  <div class="hero-card"><div class="card" id="quiz" data-campaign="GLASSMAN-SSDI-PILOT-001" data-door="quiz">
+  <div class="card-head"><span class="k">Eligibility check</span><span class="count" id="count">1 of 6</span></div>
+  <div class="prog"><i id="bar"></i></div>
+  <div class="q on" data-k="status"><h2 class="qh">Where are you in the process?</h2><p class="qs">There's no wrong answer. This tells us which path fits.</p>
+    <div class="opts"><button data-v="not_applied">I haven't applied yet</button><button data-v="applied_waiting">I applied and I'm waiting</button><button data-v="denied">I applied and was denied</button><button data-v="appealing">I'm already appealing a denial</button></div></div>
+  <div class="q" data-k="condition"><h2 class="qh">Is a medical condition keeping you from working?</h2><p class="qs">Physical or mental. You don't need to describe it here.</p>
+    <div class="opts"><button data-v="yes_12">Yes, and it's expected to last a year or more</button><button data-v="yes_short">Yes, but probably less than a year</button><button data-v="no">No</button></div></div>
+  <div class="q" data-k="work"><h2 class="qh">Have you worked and paid into Social Security in recent years?</h2><p class="qs">Most jobs with a paycheck count. A rough answer is fine.</p>
+    <div class="opts"><button data-v="yes_5of10">Yes, roughly 5 of the last 10 years or more</button><button data-v="some">Some, but less than that</button><button data-v="no">No, or not sure</button></div></div>
+  <div class="q" data-k="age"><h2 class="qh">Are you under full retirement age?</h2><p class="qs">Full retirement age is 66 to 67 depending on birth year.</p>
+    <div class="opts"><button data-v="yes">Yes</button><button data-v="no">No</button><button data-v="unsure">Not sure</button></div></div>
+  <div class="q" data-k="denial_timing"><h2 class="qh">How long ago were you denied?</h2><p class="qs">Appeals have a 60-day window. We check this first.</p>
+    <div class="opts"><button data-v="under_60">Within the last 60 days</button><button data-v="over_60">More than 60 days ago</button><button data-v="na">I wasn't denied</button></div></div>
+  <div class="q" data-k="lawyer"><h2 class="qh">Is another lawyer already handling this claim?</h2><p class="qs">Last one.</p>
+    <div class="opts"><button data-v="no">No</button><button data-v="yes">Yes</button></div></div>
+  <div class="q" data-k="result">
+    <div id="res"></div>
+    <form id="cap" novalidate>
+      <div class="grid2">
+        <div class="f"><label for="first">First name</label><input id="first" name="first_name" autocomplete="given-name" required><span class="err"></span></div>
+        <div class="f"><label for="last">Last name</label><input id="last" name="last_name" autocomplete="family-name" required><span class="err"></span></div>
+        <div class="f"><label for="phone">Best phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required><span class="err"></span></div>
+        <div class="f"><label for="state">State you live in</label><select id="state" name="state" required><option value="">Choose</option><option>MA</option><option>NH</option><option>RI</option><option>CT</option><option>ME</option><option>VT</option><option>NY</option><option value="other">Other</option></select><span class="err"></span></div>
+      </div>
+      <div class="consent">
+  <label><input type="checkbox" id="c_call" name="consent_call"> <span>I agree that Jeffrey Glassman Injury Lawyers and its service providers may call me at the number above about my disability inquiry, including by automated dialing or an AI assistant. Consent is not a condition of service.</span></label>
+  <label><input type="checkbox" id="c_sms" name="consent_sms"> <span>I agree to receive text messages about my case. Msg &amp; data rates may apply. Reply STOP to opt out.</span></label>
+</div>
+<span class="err" id="cerr"></span>
+      <button class="cta wide" type="submit" id="send">Send my answers to the team</button>
+      <p class="fine">By submitting you agree to the firm's <a href="https://www.jeffreysglassman.com/">privacy policy and terms</a>. Attorney advertising. This check is not a benefits decision; the SSA decides eligibility.</p>
+    </form>
+    <div class="ok" id="done" hidden><b>Received.</b>A member of the disability team will call you back. If you'd rather talk now, call <a href="tel:+16692099040">(669) 209-9040</a>.</div>
+  </div>
+  <p class="backrow"><button class="back" id="back" hidden>← Back</button></p>
+</div></div>
+</div></header><div class="trust"><div class="in">
+  <div><b>$500M+</b><span>Won for clients</span></div>
+  <div><b>30+</b><span>Years serving clients</span></div>
+  <div><b>1,000+</b><span>Five-star Google reviews</span></div>
+  <div><b>25,000+</b><span>Injured people helped</span></div>
+  <div><b>No fee</b><span>Unless we win</span></div>
+</div></div><section class="team"><div class="in">
+  <figure><img src="img/team.jpg" alt="The attorneys of Jeffrey Glassman Injury Lawyers" loading="lazy"><figcaption>The Glassman team, One International Place, Boston</figcaption></figure>
+  <div>
+    <p class="eyebrow dark">Why people choose Glassman for SSDI</p>
+    <h2 class="sec">You paid in. We make sure it counts.</h2>
+    <p>Social Security Disability is an earned benefit. The SSA's process is built to deny first and ask questions later; most first applications are turned down. Our disability team has handled applications, reconsiderations and hearings for thousands of Massachusetts workers.</p>
+    <ul class="checks">
+      <li><b>A person reviews your situation</b> within one business day, not a form.</li>
+      <li><b>We watch the deadlines.</b> A denial has a 60-day appeal window. We track it.</li>
+      <li><b>No fee unless we win.</b> SSDI fees are capped by federal rule and only come out of back pay.</li>
+    </ul>
+    <blockquote class="quote">They walked me through intake, answered every question, and stayed quick on email and phone until my SSDI claim was approved.<cite>Google review of the firm's disability team, paraphrased</cite></blockquote>
+  </div>
+</div></section><section><div class="in">
+  <h2 class="sec center">What happens after you reach out</h2>
+  <div class="steps">
+    <div><b>You tell us the basics</b><span>Your condition, your work history, whether you've applied or been denied. Two minutes.</span></div>
+    <div><b>We review</b><span>A member of the disability team looks at your situation and your deadlines.</span></div>
+    <div><b>We call you back</b><span>With a clear next step and exactly what we'd need from you.</span></div>
+    <div><b>We handle the claim</b><span>Application, appeal, hearing. You focus on your health.</span></div>
+  </div>
+</div></section><section class="close"><div class="in center">
+  <p class="eyebrow">Gotta Get Glassman</p>
+  <h2 class="sec">Ready when you are.</h2>
+  <p>Two minutes online, or one call. Either way, you'll know your next step today.</p>
+  <p class="ctas"><a class="cta" href="sofia.html">Talk to someone now</a><a class="cta alt" href="form.html">Request a callback</a></p>
+</div></section><script>
 (function(){
-  var WEBHOOK="https://hook.us2.make.com/7iit9nlnwuxmvt5ry1p7tq1vlryp5bkc";
-  var qs=[].slice.call(document.querySelectorAll('.q')), i=0, a={}, bar=document.getElementById('bar'), back=document.getElementById('back');
+  var WEBHOOK="https://hook.us2.make.com/7iit9nlnwuxmvt5ry1p7tq1vlryp5bkc", PID='glassman-ssdi-quiz';
+  var qs=[].slice.call(document.querySelectorAll('.q')), i=0, a={}, bar=document.getElementById('bar'), back=document.getElementById('back'), count=document.getElementById('count');
   var utm={}; try{new URL(location.href).searchParams.forEach(function(v,k){ if(/^(utm_|fbclid|gclid)/.test(k)) utm[k]=v; });}catch(e){}
-  function show(n){ qs[i].classList.remove('on'); i=n; qs[i].classList.add('on'); bar.style.width=Math.round(100*i/(qs.length-1))+'%'; back.hidden=(i===0||i===qs.length-1); window.scrollTo({top:0,behavior:'smooth'}); }
-  qs.forEach(function(q,idx){ q.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('click',function(){ a[q.dataset.k]=b.dataset.v; if(idx===0&&(b.dataset.v==='not_applied'||b.dataset.v==='applied_waiting')) a.denial_timing='na'; var nx=idx+1; if(qs[nx]&&qs[nx].dataset.k==='denial_timing'&&a.denial_timing==='na') nx++; show(nx); }); }); });
+  function score(){ var strong=a.condition==='yes_12'&&a.work==='yes_5of10'&&a.lawyer==='no'&&a.age!=='no'; var urgent=a.status==='denied'&&a.denial_timing==='under_60'; return a.lawyer==='yes'?'represented':(strong?(urgent?'strong_urgent':'strong'):'review'); }
+  function show(n){ qs[i].classList.remove('on'); i=n; qs[i].classList.add('on'); var last=qs.length-1; bar.style.width=Math.round(100*i/last)+'%'; count.textContent=(i<last?(i+1)+' of 6':'Your result'); back.hidden=(i===0||i===last);
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth',block:'start'});
+    if(qs[i].dataset.k==='result'){ var s=score(), t={
+      strong_urgent:'<h2 class="qh">Your answers point to a possible SSDI claim, and a denial inside the appeal window.</h2><p class="qs">Appeal deadlines are short. Leave your details and the team calls you today.</p>',
+      strong:'<h2 class="qh">Your answers point to a possible SSDI claim.</h2><p class="qs">Only the SSA decides eligibility, but this is worth a conversation. Leave your details and the team calls you back.</p>',
+      review:'<h2 class="qh">Your situation needs a closer look.</h2><p class="qs">Some answers need a person to review them. Leave your details and the team will follow up if it\'s a fit.</p>',
+      represented:'<h2 class="qh">You already have a lawyer on this claim.</h2><p class="qs">We don\'t step on another firm\'s case. If that changes, we\'re here.</p>'};
+      document.getElementById('res').innerHTML=t[s]; a.result=s; document.getElementById('cap').hidden=(s==='represented'); } }
+  qs.forEach(function(q,idx){ q.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('click',function(){ a[q.dataset.k]=b.dataset.v; if(idx===0&&b.dataset.v!=='denied'&&b.dataset.v!=='appealing') a.denial_timing='na'; var nx=idx+1; if(qs[nx]&&qs[nx].dataset.k==='denial_timing'&&a.denial_timing==='na') nx++; show(nx); }); }); });
   back.addEventListener('click',function(){ var p=i-1; if(qs[p].dataset.k==='denial_timing'&&a.denial_timing==='na') p--; show(Math.max(0,p)); });
-  function score(){ var strong=a.condition==='yes_12'&&a.work==='yes_5of10'&&a.lawyer==='no'&&a.age!=='no'; var urgent=a.status==='denied'&&a.denial_timing==='under_60'; var rep=a.lawyer==='yes'; return rep?'represented':(strong?(urgent?'strong_urgent':'strong'):'review'); }
-  var orig=show; show=function(n){ orig(n); if(qs[i].dataset.k==='result'){ var s=score(), r=document.getElementById('res'), t={
-    strong_urgent:'<h2 class="qh">Your answers point to a possible SSDI claim, and a denial inside the appeal window.</h2><p class="qs">Appeal deadlines are short. Leave your details and the team calls you today.</p>',
-    strong:'<h2 class="qh">Your answers point to a possible SSDI claim.</h2><p class="qs">Only the SSA decides eligibility, but this is worth a conversation. Leave your details and the team calls you back.</p>',
-    review:'<h2 class="qh">Your situation needs a closer look.</h2><p class="qs">Some answers need a person to review them. Leave your details and the team will follow up if it\'s a fit.</p>',
-    represented:'<h2 class="qh">You already have a lawyer on this claim.</h2><p class="qs">We don\'t step on another firm\'s case. If that changes, we\'re here.</p>'}; r.innerHTML=t[s]; a.result=s; document.getElementById('cap').hidden=(s==='represented'); } };
   function v(id,ok,m){ var el=document.getElementById(id), e=el.parentNode.querySelector('.err'); e.textContent=ok?'':m; el.setAttribute('aria-invalid',ok?'false':'true'); return ok; }
-  document.getElementById('cap').addEventListener('submit',function(ev){ ev.preventDefault();
-    var f=ev.target, ok=true;
+  document.getElementById('cap').addEventListener('submit',function(ev){ ev.preventDefault(); var f=ev.target, ok=true;
     ok=v('first',f.first_name.value.trim().length>1,'Enter your first name')&ok; ok=v('last',f.last_name.value.trim().length>1,'Enter your last name')&ok;
     ok=v('phone',/^\D*(\d\D*){10}$/.test(f.phone.value),'Enter a 10-digit phone number')&ok; ok=v('state',!!f.state.value,'Choose your state')&ok;
-    var ce=document.getElementById('cerr'); ce.textContent=f.consent_call.checked?'':'Please agree to be called so the team can reach you'; ok=ok&&f.consent_call.checked;
-    if(!ok) return;
+    var ce=document.getElementById('cerr'); ce.textContent=f.consent_call.checked?'':'Please agree to be called so the team can reach you'; ok=ok&&f.consent_call.checked; if(!ok) return;
     var p={campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'quiz',received_at:new Date().toISOString(),page:location.href,answers:a,
       lead:{first_name:f.first_name.value.trim(),last_name:f.last_name.value.trim(),phone:f.phone.value.replace(/\D/g,''),state:f.state.value},
       consent:{call:f.consent_call.checked,sms:f.consent_sms.checked,text:'Agreed on page '+location.pathname+' at '+new Date().toISOString()},source:utm};
-    document.getElementById('send').disabled=true; try{window.dataLayer.push({event:'ee_lead_submit_attempt',page_id:'glassman-ssdi-quiz',campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'quiz'});}catch(e){}
-    fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),keepalive:true}).catch(function(){}).then(function(){ f.hidden=true; document.getElementById('done').hidden=false; try{window.dataLayer.push({event:'ee_lead_submit_success',page_id:'glassman-ssdi-quiz',campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'quiz'});}catch(e){} });
+    document.getElementById('send').disabled=true; try{window.dataLayer.push({event:'ee_lead_submit_attempt',page_id:PID,campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'quiz'});}catch(e){}
+    fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),keepalive:true}).catch(function(){}).then(function(){ f.hidden=true; document.getElementById('done').hidden=false; try{window.dataLayer.push({event:'ee_lead_submit_success',page_id:PID,campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'quiz'});}catch(e){} });
   });
 })();
-</script>
+</script><footer><div class="in">
+  <div>Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110 · (617) 777-7777 · <a href="https://www.jeffreysglassman.com/">jeffreysglassman.com</a></div>
+  <div>Attorney advertising. Prior results do not guarantee a similar outcome. This page is not legal advice and does not create an attorney-client relationship. Not affiliated with the Social Security Administration; benefits decisions are made by the SSA. Sofia is an AI intake assistant; calls are recorded.</div>
+</div></footer>
 </body></html>
