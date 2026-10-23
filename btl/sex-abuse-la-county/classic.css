@@ -199,6 +199,13 @@
 [data-look="classic"] .talk .consent-line{color:#6b6b6b}
 [data-look="classic"] .lp .hero .q-body{padding-bottom:16px}
 
+/* the real Phillips Law Group team, on a white band (the photo is a transparent cut-out) */
+[data-look="classic"] .c-team{background:#fff;text-align:center;padding:44px 0 0;border-bottom:3px solid var(--c-red)}
+[data-look="classic"] .c-team h2{font:800 clamp(1.4rem,2.6vw,1.9rem)/1.2 var(--c-head);color:var(--c-dark);margin:0 0 8px}
+[data-look="classic"] .c-team-sub{max-width:560px;margin:0 auto 18px;color:var(--c-muted);font-size:.98rem}
+[data-look="classic"] .c-team img{display:block;width:min(100%,860px);height:auto;margin:0 auto}
+[data-look="classic"] .talk .c-team{border-radius:6px;margin:0 0 28px;padding:32px 16px 0;color:var(--c-text)}
+
 @media(max-width:960px){
   [data-look="classic"] .c-hero-grid,[data-look="classic"] .c-two{grid-template-columns:1fr;gap:28px}
   [data-look="classic"] .c-fac{grid-template-columns:repeat(2,minmax(0,1fr))}
