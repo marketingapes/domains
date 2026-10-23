@@ -42,7 +42,7 @@
 /* ---------- hero (landing + quiz): May corridor photo, copy left, card right ---------- */
 [data-look="classic"] .lp .hero{text-align:left;padding:44px 0 52px;color:#fff;background:#151515}
 [data-look="classic"] .lp .hero:before{height:auto;inset:0;background-image:linear-gradient(90deg,rgba(18,18,18,.95) 0%,rgba(18,18,18,.86) 50%,rgba(18,18,18,.62) 100%),url(/assets/lanes/sex-abuse-la-county/may-hero-900.jpg);background-size:cover;background-position:center}
-@media(min-width:900px){[data-look="classic"] .lp .hero:before{height:auto;background-image:linear-gradient(90deg,rgba(18,18,18,.95) 0%,rgba(18,18,18,.84) 46%,rgba(18,18,18,.5) 100%),url(/assets/lanes/sex-abuse-la-county/may-hero.jpg)}}
+@media(min-width:900px){[data-look="classic"] .lp .hero:before{height:auto;background-image:linear-gradient(90deg,rgba(18,18,18,.92) 0%,rgba(18,18,18,.72) 46%,rgba(18,18,18,.3) 100%),url(/assets/lanes/sex-abuse-la-county/may-hero.jpg)}}
 [data-look="classic"] .c-hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:44px;align-items:center}
 [data-look="classic"] .c-alert{display:inline-block;background:var(--c-red);color:#fff;font:800 .72rem/1.3 var(--c-head);letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:3px}
 [data-look="classic"] .lp .hero h1{font:800 clamp(2rem,3.9vw,3rem)/1.12 var(--c-head);letter-spacing:-.01em;color:#fff;margin:18px 0 16px;max-width:none;text-wrap:balance}
@@ -188,6 +188,16 @@
 [data-look="classic"] .lp .hero .s-head{display:block;padding:16px 20px}
 [data-look="classic"] .lp .hero .s-id span{display:block;margin-top:2px}
 [data-look="classic"] .lp .hero .s-foot{background:#fff;margin:0;padding:0 18px 18px;border:0}
+
+/* simple ticks under the headline */
+[data-look="classic"] .c-ticks{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 20px}
+[data-look="classic"] .c-ticks li{display:flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:.95rem}
+[data-look="classic"] .c-ticks li:before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--c-green);color:#fff;font-size:.72rem;font-weight:800}
+/* consent by submitting: one compressed 12px line under the button */
+[data-look="classic"] .consent-line{margin:10px 0 0;font-size:12px;line-height:1.35;letter-spacing:-.005em;color:#6b6b6b}
+[data-look="classic"] .consent-line a{color:#555}
+[data-look="classic"] .talk .consent-line{color:#6b6b6b}
+[data-look="classic"] .lp .hero .q-body{padding-bottom:16px}
 
 @media(max-width:960px){
   [data-look="classic"] .c-hero-grid,[data-look="classic"] .c-two{grid-template-columns:1fr;gap:28px}

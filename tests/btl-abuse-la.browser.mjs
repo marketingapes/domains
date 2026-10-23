@@ -80,12 +80,11 @@ const results = [];
 const check = (name, fn) => fn().then(() => results.push([name, "pass"]), (e) => results.push([name, "FAIL", e.message.slice(0, 300)]));
 const contrast=(a,b)=>{const l=s=>{const rgb=s.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]};const x=l(a),y=l(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
 
-// The landing form shows first name, phone and call consent; email, the two questions and SMS consent sit in an optional section.
+// The landing form shows first name and phone; email and the two questions sit in an optional section. Consent is given by submitting.
 async function openMore(form) { if (form === "laneForm") await evaluate("(()=>{const d=document.getElementById('moreDetails'); if (d) d.open = true;})()"); }
 async function fillContact(form, { email = false } = {}) {
   await fill(`#${form} #first_name`, "Avery"); await fill(`#${form} #phone`, "3105550142");
   if (email) { await openMore(form); await fill(`#${form} #email`, "avery@example.test"); }
-  await click(`#${form} #consent_calls`);
 }
 async function answerQuiz() {
   await page.waitForSelector("#qChoices button", { timeout: 5000 }); await page.keyboard.press("1"); await sleep(450);
@@ -103,15 +102,17 @@ for (const [path, form, box, email] of [["/sex-abuse-la-county/", "laneForm", "l
     assert.equal(await evaluate("document.body.innerText.includes('Your request is saved')"), false);
   });
 }
-// ---------- consent is required ----------
-await check("call consent required", async () => {
-  await open("/sex-abuse-la-county/?ep=good");
-  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142"); await openMore("laneForm"); await fill("#laneForm #email", "avery@example.test");
-  const before = posted.length;
-  await click("#laneForm button[type=submit]"); await sleep(300);
-  assert.equal(posted.length, before, "nothing posted without the call consent box");
-  assert.match(await evaluate("document.getElementById('consent_calls-e').textContent"), /check this box/);
-  assert.equal(await evaluate("document.getElementById('consent_calls').checked || document.getElementById('consent_sms').checked"), false, "both boxes start unchecked");
+// ---------- consent is given by submitting: no checkbox, one notice under the button ----------
+await check("consent notice sits under every submit button and there are no checkboxes", async () => {
+  for (const [path, form] of [["/sex-abuse-la-county/", "laneForm"], ["/sex-abuse-la-county/quiz/", "quizForm"], ["/sex-abuse-la-county/talk-to-sofia/", "talkCb"]]) {
+    await open(path);
+    const r = await evaluate(`(()=>{const f=document.getElementById('${form}');const b=f.querySelector('button[type=submit]');const n=f.querySelector('.consent-line');
+      return {boxes:document.querySelectorAll('input[type=checkbox]').length,text:n?n.textContent:'',after:!!n&&!!(b.compareDocumentPosition(n)&Node.DOCUMENT_POSITION_FOLLOWING),size:n?getComputedStyle(n).fontSize:''};})()`);
+    assert.equal(r.boxes, 0, `${path} has no checkboxes`);
+    assert.match(r.text, /^By submitting this form, you agree that Phillips Law Group .*Sofia, an AI assistant.*call and text you.*Consent is not a condition of any service.*Reply STOP/, path);
+    assert.equal(r.after, true, `${path} notice follows the button`);
+    assert.equal(r.size, "12px", `${path} notice is 12px`);
+  }
 });
 // ---------- exact receipt: saved; every wrong receipt: not saved ----------
 await check("landing exact receipt → saved", async () => {
@@ -120,7 +121,7 @@ await check("landing exact receipt → saved", async () => {
   await fillContact("laneForm", { email: true }); await click("#laneForm button[type=submit]"); await sleep(600);
   assert.deepEqual(await visibleState("landDone"), ["saved"]);
   const last = posted[posted.length - 1].body;
-  assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.calls, last.consent.sms, last.consent.calls_text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, true, false, 64]);
+  assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.version, last.consent.method, last.consent.calls, last.consent.sms, last.consent.text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, "btl-abuse-submit-consent-draft-2026-10-23.1", "submit", true, true, 64]);
 });
 await check("quiz facility step refuses contact details or a story and accepts Not sure", async () => {
   await open("/sex-abuse-la-county/quiz/?ep=good");
@@ -213,12 +214,12 @@ await check("all campaign pages use a plain firm wordmark without the product th
     assert.match(await page.textContent('.brand .wm b'), /^Phillips Law Group$/);
   }
 });
-await check("landing opt-in is minimal: two visible fields and one consent box; the rest is optional and collapsed", async () => {
+await check("landing opt-in is minimal: two visible fields, no checkbox; the rest is optional and collapsed", async () => {
   await open("/sex-abuse-la-county/");
   const r = await evaluate(`(()=>{const f=document.getElementById('laneForm');const vis=e=>e.checkVisibility();
     return {visible:[...f.querySelectorAll('input,select')].filter(vis).map(e=>e.id),required:[...f.querySelectorAll('[required]')].map(e=>e.id),open:document.getElementById('moreDetails').open};})()`);
-  assert.deepEqual(r, { visible: ["first_name", "phone", "consent_calls"], required: ["first_name", "phone", "consent_calls"], open: false });
-  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142"); await click("#laneForm #consent_calls");
+  assert.deepEqual(r, { visible: ["first_name", "phone"], required: ["first_name", "phone"], open: false });
+  await fill("#laneForm #first_name", "Avery"); await fill("#laneForm #phone", "3105550142");
   await openMore("laneForm"); await fill("#laneForm #f_facility", "call me at 310 555 0142"); await evaluate("document.getElementById('moreDetails').open=false");
   await click("#laneForm button[type=submit]"); await sleep(300);
   assert.equal(await evaluate("document.getElementById('moreDetails').open"), true, "a problem inside the optional section opens it");

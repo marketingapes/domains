@@ -6,8 +6,8 @@
      says or implies that anyone qualifies or does not. A person reviews every request.
    - Transport: EE_LANE.intake_endpoint. null = nothing is sent, and the page says so. Success is shown only
      for a receipt that says saved:true with a lead id. Retries reuse the same submission id.
-   - Consent: explicit, unchecked checkboxes whose text and version come from CAMPAIGN below; the server
-     checks the text hash, so edited text can never be recorded as consent.
+   - Consent: given by submitting. Each form shows CAMPAIGN.consent.submit_text next to its button (no checkbox);
+     the version and the text hash go with the request, so edited text can never be recorded as consent.
    - Call links are bound only when EE_LANE.phone_status is "verified_for_program". Otherwise they stay hidden. */
 (function () {
   'use strict';
@@ -17,9 +17,9 @@
     campaign_id: 'btl-ca-abuse-la-county-v1',
     question_bank_version: '2026-10-22.template.2',
     consent: {
-      version: 'btl-abuse-callback-consent-draft-2026-10-21.1',
-      calls_text: 'I agree that Phillips Law Group and its intake team, including Sofia, an AI assistant, may call me at the number I entered about this request. Calls may be recorded. Consent is not a condition of any service. I can say stop or opt out at any time.',
-      sms_text: 'I agree that Phillips Law Group may text me at this number about this request. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help. Consent is not a condition of any service.'
+      version: 'btl-abuse-submit-consent-draft-2026-10-23.1',
+      method: 'submit',
+      submit_text: 'By submitting this form, you agree that Phillips Law Group and its intake team, including Sofia, an AI assistant, may call and text you at the number you entered about your request, including with automated technology and an AI voice. Calls may be recorded. Consent is not a condition of any service. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help.'
     }
   };
   var PAGE_PATH = { landing: '/sex-abuse-la-county/', quiz: '/sex-abuse-la-county/quiz/', sofia: '/sex-abuse-la-county/talk-to-sofia/' }[L.page] || '';
@@ -176,19 +176,21 @@
       }
       var answers = kind === 'quiz' ? STEPS.map(function (s) { var a = ANSWERS[s.id]; if (!a) return null; var x = { question_id: s.id, answer_id: a.answer_id, source: 'quiz', confirmed_at: a.confirmed_at }; if (a.answer_text) x.answer_text = a.answer_text; return x; }).filter(Boolean) : optional;
       if (kind === 'quiz' && answers.length !== STEPS.length) { if (status) { status.className = 'status err'; status.textContent = 'Please answer each question first — “Prefer not to say” is fine.'; } return; }
-      var calls = form.querySelector('input[name=consent_calls]'), sms = form.querySelector('input[name=consent_sms]');
+      // consent is given by submitting a form that shows the consent text next to its button
+      var agreed = !!form.querySelector('[data-consent-text="submit"]');
       var contact = { first_name: (form.first_name.value || '').trim(), phone: digits(form.phone.value), email: form.email ? (form.email.value || '').trim() : '' };
-      var payloadKey = JSON.stringify([answers, contact, !!(calls && calls.checked), !!(sms && sms.checked)]);
+      var payloadKey = JSON.stringify([answers, contact, agreed]);
+      if (!agreed) { if (status) { status.className = 'status err'; status.textContent = 'This form is missing its consent notice, so nothing was sent.'; } return; }
       if (payloadKey !== lastPayload) { submissionId = newId(); lastPayload = payloadKey; } // same content retries keep the same id
       if (!L.intake_endpoint) { ev('ee_lead_not_sent'); done(form, 'not_sent'); return; }
       var button = form.querySelector('button[type=submit]');
       if (button) button.disabled = true;
       if (status) { status.className = 'status'; status.textContent = 'Saving your request…'; }
-      Promise.all([sha256(CAMPAIGN.consent.calls_text), sha256(CAMPAIGN.consent.sms_text)]).then(function (h) {
+      sha256(CAMPAIGN.consent.submit_text).then(function (h) {
         return post({
           schema: CAMPAIGN.schema, campaign_id: CAMPAIGN.campaign_id, tenant: 'BTL', submission_id: submissionId, page_path: PAGE_PATH,
           question_bank_version: CAMPAIGN.question_bank_version, answers: answers,
-          consent: { version: CAMPAIGN.consent.version, calls: !!(calls && calls.checked), sms: !!(sms && sms.checked), calls_text_sha256: h[0], sms_text_sha256: sms && sms.checked ? h[1] : undefined },
+          consent: { version: CAMPAIGN.consent.version, method: CAMPAIGN.consent.method, calls: agreed, sms: agreed, text_sha256: h },
           contact: contact, attribution: attribution(), simulated: L.simulated === true
         });
       }).then(function (r) {
