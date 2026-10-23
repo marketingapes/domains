@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Request a Callback · Jeffrey Glassman Injury Lawyers</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="site.css">
+<meta name="robots" content="noindex">
+<!-- Google Tag Manager (BTL web container GTM-PHC7459M). Non-identifying events only: ee_page_view, ee_form_start, ee_lead_submit_success (page_id, campaign_id, door). No PII pushed. -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PHC7459M');</script>
+<!-- End Google Tag Manager -->
+<script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_page_view',page_id:'glassman-ssdi-form',campaign_id:'GLASSMAN-SSDI-PILOT-001',tenant_id:'glassman'});</script>
+<!-- PRODUCTION: add TrustedForm script here (certificate field name xxTrustedFormCertUrl). Blocked in review sandbox. -->
+</head><body>
+<div class="bar"><div class="in"><span><b>No Fee Unless We Win.</b> Free consultation.</span><a href="tel:+16177777777">(617) 777-7777</a></div></div>
+<div class="nav"><div class="in"><a href="index.html"><img src="img/logo.svg" alt="Jeffrey Glassman Injury Lawyers"></a><a class="call" href="sofia.html">Talk to us now</a></div></div>
+
+<section style="background:var(--bg2)"><div class="in">
+  <div class="card">
+    <p class="eyebrow" style="color:var(--blue-ink)">Social Security Disability · request a callback</p>
+    <h1 style="font-size:clamp(26px,4vw,36px);color:var(--deep)">Tell us where you are. We'll call you back.</h1>
+    <p class="sub">A member of the disability team reviews what you send and calls at the time you choose. No fee unless we win.</p>
+    <form id="f" novalidate data-campaign="GLASSMAN-SSDI-PILOT-001" data-door="form">
+      <div class="grid2">
+        <div class="f"><label for="first">First name</label><input id="first" name="first_name" autocomplete="given-name" required><span class="err"></span></div>
+        <div class="f"><label for="last">Last name</label><input id="last" name="last_name" autocomplete="family-name" required><span class="err"></span></div>
+        <div class="f"><label for="phone">Best phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required><span class="err"></span></div>
+        <div class="f"><label for="email">Email (optional)</label><input id="email" name="email" type="email" autocomplete="email"><span class="err"></span></div>
+        <div class="f"><label for="state">State you live in</label><select id="state" name="state" required><option value="">Choose</option><option>MA</option><option>NH</option><option>RI</option><option>CT</option><option>ME</option><option>VT</option><option>NY</option><option value="other">Other</option></select><span class="err"></span></div>
+        <div class="f"><label for="status">Where are you in the process?</label><select id="status" name="status" required><option value="">Choose</option><option value="not_applied">Haven't applied yet</option><option value="applied_waiting">Applied, waiting</option><option value="denied">Applied, denied</option><option value="appealing">Already appealing</option></select><span class="err"></span></div>
+        <div class="f"><label for="work">Worked and paid into Social Security in recent years?</label><select id="work" name="work" required><option value="">Choose</option><option value="yes">Yes</option><option value="some">Some</option><option value="no">No / not sure</option></select><span class="err"></span></div>
+        <div class="f"><label for="when">Best time to call</label><select id="when" name="best_time"><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Any time</option></select><span class="err"></span></div>
+      </div>
+      <div class="f" style="margin-top:16px"><label for="note">Anything you want the team to know (optional)</label><textarea id="note" name="note" rows="3" placeholder="You don't need to share medical details here."></textarea><span class="err"></span></div>
+      <div class="consent">
+        <label><input type="checkbox" id="c_call" name="consent_call"> <span>I agree that Jeffrey Glassman Injury Lawyers and its service providers may call me at the number above about my disability inquiry, including by automated dialing or an AI assistant. Consent is not a condition of service.</span></label>
+        <label><input type="checkbox" id="c_sms" name="consent_sms"> <span>I agree to receive text messages about my case. Msg & data rates may apply. Reply STOP to opt out.</span></label>
+      </div>
+      <span class="err" id="cerr"></span>
+      <button class="cta" type="submit" id="send" style="border:0;cursor:pointer;width:100%">Request my callback</button>
+      <p class="fine">By submitting you agree to the firm's <a href="https://www.jeffreysglassman.com/">privacy policy and terms</a>. Attorney advertising. Not legal advice. Not affiliated with the Social Security Administration.</p>
+    </form>
+    <div class="ok" id="done" hidden><b>Received.</b>The disability team will call you at the time you chose. If you'd rather talk now, call <a href="tel:+16692099040">(669) 209-9040</a>.</div>
+  </div>
+</div></section>
+
+<footer><div class="in"><div>Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110 · (617) 777-7777</div><div>Attorney advertising. Not legal advice. Not affiliated with the Social Security Administration.</div></div></footer>
+<script>
+(function(){
+  var WEBHOOK="https://hook.us2.make.com/7iit9nlnwuxmvt5ry1p7tq1vlryp5bkc";
+  var utm={}; try{new URL(location.href).searchParams.forEach(function(v,k){ if(/^(utm_|fbclid|gclid)/.test(k)) utm[k]=v; });}catch(e){}
+  function v(id,ok,m){ var el=document.getElementById(id), e=el.parentNode.querySelector('.err'); e.textContent=ok?'':m; el.setAttribute('aria-invalid',ok?'false':'true'); return ok; }
+  document.getElementById('f').addEventListener('submit',function(ev){ ev.preventDefault(); var f=ev.target, ok=true;
+    ok=v('first',f.first_name.value.trim().length>1,'Enter your first name')&ok; ok=v('last',f.last_name.value.trim().length>1,'Enter your last name')&ok;
+    ok=v('phone',/^\D*(\d\D*){10}$/.test(f.phone.value),'Enter a 10-digit phone number')&ok;
+    ok=v('email',!f.email.value||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value),'Check the email address')&ok;
+    ok=v('state',!!f.state.value,'Choose your state')&ok; ok=v('status',!!f.status.value,'Choose one')&ok; ok=v('work',!!f.work.value,'Choose one')&ok;
+    var ce=document.getElementById('cerr'); ce.textContent=f.consent_call.checked?'':'Please agree to be called so the team can reach you'; ok=ok&&f.consent_call.checked;
+    if(!ok) return;
+    var p={campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'form',received_at:new Date().toISOString(),page:location.href,
+      lead:{first_name:f.first_name.value.trim(),last_name:f.last_name.value.trim(),phone:f.phone.value.replace(/\D/g,''),email:f.email.value.trim(),state:f.state.value},
+      answers:{status:f.status.value,work:f.work.value,best_time:f.best_time.value,note:f.note.value.trim()},
+      consent:{call:f.consent_call.checked,sms:f.consent_sms.checked,text:'Agreed on page '+location.pathname+' at '+new Date().toISOString()},
+      trustedform:(f.xxTrustedFormCertUrl&&f.xxTrustedFormCertUrl.value)||'',source:utm};
+    document.getElementById('send').disabled=true; try{window.dataLayer.push({event:'ee_lead_submit_attempt',page_id:'glassman-ssdi-form',campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'form'});}catch(e){}
+    fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p),keepalive:true}).catch(function(){}).then(function(){ f.hidden=true; document.getElementById('done').hidden=false; try{window.dataLayer.push({event:'ee_lead_submit_success',page_id:'glassman-ssdi-form',campaign_id:'GLASSMAN-SSDI-PILOT-001',door:'form'});}catch(e){} });
+  });
+})();
+</script>
+</body></html>
