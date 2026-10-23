@@ -6,6 +6,7 @@ const body = document.body, hub = body.dataset.hub, client = body.dataset.client
 const KEY = 'perspective-session-la-county';
 const RELOAD_SECONDS = 120;
 let session = sessionStorage.getItem(KEY) || '', feed = null, lastError = '', selected = null, timer = null, email = '', filter = 'all', search = '';
+let tab = location.hash === '#report' ? 'report' : 'leads';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const badge = (label, cls = '') => `<span class="badge ${cls}">${esc(label)}</span>`;
@@ -28,11 +29,35 @@ function prequalLine(c) {
     p.abused ? 'Abused: ' + p.abused.replace(/_/g, ' ') : null, p.has_lawyer != null ? (p.has_lawyer ? 'Has lawyer' : 'No lawyer') : null].filter(Boolean);
   return o + (bits.length ? ' · ' + bits.join(' · ') : '');
 }
+const usd = v => v == null ? '—' : '$' + Number(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const num = v => v == null ? '—' : Number(v).toLocaleString();
 const lastCall = l => l.calls.length ? l.calls[l.calls.length - 1] : null;
 const FILTERS = [['all', 'All', () => true], ['signed', 'Signed', l => l.litify.converted], ['down', 'Turned down', l => l.litify.status === 'Turned Down'],
   ['notlit', 'Not in Litify', l => !l.litify.status], ['sofia', 'Sofia called', l => l.calls.length > 0], ['transfer', 'Transferred', l => l.handoff_attempted]];
 
 // ---------- views ----------
+function tabs() {
+  return `<nav class="tabs" aria-label="Views"><a href="#leads" class="${tab === 'leads' ? 'on' : ''}" data-tab="leads"><span>1</span>Leads</a>${feed.report ? `<a href="#report" class="${tab === 'report' ? 'on' : ''}" data-tab="report"><span>2</span>Report · spend</a>` : ''}</nav>`;
+}
+function table(head, rows, textCols = 1) {
+  return `<div class="table-wrap"><table><thead><tr>${head.map((h, i) => `<th${i >= textCols ? ' class="n"' : ''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i >= textCols ? ' class="n"' : ''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function report() {
+  const r = feed.report, t = r.totals;
+  const tiles = [['Ad spend', usd(t.spend)], ['Leads from ads', num(t.paid_leads)], ['Cost per lead', usd(t.cost_per_lead)], ['In Phillips Litify', num(t.paid_in_litify)],
+    ['Cost per Litify intake', usd(t.cost_per_litify)], ['Signed', num(t.paid_signed)], ['Cost per signed case', usd(t.cost_per_signed)]];
+  return `${tabs()}<div class="dashboard-intro"><div><p class="eyebrow">REPORT · LA COUNTY · AD SPEND VS PHILLIPS OUTCOMES</p><h1>What the spend bought.<br><em>Lead to Litify to signed.</em></h1>
+  <p class="lede">Spend is by ad and month from Meta. Leads are matched to the ad channel that brought them; Litify status is Phillips' own. Leads Phillips holds that we can't tie to an ad are listed separately and never charged.</p></div></div>
+  <section class="metric-grid" aria-label="Report totals">${tiles.map(([l, v]) => `<article class="panel"><b>${esc(v)}</b><span>${esc(l)}</span></article>`).join('')}</section>
+  <p class="note">Across all ${esc(num(t.all_leads))} LA County leads, including those not tied to an ad: ${esc(num(t.all_signed))} signed, ${esc(usd(t.all_signed ? t.spend / t.all_signed : null))} of spend per signed case.</p>
+  <section class="panel"><p class="eyebrow">BY CHANNEL</p>${table(['Channel', 'Spend', 'Impressions', 'Clicks', 'Meta leads', 'Our leads', 'In Litify', 'Signed', 'Turned down', 'Cost / lead', 'Cost / Litify', 'Cost / signed'],
+    r.by_channel.map(c => [esc(c.channel), usd(c.spend), num(c.impressions), num(c.clicks), num(c.platform_leads), num(c.leads), num(c.in_litify), num(c.signed), num(c.turned_down), usd(c.cost_per_lead), usd(c.cost_per_litify), usd(c.cost_per_signed)]))}</section>
+  <section class="panel"><p class="eyebrow">BY MONTH</p>${table(['Month', 'Spend', 'Leads first seen', 'Signed'], r.by_month.map(m => [esc(m.month), usd(m.spend), num(m.leads), num(m.signed)]))}</section>
+  <section class="panel"><p class="eyebrow">BY AD</p>${table(['Month', 'Ad', 'Ad set', 'Spend', 'Impressions', 'Link clicks', 'Landing views', 'Meta leads', 'Cost / Meta lead'],
+    r.by_ad.map(a => [esc(a.month), esc(a.ad), esc(a.ad_set), usd(a.spend), num(a.impressions), num(a.link_clicks), num(a.landing_page_views), num(a.platform_leads), usd(a.cost_per_platform_lead)]), 3)}</section>
+  ${r.not_from_ads.length ? `<section class="panel"><p class="eyebrow">LEADS NOT TIED TO AN AD (NO SPEND CHARGED)</p>${table(['Where they came from', 'Leads', 'In Litify', 'Signed', 'Turned down'], r.not_from_ads.map(c => [esc(c.channel), num(c.leads), num(c.in_litify), num(c.signed), num(c.turned_down)]))}</section>` : ''}
+  <p class="note">Spend source: ${esc(r.source.join('; '))}. As of ${esc(r.as_of)}.</p>`;
+}
 function signin() {
   return `<section class="signin"><p class="eyebrow">PHILLIPS LAW GROUP · LA COUNTY</p><h1>Sign in.</h1><p class="note">Approved emails only. A 6-digit code lands in your inbox.</p>
   <form id="login"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email" value="${esc(email)}">
@@ -46,7 +71,7 @@ function dashboard() {
   const leads = feed.leads.filter(test).filter(l => !q || (l.name || '').toLowerCase().includes(q) || (l.phone_last4 || '').includes(q));
   const metrics = [['Leads', c.leads], ['In Litify', c.in_litify], ['Signed', c.converted], ['Turned down', c.turned_down], ['Sofia pre-quals', c.sofia_calls], ['Transferred', c.handoffs_attempted]];
   const reasons = Object.entries(c.turn_down_reasons || {});
-  return `<div class="dashboard-intro"><div><p class="eyebrow">LA COUNTY · PHILLIPS LAW GROUP</p><h1>Every LA County lead.<br><em>Phillips' outcome and Sofia's pre-qual.</em></h1>
+  return `${tabs()}<div class="dashboard-intro"><div><p class="eyebrow">LA COUNTY · PHILLIPS LAW GROUP</p><h1>Every LA County lead.<br><em>Phillips' outcome and Sofia's pre-qual.</em></h1>
   <p class="lede">One row per person. Litify status and reason are Phillips' own. Sofia asks four quick questions: age, where it happened, yes or no to abuse, and whether they have a lawyer.</p></div></div>
   <section class="metric-grid" aria-label="Totals">${metrics.map(([l, v]) => `<article class="panel"><b>${esc(v)}</b><span>${esc(l)}</span></article>`).join('')}</section>
   ${reasons.length ? `<section class="panel reasons"><p class="eyebrow">WHY PHILLIPS TURNED LEADS DOWN</p>${reasons.map(([r, n]) => `<div class="reason"><span>${esc(r)}</span><i style="width:${Math.max(4, Math.round(100 * n / reasons[0][1]))}%"></i><b>${esc(n)}</b></div>`).join('')}</section>` : ''}
@@ -88,7 +113,7 @@ function render() {
   document.querySelector('#refresh').hidden = !signed; document.querySelector('#lock').hidden = !signed;
   document.querySelector('#banner-status').textContent = feed ? 'Last updated ' + new Date(feed.generated_at).toLocaleString() : (signed ? (lastError || 'Loading…') : 'Sign in');
   document.querySelector('#footer-updated').textContent = feed ? 'Last updated ' + new Date(feed.generated_at).toLocaleString() : '';
-  main.innerHTML = !signed ? signin() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : dashboard();
+  main.innerHTML = !signed ? signin() : !feed ? `<p class="empty">${esc(lastError || 'Loading…')}</p>` : selected ? record() : (tab === 'report' && feed.report) ? report() : dashboard();
   if (signed && !timer) timer = setInterval(load, RELOAD_SECONDS * 1000);
 }
 async function post(path, data) {
@@ -114,6 +139,7 @@ main.addEventListener('click', async e => {
   if (t.id === 'resend') { try { await post('/login', { email }); lastError = 'A new code was sent.'; } catch (err) { lastError = err.message; } return render(); }
   if (t.id === 'back') { selected = null; return render(); }
   if (t.dataset.filter) { filter = t.dataset.filter; return render(); }
+  if (t.dataset.tab) { e.preventDefault(); tab = t.dataset.tab; selected = null; try { history.replaceState(null, '', '#' + tab); } catch (x) {} render(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.lead) { selected = t.dataset.lead; render(); window.scrollTo({ top: 0 }); return; }
   if (t.dataset.play) {
     const [uid, idx] = t.dataset.play.split(':'); t.disabled = true; t.textContent = 'Loading recording…';
