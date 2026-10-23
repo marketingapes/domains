@@ -1,0 +1,12 @@
+/* LA County Perspective: small additions on top of /perspective-demo/style.css and /portal/paraquat/app.css */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
+.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.search{padding:10px 14px;border:1px solid var(--line);border-radius:7px;font-size:15px;min-width:220px}
+.reasons{margin:18px 0}
+.reason{display:grid;grid-template-columns:minmax(140px,240px) 1fr 40px;align-items:center;gap:12px;margin-top:8px;font-size:14px}
+.reason i{display:block;height:10px;border-radius:5px;background:#c9d3df}
+.reason b{text-align:right}
+.badge.gray{background:#f1ece4;color:#6b5b3e}
+.lead-row{grid-template-columns:1.1fr 1.1fr 1.4fr}
+@media(max-width:700px){.search{min-width:0;width:100%}.reason{grid-template-columns:1fr 60px 32px}}
