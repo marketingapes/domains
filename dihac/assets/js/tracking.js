@@ -1,6 +1,8 @@
 /**
  * Evolution Engine — Unified Tracking & Webhook Helper
- * Shared across: doihaveaclaim.ai, nearestinjurylawyers.com, lawfirmmarketingapes.com
+ * Shared across: doihaveaclaim.ai, nearestinjurylawyers.com, besttortlawyers.com, lawfirmmarketingapes.com
+ * v2: click IDs persist 90 days (first + last touch), gbraid/wbraid + Meta _fbc/_fbp, lead_id + visitor_id,
+ *     tort slug, and hidden click-ID fields injected into every form so the lead carries its source.
  *
  * Handles: UTM capture, session tracking, webhook dispatch, event firing, click-to-call tracking
  */
@@ -14,20 +16,72 @@
   const FOOTER_LINK = 'https://marketingapes.com';
 
   /* ───── UTM / Session Capture ───── */
+  var SIG_KEY = 'ee_sig', SIG_DAYS = 90;
+  var CLICK_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id',
+    'gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid', 'ttclid', 'li_fat_id'];
+
+  function getCookie(n) { var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : ''; }
+  function setCookie(n, v) { document.cookie = n + '=' + encodeURIComponent(v) + ';path=/;max-age=' + SIG_DAYS * 86400 + ';SameSite=Lax'; }
+  function newId() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(16).slice(2); }
+
+  function loadSig() {
+    var sig = {};
+    try { sig = JSON.parse(localStorage.getItem(SIG_KEY) || '{}'); } catch (e) { }
+    if (sig.expires && Date.now() > sig.expires) sig = { visitor_id: sig.visitor_id };
+    return sig;
+  }
+
   function getUTMParams() {
-    const params = new URLSearchParams(window.location.search);
-    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_id', 'gclid', 'fbclid', 'msclkid', 'ttclid'];
-    const result = {};
-    keys.forEach(function (k) {
-      const v = params.get(k);
-      if (v) {
-        result[k] = v;
-        try { sessionStorage.setItem('ee_' + k, v); } catch (e) { }
-      } else {
-        try { const s = sessionStorage.getItem('ee_' + k); if (s) result[k] = s; } catch (e) { }
-      }
+    var params = new URLSearchParams(window.location.search);
+    var sig = loadSig(), fresh = {};
+    CLICK_KEYS.forEach(function (k) {
+      var v = params.get(k);
+      if (v) fresh[k] = v;
+      else { try { var s = sessionStorage.getItem('ee_' + k); if (s && !sig.last) fresh[k] = s; } catch (e) { } }
     });
+    if (params.get('fbclid') && getCookie('_fbc').indexOf(params.get('fbclid')) === -1) {
+      setCookie('_fbc', 'fb.1.' + Date.now() + '.' + params.get('fbclid'));
+    }
+    if (!sig.visitor_id) sig.visitor_id = newId();
+    if (Object.keys(fresh).length) {
+      var touch = Object.assign({ ts: new Date().toISOString(), landing: window.location.pathname }, fresh);
+      if (!sig.first) sig.first = touch;
+      sig.last = touch;
+      sig.expires = Date.now() + SIG_DAYS * 86400000;
+    }
+    try { localStorage.setItem(SIG_KEY, JSON.stringify(sig)); } catch (e) { }
+    var result = Object.assign({}, (sig.last || {}));
+    delete result.ts; delete result.landing;
+    CLICK_KEYS.forEach(function (k) { if (sig.first && sig.first[k]) result['first_' + k] = sig.first[k]; });
+    result.visitor_id = sig.visitor_id;
+    result.fbc = getCookie('_fbc');
+    result.fbp = getCookie('_fbp');
+    result.tort = getTort();
     return result;
+  }
+
+  function getTort() {
+    var meta = document.querySelector('meta[name="ee-tort"]');
+    if (meta) return meta.getAttribute('content');
+    var m = window.location.pathname.match(/\/campaigns\/([^\/]+)/);
+    return m ? m[1] : '';
+  }
+
+  /* Inject click IDs + lead_id as hidden fields so any form backend / CRM / intake bot gets the source. */
+  function stampForms() {
+    document.addEventListener('submit', function (e) {
+      var form = e.target;
+      if (!form || form.tagName !== 'FORM') return;
+      var data = getUTMParams();
+      data.lead_id = form._eeLeadId || (form._eeLeadId = newId());
+      Object.keys(data).forEach(function (k) {
+        if (!data[k]) return;
+        var input = form.querySelector('input[name="' + k + '"]');
+        if (!input) { input = document.createElement('input'); input.type = 'hidden'; input.name = k; form.appendChild(input); }
+        input.value = data[k];
+      });
+      pushEvent('lead_submit', { form_name: form.getAttribute('data-ee-form') || form.id || '', lead_id: data.lead_id, tort: data.tort });
+    }, true);
   }
 
   function getSessionMeta() {
@@ -48,6 +102,7 @@
     var host = window.location.hostname || '';
     if (host.indexOf('doihaveaclaim') !== -1) return 'doihaveaclaim.ai';
     if (host.indexOf('nearestinjurylawyers') !== -1) return 'nearestinjurylawyers.com';
+    if (host.indexOf('besttortlawyers') !== -1) return 'besttortlawyers.com';
     if (host.indexOf('lawfirmmarketingapes') !== -1 || host.indexOf('marketingapes') !== -1) return 'lawfirmmarketingapes.com';
     // Fallback: check meta tag
     var meta = document.querySelector('meta[name="ee-brand"]');
@@ -187,6 +242,7 @@
     trackCallClicks();
     trackCTAClicks();
     trackForms();
+    stampForms();
     trackThankYou();
     trackScroll();
     pushEvent('page_view', { brand: getBrand(), page_type: getPageType() });
@@ -206,6 +262,7 @@
     getUTMParams: getUTMParams,
     getSessionMeta: getSessionMeta,
     getBrand: getBrand,
+    getTort: getTort,
     PHONE_NUMBER: PHONE_NUMBER,
     PHONE_DISPLAY: PHONE_DISPLAY,
     PHONE_TEL: PHONE_TEL,
