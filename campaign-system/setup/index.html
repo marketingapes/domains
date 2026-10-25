@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>BTL · Campaign workspace</title>
+    <link rel="stylesheet" href="/setup.css" />
+    <script type="module" src="/setup.mjs"></script>
+  </head>
+  <body>
+    <a class="skip" href="#workspace">Skip to campaign setup</a>
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="BTL campaign workspace home"
+        ><span class="brand-icon">B</span> BTL
+        <span class="wordmark-detail">Campaign workspace</span></a
+      ><span class="local-tag"><span></span> Local review · nothing live</span>
+    </header>
+    <div class="shell">
+      <aside class="sidebar">
+        <p class="eyebrow">Build one campaign</p>
+        <nav aria-label="Setup steps">
+          <a href="#identity"><span>01</span> Firm & campaign</a
+          ><a href="#screening"><span>02</span> Screening & geography</a
+          ><a href="#consent"><span>03</span> Consent</a
+          ><a href="#connections"><span>04</span> Routing & connections</a
+          ><a href="#creative"><span>05</span> Pages & creative</a
+          ><a href="#review"><span>06</span> Generate & review</a>
+        </nav>
+        <div class="sidebar-note">
+          <strong>One tort. One firm.<br />One accountable path.</strong>
+          <p>
+            From a clear campaign brief to reviewable assets and an honest
+            readiness checklist.
+          </p>
+        </div>
+      </aside>
+      <main id="workspace">
+        <section class="intro">
+          <p class="eyebrow">Best Tort Lawyers / Firm setup</p>
+          <h1>
+            Your next campaign,<br /><em>built on a clear foundation.</em>
+          </h1>
+          <p class="lead">
+            Bring your firm’s brand and approved intake requirements. Build
+            three branded page previews and a creative review pack in one place.
+          </p>
+          <div class="phase-grid">
+            <article class="phase active">
+              <span class="pill">STARTER</span>
+              <h2>Facebook first</h2>
+              <p>
+                One named tort, three intake paths, three ad concepts. Build fee
+                and media stay separate, pending agreed terms.
+              </p>
+            </article>
+            <article class="phase">
+              <span class="pill quiet">LATER · SEPARATE APPROVAL</span>
+              <h2>Broader market coverage</h2>
+              <p>
+                Expand channels and budget after creative, integrations and
+                measurement are verified. No expansion is activated here.
+              </p>
+            </article>
+          </div>
+        </section>
+        <div id="connection-state" class="notice" role="status">
+          Connecting to your local generator…
+        </div>
+        <p id="error" class="error" role="alert" hidden></p>
+        <form id="campaign-form" novalidate autocomplete="off">
+          <section class="panel" id="identity">
+            <div class="section-heading">
+              <span class="step">01</span>
+              <div>
+                <h2>Firm & campaign</h2>
+                <p>
+                  BTL is the platform. Your firm is the face of the campaign.
+                </p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label
+                >Firm display name<input
+                  name="firm.name"
+                  placeholder="Your firm’s approved name" /></label
+              ><label
+                >Firm ID<input
+                  name="firm.id"
+                  placeholder="Existing firm reference" /></label
+              ><label
+                >Brand color<input
+                  name="firm.color"
+                  type="text"
+                  value="#153b51"
+                  pattern="#[a-fA-F0-9]{6}"
+                  aria-describedby="color-help"
+                /><small id="color-help"
+                  >Six-digit hex, such as #153b51.</small
+                ></label
+              ><label
+                >Approved logo reference<input
+                  name="firm.logoRef"
+                  placeholder="assets/firm-logo.svg"
+                /><small
+                  >Local reference only; carried in the manifest, not
+                  embedded.</small
+                ></label
+              >
+            </div>
+            <div class="field-grid">
+              <label
+                >Named mass tort<select name="topic" id="topic" disabled>
+                  <option>Loading catalog…</option></select
+                ><small
+                  >Changing tort clears screening, geography, consent, routing,
+                  creative and approvals.</small
+                ></label
+              ><label
+                >Campaign ID<input
+                  name="campaignId"
+                  id="campaign-id"
+                  placeholder="firm-talc-001"
+                  pattern="[a-z0-9][a-z0-9\-]{2,79}"
+                /><small
+                  >Unique lowercase letters, numbers and hyphens.</small
+                ></label
+              ><label
+                >Planned start date<input name="start" type="date" /></label
+              ><label class="check-label"
+                ><input type="checkbox" name="campaignSpecific" /> I have
+                replaced template placeholders with this campaign’s
+                inputs.<small
+                  >This does not approve legal criteria or authorize
+                  activation.</small
+                ></label
+              >
+            </div>
+            <p class="muted">
+              Other single-tort categories need a separate validated template.
+              MVA, personal injury, SSDI and custom categories are unavailable
+              in this product.
+            </p>
+            <div class="section-tools">
+              <label class="file-button"
+                >Import campaign JSON<input
+                  id="import"
+                  type="file"
+                  accept="application/json,.json" /></label
+              ><button type="button" id="new-profile" class="text-button">
+                Start a fresh profile</button
+              ><span class="muted"
+                >No autosave. Export your configuration before leaving.</span
+              >
+            </div>
+          </section>
+          <section class="panel" id="screening">
+            <div class="section-heading">
+              <span class="step">02</span>
+              <div>
+                <h2>Screening & geography</h2>
+                <p>
+                  Use this firm’s requirements for this tort. Every inquiry
+                  still needs human review.
+                </p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label
+                >Screening version<input
+                  name="screening.version"
+                  placeholder="Firm-approved rules version" /></label
+              ><label
+                >Included geography<textarea
+                  name="geography.included"
+                  rows="3"
+                  placeholder="One jurisdiction per line"
+                ></textarea></label
+              ><label
+                >Qualifications<textarea
+                  name="screening.qualifies"
+                  rows="5"
+                  placeholder="One firm-supplied rule per line"
+                ></textarea></label
+              ><label
+                >Disqualifications<textarea
+                  name="screening.disqualifies"
+                  rows="5"
+                  placeholder="One firm-supplied exclusion per line"
+                ></textarea></label
+              ><label class="wide"
+                >Excluded geography<textarea
+                  name="geography.excluded"
+                  rows="2"
+                  placeholder="One exclusion per line; leave empty only if none, subject to firm approval"
+                ></textarea>
+              </label>
+            </div>
+            <p class="muted">
+              The workspace supplies no medical eligibility, scoring or
+              case-acceptance rules.
+            </p>
+          </section>
+          <section class="panel" id="consent">
+            <div class="section-heading">
+              <span class="step">03</span>
+              <div>
+                <h2>Exact consent, by channel</h2>
+                <p>Keep the approved version and exact disclosure together.</p>
+              </div>
+            </div>
+            <label
+              >Consent version<input
+                name="consent.version"
+                placeholder="Exact approved consent version"
+            /></label>
+            <div class="field-grid">
+              <label
+                >Calls disclosure<textarea
+                  name="consent.callsText"
+                  rows="5"
+                  placeholder="Paste the exact firm-approved calls disclosure"
+                ></textarea></label
+              ><label
+                >SMS disclosure<textarea
+                  name="consent.smsText"
+                  rows="5"
+                  placeholder="Paste the exact firm-approved optional SMS disclosure"
+                ></textarea>
+              </label>
+            </div>
+            <p class="notice">
+              Live intake must use visible, affirmative, unchecked channel
+              choices. Entering disclosure text here does not capture anyone’s
+              consent.
+            </p>
+          </section>
+          <section class="panel" id="connections">
+            <div class="section-heading">
+              <span class="step">04</span>
+              <div>
+                <h2>Routing & connections</h2>
+                <p>
+                  Record existing references. Configured fields are not verified
+                  connections.
+                </p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label
+                >BTL tenant ID<input
+                  name="identity.tenantId"
+                  placeholder="Existing tenant ID" /></label
+              ><label
+                >Domain ID<input
+                  name="identity.domainId"
+                  placeholder="Existing domain ID"
+              /></label>
+            </div>
+            <div id="binding-fields"></div>
+            <h3>Intake destinations</h3>
+            <div id="destination-fields"></div>
+            <label
+              >Scheduling timezone<input
+                name="destinations.timezone"
+                placeholder="America/New_York"
+            /></label>
+            <p class="muted">
+              Use IDs and revisions only. Never paste passwords, tokens, webhook
+              URLs or claimant information. The workspace cannot connect
+              providers, make calls or deliver leads.
+            </p>
+          </section>
+          <section class="panel" id="creative">
+            <div class="section-heading">
+              <span class="step">05</span>
+              <div>
+                <h2>Pages & creative</h2>
+                <p>
+                  Three intake paths. Three concepts. One campaign identity.
+                </p>
+              </div>
+            </div>
+            <p class="muted">
+              Form, quiz and Sofia previews share this campaign’s rules. Sofia
+              remains a scripted demo. Asset references are not imported or
+              published.
+            </p>
+            <div id="page-fields"></div>
+            <div id="concept-fields"></div>
+          </section>
+          <section class="panel" id="review">
+            <div class="section-heading">
+              <span class="step">06</span>
+              <div>
+                <h2>Generate & review</h2>
+                <p>
+                  See what is configured, what is verified and what still needs
+                  work.
+                </p>
+              </div>
+            </div>
+            <div class="field-grid">
+              <label
+                >Sample report reference<input
+                  name="reporting.sampleRef"
+                  placeholder="review/labeled-sample.json"
+                /><small
+                  >Synthetic samples stay separate from actual
+                  performance.</small
+                ></label
+              ><label
+                >Actual reporting reference<input
+                  name="reporting.actualRef"
+                  placeholder="Private reconciled report reference" /></label
+              ><label
+                >Planning build fee · USD<input
+                  id="build-fee"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="Terms pending"
+                /><small
+                  >Planning note only; fee meaning and price are not
+                  committed.</small
+                ></label
+              ><label
+                >Media budget · USD<input
+                  name="budget.mediaCents"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="Separate media allocation"
+                /><small
+                  >Entering a budget does not approve or spend it.</small
+                ></label
+              ><label class="wide"
+                >Media approval reference<input
+                  name="budget.approvalRef"
+                  placeholder="Private budget approval reference"
+              /></label>
+            </div>
+            <div class="action-bar">
+              <button type="submit" id="generate" disabled>
+                Generate review pack <span aria-hidden="true">↗</span>
+              </button>
+              <p>
+                Local previews and downloads only.<br />No campaign is published
+                or activated.
+              </p>
+            </div>
+          </section>
+        </form>
+        <section
+          class="panel results"
+          id="results"
+          hidden
+          aria-labelledby="results-heading"
+        >
+          <div class="section-heading">
+            <span class="step">✓</span>
+            <div>
+              <h2 id="results-heading">Your review workspace</h2>
+              <p id="result-summary"></p>
+            </div>
+          </div>
+          <div class="gate-grid" id="gates"></div>
+          <p class="notice">
+            Verification shown here means a current, complete human attestation
+            was supplied. This local tool cannot inspect external proof or
+            establish provider health. Readiness never authorizes activation.
+          </p>
+          <div id="downloads" class="downloads"></div>
+          <div class="preview-toolbar">
+            <div
+              role="group"
+              aria-label="Choose preview"
+              id="preview-tabs"
+            ></div>
+            <select id="preview-size" aria-label="Preview width">
+              <option value="desktop">Desktop preview</option>
+              <option value="mobile">Mobile preview</option>
+            </select>
+          </div>
+          <div class="frame-well">
+            <iframe
+              id="preview"
+              title="Generated campaign preview"
+              sandbox="allow-scripts"
+            ></iframe>
+          </div>
+          <h3>Configured vs verified</h3>
+          <div id="binding-status"></div>
+          <details open>
+            <summary>Review requirements</summary>
+            <ul id="review-blockers"></ul>
+          </details>
+          <details>
+            <summary>Launch requirements</summary>
+            <ul id="launch-blockers"></ul>
+          </details>
+          <details>
+            <summary>Evidence status · current, stale or missing</summary>
+            <div id="evidence-status"></div>
+          </details>
+        </section>
+        <footer>
+          Best Tort Lawyers · Campaign setup<br /><span
+            >Private local workspace. No claimant records, automatic case
+            acceptance or retainer sending.</span
+          >
+        </footer>
+      </main>
+      <aside class="summary">
+        <p class="eyebrow">Your campaign</p>
+        <h2 id="summary-firm">Your firm</h2>
+        <p id="summary-topic">Choose a named tort</p>
+        <span class="status-badge" id="summary-status"
+          >DRAFT · awaiting setup</span
+        >
+        <hr />
+        <div class="mini-path">
+          <span>1</span>
+          <div>
+            <strong>Configure</strong>
+            <p>Brand, screening, consent and routing.</p>
+          </div>
+        </div>
+        <div class="mini-path">
+          <span>2</span>
+          <div>
+            <strong>Review</strong>
+            <p>Polished assets and current evidence.</p>
+          </div>
+        </div>
+        <div class="mini-path">
+          <span>3</span>
+          <div>
+            <strong>Verify for launch</strong>
+            <p>Persistent receipts, handoff and reporting.</p>
+          </div>
+        </div>
+        <p class="summary-foot">
+          All providers are unconnected in this workspace. Existing live
+          integrations stay untouched.
+        </p>
+      </aside>
+    </div>
+  </body>
+</html>

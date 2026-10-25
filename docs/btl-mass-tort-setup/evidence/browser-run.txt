@@ -1,0 +1,2 @@
+PASS 390px: setup, generation, downloads, four previews, isolation, evidence, escaping, error focus, failed-switch rollback/recovery, reordered import/export, sticky heading visibility, no external requests
+PASS 1440px: setup, generation, downloads, four previews, isolation, evidence, escaping, error focus, failed-switch rollback/recovery, reordered import/export, sticky heading visibility, no external requests

@@ -44,6 +44,11 @@ jobs:
           node tests/perspective-isolation.browser.cjs 2>&1 | tee perspective-browser.log
           node tests/perspective-ux.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/plg-az-accident.browser.cjs 2>&1 | tee -a perspective-browser.log
+      - name: BTL firm setup browser QA (local synthetic campaigns only)
+        shell: bash
+        run: |
+          set -o pipefail
+          SHOTS="$RUNNER_TEMP/btl-setup-shots" node tests/mass-tort-setup.browser.cjs 2>&1 | tee mass-tort-browser.log
       - name: Preserve validation receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,5 +57,7 @@ jobs:
           path: |
             release-checks.log
             perspective-browser.log
+            mass-tort-browser.log
+            ${{ runner.temp }}/btl-setup-shots
           if-no-files-found: warn
           retention-days: 7
