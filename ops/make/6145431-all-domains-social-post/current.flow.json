@@ -1,0 +1,53 @@
+{
+  "scenario": 6145431,
+  "name": "ALL DOMAINS — Social Post (webhook → FB Page + IG → ledger)",
+  "hook": 2770622,
+  "source": "read-only Make blueprint read 2026-09-20; scenario lastEdit 2026-09-20T22:41:31.026Z",
+  "note": "Hand-extracted structural model. Module order and the ledger's source fields are reproduced exactly; the tenant switch() tables are represented by the resolved/unresolved distinction only.",
+  "ledgerSheet": "1bCw7-S6gfbXSurwWmMtn1ZaIkJHc_h6Lgy4h1mHqewU",
+  "igMappedTenants": ["NIL", "MA", "BTL", "DIHAC", "SLIQ", "DDM", "TNT"],
+  "fbMappedTenants": ["NIL", "MA", "KG", "BTL", "DIHAC", "SLIQ", "RI", "DDM", "TNT", "CGG", "TOSS", "FPLB", "PX", "REAPES"],
+  "steps": [
+    { "id": "1", "kind": "setvars", "label": "Webhook trigger" },
+
+    {
+      "id": "f-fb",
+      "kind": "filter",
+      "expr": "input_in:tenant_id:NIL|MA|KG|BTL|DIHAC|SLIQ|RI|DDM|TNT|CGG|TOSS|FPLB|PX|REAPES",
+      "label": "Caption and verified brand identity only"
+    },
+    { "id": "2", "kind": "send", "channel": "facebook", "onerror": null, "label": "Facebook Page — CreatePost" },
+    {
+      "id": "4",
+      "kind": "ledger",
+      "channel": "facebook",
+      "destination": "$page_id",
+      "status": "posted",
+      "label": "DEFECT: destination read from webhook input page_id, not the resolved Page; status is the literal 'posted'"
+    },
+
+    {
+      "id": "5",
+      "kind": "respond",
+      "status": "200",
+      "body": { "ok": "true", "fb_post_id": "@2.id" },
+      "label": "DEFECT: caller is told ok:true here — before Instagram is attempted"
+    },
+
+    {
+      "id": "f-ig",
+      "kind": "filter",
+      "expr": "input_in:tenant_id:NIL|MA|BTL|DIHAC|SLIQ|DDM|TNT",
+      "label": "IG requested with image and verified brand identity"
+    },
+    { "id": "3", "kind": "send", "channel": "instagram", "onerror": null, "label": "Instagram — CreatePostPhoto" },
+    {
+      "id": "6",
+      "kind": "ledger",
+      "channel": "instagram",
+      "destination": "$ig_id",
+      "status": "posted",
+      "label": "DEFECT: destination read from webhook input ig_id, not the resolved IG account"
+    }
+  ]
+}

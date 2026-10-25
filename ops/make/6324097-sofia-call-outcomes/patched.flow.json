@@ -1,0 +1,72 @@
+{
+  "scenario": 6324097,
+  "name": "EE — Sofia Call Outcomes → Phillips desk + Meta CAPI (LIVE)",
+  "route": "A — transfer confirmation (router 20, first route)",
+  "source": "proposed patch — NOT applied to Make",
+  "design": [
+    "xfer:{call_id} changes meaning from CLAIMED to DELIVERED and is written only after an email returns a message id.",
+    "Every record written by the current design is already keyed xfer:{call_id}, so on deploy every historical call still reads as delivered and is never re-emailed. That is the no-replay guarantee.",
+    "xferlock:{call_id} is a new short-lived claim that stops two overlapping runs double-sending, and expires so a crashed run can be retried.",
+    "Email modules gain a resume handler so a send failure no longer aborts the execution before the receipt is recorded and no longer counts toward maxErrors (3)."
+  ],
+  "trigger": {
+    "module": 1,
+    "app": "vapi:makeApiCall2",
+    "windowMinutes": 25,
+    "limit": 50,
+    "intervalSeconds": 900,
+    "unchanged": true,
+    "retryHorizonNote": "Unchanged on purpose. The 25-minute window still bounds retries to roughly two cycles; see P2 sweeper in README.md."
+  },
+  "datastore": 152269,
+  "lockTtlMinutes": 10,
+  "steps": [
+    { "id": "3", "kind": "store.exists", "key": "xfer:{call_id}", "onerror": "ignore", "label": "Already DELIVERED? (same key as before → historical records suppress)" },
+    { "id": "f-notdelivered", "kind": "filter", "expr": "not_exists:3", "label": "Not yet delivered" },
+    { "id": "5", "kind": "setvars", "label": "Call facts" },
+    { "id": "6", "kind": "setvars", "label": "Desk + lead facts" },
+
+    { "id": "31", "kind": "store.get", "key": "xferlock:{call_id}", "onerror": "resume", "label": "NEW — read in-flight claim" },
+    { "id": "f-lock", "kind": "filter", "expr": "lock_free_or_stale:31:10", "label": "NEW — no live claim, or previous attempt is >10m stale" },
+    {
+      "id": "4",
+      "kind": "store.put",
+      "key": "xferlock:{call_id}",
+      "value": { "state": "pending", "claimed_at": "{now}" },
+      "onerror": "ignore",
+      "label": "REPURPOSED (was 'Mark confirmed') — take the claim, do not assert delivery"
+    },
+
+    { "id": "7", "kind": "query", "onerror": "resume", "label": "Ad lookup (BigQuery) — sanitize leadgen_id, see README" },
+    { "id": "8", "kind": "setvars", "label": "Ad id" },
+    { "id": "9", "kind": "setvars", "label": "Ad card" },
+    { "id": "10", "kind": "router", "label": "Desk router" },
+
+    {
+      "id": "11",
+      "kind": "send",
+      "channel": "email",
+      "to": "consultation@phillipslaw.com",
+      "onerror": "resume",
+      "label": "PI/MVA desk — resume so the receipt step still runs"
+    },
+    {
+      "id": "111",
+      "kind": "store.put",
+      "key": "xfer:{call_id}",
+      "value": { "outcome": "transfer_confirmation_sent", "marker": "delivered" },
+      "guard": "sent_ok:11",
+      "onerror": "ignore",
+      "label": "NEW — DELIVERED marker, only when the send returned a message id"
+    },
+    {
+      "id": "112",
+      "kind": "store.put",
+      "key": "xferfail:{call_id}",
+      "value": { "state": "send_failed" },
+      "guard": "sent_failed:11",
+      "onerror": "ignore",
+      "label": "NEW — auditable failure trail; today a failure leaves no record at all"
+    }
+  ]
+}
