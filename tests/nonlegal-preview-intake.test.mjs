@@ -1,5 +1,7 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';import {webcrypto as crypto, createHash} from 'node:crypto';
 const pages=["bhs", "cgg", "ddm", "dental", "dma", "fplb", "h2m", "health", "kg", "kylepractor", "leadapes", "ma", "px", "reapes", "ri", "seoapes", "sliq", "tbrew", "tnd", "toss", "wiwc"];
+// Pages that still post somewhere (sliq's root redirects to /preview/, so its form is live).
+const KEEPS_ENDPOINT=new Set(['sliq']);
 const excludedHashes={"cawk": "1475c76cceaac8a7bbe753cb844b8cd4c0b9b9e2b496b28d59f6761651dc24ee", "stopableed": "1475c76cceaac8a7bbe753cb844b8cd4c0b9b9e2b496b28d59f6761651dc24ee", "tnt": "1475c76cceaac8a7bbe753cb844b8cd4c0b9b9e2b496b28d59f6761651dc24ee", "tbrewery": "1475c76cceaac8a7bbe753cb844b8cd4c0b9b9e2b496b28d59f6761651dc24ee"};
 function boot(page,{valid=true,consent=true,response=true}={}){
  const html=fs.readFileSync(`${page}/preview/index.html`,'utf8'),elements={},requests=[],status=[],hidden=[];
@@ -8,7 +10,7 @@ function boot(page,{valid=true,consent=true,response=true}={}){
  const context={window:{},document:{getElementById:id=>elements[id]||null,querySelectorAll:()=>[],querySelector:()=>null,createElement:()=>({setAttribute(){}}),referrer:'',title:'Synthetic'},location:{search:'?utm_campaign=synthetic',href:'https://example.test/preview/?utm_campaign=synthetic',origin:'https://example.test',pathname:'/preview/',hostname:'example.test'},sessionStorage:{getItem:()=>null,setItem(){}},navigator:{userAgent:'synthetic',language:'en',maxTouchPoints:0},screen:{width:100,height:100},innerWidth:100,innerHeight:100,devicePixelRatio:1,crypto,URLSearchParams,Intl,AbortController,setTimeout,clearTimeout,FormData:class{entries(){return [['full_name','Synthetic Example'],['email','synthetic@example.test'],['phone','000'],['contact_consent',consent?'on':''],...hidden.map(e=>[e.name,e.value])]}get(k){return Object.fromEntries(this.entries())[k]}},fetch:async(url,opts)=>{requests.push({url,headers:opts.headers,rawBody:opts.body,body:JSON.parse(opts.body)});return{ok:response,status:response?200:503}}};
  vm.runInNewContext(fs.readFileSync(`${page}/preview/config.js`,'utf8'),context);
  vm.runInNewContext(fs.readFileSync(`${page}/preview/intake.js`,'utf8'),context);
- return {context,form,requests,status,submit:()=>form.onsubmit({preventDefault(){}})};
+ return {context,form,elements,requests,status,submit:()=>form.onsubmit({preventDefault(){}})};
 }
 test('all 21 eligible nonlegal previews boot without legal form nodes and bind submit',()=>{assert.equal(pages.length,21);for(const p of pages){const b=boot(p);assert.equal(typeof b.form.onsubmit,'function',p);assert.equal(b.requests.length,0)}});
 test('required-field or missing contact consent blocks network',async()=>{for(const options of [{valid:false},{consent:false}]){const b=boot('sliq',options);await b.submit();assert.equal(b.requests.length,0)}});
@@ -18,4 +20,10 @@ test('every eligible generated script remains identical',()=>{assert.equal(new S
 
 test("protected and retired preview scripts remain unchanged",()=>{for(const [page,hash] of Object.entries(excludedHashes)){assert.equal(createHash("sha256").update(fs.readFileSync(`${page}/preview/intake.js`)).digest("hex"),hash,page)}});
 
-test("eligible nonlegal submissions declare JSON matching the serialized body",async()=>{for(const page of pages){const b=boot(page);await b.submit();assert.equal(b.requests.length,1,page);const r=b.requests[0];assert.equal(r.headers["Content-Type"],"application/json",page);assert.deepEqual(JSON.parse(r.rawBody),r.body);assert.equal(typeof r.body,"object");assert.equal(r.body.contact_consent,true)}});
+test("eligible nonlegal submissions declare JSON matching the serialized body",async()=>{for(const page of pages.filter(p=>KEEPS_ENDPOINT.has(p))){const b=boot(page);await b.submit();assert.equal(b.requests.length,1,page);const r=b.requests[0];assert.equal(r.headers["Content-Type"],"application/json",page);assert.deepEqual(JSON.parse(r.rawBody),r.body);assert.equal(typeof r.body,"object");assert.equal(r.body.contact_consent,true)}});
+
+// 2026-09-24 (LEG-1/AFF-6): the public Make capture hook is removed from every eligible preview except
+// sliq, whose root still redirects to /preview/ (its form is live). cawk, stopableed, tnt and tbrewery
+// are protected/retired and are not edited here.
+test('no eligible preview except sliq ships a Make hook URL',()=>{for(const p of pages){const cfg=fs.readFileSync(`${p}/preview/config.js`,'utf8');if(KEEPS_ENDPOINT.has(p))assert.match(cfg,/"ENDPOINT": "https:\/\//,p);else{assert.doesNotMatch(cfg,/hook\.us2\.make\.com|hooks\.zapier\.com/,p);assert.match(cfg,/"ENDPOINT": ""/,p)}}});
+test('a preview without an endpoint fails closed: no request, form kept, clear message',async()=>{for(const p of pages.filter(p=>!KEEPS_ENDPOINT.has(p))){const b=boot(p);await b.submit();assert.equal(b.requests.length,0,p);assert.notEqual(b.form.hidden,true,p);assert.equal(b.status.length,0,p);assert.match(String(b.elements.error.textContent),/no longer accepting requests/,p)}});
