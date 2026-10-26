@@ -1,0 +1,67 @@
+[
+  {
+    "slot": "hero",
+    "label": "Page hero image",
+    "status": "ACTUAL",
+    "where": "/assets/paraquat-field-usda-nrcs.jpg",
+    "size": "1600x1066"
+  },
+  {
+    "slot": "og",
+    "label": "Share image (og:image)",
+    "status": "ACTUAL",
+    "where": "/assets/og-btl.jpg",
+    "size": "1200x630"
+  },
+  {
+    "slot": "team",
+    "label": "Proof / team image",
+    "status": "NOT USED",
+    "where": null
+  },
+  {
+    "slot": "ad_quiz",
+    "label": "Meta feed ad · quiz door",
+    "status": "ACTUAL",
+    "where": "Meta only · image_hash b448fa5026edfa3be5541fefd7380bcd · ad 120254862374030231",
+    "note": "Not in the repo; exists as an uploaded Meta creative"
+  },
+  {
+    "slot": "ad_sofia",
+    "label": "Meta feed ad · Sofia door",
+    "status": "ACTUAL",
+    "where": "Meta only · image_hash 571f86dd98cd4f9a472d78f63ff0f449 · ad 120254862374580231",
+    "note": "Not in the repo; exists as an uploaded Meta creative"
+  },
+  {
+    "slot": "ad_form",
+    "label": "Meta feed ad · form door",
+    "status": "ACTUAL",
+    "where": "Meta only · image_hash 9c549e184ba4d4a765107d39fa26d25b · ad 120254862375180231",
+    "note": "Not in the repo; exists as an uploaded Meta creative"
+  },
+  {
+    "slot": "story_quiz",
+    "label": "Stories/Reels 9:16 · quiz door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "story_sofia",
+    "label": "Stories/Reels 9:16 · Sofia door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "story_form",
+    "label": "Stories/Reels 9:16 · form door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "tiktok_video",
+    "label": "TikTok 9:16 video",
+    "status": "MISSING",
+    "where": null
+  }
+]

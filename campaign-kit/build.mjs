@@ -7,17 +7,20 @@
 //
 // Writes:
 //   btl/c/<slug>/{index,quiz,sofia,form,ads}.html + site.css   public pages, always noindex
-//   campaign-kit/out/<slug>/*.json + LAUNCH.md                  internal bundle, not deployed
+//   campaign-kit/out/<slug>/preview/…                           same pages when publish:false (not deployed)
+//   campaign-kit/out/<slug>/*.json + LAUNCH.md + assets.json    internal bundle, not deployed
+//   campaign-kit/BRIEF.md (checklist block)                     with --all, the read-first brief's status table
 //
-// Nothing here calls an ad platform, Vapi, Make or a buyer. Every channel file is a PAUSED draft;
-// launch stays human-gated (see LAUNCH.md in each bundle).
+// Pages are PREVIEWS unless the config says status:"live" and every launch gate carries evidence. A preview has
+// no GTM, no TrustedForm, no dialable phone link, no webhook and a connect-src 'none' CSP, so it cannot reach
+// production. Nothing here calls an ad platform, Vapi, Make or a buyer; every channel file is a PAUSED draft.
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const KIT = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(KIT, '..');
-export const KIT_VERSION = '2026-10-26.1';
+export const KIT_VERSION = '2026-10-26.2';
 
 // ---------- defaults (Best Tort Lawyers house brand, BTL web container, BTL Meta assets) ----------
 const BTL_BRAND = {
@@ -34,7 +37,7 @@ const BTL_BRAND = {
 const DEFAULTS = {
   domain_id: 'besttortlawyers.com', status: 'draft',
   gtm: 'GTM-PHC7459M',
-  intake: {webhook: 'https://hook.us2.make.com/7iit9nlnwuxmvt5ry1p7tq1vlryp5bkc', trustedform: true},
+  intake: {webhook: null, trustedform: true},
   budget: {media_total_usd: 5000, days: 14},
   channels: {
     meta: {ad_account: 'act_411567125842274', page_id: '222081604317115', instagram_id: '17841464212888132', pixel_id: '673552078259404', objective: 'OUTCOME_LEADS', special_ad_categories: []},
@@ -47,6 +50,20 @@ const DEFAULTS = {
 const DOORS = ['quiz', 'sofia', 'form'];
 const SIGNALS = ['good', 'bad', 'unsure', 'represented', 'neutral'];
 const DELIVERY = ['live_transfer', 'scheduled_callback', 'api_webhook', 'email'];
+const TRANSFER_KINDS = ['firm', 'internal', 'demo'];
+// A gate passes only with evidence: config.gates.<key> = {by, at, evidence}.
+export const GATES = [
+  ['criteria_approved', 'Buyer criteria approved in writing'],
+  ['copy_approved', 'Firm identity, disclosures and attorney-advertising copy signed off'],
+  ['intake_receipt_tested', 'Test lead to intake.webhook returned a receipt and the stored record was found'],
+  ['firm_transfer_tested', 'Live call transferred to the firm intake line (not a demo or internal line)'],
+  ['trustedform_tested', 'TrustedForm certificate retained on a production test submission'],
+  ['conversions_tested', 'ee_lead_submit_success recorded as a Lead in Meta, Google, TikTok and ChatGPT ads'],
+  ['portal_tested', 'Perspective portal shows the test lead'],
+  ['billing', 'Invoice paid / media authorization on file'],
+  ['activation_approved', 'Kyle approved activation in chat (exact campaign + budget)'],
+];
+const gateOk = (c, k) => { const g = c.gates?.[k]; return !!(g && g.by && g.at && g.evidence); };
 const CLICK_IDS = /^(utm_|fbclid$|gclid$|gbraid$|wbraid$|ttclid$|msclkid$|oai_)/;
 
 // ---------- helpers ----------
@@ -68,7 +85,7 @@ export function normalize(raw) {
   need(c.tort?.name, 'tort.name required');
   need(telOk(c.brand.phone_tel), 'brand.phone_tel must be E.164 US');
   need(c.sofia && telOk(c.sofia.phone_tel), 'sofia.phone_tel must be E.164 US (the campaign voice line)');
-  need(/^https:\/\//.test(c.intake.webhook ?? ''), 'intake.webhook must be https');
+  need(c.intake.webhook == null || /^https:\/\//.test(c.intake.webhook), 'intake.webhook must be https or null');
   need(Array.isArray(c.quiz) && c.quiz.length >= 3 && c.quiz.length <= 10, 'quiz: 3-10 questions');
   for (const [i, q] of (c.quiz ?? []).entries()) {
     need(/^[a-z][a-z0-9_]*$/.test(q.key ?? ''), `quiz[${i}].key`);
@@ -78,7 +95,21 @@ export function normalize(raw) {
   need(new Set((c.quiz ?? []).map(q => q.key)).size === (c.quiz ?? []).length, 'quiz keys must be unique');
   need(Array.isArray(c.geo?.states) && c.geo.states.length, 'geo.states: at least one state (or ["US"])');
   need(DELIVERY.includes(c.delivery?.mode), `delivery.mode: ${DELIVERY.join('|')}`);
-  if (c.delivery?.mode === 'live_transfer') need(telOk(c.delivery.transfer_number ?? ''), 'delivery.transfer_number (E.164) required for live_transfer');
+  need(!('transfer_number' in (c.delivery ?? {})), 'delivery.transfer_number is replaced by delivery.transfer {number, kind, label, source}');
+  const t = c.delivery?.transfer, inbound = [c.sofia?.phone_tel, ...(c.sofia?.inbound_numbers ?? [])];
+  if (t) {
+    need(telOk(t.number ?? ''), 'delivery.transfer.number must be E.164 US');
+    need(TRANSFER_KINDS.includes(t.kind), `delivery.transfer.kind: ${TRANSFER_KINDS.join('|')}`);
+    need(!inbound.includes(t.number), 'delivery.transfer.number is a Sofia inbound line — the call would transfer to itself');
+    need(t.source, 'delivery.transfer.source: where the destination was read (e.g. Vapi tool id + date)');
+  }
+  c.mode = c.status === 'live' ? 'live' : 'preview';
+  if (c.mode === 'live') {
+    const open = GATES.filter(([k]) => !gateOk(c, k)).map(([k]) => k);
+    need(!open.length, `status "live" needs evidence on every gate; open: ${open.join(', ')}`);
+    need(c.intake.webhook, 'status "live" needs intake.webhook');
+    if (c.delivery?.mode === 'live_transfer') need(t?.kind === 'firm', 'status "live" with live_transfer needs delivery.transfer.kind "firm"');
+  }
   if (c.delivery?.mode === 'api_webhook') need(/^https:\/\//.test(c.delivery.buyer_webhook ?? ''), 'delivery.buyer_webhook (https) required for api_webhook');
   need(Array.isArray(c.criteria?.qualifies) && c.criteria.qualifies.length, 'criteria.qualifies: list the buyer-approved criteria');
   if (errs.length) throw Error(`${c.slug ?? '?'}: invalid campaign config\n  - ` + errs.join('\n  - '));
@@ -117,26 +148,34 @@ const pid = (c, page) => `${c.slug}-${page}`;
 
 function head(c, page, title, desc) {
   const b = c.brand, f = b.fonts, fam = [...new Set([f.display, f.body])].map(n => 'family=' + n.replace(/ /g, '+') + ':wght@400;600;700').join('&');
-  const tf = c.intake.trustedform && (page === 'quiz' || page === 'form') ? TRUSTEDFORM : '';
+  const live = c.mode === 'live', tf = live && c.intake.trustedform && (page === 'quiz' || page === 'form') ? TRUSTEDFORM : '';
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="robots" content="noindex,follow">
-<meta name="campaign-kit" content="${esc(c.campaign_id)} · ${KIT_VERSION}">
+<meta name="campaign-kit" content="${esc(c.campaign_id)} · ${KIT_VERSION} · ${c.mode}">${live ? '' : `
+<meta http-equiv="Content-Security-Policy" content="${PREVIEW_CSP}">`}
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website">${c.images?.og ? `<meta property="og:image" content="${esc(c.images.og)}">` : ''}
 <link rel="icon" href="${esc(b.logo)}" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${fam}&display=swap">
 <link rel="stylesheet" href="site.css?v=${KIT_VERSION}">
-<!-- Google Tag Manager (${esc(c.gtm)}). Non-identifying events only: ee_page_view, ee_door_click, ee_lead_submit_attempt, ee_lead_submit_success. No PII is pushed. -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${js(c.gtm)});</script>
+${live ? `<!-- Google Tag Manager (${esc(c.gtm)}). Non-identifying events only: ee_page_view, ee_door_click, ee_lead_submit_attempt, ee_lead_submit_success. No PII is pushed. -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${js(c.gtm)});</script>` : '<!-- PREVIEW: GTM, TrustedForm, phone dialing and lead sending are off. -->'}
 <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_page_view',page_id:${js(pid(c, page))},campaign_id:${js(c.campaign_id)},tenant_id:${js(c.tenant_id)},domain_id:${js(c.domain_id)}});</script>
 ${tf}</head><body>
-<div class="bar"><div class="in"><span><b>${esc(b.fee_line)}</b> ${esc(b.tagline ?? 'Free consultation, 24/7.')}</span><a href="tel:${esc(c.sofia.phone_tel)}" data-door="sofia">${esc(c.sofia.phone_display)}</a></div></div>
+${live ? '' : '<div class="kit-preview" role="note"><b>Preview</b> · nothing on this page sends a lead, places a call or loads tracking.</div>\n'}<div class="bar"><div class="in"><span><b>${esc(b.fee_line)}</b> ${esc(b.tagline ?? 'Free consultation, 24/7.')}</span>${tel(c, c.sofia.phone_tel, c.sofia.phone_display, 'data-door="sofia"')}</div></div>
 <div class="nav"><div class="in"><a href="./" class="brand" aria-label="${esc(b.name)}">${b.logo_wide ? `<img src="${esc(b.logo_wide)}" alt="${esc(b.name)}">` : `<span class="wordmark"><img src="${esc(b.logo)}" alt="" width="36" height="36">${esc(b.name)}</span>`}</a><nav class="links"><a href="quiz.html">Case check</a><a href="form.html">Request a callback</a><a class="call" href="sofia.html">Talk to us now</a></nav></div></div>
 `;
 }
+
+// Previews may load the page's own files and Google Fonts, nothing else: no fetch, no form posts, no third-party scripts.
+export const PREVIEW_CSP = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'none'; form-action 'none'; frame-src 'none'";
+// Live: a dialable link. Preview: the number as text, so tapping it never rings a production line.
+const tel = (c, e164, label, attrs = '', cls = '') => c.mode === 'live'
+  ? `<a href="tel:${esc(e164)}"${cls ? ` class="${cls}"` : ''}${attrs ? ' ' + attrs : ''}>${esc(label)}</a>`
+  : `<span class="tel-off${cls ? ' ' + cls : ''}"${attrs ? ' ' + attrs : ''} title="Preview: calling is turned off">${esc(label)}</span>`;
 
 // TrustedForm certificate script (public snippet). Writes xxTrustedFormCertUrl into each form on the page.
 const TRUSTEDFORM = `<script>(function(){var tf=document.createElement('script');tf.type='text/javascript';tf.async=true;tf.src=('https:'==document.location.protocol?'https':'http')+'://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l='+new Date().getTime()+Math.random();var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(tf,s);})();</script>
@@ -162,7 +201,7 @@ function proof(c) {
 function foot(c) {
   const b = c.brand, na = c.tort.not_affiliated ? ` Not affiliated with ${esc(c.tort.not_affiliated)}.` : '';
   return `<footer><div class="in">
-  <div>${esc(b.address)} · <a href="tel:${esc(b.phone_tel)}">${esc(b.phone_display)}</a> · <a href="${esc(b.privacy_url)}">Privacy</a> · <a href="${esc(b.terms_url)}">Terms</a></div>
+  <div>${esc(b.address)} · ${tel(c, b.phone_tel, b.phone_display)} · <a href="${esc(b.privacy_url)}">Privacy</a> · <a href="${esc(b.terms_url)}">Terms</a></div>
   <div>Attorney advertising. ${esc(b.advertising_note)}${na} Prior results do not guarantee a similar outcome. Sofia is an AI intake assistant; calls are recorded.</div>
 </div></footer>
 <script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-door]');if(!a)return;try{window.dataLayer.push({event:'ee_door_click',page_id:location.pathname,campaign_id:${js(c.campaign_id)},door:a.getAttribute('data-door')});}catch(x){}});</script>
@@ -190,8 +229,10 @@ const contactFields = (c, email) => `<div class="grid2">
   <div class="f"><label for="phone">Best phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required><span class="err"></span></div>
   ${email ? '<div class="f"><label for="email">Email (optional)</label><input id="email" name="email" type="email" autocomplete="email"><span class="err"></span></div>' : ''}
   <div class="f"><label for="state">State you live in</label>${states(c)}<span class="err"></span></div>`;
-const fine = c => `<p class="err" id="senderr" role="alert" hidden>That did not go through. Please try again, or call <a href="tel:${esc(c.sofia.phone_tel)}">${esc(c.sofia.phone_display)}</a>.</p><p class="fine">By submitting you agree to the <a href="${esc(c.brand.privacy_url)}">privacy policy</a> and <a href="${esc(c.brand.terms_url)}">terms</a>. Attorney advertising. This is not a case decision; a person reviews every inquiry.</p>`;
-const done = (c, msg) => `<div class="ok" id="done" hidden><b>Received.</b>${esc(msg)} If you would rather talk now, call <a href="tel:${esc(c.sofia.phone_tel)}" data-door="sofia">${esc(c.sofia.phone_display)}</a>.</div>`;
+const fine = c => `<p class="err" id="senderr" role="alert" hidden>That did not go through. Please try again, or call ${tel(c, c.sofia.phone_tel, c.sofia.phone_display)}.</p><p class="fine">By submitting you agree to the <a href="${esc(c.brand.privacy_url)}">privacy policy</a> and <a href="${esc(c.brand.terms_url)}">terms</a>. Attorney advertising. This is not a case decision; a person reviews every inquiry.</p>`;
+const done = (c, msg) => `<div class="ok" id="done" hidden role="status"><b>Received.</b>${esc(msg)} If you would rather talk now, call ${tel(c, c.sofia.phone_tel, c.sofia.phone_display, 'data-door="sofia"')}.
+  <span class="ref">Your reference: <b id="ref"></b>${c.mode === 'live' ? '' : ' <em>(preview — nothing was sent)</em>'}</span>
+  <button type="button" class="back" id="again">Start a new request</button></div>`;
 
 function quizCard(c) {
   const n = c.quiz.length;
@@ -202,7 +243,7 @@ function quizCard(c) {
   <div class="prog"><i id="bar"></i></div>
   ${qs}
   <div class="q" data-k="result"><div id="res"></div>
-    <form id="cap" novalidate>${contactFields(c, false)}</div>${consent(c)}
+    <form id="cap" novalidate data-kit>${contactFields(c, false)}</div>${consent(c)}
       <button class="cta wide" type="submit" id="send">Send my answers</button>${fine(c)}</form>
     ${done(c, `${c.brand.team_name[0].toUpperCase() + c.brand.team_name.slice(1)} will call you back.`)}
   </div>
@@ -214,7 +255,7 @@ function formCard(c) {
   const sel = c.form_fields.map(f => `<div class="f"><label for="ff_${esc(f.key)}">${esc(f.label)}</label><select id="ff_${esc(f.key)}" name="${esc(f.key)}" required><option value="">Choose</option>${f.options.map(o => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select><span class="err"></span></div>`).join('');
   return `<div class="card">
   <div class="card-head"><span class="k">Request a callback</span><span class="count">Takes a minute</span></div>
-  <form id="f" novalidate data-campaign="${esc(c.campaign_id)}" data-door="form">${contactFields(c, true)}${sel}
+  <form id="f" novalidate data-kit data-campaign="${esc(c.campaign_id)}" data-door="form">${contactFields(c, true)}${sel}
     <div class="f"><label for="when">Best time to call</label><select id="when" name="best_time"><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Any time</option></select><span class="err"></span></div></div>
     <div class="f" style="margin-top:14px"><label for="note">Anything you want us to know (optional)</label><textarea id="note" name="note" rows="2" placeholder="No medical details needed here."></textarea><span class="err"></span></div>
     ${consent(c)}<button class="cta wide" type="submit" id="send">Request my callback</button>${fine(c)}</form>
@@ -227,7 +268,7 @@ function sofiaCard(c) {
   return `<div class="card phonecard">
   <div class="card-head"><span class="k">Talk to Sofia</span><span class="count">24/7 · recorded</span></div>
   <p class="num" id="num">${esc(s.phone_display)}</p>
-  <p class="ctas"><a class="cta" href="tel:${esc(s.phone_tel)}" data-door="sofia">Tap to call</a><button class="copybtn" id="copy" type="button">Copy number</button></p>
+  <p class="ctas">${tel(c, s.phone_tel, 'Tap to call', 'data-door="sofia"', 'cta')}<button class="copybtn" id="copy" type="button">Copy number</button></p>
   <div class="chat">${t.map(([who, m]) => `<div class="msg ${who === 'c' ? 'c' : 's'}">${esc(m)}</div>`).join('')}</div>
 </div>`;
 }
@@ -260,11 +301,16 @@ function adsSection(c) {
 // ---------- client scripts ----------
 // Same wire contract as the live Paraquat lane (btl/paraquat/intake.js): schema btl.intake.web/v1, sent
 // form-encoded (payload=<json>&submission_id=<uuid>) so Make receives it without a CORS preflight.
-// Success is shown only on a 2xx; anything else shows the error line with the phone fallback.
+// Receipts: success only when the webhook answers 2xx with JSON {status: received|accepted|duplicate, receipt_id}.
+// The submission_id survives retries (sessionStorage) so a resend dedupes to the same receipt; the receipt is kept
+// for 24h (localStorage) so a reload shows "Received" + the reference instead of an empty form.
+// Preview builds have no webhook: the payload goes to window.__kitOutbox and the receipt is PREVIEW-…
 const REQUEST_TYPE = {form: 'web_inquiry', quiz: 'quiz_inquiry', sofia: 'callback_request'};
+export const RECEIPT_STATUSES = ['received', 'accepted', 'duplicate'];
 export const consentVersion = c => `${c.slug}-consent-${c.consent_version ?? KIT_VERSION}`;
 function captureJs(c, door, extra) {
-  const cfg = {webhook: c.intake.webhook, campaign_id: c.campaign_id, tenant_id: c.tenant_id, domain_id: c.domain_id, page_id: pid(c, door), door, request_type: REQUEST_TYPE[door], consent_version: consentVersion(c)};
+  const live = c.mode === 'live';
+  const cfg = {webhook: live ? c.intake.webhook : null, preview: !live, campaign_id: c.campaign_id, tenant_id: c.tenant_id, domain_id: c.domain_id, page_id: pid(c, door), door, request_type: REQUEST_TYPE[door], consent_version: consentVersion(c), statuses: RECEIPT_STATUSES};
   return `<script>
 (function(){
   var C=${js(cfg)};
@@ -272,10 +318,24 @@ function captureJs(c, door, extra) {
   attr.landing_path=location.pathname; try{attr.referrer_host=document.referrer?new URL(document.referrer).host:'';}catch(e){attr.referrer_host='';}
   function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
   attr.fbp=ck('_fbp'); attr.fbc=ck('_fbc');
+  var form=document.querySelector('form[data-kit]'), doneEl=document.getElementById('done'), SK='ee_sub_'+C.page_id, RK='ee_receipt_'+C.page_id;
   function v(id,ok,m){ var el=document.getElementById(id), e=el.parentNode.querySelector('.err'); if(e) e.textContent=ok?'':m; el.setAttribute('aria-invalid',ok?'false':'true'); return ok; }
   function ev(n){ try{window.dataLayer.push({event:n,page_id:C.page_id,campaign_id:C.campaign_id,door:C.door});}catch(e){} }
-  function sid(){ var k='ee_sub_'+C.page_id; try{var s=sessionStorage.getItem(k); if(s) return s;}catch(e){} var u; try{u=crypto.randomUUID();}catch(e){u='s'+Date.now()+Math.random().toString(16).slice(2);} try{sessionStorage.setItem(k,u);}catch(e){} return u; }
-  function send(f,screening,onDone){
+  function uuid(){ try{return crypto.randomUUID();}catch(e){return 's'+Date.now()+Math.random().toString(16).slice(2);} }
+  function sid(){ try{var s=sessionStorage.getItem(SK); if(s) return s;}catch(e){} var u=uuid(); try{sessionStorage.setItem(SK,u);}catch(e){} return u; }
+  function saveReceipt(r){ try{localStorage.setItem(RK,JSON.stringify(r));}catch(e){} }
+  function loadReceipt(){ try{var r=JSON.parse(localStorage.getItem(RK)||'null'); if(r&&r.receipt_id&&Date.now()-Date.parse(r.at)<864e5) return r;}catch(e){} return null; }
+  function showDone(r){ form.hidden=true; doneEl.hidden=false; document.getElementById('ref').textContent=r.receipt_id; }
+  document.getElementById('again').addEventListener('click',function(){ try{localStorage.removeItem(RK);sessionStorage.removeItem(SK);}catch(e){} location.reload(); });
+  function post(p){
+    if(C.preview){ (window.__kitOutbox=window.__kitOutbox||[]).push(p); return Promise.resolve({status:'received',receipt_id:'PREVIEW-'+p.submission_id.replace(/-/g,'').slice(0,10).toUpperCase(),preview:true}); }
+    var ctl=('AbortController' in window)?new AbortController():null, tm=setTimeout(function(){ if(ctl) ctl.abort(); },15000);
+    return fetch(C.webhook,{method:'POST',body:new URLSearchParams({payload:JSON.stringify(p),submission_id:p.submission_id}),signal:ctl?ctl.signal:undefined})
+      .then(function(r){ return r.text().then(function(t){ clearTimeout(tm); var j=null; try{j=JSON.parse(t);}catch(e){}
+        if(!r.ok||!j||!(j.receipt_id||j.lead_id)||C.statuses.indexOf(j.status)<0) throw Error('no receipt'); return j; }); },
+        function(e){ clearTimeout(tm); throw e; });
+  }
+  function send(f,screening){
     var ok=true;
     ok=v('first',f.first_name.value.trim().length>1,'Enter your first name')&ok; ok=v('last',f.last_name.value.trim().length>1,'Enter your last name')&ok;
     ok=v('phone',/^\\D*(\\d\\D*){10}$/.test(f.phone.value),'Enter a 10-digit phone number')&ok; ok=v('state',!!f.state.value,'Choose your state')&ok;
@@ -290,15 +350,15 @@ function captureJs(c, door, extra) {
       callback:{window:f.best_time?f.best_time.value:'',time_zone:(Intl.DateTimeFormat().resolvedOptions().timeZone||'')},
       consent:{version:C.consent_version,captured_at:now,page_url:location.href,method:'checkbox',calls:{granted:f.consent_call.checked,text:txt('[data-tf-element-role=consent-language]')},sms:{granted:f.consent_sms.checked,text:txt('#c_sms + span')}},
       trustedform_cert_url:(f.xxTrustedFormCertUrl&&f.xxTrustedFormCertUrl.value)||'',attribution:attr};
-    if(/[?&]ee_test=synthetic/.test(location.search)) p.test={synthetic:true};
+    if(C.preview||/[?&]ee_test=synthetic/.test(location.search)) p.test={synthetic:true};
     var btn=document.getElementById('send'), er=document.getElementById('senderr'); btn.disabled=true; er.hidden=true; ev('ee_lead_submit_attempt');
-    var body=new URLSearchParams({payload:JSON.stringify(p),submission_id:p.submission_id});
-    var ctl=('AbortController' in window)?new AbortController():null; var tm=setTimeout(function(){ if(ctl) ctl.abort(); },15000);
-    fetch(C.webhook,{method:'POST',body:body,signal:ctl?ctl.signal:undefined}).then(function(r){ clearTimeout(tm); if(!r.ok) throw Error(r.status);
-      f.hidden=true; document.getElementById('done').hidden=false; ev('ee_lead_submit_success'); if(onDone) onDone(); })
-    .catch(function(){ clearTimeout(tm); btn.disabled=false; er.hidden=false; ev('ee_lead_submit_error'); });
+    post(p).then(function(j){
+      var rec={receipt_id:j.receipt_id||j.lead_id,submission_id:p.submission_id,status:j.status,at:new Date().toISOString(),preview:!!j.preview};
+      saveReceipt(rec); try{sessionStorage.removeItem(SK);}catch(e){} showDone(rec); ev('ee_lead_submit_success');
+    }).catch(function(){ btn.disabled=false; er.hidden=false; ev('ee_lead_submit_error'); });
   }
 ${extra}
+  var kept=loadReceipt(); if(kept){ if(typeof onRestore==='function') onRestore(kept); showDone(kept); }
 })();
 </script>`;
 }
@@ -320,7 +380,8 @@ const QUIZ_EXTRA = (c) => `  var SIG=${js(sigMap(c))}; ${OUTCOME_JS}
     if(qs[i].dataset.k==='result'){ var r=outcome(a), t=RESULTS[r], res=document.getElementById('res'); res.innerHTML=''; var h=document.createElement('h2'); h.className='qh'; h.textContent=t[0]; var p=document.createElement('p'); p.className='qs'; p.textContent=t[1]; res.append(h,p); try{window.dataLayer.push({event:'ee_quiz_complete',page_id:C.page_id,campaign_id:C.campaign_id,door:'quiz',step_count:N});}catch(e){} } }
   qs.forEach(function(q,idx){ q.querySelectorAll('.opts button').forEach(function(b){ b.addEventListener('click',function(){ a[q.dataset.k]=b.dataset.v; show(idx+1); }); }); });
   back.addEventListener('click',function(){ show(Math.max(0,i-1)); });
-  document.getElementById('cap').addEventListener('submit',function(e){ e.preventDefault(); var sc=Object.assign({},a,{web_outcome:outcome(a),quiz_version:${js(quizVersion(c))}}); send(e.target,sc); });`;
+  document.getElementById('cap').addEventListener('submit',function(e){ e.preventDefault(); var sc=Object.assign({},a,{web_outcome:outcome(a),quiz_version:${js(quizVersion(c))}}); send(e.target,sc); });
+  function onRestore(){ qs[i].classList.remove('on'); i=qs.length-1; qs[i].classList.add('on'); bar.style.width='100%'; count.textContent='Your result'; back.hidden=true; var res=document.getElementById('res'), h=document.createElement('h2'); h.className='qh'; h.textContent='We already have your answers.'; res.replaceChildren(h); }`;
 
 const FORM_EXTRA = (c) => `  var SIG=${js(sigMap(c))}; ${OUTCOME_JS}
   document.getElementById('f').addEventListener('submit',function(e){ e.preventDefault(); var f=e.target, a={};
@@ -349,15 +410,99 @@ export function renderPages(c) {
 export function renderCss(c) {
   const k = c.brand.colors, f = c.brand.fonts;
   const vars = `:root{--navy:${k.navy};--deep:${k.deep};--blue:${k.blue};--blue-ink:${k.blue_ink};--gold:${k.gold};--gold-ink:${k.gold_ink};--bg2:${k.bg2};--line:${k.line};--ok:${k.ok};--display:"${f.display}",Georgia,serif;--body:"${f.body}",system-ui,-apple-system,sans-serif;--hero-img:${c.images?.hero ? `url(${c.images.hero})` : 'none'}}
+.kit-preview{background:#fff4c2;color:#3d2e00;font:600 14px/1.4 var(--body);text-align:center;padding:8px max(16px,env(safe-area-inset-left,0px))}
+.tel-off{font-weight:700;cursor:not-allowed}.cta.tel-off{opacity:.75}
+.ok .ref{display:block;margin-top:10px;font-size:14px}.ok .ref em{font-style:normal;color:var(--muted)}.ok #again{margin-top:10px}
 .nav{background:var(--navy)}.wordmark{display:inline-flex;align-items:center;gap:10px;color:#fff;font-family:var(--display);font-size:20px;font-weight:700;text-decoration:none}.nav .wordmark img{width:36px}.brand{text-decoration:none}
 `;
   return readFileSync(join(KIT, 'base.css'), 'utf8') + '\n/* campaign-kit brand tokens: ' + c.campaign_id + ' */\n' + vars;
 }
 
+// ---------- creative assets: what is real, what is a placeholder, what is missing ----------
+// Each slot resolves to a repo file under btl/ (or its committed .b64), measured from the file header,
+// or to a creative that exists only inside Meta (config.meta_creatives.<door> = {image_hash, ad_id}).
+export const ASSET_SLOTS = [
+  ['hero', 'Page hero image', {minW: 1200}], ['og', 'Share image (og:image)', {w: 1200, h: 630}], ['team', 'Proof / team image', {optional: true}],
+  ['ad_quiz', 'Meta feed ad · quiz door', {w: 1080, h: 1080}], ['ad_sofia', 'Meta feed ad · Sofia door', {w: 1080, h: 1080}], ['ad_form', 'Meta feed ad · form door', {w: 1080, h: 1080}],
+  ['story_quiz', 'Stories/Reels 9:16 · quiz door', {w: 1080, h: 1920}], ['story_sofia', 'Stories/Reels 9:16 · Sofia door', {w: 1080, h: 1920}], ['story_form', 'Stories/Reels 9:16 · form door', {w: 1080, h: 1920}],
+  ['tiktok_video', 'TikTok 9:16 video', {video: true}],
+];
+export function imageSize(buf) {
+  if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) return {w: buf.readUInt32BE(16), h: buf.readUInt32BE(20)};
+  if (buf[0] === 0xff && buf[1] === 0xd8) {
+    for (let i = 2; i + 9 < buf.length;) {
+      if (buf[i] !== 0xff) { i++; continue; }
+      const m = buf[i + 1], len = buf.readUInt16BE(i + 2);
+      if (m >= 0xc0 && m <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(m)) return {h: buf.readUInt16BE(i + 5), w: buf.readUInt16BE(i + 7)};
+      i += 2 + len;
+    }
+  }
+  if (buf.slice(0, 200).toString().includes('<svg')) return {vector: true};
+  if (buf.length > 12 && buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') return {webp: true};
+  return null;
+}
+function readRepoAsset(ref) {
+  const path = ref.replace(/^https:\/\/besttortlawyers\.com/, '');
+  if (!path.startsWith('/')) return {path, missing: 'not a besttortlawyers.com path'};
+  const f = join(ROOT, 'btl', path);
+  if (existsSync(f)) return {path, buf: readFileSync(f)};
+  if (existsSync(f + '.b64')) return {path, buf: Buffer.from(readFileSync(f + '.b64', 'utf8'), 'base64')};
+  return {path, missing: 'file not found in btl/'};
+}
+export function assetManifest(c) {
+  const placeholders = new Set(c.placeholders ?? []);
+  return ASSET_SLOTS.map(([slot, label, spec]) => {
+    const ref = c.images?.[slot], door = slot.startsWith('ad_') ? slot.slice(3) : null, inMeta = door && c.meta_creatives?.[door];
+    if (!ref) {
+      if (inMeta) return {slot, label, status: 'ACTUAL', where: `Meta only · image_hash ${inMeta.image_hash} · ad ${inMeta.ad_id}`, note: 'Not in the repo; exists as an uploaded Meta creative'};
+      return {slot, label, status: spec.optional ? 'NOT USED' : 'MISSING', where: null};
+    }
+    if (placeholders.has(slot)) return {slot, label, status: 'PLACEHOLDER', where: ref};
+    if (spec.video) return {slot, label, status: 'UNVERIFIED', where: ref, note: 'Video files are not measured by the kit'};
+    const a = readRepoAsset(ref);
+    if (a.missing) return {slot, label, status: 'MISSING', where: ref, note: a.missing};
+    const d = imageSize(a.buf);
+    if (!d) return {slot, label, status: 'UNVERIFIED', where: a.path, note: 'Unknown image format'};
+    if (d.vector || d.webp) return {slot, label, status: 'ACTUAL', where: a.path, size: d.vector ? 'vector' : 'webp'};
+    const size = `${d.w}x${d.h}`;
+    if (spec.w && (d.w !== spec.w || d.h !== spec.h)) return {slot, label, status: 'WRONG SIZE', where: a.path, size, note: `needs ${spec.w}x${spec.h}`};
+    if (spec.minW && d.w < spec.minW) return {slot, label, status: 'WRONG SIZE', where: a.path, size, note: `needs at least ${spec.minW}px wide`};
+    return {slot, label, status: 'ACTUAL', where: a.path, size};
+  });
+}
+
+// ---------- the checklist: every row is WORKING, MISSING, UNTESTED or NOT CREATED, with its evidence ----------
+// Integration rows come only from config.evidence.<key> = {status, note, source}; anything without evidence is UNTESTED.
+export const STATUSES = ['WORKING', 'MISSING', 'UNTESTED', 'NOT CREATED'];
+const EVIDENCE_ROWS = [
+  ['intake', 'Intake webhook returns a receipt for this payload'], ['intake_durable', 'Receipt only after the lead is durably stored'],
+  ['sofia_line', 'Sofia line answers with this campaign\'s assistant'], ['transfer', 'Transfer destination'],
+  ['meta', 'Meta campaign + ads'], ['google', 'Google Search campaign'], ['tiktok', 'TikTok campaign'], ['openai', 'ChatGPT ads campaign'],
+  ['tracking', 'GTM tags fire on the live pages'], ['portal', 'Perspective portal entry'],
+];
+export function checklist(c) {
+  const rows = [];
+  const add = (area, item, status, evidence) => rows.push({area, item, status, evidence});
+  add('Pages', `5 pages (${c.publish === false ? 'preview only, not deployed' : 'btl/c/' + c.slug + '/'})`, 'WORKING', 'Built by the kit; unit tests + tests/campaign-kit.browser.cjs in CI');
+  add('Pages', 'Preview cannot reach production', 'WORKING', 'No GTM, TrustedForm, dialable link or webhook; CSP connect-src none; tests/campaign-kit.browser.cjs fails on any request beyond itself + Google Fonts');
+  add('Pages', 'Live build (production wiring)', c.mode === 'live' ? 'WORKING' : 'MISSING', c.mode === 'live' ? 'status live with every gate evidenced' : 'status is not "live"; the build refuses live while any gate below is open');
+  for (const [k, item] of EVIDENCE_ROWS) {
+    const e = c.evidence?.[k];
+    if (!e) { add('Integration', item, ['meta', 'google', 'tiktok', 'openai'].includes(k) ? 'NOT CREATED' : 'UNTESTED', 'No evidence recorded in the config'); continue; }
+    if (!STATUSES.includes(e.status)) throw Error(`${c.slug}: evidence.${k}.status must be one of ${STATUSES.join('|')}`);
+    add('Integration', item, e.status, [e.note, e.source].filter(Boolean).join(' — '));
+  }
+  for (const a of assetManifest(c)) if (a.status !== 'NOT USED') add('Creative', a.label, a.status === 'ACTUAL' ? 'WORKING' : a.status === 'UNVERIFIED' ? 'UNTESTED' : 'MISSING', [a.status, a.size, a.where, a.note].filter(Boolean).join(' · '));
+  for (const [k, label] of GATES) add('Gate', label, gateOk(c, k) ? 'WORKING' : 'MISSING', gateOk(c, k) ? `${c.gates[k].by} ${c.gates[k].at}: ${c.gates[k].evidence}` : 'No signed evidence');
+  return rows;
+}
+const mdRows = rows => rows.map(r => `| ${r.area} | ${r.item} | **${r.status}** | ${String(r.evidence).replace(/\|/g, '/')} |`).join('\n');
+
 // ---------- internal bundle: channels, voice, delivery, portal, tracking, launch ----------
 export function renderBundle(c) {
   const usd = c.budget.media_total_usd, days = c.budget.days, base = `${c.domain_id === 'besttortlawyers.com' ? 'https://besttortlawyers.com' : 'https://' + c.domain_id}/c/${c.slug}/`;
-  const url = (door, source, medium = 'paid') => `${base}${PAGE_FILES[door]}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${encodeURIComponent(c.campaign_id)}&utm_content=${door}`;
+  const landing = c.landing ?? (c.publish === false ? null : Object.fromEntries(DOORS.map(d => [d, base + PAGE_FILES[d]])));
+  const url = (door, source, medium = 'paid') => landing?.[door] && `${landing[door]}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${encodeURIComponent(c.campaign_id)}&utm_content=${door}`;
   const daily = ch => Math.max(1, Math.round((usd * c.split[ch]) / days));
   const name = (ch, extra = '') => `${c.campaign_id} | ${c.tort.name} | ${ch}${extra} | DRAFT PAUSED | campaign-kit ${KIT_VERSION}`;
   const states = c.geo.states.includes('US') ? ['US'] : c.geo.states;
@@ -367,7 +512,8 @@ export function renderBundle(c) {
     ad_account: c.channels.meta.ad_account, page_id: c.channels.meta.page_id, instagram_id: c.channels.meta.instagram_id, pixel_id: c.channels.meta.pixel_id,
     campaign: {name: name('Meta', ' | 3 doors'), objective: c.channels.meta.objective, status: 'PAUSED', special_ad_categories: c.channels.meta.special_ad_categories, daily_budget_usd: daily('meta')},
     ad_sets: [{name: `${c.campaign_id} | ${states.join(',')} | 3 doors`, status: 'PAUSED', optimization_goal: 'OFFSITE_CONVERSIONS', promoted_object: {pixel_id: c.channels.meta.pixel_id, custom_event_type: 'LEAD'}, targeting: {geo_locations: states[0] === 'US' ? {countries: ['US']} : {regions_by_state_code: states}, age_min: c.geo.age_min ?? 25, publisher_platforms: ['facebook', 'instagram']}}],
-    ads: c.ads.map(a => ({name: `${c.campaign_id} | door:${a.door}`, status: 'PAUSED', headline: a.headline, primary_text: a.primary_text, call_to_action: a.cta, link: url(a.door, 'facebook'), image: c.images?.['ad_' + a.door] ? base + c.images['ad_' + a.door] : null})),
+    ads: c.ads.map(a => ({name: `${c.campaign_id} | door:${a.door}`, status: 'PAUSED', headline: a.headline, primary_text: a.primary_text, call_to_action: a.cta, link: url(a.door, 'facebook'), image: c.images?.['ad_' + a.door] ? 'https://besttortlawyers.com' + c.images['ad_' + a.door] : null, image_hash: c.meta_creatives?.[a.door]?.image_hash ?? null})),
+    ...(landing ? {} : {landing_note: 'Preview-only campaign: no deployed kit landing page. Set config.landing.{quiz,sofia,form} before creating ads.'}),
   };
   const kw = c.keywords ?? [`${c.tort.name} lawsuit`, `${c.tort.name} lawyer`, `${c.tort.name} claim`, `${c.tort.name} attorney`];
   const google = {
@@ -383,12 +529,13 @@ export function renderBundle(c) {
   const sofia = {
     status: 'DRAFT', note: 'Feed to services/provision-bot/provision.js (DRY_RUN first). assistant_id stays null until provisioned and tested.',
     phone_display: c.sofia.phone_display, phone_tel: c.sofia.phone_tel, assistant_id: c.sofia.assistant_id ?? null,
-    provision_bot_input: {firm_name: c.delivery.firm_name ?? c.brand.name, buyer_id: c.tenant_id, transfer_number: c.delivery.transfer_number ?? null, states: c.geo.states, accepted: [c.tort.name], turned_down: c.criteria.disqualifies ?? [], hours: c.delivery.hours ?? '24/7', language: c.sofia.language ?? 'en'},
-    criteria_prompt_block: [`CAMPAIGN ${c.campaign_id} — ${c.tort.name}`, 'Ask one question at a time, in this order:', ...c.quiz.map((q, i) => `${i + 1}. ${q.q} (qualifying answers: ${q.options.filter(o => o.signal === 'good').map(o => o.label).join(' / ') || 'n/a'})`), 'Qualifies when: ' + c.criteria.qualifies.join('; '), 'Does not qualify when: ' + (c.criteria.disqualifies ?? []).join('; '), `Delivery: ${c.delivery.mode}${c.delivery.mode === 'live_transfer' ? ' to the firm intake line during ' + (c.delivery.hours ?? '24/7') : ''}.`, 'Never say the caller qualifies; say they may potentially qualify for review. Never give legal advice.'].join('\n'),
+    current_transfer: c.delivery.transfer ?? null,
+    provision_bot_input: {firm_name: c.delivery.firm_name ?? c.brand.name, buyer_id: c.tenant_id, transfer_number: c.delivery.transfer?.kind === 'firm' ? c.delivery.transfer.number : null, states: c.geo.states, accepted: [c.tort.name], turned_down: c.criteria.disqualifies ?? [], hours: c.delivery.hours ?? '24/7', language: c.sofia.language ?? 'en'},
+    criteria_prompt_block: [`CAMPAIGN ${c.campaign_id} — ${c.tort.name}`, 'Ask one question at a time, in this order:', ...c.quiz.map((q, i) => `${i + 1}. ${q.q} (qualifying answers: ${q.options.filter(o => o.signal === 'good').map(o => o.label).join(' / ') || 'n/a'})`), 'Qualifies when: ' + c.criteria.qualifies.join('; '), 'Does not qualify when: ' + (c.criteria.disqualifies ?? []).join('; '), `Delivery: ${c.delivery.mode}${c.delivery.mode === 'live_transfer' ? ` to ${c.delivery.transfer ? c.delivery.transfer.label + ' (' + c.delivery.transfer.kind + ')' : 'a firm line that is NOT SET'} during ${c.delivery.hours ?? '24/7'}` : ''}.`, 'Never say the caller qualifies; say they may potentially qualify for review. Never give legal advice.'].join('\n'),
   };
   const delivery = {
     mode: c.delivery.mode, options_offered_to_firm: ['live_transfer', 'scheduled_callback', 'api_webhook', 'email'],
-    transfer_number: c.delivery.transfer_number ?? null, hours: c.delivery.hours ?? '24/7', buyer_webhook: c.delivery.buyer_webhook ?? null, buyer_email: c.delivery.buyer_email ?? null, schedule_url: c.delivery.schedule_url ?? null,
+    transfer: c.delivery.transfer ?? null, firm_transfer_set: c.delivery.transfer?.kind === 'firm', hours: c.delivery.hours ?? '24/7', buyer_webhook: c.delivery.buyer_webhook ?? null, buyer_email: c.delivery.buyer_email ?? null, schedule_url: c.delivery.schedule_url ?? null,
     payload_contract: 'btl.intake.web/v1 (same as the live Paraquat lane; see tracking.json). Buyer outcome comes back via POST to the Perspective outcome endpoint or a portal status update: accepted | rejected(reason) | signed | not_signed.',
     real_time_return: 'Firm returns status per lead_id within 24h (portal button, API, or reply to the lead email). Feeds Meta CAPI + Google offline conversions + BigQuery.',
   };
@@ -396,7 +543,7 @@ export function renderBundle(c) {
   const source = `make:btl-${c.slug}-web`;
   const perspective = {
     status: 'NOT_PROVISIONED', kpis: ['spend', 'leads', 'cost_per_lead', 'qualified', 'transferred', 'accepted', 'signed', 'cost_per_signed', 'door_mix', 'speed_to_contact'],
-    make_intake_scenario: {clone_of: 'Make 6437227 "BTL — Paraquat Web Intake" (hook 2868930)', must: ['parse payload (form field) as JSON', 'dedupe on submission_id', `append BigQuery evolution_engine.raw_lead_events with source "${source}", event_type "lead.received"`, `deliver per delivery.json (${c.delivery.mode})`, 'respond 200 {status:"received", receipt_id}'], set_webhook_in: `campaign-kit/campaigns/${c.slug}.json → intake.webhook`},
+    make_intake_scenario: {clone_of: 'Make 6437227 "BTL — Paraquat Web Intake" (hook 2868930)', must: ['parse payload (form field) as JSON', 'dedupe on submission_id; a duplicate answers {status:"duplicate"} with the SAME receipt_id', 'receipt_id derived from submission_id (e.g. BTLXX-<first 10 hex>) so retries are idempotent', `append BigQuery evolution_engine.raw_lead_events with source "${source}", event_type "lead.received" — NO "Ignore" error handler on this write`, 'respond only AFTER the write succeeds: 200 {status:"received", receipt_id}; on write failure respond 500 so the page shows the phone fallback', `deliver per delivery.json (${c.delivery.mode}) after the receipt`], known_gap_in_6437227: 'BigQuery write has an Ignore error handler and the response route does not depend on it — the receipt is returned even if storage failed', set_webhook_in: `campaign-kit/campaigns/${c.slug}.json → intake.webhook`},
     'legal-web-lead/config/portal/campaign-overviews.json': {slug: c.slug, campaign_id: c.campaign_id, public_schema: `${c.slug}-perspective/v1`, input_schema: `${c.slug}-overview-input/v1`, public_origin: 'https://besttortlawyers.com',
       source_binding: {system: 'bigquery', table: 'marketing-apes-master-database.evolution_engine.raw_lead_events', source, domain_id: 'btl', payload_version: 'btl.intake.web/v1', event_type: 'lead.received'},
       page_sources: {[pid(c, 'form')]: 'form', [pid(c, 'quiz')]: 'quiz', [pid(c, 'sofia')]: 'sofia'}, privacy_floor: 10, staleness_seconds: 900, max_future_skew_seconds: 120},
@@ -411,35 +558,23 @@ export function renderBundle(c) {
     compliance_fields: ['consent.call', 'consent.sms', 'consent.language', 'consent.at', 'trustedform_cert_url'],
     bigquery: 'Make webhook scenario appends raw payload to the ledger table (one row per event, campaign_id partition key).',
   };
-  const gates = [
-    ['Buyer criteria approved in writing', !!c.criteria.approved_by],
-    ['Firm identity, disclosures and attorney-advertising copy signed off', !!c.compliance?.copy_approved_by],
-    ['Delivery destination verified with a test lead (form + quiz)', false],
-    ['Sofia assistant provisioned, transfer tested on a live call', !!c.sofia.assistant_id && !!c.sofia.transfer_tested],
-    ['TrustedForm certificate present on a test submission', false],
-    ['GTM tags publish ee_lead_submit_success → Meta/Google/TikTok/OpenAI conversions', false],
-    ['Perspective portal feed returns this campaign', false],
-    ['Invoice paid / media authorization on file', !!c.billing?.paid],
-    ['Kyle approves activation in chat (exact campaign + budget)', false],
-  ];
-  const launch = `# ${c.campaign_id} — ${c.tort.name} · launch gates
+  const rows = checklist(c), open = rows.filter(r => r.status !== 'WORKING').length;
+  const launch = `# ${c.campaign_id} — ${c.tort.name} · working / missing checklist
 
-Generated by campaign-kit ${KIT_VERSION}. Status: **${gates.every(g => g[1]) ? 'READY FOR APPROVAL' : 'BUILT-NOT-LIVE'}**
+Generated by campaign-kit ${KIT_VERSION} from \`campaign-kit/campaigns/${c.slug}.json\`. Mode: **${c.mode.toUpperCase()}**. ${open} of ${rows.length} rows are not WORKING.
 
-Pages (noindex)${c.publish === false ? ' — PREVIEW ONLY, not deployed (publish:false; see out/' + c.slug + '/preview/). The live lane is the source; channel links below point at /c/ and must be repointed before use' : ''}: ${base}  ·  quiz ${base}quiz.html  ·  Sofia ${base}sofia.html  ·  form ${base}form.html  ·  ads ${base}ads.html
+Budget plan (not created anywhere): $${usd.toLocaleString()} media over ${days} days → Meta $${daily('meta')}/d · Google $${daily('google')}/d · TikTok $${daily('tiktok')}/d · ChatGPT $${daily('openai')}/d.
+Delivery: ${c.delivery.mode}${c.delivery.transfer ? ` · Sofia currently transfers to ${c.delivery.transfer.number} (${c.delivery.transfer.kind}: ${c.delivery.transfer.label})` : ''}. Geo: ${c.geo.states.join(', ')}.
 
-Budget: $${usd.toLocaleString()} media over ${days} days → Meta $${daily('meta')}/d · Google $${daily('google')}/d · TikTok $${daily('tiktok')}/d · ChatGPT $${daily('openai')}/d (all PAUSED drafts).
-Delivery: ${c.delivery.mode}${c.delivery.transfer_number ? ' → ' + c.delivery.transfer_number : ''}. Geo: ${c.geo.states.join(', ')}.
-
-| Gate | Status |
-|---|---|
-${gates.map(([g, ok]) => `| ${g} | ${ok ? 'PASS' : 'OPEN'} |`).join('\n')}
+| Area | Item | Status | Evidence |
+|---|---|---|---|
+${mdRows(rows)}
 
 Criteria (as configured — not a legal determination):
 - Qualifies: ${c.criteria.qualifies.join('; ')}
 - Does not qualify: ${(c.criteria.disqualifies ?? []).join('; ') || 'not specified'}
 `;
-  return {'meta.json': meta, 'google-search.json': google, 'tiktok.json': tiktok, 'openai-ads.json': openai, 'sofia.json': sofia, 'delivery.json': delivery, 'perspective.json': perspective, 'tracking.json': tracking, 'LAUNCH.md': launch};
+  return {'meta.json': meta, 'google-search.json': google, 'tiktok.json': tiktok, 'openai-ads.json': openai, 'sofia.json': sofia, 'delivery.json': delivery, 'perspective.json': perspective, 'tracking.json': tracking, 'assets.json': assetManifest(c), 'LAUNCH.md': launch};
 }
 
 // ---------- write ----------
@@ -454,10 +589,20 @@ export function build(file) {
   return {campaign_id: c.campaign_id, pages: pageDir.slice(ROOT.length + 1) + '/', bundle: `campaign-kit/out/${c.slug}/`};
 }
 
+// Rewrites the generated block of the read-first brief so the status table can never drift from the configs.
+export function writeBriefChecklist(configs) {
+  const f = join(KIT, 'BRIEF.md'), start = '<!-- checklist:start -->', end = '<!-- checklist:end -->';
+  const brief = readFileSync(f, 'utf8'), a = brief.indexOf(start), b = brief.indexOf(end);
+  if (a < 0 || b < a) throw Error('BRIEF.md is missing the checklist markers');
+  const block = configs.map(c => `### ${c.campaign_id} · ${c.tort.name} · ${c.mode.toUpperCase()}\n\n| Area | Item | Status | Evidence |\n|---|---|---|---|\n${mdRows(checklist(c))}\n`).join('\n');
+  writeFileSync(f, brief.slice(0, a + start.length) + `\n_Generated by \`node campaign-kit/build.mjs --all\` (kit ${KIT_VERSION}). Do not edit by hand._\n\n` + block + brief.slice(b));
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const dir = join(KIT, 'campaigns');
   const files = args[0] === '--all' ? readdirSync(dir).filter(f => f.endsWith('.json')).map(f => join(dir, f)) : args;
   if (!files.length) { console.error('usage: build.mjs <campaign.json> | --all'); process.exit(1); }
   for (const f of files) { if (!existsSync(f)) { console.error('missing ' + f); process.exit(1); } console.log(JSON.stringify(build(f))); }
+  if (args[0] === '--all') writeBriefChecklist(files.map(f => normalize(JSON.parse(readFileSync(f, 'utf8')))));
 }

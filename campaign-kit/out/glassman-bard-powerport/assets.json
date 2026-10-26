@@ -1,0 +1,69 @@
+[
+  {
+    "slot": "hero",
+    "label": "Page hero image",
+    "status": "ACTUAL",
+    "where": "/glassman-bard-powerport/img/boston.jpg",
+    "size": "1300x650"
+  },
+  {
+    "slot": "og",
+    "label": "Share image (og:image)",
+    "status": "WRONG SIZE",
+    "where": "/glassman-bard-powerport/img/boston.jpg",
+    "size": "1300x650",
+    "note": "needs 1200x630"
+  },
+  {
+    "slot": "team",
+    "label": "Proof / team image",
+    "status": "ACTUAL",
+    "where": "/glassman-bard-powerport/img/team.jpg",
+    "size": "737x490"
+  },
+  {
+    "slot": "ad_quiz",
+    "label": "Meta feed ad · quiz door",
+    "status": "ACTUAL",
+    "where": "/glassman-bard-powerport/img/ad-quiz.jpg",
+    "size": "1080x1080"
+  },
+  {
+    "slot": "ad_sofia",
+    "label": "Meta feed ad · Sofia door",
+    "status": "ACTUAL",
+    "where": "/glassman-bard-powerport/img/ad-sofia.jpg",
+    "size": "1080x1080"
+  },
+  {
+    "slot": "ad_form",
+    "label": "Meta feed ad · form door",
+    "status": "ACTUAL",
+    "where": "/glassman-bard-powerport/img/ad-form.jpg",
+    "size": "1080x1080"
+  },
+  {
+    "slot": "story_quiz",
+    "label": "Stories/Reels 9:16 · quiz door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "story_sofia",
+    "label": "Stories/Reels 9:16 · Sofia door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "story_form",
+    "label": "Stories/Reels 9:16 · form door",
+    "status": "MISSING",
+    "where": null
+  },
+  {
+    "slot": "tiktok_video",
+    "label": "TikTok 9:16 video",
+    "status": "MISSING",
+    "where": null
+  }
+]

@@ -1,12 +1,18 @@
 {
-  "mode": "scheduled_callback",
+  "mode": "live_transfer",
   "options_offered_to_firm": [
     "live_transfer",
     "scheduled_callback",
     "api_webhook",
     "email"
   ],
-  "transfer_number": null,
+  "transfer": {
+    "number": "+17605211485",
+    "kind": "demo",
+    "label": "Kyle's cell standing in for Glassman intake (Vapi labels it DEMO)",
+    "source": "Vapi tool transfer_to_firm fe1a10b9-838b-431e-8d3a-e5e9b30cfbe7, read 2026-10-26 by Claude"
+  },
+  "firm_transfer_set": false,
   "hours": "24/7",
   "buyer_webhook": null,
   "buyer_email": null,

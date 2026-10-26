@@ -16,11 +16,13 @@
     "clone_of": "Make 6437227 \"BTL — Paraquat Web Intake\" (hook 2868930)",
     "must": [
       "parse payload (form field) as JSON",
-      "dedupe on submission_id",
-      "append BigQuery evolution_engine.raw_lead_events with source \"make:btl-glassman-bard-powerport-web\", event_type \"lead.received\"",
-      "deliver per delivery.json (scheduled_callback)",
-      "respond 200 {status:\"received\", receipt_id}"
+      "dedupe on submission_id; a duplicate answers {status:\"duplicate\"} with the SAME receipt_id",
+      "receipt_id derived from submission_id (e.g. BTLXX-<first 10 hex>) so retries are idempotent",
+      "append BigQuery evolution_engine.raw_lead_events with source \"make:btl-glassman-bard-powerport-web\", event_type \"lead.received\" — NO \"Ignore\" error handler on this write",
+      "respond only AFTER the write succeeds: 200 {status:\"received\", receipt_id}; on write failure respond 500 so the page shows the phone fallback",
+      "deliver per delivery.json (live_transfer) after the receipt"
     ],
+    "known_gap_in_6437227": "BigQuery write has an Ignore error handler and the response route does not depend on it — the receipt is returned even if storage failed",
     "set_webhook_in": "campaign-kit/campaigns/glassman-bard-powerport.json → intake.webhook"
   },
   "legal-web-lead/config/portal/campaign-overviews.json": {

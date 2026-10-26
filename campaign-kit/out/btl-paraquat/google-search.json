@@ -3,7 +3,7 @@
   "customer_id": "6072919714",
   "note": "Create via Ryze google_ads.runRawMutate with status PAUSED. Conversion = ee_lead_submit_success via GTM.",
   "campaign": {
-    "name": "PARAQUAT-PILOT-001 | Paraquat | Google Search | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "PARAQUAT-PILOT-001 | Paraquat | Google Search | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "advertising_channel_type": "SEARCH",
     "status": "PAUSED",
     "daily_budget_usd": 179,
@@ -54,7 +54,7 @@
     ]
   },
   "responsive_search_ad": {
-    "final_url": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=google&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
+    "final_url": "https://besttortlawyers.com/paraquat/quiz/?utm_source=google&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
     "headlines": [
       "Paraquat Claim Check",
       "Free 2-Minute Claim Check",

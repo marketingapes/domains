@@ -6,7 +6,7 @@
   "instagram_id": "17841464212888132",
   "pixel_id": "673552078259404",
   "campaign": {
-    "name": "PARAQUAT-PILOT-001 | Paraquat | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "PARAQUAT-PILOT-001 | Paraquat | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "objective": "OUTCOME_LEADS",
     "status": "PAUSED",
     "special_ad_categories": [],
@@ -42,8 +42,9 @@
       "headline": "Affected by Paraquat?",
       "primary_text": "Answer 9 quick questions and see where you stand. Free to check. No cost to you.",
       "call_to_action": "LEARN_MORE",
-      "link": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
-      "image": null
+      "link": "https://besttortlawyers.com/paraquat/quiz/?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
+      "image": null,
+      "image_hash": "b448fa5026edfa3be5541fefd7380bcd"
     },
     {
       "name": "PARAQUAT-PILOT-001 | door:sofia",
@@ -51,8 +52,9 @@
       "headline": "Talk it through with Sofia",
       "primary_text": "Prefer to talk? Call and tell us what happened with Paraquat. Sofia, an AI intake assistant, asks a few questions and connects you with a person.",
       "call_to_action": "CALL_NOW",
-      "link": "https://besttortlawyers.com/c/btl-paraquat/sofia.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=sofia",
-      "image": null
+      "link": "https://besttortlawyers.com/paraquat/talk-to-sofia/?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=sofia",
+      "image": null,
+      "image_hash": "571f86dd98cd4f9a472d78f63ff0f449"
     },
     {
       "name": "PARAQUAT-PILOT-001 | door:form",
@@ -60,8 +62,9 @@
       "headline": "Start your Paraquat claim review",
       "primary_text": "Tell us what happened and the review team calls you back at a time you choose.",
       "call_to_action": "SIGN_UP",
-      "link": "https://besttortlawyers.com/c/btl-paraquat/form.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=form",
-      "image": null
+      "link": "https://besttortlawyers.com/paraquat/?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=form",
+      "image": null,
+      "image_hash": "9c549e184ba4d4a765107d39fa26d25b"
     }
   ]
 }
