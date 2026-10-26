@@ -13,7 +13,7 @@
     "speed_to_contact"
   ],
   "make_intake_scenario": {
-    "scenario": "Make 6777650 \"BTL — Campaign Kit Web Intake (store → receipt)\", hook 2982612 — shared by every kit campaign; INACTIVE until Kyle approves",
+    "scenario": "Make 6777650 \"BTL — Campaign Kit Web Intake (store → receipt)\", hook 2982612 — shared by every kit campaign; active since 2026-10-26",
     "must": [
       "parse payload (form field) as JSON",
       "dedupe on submission_id; a duplicate answers {status:\"duplicate\"} with the SAME receipt_id",

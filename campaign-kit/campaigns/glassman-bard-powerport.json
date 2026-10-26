@@ -317,7 +317,7 @@
   "evidence": {
     "intake": {
       "status": "WORKING",
-      "note": "Kit intake Make 6777650 (built 2026-10-26, INACTIVE until Kyle approves): synthetic btl.intake.web/v1 lead → 200 {status:received, receipt_id BTLK-FEEFF1EF5E}; resend → duplicate, same receipt; malformed → 400, no receipt. Tested during two brief activations. A live page gets no receipt until 6777650 is activated",
+      "note": "Kit intake Make 6777650 (built 2026-10-26; ACTIVE since 2026-10-26 on Kyle's approval): synthetic btl.intake.web/v1 lead → 200 {status:received, receipt_id BTLK-FEEFF1EF5E}; resend → duplicate, same receipt; malformed → 400, no receipt. Tested during two brief activations. No page posts to it yet: this campaign still builds as a preview",
       "source": "curl + BigQuery + Make executions 2026-10-26 by Claude"
     },
     "intake_durable": {
