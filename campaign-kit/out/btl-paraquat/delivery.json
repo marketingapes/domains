@@ -6,7 +6,13 @@
     "api_webhook",
     "email"
   ],
-  "transfer_number": "+12029329700",
+  "transfer": {
+    "number": "+16198530048",
+    "kind": "internal",
+    "label": "BTL team line via CallRail (recorded), forwards to Kyle",
+    "source": "Vapi assistant 976d64df transferCall destination, read 2026-10-26 by Claude"
+  },
+  "firm_transfer_set": false,
   "hours": "24/7",
   "buyer_webhook": null,
   "buyer_email": null,

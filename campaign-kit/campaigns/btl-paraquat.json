@@ -1,31 +1,347 @@
 {
-  "_note": "House-brand port of the live /paraquat/ lane criteria (Sofia 'BTL Paraquat v4', prequal.js 2026-09-28-v4criteria) to prove the kit on the BTL brand. publish:false — the live /paraquat/ lane stays untouched. Conditional follow-ups (passed/cont13/adult/season) are folded into the age question.",
+  "_note": "House-brand port of the live /paraquat/ lane criteria. publish:false — preview only; the live /paraquat/ lane is untouched and stays the source.",
   "campaign_id": "PARAQUAT-PILOT-001",
   "slug": "btl-paraquat",
   "tenant_id": "btl",
   "publish": false,
-  "tort": {"name": "Paraquat", "descriptor": "Parkinson's disease", "not_affiliated": "Syngenta or Chevron",
+  "tort": {
+    "name": "Paraquat",
+    "descriptor": "Parkinson's disease",
+    "not_affiliated": "Syngenta or Chevron",
     "headline": "Worked with Paraquat and later diagnosed with Parkinson's?",
-    "lede": "People who mixed, loaded or sprayed Paraquat (Gramoxone) at work and were later diagnosed with Parkinson's disease may be able to file a claim. Check in two minutes, or talk it through with Sofia."},
-  "geo": {"states": ["US"]},
+    "lede": "People who mixed, loaded or sprayed Paraquat (Gramoxone) at work and were later diagnosed with Parkinson's disease may be able to file a claim. Check in two minutes, or talk it through with Sofia."
+  },
+  "geo": {
+    "states": [
+      "US"
+    ]
+  },
   "criteria": {
-    "qualifies": ["Parkinson's disease diagnosed by a doctor", "Occupational exposure: mixed, loaded, applied/sprayed, or flagged", "Product mixed with water, from a farm or ag supplier", "Exposure started 1964–2010", "Exposure at 18+ (or at least one full season if younger)", "Farm/area over ~3 acres", "Not represented, never signed with a lawyer on this", "No methamphetamine use"],
-    "disqualifies": ["No Parkinson's diagnosis", "Home/garden/hobby use only", "Only nearby, never handled it", "Retail/ready-to-use product", "All exposure before 1964", "Lawyer handling or previously signed", "Methamphetamine use"],
-    "approved_by": "Receiving firm criteria as encoded in Sofia BTL Paraquat v4 (2026-09-28)"
+    "qualifies": [
+      "Parkinson's disease diagnosed by a doctor",
+      "Occupational exposure: mixed, loaded, applied/sprayed, or flagged",
+      "Product mixed with water, from a farm or ag supplier",
+      "Exposure started 1964–2010",
+      "Exposure at 18+ (or at least one full season if younger)",
+      "Farm/area over ~3 acres",
+      "Not represented, never signed with a lawyer on this",
+      "No methamphetamine use"
+    ],
+    "disqualifies": [
+      "No Parkinson's diagnosis",
+      "Home/garden/hobby use only",
+      "Only nearby, never handled it",
+      "Retail/ready-to-use product",
+      "All exposure before 1964",
+      "Lawyer handling or previously signed",
+      "Methamphetamine use"
+    ]
   },
   "quiz": [
-    {"key": "diagnosis", "q": "Has a doctor diagnosed you (or the person you're asking for) with Parkinson's disease?", "options": [{"label": "Yes", "value": "yes", "signal": "good"}, {"label": "No", "value": "no", "signal": "bad"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "lawyer", "q": "Is a lawyer already handling this, or has anyone signed with a lawyer about it?", "options": [{"label": "No", "value": "no", "signal": "good"}, {"label": "Yes, a lawyer is handling it", "value": "handling", "signal": "represented"}, {"label": "Signed with a lawyer before", "value": "signed", "signal": "represented"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "job", "q": "Was the Paraquat exposure part of a job?", "hint": "Farm work, spraying and crop dusting are common examples.", "options": [{"label": "Yes, at a job", "value": "job", "signal": "good"}, {"label": "No, home, garden or hobby use", "value": "home", "signal": "bad"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "role", "q": "What did they do with it?", "options": [{"label": "Mixed or loaded it", "value": "mixed", "signal": "good"}, {"label": "Applied or sprayed it", "value": "applied", "signal": "good"}, {"label": "Flagged for a crop duster", "value": "flagger", "signal": "good"}, {"label": "Was sprayed directly", "value": "sprayed_on", "signal": "unsure"}, {"label": "None of these, just nearby", "value": "other", "signal": "bad"}]},
-    {"key": "product", "q": "Was it mixed with water before spraying, and where did it come from?", "hint": "Paraquat is also sold as Gramoxone.", "options": [{"label": "Mixed with water, from a farm or ag supplier", "value": "supplier", "signal": "good"}, {"label": "Store-bought or ready to use", "value": "retail", "signal": "bad"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "years", "q": "About when did the exposure start?", "options": [{"label": "Between 1964 and 2010", "value": "1964_2010", "signal": "good"}, {"label": "All of it before 1964", "value": "pre1964", "signal": "bad"}, {"label": "2011 or later", "value": "2011_on", "signal": "unsure"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "age", "q": "How old were they when it started?", "options": [{"label": "18 or older", "value": "18plus", "signal": "good"}, {"label": "Younger than 18", "value": "under18", "signal": "unsure"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "acres", "q": "Roughly how big was the farm or area?", "options": [{"label": "More than about 3 acres", "value": "over3", "signal": "good"}, {"label": "Less than about 3 acres", "value": "under3", "signal": "unsure"}, {"label": "Not sure", "value": "not_sure", "signal": "unsure"}]},
-    {"key": "meth", "q": "The firm asks everyone this: has the person ever used methamphetamine?", "options": [{"label": "No", "value": "no", "signal": "good"}, {"label": "Yes", "value": "yes", "signal": "bad"}, {"label": "Prefer not to say", "value": "prefer_not", "signal": "unsure"}]}
+    {
+      "key": "diagnosis",
+      "q": "Has a doctor diagnosed you (or the person you're asking for) with Parkinson's disease?",
+      "options": [
+        {
+          "label": "Yes",
+          "value": "yes",
+          "signal": "good"
+        },
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "lawyer",
+      "q": "Is a lawyer already handling this, or has anyone signed with a lawyer about it?",
+      "options": [
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "good"
+        },
+        {
+          "label": "Yes, a lawyer is handling it",
+          "value": "handling",
+          "signal": "represented"
+        },
+        {
+          "label": "Signed with a lawyer before",
+          "value": "signed",
+          "signal": "represented"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "job",
+      "q": "Was the Paraquat exposure part of a job?",
+      "hint": "Farm work, spraying and crop dusting are common examples.",
+      "options": [
+        {
+          "label": "Yes, at a job",
+          "value": "job",
+          "signal": "good"
+        },
+        {
+          "label": "No, home, garden or hobby use",
+          "value": "home",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "role",
+      "q": "What did they do with it?",
+      "options": [
+        {
+          "label": "Mixed or loaded it",
+          "value": "mixed",
+          "signal": "good"
+        },
+        {
+          "label": "Applied or sprayed it",
+          "value": "applied",
+          "signal": "good"
+        },
+        {
+          "label": "Flagged for a crop duster",
+          "value": "flagger",
+          "signal": "good"
+        },
+        {
+          "label": "Was sprayed directly",
+          "value": "sprayed_on",
+          "signal": "unsure"
+        },
+        {
+          "label": "None of these, just nearby",
+          "value": "other",
+          "signal": "bad"
+        }
+      ]
+    },
+    {
+      "key": "product",
+      "q": "Was it mixed with water before spraying, and where did it come from?",
+      "hint": "Paraquat is also sold as Gramoxone.",
+      "options": [
+        {
+          "label": "Mixed with water, from a farm or ag supplier",
+          "value": "supplier",
+          "signal": "good"
+        },
+        {
+          "label": "Store-bought or ready to use",
+          "value": "retail",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "years",
+      "q": "About when did the exposure start?",
+      "options": [
+        {
+          "label": "Between 1964 and 2010",
+          "value": "1964_2010",
+          "signal": "good"
+        },
+        {
+          "label": "All of it before 1964",
+          "value": "pre1964",
+          "signal": "bad"
+        },
+        {
+          "label": "2011 or later",
+          "value": "2011_on",
+          "signal": "unsure"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "age",
+      "q": "How old were they when it started?",
+      "options": [
+        {
+          "label": "18 or older",
+          "value": "18plus",
+          "signal": "good"
+        },
+        {
+          "label": "Younger than 18",
+          "value": "under18",
+          "signal": "unsure"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "acres",
+      "q": "Roughly how big was the farm or area?",
+      "options": [
+        {
+          "label": "More than about 3 acres",
+          "value": "over3",
+          "signal": "good"
+        },
+        {
+          "label": "Less than about 3 acres",
+          "value": "under3",
+          "signal": "unsure"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "meth",
+      "q": "The firm asks everyone this: has the person ever used methamphetamine?",
+      "options": [
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "good"
+        },
+        {
+          "label": "Yes",
+          "value": "yes",
+          "signal": "bad"
+        },
+        {
+          "label": "Prefer not to say",
+          "value": "prefer_not",
+          "signal": "unsure"
+        }
+      ]
+    }
   ],
-  "sofia": {"phone_display": "(202) 932-9700", "phone_tel": "+12029329700", "assistant_id": "976d64df-ca8d-4880-a983-7fcec3e786db", "transfer_tested": true},
-  "intake": {"webhook": "https://hook.us2.make.com/f916v5eh4xccy9ytkancw7xa63g6v326", "trustedform": true},
-  "delivery": {"mode": "live_transfer", "transfer_number": "+12029329700", "firm_name": "Receiving firm (via LegalCalls)", "hours": "24/7", "_note": "Live lane transfers through CallRail; transfer_number here is the BTL line, not the firm line."},
-  "budget": {"media_total_usd": 10000, "days": 14}
+  "sofia": {
+    "phone_display": "(202) 932-9700",
+    "phone_tel": "+12029329700",
+    "inbound_numbers": [
+      "+12138787408"
+    ],
+    "assistant_id": "976d64df-ca8d-4880-a983-7fcec3e786db"
+  },
+  "intake": {
+    "webhook": "https://hook.us2.make.com/f916v5eh4xccy9ytkancw7xa63g6v326",
+    "trustedform": true
+  },
+  "delivery": {
+    "mode": "live_transfer",
+    "firm_name": null,
+    "hours": "24/7",
+    "transfer": {
+      "number": "+16198530048",
+      "kind": "internal",
+      "label": "BTL team line via CallRail (recorded), forwards to Kyle",
+      "source": "Vapi assistant 976d64df transferCall destination, read 2026-10-26 by Claude"
+    }
+  },
+  "budget": {
+    "media_total_usd": 10000,
+    "days": 14
+  },
+  "images": {
+    "hero": "/assets/paraquat-field-usda-nrcs.jpg",
+    "og": "/assets/og-btl.jpg"
+  },
+  "meta_creatives": {
+    "quiz": {
+      "image_hash": "b448fa5026edfa3be5541fefd7380bcd",
+      "ad_id": "120254862374030231"
+    },
+    "sofia": {
+      "image_hash": "571f86dd98cd4f9a472d78f63ff0f449",
+      "ad_id": "120254862374580231"
+    },
+    "form": {
+      "image_hash": "9c549e184ba4d4a765107d39fa26d25b",
+      "ad_id": "120254862375180231"
+    }
+  },
+  "landing": {
+    "quiz": "https://besttortlawyers.com/paraquat/quiz/",
+    "sofia": "https://besttortlawyers.com/paraquat/talk-to-sofia/",
+    "form": "https://besttortlawyers.com/paraquat/"
+  },
+  "evidence": {
+    "intake": {
+      "status": "UNTESTED",
+      "note": "Make 6437227 (hook 2868930) returns {status, receipt_id BTLPQ-…} and dedupes on submission_id; this kit's payload has never been sent to it",
+      "source": "Make blueprint read 2026-10-26 by Claude"
+    },
+    "intake_durable": {
+      "status": "MISSING",
+      "note": "6437227 ignores BigQuery write errors and still answers \"received\"; the receipt does not prove storage",
+      "source": "Make blueprint read 2026-10-26 by Claude"
+    },
+    "sofia_line": {
+      "status": "WORKING",
+      "note": "(202) 932-9700 and (213) 878-7408 bound to Sofia BTL Paraquat v4 (976d64df, metadata status live); Kyle's test call 2026-10-14 12:35 PT is recorded in the assistant metadata",
+      "source": "Vapi phone-number + assistant read 2026-10-26 by Claude"
+    },
+    "transfer": {
+      "status": "MISSING",
+      "note": "Sofia transfers to +1 (619) 853-0048, the internal BTL team line (forwards to Kyle). No receiving firm line is set",
+      "source": "Vapi transferCall read 2026-10-26 by Claude"
+    },
+    "meta": {
+      "status": "NOT CREATED",
+      "note": "Kit Meta drafts not created. Separate existing campaign 120254862367750231 (3 door ads, PAUSED) points at the live /paraquat/ pages",
+      "source": "Meta Graph read 2026-10-26 by Claude"
+    },
+    "tracking": {
+      "status": "UNTESTED",
+      "note": "GTM-PHC7459M loaded Meta, TikTok, ChatGPT ads, GA4, Google Ads, TrustedForm and CallRail on a local render; no Lead conversion confirmed in any platform",
+      "source": "local browser check 2026-10-26"
+    },
+    "portal": {
+      "status": "UNTESTED",
+      "note": "Live Paraquat portal exists for the live lane; no kit lead has flowed through it",
+      "source": "legal-web-lead + affiliate-hub code read 2026-10-26"
+    }
+  },
+  "gates": {
+    "criteria_approved": {
+      "by": "Kyle",
+      "at": "2026-09-28",
+      "evidence": "Receiving firm's criteria supplied by Kyle 2026-09-28 and kept on file (Sofia BTL Paraquat v4 metadata: criteria_source)"
+    }
+  }
 }

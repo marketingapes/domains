@@ -3,13 +3,13 @@
   "ad_account": "adacct_69fbe2c8e0a081a1a4de498b5418243c",
   "note": "ChatGPT ads. Create paused via Ryze openai_ads.write. Conversion event = lead.",
   "campaign": {
-    "name": "PARAQUAT-PILOT-001 | Paraquat | ChatGPT Ads | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "PARAQUAT-PILOT-001 | Paraquat | ChatGPT Ads | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "daily_budget_usd": 71,
     "status": "paused"
   },
   "ad": {
     "headline": "Affected by Paraquat?",
     "body": "Answer 9 quick questions and see where you stand. Free to check. No cost to you.",
-    "destination": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=chatgpt&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz"
+    "destination": "https://besttortlawyers.com/paraquat/quiz/?utm_source=chatgpt&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz"
   }
 }

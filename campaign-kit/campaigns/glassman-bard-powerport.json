@@ -1,48 +1,349 @@
 {
-  "_note": "Parity port of the live /glassman-bard-powerport/ lane (PR #354) to prove the kit. publish:false — the live pages stay the source; this renders to campaign-kit/out/ only.",
+  "_note": "Parity port of the live /glassman-bard-powerport/ lane (PR #354). publish:false — preview only; the live pages stay the source.",
   "campaign_id": "GLASSMAN-BARD-POWERPORT-001",
   "slug": "glassman-bard-powerport",
   "tenant_id": "glassman",
   "publish": false,
-  "tort": {"name": "Bard PowerPort", "descriptor": "implanted port catheter", "not_affiliated": "Becton Dickinson or C. R. Bard",
+  "tort": {
+    "name": "Bard PowerPort",
+    "descriptor": "implanted port catheter",
+    "not_affiliated": "Becton Dickinson or C. R. Bard",
     "headline": "Infection, blood clot, or a port that broke? Find out where you stand.",
-    "lede": "Thousands of people had a Bard PowerPort implanted for chemo or long-term treatment. Some suffered infections, blood clots, or catheter pieces that broke off and moved. If that happened to you, you may have a claim, and we don't get paid unless you do."},
+    "lede": "Thousands of people had a Bard PowerPort implanted for chemo or long-term treatment. Some suffered infections, blood clots, or catheter pieces that broke off and moved. If that happened to you, you may have a claim, and we don't get paid unless you do."
+  },
   "brand": {
-    "name": "Jeffrey Glassman Injury Lawyers", "phone_display": "(617) 777-7777", "phone_tel": "+16177777777",
-    "site_url": "https://www.jeffreysglassman.com/", "privacy_url": "https://www.jeffreysglassman.com/", "terms_url": "https://www.jeffreysglassman.com/",
-    "logo": "/glassman-bard-powerport/img/logo.svg", "logo_wide": "/glassman-bard-powerport/img/logo.svg",
+    "name": "Jeffrey Glassman Injury Lawyers",
+    "phone_display": "(617) 777-7777",
+    "phone_tel": "+16177777777",
+    "site_url": "https://www.jeffreysglassman.com/",
+    "privacy_url": "https://www.jeffreysglassman.com/",
+    "terms_url": "https://www.jeffreysglassman.com/",
+    "logo": "/glassman-bard-powerport/img/logo.svg",
+    "logo_wide": "/glassman-bard-powerport/img/logo.svg",
     "address": "Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110",
     "advertising_note": "This page is not legal advice and does not create an attorney-client relationship.",
-    "team_name": "the team", "fee_line": "No Fee Unless We Win.", "tagline": "Free consultation, 24/7.",
-    "colors": {"deep": "#122b3e", "navy": "#264861", "blue": "#1a78a1", "blue_ink": "#14607f", "gold": "#edaa00", "gold_ink": "#a56f00", "bg2": "#f2f5f8", "line": "#dbe3e9", "ok": "#1f8a5b"},
-    "fonts": {"display": "Lora", "body": "Open Sans"},
-    "trust": [["$500M+", "Won for clients"], ["30+", "Years serving clients"], ["1,000+", "Five-star Google reviews"], ["25,000+", "Injured people helped"], ["No fee", "Unless we win"]]
+    "team_name": "the team",
+    "fee_line": "No Fee Unless We Win.",
+    "tagline": "Free consultation, 24/7.",
+    "colors": {
+      "deep": "#122b3e",
+      "navy": "#264861",
+      "blue": "#1a78a1",
+      "blue_ink": "#14607f",
+      "gold": "#edaa00",
+      "gold_ink": "#a56f00",
+      "bg2": "#f2f5f8",
+      "line": "#dbe3e9",
+      "ok": "#1f8a5b"
+    },
+    "fonts": {
+      "display": "Lora",
+      "body": "Open Sans"
+    },
+    "trust": [
+      [
+        "$500M+",
+        "Won for clients"
+      ],
+      [
+        "30+",
+        "Years serving clients"
+      ],
+      [
+        "1,000+",
+        "Five-star Google reviews"
+      ],
+      [
+        "25,000+",
+        "Injured people helped"
+      ],
+      [
+        "No fee",
+        "Unless we win"
+      ]
+    ]
   },
-  "images": {"hero": "/glassman-bard-powerport/img/boston.jpg", "team": "/glassman-bard-powerport/img/team.jpg", "ad_quiz": "/glassman-bard-powerport/img/ad-quiz.jpg", "ad_sofia": "/glassman-bard-powerport/img/ad-sofia.jpg", "ad_form": "/glassman-bard-powerport/img/ad-form.jpg", "og": "https://besttortlawyers.com/glassman-bard-powerport/img/boston.jpg"},
-  "geo": {"states": ["MA", "NH", "RI", "CT", "ME", "VT", "NY"]},
+  "images": {
+    "hero": "/glassman-bard-powerport/img/boston.jpg",
+    "team": "/glassman-bard-powerport/img/team.jpg",
+    "ad_quiz": "/glassman-bard-powerport/img/ad-quiz.jpg",
+    "ad_sofia": "/glassman-bard-powerport/img/ad-sofia.jpg",
+    "ad_form": "/glassman-bard-powerport/img/ad-form.jpg",
+    "og": "/glassman-bard-powerport/img/boston.jpg"
+  },
+  "geo": {
+    "states": [
+      "MA",
+      "NH",
+      "RI",
+      "CT",
+      "ME",
+      "VT",
+      "NY"
+    ]
+  },
   "criteria": {
-    "qualifies": ["Bard PowerPort or similar implanted port catheter", "Infection/sepsis, blood clot, or catheter fracture/migration", "Led to removal surgery or a hospital stay", "No other lawyer handling the claim"],
-    "disqualifies": ["No port implanted", "No serious complication", "Already represented"],
-    "approved_by": "Jeffrey Glassman Injury Lawyers (live lane, PR #354)"
+    "qualifies": [
+      "Bard PowerPort or similar implanted port catheter",
+      "Infection/sepsis, blood clot, or catheter fracture/migration",
+      "Led to removal surgery or a hospital stay",
+      "No other lawyer handling the claim"
+    ],
+    "disqualifies": [
+      "No port implanted",
+      "No serious complication",
+      "Already represented"
+    ]
   },
   "quiz": [
-    {"key": "port", "q": "Was a Bard PowerPort or similar port catheter implanted?", "hint": "Often placed for chemotherapy or long-term IV treatment.", "options": [{"label": "Yes, a Bard PowerPort", "value": "bard", "signal": "good"}, {"label": "Yes, a port, not sure which brand", "value": "port_unknown", "signal": "good"}, {"label": "No", "value": "no", "signal": "bad"}]},
-    {"key": "implanted", "q": "Roughly when was it implanted?", "hint": "A year or a range is fine.", "options": [{"label": "2010 or later", "value": "2010_on", "signal": "neutral"}, {"label": "Before 2010", "value": "pre2010", "signal": "neutral"}, {"label": "Not sure", "value": "not_sure", "signal": "neutral"}]},
-    {"key": "problem", "q": "What went wrong?", "hint": "In plain words. No records needed.", "options": [{"label": "Infection or sepsis", "value": "infection", "signal": "good"}, {"label": "Blood clot", "value": "clot", "signal": "good"}, {"label": "The catheter broke, cracked or moved", "value": "fracture", "signal": "good"}, {"label": "Nothing serious", "value": "none", "signal": "bad"}]},
-    {"key": "treated", "q": "Did it lead to surgery to remove it, or a hospital stay?", "hint": "Either one counts.", "options": [{"label": "Yes, removed", "value": "removed", "signal": "good"}, {"label": "Yes, hospitalized", "value": "hospital", "signal": "good"}, {"label": "No", "value": "no", "signal": "unsure"}]},
-    {"key": "when", "q": "When did the problem happen?", "hint": "Filing deadlines vary by state. We check this first.", "options": [{"label": "Within the last 2 years", "value": "under_2y", "signal": "good"}, {"label": "2 to 10 years ago", "value": "2_10y", "signal": "unsure"}, {"label": "More than 10 years ago", "value": "over_10y", "signal": "unsure"}]},
-    {"key": "lawyer", "q": "Is another lawyer already handling this claim?", "hint": "Last one.", "options": [{"label": "No", "value": "no", "signal": "good"}, {"label": "Yes", "value": "yes", "signal": "represented"}]}
+    {
+      "key": "port",
+      "q": "Was a Bard PowerPort or similar port catheter implanted?",
+      "hint": "Often placed for chemotherapy or long-term IV treatment.",
+      "options": [
+        {
+          "label": "Yes, a Bard PowerPort",
+          "value": "bard",
+          "signal": "good"
+        },
+        {
+          "label": "Yes, a port, not sure which brand",
+          "value": "port_unknown",
+          "signal": "good"
+        },
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "bad"
+        }
+      ]
+    },
+    {
+      "key": "implanted",
+      "q": "Roughly when was it implanted?",
+      "hint": "A year or a range is fine.",
+      "options": [
+        {
+          "label": "2010 or later",
+          "value": "2010_on",
+          "signal": "neutral"
+        },
+        {
+          "label": "Before 2010",
+          "value": "pre2010",
+          "signal": "neutral"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "neutral"
+        }
+      ]
+    },
+    {
+      "key": "problem",
+      "q": "What went wrong?",
+      "hint": "In plain words. No records needed.",
+      "options": [
+        {
+          "label": "Infection or sepsis",
+          "value": "infection",
+          "signal": "good"
+        },
+        {
+          "label": "Blood clot",
+          "value": "clot",
+          "signal": "good"
+        },
+        {
+          "label": "The catheter broke, cracked or moved",
+          "value": "fracture",
+          "signal": "good"
+        },
+        {
+          "label": "Nothing serious",
+          "value": "none",
+          "signal": "bad"
+        }
+      ]
+    },
+    {
+      "key": "treated",
+      "q": "Did it lead to surgery to remove it, or a hospital stay?",
+      "hint": "Either one counts.",
+      "options": [
+        {
+          "label": "Yes, removed",
+          "value": "removed",
+          "signal": "good"
+        },
+        {
+          "label": "Yes, hospitalized",
+          "value": "hospital",
+          "signal": "good"
+        },
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "when",
+      "q": "When did the problem happen?",
+      "hint": "Filing deadlines vary by state. We check this first.",
+      "options": [
+        {
+          "label": "Within the last 2 years",
+          "value": "under_2y",
+          "signal": "good"
+        },
+        {
+          "label": "2 to 10 years ago",
+          "value": "2_10y",
+          "signal": "unsure"
+        },
+        {
+          "label": "More than 10 years ago",
+          "value": "over_10y",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "lawyer",
+      "q": "Is another lawyer already handling this claim?",
+      "hint": "Last one.",
+      "options": [
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "good"
+        },
+        {
+          "label": "Yes",
+          "value": "yes",
+          "signal": "represented"
+        }
+      ]
+    }
   ],
   "form_fields": [
-    {"key": "problem", "label": "What happened with the port?", "options": [{"value": "infection", "label": "Infection or sepsis"}, {"value": "clot", "label": "Blood clot"}, {"value": "fracture", "label": "Catheter broke, cracked or moved"}, {"value": "none", "label": "Something else"}]},
-    {"key": "treated", "label": "Was it removed or did you go to the hospital?", "options": [{"value": "removed", "label": "Removed by surgery"}, {"value": "hospital", "label": "Hospital stay"}, {"value": "no", "label": "Neither / not sure"}]}
+    {
+      "key": "problem",
+      "label": "What happened with the port?",
+      "options": [
+        {
+          "value": "infection",
+          "label": "Infection or sepsis"
+        },
+        {
+          "value": "clot",
+          "label": "Blood clot"
+        },
+        {
+          "value": "fracture",
+          "label": "Catheter broke, cracked or moved"
+        },
+        {
+          "value": "none",
+          "label": "Something else"
+        }
+      ]
+    },
+    {
+      "key": "treated",
+      "label": "Was it removed or did you go to the hospital?",
+      "options": [
+        {
+          "value": "removed",
+          "label": "Removed by surgery"
+        },
+        {
+          "value": "hospital",
+          "label": "Hospital stay"
+        },
+        {
+          "value": "no",
+          "label": "Neither / not sure"
+        }
+      ]
+    }
   ],
   "copy": {
-    "proof": {"eyebrow": "Why people choose Glassman for device claims", "h2": "A device that was supposed to help. We hold them to it.", "p": "Lawsuits allege the catheter material can crack, break, and migrate, and that the port raises the risk of serious infection and blood clots. Our team has recovered more than $25 million in defective device cases.", "image_alt": "The attorneys of Jeffrey Glassman Injury Lawyers",
-      "checks": [["A person reviews your situation", "within one business day, not a form."], ["We watch the deadlines.", "Device claims have filing limits that vary by state."], ["No fee unless we win.", "You pay nothing up front."]]}
+    "proof": {
+      "eyebrow": "Why people choose Glassman for device claims",
+      "h2": "A device that was supposed to help. We hold them to it.",
+      "p": "Lawsuits allege the catheter material can crack, break, and migrate, and that the port raises the risk of serious infection and blood clots. Our team has recovered more than $25 million in defective device cases.",
+      "image_alt": "The attorneys of Jeffrey Glassman Injury Lawyers",
+      "checks": [
+        [
+          "A person reviews your situation",
+          "within one business day, not a form."
+        ],
+        [
+          "We watch the deadlines.",
+          "Device claims have filing limits that vary by state."
+        ],
+        [
+          "No fee unless we win.",
+          "You pay nothing up front."
+        ]
+      ]
+    }
   },
-  "sofia": {"phone_display": "(661) 471-3263", "phone_tel": "+16614713263", "assistant_id": null},
-  "intake": {"webhook": "https://hook.us2.make.com/7iit9nlnwuxmvt5ry1p7tq1vlryp5bkc", "trustedform": true, "consent_entity": "Jeffrey Glassman Injury Lawyers and its service providers"},
-  "delivery": {"mode": "scheduled_callback", "firm_name": "Jeffrey Glassman Injury Lawyers", "hours": "24/7", "buyer_email": null},
-  "budget": {"media_total_usd": 5000, "days": 14}
+  "sofia": {
+    "phone_display": "(661) 471-3263",
+    "phone_tel": "+16614713263",
+    "assistant_id": "073e4115-0f7e-46ea-a9be-810a7751b5de"
+  },
+  "intake": {
+    "webhook": null,
+    "trustedform": true,
+    "consent_entity": "Jeffrey Glassman Injury Lawyers and its service providers"
+  },
+  "delivery": {
+    "mode": "live_transfer",
+    "firm_name": "Jeffrey Glassman Injury Lawyers",
+    "hours": "24/7",
+    "transfer": {
+      "number": "+17605211485",
+      "kind": "demo",
+      "label": "Kyle's cell standing in for Glassman intake (Vapi labels it DEMO)",
+      "source": "Vapi tool transfer_to_firm fe1a10b9-838b-431e-8d3a-e5e9b30cfbe7, read 2026-10-26 by Claude"
+    }
+  },
+  "evidence": {
+    "intake": {
+      "status": "MISSING",
+      "note": "No kit-contract intake. Make 6750837 (live Glassman pages) expects the old {lead, answers, source} JSON and answers {\"ok\":true} with no receipt — a kit payload would be dropped",
+      "source": "Make blueprint read 2026-10-26 by Claude"
+    },
+    "intake_durable": {
+      "status": "MISSING",
+      "note": "6750837 writes a Sheet row then emails; no receipt, no dedupe",
+      "source": "Make blueprint read 2026-10-26 by Claude"
+    },
+    "sofia_line": {
+      "status": "UNTESTED",
+      "note": "(661) 471-3263 is bound to \"TEST Sofia — Glassman Bard PowerPort\" (073e4115), a test assistant; no call placed for this check",
+      "source": "Vapi phone-number + assistant read 2026-10-26 by Claude"
+    },
+    "transfer": {
+      "status": "MISSING",
+      "note": "transfer_to_firm dials +1 (760) 521-1485, Kyle's cell as a demo stand-in. Glassman's intake line is not set",
+      "source": "Vapi tool read 2026-10-26 by Claude"
+    },
+    "meta": {
+      "status": "NOT CREATED",
+      "note": "No Bard PowerPort ads in Meta (only GLASSMAN SSDI campaign 120254995779610231 exists)",
+      "source": "Meta Graph read 2026-10-26 by Claude"
+    }
+  },
+  "gates": {},
+  "budget": {
+    "media_total_usd": 5000,
+    "days": 14
+  }
 }

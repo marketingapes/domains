@@ -3,7 +3,7 @@
   "customer_id": "6072919714",
   "note": "Create via Ryze google_ads.runRawMutate with status PAUSED. Conversion = ee_lead_submit_success via GTM.",
   "campaign": {
-    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | Google Search | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | Google Search | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "advertising_channel_type": "SEARCH",
     "status": "PAUSED",
     "daily_budget_usd": 89,
@@ -60,7 +60,6 @@
     ]
   },
   "responsive_search_ad": {
-    "final_url": "https://besttortlawyers.com/c/glassman-bard-powerport/quiz.html?utm_source=google&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=quiz",
     "headlines": [
       "Bard PowerPort Claim Check",
       "Free 2-Minute Claim Check",

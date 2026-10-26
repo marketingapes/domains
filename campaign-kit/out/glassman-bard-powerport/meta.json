@@ -6,7 +6,7 @@
   "instagram_id": "17841464212888132",
   "pixel_id": "673552078259404",
   "campaign": {
-    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "objective": "OUTCOME_LEADS",
     "status": "PAUSED",
     "special_ad_categories": [],
@@ -48,8 +48,8 @@
       "headline": "Affected by Bard PowerPort?",
       "primary_text": "Answer 6 quick questions and see where you stand. No Fee Unless We Win.",
       "call_to_action": "LEARN_MORE",
-      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/quiz.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=quiz",
-      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-quiz.jpg"
+      "image": "https://besttortlawyers.com/glassman-bard-powerport/img/ad-quiz.jpg",
+      "image_hash": null
     },
     {
       "name": "GLASSMAN-BARD-POWERPORT-001 | door:sofia",
@@ -57,8 +57,8 @@
       "headline": "Talk it through with Sofia",
       "primary_text": "Prefer to talk? Call and tell us what happened with Bard PowerPort. Sofia, an AI intake assistant, asks a few questions and connects you with a person.",
       "call_to_action": "CALL_NOW",
-      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/sofia.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=sofia",
-      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-sofia.jpg"
+      "image": "https://besttortlawyers.com/glassman-bard-powerport/img/ad-sofia.jpg",
+      "image_hash": null
     },
     {
       "name": "GLASSMAN-BARD-POWERPORT-001 | door:form",
@@ -66,8 +66,9 @@
       "headline": "Start your Bard PowerPort claim review",
       "primary_text": "Tell us what happened and the team calls you back at a time you choose.",
       "call_to_action": "SIGN_UP",
-      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/form.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=form",
-      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-form.jpg"
+      "image": "https://besttortlawyers.com/glassman-bard-powerport/img/ad-form.jpg",
+      "image_hash": null
     }
-  ]
+  ],
+  "landing_note": "Preview-only campaign: no deployed kit landing page. Set config.landing.{quiz,sofia,form} before creating ads."
 }

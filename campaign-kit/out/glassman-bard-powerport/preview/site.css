@@ -156,4 +156,7 @@ footer a{color:#fff}
 
 /* campaign-kit brand tokens: GLASSMAN-BARD-POWERPORT-001 */
 :root{--navy:#264861;--deep:#122b3e;--blue:#1a78a1;--blue-ink:#14607f;--gold:#edaa00;--gold-ink:#a56f00;--bg2:#f2f5f8;--line:#dbe3e9;--ok:#1f8a5b;--display:"Lora",Georgia,serif;--body:"Open Sans",system-ui,-apple-system,sans-serif;--hero-img:url(/glassman-bard-powerport/img/boston.jpg)}
+.kit-preview{background:#fff4c2;color:#3d2e00;font:600 14px/1.4 var(--body);text-align:center;padding:8px max(16px,env(safe-area-inset-left,0px))}
+.tel-off{font-weight:700;cursor:not-allowed}.cta.tel-off{opacity:.75}
+.ok .ref{display:block;margin-top:10px;font-size:14px}.ok .ref em{font-style:normal;color:var(--muted)}.ok #again{margin-top:10px}
 .nav{background:var(--navy)}.wordmark{display:inline-flex;align-items:center;gap:10px;color:#fff;font-family:var(--display);font-size:20px;font-weight:700;text-decoration:none}.nav .wordmark img{width:36px}.brand{text-decoration:none}

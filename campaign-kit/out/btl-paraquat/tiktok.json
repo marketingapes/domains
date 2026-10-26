@@ -3,11 +3,11 @@
   "advertiser_id": "7445082454647783425",
   "note": "Needs 9:16 video creative before it can be created. Lands on quiz door.",
   "campaign": {
-    "name": "PARAQUAT-PILOT-001 | Paraquat | TikTok | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "name": "PARAQUAT-PILOT-001 | Paraquat | TikTok | DRAFT PAUSED | campaign-kit 2026-10-26.2",
     "objective": "LEAD_GENERATION",
     "daily_budget_usd": 71,
     "operation_status": "DISABLE"
   },
-  "landing": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=tiktok&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
+  "landing": "https://besttortlawyers.com/paraquat/quiz/?utm_source=tiktok&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
   "ad_text": "Answer 9 quick questions and see where you stand. Free to check. No cost to you."
 }
