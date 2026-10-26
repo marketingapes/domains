@@ -299,7 +299,7 @@
     "assistant_id": "073e4115-0f7e-46ea-a9be-810a7751b5de"
   },
   "intake": {
-    "webhook": null,
+    "webhook": "https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va",
     "trustedform": true,
     "consent_entity": "Jeffrey Glassman Injury Lawyers and its service providers"
   },
@@ -316,14 +316,14 @@
   },
   "evidence": {
     "intake": {
-      "status": "MISSING",
-      "note": "No kit-contract intake. Make 6750837 (live Glassman pages) expects the old {lead, answers, source} JSON and answers {\"ok\":true} with no receipt — a kit payload would be dropped",
-      "source": "Make blueprint read 2026-10-26 by Claude"
+      "status": "WORKING",
+      "note": "Kit intake Make 6777650 (built 2026-10-26, INACTIVE until Kyle approves): synthetic btl.intake.web/v1 lead → 200 {status:received, receipt_id BTLK-FEEFF1EF5E}; resend → duplicate, same receipt; malformed → 400, no receipt. Tested during two brief activations. A live page gets no receipt until 6777650 is activated",
+      "source": "curl + BigQuery + Make executions 2026-10-26 by Claude"
     },
     "intake_durable": {
-      "status": "MISSING",
-      "note": "6750837 writes a Sheet row then emails; no receipt, no dedupe",
-      "source": "Make blueprint read 2026-10-26 by Claude"
+      "status": "UNTESTED",
+      "note": "6777650 writes BigQuery raw_lead_events (no error handler) and the dedupe record before answering; 1 row stored for 2 sends. The failure path (write fails → no receipt) is by design but was not exercised",
+      "source": "Make blueprint + BigQuery count 2026-10-26 by Claude"
     },
     "sofia_line": {
       "status": "UNTESTED",

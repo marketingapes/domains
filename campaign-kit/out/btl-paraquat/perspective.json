@@ -13,17 +13,18 @@
     "speed_to_contact"
   ],
   "make_intake_scenario": {
-    "clone_of": "Make 6437227 \"BTL — Paraquat Web Intake\" (hook 2868930)",
+    "scenario": "Make 6777650 \"BTL — Campaign Kit Web Intake (store → receipt)\", hook 2982612 — shared by every kit campaign; INACTIVE until Kyle approves",
     "must": [
       "parse payload (form field) as JSON",
       "dedupe on submission_id; a duplicate answers {status:\"duplicate\"} with the SAME receipt_id",
       "receipt_id derived from submission_id (e.g. BTLXX-<first 10 hex>) so retries are idempotent",
-      "append BigQuery evolution_engine.raw_lead_events with source \"make:btl-btl-paraquat-web\", event_type \"lead.received\" — NO \"Ignore\" error handler on this write",
+      "append BigQuery evolution_engine.raw_lead_events with source \"make:btl-kit-web\", event_type \"lead.received\" — NO \"Ignore\" error handler on this write",
       "respond only AFTER the write succeeds: 200 {status:\"received\", receipt_id}; on write failure respond 500 so the page shows the phone fallback",
       "deliver per delivery.json (live_transfer) after the receipt"
     ],
     "known_gap_in_6437227": "BigQuery write has an Ignore error handler and the response route does not depend on it — the receipt is returned even if storage failed",
-    "set_webhook_in": "campaign-kit/campaigns/btl-paraquat.json → intake.webhook"
+    "set_webhook_in": "campaign-kit/campaigns/btl-paraquat.json → intake.webhook",
+    "campaign_filter": "JSON_VALUE(raw_payload, '$.campaign_id') = 'PARAQUAT-PILOT-001'"
   },
   "legal-web-lead/config/portal/campaign-overviews.json": {
     "slug": "btl-paraquat",
@@ -34,7 +35,8 @@
     "source_binding": {
       "system": "bigquery",
       "table": "marketing-apes-master-database.evolution_engine.raw_lead_events",
-      "source": "make:btl-btl-paraquat-web",
+      "source": "make:btl-kit-web",
+      "campaign_id": "PARAQUAT-PILOT-001",
       "domain_id": "btl",
       "payload_version": "btl.intake.web/v1",
       "event_type": "lead.received"
@@ -48,7 +50,7 @@
     "staleness_seconds": 900,
     "max_future_skew_seconds": 120
   },
-  "legal-web-lead/sql": "copy sql/paraquat-overview.sql → sql/btl-paraquat-overview.sql; edit CONFIG lines (source \"make:btl-btl-paraquat-web\", page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)",
+  "legal-web-lead/sql": "copy sql/paraquat-overview.sql → sql/btl-paraquat-overview.sql; edit CONFIG lines (source \"make:btl-kit-web\" AND JSON_VALUE(raw_payload,'$.campaign_id') = 'PARAQUAT-PILOT-001', page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)",
   "evolutionengine/affiliate-hub/portal.py BASIC_PORTALS": {
     "btl-paraquat": {
       "view": "v_btl_paraquat_portal_leads",
@@ -59,5 +61,5 @@
       "open_demo": true
     }
   },
-  "evolutionengine/sql/views": "copy sql/views/paraquat_portal.sql → v_btl_paraquat_portal_leads; sources make:btl-btl-paraquat-web, vapi:btl-btl-paraquat-*, callrail:btl-btl-paraquat-transfer"
+  "evolutionengine/sql/views": "copy sql/views/paraquat_portal.sql → v_btl_paraquat_portal_leads; sources make:btl-kit-web, vapi:btl-btl-paraquat-*, callrail:btl-btl-paraquat-transfer"
 }

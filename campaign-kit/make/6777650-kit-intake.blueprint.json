@@ -1,0 +1,466 @@
+{
+ "name": "BTL \u2014 Campaign Kit Web Intake (store \u2192 receipt) \u00b7 INACTIVE until Kyle approves",
+ "flow": [
+  {
+   "id": 1,
+   "module": "gateway:CustomWebHook",
+   "version": 1,
+   "parameters": {
+    "hook": 2982612,
+    "maxResults": 1
+   },
+   "mapper": {},
+   "metadata": {
+    "designer": {
+     "x": 0,
+     "y": 0,
+     "name": "Kit page POST (payload + submission_id)"
+    }
+   }
+  },
+  {
+   "id": 2,
+   "module": "json:ParseJSON",
+   "version": 1,
+   "parameters": {},
+   "mapper": {
+    "json": "{{1.payload}}"
+   },
+   "metadata": {
+    "designer": {
+     "x": 300,
+     "y": 0,
+     "name": "Parse btl.intake.web/v1 payload"
+    }
+   }
+  },
+  {
+   "id": 3,
+   "module": "datastore:ExistRecord",
+   "version": 1,
+   "parameters": {
+    "datastore": 152269
+   },
+   "mapper": {
+    "key": "btl-kit:{{2.campaign_id}}:{{2.submission_id}}"
+   },
+   "metadata": {
+    "designer": {
+     "x": 600,
+     "y": 0,
+     "name": "Seen this submission before?"
+    }
+   }
+  },
+  {
+   "id": 4,
+   "module": "util:SetVariables",
+   "version": 1,
+   "parameters": {},
+   "mapper": {
+    "scope": "roundtrip",
+    "variables": [
+     {
+      "name": "receipt_id",
+      "value": "BTLK-{{upper(substring(replace(2.submission_id; \"-\"; \"\"); 0; 10))}}"
+     },
+     {
+      "name": "is_dup",
+      "value": "{{if(3.exist = true; \"true\"; \"false\")}}"
+     },
+     {
+      "name": "is_test",
+      "value": "{{if(2.test.synthetic = true; \"true\"; \"false\")}}"
+     },
+     {
+      "name": "now_ts",
+      "value": "{{formatDate(now; \"YYYY-MM-DD HH:mm:ss\"; \"UTC\")}}"
+     },
+     {
+      "name": "full_name",
+      "value": "{{ifempty(2.contact.full_name; trim(2.contact.first_name + \" \" + 2.contact.last_name))}}"
+     },
+     {
+      "name": "mode",
+      "value": "{{if(2.test.synthetic = true; \"test\"; \"live\")}}"
+     }
+    ]
+   },
+   "metadata": {
+    "designer": {
+     "x": 900,
+     "y": 0,
+     "name": "Receipt id (deterministic from submission_id)"
+    }
+   }
+  },
+  {
+   "id": 5,
+   "module": "builtin:BasicRouter",
+   "version": 1,
+   "mapper": null,
+   "parameters": {},
+   "metadata": {
+    "designer": {
+     "x": 1200,
+     "y": 0
+    }
+   },
+   "routes": [
+    {
+     "flow": [
+      {
+       "id": 6,
+       "module": "google-bigquery:createRow",
+       "version": 1,
+       "parameters": {
+        "__IMTCONN__": 10947377
+       },
+       "filter": {
+        "name": "valid + new \u2192 STORE FIRST (no error handler: a failed write sends no receipt)",
+        "conditions": [
+         [
+          {
+           "a": "{{2.schema}}",
+           "b": "btl.intake.web/v1",
+           "o": "text:equal"
+          },
+          {
+           "a": "{{2.submission_id}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{2.campaign_id}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{2.contact.phone_e164}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{4.is_dup}}",
+           "b": "true",
+           "o": "text:notequal"
+          }
+         ]
+        ]
+       },
+       "mapper": {
+        "project": "marketing-apes-master-database",
+        "dataset": "evolution_engine",
+        "table": "raw_lead_events",
+        "select": "map",
+        "row": [
+         {
+          "key": "source",
+          "type": "text",
+          "value": "make:btl-kit-web"
+         },
+         {
+          "key": "event_id",
+          "type": "text",
+          "value": "{{4.receipt_id}}"
+         },
+         {
+          "key": "domain_id",
+          "type": "text",
+          "value": "btl"
+         },
+         {
+          "key": "event_type",
+          "type": "text",
+          "value": "{{if(4.is_test = \"true\"; \"lead.test\"; \"lead.received\")}}"
+         },
+         {
+          "key": "replay_key",
+          "type": "text",
+          "value": "{{2.submission_id}}"
+         },
+         {
+          "key": "occurred_at",
+          "type": "text",
+          "value": "{{ifempty(2.consent.captured_at; 4.now_ts)}}"
+         },
+         {
+          "key": "raw_payload",
+          "type": "text",
+          "value": "{{1.payload}}"
+         },
+         {
+          "key": "received_at",
+          "type": "text",
+          "value": "{{4.now_ts}}"
+         },
+         {
+          "key": "payload_version",
+          "type": "text",
+          "value": "btl.intake.web/v1"
+         },
+         {
+          "key": "source_event_id",
+          "type": "text",
+          "value": "{{2.submission_id}}"
+         },
+         {
+          "key": "client_idempotency_key",
+          "type": "text",
+          "value": "btl-kit:{{2.campaign_id}}:{{2.submission_id}}"
+         }
+        ]
+       },
+       "metadata": {
+        "designer": {
+         "x": 1500,
+         "y": -300,
+         "name": "BigQuery raw_lead_events (durable record)"
+        }
+       }
+      },
+      {
+       "id": 7,
+       "module": "datastore:AddRecord",
+       "version": 1,
+       "parameters": {
+        "datastore": 152269
+       },
+       "mapper": {
+        "key": "btl-kit:{{2.campaign_id}}:{{2.submission_id}}",
+        "data": {
+         "call_id": "{{4.receipt_id}}",
+         "outcome": "btl-kit:{{2.campaign_id}}:{{2.page_id}}:{{ifempty(2.screening.web_outcome; \"callback\")}}",
+         "alerted_at": "{{4.now_ts}}"
+        },
+        "overwrite": true
+       },
+       "metadata": {
+        "designer": {
+         "x": 1800,
+         "y": -300,
+         "name": "Dedupe record"
+        }
+       }
+      },
+      {
+       "id": 8,
+       "module": "gateway:WebhookRespond",
+       "version": 1,
+       "mapper": {
+        "status": "200",
+        "body": "{\"status\":\"received\",\"receipt_id\":\"{{4.receipt_id}}\",\"lead_id\":\"{{4.receipt_id}}\",\"campaign_id\":\"{{2.campaign_id}}\",\"mode\":\"{{4.mode}}\"}",
+        "headers": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         },
+         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+         }
+        ]
+       },
+       "parameters": {},
+       "metadata": {
+        "designer": {
+         "x": 2100,
+         "y": -300,
+         "name": "Receipt \u2014 only after both writes"
+        }
+       }
+      },
+      {
+       "id": 9,
+       "module": "google-email:sendAnEmail",
+       "version": 4,
+       "parameters": {
+        "__IMTCONN__": 8002189
+       },
+       "filter": {
+        "name": "real leads only (synthetic tests are never emailed)",
+        "conditions": [
+         [
+          {
+           "a": "{{4.is_test}}",
+           "b": "true",
+           "o": "text:notequal"
+          }
+         ]
+        ]
+       },
+       "mapper": {
+        "to": [
+         "kyleg@marketingapes.com"
+        ],
+        "cc": [],
+        "bcc": [],
+        "from": "\"Sofia \u00b7 Best Tort Lawyers\" <sofia@besttortlawyers.com>",
+        "subject": "New Lead | {{2.campaign_id}} | {{ifempty(2.screening.web_outcome; \"CALLBACK\")}} | {{4.full_name}} | {{ifempty(2.contact.state; \"state n/a\")}} | {{4.receipt_id}}",
+        "bodyType": "rawHtml",
+        "content": "<div style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#111827;max-width:680px\"><p style=\"margin:0 0 4px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#7d5f24;font-weight:700\">Best Tort Lawyers \u00b7 campaign kit</p><h2 style=\"margin:0 0 6px\">New lead \u2014 {{2.campaign_id}} \u2014 {{4.full_name}}</h2><p style=\"margin:0 0 12px;color:#5b6472\">Stored in BigQuery before this email (receipt {{4.receipt_id}}). Web screen result is not a legal determination.</p><table cellspacing=\"0\" style=\"border-collapse:collapse;width:100%\"><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Screen result</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{ifempty(2.screening.web_outcome; \"not screened\")}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Door / page</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{2.door}} \u00b7 {{2.page_id}} ({{2.request_type}})</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Phone</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{2.contact.phone_e164}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Email</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{ifempty(2.contact.email; \"\u2014\")}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>State</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{ifempty(2.contact.state; \"\u2014\")}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Best time</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{ifempty(2.callback.window; \"\u2014\")}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Consent calls / texts</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{2.consent.calls.granted}} / {{2.consent.sms.granted}} \u00b7 {{2.consent.version}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>TrustedForm</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{ifempty(2.trustedform_cert_url; \"\u2014\")}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Attribution</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{2.attribution.utm_source}} / {{2.attribution.utm_medium}} / {{2.attribution.utm_campaign}} / {{2.attribution.utm_content}} \u00b7 gclid {{2.attribution.gclid}} \u00b7 fbclid {{2.attribution.fbclid}}</td></tr><tr><td style=\"border:1px solid #e4dccd;padding:6px 10px;width:180px\"><b>Reference</b></td><td style=\"border:1px solid #e4dccd;padding:6px 10px\">{{4.receipt_id}}</td></tr></table></div>",
+        "attachments": [],
+        "emailHeaders": []
+       },
+       "onerror": [
+        {
+         "id": 90,
+         "module": "builtin:Ignore",
+         "version": 1,
+         "mapper": {},
+         "parameters": {},
+         "metadata": {
+          "designer": {
+           "x": 0,
+           "y": 0
+          }
+         }
+        }
+       ],
+       "metadata": {
+        "designer": {
+         "x": 2400,
+         "y": -300,
+         "name": "Delivery to Kyle (interim until a buyer is set) \u2014 after the receipt"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "flow": [
+      {
+       "id": 10,
+       "module": "gateway:WebhookRespond",
+       "version": 1,
+       "mapper": {
+        "status": "200",
+        "body": "{\"status\":\"duplicate\",\"receipt_id\":\"{{4.receipt_id}}\",\"lead_id\":\"{{4.receipt_id}}\",\"campaign_id\":\"{{2.campaign_id}}\",\"mode\":\"{{4.mode}}\"}",
+        "headers": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         },
+         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+         }
+        ]
+       },
+       "parameters": {},
+       "metadata": {
+        "designer": {
+         "x": 1500,
+         "y": 0,
+         "name": "Duplicate \u2014 same receipt"
+        }
+       },
+       "filter": {
+        "name": "valid + already stored \u2192 same receipt",
+        "conditions": [
+         [
+          {
+           "a": "{{2.schema}}",
+           "b": "btl.intake.web/v1",
+           "o": "text:equal"
+          },
+          {
+           "a": "{{2.submission_id}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{2.campaign_id}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{2.contact.phone_e164}}",
+           "o": "exist"
+          },
+          {
+           "a": "{{4.is_dup}}",
+           "b": "true",
+           "o": "text:equal"
+          }
+         ]
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "flow": [
+      {
+       "id": 11,
+       "module": "gateway:WebhookRespond",
+       "version": 1,
+       "mapper": {
+        "status": "400",
+        "body": "{\"status\":\"rejected\",\"reason\":\"payload is not btl.intake.web/v1 with submission_id, campaign_id and phone\"}",
+        "headers": [
+         {
+          "key": "Content-Type",
+          "value": "application/json"
+         },
+         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+         }
+        ]
+       },
+       "parameters": {},
+       "metadata": {
+        "designer": {
+         "x": 1500,
+         "y": 300,
+         "name": "Rejected \u2014 no receipt"
+        }
+       },
+       "filter": {
+        "name": "invalid payload",
+        "conditions": [
+         [
+          {
+           "a": "{{2.schema}}",
+           "b": "btl.intake.web/v1",
+           "o": "text:notequal"
+          }
+         ],
+         [
+          {
+           "a": "{{2.submission_id}}",
+           "o": "notexist"
+          }
+         ],
+         [
+          {
+           "a": "{{2.campaign_id}}",
+           "o": "notexist"
+          }
+         ],
+         [
+          {
+           "a": "{{2.contact.phone_e164}}",
+           "o": "notexist"
+          }
+         ]
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "metadata": {
+  "instant": true,
+  "version": 1,
+  "scenario": {
+   "roundtrips": 1,
+   "maxErrors": 3,
+   "autoCommit": true,
+   "autoCommitTriggerLast": true,
+   "sequential": false,
+   "confidential": false,
+   "dataloss": false,
+   "dlq": false,
+   "freshVariables": false
+  }
+ }
+}

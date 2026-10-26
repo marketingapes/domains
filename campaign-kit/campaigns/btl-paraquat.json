@@ -259,7 +259,7 @@
     "assistant_id": "976d64df-ca8d-4880-a983-7fcec3e786db"
   },
   "intake": {
-    "webhook": "https://hook.us2.make.com/f916v5eh4xccy9ytkancw7xa63g6v326",
+    "webhook": "https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va",
     "trustedform": true
   },
   "delivery": {
@@ -302,14 +302,14 @@
   },
   "evidence": {
     "intake": {
-      "status": "UNTESTED",
-      "note": "Make 6437227 (hook 2868930) returns {status, receipt_id BTLPQ-…} and dedupes on submission_id; this kit's payload has never been sent to it",
-      "source": "Make blueprint read 2026-10-26 by Claude"
+      "status": "WORKING",
+      "note": "Kit intake Make 6777650 (built 2026-10-26, INACTIVE until Kyle approves): synthetic btl.intake.web/v1 lead → 200 {status:received, receipt_id BTLK-FEEFF1EF5E}; resend → duplicate, same receipt; malformed → 400, no receipt. Tested during two brief activations. A live page gets no receipt until 6777650 is activated",
+      "source": "curl + BigQuery + Make executions 2026-10-26 by Claude"
     },
     "intake_durable": {
-      "status": "MISSING",
-      "note": "6437227 ignores BigQuery write errors and still answers \"received\"; the receipt does not prove storage",
-      "source": "Make blueprint read 2026-10-26 by Claude"
+      "status": "UNTESTED",
+      "note": "6777650 writes BigQuery raw_lead_events (no error handler) and the dedupe record before answering; 1 row stored for 2 sends. The failure path (write fails → no receipt) is by design but was not exercised",
+      "source": "Make blueprint + BigQuery count 2026-10-26 by Claude"
     },
     "sofia_line": {
       "status": "WORKING",
