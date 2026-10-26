@@ -1,0 +1,32 @@
+{
+  "status": "DRAFT",
+  "note": "Feed to services/provision-bot/provision.js (DRY_RUN first). assistant_id stays null until provisioned and tested.",
+  "phone_display": "(661) 471-3263",
+  "phone_tel": "+16614713263",
+  "assistant_id": null,
+  "provision_bot_input": {
+    "firm_name": "Jeffrey Glassman Injury Lawyers",
+    "buyer_id": "glassman",
+    "transfer_number": null,
+    "states": [
+      "MA",
+      "NH",
+      "RI",
+      "CT",
+      "ME",
+      "VT",
+      "NY"
+    ],
+    "accepted": [
+      "Bard PowerPort"
+    ],
+    "turned_down": [
+      "No port implanted",
+      "No serious complication",
+      "Already represented"
+    ],
+    "hours": "24/7",
+    "language": "en"
+  },
+  "criteria_prompt_block": "CAMPAIGN GLASSMAN-BARD-POWERPORT-001 — Bard PowerPort\nAsk one question at a time, in this order:\n1. Was a Bard PowerPort or similar port catheter implanted? (qualifying answers: Yes, a Bard PowerPort / Yes, a port, not sure which brand)\n2. Roughly when was it implanted? (qualifying answers: n/a)\n3. What went wrong? (qualifying answers: Infection or sepsis / Blood clot / The catheter broke, cracked or moved)\n4. Did it lead to surgery to remove it, or a hospital stay? (qualifying answers: Yes, removed / Yes, hospitalized)\n5. When did the problem happen? (qualifying answers: Within the last 2 years)\n6. Is another lawyer already handling this claim? (qualifying answers: No)\nQualifies when: Bard PowerPort or similar implanted port catheter; Infection/sepsis, blood clot, or catheter fracture/migration; Led to removal surgery or a hospital stay; No other lawyer handling the claim\nDoes not qualify when: No port implanted; No serious complication; Already represented\nDelivery: scheduled_callback.\nNever say the caller qualifies; say they may potentially qualify for review. Never give legal advice."
+}

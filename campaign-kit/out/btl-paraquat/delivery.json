@@ -1,0 +1,16 @@
+{
+  "mode": "live_transfer",
+  "options_offered_to_firm": [
+    "live_transfer",
+    "scheduled_callback",
+    "api_webhook",
+    "email"
+  ],
+  "transfer_number": "+12029329700",
+  "hours": "24/7",
+  "buyer_webhook": null,
+  "buyer_email": null,
+  "schedule_url": null,
+  "payload_contract": "btl.intake.web/v1 (same as the live Paraquat lane; see tracking.json). Buyer outcome comes back via POST to the Perspective outcome endpoint or a portal status update: accepted | rejected(reason) | signed | not_signed.",
+  "real_time_return": "Firm returns status per lead_id within 24h (portal button, API, or reply to the lead email). Feeds Meta CAPI + Google offline conversions + BigQuery."
+}

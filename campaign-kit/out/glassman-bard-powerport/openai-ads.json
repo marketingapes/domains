@@ -1,0 +1,15 @@
+{
+  "status": "PAUSED_DRAFT",
+  "ad_account": "adacct_69fbe2c8e0a081a1a4de498b5418243c",
+  "note": "ChatGPT ads. Create paused via Ryze openai_ads.write. Conversion event = lead.",
+  "campaign": {
+    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | ChatGPT Ads | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "daily_budget_usd": 36,
+    "status": "paused"
+  },
+  "ad": {
+    "headline": "Affected by Bard PowerPort?",
+    "body": "Answer 6 quick questions and see where you stand. No Fee Unless We Win.",
+    "destination": "https://besttortlawyers.com/c/glassman-bard-powerport/quiz.html?utm_source=chatgpt&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=quiz"
+  }
+}

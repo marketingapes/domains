@@ -13,7 +13,7 @@ python3 -c 'import jsonschema' || {
 echo "Release validation: $(git rev-parse HEAD)"
 sh build.sh
 python3 tools/verify-foundation.py
-node --test tests/*.test.mjs campaign-system/test/*.test.mjs
+node --test tests/*.test.mjs campaign-system/test/*.test.mjs campaign-kit/test/*.test.mjs
 
 # Tests and asset decoding must not rewrite tracked source files. Untracked
 # decoded assets are expected and are intentionally not treated as source drift.

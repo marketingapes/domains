@@ -1,0 +1,73 @@
+{
+  "status": "PAUSED_DRAFT",
+  "note": "Create via Ryze meta_ads.runGraphWrite with status PAUSED. Never activate without Kyle approval in chat.",
+  "ad_account": "act_411567125842274",
+  "page_id": "222081604317115",
+  "instagram_id": "17841464212888132",
+  "pixel_id": "673552078259404",
+  "campaign": {
+    "name": "GLASSMAN-BARD-POWERPORT-001 | Bard PowerPort | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "objective": "OUTCOME_LEADS",
+    "status": "PAUSED",
+    "special_ad_categories": [],
+    "daily_budget_usd": 196
+  },
+  "ad_sets": [
+    {
+      "name": "GLASSMAN-BARD-POWERPORT-001 | MA,NH,RI,CT,ME,VT,NY | 3 doors",
+      "status": "PAUSED",
+      "optimization_goal": "OFFSITE_CONVERSIONS",
+      "promoted_object": {
+        "pixel_id": "673552078259404",
+        "custom_event_type": "LEAD"
+      },
+      "targeting": {
+        "geo_locations": {
+          "regions_by_state_code": [
+            "MA",
+            "NH",
+            "RI",
+            "CT",
+            "ME",
+            "VT",
+            "NY"
+          ]
+        },
+        "age_min": 25,
+        "publisher_platforms": [
+          "facebook",
+          "instagram"
+        ]
+      }
+    }
+  ],
+  "ads": [
+    {
+      "name": "GLASSMAN-BARD-POWERPORT-001 | door:quiz",
+      "status": "PAUSED",
+      "headline": "Affected by Bard PowerPort?",
+      "primary_text": "Answer 6 quick questions and see where you stand. No Fee Unless We Win.",
+      "call_to_action": "LEARN_MORE",
+      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/quiz.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=quiz",
+      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-quiz.jpg"
+    },
+    {
+      "name": "GLASSMAN-BARD-POWERPORT-001 | door:sofia",
+      "status": "PAUSED",
+      "headline": "Talk it through with Sofia",
+      "primary_text": "Prefer to talk? Call and tell us what happened with Bard PowerPort. Sofia, an AI intake assistant, asks a few questions and connects you with a person.",
+      "call_to_action": "CALL_NOW",
+      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/sofia.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=sofia",
+      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-sofia.jpg"
+    },
+    {
+      "name": "GLASSMAN-BARD-POWERPORT-001 | door:form",
+      "status": "PAUSED",
+      "headline": "Start your Bard PowerPort claim review",
+      "primary_text": "Tell us what happened and the team calls you back at a time you choose.",
+      "call_to_action": "SIGN_UP",
+      "link": "https://besttortlawyers.com/c/glassman-bard-powerport/form.html?utm_source=facebook&utm_medium=paid&utm_campaign=GLASSMAN-BARD-POWERPORT-001&utm_content=form",
+      "image": "https://besttortlawyers.com/c/glassman-bard-powerport//glassman-bard-powerport/img/ad-form.jpg"
+    }
+  ]
+}

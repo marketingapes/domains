@@ -1,0 +1,67 @@
+{
+  "status": "PAUSED_DRAFT",
+  "note": "Create via Ryze meta_ads.runGraphWrite with status PAUSED. Never activate without Kyle approval in chat.",
+  "ad_account": "act_411567125842274",
+  "page_id": "222081604317115",
+  "instagram_id": "17841464212888132",
+  "pixel_id": "673552078259404",
+  "campaign": {
+    "name": "PARAQUAT-PILOT-001 | Paraquat | Meta | 3 doors | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "objective": "OUTCOME_LEADS",
+    "status": "PAUSED",
+    "special_ad_categories": [],
+    "daily_budget_usd": 393
+  },
+  "ad_sets": [
+    {
+      "name": "PARAQUAT-PILOT-001 | US | 3 doors",
+      "status": "PAUSED",
+      "optimization_goal": "OFFSITE_CONVERSIONS",
+      "promoted_object": {
+        "pixel_id": "673552078259404",
+        "custom_event_type": "LEAD"
+      },
+      "targeting": {
+        "geo_locations": {
+          "countries": [
+            "US"
+          ]
+        },
+        "age_min": 25,
+        "publisher_platforms": [
+          "facebook",
+          "instagram"
+        ]
+      }
+    }
+  ],
+  "ads": [
+    {
+      "name": "PARAQUAT-PILOT-001 | door:quiz",
+      "status": "PAUSED",
+      "headline": "Affected by Paraquat?",
+      "primary_text": "Answer 9 quick questions and see where you stand. Free to check. No cost to you.",
+      "call_to_action": "LEARN_MORE",
+      "link": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
+      "image": null
+    },
+    {
+      "name": "PARAQUAT-PILOT-001 | door:sofia",
+      "status": "PAUSED",
+      "headline": "Talk it through with Sofia",
+      "primary_text": "Prefer to talk? Call and tell us what happened with Paraquat. Sofia, an AI intake assistant, asks a few questions and connects you with a person.",
+      "call_to_action": "CALL_NOW",
+      "link": "https://besttortlawyers.com/c/btl-paraquat/sofia.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=sofia",
+      "image": null
+    },
+    {
+      "name": "PARAQUAT-PILOT-001 | door:form",
+      "status": "PAUSED",
+      "headline": "Start your Paraquat claim review",
+      "primary_text": "Tell us what happened and the review team calls you back at a time you choose.",
+      "call_to_action": "SIGN_UP",
+      "link": "https://besttortlawyers.com/c/btl-paraquat/form.html?utm_source=facebook&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=form",
+      "image": null
+    }
+  ]
+}

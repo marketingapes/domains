@@ -1,0 +1,30 @@
+{
+  "status": "DRAFT",
+  "note": "Feed to services/provision-bot/provision.js (DRY_RUN first). assistant_id stays null until provisioned and tested.",
+  "phone_display": "(202) 932-9700",
+  "phone_tel": "+12029329700",
+  "assistant_id": "976d64df-ca8d-4880-a983-7fcec3e786db",
+  "provision_bot_input": {
+    "firm_name": "Receiving firm (via LegalCalls)",
+    "buyer_id": "btl",
+    "transfer_number": "+12029329700",
+    "states": [
+      "US"
+    ],
+    "accepted": [
+      "Paraquat"
+    ],
+    "turned_down": [
+      "No Parkinson's diagnosis",
+      "Home/garden/hobby use only",
+      "Only nearby, never handled it",
+      "Retail/ready-to-use product",
+      "All exposure before 1964",
+      "Lawyer handling or previously signed",
+      "Methamphetamine use"
+    ],
+    "hours": "24/7",
+    "language": "en"
+  },
+  "criteria_prompt_block": "CAMPAIGN PARAQUAT-PILOT-001 — Paraquat\nAsk one question at a time, in this order:\n1. Has a doctor diagnosed you (or the person you're asking for) with Parkinson's disease? (qualifying answers: Yes)\n2. Is a lawyer already handling this, or has anyone signed with a lawyer about it? (qualifying answers: No)\n3. Was the Paraquat exposure part of a job? (qualifying answers: Yes, at a job)\n4. What did they do with it? (qualifying answers: Mixed or loaded it / Applied or sprayed it / Flagged for a crop duster)\n5. Was it mixed with water before spraying, and where did it come from? (qualifying answers: Mixed with water, from a farm or ag supplier)\n6. About when did the exposure start? (qualifying answers: Between 1964 and 2010)\n7. How old were they when it started? (qualifying answers: 18 or older)\n8. Roughly how big was the farm or area? (qualifying answers: More than about 3 acres)\n9. The firm asks everyone this: has the person ever used methamphetamine? (qualifying answers: No)\nQualifies when: Parkinson's disease diagnosed by a doctor; Occupational exposure: mixed, loaded, applied/sprayed, or flagged; Product mixed with water, from a farm or ag supplier; Exposure started 1964–2010; Exposure at 18+ (or at least one full season if younger); Farm/area over ~3 acres; Not represented, never signed with a lawyer on this; No methamphetamine use\nDoes not qualify when: No Parkinson's diagnosis; Home/garden/hobby use only; Only nearby, never handled it; Retail/ready-to-use product; All exposure before 1964; Lawyer handling or previously signed; Methamphetamine use\nDelivery: live_transfer to the firm intake line during 24/7.\nNever say the caller qualifies; say they may potentially qualify for review. Never give legal advice."
+}
