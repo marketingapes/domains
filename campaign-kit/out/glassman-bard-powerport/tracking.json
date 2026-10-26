@@ -1,0 +1,40 @@
+{
+  "gtm_web": "GTM-PHC7459M",
+  "ga4_property": "423835322",
+  "meta_pixel": "673552078259404",
+  "events": {
+    "ee_page_view": "every page load",
+    "ee_door_click": "click on any door CTA or phone link",
+    "ee_quiz_complete": "quiz result shown (quiz_result)",
+    "ee_lead_submit_attempt": "form/quiz submit clicked",
+    "ee_lead_submit_success": "webhook returned 2xx — the Lead conversion for Meta/Google/TikTok/OpenAI tags",
+    "ee_lead_submit_error": "webhook failed or timed out (15s); phone fallback shown"
+  },
+  "join_keys": [
+    "lead_id",
+    "campaign_id",
+    "tenant_id",
+    "domain_id",
+    "door",
+    "page_id"
+  ],
+  "click_ids": [
+    "gclid",
+    "gbraid",
+    "wbraid",
+    "fbclid",
+    "fbp",
+    "fbc",
+    "ttclid",
+    "msclkid",
+    "utm_*"
+  ],
+  "compliance_fields": [
+    "consent.call",
+    "consent.sms",
+    "consent.language",
+    "consent.at",
+    "trustedform_cert_url"
+  ],
+  "bigquery": "Make webhook scenario appends raw payload to the ledger table (one row per event, campaign_id partition key)."
+}

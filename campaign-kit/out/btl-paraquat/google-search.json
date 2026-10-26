@@ -1,0 +1,74 @@
+{
+  "status": "PAUSED_DRAFT",
+  "customer_id": "6072919714",
+  "note": "Create via Ryze google_ads.runRawMutate with status PAUSED. Conversion = ee_lead_submit_success via GTM.",
+  "campaign": {
+    "name": "PARAQUAT-PILOT-001 | Paraquat | Google Search | DRAFT PAUSED | campaign-kit 2026-10-26.1",
+    "advertising_channel_type": "SEARCH",
+    "status": "PAUSED",
+    "daily_budget_usd": 179,
+    "geo": [
+      "US"
+    ]
+  },
+  "ad_group": {
+    "name": "PARAQUAT-PILOT-001 | core",
+    "keywords": [
+      {
+        "text": "Paraquat lawsuit",
+        "match": "EXACT"
+      },
+      {
+        "text": "Paraquat lawsuit",
+        "match": "PHRASE"
+      },
+      {
+        "text": "Paraquat lawyer",
+        "match": "EXACT"
+      },
+      {
+        "text": "Paraquat lawyer",
+        "match": "PHRASE"
+      },
+      {
+        "text": "Paraquat claim",
+        "match": "EXACT"
+      },
+      {
+        "text": "Paraquat claim",
+        "match": "PHRASE"
+      },
+      {
+        "text": "Paraquat attorney",
+        "match": "EXACT"
+      },
+      {
+        "text": "Paraquat attorney",
+        "match": "PHRASE"
+      }
+    ],
+    "negative_keywords": [
+      "jobs",
+      "settlement amounts reddit",
+      "free download"
+    ]
+  },
+  "responsive_search_ad": {
+    "final_url": "https://besttortlawyers.com/c/btl-paraquat/quiz.html?utm_source=google&utm_medium=paid&utm_campaign=PARAQUAT-PILOT-001&utm_content=quiz",
+    "headlines": [
+      "Paraquat Claim Check",
+      "Free 2-Minute Claim Check",
+      "Talk To Sofia 24/7",
+      "A Person Reviews Every Claim",
+      "No Cost To Check",
+      "Hurt By Paraquat?"
+    ],
+    "descriptions": [
+      "Answer 9 quick questions and see where you stand. A person reviews every inquiry.",
+      "Prefer to talk? Call Sofia any time, or request a callback at a time you choose."
+    ]
+  },
+  "call_asset": {
+    "phone": "+12029329700"
+  }
+}

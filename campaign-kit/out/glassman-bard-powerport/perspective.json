@@ -1,0 +1,61 @@
+{
+  "status": "NOT_PROVISIONED",
+  "kpis": [
+    "spend",
+    "leads",
+    "cost_per_lead",
+    "qualified",
+    "transferred",
+    "accepted",
+    "signed",
+    "cost_per_signed",
+    "door_mix",
+    "speed_to_contact"
+  ],
+  "make_intake_scenario": {
+    "clone_of": "Make 6437227 \"BTL — Paraquat Web Intake\" (hook 2868930)",
+    "must": [
+      "parse payload (form field) as JSON",
+      "dedupe on submission_id",
+      "append BigQuery evolution_engine.raw_lead_events with source \"make:btl-glassman-bard-powerport-web\", event_type \"lead.received\"",
+      "deliver per delivery.json (scheduled_callback)",
+      "respond 200 {status:\"received\", receipt_id}"
+    ],
+    "set_webhook_in": "campaign-kit/campaigns/glassman-bard-powerport.json → intake.webhook"
+  },
+  "legal-web-lead/config/portal/campaign-overviews.json": {
+    "slug": "glassman-bard-powerport",
+    "campaign_id": "GLASSMAN-BARD-POWERPORT-001",
+    "public_schema": "glassman-bard-powerport-perspective/v1",
+    "input_schema": "glassman-bard-powerport-overview-input/v1",
+    "public_origin": "https://besttortlawyers.com",
+    "source_binding": {
+      "system": "bigquery",
+      "table": "marketing-apes-master-database.evolution_engine.raw_lead_events",
+      "source": "make:btl-glassman-bard-powerport-web",
+      "domain_id": "btl",
+      "payload_version": "btl.intake.web/v1",
+      "event_type": "lead.received"
+    },
+    "page_sources": {
+      "glassman-bard-powerport-form": "form",
+      "glassman-bard-powerport-quiz": "quiz",
+      "glassman-bard-powerport-sofia": "sofia"
+    },
+    "privacy_floor": 10,
+    "staleness_seconds": 900,
+    "max_future_skew_seconds": 120
+  },
+  "legal-web-lead/sql": "copy sql/paraquat-overview.sql → sql/glassman-bard-powerport-overview.sql; edit CONFIG lines (source \"make:btl-glassman-bard-powerport-web\", page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)",
+  "evolutionengine/affiliate-hub/portal.py BASIC_PORTALS": {
+    "glassman-bard-powerport": {
+      "view": "v_glassman_bard_powerport_portal_leads",
+      "campaign_id": "GLASSMAN-BARD-POWERPORT-001",
+      "title": "Bard PowerPort · Jeffrey Glassman Injury Lawyers",
+      "transfer_poll_seconds": 900,
+      "self_register": true,
+      "open_demo": true
+    }
+  },
+  "evolutionengine/sql/views": "copy sql/views/paraquat_portal.sql → v_glassman_bard_powerport_portal_leads; sources make:btl-glassman-bard-powerport-web, vapi:btl-glassman-bard-powerport-*, callrail:btl-glassman-bard-powerport-transfer"
+}
