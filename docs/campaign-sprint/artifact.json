@@ -20,9 +20,12 @@
     "ma/campaign-sprint/demo/quiz.html": "3b3b0bcfb2ebc760f392694fd0a2a25711c8764be43350fe2a9631a92e7386e9",
     "ma/campaign-sprint/demo/site.css": "0db5f08e290a0494d463a689dabd6b97773f0ea93a49c4beb6453a73ffea11e3",
     "ma/campaign-sprint/demo/sofia.html": "e372426ce6b6e559f51e25cfd4e0cffe9c61d80496e7b935d9804a50dca01fcd",
-    "ma/campaign-sprint/index.html": "675a23dc35d8f7a46430b19a51f5520e67af2800bc80782ecac401b65e2d8215",
-    "ma/campaign-sprint/sprint.css": "3b17beed2b639a8e08e7f5ef74fc8bc67cce98cc1766806e8d522708373907b4",
+    "ma/campaign-sprint/index.html": "0eab619bca532598aefd56f2f3cacbda628329bb60a55aaf44dacbf146668451",
+    "ma/campaign-sprint/sprint.css": "d4d4a087a2b45227e2a3357ba71b9d88a23dc68ff36bbf0322b73d7cc64ce366",
     "ma/campaign-sprint/sprint.js": "99bc316423740088aca1cccf04194f887efc663b468365573c8973bf0f5e00a7"
   },
-  "previous_review_commit": "c6549b538605f11e5b04cd3aa970fc7574c58d87"
+  "previous_review_commit": "c6549b538605f11e5b04cd3aa970fc7574c58d87",
+  "public_story": "Demo first; lower signed-case acquisition cost is a goal, not a promised result",
+  "public_pricing": false,
+  "previous_pr_head": "62bfbaee536369fe116fb118c25ab84f87780752"
 }

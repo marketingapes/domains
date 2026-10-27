@@ -5,7 +5,13 @@ Branch: codex/mass-tort-sprint-local-20261027.
 Publication candidate: https://marketingapes.com/campaign-sprint/
 Local preview: http://127.0.0.1:8768/campaign-sprint/ while its local server runs.
 
-## Offer
+## Current public demo
+
+Revision 3 is demo-first with a meeting request CTA. Public pricing was removed;
+the commercial terms below remain internal and unchanged. See revision-3-demo-first.md
+for current copy, screenshots and checks.
+
+## Internal offer terms
 
 One tort. Two weeks. A focused campaign sprint.
 One $7,500 invoice: $2,500 build/management and $5,000 media allocation.

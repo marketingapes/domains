@@ -7,13 +7,15 @@ import {execFileSync} from 'node:child_process';
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..'),MA=join(ROOT,'ma'),OFFER=join(MA,'campaign-sprint');
 const read=p=>readFileSync(join(OFFER,p),'utf8');
 const pages=['index.html',...['index','quiz','form','sofia','ads'].map(p=>'demo/'+p+'.html')];
-test('offer states exact scope, one invoice, split and human release gates',()=>{
- const p=read('index.html');for(const text of ['$7,500','$2,500','$5,000','One tort.','Two weeks.','A focused campaign sprint.','before invoicing','after approvals','Unverified doors remain off'])assert.ok(p.includes(text),text);
+test('demo-first page frames lower signed-case acquisition cost as a goal without public pricing',()=>{
+ const p=read('index.html');for(const text of ['What if your next <em>signed case</em> cost less to acquire?','That is the optimization goal. Results are not guaranteed.','Explore the demo','Discuss your campaign','not a complete live signed-outcome feedback loop'])assert.ok(p.includes(text),text);
+ assert.doesNotMatch(p,/\$7,500|\$2,500|\$5,000|ONE INVOICE|price-card|free campaign/i);
  assert.doesNotMatch(p,/\$74\b|2.hour guarantee|launchMonday|Oct(?:ober)?\s*19|fake testimonial/i);
+ assert.ok(p.indexOf('href="#demo">Explore the demo')<p.indexOf('href="#pilot">Discuss your campaign ↗'));
 });
 test('primary contact matches existing verified MA work email, no payment or phone CTA',()=>{
  const p=read('index.html'),home=readFileSync(join(MA,'index.html'),'utf8');assert.match(home,/mailto:kyleg@marketingapes.com/);
- assert.match(p,/mailto:kyleg@marketingapes.com\?subject=/);assert.match(p,/You choose when to send/);assert.doesNotMatch(p,/href="(?:tel:|https:[^"]*(?:stripe|paypal))/);assert.doesNotMatch(p,/<form/);
+ assert.match(p,/mailto:kyleg@marketingapes.com\?subject=/);assert.match(p,/You choose when to send/);assert.match(p,/Preferred%20meeting%20time%20and%20time%20zone/);assert.doesNotMatch(p,/calendly|cal\.com/i);assert.doesNotMatch(p,/href="(?:tel:|https:[^"]*(?:stripe|paypal))/);assert.doesNotMatch(p,/<form/);
 });
 test('all page links, assets and fragments resolve locally or are the approved mailto',()=>{
  for(const path of pages){const html=read(path);for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){
