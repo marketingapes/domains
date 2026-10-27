@@ -1,0 +1,154 @@
+diff --git a/docs/campaign-sprint/build-fixtures.mjs b/docs/campaign-sprint/build-fixtures.mjs
+index 2407151..71fb511 100644
+--- a/docs/campaign-sprint/build-fixtures.mjs
++++ b/docs/campaign-sprint/build-fixtures.mjs
+@@ -21,0 +22,8 @@ const c=normalize(raw);
++// All externally surfaced metadata describes the fixture, never the live kit promise.
++const previewMetadata={
++ 'index.html':['Fictional campaign paths | Marketing Apes demo','Explore a fictional campaign preview. No lead submission, callbacks or live calls.'],
++ 'form.html':['Fictional form preview | Marketing Apes demo','Fixed fictional form preview only. No inquiry is sent and no callbacks or live calls are requested.'],
++ 'quiz.html':['Fictional quiz preview | Marketing Apes demo','Explore non-personal demonstration choices. No case assessment, inquiry submission or calls.'],
++ 'sofia.html':['Fictional Sofia walkthrough | Marketing Apes demo','Click through a scripted fictional Sofia conversation. No live calls, assistant connection, recording or transfer.'],
++ 'ads.html':['Fictional ad concepts | Marketing Apes demo','Draft ad concepts for fictional preview experiences. No published ads, live calls or activated campaign.']
++};
+@@ -42,0 +51,6 @@ for(const [name,original] of Object.entries(renderPages(c))){
++ const [previewTitle,previewDescription]=previewMetadata[name];
++ html=html.replace(/<title>[\s\S]*?<\/title>/,'<title>'+previewTitle+'</title>')
++  .replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+previewDescription+'">')
++  .replace(/<meta property="og:title" content="[^"]*">/,'<meta property="og:title" content="'+previewTitle+'">')
++  .replace(/<meta property="og:description" content="[^"]*">/,'<meta property="og:description" content="'+previewDescription+'">');
++ if(name==='sofia.html')html=html.replace('<div class="chat">','<p id="sofia-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><div class="chat" aria-label="Fictional Sofia conversation">');
+diff --git a/ma/campaign-sprint/demo/ads.html b/ma/campaign-sprint/demo/ads.html
+index 5f64ada..30361e7 100644
+--- a/ma/campaign-sprint/demo/ads.html
++++ b/ma/campaign-sprint/demo/ads.html
+@@ -3,2 +3,2 @@
+-<title>Your approved tort Campaign Ads · Best Tort Lawyers · demonstration</title>
+-<meta name="description" content="The ads behind the Your approved tort campaign, one per door.">
++<title>Fictional ad concepts | Marketing Apes demo</title>
++<meta name="description" content="Draft ad concepts for fictional preview experiences. No published ads, live calls or activated campaign.">
+@@ -8 +8 @@
+-<meta property="og:title" content="Your approved tort Campaign Ads · Best Tort Lawyers · demonstration"><meta property="og:description" content="The ads behind the Your approved tort campaign, one per door."><meta property="og:type" content="website">
++<meta property="og:title" content="Fictional ad concepts | Marketing Apes demo"><meta property="og:description" content="Draft ad concepts for fictional preview experiences. No published ads, live calls or activated campaign."><meta property="og:type" content="website">
+diff --git a/ma/campaign-sprint/demo/fixture.css b/ma/campaign-sprint/demo/fixture.css
+index ee34048..31d7985 100644
+--- a/ma/campaign-sprint/demo/fixture.css
++++ b/ma/campaign-sprint/demo/fixture.css
+@@ -1,0 +2 @@
++.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}.q h2:focus,#done:focus{outline:3px solid #2457e6;outline-offset:5px}.copybtn[aria-disabled="true"]{opacity:.7;cursor:default}
+diff --git a/ma/campaign-sprint/demo/fixture.js b/ma/campaign-sprint/demo/fixture.js
+index 6d942df..978f45a 100644
+--- a/ma/campaign-sprint/demo/fixture.js
++++ b/ma/campaign-sprint/demo/fixture.js
+@@ -7 +7,7 @@ forms.forEach(form=>{
+- form.addEventListener('submit',event=>{event.preventDefault();event.stopImmediatePropagation();form.hidden=true;const done=document.getElementById('done');done.hidden=false;done.textContent='SIMULATED HANDOFF · DEMO-001. No inquiry was sent, no callback was requested and no firm received a record. The next step would be human review.';const link=document.createElement('a');link.href='../#perspective';link.textContent=' View the synthetic reporting journey →';done.append(link);},true);
++ form.addEventListener('submit',event=>{
++  event.preventDefault();event.stopImmediatePropagation();form.hidden=true;
++  const done=document.getElementById('done');done.hidden=false;
++  done.textContent='SIMULATED HANDOFF · DEMO-001. No inquiry was sent, no callback was requested and no firm received a record. The next step would be human review.';
++  const link=document.createElement('a');link.href='../#perspective';link.textContent=' View the synthetic reporting journey →';done.append(link);
++  done.tabIndex=-1;done.focus();
++ },true);
+@@ -10 +16,14 @@ const questions=[...document.querySelectorAll('#quiz .q')],back=document.getElem
+-function show(i){questions.forEach((q,n)=>q.classList.toggle('on',n===i));step=i;if(back)back.hidden=i===0;const count=document.getElementById('count');if(count)count.textContent=i<questions.length-1?`${i+1} of ${questions.length-1}`:'Fictional result';const bar=document.getElementById('bar');if(bar)bar.style.width=Math.round(100*i/(questions.length-1))+'%';const res=document.getElementById('res');if(res)res.textContent='DEMO: Human review remains required. This is not a case assessment.';}
++function show(i){
++ questions.forEach((q,n)=>q.classList.toggle('on',n===i));step=i;
++ if(back)back.hidden=i===0;
++ const count=document.getElementById('count');
++ if(count)count.textContent=i<questions.length-1?`${i+1} of ${questions.length-1}`:'Fictional result';
++ const bar=document.getElementById('bar');if(bar)bar.style.width=Math.round(100*i/(questions.length-1))+'%';
++ if(i===questions.length-1){
++  const heading=document.createElement('h2');heading.className='qh';
++  heading.textContent='DEMO: Human review remains required. This is not a case assessment.';
++  document.getElementById('res').replaceChildren(heading);
++ }
++ const heading=questions[i].querySelector('h2');
++ if(heading){heading.tabIndex=-1;heading.setAttribute('aria-label',`${count.textContent}. ${heading.textContent}`);heading.focus();}
++}
+@@ -14 +33,15 @@ const turns=[...document.querySelectorAll('.chat .msg')];let turn=1;
+-if(turns.length){turns.forEach((el,i)=>el.hidden=i>0);document.getElementById('next-turn').addEventListener('click',event=>{if(turn<turns.length)turns[turn++].hidden=false;if(turn===turns.length){event.target.textContent='Simulated conversation complete · no handoff occurred';event.target.disabled=true;}});}
++if(turns.length){
++ turns.forEach((el,i)=>el.hidden=i>0);
++ document.getElementById('next-turn').addEventListener('click',event=>{
++  if(turn>=turns.length)return;
++  const message=turns[turn++];message.hidden=false;
++  const speaker=message.classList.contains('s')?'Sofia':'Fictional caller';
++  let announcement=`${speaker}: ${message.textContent}`;
++  if(turn===turns.length){
++   event.target.textContent='Simulated conversation complete · no handoff occurred';
++   event.target.setAttribute('aria-disabled','true');
++   announcement+=' Simulated conversation complete. No handoff occurred.';
++  }
++  document.getElementById('sofia-announcement').textContent=announcement;
++ });
++}
+diff --git a/ma/campaign-sprint/demo/form.html b/ma/campaign-sprint/demo/form.html
+index 920d568..de8402b 100644
+--- a/ma/campaign-sprint/demo/form.html
++++ b/ma/campaign-sprint/demo/form.html
+@@ -3,2 +3,2 @@
+-<title>Request a Callback · Your approved tort · Best Tort Lawyers · demonstration</title>
+-<meta name="description" content="Tell us what happened with Your approved tort and we call you back at the time you choose.">
++<title>Fictional form preview | Marketing Apes demo</title>
++<meta name="description" content="Fixed fictional form preview only. No inquiry is sent and no callbacks or live calls are requested.">
+@@ -8 +8 @@
+-<meta property="og:title" content="Request a Callback · Your approved tort · Best Tort Lawyers · demonstration"><meta property="og:description" content="Tell us what happened with Your approved tort and we call you back at the time you choose."><meta property="og:type" content="website">
++<meta property="og:title" content="Fictional form preview | Marketing Apes demo"><meta property="og:description" content="Fixed fictional form preview only. No inquiry is sent and no callbacks or live calls are requested."><meta property="og:type" content="website">
+diff --git a/ma/campaign-sprint/demo/index.html b/ma/campaign-sprint/demo/index.html
+index ad39e2b..d0e4999 100644
+--- a/ma/campaign-sprint/demo/index.html
++++ b/ma/campaign-sprint/demo/index.html
+@@ -3,2 +3,2 @@
+-<title>Your approved tort Claims · Best Tort Lawyers · demonstration</title>
+-<meta name="description" content="A fictional campaign experience. No live intake, call or transfer.">
++<title>Fictional campaign paths | Marketing Apes demo</title>
++<meta name="description" content="Explore a fictional campaign preview. No lead submission, callbacks or live calls.">
+@@ -8 +8 @@
+-<meta property="og:title" content="Your approved tort Claims · Best Tort Lawyers · demonstration"><meta property="og:description" content="A fictional campaign experience. No live intake, call or transfer."><meta property="og:type" content="website">
++<meta property="og:title" content="Fictional campaign paths | Marketing Apes demo"><meta property="og:description" content="Explore a fictional campaign preview. No lead submission, callbacks or live calls."><meta property="og:type" content="website">
+diff --git a/ma/campaign-sprint/demo/quiz.html b/ma/campaign-sprint/demo/quiz.html
+index 00e9101..469fd24 100644
+--- a/ma/campaign-sprint/demo/quiz.html
++++ b/ma/campaign-sprint/demo/quiz.html
+@@ -3,2 +3,2 @@
+-<title>Your approved tort Claim Check · Best Tort Lawyers · demonstration</title>
+-<meta name="description" content="3 quick questions about Your approved tort. See your next step right away.">
++<title>Fictional quiz preview | Marketing Apes demo</title>
++<meta name="description" content="Explore non-personal demonstration choices. No case assessment, inquiry submission or calls.">
+@@ -8 +8 @@
+-<meta property="og:title" content="Your approved tort Claim Check · Best Tort Lawyers · demonstration"><meta property="og:description" content="3 quick questions about Your approved tort. See your next step right away."><meta property="og:type" content="website">
++<meta property="og:title" content="Fictional quiz preview | Marketing Apes demo"><meta property="og:description" content="Explore non-personal demonstration choices. No case assessment, inquiry submission or calls."><meta property="og:type" content="website">
+diff --git a/ma/campaign-sprint/demo/sofia.html b/ma/campaign-sprint/demo/sofia.html
+index 6d436bb..bb5082b 100644
+--- a/ma/campaign-sprint/demo/sofia.html
++++ b/ma/campaign-sprint/demo/sofia.html
+@@ -3,2 +3,2 @@
+-<title>Talk to Sofia · Your approved tort · Best Tort Lawyers · demonstration</title>
+-<meta name="description" content="Call and tell us what happened with Your approved tort. Sofia, an AI intake assistant, asks a few questions and connects you with a person.">
++<title>Fictional Sofia walkthrough | Marketing Apes demo</title>
++<meta name="description" content="Click through a scripted fictional Sofia conversation. No live calls, assistant connection, recording or transfer.">
+@@ -8 +8 @@
+-<meta property="og:title" content="Talk to Sofia · Your approved tort · Best Tort Lawyers · demonstration"><meta property="og:description" content="Call and tell us what happened with Your approved tort. Sofia, an AI intake assistant, asks a few questions and connects you with a person."><meta property="og:type" content="website">
++<meta property="og:title" content="Fictional Sofia walkthrough | Marketing Apes demo"><meta property="og:description" content="Click through a scripted fictional Sofia conversation. No live calls, assistant connection, recording or transfer."><meta property="og:type" content="website">
+@@ -26 +26 @@
+-  <div class="chat"><div class="msg s">Hello, this is Sofia, an AI assistant. How can I help today?</div><div class="msg c">I would like to understand the next step.</div><div class="msg s">I can explain the process. Before discussing an existing inquiry, identity would need to be verified.</div><div class="msg c">What happens after the questions?</div><div class="msg s">Your firm’s approved criteria guide the review. A human decides the next step. No acceptance or transfer is promised.</div></div>
++  <p id="sofia-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><div class="chat" aria-label="Fictional Sofia conversation"><div class="msg s">Hello, this is Sofia, an AI assistant. How can I help today?</div><div class="msg c">I would like to understand the next step.</div><div class="msg s">I can explain the process. Before discussing an existing inquiry, identity would need to be verified.</div><div class="msg c">What happens after the questions?</div><div class="msg s">Your firm’s approved criteria guide the review. A human decides the next step. No acceptance or transfer is promised.</div></div>
+diff --git a/tests/campaign-sprint.test.mjs b/tests/campaign-sprint.test.mjs
+index f7fde37..271f987 100644
+--- a/tests/campaign-sprint.test.mjs
++++ b/tests/campaign-sprint.test.mjs
+@@ -40,0 +41,14 @@ test('fixture export deterministically reuses the existing generator without mod
++test('fixture titles and search/social descriptions explicitly describe fictional non-calling previews',()=>{
++ for(const p of pages.slice(1)){
++  const html=read(p),title=html.match(/<title>(.*?)<\/title>/)[1];assert.match(title,/Fictional/i);
++  for(const marker of ['name="description"','property="og:description"']){
++   const description=html.match(new RegExp('<meta '+marker+' content="([^"]*)"'))[1];assert.match(description,/fictional|demonstration/i);assert.match(description,/No /);
++   assert.doesNotMatch(description,/we call you|connects you|Call and tell us/i);
++  }
++  assert.match(html,/<meta property="og:title" content="Fictional/);
++ }
++});
++test('scripted voice has one atomic polite live region and final button remains focusable',()=>{
++ const html=read('demo/sofia.html');assert.match(html,/id="sofia-announcement"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/);
++ const js=read('demo/fixture.js');assert.match(js,/heading\.focus\(\)/);assert.match(js,/heading\.tabIndex=-1/);assert.match(js,/setAttribute\('aria-disabled','true'\)/);assert.doesNotMatch(js,/event\.target\.disabled=true/);
++});

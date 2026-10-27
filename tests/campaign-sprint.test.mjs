@@ -38,3 +38,17 @@ test('Perspective and voice have truthful synthetic, unavailable and unknown sta
 test('fixture export deterministically reuses the existing generator without modifying it',()=>{
  const before=Object.fromEntries(pages.slice(1).map(p=>[p,read(p)]));execFileSync(process.execPath,['docs/campaign-sprint/build-fixtures.mjs'],{cwd:ROOT});for(const [p,h] of Object.entries(before))assert.equal(read(p),h);
 });
+test('fixture titles and search/social descriptions explicitly describe fictional non-calling previews',()=>{
+ for(const p of pages.slice(1)){
+  const html=read(p),title=html.match(/<title>(.*?)<\/title>/)[1];assert.match(title,/Fictional/i);
+  for(const marker of ['name="description"','property="og:description"']){
+   const description=html.match(new RegExp('<meta '+marker+' content="([^"]*)"'))[1];assert.match(description,/fictional|demonstration/i);assert.match(description,/No /);
+   assert.doesNotMatch(description,/we call you|connects you|Call and tell us/i);
+  }
+  assert.match(html,/<meta property="og:title" content="Fictional/);
+ }
+});
+test('scripted voice has one atomic polite live region and final button remains focusable',()=>{
+ const html=read('demo/sofia.html');assert.match(html,/id="sofia-announcement"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/);
+ const js=read('demo/fixture.js');assert.match(js,/heading\.focus\(\)/);assert.match(js,/heading\.tabIndex=-1/);assert.match(js,/setAttribute\('aria-disabled','true'\)/);assert.doesNotMatch(js,/event\.target\.disabled=true/);
+});

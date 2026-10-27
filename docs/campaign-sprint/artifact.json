@@ -4,24 +4,25 @@
   "publication_candidate": "https://marketingapes.com/campaign-sprint/",
   "published": false,
   "tests": {
-    "offer_and_kit_passed": 17,
+    "offer_and_kit_passed": 19,
     "foundation": "PASS",
     "responsive_checks": 15
   },
   "provider_operations": 0,
   "emails_sent": 0,
   "files": {
-    "ma/campaign-sprint/demo/ads.html": "5511463ae732f8507a367a7e3c119a97869aaf0c59cb5159ee694faf4c70f0d0",
+    "ma/campaign-sprint/demo/ads.html": "9f62b0d88a9a1df7a28b62b221bfad7710ff0b1329f305e6370cb7a7cb6f765f",
     "ma/campaign-sprint/demo/btl-seal.svg": "c26ca226e65d214fcce756850ed5d81ab381b090928991be9f0af788f656152c",
-    "ma/campaign-sprint/demo/fixture.css": "4d8773ac4da5fa7b24e93bf1e57336cc60f7fbed7d7328d282a4f4c13a520e60",
-    "ma/campaign-sprint/demo/fixture.js": "2a1b56b87b80f0563668a42244427820ee80134db57d95d2da4cca818df5d84d",
-    "ma/campaign-sprint/demo/form.html": "042f95a7c952a4b825225ca43d69295d7d5fc03feb02ce4d2420d2b7be3c194a",
-    "ma/campaign-sprint/demo/index.html": "c729221102b57ace2f1f4cee472ccb7d2c93f1aa8fe8b4112e0481d353b0360d",
-    "ma/campaign-sprint/demo/quiz.html": "eb8a6864d4f58a3355ef531b4837fa05f153b09a8ba1f573a60cc1f129279098",
+    "ma/campaign-sprint/demo/fixture.css": "598a4c37fc66a5823a3c26722899f858201aa04174386027118e369e9e23d863",
+    "ma/campaign-sprint/demo/fixture.js": "c14a4da8918f8bac86e9ce93c8baafe15b28e563a9257fc4107262600e421430",
+    "ma/campaign-sprint/demo/form.html": "53706664a347f79431573779c865180fe29e9cd985fcde32b6c6fdc0d82f7015",
+    "ma/campaign-sprint/demo/index.html": "0df7ef34b26daea1ba9d718278e90df67ed606fe0936088ff754e7cfa05b0be4",
+    "ma/campaign-sprint/demo/quiz.html": "3b3b0bcfb2ebc760f392694fd0a2a25711c8764be43350fe2a9631a92e7386e9",
     "ma/campaign-sprint/demo/site.css": "0db5f08e290a0494d463a689dabd6b97773f0ea93a49c4beb6453a73ffea11e3",
-    "ma/campaign-sprint/demo/sofia.html": "08fb9a41b848467bc9bfdf7a873013d4bcad754f0c0abc5c2cd1bf6c5a197ee6",
+    "ma/campaign-sprint/demo/sofia.html": "e372426ce6b6e559f51e25cfd4e0cffe9c61d80496e7b935d9804a50dca01fcd",
     "ma/campaign-sprint/index.html": "675a23dc35d8f7a46430b19a51f5520e67af2800bc80782ecac401b65e2d8215",
     "ma/campaign-sprint/sprint.css": "3b17beed2b639a8e08e7f5ef74fc8bc67cce98cc1766806e8d522708373907b4",
     "ma/campaign-sprint/sprint.js": "99bc316423740088aca1cccf04194f887efc663b468365573c8973bf0f5e00a7"
-  }
+  },
+  "previous_review_commit": "c6549b538605f11e5b04cd3aa970fc7574c58d87"
 }

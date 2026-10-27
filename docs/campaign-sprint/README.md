@@ -50,14 +50,18 @@ node docs/campaign-sprint/build-fixtures.mjs
 node --test tests/campaign-sprint.test.mjs campaign-kit/test/*.test.mjs
 python3 tools/verify-foundation.py
 
-17/17 tests passed: seven new offer tests plus ten existing kit tests.
+19/19 tests passed: nine offer tests plus ten existing kit tests.
 Foundation: PASS, 17 frozen files unchanged, 14 canonical manifests conformant.
 git diff --check: clean.
 Browser: actual in-app Chromium local HTTP render at widths 320, 390 and 1440.
 15 responsive page checks: no horizontal overflow or broken loaded images.
 Verified form simulation, quiz three-step progress and back navigation, fixed fields,
 quiz simulated completion, return to synthetic reporting, five-turn Sofia completion,
-primary CTA anchor and FAQ expansion. Browser console: no error/warning entries.
+primary CTA anchor and FAQ expansion. Browser console: no error/warning entries in the initial review.
+Revision 2 also verifies Enter/Space quiz progression, heading focus on forward/back
+and result, focused simulation confirmation, and speaker-labeled atomic polite Sofia
+announcements with preserved control focus. Screen-reader audio was not tested.
+See accessibility-proof.json and revision-2.md.
 Email href inspected; email client was not opened and no email was sent.
 No live provider, lead, analytics, ad account or CRM integration was tested or claimed.
 
