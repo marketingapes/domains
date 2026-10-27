@@ -23,9 +23,21 @@ page form ──POST──▶ legal-web-lead /api/v1/btl/web-lead ──queue─
 | Phillips credits MA | 18 LA County converted in Litify, Source = Marketing Apes | PROOF-2026-09-23-Phillips-credit-confirmed.md (Drive) |
 | Page → backend contract | name, phone, consent text + sha256 + version, tort la_county_abuse, state CA, event_id = submission id, UTMs; success only for an `MA-BTL-<uuid>` receipt with this event_id (or duplicate) and status awaiting_executor / call_created / call_ended; test, dry-run, filtered, refused → not saved | tests/btl-abuse-la.browser.mjs against a local fake (proves the page only) |
 
+## Done 2026-10-27 (Kyle approved in chat)
+
+- Meta ad `jordanpulaski - Copy` 120253458361700231 (404 landing) set to PAUSED.
+- Render legal-web-lead `PHILLIPS_LANE_BTL_ASSISTANT_ID=d3dacc64-1710-45c0-8816-6d8a7039d1df` (merge, not replace); deploy dep-dbgedregekts73a4qlug live, /health unchanged. The AZ MVA callback path is unaffected (it uses hard-coded MVA_ASSISTANT 9fffe3f2 / MVA_PHONE 4d07e1e8).
+
+## Blocker found 2026-10-27: nothing places the web callbacks
+
+- The executor that dials queued web leads, Render cron `legal-web-lead-website-executor` (crn-davtbv7avr4c73dbqhrg, every 2 min), is **suspended**.
+- Even when it runs, `docs/website-executor.md` says live sends are refused until something writes the suppression registry (`suppression:v1:ready`), and nothing does today.
+- Its test mode can only dial a recording-only test assistant with no transfer and no tools, plus a stored attestation and approval. It cannot place a test call with the production LA assistant by design.
+- So switching on the pages today would store leads and show "Sofia will call you", but no call would be placed.
+
 ## Not verified — blockers before any spend
 
-1. **Which assistant the BTL web lane dials.** `PHILLIPS_LANE_BTL_ASSISTANT_ID` on Render is set but not readable from here. Recent BTL lane calls went out on `9fffe3f2` "BTL Sofia — AZ MVA Outbound", which says *"Never handle a California incident"*. If that is the web-lane assistant, an LA survivor would get an accident call that refuses them. **Fix:** set `PHILLIPS_LANE_BTL_ASSISTANT_ID=d3dacc64-1710-45c0-8816-6d8a7039d1df` (Render env, legal-web-lead). This changes every BTL web-lead tort; the other BTL abuse pages (women's prisons, rideshare) are also `intake_endpoint:null` today — confirm before flipping.
+1. ~~**Which assistant the BTL web lane dials.**~~ Set to d3dacc64 on 2026-10-27 (see above). `PHILLIPS_LANE_BTL_ASSISTANT_ID` on Render is set but not readable from here. Recent BTL lane calls went out on `9fffe3f2` "BTL Sofia — AZ MVA Outbound", which says *"Never handle a California incident"*. If that is the web-lane assistant, an LA survivor would get an accident call that refuses them. **Fix:** set `PHILLIPS_LANE_BTL_ASSISTANT_ID=d3dacc64-1710-45c0-8816-6d8a7039d1df` (Render env, legal-web-lead). This changes every BTL web-lead tort; the other BTL abuse pages (women's prisons, rideshare) are also `intake_endpoint:null` today — confirm before flipping.
 2. **Which line calls out.** `PHILLIPS_LANE_BTL_PHONE_NUMBER_ID` is also unreadable. Its inbound must not be bound to the Paraquat assistant (976d64df), or a survivor calling back reaches Paraquat Sofia.
 3. **One synthetic end-to-end call** (executor test mode, test callee) showing: receipt on the page → Sofia LA call → transfer rings the CallRail number. Only then flip the pages.
 4. **Conversion event.** Pages push `ee_lead_saved`. GTM-PHC7459M must map it to Meta `Lead` (pixel 673552078259404) before `measurement:"on"`; otherwise Meta optimizes blind. Untested.
