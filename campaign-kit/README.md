@@ -5,8 +5,19 @@
 Built 2026-10-26 overnight by Claude. Campaign comes in → write one JSON → run one command → the whole lane is staged.
 
     node campaign-kit/build.mjs --all            # pages, bundles, BRIEF.md checklist
+    node campaign-kit/build.mjs --onboarding     # offline firm/network request preview only
     node --test campaign-kit/test/*.test.mjs
     node tests/campaign-kit.browser.cjs          # real browser; SHOTS=dir saves screenshots
+
+## Firm onboarding and proposed network
+
+See `ONBOARDING.md` for the complete request → scope → invoice → verified payment → staged build → client review → owner launch queue workflow, the proposed directory/membership/inquiry models, and the exact Make/Render boundaries.
+
+`--onboarding` writes a standalone HTML form to `out/onboarding/preview/index.html`; `--all` includes it. It has no network calls, browser persistence, invoice sending, subscriptions or payment actions. Four proposed commercial models share one request contract. Only a managed campaign has draft fee/media lines; membership, inquiry and founding-partner amounts remain unapproved and require a quote. A `DRAFT-` reference is local planning output, never a submission/payment receipt.
+
+`order-contract.mjs` contains shared request validation and a pure server-side state reducer. It is not an HTTP API or persistent workflow. A trusted adapter must authenticate people/provider events, re-fetch payment state and atomically store state plus unique inbox/outbox keys. The browser receives only draft validation helpers. Provider, client and Kyle approvals must bind to the current order/artifact version. A bound invoice cannot be silently replaced.
+
+`RECEIPT.md` records what was tested and which integration work remains.
 
 ## Preview vs live
 
@@ -39,7 +50,7 @@ Live pages show "Received" only when the webhook answers 2xx JSON `{status: rece
 
 Live pages POST `payload=<json>&submission_id=<uuid>` (form-encoded, so Make gets it without a CORS preflight) with `schema: "btl.intake.web/v1"`: `contact{}`, `screening{…answers, web_outcome: QUALIFIED|FIRM_REVIEW|NOT_A_FIT, quiz_version}`, `consent{version, calls{granted,text}, sms{granted,text}}`, `trustedform_cert_url`, `attribution{utm_*, gclid, gbraid, wbraid, fbclid, ttclid, fbp, fbc, landing_path, referrer_host}`. `request_type`: form `web_inquiry`, quiz `quiz_inquiry`. `?ee_test=synthetic` (and every preview) adds `test.synthetic: true`.
 
-GTM `GTM-PHC7459M` already loads the Meta pixel, TikTok pixel, ChatGPT ads SDK, GA4, Google Ads conversion and CallRail number swap, so kit pages are tracked on every channel with no extra wiring. dataLayer events: `ee_page_view`, `ee_door_click`, `ee_quiz_complete`, `ee_lead_submit_attempt|success|error` — no personal data.
+The existing live-page GTM container is `GTM-PHC7459M`. Its configuration is not evidence that every channel's conversions work or are policy-eligible. Verify approved measurement for the selected channels and document policy-disabled channels before launch, including URL/referrer/event sensitivity. The existing dataLayer event names are `ee_page_view`, `ee_door_click`, `ee_quiz_complete`, `ee_lead_submit_attempt|success|error`; names alone do not prove safe payloads. See `ONBOARDING.md` for the internal outcome and platform-export boundaries.
 
 ## Quiz scoring
 
@@ -56,3 +67,4 @@ Each answer option carries a `signal`: `good`, `neutral`, `unsure` (→ FIRM_REV
 2. Clone Make scenario 6437227 for the intake hook; put its URL in `intake.webhook`.
 3. `node campaign-kit/build.mjs …` and `node --test campaign-kit/test/*.test.mjs`.
 4. Work the gates in `out/<slug>/LAUNCH.md`. Ad activation is always Kyle's call in chat.
+

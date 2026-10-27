@@ -4,6 +4,7 @@
 //
 //   node campaign-kit/build.mjs campaign-kit/campaigns/<slug>.json   # one campaign
 //   node campaign-kit/build.mjs --all                                 # every config in campaigns/
+//   node campaign-kit/build.mjs --onboarding                          # firm request preview only
 //
 // Writes:
 //   btl/c/<slug>/{index,quiz,sofia,form,ads}.html + site.css   public pages, always noindex
@@ -17,6 +18,7 @@
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {ORDER_SCHEMA, browserOrderContractSource} from './order-contract.mjs';
 
 const KIT = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(KIT, '..');
@@ -58,7 +60,7 @@ export const GATES = [
   ['intake_receipt_tested', 'Test lead to intake.webhook returned a receipt and the stored record was found'],
   ['firm_transfer_tested', 'Live call transferred to the firm intake line (not a demo or internal line)'],
   ['trustedform_tested', 'TrustedForm certificate retained on a production test submission'],
-  ['conversions_tested', 'ee_lead_submit_success recorded as a Lead in Meta, Google, TikTok and ChatGPT ads'],
+  ['conversions_tested', 'Approved measurement verified for selected channels; policy-disabled channels documented'],
   ['portal_tested', 'Perspective portal shows the test lead'],
   ['billing', 'Invoice paid / media authorization on file'],
   ['activation_approved', 'Kyle approved activation in chat (exact campaign + budget)'],
@@ -577,7 +579,310 @@ Criteria (as configured — not a legal determination):
   return {'meta.json': meta, 'google-search.json': google, 'tiktok.json': tiktok, 'openai-ads.json': openai, 'sofia.json': sofia, 'delivery.json': delivery, 'perspective.json': perspective, 'tracking.json': tracking, 'assets.json': assetManifest(c), 'LAUNCH.md': launch};
 }
 
+// ---------- firm onboarding: local request preview, using this same generator ----------
+export const ONBOARDING_CSP = "default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'";
+
+function onboardingBrowser(config) {
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const form = byId('order-form');
+  const panels = Array.from(document.querySelectorAll('[data-panel]'));
+  const steps = Array.from(document.querySelectorAll('[data-step]'));
+  const value = id => byId(id).value.trim();
+  const splitLines = s => s.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+  const states = s => s.split(/[\s,;]+/).map(x => x.trim().toUpperCase()).filter(Boolean);
+  const money = cents => cents === null || cents === undefined ? 'To review' : new Intl.NumberFormat('en-US', {style:'currency',currency:'USD',maximumFractionDigits:2}).format(cents / 100);
+  const titles = {managed_campaign:'Managed campaign',qualified_lead_program:'Qualified-lead program',network_membership:'Firm directory membership',founding_partner:'Founding partner'};
+  const commercialCopy = {
+    qualified_lead_program:'Per-lead price, the definition of a billable lead, exclusivity, acceptance window and credit policy need a written agreement. No campaign fee or advertising budget is automatically added to this request.',
+    network_membership:'A proposed $150/month example is under review. Membership would cover a firm profile, criteria and capacity settings, and agreed intake/report access. Media and guaranteed leads are not included. The final price and service terms have not been approved.',
+    founding_partner:'Dedicated campaigns and a broader operating build need a custom scope, service levels, budget and agreement. Any partner planning scenario is a proposal, not an invoice or commitment.'
+  };
+  const mappedFields = {
+    commercial_model:'commercial-model',template_id:'topic',topic:'topic','geo.states':'states','geo.excluded_states':'excluded-states',channels:'commercial-model',
+    'firm.name':'firm-name','firm.website':'firm-website','firm.contact_name':'contact-name','firm.email':'contact-email','firm.phone':'contact-phone',
+    'billing.name':'billing-name','billing.email':'billing-email','criteria.version':'criteria-version','criteria.source':'criteria-source','criteria.qualifiers':'qualifiers','criteria.exclusions':'exclusions',
+    'intake.mode':'intake-mode','intake.endpoint':'intake-endpoint','intake.hours':'intake-hours','intake.timezone':'timezone','intake.capacity_per_day':'capacity',
+    'budget.media_usd':'media','budget.media_budget_cents':'media','budget.duration_days':'duration','network.distribution':'distribution','terms.scope_acknowledged':'scope-ack'
+  };
+  let currentStep = 0;
+  let draft = null;
+  let lastRaw = null;
+  let synthetic = false;
+  let serial = 0;
+  let downloadUrl = null;
+  let busy = false;
+  function releaseDownload() { if (downloadUrl) { URL.revokeObjectURL(downloadUrl); downloadUrl = null; } }
+  function rawRequest() {
+    const source = value('criteria-source');
+    const model = value('commercial-model');
+    return {
+      schema:config.schema,commercial_model:model,template_id:form.querySelector('input[name="template"]:checked').value,topic:value('topic'),
+      geo:{states:states(value('states')),excluded_states:states(value('excluded-states'))},
+      channels:model === 'network_membership' ? [] : Array.from(form.querySelectorAll('input[name="channels"]:checked')).map(el=>el.value),
+      firm:{name:value('firm-name'),website:value('firm-website'),contact_name:value('contact-name'),email:value('contact-email'),phone:value('contact-phone')},
+      billing:{name:value('billing-name'),email:value('billing-email')},
+      criteria:{version:value('criteria-version'),source,qualifiers:splitLines(value('qualifiers')).map((line,i)=>({key:'qualifier_'+(i+1),label:line,rule:line,verification_method:value('verification-method'),required:true,evidence_source:source})),exclusions:splitLines(value('exclusions'))},
+      intake:{mode:value('intake-mode'),endpoint:value('intake-endpoint'),hours:value('intake-hours'),timezone:value('timezone'),languages:value('languages').split(','),capacity_per_day:value('capacity') === '' ? null : Number(value('capacity'))},
+      budget:{media_usd:model === 'managed_campaign' ? value('media') : '',duration_days:value('duration') === '' ? null : Number(value('duration'))},
+      network:{alternate_routing:byId('alternate-routing').checked,distribution:value('distribution')},
+      terms:{version:'',source:'',scope_acknowledged:byId('scope-ack').checked}
+    };
+  }
+  function clearErrors() {
+    byId('errors').hidden = true;
+    byId('error-list').replaceChildren();
+    document.querySelectorAll('.field-error').forEach(el=>{el.textContent='';});
+    form.querySelectorAll('[aria-invalid]').forEach(el=>el.removeAttribute('aria-invalid'));
+  }
+  function fieldId(error) {
+    if (mappedFields[error.field]) return mappedFields[error.field];
+    const prefix = Object.keys(mappedFields).sort((a,b)=>b.length-a.length).find(k=>error.field?.startsWith(k));
+    return prefix ? mappedFields[prefix] : 'topic';
+  }
+  function showErrors(errors) {
+    clearErrors();
+    const first = errors[0]?.id;
+    for (const error of errors) {
+      const field = byId(error.id);
+      if (field) field.setAttribute('aria-invalid','true');
+      const inline = byId('error-'+error.id);
+      if (inline && !inline.textContent) inline.textContent = error.message;
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = '#'+error.id;
+      link.textContent = error.message;
+      link.addEventListener('click', event=>{event.preventDefault();focusField(error.id);});
+      li.append(link);byId('error-list').append(li);
+    }
+    byId('errors').hidden = !errors.length;
+    if (first) focusField(first);
+  }
+  function focusField(id) {
+    const field = byId(id);
+    if (!field) return;
+    const panel = field.closest('[data-panel]');
+    if (panel) goTo(Number(panel.dataset.panel),false);
+    const details = field.closest('details');if(details) details.open=true;
+    field.focus();
+  }
+  function localErrors(index = null) {
+    const errors = [];
+    const add = (id,message)=>{if(index === null || byId(id).closest('[data-panel]')?.dataset.panel === String(index)) errors.push({id,message});};
+    const scope = index === null ? form : panels[index];
+    for (const field of scope.querySelectorAll('[data-required="true"]')) {
+      if (field.type === 'checkbox' ? !field.checked : !field.value.trim()) {
+        const name = field.id === 'scope-ack' ? 'Confirm that this is a draft scope request.' : (form.querySelector('label[for="'+field.id+'"]')?.textContent || 'This field')+' is required.';
+        add(field.id,name);
+      }
+    }
+    for (const field of scope.querySelectorAll('input[type="email"],input[type="url"]')) {
+      if (field.value.trim() && !field.validity.valid) add(field.id,field.type==='email'?'Enter a valid business email address.':'Enter a complete http:// or https:// website address.');
+    }
+    if (value('criteria-status') === 'provided') {
+      if (!value('criteria-source')) add('criteria-source','Reference the firm-supplied written criteria.');
+      if (!value('criteria-version')) add('criteria-version','Enter the criteria version.');
+      if (!value('qualifiers')) add('qualifiers','Add the firm’s written key qualifiers, one per line.');
+    }
+    const included=states(value('states')),excluded=states(value('excluded-states'));
+    const stateCodes = new Set('AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' '));
+    if (included.some(x=>!stateCodes.has(x))) add('states','Use valid two-letter US state codes, separated by commas.');
+    if (excluded.some(x=>!stateCodes.has(x))) add('excluded-states','Use valid two-letter state codes for exclusions.');
+    if(new Set(included).size!==included.length) add('states','List each included state once.');
+    if(new Set(excluded).size!==excluded.length) add('excluded-states','List each excluded state once.');
+    if(included.some(x=>excluded.includes(x))) add('excluded-states','A state cannot be both included and excluded.');
+    if (value('capacity') && !/^\d{1,5}$/.test(value('capacity'))) add('capacity','Capacity must be a whole number from 0 to 99,999.');
+    if (value('duration') && (!/^\d{1,3}$/.test(value('duration')) || Number(value('duration')) < 1 || Number(value('duration')) > 365)) add('duration','Use a whole campaign duration from 1 to 365 days.');
+    if (value('commercial-model')==='managed_campaign' && value('media') && (!/^\d{1,8}(?:\.\d{1,2})?$/.test(value('media')) || Number(value('media'))<=0)) add('media','Use a positive USD amount with at most two decimal places.');
+    if (/https?:\/\//i.test(value('intake-endpoint'))) add('intake-endpoint','Use a business phone or opaque connection reference; leave endpoint URLs for secure setup.');
+    return errors;
+  }
+  function goTo(index,focus=true) {
+    currentStep=Math.max(0,Math.min(3,index));
+    panels.forEach((panel,i)=>{panel.hidden=i!==currentStep;});
+    steps.forEach((button,i)=>{if(i===currentStep)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});
+    byId('back').hidden=currentStep===0;byId('start-note').hidden=currentStep!==0;
+    byId('next').hidden=currentStep===3;byId('prepare').hidden=currentStep!==3;
+    updateSummary();
+    if(focus)byId('step-title-'+currentStep).focus();
+  }
+  function row(parent,label,text) {
+    const div=document.createElement('div');div.className='summary-row';
+    const name=document.createElement('strong');name.textContent=label;
+    const content=document.createElement('span');content.textContent=text || 'Needs review';
+    div.append(name,content);parent.append(div);
+  }
+  function summary(parent,raw,quote) {
+    parent.replaceChildren();
+    row(parent,'Program',titles[raw.commercial_model]);row(parent,'Case type',raw.topic);
+    row(parent,'Locations',raw.geo.states.join(', '));row(parent,'Firm',raw.firm.name);
+    row(parent,'Written criteria',value('criteria-status')==='provided'?(raw.criteria.version || 'Version missing'):'Pending firm review');
+    row(parent,'Intake',raw.intake.mode==='review_needed'?'Needs setup review':raw.intake.mode.replaceAll('_',' '));
+    if(raw.commercial_model==='managed_campaign') {
+      row(parent,'Build fee',money(quote?.service_fee_cents ?? 250000));
+      row(parent,'Proposed media',money(quote?.media_budget_cents));
+      row(parent,'Planning total',money(quote?.total_cents));
+    } else row(parent,'Commercial terms','Custom quote / agreement required');
+  }
+  function updateSummary() {
+    const raw=rawRequest(),result=BTL_ORDER.validateOrderRequest(raw),model=raw.commercial_model;
+    const managed=model==='managed_campaign';
+    byId('managed-budget').hidden=!managed;byId('custom-commercial').hidden=managed;
+    byId('campaign-channel-area').hidden=model==='network_membership';
+    byId('commercial-title').textContent=titles[model]+' · terms to review';
+    byId('commercial-copy').textContent=commercialCopy[model]||'';
+    byId('plan-title').textContent=titles[model];byId('plan-topic').textContent=raw.topic || 'Choose a case type to begin.';
+    const lines=byId('plan-lines');lines.replaceChildren();
+    function line(label,text,total=false){const div=document.createElement('div');if(total)div.className='total';const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=text;div.append(dt,dd);lines.append(div);}
+    if(managed) {
+      line('Campaign build',money(250000));line('Proposed media',money(result.quote?.media_budget_cents));line('Planning total',money(result.quote?.total_cents),true);
+      byId('plan-note').textContent='Planning amounts only. Final scope and terms must be reviewed before an invoice is issued.';
+    } else {
+      line('Price','Quote required');line('Media','Not included automatically');line('Status','Proposal only');
+      byId('plan-note').textContent=model==='network_membership'?'A $150/month example is under review. No approved membership price, media or lead guarantee.':'Separate scope, pricing and delivery terms are required. No campaign fee or media charge is added here.';
+    }
+    summary(byId('review-summary'),raw,result.quote);
+  }
+  function invalidate() {
+    if(draft){draft=null;lastRaw=null;releaseDownload();byId('draft-result').hidden=true;form.hidden=false;document.querySelector('.progress').hidden=false;}
+    updateSummary();
+  }
+  function prepare(event) {
+    event.preventDefault();
+    if(busy)return;
+    const local=localErrors();if(local.length){showErrors(local);return;}
+    const raw=rawRequest(),result=BTL_ORDER.validateOrderRequest(raw);
+    if(!result.valid){showErrors(result.errors.map(e=>({id:fieldId(e),message:e.message})));return;}
+    const serialized=JSON.stringify(raw);
+    if(draft && lastRaw===serialized){showDraft();return;}
+    busy=true;byId('prepare').disabled=true;
+    try {
+      serial+=1;
+      const id='DRAFT-'+(globalThis.crypto?.randomUUID?.() || (Date.now().toString(16)+'-'+serial)).toUpperCase();
+      const reasons=[...(result.review_reasons||[])];
+      if(value('criteria-status')!=='provided')reasons.unshift('Firm-supplied written key qualifiers are still pending.');
+      if(synthetic)reasons.unshift('Synthetic demonstration details only; replace and independently verify every field.');
+      draft={schema:'btl.campaign.order.preview/v1',draft_id:id,revision:serial,created_at:new Date().toISOString(),status:'LOCAL_DRAFT_NOT_SUBMITTED',synthetic,request:result.normalized,commercial_preview:result.quote,review_reasons:[...new Set(reasons)],authorization:{invoice:false,payment:false,build:false,publish:false,spend:false,contact:false}};
+      lastRaw=serialized;showDraft();
+    } finally {busy=false;byId('prepare').disabled=false;}
+  }
+  function showDraft() {
+    clearErrors();form.hidden=true;document.querySelector('.progress').hidden=true;byId('draft-result').hidden=false;
+    byId('draft-ref').textContent=draft.draft_id;
+    summary(byId('result-summary'),draft.request,draft.commercial_preview);
+    byId('review-reasons').replaceChildren();
+    for(const reason of draft.review_reasons){const li=document.createElement('li');li.textContent=reason;byId('review-reasons').append(li);}
+    byId('draft-title').focus();
+  }
+  function download() {
+    if(!draft)return;
+    releaseDownload();
+    downloadUrl=URL.createObjectURL(new Blob([JSON.stringify(draft,null,2)+'\n'],{type:'application/json'}));
+    const link=document.createElement('a');link.href=downloadUrl;link.download=draft.draft_id.toLowerCase()+'.json';document.body.append(link);link.click();link.remove();
+    byId('download-status').textContent='Download prepared. This tab has not submitted or stored the request.';
+  }
+  function reset() {
+    releaseDownload();form.reset();draft=null;lastRaw=null;synthetic=false;serial=0;
+    form.hidden=false;document.querySelector('.progress').hidden=false;byId('draft-result').hidden=true;clearErrors();goTo(0);updateSummary();
+  }
+  function demo() {
+    reset();synthetic=true;
+    const values={topic:'Example mass tort program',states:'CA, AZ','firm-name':'Example Review Firm','firm-website':'https://firm.example.test','contact-name':'Example Operator','contact-email':'operator@example.test','contact-phone':'+12025550100','billing-name':'Example Review Firm','billing-email':'billing@example.test','intake-mode':'review_needed','intake-hours':'Mon–Fri, 9:00 AM–5:00 PM',timezone:'America/Los_Angeles',capacity:'10',media:'5000.00',duration:'14'};
+    for(const [id,text] of Object.entries(values))byId(id).value=text;
+    byId('qualifiers').value='Example only: firm must provide and approve the case-specific qualifiers.';
+    updateSummary();goTo(0);byId('demo').textContent='Synthetic example loaded — edit as needed';
+  }
+  form.addEventListener('submit',prepare);
+  form.addEventListener('input',invalidate);
+  form.addEventListener('change',event=>{
+    if(event.target.name==='template') {
+      byId('topic').value=event.target.value==='btl-paraquat'?'Paraquat':event.target.value==='glassman-bard-powerport'?'Bard PowerPort':'';
+      for(const id of ['criteria-source','criteria-version','qualifiers','exclusions'])byId(id).value='';
+      byId('criteria-status').value='pending';byId('scope-ack').checked=false;
+    }
+    if(event.target.id==='commercial-model')byId('scope-ack').checked=false;
+    invalidate();
+  });
+  steps.forEach(button=>button.addEventListener('click',()=>{clearErrors();goTo(Number(button.dataset.step));}));
+  byId('next').addEventListener('click',()=>{const errors=localErrors(currentStep);if(errors.length)showErrors(errors);else{clearErrors();goTo(currentStep+1);}});
+  byId('back').addEventListener('click',()=>{clearErrors();goTo(currentStep-1);});
+  byId('download').addEventListener('click',download);
+  byId('revise').addEventListener('click',()=>{form.hidden=false;document.querySelector('.progress').hidden=false;byId('draft-result').hidden=true;goTo(3);});
+  byId('reset').addEventListener('click',reset);byId('demo').addEventListener('click',demo);
+  window.addEventListener('pagehide',releaseDownload);
+  window.BTL_ONBOARDING=Object.freeze({read:rawRequest,getDraft:()=>draft?JSON.parse(JSON.stringify(draft)):null});
+  updateSummary();
+}
+
+export function renderOnboardingPage() {
+  const css = readFileSync(join(KIT, 'onboarding.css'), 'utf8');
+  const field = (id, label, control, hint = '', wide = false) => `<div class="field${wide ? ' wide' : ''}" id="field-${id}"><label for="${id}">${label}</label>${control}<p class="hint" id="hint-${id}">${hint}</p><p class="field-error" id="error-${id}" aria-live="polite"></p></div>`;
+  const input = (id, label, opts = {}) => field(id, label, `<input id="${id}" name="${id}" type="${opts.type || 'text'}" maxlength="${opts.max || 200}"${opts.required ? ' data-required="true" required' : ''}${opts.placeholder ? ` placeholder="${esc(opts.placeholder)}"` : ''}${opts.value ? ` value="${esc(opts.value)}"` : ''}${opts.autocomplete ? ` autocomplete="${opts.autocomplete}"` : ''}${opts.inputmode ? ` inputmode="${opts.inputmode}"` : ''} aria-describedby="hint-${id} error-${id}">`, opts.hint, opts.wide);
+  const textarea = (id, label, opts = {}) => field(id, label, `<textarea id="${id}" name="${id}" rows="${opts.rows || 3}" maxlength="${opts.max || 4000}"${opts.required ? ' data-required="true" required' : ''}${opts.placeholder ? ` placeholder="${esc(opts.placeholder)}"` : ''} aria-describedby="hint-${id} error-${id}"></textarea>`, opts.hint, opts.wide);
+  const select = (id, label, values, opts = {}) => field(id, label, `<select id="${id}" name="${id}"${opts.required ? ' data-required="true" required' : ''} aria-describedby="hint-${id} error-${id}">${values.map(([v,l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('')}</select>`, opts.hint, opts.wide);
+  const checklist = ['Firm identity, written key qualifiers and approved locations', 'Approved copy, disclosures and exact consent language', 'Successful intake receipt and durable saved record', 'Tested firm delivery, transfer and fallback', 'Required consent evidence captured and retained', 'Allowed conversion events verified for selected channels', 'Perspective report reconciled with test outcomes', 'Invoice/payment evidence and separate media authorization', 'Kyle’s approval of the exact launch and budget'];
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="${ONBOARDING_CSP}"><meta name="theme-color" content="#0d253d"><title>Plan your campaign &amp; firm intake | Best Tort Lawyers</title><meta name="description" content="A private planning preview for a mass tort or abuse campaign, firm intake and proposed network participation."><link rel="icon" href="data:,"><style>${css}</style></head>
+<body><a class="skip" href="#request">Skip to request</a><header class="masthead"><div class="wrap"><div class="brand"><span class="brand-mark" aria-hidden="true">BTL</span><div class="brand-name">BEST TORT LAWYERS<span class="brand-sub">Mass tort &amp; abuse network · proposed program</span></div></div><div class="preview-tag"><span class="preview-dot" aria-hidden="true"></span>Planning preview</div></div></header>
+<main class="wrap"><section class="hero" aria-labelledby="headline"><div><p class="eyebrow">For law firms · campaign &amp; intake planning</p><h1 id="headline">A clearer path<br>to <em>the right firm.</em></h1><p class="lede">Define the case criteria, marketing plan and intake handoff for your next mass tort or abuse program. One request becomes the starting point for a repeatable campaign.</p></div><div class="hero-aside"><p>Clear inputs. A reviewable launch.</p><ol class="mini-flow"><li><span>01 / REQUEST</span>Choose the scope.</li><li><span>02 / FUND</span>Approve terms &amp; invoice.</li><li><span>03 / REVIEW</span>Review your campaign.</li><li><span>04 / LAUNCH</span>Enter Kyle’s launch queue.</li></ol><p class="intro-note">For campaign orders: verified payment starts the build. Client review, successful tests and Kyle’s launch approval follow.</p></div></section>
+<noscript><div class="noscript">This local planning preview needs JavaScript to validate the request and prepare a download. Nothing can be submitted or paid here.</div></noscript>
+<div class="request-layout" id="request"><section class="request-panel" aria-label="Firm request"><nav class="progress" aria-label="Request steps"><button type="button" data-step="0" aria-current="step"><span class="step-dot">1</span>Program</button><button type="button" data-step="1"><span class="step-dot">2</span>Key qualifiers</button><button type="button" data-step="2"><span class="step-dot">3</span>Firm &amp; intake</button><button type="button" data-step="3"><span class="step-dot">4</span>Scope &amp; review</button></nav>
+<div class="errors" id="errors" role="alert" hidden><p>Please check the following:</p><ul id="error-list"></ul></div>
+<form id="order-form" novalidate autocomplete="off">
+<section class="step" data-panel="0" aria-labelledby="step-title-0"><div class="step-heading"><h2 id="step-title-0" tabindex="-1">Start with the program.</h2><span class="step-counter">01 / 04</span></div><p class="description">Tell us what your firm wants to receive. Every option is a proposal for review.</p><div class="field-grid">
+${select('commercial-model','How would you like to work together?', [['managed_campaign','Managed campaign'],['qualified_lead_program','Qualified-lead program · quote required'],['network_membership','Firm directory membership · proposed'],['founding_partner','Founding partner · custom proposal']], {wide:true,hint:'Campaign fee and media apply only to a managed campaign. Other programs need their own approved commercial terms.'})}
+</div><div class="divider"></div><fieldset><legend>Campaign template</legend><div class="template-options"><label class="choice"><input type="radio" name="template" value="btl-paraquat"><span><strong>Paraquat</strong><small>Template · review required</small></span></label><label class="choice"><input type="radio" name="template" value="glassman-bard-powerport"><span><strong>Bard PowerPort</strong><small>Template · review required</small></span></label><label class="choice"><input type="radio" name="template" value="custom" checked><span><strong>Another program</strong><small>Mass tort or abuse</small></span></label></div><p class="hint">Template availability does not mean launch approval. Your firm supplies the criteria.</p></fieldset><div class="field-grid" style="margin-top:18px">
+${input('topic','Tort or case type', {required:true,placeholder:'Name the tort or abuse program',hint:'Use the specific case type. Each distinct campaign gets its own approved criteria.',wide:true,max:180})}
+${input('states','Included states', {required:true,placeholder:'CA, AZ',hint:'Use two-letter state codes. List the actual states your firm accepts.',max:200})}
+${input('excluded-states','Excluded states <span class="optional">(optional)</span>', {placeholder:'NV, OR',hint:'Exclusions are kept explicitly; they are not inferred.',max:200})}
+</div><div id="campaign-channel-area"><div class="divider"></div><fieldset><legend>Requested channels</legend><div class="channel-grid"><label class="choice"><input type="checkbox" name="channels" value="meta" checked><span><strong>Facebook + Instagram</strong><small>Initial pilot request</small></span></label><label class="choice"><input type="checkbox" name="channels" value="google"><span><strong>Google Search</strong><small>Additional review</small></span></label><label class="choice"><input type="checkbox" name="channels" value="tiktok"><span><strong>TikTok</strong><small>Additional review</small></span></label><label class="choice"><input type="checkbox" name="channels" value="openai"><span><strong>ChatGPT ads</strong><small>Availability &amp; policy review</small></span></label></div><p class="hint">Requested channels are reviewed against fit, platform rules and the approved budget. No channel is activated here.</p></fieldset><div class="divider"></div><p class="field-label">Three ways for someone to start</p><div class="door-list"><span>Online claim check</span><span>Talk with Sofia</span><span>Request a callback</span></div><p class="hint">One approved set of key qualifiers across all three.</p></div></section>
+<section class="step" data-panel="1" aria-labelledby="step-title-1" hidden><div class="step-heading"><h2 id="step-title-1" tabindex="-1">Define the key qualifiers.</h2><span class="step-counter">02 / 04</span></div><p class="description">Write what must be true before intake. Unknown answers remain unknown until verified.</p><div class="field-grid">
+${select('criteria-status','Written criteria', [['pending','Not ready — route this request for review'],['provided','I have firm-supplied written criteria']], {wide:true})}
+${input('criteria-source','Criteria source reference', {placeholder:'Private brief or approval reference',hint:'Reference the approved brief. Do not paste claimant records, credentials or webhook URLs.',wide:true,max:500})}
+${input('criteria-version','Criteria version', {placeholder:'e.g. v1 · 2026-10-27',hint:'The final approval must bind to the exact version.',max:100})}
+${select('verification-method','How answers should be verified', [['ask_or_verify_existing','Ask, or reuse verified existing evidence'],['ask','Ask the person directly'],['verified_existing','Use verified existing evidence'],['manual_review','Firm review required']], {hint:'Ad targeting and browsing behavior do not establish case eligibility.'})}
+${textarea('qualifiers','Required qualifiers <span class="optional">(one per line)</span>', {placeholder:'Paste your firm’s rules, including relevant dates and evidence requirements.',hint:'No suggested legal or medical thresholds are filled in automatically.',wide:true,max:6000,rows:4})}
+${textarea('exclusions','Exclusions &amp; unknown-answer handling', {placeholder:'List exclusions and questions that need a person to review.',hint:'This is your screening instruction, not a promise that a case will be accepted.',wide:true,max:4000})}
+</div><div class="rule-note"><strong>Ask less when the evidence already exists.</strong>Reuse a verified answer only when its source, date and permission fit the rule. Otherwise, ask a clear question or send it to your team for review. A click or demographic estimate is never proof.</div></section>
+<section class="step" data-panel="2" aria-labelledby="step-title-2" hidden><div class="step-heading"><h2 id="step-title-2" tabindex="-1">Connect the firm.</h2><span class="step-counter">03 / 04</span></div><p class="description">Business contact details only. Intake and billing stay tied to the correct firm.</p><div class="field-grid">
+${input('firm-name','Firm legal name', {required:true,autocomplete:'organization',wide:true})}
+${input('firm-website','Firm website <span class="optional">(optional)</span>', {type:'url',placeholder:'https://yourfirm.com',hint:'Include https://.',wide:true})}
+${input('contact-name','Requesting contact', {required:true,autocomplete:'name'})}
+${input('contact-email','Business email', {type:'email',required:true,autocomplete:'email'})}
+${input('contact-phone','Business phone <span class="optional">(optional)</span>', {type:'tel',placeholder:'+1 202 555 0100',max:30})}
+${input('billing-name','Invoice recipient / business name', {required:true})}
+${input('billing-email','Billing email', {type:'email',required:true,wide:true})}
+</div><div class="divider"></div><div class="field-grid">
+${select('intake-mode','Preferred intake route', [['review_needed','Choose during setup'],['live_transfer','Sofia screening + live transfer'],['scheduled_callback','Scheduled callback'],['api_webhook','Existing CRM integration'],['secure_delivery','Secure delivery for firm review']], {wide:true})}
+${input('intake-endpoint','Intake destination reference', {placeholder:'Firm desk number or existing connection reference',hint:'Use a public business phone or an opaque connection reference. Never paste a secret endpoint or key.',wide:true,max:250})}
+${input('intake-hours','Intake hours', {placeholder:'Mon–Fri, 8:00 AM–6:00 PM',hint:'Include any after-hours routing requirement.'})}
+${select('timezone','Intake time zone', [['','Choose a time zone'],['America/Los_Angeles','Pacific — America/Los_Angeles'],['America/Denver','Mountain — America/Denver'],['America/Phoenix','Arizona — America/Phoenix'],['America/Chicago','Central — America/Chicago'],['America/New_York','Eastern — America/New_York'],['Pacific/Honolulu','Hawaii — Pacific/Honolulu'],['America/Anchorage','Alaska — America/Anchorage']], {hint:'Used for scheduling, coverage and contact timing.'})}
+${input('capacity','Capacity per day <span class="optional">(proposed)</span>', {inputmode:'numeric',placeholder:'e.g. 10',hint:'Maximum new inquiries your team can review. Zero means hold.',max:6})}
+${select('languages','Intake languages', [['en','English'],['en,es','English + Spanish'],['es','Spanish']], {hint:'Language support must be verified before launch.'})}
+</div><details class="details"><summary>Network participation &amp; delivery terms</summary><p>Proposed firm preferences. These do not grant permission to share a person’s information or create an acceptance agreement.</p><div class="field-grid">
+${select('distribution','Requested lead distribution', [['undecided','Needs agreement'],['exclusive','Exclusive to our firm'],['shared','Shared only under an approved agreement']], {wide:true})}
+<div class="field wide"><label class="inline-check"><input type="checkbox" id="alternate-routing"><span>Discuss alternative matching with other participating firms.<small>Only after the applicable agreements and the person’s separate permission are verified. No automatic redistribution is enabled here.</small></span></label></div>
+</div></details></section>
+<section class="step" data-panel="3" aria-labelledby="step-title-3" hidden><div class="step-heading"><h2 id="step-title-3" tabindex="-1">Set the scope. Review it.</h2><span class="step-counter">04 / 04</span></div><p class="description">This prepares a local request for review. It does not issue an invoice, accept payment or approve a launch.</p><div id="managed-budget"><div class="field-grid">
+${input('media','Proposed advertising budget', {inputmode:'decimal',placeholder:'5000.00',hint:'USD. $5,000 is a planning example; enter the amount to be reviewed. Media remains separate from the build fee.',max:14})}
+${input('duration','Proposed campaign days', {inputmode:'numeric',value:'14',hint:'Start date and duration are agreed after readiness checks.',max:3})}
+</div><div class="cost-box"><h3>$2,500 campaign build fee</h3><p>Shown separately from your proposed media budget. Final scope, price and terms require review before an invoice can be issued.</p></div></div><div id="custom-commercial" class="cost-box" hidden><h3 id="commercial-title">Custom terms required</h3><p id="commercial-copy"></p></div><div class="draft-summary" id="review-summary" aria-label="Request summary"></div><div class="acceptance"><label class="inline-check"><input type="checkbox" id="scope-ack" data-required="true" required aria-describedby="error-scope-ack"><span>I confirm this is a draft scope request.<small>I understand the commercial terms, invoice, payment, any information sharing and the final launch require separate approval.</small></span></label><p class="field-error" id="error-scope-ack" aria-live="polite"></p></div></section>
+<div class="form-footer"><button type="button" class="button quiet" id="back" hidden>← Back</button><p class="micro-copy" id="start-note">Four short steps.</p><button type="button" class="button" id="next">Continue <span aria-hidden="true">→</span></button><button type="submit" class="button" id="prepare" hidden>Prepare request <span aria-hidden="true">→</span></button></div><p class="preview-warning">Preview only. Information stays in this tab until you download it. Nothing is sent and no payment is accepted. Do not enter claimant records or secret connection details.</p></form>
+<section class="draft-result" id="draft-result" aria-labelledby="draft-title" hidden><p class="result-label">Local planning draft</p><h2 id="draft-title" tabindex="-1">Your request is prepared.</h2><p class="ref" id="draft-ref"></p><p class="result-note">This reference identifies a draft in this tab. It is not a submitted order or a payment receipt.</p><div class="draft-summary" id="result-summary"></div><div class="status-banner"><strong>Review required before billing or setup.</strong><span>Final terms and campaign-specific approvals are still required.</span><ul id="review-reasons"></ul></div><p class="result-note">Next: review the scope with Kyle. For an approved campaign order, verified payment starts the build; you review the pages and request edits before it enters the launch queue.</p><div class="result-actions"><button type="button" class="button" id="download">Download request JSON</button><button type="button" class="button secondary" id="revise">Revise request</button><button type="button" class="button quiet" id="reset">Start a new request</button></div><p class="micro-copy" id="download-status" role="status">Download before closing this tab. No copy is stored here.</p></section></section>
+<aside class="sidebar" aria-label="Planning summary"><p class="side-label">Your proposed program</p><div class="plan-card"><h3 id="plan-title">Managed campaign</h3><p class="plan-topic" id="plan-topic">Choose a case type to begin.</p><dl class="plan-lines" id="plan-lines"></dl><p class="plan-note" id="plan-note">Planning amounts only. No approved quote, invoice, payment or launch.</p></div><div class="side-notes"><p class="side-copy"><strong>The goal:</strong> more qualified potential claims reaching the right intake team, with outcomes reported back to improve the next campaign.</p><p class="side-copy">Your firm decides legal eligibility and case acceptance. Screening supports that decision.</p><button type="button" class="demo-button" id="demo">Try synthetic example details</button></div></aside></div>
+<section class="system-section" aria-labelledby="system-title"><div class="section-heading"><h2 id="system-title">The proposed network workflow.</h2><p>Consumer screening is free. Firm services require agreed terms.</p></div><ol class="network-flow"><li><span class="num">01</span><strong>An inquiry arrives</strong><p>Someone explores a potential claim through an ad, case page or directory.</p></li><li><span class="num">02</span><strong>Approved pre-screen</strong><p>Ask the firm’s key qualifiers. Keep uncertain answers open for review.</p></li><li><span class="num">03</span><strong>The firm reviews</strong><p>Deliver through the tested route, within capacity, with an acceptance record.</p></li><li><span class="num">04</span><strong>Another fit, if permitted</strong><p>If the first firm declines, check another participating firm only under the applicable agreements and permission.</p></li><li><span class="num">05</span><strong>Outcomes return</strong><p>Track accepted, declined and signed outcomes separately, then review what improves qualified-case acquisition.</p></li></ol><details class="owner-checklist"><summary>What Kyle checks before a campaign launches</summary><ul>${checklist.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></details></section>
+</main><footer class="page-footer"><div class="wrap"><p>Best Tort Lawyers is a claim matching service operated by Marketing Apes LLC, not a law firm. This planning preview does not establish an attorney-client relationship, guarantee leads or show a live network directory.</p><p class="foot-version">Campaign kit · local preview · ${KIT_VERSION}</p></div></footer><script>${browserOrderContractSource()}
+(${onboardingBrowser.toString()})(${js({schema:ORDER_SCHEMA})});</script></body></html>`;
+}
+
 // ---------- write ----------
+export function buildOnboarding() {
+  const pageDir = join(KIT, 'out', 'onboarding', 'preview');
+  mkdirSync(pageDir, {recursive:true});
+  writeFileSync(join(pageDir, 'index.html'), renderOnboardingPage());
+  return {mode:'LOCAL_DRAFT_NOT_SUBMITTED',pages:'campaign-kit/out/onboarding/preview/index.html',provider_actions:false};
+}
+
 export function build(file) {
   const c = normalize(JSON.parse(readFileSync(file, 'utf8')));
   // publish:false keeps the pages out of btl/ (not deployed) — used for client lanes that already live elsewhere.
@@ -600,9 +905,16 @@ export function writeBriefChecklist(configs) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  const dir = join(KIT, 'campaigns');
-  const files = args[0] === '--all' ? readdirSync(dir).filter(f => f.endsWith('.json')).map(f => join(dir, f)) : args;
-  if (!files.length) { console.error('usage: build.mjs <campaign.json> | --all'); process.exit(1); }
-  for (const f of files) { if (!existsSync(f)) { console.error('missing ' + f); process.exit(1); } console.log(JSON.stringify(build(f))); }
-  if (args[0] === '--all') writeBriefChecklist(files.map(f => normalize(JSON.parse(readFileSync(f, 'utf8')))));
+  if (args[0] === '--onboarding') console.log(JSON.stringify(buildOnboarding()));
+  else {
+    const dir = join(KIT, 'campaigns');
+    const files = args[0] === '--all' ? readdirSync(dir).filter(f => f.endsWith('.json')).map(f => join(dir, f)) : args;
+    if (!files.length) { console.error('usage: build.mjs <campaign.json> | --all | --onboarding'); process.exit(1); }
+    for (const f of files) { if (!existsSync(f)) { console.error('missing ' + f); process.exit(1); } console.log(JSON.stringify(build(f))); }
+    if (args[0] === '--all') {
+      writeBriefChecklist(files.map(f => normalize(JSON.parse(readFileSync(f, 'utf8')))));
+      console.log(JSON.stringify(buildOnboarding()));
+    }
+  }
 }
+
