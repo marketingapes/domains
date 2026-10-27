@@ -13,7 +13,6 @@ import http from "node:http";
 import { createRequire } from "node:module";
 import { readFile, mkdir, writeFile, access } from "node:fs/promises";
 import { join, extname, normalize } from "node:path";
-import { createHash } from "node:crypto";
 import assert from "node:assert/strict";
 
 const ROOT = new URL("../btl/", import.meta.url).pathname;
@@ -23,16 +22,18 @@ if (!CHROMIUM || !process.env.PLAYWRIGHT) { console.error("Set PLAYWRIGHT (exist
 const { chromium } = createRequire(import.meta.url)(process.env.PLAYWRIGHT);
 if (SHOTS) { try { await access(SHOTS); console.error("SHOTS must be a new directory."); process.exit(2); } catch { await mkdir(SHOTS, { recursive: true }); } }
 
-const sha = (v) => createHash("sha256").update(v).digest("hex");
 const posted = [];
 const types = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".webp": "image/webp", ".jpg": "image/jpeg", ".png": "image/png" };
+// The pages speak legal-web-lead's POST /api/v1/btl/web-lead (intake_contract "btl.web-lead/v1"): a
+// stored request with Sofia's callback queued is the only "saved" answer.
 function receipt(body, variant) {
-  const good = { ok: true, schema: "btl.abuse.intake/v1", campaign_id: "btl-ca-abuse-la-county-v1", lead_id: "MA-BTL-ABUSE-00000000-0000-4000-8000-000000000001", submission_id: body.submission_id, consent_record_id: `CR-${sha(body.submission_id).slice(0, 24)}`, saved: true, status: "saved_pending_human_review", eligibility: "not_assessed", dispatch: "disabled", outreach: "not_scheduled" };
+  const uid = "MA-BTL-00000000-0000-4000-8000-000000000001";
+  const good = { ok: true, lead_uid: uid, lead_id: uid, event_id: body.event_id, dispatch_id: "phl-00000000-0000-4000-8000-000000000001", status: "awaiting_executor", test: false, dry_run: false, route_hint: null, litify: { dry_run: true, sent: false }, message: "Callback request queued. No call has been placed yet." };
   const bad = {
-    wrongsub: { submission_id: "different-submission" }, badlead: { lead_id: "MA-BTL-ABUSE-invalid" }, dispatch: { dispatch: "enabled" },
-    noconsent: { consent_record_id: undefined }, schema: { schema: "btl.intake.web/v1" }, campaign: { campaign_id: "btl-az-mva" },
-    notsaved: { saved: false }, qualified: { eligibility: "qualified" },
+    wrongevent: { event_id: "sub-different" }, baduid: { lead_uid: "MA-NIL-00000000-0000-4000-8000-000000000001" }, test: { test: true },
+    dryrun: { dry_run: true, status: "dry_run" }, filtered: { filtered: true }, refused: { status: "refused" }, notok: { ok: false },
   }[variant];
+  if (variant === "duplicate") return { ...good, duplicate: true, event_id: "sub-earlier-request" };
   return bad ? { ...good, ...bad } : good;
 }
 const server = http.createServer(async (req, res) => {
@@ -117,9 +118,13 @@ await check("landing exact receipt → saved", async () => {
   await open("/sex-abuse-la-county/?ep=good");
   assert.equal(await evaluate("document.querySelector('[data-ee-offline]').hidden"), true);
   await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
-  assert.deepEqual(await visibleState("landDone"), ["saved"]);
+  assert.deepEqual(await visibleState("landDone"), ["queued"]);
   const last = posted[posted.length - 1].body;
-  assert.deepEqual([last.schema, last.campaign_id, last.page_path, last.answers.length, last.consent.version, last.consent.method, last.consent.calls, last.consent.sms, last.consent.text_sha256.length], ["btl.abuse.intake/v1", "btl-ca-abuse-la-county-v1", "/sex-abuse-la-county/", 0, "btl-abuse-submit-consent-draft-2026-10-23.1", "submit", true, true, 64]);
+  assert.deepEqual([last.name, last.phone, last.consent, last.consent_method, last.consent_version, last.consent_sha256.length, last.tort, last.state, last.page_path, last.form_variant, last.company],
+    ["Avery", "3105550142", true, "submit_button", "btl-abuse-submit-consent-draft-2026-10-23.1", 64, "la_county_abuse", "CA", "/sex-abuse-la-county/", "btl-sex-abuse-la-county:landing", ""]);
+  assert.match(last.consent_text, /^By submitting this form, you agree that Phillips Law Group/);
+  assert.match(last.event_id, /^sub-/);
+  assert.match(await evaluate("document.getElementById('landDone').innerText"), /Sofia, an A\.I\. assistant with Phillips Law Group’s intake team, will call you/);
 });
 await check("quiz facility step refuses contact details or a story and accepts Not sure", async () => {
   await open("/sex-abuse-la-county/quiz/?ep=good");
@@ -134,16 +139,20 @@ await check("quiz facility step refuses contact details or a story and accepts N
   assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 2);
   assert.match(await evaluate("document.getElementById('rSum').innerText"), /Not sure/);
 });
-await check("landing sends contact only (no answers) with the current question-bank version", async () => {
+await check("landing sends name, phone and consent only: no answers, no email, no story", async () => {
   await open("/sex-abuse-la-county/?ep=good");
   await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
-  assert.deepEqual(await visibleState("landDone"), ["saved"]);
+  assert.deepEqual(await visibleState("landDone"), ["queued"]);
   const last = posted[posted.length - 1].body;
-  assert.equal(last.question_bank_version, "2026-10-22.template.2");
-  assert.deepEqual([last.answers, Object.keys(last.contact).sort(), last.contact.email], [[], ["email", "first_name", "phone"], ""]);
+  assert.deepEqual([last.answers, last.email, last.routing], [undefined, undefined, undefined]);
   assert.doesNotMatch(await evaluate("document.getElementById('landDone').innerText"), /separate|review group|turned away|not eligible|qualif/i, "the receipt shows no routing or rejection language");
 });
-for (const variant of ["wrongsub", "badlead", "dispatch", "noconsent", "schema", "campaign", "notsaved", "qualified", "http500"]) {
+await check("a duplicate of a request already queued for this phone counts as saved", async () => {
+  await open("/sex-abuse-la-county/?ep=duplicate");
+  await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
+  assert.deepEqual(await visibleState("landDone"), ["queued"]);
+});
+for (const variant of ["wrongevent", "baduid", "test", "dryrun", "filtered", "refused", "notok", "http500"]) {
   await check(`landing wrong receipt (${variant}) → not saved`, async () => {
     await open(`/sex-abuse-la-county/?ep=${variant}`);
     await fillContact("laneForm"); await click("#laneForm button[type=submit]"); await sleep(600);
@@ -156,13 +165,13 @@ await check("retry keeps the same submission id; edited content gets a new one",
   await open("/sex-abuse-la-county/?ep=http500");
   await fillContact("laneForm");
   await click("#laneForm button[type=submit]"); await sleep(500); await click("#laneForm button[type=submit]"); await sleep(500);
-  const [a, b] = posted.slice(-2).map((p) => p.body.submission_id);
+  const [a, b] = posted.slice(-2).map((p) => p.body.event_id);
   assert.equal(a, b);
   await fill("#laneForm #first_name", "Avery J"); await click("#laneForm button[type=submit]"); await sleep(500);
-  assert.notEqual(posted[posted.length - 1].body.submission_id, a);
+  assert.notEqual(posted[posted.length - 1].body.event_id, a);
 });
 // ---------- quiz: four approved answers → summary without verdict → contact → saved with answers ----------
-await check("quiz → summary → saved with four question IDs", async () => {
+await check("quiz → summary → queued; quiz answers stay on the page (Sofia asks on the call)", async () => {
   await open("/sex-abuse-la-county/quiz/?ep=good");
   await answerQuiz(); await sleep(600); // the summary line is typed in after a short pause
   const text = await evaluate("document.getElementById('rSay').textContent + ' ' + document.getElementById('rSum').innerText");
@@ -171,10 +180,10 @@ await check("quiz → summary → saved with four question IDs", async () => {
   assert.doesNotMatch(text, /may potentially qualify|not be able to help|disqualif/i);
   assert.equal(await evaluate("document.querySelectorAll('#rSum li').length"), 2);
   await click("#rContinue"); await fillContact("quizForm"); await click("#quizForm button[type=submit]"); await sleep(600);
-  assert.deepEqual(await visibleState("quizDone"), ["saved"]);
+  assert.deepEqual(await visibleState("quizDone"), ["queued"]);
   const last = posted[posted.length - 1].body;
-  assert.deepEqual(last.answers.map((a) => [a.question_id, a.answer_id, a.answer_text ?? null, a.source]), [["claim_type", "la_juvenile_detention", null, "quiz"], ["facility", "named", "Fictional Valley Juvenile Hall", "quiz"]]);
-  assert.equal(last.page_path, "/sex-abuse-la-county/quiz/");
+  assert.equal(JSON.stringify(last).includes("Fictional Valley"), false, "facility text is not sent");
+  assert.deepEqual([last.page_path, last.form_variant, last.tort], ["/sex-abuse-la-county/quiz/", "btl-sex-abuse-la-county:quiz", "la_county_abuse"]);
 });
 await check("quiz cannot submit without all answers", async () => {
   await open("/sex-abuse-la-county/quiz/?ep=good");
