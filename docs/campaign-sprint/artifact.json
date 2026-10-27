@@ -1,0 +1,27 @@
+{
+  "schema": "campaign-sprint-review/v1",
+  "base": "ac88fa9ded31cafa93f9c6eb125130027fa03c9b",
+  "publication_candidate": "https://marketingapes.com/campaign-sprint/",
+  "published": false,
+  "tests": {
+    "offer_and_kit_passed": 17,
+    "foundation": "PASS",
+    "responsive_checks": 15
+  },
+  "provider_operations": 0,
+  "emails_sent": 0,
+  "files": {
+    "ma/campaign-sprint/demo/ads.html": "5511463ae732f8507a367a7e3c119a97869aaf0c59cb5159ee694faf4c70f0d0",
+    "ma/campaign-sprint/demo/btl-seal.svg": "c26ca226e65d214fcce756850ed5d81ab381b090928991be9f0af788f656152c",
+    "ma/campaign-sprint/demo/fixture.css": "4d8773ac4da5fa7b24e93bf1e57336cc60f7fbed7d7328d282a4f4c13a520e60",
+    "ma/campaign-sprint/demo/fixture.js": "2a1b56b87b80f0563668a42244427820ee80134db57d95d2da4cca818df5d84d",
+    "ma/campaign-sprint/demo/form.html": "042f95a7c952a4b825225ca43d69295d7d5fc03feb02ce4d2420d2b7be3c194a",
+    "ma/campaign-sprint/demo/index.html": "c729221102b57ace2f1f4cee472ccb7d2c93f1aa8fe8b4112e0481d353b0360d",
+    "ma/campaign-sprint/demo/quiz.html": "eb8a6864d4f58a3355ef531b4837fa05f153b09a8ba1f573a60cc1f129279098",
+    "ma/campaign-sprint/demo/site.css": "0db5f08e290a0494d463a689dabd6b97773f0ea93a49c4beb6453a73ffea11e3",
+    "ma/campaign-sprint/demo/sofia.html": "08fb9a41b848467bc9bfdf7a873013d4bcad754f0c0abc5c2cd1bf6c5a197ee6",
+    "ma/campaign-sprint/index.html": "675a23dc35d8f7a46430b19a51f5520e67af2800bc80782ecac401b65e2d8215",
+    "ma/campaign-sprint/sprint.css": "3b17beed2b639a8e08e7f5ef74fc8bc67cce98cc1766806e8d522708373907b4",
+    "ma/campaign-sprint/sprint.js": "99bc316423740088aca1cccf04194f887efc663b468365573c8973bf0f5e00a7"
+  }
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "width": 320,
+    "route": "offer",
+    "heading": "One tort.Two weeks.A focused campaign sprint.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/form.html",
+    "heading": "A direct path to a human review.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/quiz.html",
+    "heading": "One clear question at a time.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/sofia.html",
+    "heading": "A conversation with a clear boundary.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/ads.html",
+    "heading": "Three draft messages. One review standard.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "offer",
+    "heading": "One tort.Two weeks.A focused campaign sprint.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/form.html",
+    "heading": "A direct path to a human review.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/quiz.html",
+    "heading": "One clear question at a time.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/sofia.html",
+    "heading": "A conversation with a clear boundary.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/ads.html",
+    "heading": "Three draft messages. One review standard.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "offer",
+    "heading": "One tort.Two weeks.A focused campaign sprint.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/form.html",
+    "heading": "A direct path to a human review.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/quiz.html",
+    "heading": "One clear question at a time.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/sofia.html",
+    "heading": "A conversation with a clear boundary.",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/ads.html",
+    "heading": "Three draft messages. One review standard.",
+    "missingImages": 0,
+    "overflow": false
+  }
+]
