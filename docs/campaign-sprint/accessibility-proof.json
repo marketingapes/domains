@@ -1,0 +1,55 @@
+{
+  "proof": [
+    {
+      "label": "2 of 3. Which sample geography should the demo display?",
+      "tag": "H2",
+      "text": "Which sample geography should the demo display?"
+    },
+    {
+      "label": "1 of 3. Which fictional path would you like to explore?",
+      "tag": "H2",
+      "text": "Which fictional path would you like to explore?"
+    },
+    {
+      "label": "Fictional result. DEMO: Human review remains required. This is not a case assessment.",
+      "tag": "H2",
+      "text": "DEMO: Human review remains required. This is not a case assessment."
+    },
+    {
+      "label": "simulated completion focus",
+      "id": "done",
+      "text": "SIMULATED HANDOFF · DEMO-001. No inquiry was sent, no callback was requested and no firm received a record. The next step would be human review. View the synthetic reporting journey →"
+    },
+    {
+      "label": "Sofia first polite announcement",
+      "atomic": "true",
+      "focus": "next-turn",
+      "live": "polite",
+      "role": "status",
+      "text": "Fictional caller: I would like to understand the next step."
+    },
+    {
+      "label": "Sofia final announcement and focus",
+      "disabled": "true",
+      "focus": "next-turn",
+      "text": "Sofia: Your firm’s approved criteria guide the review. A human decides the next step. No acceptance or transfer is promised. Simulated conversation complete. No handoff occurred.",
+      "turns": 5
+    }
+  ],
+  "metadata": [
+    {
+      "path": "form.html",
+      "description": "Fixed fictional form preview only. No inquiry is sent and no callbacks or live calls are requested.",
+      "ogDescription": "Fixed fictional form preview only. No inquiry is sent and no callbacks or live calls are requested.",
+      "title": "Fictional form preview | Marketing Apes demo"
+    },
+    {
+      "path": "sofia.html",
+      "description": "Click through a scripted fictional Sofia conversation. No live calls, assistant connection, recording or transfer.",
+      "ogDescription": "Click through a scripted fictional Sofia conversation. No live calls, assistant connection, recording or transfer.",
+      "title": "Fictional Sofia walkthrough | Marketing Apes demo"
+    }
+  ],
+  "screen_reader_audio_tested": false,
+  "repeat_activation": "Browser automation correctly refused aria-disabled button"
+}

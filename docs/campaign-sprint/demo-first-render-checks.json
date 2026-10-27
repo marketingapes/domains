@@ -1,0 +1,92 @@
+[
+  {
+    "width": 320,
+    "route": "offer",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/form.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/quiz.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/sofia.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 320,
+    "route": "demo/ads.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "offer",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/form.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/quiz.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/sofia.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "route": "demo/ads.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "offer",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/form.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/quiz.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/sofia.html",
+    "missingImages": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "route": "demo/ads.html",
+    "missingImages": 0,
+    "overflow": false
+  }
+]

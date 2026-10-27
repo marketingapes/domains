@@ -1,0 +1,34 @@
+== frozen hash comparison ==
+  17/17 artifacts byte-identical to the frozen manifest
+== canonical tenant set ==
+  note  lee/domain.json is present and NOT part of the canonical 14 (excluded from the foundation; its site folder is left alone)
+  14/14 canonical manifests present
+== frozen validator (staged layout) ==
+    TEN   CAPS  DECL   CLEAN   COVER   ERRORS
+    ------------------------------------------------------------------------------------
+    BTL   47    PASS   PASS    PASS    -
+    CGG   47    PASS   PASS    PASS    -
+    DDM   47    PASS   PASS    PASS    -
+    DIHAC 47    PASS   PASS    PASS    -
+    FPLB  47    PASS   PASS    PASS    -
+    KG    47    PASS   PASS    PASS    -
+    LFMA  47    PASS   PASS    PASS    -
+    MA    47    PASS   PASS    PASS    -
+    NIL   47    PASS   PASS    PASS    -
+    PX    47    PASS   PASS    PASS    -
+    RI    47    PASS   PASS    PASS    -
+    SLIQ  47    PASS   PASS    PASS    -
+    TNT   47    PASS   PASS    PASS    -
+    TOSS  47    PASS   PASS    PASS    -
+
+    schema:               marketingapes.domain.foundation/v1.2
+    tenant set:           EXACT (14/14 canonical, 0 extra)
+    FOUNDATION-DECLARED:  14/14
+    FOUNDATION-CLEAN:     14/14
+    CONTRACT-COVERAGE:    14/14
+    capability leaves:    47 per object | 658 total
+    identity namespaces:  28
+== schema validation ==
+  schema conformance: 14/14
+
+FOUNDATION VERIFY: PASS

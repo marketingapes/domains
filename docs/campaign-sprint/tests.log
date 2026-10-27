@@ -1,0 +1,27 @@
+✔ every shipped config builds as a PREVIEW that cannot reach production (2.545291ms)
+✔ live mode needs evidence on every gate, a webhook and a firm transfer (0.926125ms)
+✔ live pages send btl.intake.web/v1 and accept success only with a receipt (0.323458ms)
+✔ transfer destinations are validated (9.645042ms)
+✔ image sizes are read from file headers (0.105375ms)
+✔ creative manifest separates real files, Meta-only creatives and missing slots (0.917084ms)
+✔ checklist rows carry a status and evidence; nothing is WORKING without it (0.709875ms)
+✔ BRIEF.md checklist block matches the configs (run build --all after editing a config) (0.910917ms)
+✔ config text is escaped and bad configs are refused (0.644208ms)
+✔ channel bundle is paused drafts only; preview-only campaigns get no kit landing links (1.0035ms)
+✔ demo-first page frames lower signed-case acquisition cost as a goal without public pricing (0.888792ms)
+✔ primary contact matches existing verified MA work email, no payment or phone CTA (0.420083ms)
+✔ all page links, assets and fragments resolve locally or are the approved mailto (1.789583ms)
+✔ all demo pages prevent provider, tracking, dialing and external-font transport (0.41225ms)
+✔ fictional form fields cannot receive claimant details; no agreement is collected (0.194833ms)
+✔ Perspective and voice have truthful synthetic, unavailable and unknown states (0.116667ms)
+✔ fixture export deterministically reuses the existing generator without modifying it (29.630667ms)
+✔ fixture titles and search/social descriptions explicitly describe fictional non-calling previews (0.409625ms)
+✔ scripted voice has one atomic polite live region and final button remains focusable (0.158709ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 68.393042
