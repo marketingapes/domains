@@ -1,4 +1,4 @@
-/* BTL-SSDI-001 B version page script for the callback form (/ssdi/b/) and Talk to Sofia (/ssdi/b/talk-to-sofia/):
+/* BTL-SSDI-001 page script for the callback form (/ssdi/) and Talk to Sofia (/ssdi/talk-to-sofia/):
    picks the call time, opens the callback card in place, shows the thank-you after intake.js saves the lead,
    and tags call clicks. The Sofia call links work only when <body data-sofia-tel> holds the SSDI line
    (otherwise they are hidden: never a line that answers as another Sofia). Nothing identifying goes to dataLayer. */

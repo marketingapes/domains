@@ -12,4 +12,4 @@ The BTL SSDI A pages (`/ssdi/`, Glassman-style layout) re-branded for Jeffrey Gl
 - Leads: campaign-kit intake (Make 6777650), tenant `glassman`, campaign `GLASSMAN-SSDI-002`. `?test=1` sends a synthetic lead.
 - Brand: logo, door images and colors from `/glassman-ssdi/` (jeffreysglassman.com palette). Firm phone (617) 777-7777, privacy/disclaimer links go to jeffreysglassman.com.
 - Criteria, hours and the CA/CO exclusion are still the same as `/ssdi/criteria.js` (the GAR buyer's box). Swap them in `criteria.js` and the page copy once Glassman gives his own.
-- Regenerate from the BTL pages: `python3 btl/glassman/ssdi/build_from_ssdi.py btl` (overwrites this folder except this README and the script).
+- Built 2026-10-28 from the dark pages, which were at `/ssdi/` then and are now at `/ssdi/b/`. `build_from_ssdi.py` reads `/ssdi/`, so it no longer reproduces these pages as is; edit this folder directly.
