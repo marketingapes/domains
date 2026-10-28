@@ -29,13 +29,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="stylesheet" href="/ssdi/pages.css?v=20261028h">
 <script>document.documentElement.className+=' js'</script>
 </head>
+<!-- data-calltrk-noswap: CallRail must not swap the Sofia line on SSDI pages; Kyle wants (202) 932-9700 shown (2026-10-28). -->
 <!-- data-sofia-tel: the SSDI Sofia's own line in E.164 (Vapi 9d3d31eb). Empty hides every "Talk to Sofia" call link
      (never a line that answers as another Sofia). (202) 932-9700 moved to the SSDI Sofia on 2026-10-28 at Kyle's direction. -->
-<body data-sofia-tel="+12029329700">
+<body data-calltrk-noswap data-sofia-tel="+12029329700">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a class="skip" href="#request">Skip to the callback form</a>
 
-<div class="bar"><div class="in"><span><b>Free to check.</b> <span class="hide-s">Not the government. Never sold.</span></span><a href="#" data-sofia-call="topbar">Talk to Sofia: <span data-num>(202) 932-9700</span></a></div></div>
+<div class="bar"><div class="in"><span><b>Free to check.</b> <span class="hide-s">Not the government. Never sold.</span></span><a href="#" data-calltrk-noswap data-sofia-call="topbar">Talk to Sofia: <span data-num>(202) 932-9700</span></a></div></div>
 <header class="nav"><div class="in">
   <a class="brand" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="40" height="40" alt=""><span><b>Best Tort Lawyers</b><small>Social Security Disability</small></span></a>
   <nav class="links" aria-label="SSDI pages"><a href="/ssdi/b/quiz/">Eligibility check</a><a href="/ssdi/b/" aria-current="page">Request a callback</a><a class="call" href="/ssdi/b/talk-to-sofia/">Talk to Sofia</a></nav>
@@ -61,7 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Request my free call"></div>
             <p class="status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
-        <p class="alt-ways"><a href="#" data-sofia-call="form_alt">Call Sofia now: <span data-num>(202) 932-9700</span></a><a href="/ssdi/b/quiz/">Or take the two-minute check →</a></p>
+        <p class="alt-ways"><a href="#" data-calltrk-noswap data-sofia-call="form_alt">Call Sofia now: <span data-num>(202) 932-9700</span></a><a href="/ssdi/b/quiz/">Or take the two-minute check →</a></p>
       </div>
       <div class="ok-box" id="formDone" hidden><b tabindex="-1">You’re all set.</b><p id="doneText"></p><p>The call comes from Sofia, our AI intake assistant. Keep your phone nearby.</p></div>
     </div>
@@ -128,7 +129,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <section class="close center" aria-labelledby="closeH"><div class="in">
   <h2 class="sec" id="closeH">Find out where you stand today.</h2>
   <p>Free, about two minutes, and you can stop anytime.</p>
-  <div class="ctas"><a class="cta" href="#request">Request my free call →</a><a class="cta ghost" href="#" data-sofia-call="close">Call Sofia: <span data-num>(202) 932-9700</span></a></div>
+  <div class="ctas"><a class="cta" href="#request">Request my free call →</a><a class="cta ghost" href="#" data-calltrk-noswap data-sofia-call="close">Call Sofia: <span data-num>(202) 932-9700</span></a></div>
 </div></section>
 
 </main>

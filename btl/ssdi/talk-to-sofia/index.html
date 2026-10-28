@@ -29,9 +29,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
 <link rel="stylesheet" href="/ssdi/friendly.css?v=20261028h">
 </head>
+<!-- data-calltrk-noswap: CallRail must not swap the Sofia line on SSDI pages; Kyle wants (202) 932-9700 shown (2026-10-28). -->
 <!-- data-sofia-tel: the SSDI Sofia's own line in E.164. Empty hides every "Call Sofia" link (never a line that answers as another Sofia).
      (202) 932-9700 was moved from the Paraquat Sofia to the SSDI Sofia (Vapi 9d3d31eb) on 2026-10-28 at Kyle's direction. -->
-<body data-sofia-tel="+12029329700">
+<body data-calltrk-noswap data-sofia-tel="+12029329700">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a class="skip" href="#callSofia">Skip to Talk to Sofia</a>
 
@@ -39,7 +40,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <header class="top">
   <div class="wrap">
     <a class="logo" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="40" height="40" alt=""><b>Best Tort Lawyers</b></a>
-    <a class="top-call" href="#" data-sofia-call="header"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span><span><small>Talk to Sofia</small><span data-num></span><b class="m">Call Sofia</b></span></a>
+    <a class="top-call" href="#" data-calltrk-noswap data-sofia-call="header"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span><span><small>Talk to Sofia</small><span data-num></span><b class="m">Call Sofia</b></span></a>
   </div>
 </header>
 
@@ -52,7 +53,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <p class="lede">Sofia is our AI intake assistant. She asks six quick questions about Social Security Disability and, if it fits, connects you with a disability intake team on the same call. Calling after hours? She books a time for the team to call you back.</p>
 
       <div class="call-cta">
-        <a class="call-btn primary" id="callSofia" href="#" data-sofia-call="hero_call">
+        <a class="call-btn primary" id="callSofia" href="#" data-calltrk-noswap data-sofia-call="hero_call">
           <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span>
           <span><strong>Call Sofia now</strong><small data-num></small></span>
           <span class="go" aria-hidden="true">›</span>
