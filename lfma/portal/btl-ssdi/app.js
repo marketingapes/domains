@@ -18,7 +18,7 @@ const LABEL = {state:'State',age:'Age',out_of_work:'Out of work 1 yr+',doctor:"U
   full_name:'Name',out_of_work_1yr:'Out of work 1 yr+',under_doctor_care:"Under a doctor's care",receiving_gov_disability:"Gov't disability now",has_lawyer:'Has a lawyer',outcome:'Sofia outcome',not_qualified_reason:'Did not fit',callback_eastern:'Callback (Eastern)',callback_caller_local:"Callback (caller's time)",callback_phone:'Callback number',answers:'Answers'};
 
 function sourceLabel(s) { return ({screened_inquiry:'Form or quiz', callback_request:'Talk to Sofia callback'})[s] || (s || 'Inquiry'); }
-function pageLabel(p) { return ({'btl-ssdi-main-form':'Form page', 'btl-ssdi-quiz':'Quiz with Sofia', 'btl-ssdi-call-first':'Talk to Sofia page'})[p] || p || '—'; }
+function pageLabel(p) { return ({'btl-ssdi-main-form':'Form page', 'btl-ssdi-quiz':'Quiz with Sofia', 'btl-ssdi-call-first':'Talk to Sofia page', 'btl-ssdi-b-form':'Form page (B)', 'btl-ssdi-b-quiz':'Quiz with Sofia (B)', 'btl-ssdi-b-call-first':'Talk to Sofia page (B)'})[p] || p || '—'; }
 const ENDED = {'customer-ended-call':'caller hung up','assistant-forwarded-call':'transferred','assistant-ended-call':'Sofia ended the call','silence-timed-out':'silence timeout','voicemail':'voicemail','customer-did-not-answer':'no answer','assistant-error':'system error'};
 function callStatus(c) {
   const o = (c.outcome || '').toUpperCase(), e = ENDED[c.ended_reason] || (c.ended_reason || '').replace(/-/g, ' ');

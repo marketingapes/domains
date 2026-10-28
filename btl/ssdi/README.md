@@ -24,6 +24,8 @@ Add `?test=1` to any page URL to send a synthetic lead (stored as `lead.test`, n
 
 All three share `pages.css` + `pages.js`: the Glassman SSDI layout (`btl/glassman-ssdi/`) in Best Tort Lawyers' navy and gold, with no firm named. `talk-to-sofia-b/` still uses the older `look.css` + `talk.js`.
 
+**B version (`b/`):** the light "friendly" look from #367, kept for testing beside the A pages: `/ssdi/b/` (callback form, `btl-ssdi-b-form`), `/ssdi/b/talk-to-sofia/` (`btl-ssdi-b-call-first`), `/ssdi/b/quiz/` (`btl-ssdi-b-quiz`, chat quiz). Same intake, consent and Sofia line; its own `friendly.css`/`friendly.js` and quiz script so A changes never touch it.
+
 ## Shared files
 
 | File | Role |
