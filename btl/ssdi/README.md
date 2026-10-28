@@ -1,83 +1,46 @@
-# SSDI-PILOT-001 — SSDI reference campaign (YOUR BRAND HERE)
+# BTL-SSDI-001 — SSDI campaign (Best Tort Lawyers)
 
-A complete Social Security Disability reference campaign mirroring the proven
-PARAQUAT-PILOT-001 build, so a firm adopts it by swapping in its brand, its
-approved criteria, and its production transfer destination. **Reference build
-only: nothing here is live, no ads run, no leads are delivered, and no
-assistant has been created or changed.** Pages run in synthetic (preview)
-mode — submissions stay in the visitor's browser.
+Three pages for a Social Security Disability buyer whose firm is never named on the site.
+**Preview only: nothing is sent, no ads run, and no Sofia assistant or phone line exists yet.**
+Submissions stay in the visitor's browser (`sessionStorage` key `ee_ssdi_last_lead`) until
+`window.EE_INTAKE_ENDPOINT` is set at go-live.
 
-## Contents
+## Buyer terms (from the buyer, 2026-10-27)
 
-| Path | What it is |
+- **Criteria:** age 54–63 · out of work at least a year · not represented by an attorney ·
+  currently under a doctor's care · not receiving government disability payments.
+- **Hours:** Monday–Friday, 9:30 AM–6:00 PM Eastern.
+- **Geo:** all US except California and Colorado (ads: no India or Pakistan traffic).
+- **Brand:** the firm's name must not appear on the website.
+
+## Pages
+
+| Path | What it is | Page tag |
+|---|---|---|
+| `index.html` | Three-step form (about you → work and health → contact), tap answers, "why we ask" under each question | `btl-ssdi-main-form` |
+| `quiz/index.html` + `quiz/quiz.js` | Sofia chat: she types, asks, says why she asks; contact step only after a "may qualify" result | `btl-ssdi-quiz` |
+| `talk-to-sofia/index.html` + `talk.js` | Callback request plus an example call that plays as it scrolls in. The call button stays off until the SSDI Sofia has its own number | `btl-ssdi-call-first` |
+
+## Shared files
+
+| File | Role |
 |---|---|
-| `index.html` | **Door 1 — Form.** Dropdown qualifier + contact form. Page tag `btl-ssdi-main-form`. Per-channel consent checkboxes (never prechecked); TrustedForm wired at go-live only. |
-| `talk-to-sofia/index.html` | **Door 2 — Talk to Sofia.** Call-first page + callback panel. Page tag `btl-ssdi-call-first`. Demo line (202) 932-9700 (same demo chain as Paraquat). |
-| `quiz/index.html` + `quiz/quiz.js` | **Door 3 — Guided quiz.** Chat-style, one question at a time, outcome shown to the visitor. Page tag `btl-ssdi-quiz`. |
-| `qualifier.js` | Form-door scoring (example firm criteria): QUALIFIED / FIRM_REVIEW / NOT_A_FIT. Visitor never sees which answer mattered. |
-| `intake.js` | Shared intake: consent rendering, non-PII dataLayer events only, payload build, synthetic delivery. |
-| `ssdi.css` | Shared styles adapted from `/paraquat/paraquat.css` conventions. |
-| `ads/facebook-previews.md` | Three Facebook ad previews (one per door), each labeled **PREVIEW — NOT LAUNCHED**. |
-| `sofia/sofia-ssdi-config.md` | Sofia SSDI configuration spec: system prompt, verify-then-transfer flow, exact qualification line, `PLACEHOLDER_TRANSFER_DESTINATION`. Spec only — not applied anywhere. |
-| `perspective/` | Perspective demo view + contract README: how an SSDI test lead appears, aggregate-only rules, human-date formatting, swap-ins. Feed is a placeholder — the view honestly reports "not connected." |
+| `criteria.js` | The only place the buyer's criteria, hours and excluded states live. Outcomes: `QUALIFIED`, `FIRM_REVIEW` (a "Not sure" Sofia confirms on the call), `NOT_A_FIT`. Routes: `sofia_transfer`, `sofia_confirm`, `hold`; callback leads are `sofia_screen`. |
+| `qualifier.js` | Form steps and scoring for `index.html`. Not-a-fit visitors stop after step 2 and are never asked for contact details. |
+| `intake.js` | Consent, payload (answers, route, `transfer_window`, UTMs and click IDs), delivery. Fires `ee:lead-saved` on the form after a save. dataLayer gets non-identifying events only. |
+| `look.css` | Design for all three pages: dark animated hero, Sofia ring and voice wave, tap tiles, promise cards. Motion is off under `prefers-reduced-motion`. |
+| `motion.js` | Scroll reveals. |
+| `states.js` | Fills state selects. |
+| `/assets/ssdi/hero-woman-phone-*.jpg` | AI-generated hero photo (Leonardo Lucid Realism, 2026-10-27), no logos or text. |
 
-Campaign ID everywhere: `SSDI-PILOT-001`. Tracking follows the house
-standard: GTM container `GTM-PHC7459M`, only non-identifying events to
-dataLayer (page_id, campaign_id, tenant_id, step counts, result category) —
-names, phone numbers, emails, states and answers are never pushed.
+## Before go-live
 
-## Marked assumptions (from the brief — do not present as a firm's ask)
+1. Buyer's DID and posting specs → set `window.EE_INTAKE_ENDPOINT` and the delivery mapping.
+2. SSDI Sofia assistant with the buyer's criteria, the transfer to the DID, and its own phone number;
+   then turn the call option back on. Never reuse (202) 932-9700, which reaches the Paraquat Sofia.
+3. Callbacks must fall inside both the buyer's hours and the lead's local calling hours.
+4. Buyer/counsel OK on the consent text, which names "a participating law firm" rather than the firm.
+5. GTM: map `ee_lead_submit_success` to the Lead conversion before ads run.
 
-- **Scope:** whether the adopting firm wants new applications, denied-claim
-  appeals, or both is **unconfirmed**. Both paths are built; every demo
-  walkthrough defaults to **new applications**.
-- **Geography:** SSDI is federal; the example build is nationwide. The firm
-  confirms the states it actually takes.
-- **Criteria:** all screening rules are published-example grade. Firm +
-  counsel confirm before any live run.
-
-## Swap-in points (adoption checklist)
-
-1. **Brand** — "YOUR BRAND HERE" → firm brand (headers, footers, legal
-   blocks, seal) and `tenant_id` in `intake.js` / `quiz.js`.
-2. **Criteria** — confirm/edit the example rules in `qualifier.js`,
-   `quiz/quiz.js`, and the Sofia spec (incl. the scope question above).
-3. **Transfer destination** — replace `PLACEHOLDER_TRANSFER_DESTINATION` in
-   `sofia/sofia-ssdi-config.md` with the firm's production transfer number.
-   (Never pre-filled here; the reference build demos transfers on the
-   existing CallRail demo chain.)
-4. **Sofia binding** — create/bind the firm's SSDI Sofia assistant per the
-   spec; point the talk page's number binding at it.
-5. **Intake + Perspective feed** — set `window.EE_INTAKE_ENDPOINT` (and
-   `EE_TRUSTEDFORM`) at go-live; build the overview route described in
-   `perspective/README.md`; replace the placeholder in
-   `perspective/config.json`.
-6. **Copy approval** — counsel approves page/ad/consent copy (consent texts
-   in `intake.js` are marked examples).
-
-## Acceptance checks this build was shaped for (from the brief)
-
-1. Inbound ladder on the demo number: call → confirm → verify → qualify
-   line said exactly once → transfer → phone rings. *(Requires the Sofia
-   wiring in step 4 — not performed by this build.)*
-2. A test lead through each door lands in Perspective with correct
-   campaign/per-door tags and status labels. *(Synthetic mode demonstrates
-   the payload + presentation; live landing requires step 5.)*
-3. Demo view exposes no names/answers/recordings. *(By construction —
-   aggregate-only contract.)*
-4. Dates render as human dates. *(Perspective synthetic examples exercise
-   the seconds→ms formatter.)*
-5. Three preview ads, clearly labeled, presented ads-first. *(In
-   `ads/facebook-previews.md`.)*
-6. No console errors / no horizontal overflow at phone width. *(Verify in a
-   browser before any demo.)*
-
-## Hard rules honored by this build
-
-- The 602 / Phillips lane is untouched — no changes, no test calls, no
-  Phillips numbers or assets anywhere in this package.
-- No live ad spend, no prospect outreach, no sends to anyone.
-- All copy carries attorney-advertising and "not a law firm" disclosures;
-  Sofia copy discloses she is AI and gives no legal advice.
-
-Status (Oct 20, 2026): Version A build complete; PR #328 open against main, pending Domain release checks.
+Not yet updated to these terms: `sofia/sofia-ssdi-config.md`, `ads/facebook-previews.md` and `perspective/`
+still describe the earlier SSDI-PILOT-001 reference build.
