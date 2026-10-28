@@ -50,6 +50,12 @@
   var started = false;
   form.addEventListener('input', function () { if (!started) { started = true; push('ee_form_start'); } }, true);
 
+  /* Ad click IDs and UTMs from the landing URL, kept for attribution and the buyer's posting. */
+  function tracking() {
+    var q = new URLSearchParams(location.search), o = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'ttclid'].forEach(function (k) { var v = q.get(k); if (v) o[k] = v.slice(0, 250); });
+    return o;
+  }
   function fieldErr(id, msg) { var e = document.getElementById(id + '-e'); if (e) e.textContent = msg || ''; }
   function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
@@ -58,9 +64,6 @@
     var status = document.getElementById('formStatus');
     var btn = document.getElementById('submitBtn');
     var ok = true;
-    form.querySelectorAll('select[data-q][required]').forEach(function (el) {
-      if (!el.value) { fieldErr(el.id, 'Please choose an answer.'); ok = false; } else fieldErr(el.id, '');
-    });
     ['full_name', 'phone'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el && el.hasAttribute('required') && !val(id)) { fieldErr(id, 'Required.'); ok = false; } else fieldErr(id, '');
@@ -90,16 +93,17 @@
         sms: !!(document.getElementById('consent_sms') || {}).checked,
         text: (document.querySelector('#consentBox label') || {}).textContent || ''
       },
-      trustedform_cert_url: null /* populated at go-live when EE_TRUSTEDFORM is enabled */
+      trustedform_cert_url: null, /* populated at go-live when EE_TRUSTEDFORM is enabled */
+      page_url: location.origin + location.pathname,
+      tracking: tracking()
     };
 
     push('ee_lead_submit_attempt');
     if (btn) { btn.disabled = true; }
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
 
-    /* The callback door has no questions, so it gets a thank-you that says when Sofia calls. */
+    /* After a submit every door gets the same thank-you: when Sofia will call. */
     function thanks() {
-      if (scorer && scorer.resultText) return scorer.resultText();
       return window.SSDI_RULES && window.SSDI_RULES.inHours()
         ? 'Thank you. Sofia will call you in the next few minutes.'
         : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
@@ -107,6 +111,7 @@
     function succeed() {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
+      form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}
         var flag = document.getElementById('previewFlag'); if (flag) flag.hidden = false;
