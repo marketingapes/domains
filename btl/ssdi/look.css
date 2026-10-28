@@ -75,6 +75,10 @@ h1 span{color:var(--navy)}
 .btn:hover{background:var(--cta-dark)}.btn:active{transform:translateY(1px)}
 .btn[disabled]{opacity:.65;cursor:wait}
 .btn .arrow{font-size:1.3rem;line-height:1}
+.skip-q{display:block;width:100%;margin:14px 0 0;padding:10px 6px;background:none;border:0;font:inherit;font-size:.98rem;color:var(--muted);cursor:pointer;text-align:center}
+.skip-q.top{margin:-4px 0 14px;padding:10px 12px;border:1px dashed #cdd5dd;border-radius:12px;background:#f8fafb;text-align:left}
+.skip-q b{color:var(--teal);text-decoration:underline;text-underline-offset:3px}
+.skip-q:hover b{color:var(--navy)}
 .back{display:inline-block;margin:14px 0 0;background:none;border:0;padding:6px 0;font:inherit;font-size:1rem;color:var(--muted);text-decoration:underline;cursor:pointer}
 .secure{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0 0;font-size:.9rem;color:var(--muted);text-align:center}
 .consent{margin:4px 0 18px;padding:14px 16px;background:#f8f9fb;border:1px solid var(--line);border-radius:14px;font-size:.88rem;line-height:1.5;color:var(--ink-2)}

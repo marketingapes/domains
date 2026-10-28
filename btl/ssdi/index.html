@@ -23,7 +23,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/ssdi/look.css?v=20261027i">
+<link rel="stylesheet" href="/ssdi/look.css?v=20261028b">
 <link rel="preload" as="image" href="/assets/ssdi/hero-woman-phone-960.jpg" imagesrcset="/assets/ssdi/hero-woman-phone-960.jpg 960w, /assets/ssdi/hero-woman-phone-1472.jpg 1472w" imagesizes="(min-width:900px) 560px, 100vw">
 </head>
 <body>
@@ -65,6 +65,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="step" data-step="1">
             <h2 tabindex="-1">Let’s see if you may qualify</h2>
             <p class="hint">Answer for the person who needs disability benefits.</p>
+            <button class="skip-q top" type="button" data-skip>Rather not answer questions? <b>Just request a callback →</b></button>
             <div class="field">
               <label for="state">Which state do you live in?</label>
               <select id="state" name="state" data-q="state" data-states data-required autocomplete="address-level1" aria-describedby="state-e"><option value="">Choose your state</option></select>
@@ -132,8 +133,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </div>
 
           <div class="step" data-step="3" hidden>
-            <h2 tabindex="-1">Good news: you may qualify</h2>
-            <p class="hint">Where should Sofia, our AI intake assistant, call you? She’ll confirm a few details and connect you with the firm.</p>
+            <h2 tabindex="-1" id="contactH" data-skip-text="Request a callback">Good news: you may qualify</h2>
+            <p class="hint" id="contactHint" data-skip-text="Leave your name and number. Sofia, our AI intake assistant, will call you, ask a few short questions and let you know if you may qualify for a free review.">Where should Sofia, our AI intake assistant, call you? She’ll confirm a few details and connect you with the firm.</p>
             <div class="field">
               <label for="full_name">Your full name</label>
               <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e">
@@ -283,7 +284,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/ssdi/states.js?v=20261027a"></script>
 <script src="/ssdi/motion.js?v=20261027a" defer></script>
 <script src="/ssdi/criteria.js?v=20261027a" defer></script>
-<script src="/ssdi/qualifier.js?v=20261027c" defer></script>
+<script src="/ssdi/qualifier.js?v=20261028a" defer></script>
 <script>/* BTL-SSDI-001 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
 <script src="/ssdi/intake.js?v=20261028c" defer></script>
