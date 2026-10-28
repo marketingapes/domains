@@ -200,3 +200,14 @@ section.band{padding:48px 0}
 .bar.dark{background:#0b1b2e;border-bottom:1px solid rgba(255,255,255,.08)}
 .bar.dark .logo{color:#fff}
 .bar.dark .pill{background:rgba(94,234,212,.12);color:#5eead4}.bar.dark .pill::before{background:#5eead4}
+
+/* Hero photo: the person Sofia is calling, with Sofia's live card over the corner */
+.hero-photo{position:relative;margin:22px 0 0;border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 0 1px rgba(94,234,212,.22)}
+.hero-photo>img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:62% 35%;animation:kenburns 24s ease-in-out infinite alternate}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,27,46,0) 45%,rgba(11,27,46,.85) 100%);pointer-events:none}
+.hero-photo .sofia-live{position:absolute;left:12px;right:12px;bottom:12px;z-index:1;margin:0;width:auto;background:rgba(11,27,46,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+@keyframes kenburns{from{transform:scale(1.02)}to{transform:scale(1.1) translate(-1.5%,-1%)}}
+@media(min-width:520px){.hero-photo .sofia-live{right:auto}}
+@media(max-width:899px){.hero-photo>img{aspect-ratio:4/3;object-position:64% 30%}}
+@media(max-width:519px){.hero-photo .sofia-live{padding:8px 12px 8px 8px;gap:10px}.hero-photo .orb{flex-basis:44px;width:44px;height:44px}.hero-photo .orb img{width:38px;height:38px}.hero-photo .sofia-live small{font-size:.78rem}}
+@media(min-width:900px){.hero-grid{grid-template-areas:"copy form" "copy fit"}}
