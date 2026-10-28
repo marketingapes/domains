@@ -32,6 +32,17 @@ Inbound callers to Sofia's number follow steps 4–6.
 
 **Status 2026-10-28:** steps 1–3 and the Sofia assistant and transfer are built. A test lead got receipt `BTLK-DEFF6E3AFE`. Sofia still needs her own phone number, and the automatic callback in step 4 needs a new intake webhook. Both are in the go-live list below.
 
+## Built in the ad accounts (2026-10-28, all PAUSED, $0 spent)
+
+| Platform | What exists | IDs |
+|---|---|---|
+| Meta, "Best Tort Lawyers - Primary" (act_411567125842274) | Campaign (Leads, $200/day campaign budget) and ad set (US minus CA and CO, ages 54–63, FB and IG feeds, Stories and Reels, pixel Lead, 1-day click) | campaign `120255059474950231`, ad set `120255059475720231` |
+| Google Ads, "Best Tort Lawyers" (945-563-5555) | Search campaign, $100/day, Maximize conversions, Google Search only, US minus CA and CO (presence), Mon–Fri 9:30–18:00 ET, 20 negatives; 3 ad groups (SSDI help, Disability lawyer, Denied / appeal) with 26 keywords; ages 18–44 and 65+ excluded | campaign `24410694919`, ad groups `198801132142`, `198801132182`, `198801132222` |
+
+**Still to add once the pages are live** (both platforms check the landing page):
+- Meta: the three ads (upload images from `/assets/ssdi/ads/`, Page 222081604317115, Instagram 17841464212888132).
+- Google: one responsive search ad per ad group, plus sitelinks.
+
 ## Budget for the test (proposal)
 
 The test budget is $5,000 over about 14 days, run only during transfer hours (about $360 a day on the 10 weekdays).
