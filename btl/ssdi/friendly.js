@@ -17,10 +17,22 @@
   /* Sofia's line */
   var tel = (document.body.getAttribute('data-sofia-tel') || '').trim();
   var ok = /^\+1\d{10}$/.test(tel), d = tel.slice(2);
+  var label = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+  /* CallRail's website pool rewrites (202) 932-9700 to a 602 tracking number after load. Kyle wants the 202 line on
+     SSDI pages (2026-10-28), so put it back whenever a call link is rewritten (capped, so it can never loop). */
+  function pin(a) {
+    var n = a.querySelector('[data-num]'), fixes = 0;
+    function fix() {
+      if (fixes > 20) return;
+      if (a.getAttribute('href') !== 'tel:' + tel) { fixes++; a.setAttribute('href', 'tel:' + tel); }
+      if (n && n.textContent !== label) { fixes++; n.textContent = label; }
+    }
+    fix();
+    if (window.MutationObserver) new MutationObserver(fix).observe(a, { attributes: true, attributeFilter: ['href'], childList: true, characterData: true, subtree: true });
+  }
   document.querySelectorAll('[data-sofia-call]').forEach(function (a) {
     if (!ok) { a.hidden = true; return; }
-    a.href = 'tel:' + tel;
-    var n = a.querySelector('[data-num]'); if (n) n.textContent = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+    pin(a);
     a.addEventListener('click', function () { push('ee_call_click', { placement: a.getAttribute('data-sofia-call') }); });
   });
 
