@@ -1,4 +1,4 @@
-/* SSDI-PILOT-001 intake (shared by the form door and the Sofia callback panel).
+/* BTL-SSDI-001 intake (shared by the form, the quiz and the Sofia callback panel).
    Mirrors the role of /paraquat/intake.js:
    - renders per-channel consent checkboxes (NEVER prechecked) into #consentBox
    - pushes only non-identifying events to dataLayer (page_id, campaign_id, tenant_id) —
@@ -14,8 +14,8 @@
    and the cert URL joins the payload. It is intentionally NOT loaded in this reference build. */
 (function () {
   'use strict';
-  var CAMPAIGN = 'SSDI-PILOT-001';
-  var TENANT = 'your-brand-here'; /* SWAP-IN: adopting firm's tenant slug */
+  var CAMPAIGN = 'BTL-SSDI-001';
+  var TENANT = 'btl'; /* the buyer's firm is never named on the site */
   var form = document.getElementById('leadForm');
   if (!form) return;
   var pageId = form.getAttribute('data-page-id') || 'btl-ssdi-unknown';
@@ -33,10 +33,9 @@
   var box = document.getElementById('consentBox');
   if (box) {
     box.innerHTML =
-      '<span class="c-title">How may the reviewing firm contact you? (Optional unless required below — boxes start unchecked.)</span>' +
-      '<label><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span><b>Calls.</b> I agree that YOUR BRAND HERE and the independent law firm reviewing my inquiry may call me at the number I provided about my inquiry. [Example language — counsel approves final text before any live run.]</span></label>' +
-      '<label><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span><b>Text messages.</b> I agree to receive text messages about my inquiry at the number I provided. Message and data rates may apply; reply STOP to end. [Example language — counsel approves final text before any live run.]</span></label>' +
-      '<label><input type="checkbox" id="consent_email" name="consent_email" value="yes"><span><b>Email.</b> I agree to receive email about my inquiry at the address I provided, if I provided one. [Example language — counsel approves final text before any live run.]</span></label>';
+      '<span class="c-title">How may we contact you? Boxes start unchecked.</span>' +
+      '<label><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span><b>Calls (required).</b> I agree that Best Tort Lawyers, including Sofia, its AI voice assistant, and a participating law firm may call me at the number I provided about my disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service.</span></label>' +
+      '<label><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span><b>Text messages.</b> I agree to receive text messages about my inquiry at the number I provided. Message and data rates may apply. Reply STOP to end.</span></label>';
   }
 
   /* ---- TrustedForm (go-live only; dormant in the reference build) ---- */
@@ -59,6 +58,9 @@
     var status = document.getElementById('formStatus');
     var btn = document.getElementById('submitBtn');
     var ok = true;
+    form.querySelectorAll('select[data-q][required]').forEach(function (el) {
+      if (!el.value) { fieldErr(el.id, 'Please choose an answer.'); ok = false; } else fieldErr(el.id, '');
+    });
     ['full_name', 'phone'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el && el.hasAttribute('required') && !val(id)) { fieldErr(id, 'Required.'); ok = false; } else fieldErr(id, '');
@@ -67,22 +69,26 @@
     if (phone && phone.length < 10) { fieldErr('phone', 'Please enter a valid phone number.'); ok = false; }
     var callsBox = document.getElementById('consent_calls');
     if (phone && callsBox && !callsBox.checked) {
-      if (status) { status.className = 'status err'; status.textContent = 'Please check the “Calls” consent box so the reviewing firm may call the number you provided.'; }
+      if (status) { status.className = 'status err'; status.textContent = 'Please check the “Calls” box so Sofia can call the number you provided.'; }
       ok = false;
     }
     if (!ok) { push('ee_lead_submit_error', { reason: 'validation' }); return; }
 
     var scorer = window.BTL_SSDI || window.BTL_SSDI_QUIZ;
     var answers = scorer ? scorer.answers() : {};
+    var R = window.SSDI_RULES, now = new Date();
     var payload = {
       campaign_id: CAMPAIGN, page_id: pageId, tenant_id: TENANT, door: form.getAttribute('data-kind') || 'form',
-      submitted_at: new Date().toISOString(),
-      contact: { full_name: val('full_name'), phone: val('phone'), state: val('state') || null },
+      submitted_at: now.toISOString(),
+      contact: { full_name: val('full_name'), phone: val('phone'), state: val('state') || answers.state || null },
       answers: answers,
+      /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
+      route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen',
+      transfer_window: R && R.inHours(now) ? 'open' : 'closed',
       consent: {
         calls: !!(callsBox && callsBox.checked),
         sms: !!(document.getElementById('consent_sms') || {}).checked,
-        email: !!(document.getElementById('consent_email') || {}).checked
+        text: (document.querySelector('#consentBox label') || {}).textContent || ''
       },
       trustedform_cert_url: null /* populated at go-live when EE_TRUSTEDFORM is enabled */
     };
@@ -91,6 +97,13 @@
     if (btn) { btn.disabled = true; }
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
 
+    /* The callback door has no questions, so it gets a thank-you that says when Sofia calls. */
+    function thanks() {
+      if (scorer && scorer.resultText) return scorer.resultText();
+      return window.SSDI_RULES && window.SSDI_RULES.inHours()
+        ? 'Thank you. Sofia will call you in the next few minutes.'
+        : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
+    }
     function succeed() {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
@@ -99,18 +112,18 @@
         var flag = document.getElementById('previewFlag'); if (flag) flag.hidden = false;
         if (status) {
           status.className = 'status ok';
-          status.textContent = (scorer && scorer.resultText ? scorer.resultText() + ' ' : '') +
-            'Preview mode: this was a test — nothing was sent and no lead was delivered. In production, this submission becomes the lead receipt shown in Perspective.';
+          status.textContent = thanks() + ' ' +
+            'Preview: this was a test, nothing was sent.';
         }
       } else if (status) {
         status.className = 'status ok';
-        status.textContent = scorer && scorer.resultText ? scorer.resultText() : 'Thank you — your inquiry was received.';
+        status.textContent = thanks();
       }
     }
     function fail() {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_error', { reason: 'delivery' });
-      if (status) { status.className = 'status err'; status.textContent = 'Something went wrong sending your inquiry. Please try again, or call the number on this page.'; }
+      if (status) { status.className = 'status err'; status.textContent = 'Something went wrong sending your inquiry. Please try again in a moment.'; }
     }
 
     if (synthetic) { setTimeout(succeed, 500); return; }

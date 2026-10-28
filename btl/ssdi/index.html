@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Social Security Disability (SSDI) — Check If You May Qualify — YOUR BRAND HERE</title>
-<meta name="description" content="SSDI questions? Answer a few short questions to see whether you may potentially qualify for further review by an independent law firm. YOUR BRAND HERE is a matching service, not a law firm.">
+<title>Social Security Disability (SSDI) — See If You May Qualify — Best Tort Lawyers</title>
+<meta name="description" content="Out of work for a year or more because of your health? Answer six short questions to see if you may qualify for a free SSDI review by a participating law firm. Best Tort Lawyers is not a law firm.">
 <link rel="canonical" href="https://besttortlawyers.com/ssdi/">
 <meta name="robots" content="noindex,follow">
 <meta name="theme-color" content="#f6f1e7">
-<meta name="ee-campaign" content="SSDI-PILOT-001">
+<meta name="ee-campaign" content="BTL-SSDI-001">
 <meta name="ee-page-id" content="btl-ssdi-main-form">
-<meta property="og:title" content="Social Security Disability questions. A clearer first step.">
-<meta property="og:description" content="A few short questions, then an independent firm decides. Not a law firm. No legal advice.">
+<meta property="og:title" content="Out of work for a year? See if you may qualify for SSDI help.">
+<meta property="og:description" content="Six short questions, then a participating law firm decides. Not a law firm. No legal advice.">
 <meta property="og:type" content="website">
 <!-- Google Tag Manager (BTL web container GTM-PHC7459M). The page pushes only non-identifying events to dataLayer:
      ee_page_view, ee_form_start, ee_lead_submit_attempt/success/error (page_id, campaign_id, tenant_id).
@@ -59,6 +59,7 @@ summary{list-style:none;cursor:pointer;display:flex;justify-content:space-betwee
 summary::-webkit-details-marker{display:none}
 details p{margin:0 0 18px;color:var(--ink-2)}
 .src{max-width:760px;margin:16px auto 0;text-align:center;color:var(--muted);font-size:.78rem}
+@media(max-width:560px){header.top nav{display:none}}
 </style>
 </head>
 <body>
@@ -66,7 +67,7 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 <a class="skip" href="#review">Skip to the form</a>
 
 <header class="wrap top">
-  <a class="brand" href="/" aria-label="YOUR BRAND HERE home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>YOUR BRAND HERE</b><small>Claim matching service</small></span></a>
+  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><span class="seal"><img src="/assets/btl-seal.svg" width="42" height="42" alt=""></span><span class="wm"><b>Best Tort Lawyers</b><small>Free case review</small></span></a>
   <nav aria-label="Page">
     <a href="#about">About SSDI</a>
     <a href="#how">How it works</a>
@@ -77,49 +78,43 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 <main>
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">Social Security Disability · SSDI-PILOT-001 reference build</span>
-    <h1>Disability benefits questions. <em>A clearer first step.</em></h1>
-    <p class="lede">Answer a few short questions and share your contact info to help identify whether you may potentially qualify for further review by an independent law firm.</p>
-    <p class="fine">YOUR BRAND HERE is a matching/directory service, not a law firm. No legal advice or attorney-client relationship is created. Example criteria shown — the reviewing firm confirms its own before anything runs live.</p>
+    <span class="eyebrow">Social Security Disability · Free review</span>
+    <h1>Out of work for a year because of your health? <em>See if you may qualify.</em></h1>
+    <p class="lede">Six short questions. If your answers fit, a participating disability law firm can review your situation for free.</p>
+    <p class="fine">Best Tort Lawyers is not a law firm and gives no legal advice. Using this page does not create an attorney-client relationship.</p>
     <div class="doors" aria-label="Three ways in">
       <a class="primary" href="#review">Fill out the form</a>
       <a href="/ssdi/talk-to-sofia/">Talk to Sofia</a>
-      <a href="/ssdi/quiz/">Take the guided quiz</a>
+      <a href="/ssdi/quiz/">Take the quiz</a>
     </div>
 
     <section class="review" id="review" aria-label="SSDI review form">
       <div class="card form-card">
         <div id="formBody">
-          <p class="preview-flag" id="previewFlag" hidden>Preview — synthetic test mode, nothing is delivered</p>
-          <h2>SSDI case review</h2>
-          <p class="hint">A few quick questions and your contact info. “Not sure” is always an answer. The demo opens on <b>new applications</b>; if you were already denied, choose the appeals path in the first question.</p>
+          <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
+          <h2>Free SSDI review</h2>
+          <p class="hint">Answer for the person who needs disability benefits. “Not sure” is fine.</p>
           <form id="leadForm" novalidate data-page-id="btl-ssdi-main-form" data-kind="form">
             <div class="grid">
-              <div class="field full"><label for="who">Who are you asking about?</label><select id="who" data-q="who" aria-describedby="who-e"><option value="">Select…</option><option value="self">Myself</option><option value="family">A family member</option><option value="other">Someone else</option></select><span class="ferr" id="who-e"></span></div>
-              <div class="field full"><label for="path">Where are you in the process?</label><select id="path" data-q="path" aria-describedby="path-e"><option value="new" selected>I want to apply for SSDI (new application)</option><option value="appeals">I already applied and was denied (appeals)</option></select><span class="ferr" id="path-e"></span></div>
+              <p class="q-sep">About you</p>
+              <div class="field full"><label for="state">Which state do you live in?</label><select id="state" name="state" data-q="state" data-states autocomplete="address-level1" required aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
+              <div class="field full"><label for="age">How old are you?</label><select id="age" data-q="age" required aria-describedby="age-e"><option value="">Select…</option><option value="under_54">Under 54</option><option value="54_63">54 to 63</option><option value="64_plus">64 or older</option></select><span class="ferr" id="age-e"></span></div>
 
-              <p class="q-sep">About the condition</p>
-              <div class="field full"><label for="condition">Do you have a medical condition that keeps you from working?</label><select id="condition" data-q="condition" aria-describedby="condition-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="condition-e"></span></div>
-              <div class="field full"><label for="duration">Is the condition expected to last at least 12 months, or is it terminal?</label><select id="duration" data-q="duration" aria-describedby="duration-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="duration-e"></span></div>
+              <p class="q-sep">Work and health</p>
+              <div class="field full"><label for="out_of_work">Have you been out of work for at least a year?</label><select id="out_of_work" data-q="out_of_work" required aria-describedby="out_of_work-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="out_of_work-e"></span></div>
+              <div class="field full"><label for="doctor">Are you currently under a doctor’s care?</label><select id="doctor" data-q="doctor" required aria-describedby="doctor-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="doctor-e"></span></div>
+              <div class="field full"><label for="benefits">Are you currently receiving disability payments from the government?</label><select id="benefits" data-q="benefits" required aria-describedby="benefits-e"><option value="">Select…</option><option value="no">No</option><option value="yes">Yes</option><option value="not_sure">Not sure</option></select><span class="ferr" id="benefits-e"></span></div>
+              <div class="field full"><label for="lawyer">Do you already have a lawyer for your disability claim?</label><select id="lawyer" data-q="lawyer" required aria-describedby="lawyer-e"><option value="">Select…</option><option value="no">No</option><option value="yes">Yes</option><option value="not_sure">Not sure</option></select><span class="ferr" id="lawyer-e"></span></div>
 
-              <p class="q-sep">Work and status</p>
-              <div class="field full" id="w-work_history"><label for="work_history">Have you worked and paid into Social Security for roughly 5 of the last 10 years? <span style="color:var(--muted);font-weight:400">(Example threshold — actual work-credit rules vary by age.)</span></label><select id="work_history" data-q="work_history" aria-describedby="work_history-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="work_history-e"></span></div>
-              <div class="field full" id="w-denied" hidden><label for="denied">Have you applied for SSDI before and been denied?</label><select id="denied" data-q="denied" aria-describedby="denied-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="denied-e"></span></div>
-              <div class="field full" id="w-denied_when" hidden><label for="denied_when">When were you denied?</label><select id="denied_when" data-q="denied_when" aria-describedby="denied_when-e"><option value="">Select…</option><option value="within60">Within the last 60 days</option><option value="over60">More than 60 days ago</option><option value="not_sure">Not sure</option></select><span class="ferr" id="denied_when-e"></span></div>
-              <div class="field full" id="w-receiving" hidden><label for="receiving">Are you currently receiving SSDI benefits?</label><select id="receiving" data-q="receiving" aria-describedby="receiving-e"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="not_sure">Not sure</option></select><span class="ferr" id="receiving-e"></span></div>
-              <div class="field full"><label for="fra">Are you under full retirement age (younger than 67)?</label><select id="fra" data-q="fra" aria-describedby="fra-e"><option value="">Select…</option><option value="under">Yes, under 67</option><option value="at_or_over">No, 67 or older</option><option value="not_sure">Not sure</option></select><span class="ferr" id="fra-e"></span></div>
-              <div class="field full"><label for="lawyer">Is a lawyer already handling this claim for you?</label><select id="lawyer" data-q="lawyer" aria-describedby="lawyer-e"><option value="">Select…</option><option value="no">No</option><option value="not_sure">Not sure</option><option value="handling">Yes — a lawyer is looking into it</option><option value="signed">Yes — I signed with a lawyer</option></select><span class="ferr" id="lawyer-e"></span></div>
-
-              <p class="q-sep">Your contact info</p>
+              <p class="q-sep">Where should we reach you?</p>
               <div class="field full"><label for="full_name">Full name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div>
-              <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
-              <div class="field"><label for="state">State</label><select id="state" name="state" autocomplete="address-level1" aria-describedby="state-e"><option value="">Select…</option></select><span class="ferr" id="state-e"></span></div>
+              <div class="field full"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div>
               <div class="consent full" id="consentBox"></div>
             </div>
-            <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Check if I may qualify</span></button>
+            <button class="submit" type="submit" id="submitBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">See if I may qualify</span></button>
             <p class="status" id="formStatus" role="status" aria-live="polite"></p>
           </form>
-          <p class="hint" style="margin-top:14px">Answers go only to the intake of YOUR BRAND HERE and, when you submit, to the independent legal team that reviews SSDI inquiries. Don’t enter Social Security numbers, payment details or medical records.</p>
+          <p class="hint" style="margin-top:14px">Never enter a Social Security number, payment details or medical records here.</p>
         </div>
       </div>
     </section>
@@ -129,11 +124,11 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 <section class="ctx" id="about" aria-labelledby="ctxH">
   <div class="wrap">
     <h2 id="ctxH">What SSDI is</h2>
-    <p class="intro">Social Security Disability Insurance pays monthly benefits to people who cannot work because of a medical condition that is expected to last at least a year or result in death — and who have worked long enough, and recently enough, paying into Social Security. It is a federal program; the Social Security Administration decides every claim.</p>
+    <p class="intro">Social Security Disability Insurance pays monthly benefits to people who can’t work because of a medical condition expected to last at least a year, and who paid into Social Security while they worked. The Social Security Administration decides every claim.</p>
     <div class="cards">
-      <div class="card"><div class="t"><h3>A condition that stops work</h3><p>The condition must prevent substantial work and be expected to last 12 months or longer, or be terminal. SSA keeps a listing of impairments, but a condition does not have to match a listing exactly to qualify.</p></div></div>
-      <div class="card"><div class="t"><h3>Work credits matter</h3><p>SSDI is insurance you paid into through payroll taxes. How many work credits you need depends on your age; as an example, many adults need roughly 5 years of work in the last 10. The reviewing firm checks the real rules for your age.</p></div></div>
-      <div class="card"><div class="t"><h3>Denials can be appealed</h3><p>Many first applications are denied. A denial is not the end: there is an appeals process, and the first appeal deadline is generally 60 days from the denial notice. If you were denied, choose the appeals path in the form above.</p></div></div>
+      <div class="card"><div class="t"><h3>A condition that stops work</h3><p>The condition has to keep you from working and be expected to last 12 months or longer. Regular care from a doctor helps document it.</p></div></div>
+      <div class="card"><div class="t"><h3>You paid into it</h3><p>SSDI is insurance you paid for through payroll taxes. How much work history you need depends on your age.</p></div></div>
+      <div class="card"><div class="t"><h3>Help with the process</h3><p>Many first applications are denied. A disability lawyer can help with the application and with appeals, and is usually paid only if you win.</p></div></div>
     </div>
     <p class="src">General information only, not legal or medical advice. Source: Social Security Administration, <a href="https://www.ssa.gov/disability/" rel="noopener">ssa.gov/disability</a>.</p>
   </div>
@@ -142,9 +137,9 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 <section class="how" id="how" aria-labelledby="howH">
   <div class="wrap">
     <div class="steps">
-      <div class="step"><small>01</small><h3>Share the basics</h3><p>A few short questions, one at a time. “Not sure” is always an answer.</p></div>
-      <div class="step"><small>02</small><h3>See where you stand</h3><p>A plain-language result based on what you shared — never a legal opinion, never a guarantee.</p></div>
-      <div class="step"><small>03</small><h3>Independent firm review</h3><p>Where available, an independent law firm decides under its own criteria whether to review your situation.</p></div>
+      <div class="step"><small>01</small><h3>Answer six questions</h3><p>About a minute. “Not sure” is always an answer.</p></div>
+      <div class="step"><small>02</small><h3>Sofia calls you</h3><p>Our AI intake assistant confirms a few details, usually within minutes during business hours.</p></div>
+      <div class="step"><small>03</small><h3>Talk to the firm</h3><p>If it fits, Sofia connects you with a participating disability law firm for a free review.</p></div>
     </div>
   </div>
 </section>
@@ -153,10 +148,11 @@ details p{margin:0 0 18px;color:var(--ink-2)}
   <div class="wrap">
     <h2>Before you start</h2>
     <div class="list">
-      <details><summary>Is YOUR BRAND HERE a law firm?</summary><p>No. YOUR BRAND HERE is a matching and directory service. It does not give legal advice, and using this page does not create an attorney-client relationship.</p></details>
-      <details><summary>Is this the same as applying with Social Security?</summary><p>No. This is a private review service. You can always apply directly with the Social Security Administration for free at ssa.gov, whether or not you use this page.</p></details>
-      <details><summary>I was already denied. Is it too late?</summary><p>Often not — denials can be appealed, generally within 60 days of the denial notice. Choose the appeals path in the form and a reviewer can look at your timing.</p></details>
-      <details><summary>Where do my answers go?</summary><p>Only to the intake of YOUR BRAND HERE and, when you submit, to the independent legal team that reviews SSDI inquiries. They are not sold.</p></details>
+      <details><summary>Is Best Tort Lawyers a law firm?</summary><p>No. Best Tort Lawyers connects people with participating law firms. It does not give legal advice, and using this page does not create an attorney-client relationship.</p></details>
+      <details><summary>Is this the same as applying with Social Security?</summary><p>No. This is a private service. You can always apply directly with the Social Security Administration for free at ssa.gov.</p></details>
+      <details><summary>Does it cost anything?</summary><p>No. The review is free. Disability lawyers are usually paid only if your claim is approved, and the fee is set by law.</p></details>
+      <details><summary>When will someone call?</summary><p>Sofia, our AI intake assistant, calls during business hours: Monday to Friday, 9:30 AM to 6:00 PM Eastern. Calls are recorded.</p></details>
+      <details><summary>Where do my answers go?</summary><p>To Best Tort Lawyers and, if your answers fit, to the participating law firm that reviews your situation. They are not sold.</p></details>
     </div>
   </div>
 </section>
@@ -165,25 +161,23 @@ details p{margin:0 0 18px;color:var(--ink-2)}
 <footer class="foot">
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>YOUR BRAND HERE</b><small>Claim matching service</small></span></div>
+      <div class="f-brand"><img src="/assets/btl-seal.svg" width="36" height="36" alt=""><span class="wm"><b>Best Tort Lawyers</b><small>Free case review</small></span></div>
       <nav class="f-links" aria-label="Footer">
         <a href="/ssdi/">Form</a>
         <a href="/ssdi/talk-to-sofia/">Talk to Sofia</a>
-        <a href="/ssdi/quiz/">Guided quiz</a>
+        <a href="/ssdi/quiz/">Quiz</a>
         <a href="/privacy-policy/">Privacy Policy</a>
         <a href="/terms-and-conditions/">Terms</a>
         <a href="/sms-terms/">SMS Terms</a>
       </nav>
     </div>
-    <p class="f-legal"><strong>ATTORNEY ADVERTISING. YOUR BRAND HERE is a matching and directory service, not a law firm, and does not provide legal advice.</strong> Using this website or submitting this form does not create an attorney-client relationship. This is a private service and is not affiliated with the Social Security Administration; you may apply for benefits directly with SSA at no cost. Any independent law firm evaluates potential matters under its own criteria. No review, acceptance, representation, benefit approval or outcome is guaranteed. Reference build SSDI-PILOT-001 — example criteria only; firm and counsel confirm final criteria and copy before any live run. © 2026 YOUR BRAND HERE</p>
+    <p class="f-legal"><strong>ATTORNEY ADVERTISING. Best Tort Lawyers is not a law firm and does not provide legal advice.</strong> Using this website or submitting this form does not create an attorney-client relationship. This is a private service and is not affiliated with the Social Security Administration; you may apply for benefits directly with SSA at no cost. Participating law firms decide under their own criteria whether to review a matter. No review, representation, benefit approval or outcome is guaranteed. Not available in California or Colorado. © 2026 Best Tort Lawyers</p>
   </div>
 </footer>
 
-<script>
-/* US states for the state select (mirrors the Paraquat pages' client-side fill). */
-(function(){var s=document.getElementById('state');if(!s)return;var states=['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];states.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o);});})();
-</script>
-<script src="/ssdi/qualifier.js?v=20261019a" defer></script>
-<script src="/ssdi/intake.js?v=20261019a" defer></script>
+<script src="/ssdi/states.js?v=20261027a"></script>
+<script src="/ssdi/criteria.js?v=20261027a" defer></script>
+<script src="/ssdi/qualifier.js?v=20261027a" defer></script>
+<script src="/ssdi/intake.js?v=20261027a" defer></script>
 </body>
 </html>
