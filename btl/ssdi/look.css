@@ -211,3 +211,46 @@ section.band{padding:48px 0}
 @media(max-width:899px){.hero-photo>img{aspect-ratio:4/3;object-position:64% 30%}}
 @media(max-width:519px){.hero-photo .sofia-live{padding:8px 12px 8px 8px;gap:10px}.hero-photo .orb{flex-basis:44px;width:44px;height:44px}.hero-photo .orb img{width:38px;height:38px}.hero-photo .sofia-live small{font-size:.78rem}}
 @media(min-width:900px){.hero-grid{grid-template-areas:"copy form" "copy fit"}}
+
+/* ---------- quiz: Sofia chat ---------- */
+.quiz-hero{padding-bottom:56px}
+.quiz-grid{display:grid;gap:24px}
+@media(min-width:900px){.quiz-grid{grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}.quiz-hero{padding-top:56px}}
+@media(max-width:899px){.quiz-intro .sofia-intro,.quiz-intro .trust{display:none}}
+.sofia-intro{display:flex;gap:18px;align-items:center;margin:26px 0 0;padding:18px;border-radius:var(--radius);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.sofia-intro b{color:#fff;font-size:1.15rem}
+.sofia-intro p{margin:4px 0 0;color:#c7d6e3;font-size:1rem}
+.orb.big{flex:0 0 96px;width:96px;height:96px;padding:4px}
+.orb.big img{width:88px;height:88px}
+.orb.big .live{width:18px;height:18px;right:4px;bottom:4px}
+.chat{color:var(--ink);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(94,234,212,.25);border:0}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.chat-head .orb{flex:0 0 46px;width:46px;height:46px}
+.chat-head .orb img{width:40px;height:40px;border-color:#fff}
+.chat-head .orb .live{border-color:#fff;width:12px;height:12px}
+.chat-head b{display:block;line-height:1.2}
+.chat-head small{color:var(--muted);font-size:.85rem}
+.chat-count{margin-left:auto;font-size:.85rem;font-weight:700;color:var(--teal);background:var(--teal-soft);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.chat-meter{margin:0;border-radius:0;height:5px}
+.thread{display:flex;flex-direction:column;gap:10px;padding:18px 16px 6px;min-height:200px;max-height:none}
+.b{max-width:88%;padding:12px 16px;border-radius:18px;font-size:1.05rem;line-height:1.45;animation:pop .28s ease}
+.b.s{align-self:flex-start;background:#eef4f6;color:var(--ink);border-bottom-left-radius:6px}
+.b.u{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:6px;font-weight:600}
+.b.why{align-self:flex-start;background:none;padding:0 4px;margin-top:-4px;font-size:.88rem;color:var(--muted)}
+.b.why::before{content:"Why I ask: ";font-weight:700;color:var(--teal)}
+.b.note{align-self:flex-start;background:var(--ok-soft);color:var(--ok);font-weight:600}
+.b.typing{display:flex;gap:5px;align-items:center;padding:16px 18px}
+.b.typing i{width:8px;height:8px;border-radius:50%;background:#94a3b8;animation:blink 1s infinite}
+.b.typing i:nth-child(2){animation-delay:.15s}.b.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.dock{padding:10px 16px 18px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.chip{min-height:58px;padding:10px 8px;border:2px solid #d5d9e0;border-radius:14px;background:#fff;font:inherit;font-weight:700;font-size:1.02rem;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,transform .1s}
+.chip:hover{border-color:var(--teal);background:var(--teal-soft)}.chip:active{transform:scale(.98)}
+.chip-select{grid-column:1/-1;width:100%;min-height:58px;padding:12px 16px;border:2px solid #d5d9e0;border-radius:14px;background:#fff;font:inherit;font-size:1.08rem;color:var(--ink)}
+.chip-select:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 4px rgba(15,107,111,.15)}
+.chat-contact{padding:6px 16px 18px;animation:pop .3s ease}
+.chat-foot{margin:0;padding:12px 16px;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted);text-align:center}
+.ssa-link{display:inline-block;margin-top:6px;font-weight:700}
+@media(min-width:900px){.quiz-intro{position:sticky;top:24px}}
