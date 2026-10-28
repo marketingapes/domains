@@ -1,5 +1,5 @@
 /* BTL-SSDI-001 eligibility check (/ssdi/b/quiz/). One question at a time in the hero card, with a progress bar,
-   a "why we ask" line and a back link, like the Glassman SSDI quiz.
+   a "why we ask" line and a back link.
    Scoring lives in /ssdi/criteria.js (the buyer's criteria), shared with the form.
    The visitor never sees which answer mattered; a visitor who is not a fit is never asked for contact details.
    Answers go only to the intake payload (intake.js), never to dataLayer — dataLayer receives step counts and the result category only. */

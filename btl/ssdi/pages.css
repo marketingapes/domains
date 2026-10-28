@@ -1,5 +1,5 @@
-/* BTL-SSDI-001 pages (/ssdi/, /ssdi/talk-to-sofia/, /ssdi/quiz/), laid out like the Glassman SSDI site
-   (btl/glassman-ssdi/site.css) but in Best Tort Lawyers' own navy and gold, with no firm named anywhere:
+/* BTL-SSDI-001 dark pages (/ssdi/b/, /ssdi/b/talk-to-sofia/, /ssdi/b/quiz/) in Best Tort Lawyers' own navy and gold,
+   with no firm named anywhere:
    full-bleed photo hero with the working card floating over it, a facts strip, image-led "three ways in",
    steps, questions and a closing band. Lora + Open Sans. Mobile first; motion is off under reduced motion. */
 :root{
