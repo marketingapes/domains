@@ -1,62 +1,84 @@
-/* SSDI-PILOT-001 dropdown qualifier (/ssdi/). One form: qualifying dropdowns + contact details.
-   Mirrors the BTL Paraquat pattern (qualifier.js): scored on the receiving firm's EXAMPLE criteria.
-   NOT_A_FIT = an example disqualifier, FIRM_REVIEW = uncertain or a review trigger, QUALIFIED = everything matches.
-   The visitor never sees which answer mattered. Answers go only to the intake payload (intake.js), never to dataLayer.
-
-   ⚠ MARKED ASSUMPTION — SCOPE: it is not yet known whether the adopting firm wants new applications,
-   denied-claim appeals, or both. Both paths exist here; the demo defaults to NEW APPLICATIONS.
-   Appeals swaps the work-history check for applied-before + denied, and adds denial timing + current benefits.
-   All criteria below are published-example grade — firm + counsel confirm before any live run. */
+/* BTL-SSDI-001 form (/ssdi/): three steps (about you → work and health → contact) plus a not-a-fit ending.
+   Scoring lives in /ssdi/criteria.js (the buyer's criteria), shared with the quiz.
+   A visitor who is not a fit stops after step 2 and is never asked for contact details.
+   The visitor never sees which answer mattered. Answers go only to the intake payload (intake.js), never to dataLayer. */
 (function () {
   'use strict';
   var form = document.getElementById('leadForm');
-  if (!form) return;
+  var R = window.SSDI_RULES;
+  if (!form || !R) return;
 
-  var DQ = {
-    condition: ['no'], duration: ['no'], work_history: ['no'], fra: ['at_or_over'],
-    lawyer: ['handling', 'signed'], denied: ['no'], receiving: ['yes']
-  };
-  var RV = {
-    who: ['other'], condition: ['not_sure'], duration: ['not_sure'], work_history: ['not_sure'],
-    fra: ['not_sure'], lawyer: ['not_sure'], denied: ['not_sure'], denied_when: ['over60', 'not_sure'],
-    receiving: ['not_sure']
-  };
-  function val(id) { var el = form.querySelector('select[data-q="' + id + '"]'); return el && !el.closest('[hidden]') ? el.value : ''; }
-  function show(id, on) {
-    var wrap = document.getElementById('w-' + id); if (!wrap) return;
-    wrap.hidden = !on;
-    var sel = wrap.querySelector('select');
-    if (sel) { if (on) sel.setAttribute('required', ''); else { sel.removeAttribute('required'); sel.value = ''; } }
-  }
-  function sync() {
-    var appeals = val('path') === 'appeals';
-    show('work_history', !appeals);
-    show('denied', appeals);
-    show('denied_when', appeals && val('denied') === 'yes');
-    show('receiving', appeals);
-  }
-  form.addEventListener('change', function (e) { if (e.target.matches('select[data-q]')) sync(); });
-  sync();
+  var steps = [].slice.call(form.querySelectorAll('.step'));
+  var label = document.getElementById('stepLabel');
+  var meter = document.getElementById('stepMeter');
+  var current = 0;
 
+  function value(el) { return el.tagName === 'FIELDSET' ? ((el.querySelector('input:checked') || {}).value || '') : el.value; }
   function answers() {
     var o = {};
-    form.querySelectorAll('select[data-q]').forEach(function (s) { if (!s.closest('[hidden]') && s.value) o[s.getAttribute('data-q')] = s.value; });
+    form.querySelectorAll('[data-q]').forEach(function (el) { var v = value(el); if (v) o[el.getAttribute('data-q')] = v; });
     return o;
   }
-  function outcome(a) {
-    var dq = false, rv = false;
-    Object.keys(a).forEach(function (k) {
-      if ((DQ[k] || []).indexOf(a[k]) >= 0) dq = true;
-      if ((RV[k] || []).indexOf(a[k]) >= 0) rv = true;
-    });
-    return dq ? 'NOT_A_FIT' : rv ? 'FIRM_REVIEW' : 'QUALIFIED';
+  function push(evt, extra) {
+    var o = { event: evt, page_id: form.getAttribute('data-page-id'), campaign_id: 'BTL-SSDI-001', tenant_id: 'btl' };
+    if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; });
+    (window.dataLayer = window.dataLayer || []).push(o);
   }
-  window.BTL_SSDI = {
-    answers: function () { var a = answers(); a.web_outcome = outcome(a); a.quiz_version = 'ssdi-pilot-001-form-2026-10-19-v1-example'; return a; },
-    resultText: function () {
-      return outcome(answers()) === 'NOT_A_FIT'
-        ? 'Thank you for explaining. Based on what you’ve shared, this doesn’t match what this SSDI review is looking for right now. That isn’t a legal opinion about your situation, and it doesn’t affect any right you may have to apply or appeal on your own.'
-        : 'Based on what you’ve shared, you may potentially qualify for further review. A person at an independent law firm would look at the details and decide whether to review it — nothing is guaranteed.';
+
+  function show(i) {
+    steps.forEach(function (s, n) { s.hidden = n !== i; });
+    current = i;
+    var numbered = i < 3; /* the endings (not a fit, done) have no step number */
+    if (label) label.parentNode.hidden = !numbered;
+    if (meter) { meter.parentNode.hidden = !numbered; meter.style.width = Math.round(((i + 1) / 3) * 100) + '%'; }
+    if (label) label.textContent = 'Step ' + (i + 1) + ' of 3';
+    var h = steps[i].querySelector('h2'); if (h) h.focus({ preventScroll: true });
+    var card = form.closest('.card'); if (card && card.getBoundingClientRect().top < 0) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function valid(step) {
+    var ok = true;
+    step.querySelectorAll('[data-q][data-required]').forEach(function (el) {
+      var e = document.getElementById(el.id + '-e');
+      var missing = !value(el);
+      if (e) e.textContent = missing ? 'Please choose an answer.' : '';
+      if (missing) ok = false;
+    });
+    return ok;
+  }
+
+  /* Clear an error as soon as the question is answered. */
+  form.addEventListener('change', function (ev) {
+    var q = ev.target.closest('[data-q]'); if (!q) return;
+    var e = document.getElementById(q.id + '-e'); if (e && value(q)) e.textContent = '';
+  });
+
+  form.addEventListener('click', function (ev) {
+    var t = ev.target.closest('[data-next],[data-back],[data-restart]'); if (!t) return;
+    if (t.hasAttribute('data-back')) return show(Math.max(0, current - 1));
+    if (t.hasAttribute('data-restart')) { form.reset(); return show(0); }
+    if (!valid(steps[current])) { var bad = steps[current].querySelector('.ferr:not(:empty)'); if (bad) bad.parentNode.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+    push('ee_form_step_complete', { step: current + 1 });
+    if (current === 1) {
+      var result = R.outcome(answers());
+      if (result === 'NOT_A_FIT') {
+        document.getElementById('noFitText').textContent = R.resultText(result);
+        push('ee_form_not_a_fit');
+        return show(steps.indexOf(form.querySelector('[data-step="nofit"]')));
+      }
     }
+    show(current + 1);
+  });
+
+  /* After intake saves the lead, swap the contact step for the confirmation. */
+  form.addEventListener('ee:lead-saved', function (ev) {
+    var done = form.querySelector('[data-step="done"]'); if (!done) return;
+    document.getElementById('doneText').textContent = ev.detail.message;
+    show(steps.indexOf(done));
+  });
+
+  window.BTL_SSDI = {
+    answers: function () { var a = answers(); a.web_outcome = R.outcome(a); a.criteria_version = R.version; return a; },
+    resultText: function () { return R.resultText(R.outcome(answers())); }
   };
 })();

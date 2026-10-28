@@ -1,94 +1,115 @@
-/* SSDI-PILOT-001 guided quiz (/ssdi/quiz/). Chat-style, one question at a time.
-   Same scoring contract as /ssdi/qualifier.js (example firm criteria):
-   NOT_A_FIT = an example disqualifier, FIRM_REVIEW = uncertain/review trigger, QUALIFIED = all match.
-   The visitor never sees which answer mattered. Answers go only to the intake payload (intake.js),
-   never to dataLayer — dataLayer receives step counts and the result category only.
-
-   ⚠ MARKED ASSUMPTION — SCOPE: new applications vs denied-claim appeals vs both is unconfirmed.
-   Both paths are asked here; the demo walkthrough defaults to NEW APPLICATIONS. */
+/* BTL-SSDI-001 guided quiz (/ssdi/quiz/). Chat-style, one question at a time: Sofia "types", asks, and says why she asks.
+   Scoring lives in /ssdi/criteria.js (the buyer's criteria), shared with the form.
+   The visitor never sees which answer mattered; a visitor who is not a fit is never asked for contact details.
+   Answers go only to the intake payload (intake.js), never to dataLayer — dataLayer receives step counts and the result category only. */
 (function () {
   'use strict';
   var thread = document.getElementById('thread');
   var dock = document.getElementById('dock');
   var meter = document.getElementById('meterFill');
+  var count = document.getElementById('chatCount');
   var contactWrap = document.getElementById('contactWrap');
-  if (!thread || !dock) return;
+  var form = document.getElementById('leadForm');
+  var R = window.SSDI_RULES;
+  if (!thread || !dock || !R) return;
 
-  var DQ = { condition: ['no'], duration: ['no'], work_history: ['no'], fra: ['at_or_over'], lawyer: ['handling', 'signed'], denied: ['no'], receiving: ['yes'] };
-  var RV = { who: ['other'], condition: ['not_sure'], duration: ['not_sure'], work_history: ['not_sure'], fra: ['not_sure'], lawyer: ['not_sure'], denied: ['not_sure'], denied_when: ['over60', 'not_sure'], receiving: ['not_sure'] };
-
+  var STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+  var YN = [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']];
   var A = {};
   var steps = [
-    { q: 'who', text: 'Hi, I’m Sofia, an AI intake guide. First — are you asking about Social Security Disability for yourself, or for someone else?', opts: [['self', 'Myself'], ['family', 'A family member'], ['other', 'Someone else']] },
-    { q: 'path', text: 'Where are you in the process?', opts: [['new', 'I want to apply'], ['appeals', 'I applied and was denied']] },
-    { q: 'condition', text: 'Do you have a medical condition that keeps you from working?', opts: [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']] },
-    { q: 'duration', text: 'Is the condition expected to last at least 12 months, or is it terminal?', opts: [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']] },
-    { q: 'work_history', when: function () { return A.path !== 'appeals'; }, text: 'Have you worked and paid into Social Security for roughly 5 of the last 10 years? (Example threshold — the real work-credit rules vary by age.)', opts: [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']] },
-    { q: 'denied', when: function () { return A.path === 'appeals'; }, text: 'Have you applied for SSDI before and been denied?', opts: [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']] },
-    { q: 'denied_when', when: function () { return A.path === 'appeals' && A.denied === 'yes'; }, text: 'When were you denied?', opts: [['within60', 'Within the last 60 days'], ['over60', 'More than 60 days ago'], ['not_sure', 'Not sure']] },
-    { q: 'receiving', when: function () { return A.path === 'appeals'; }, text: 'Are you currently receiving SSDI benefits?', opts: [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']] },
-    { q: 'fra', text: 'Are you under full retirement age — younger than 67?', opts: [['under', 'Yes, under 67'], ['at_or_over', 'No, 67 or older'], ['not_sure', 'Not sure']] },
-    { q: 'lawyer', text: 'Last one — is a lawyer already handling this claim for you?', opts: [['no', 'No'], ['not_sure', 'Not sure'], ['handling', 'Yes — looking into it'], ['signed', 'Yes — I signed']] }
+    { q: 'state', text: 'Hi, I’m Sofia. Six quick questions about the person who needs disability benefits. First, which state do you live in?', why: 'This review isn’t available in California or Colorado.', select: STATES },
+    { q: 'age', text: 'How old are you?', why: 'This review is for people 54 to 63. Social Security’s own rules give age more weight after 50.', opts: [['under_54', 'Under 54'], ['54_63', '54 to 63'], ['64_plus', '64 or older']] },
+    { q: 'out_of_work', text: 'Have you been out of work for at least a year?', why: 'SSDI is for people whose health keeps them from working, so time out of work matters.', opts: YN },
+    { q: 'doctor', text: 'Are you currently under a doctor’s care?', why: 'Records from regular medical care are the main evidence Social Security looks at.', opts: YN },
+    { q: 'benefits', text: 'Are you getting disability payments from the government right now?', why: 'If you already get disability payments, this review isn’t the right fit for you.', opts: YN },
+    { q: 'lawyer', text: 'Last one. Do you already have a lawyer for your disability claim?', why: 'If you already have a lawyer, they should be the one handling your claim.', opts: YN }
   ];
-  var total = steps.length;
-  var idx = 0, answered = 0;
+  var total = steps.length, idx = 0;
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   window.dataLayer = window.dataLayer || [];
   function push(evt, extra) {
-    var o = { event: evt, page_id: 'btl-ssdi-quiz', campaign_id: 'SSDI-PILOT-001', tenant_id: 'your-brand-here' };
+    var o = { event: evt, page_id: 'btl-ssdi-quiz', campaign_id: 'BTL-SSDI-001', tenant_id: 'btl' };
     if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; });
     window.dataLayer.push(o);
   }
   function bubble(text, who) {
     var d = document.createElement('div'); d.className = 'b ' + (who || 's'); d.textContent = text; thread.appendChild(d);
-    thread.scrollTop = thread.scrollHeight; return d;
+    return d;
   }
-  function outcome(a) {
-    var dq = false, rv = false;
-    Object.keys(a).forEach(function (k) {
-      if ((DQ[k] || []).indexOf(a[k]) >= 0) dq = true;
-      if ((RV[k] || []).indexOf(a[k]) >= 0) rv = true;
-    });
-    return dq ? 'NOT_A_FIT' : rv ? 'FIRM_REVIEW' : 'QUALIFIED';
-  }
-  function resultText() {
-    return outcome(A) === 'NOT_A_FIT'
-      ? 'Thank you for explaining. Based on what you’ve shared, this doesn’t match what this SSDI review is looking for right now. That isn’t a legal opinion about your situation, and it doesn’t affect any right you may have to apply or appeal on your own.'
-      : 'Based on what you’ve shared, you may potentially qualify for further review. A person at an independent law firm would look at the details and decide whether to review it — nothing is guaranteed.';
+  /* Sofia "types" for a moment, then the message appears. */
+  function say(lines, then) {
+    var typing = document.createElement('div'); typing.className = 'b s typing'; typing.setAttribute('aria-hidden', 'true');
+    typing.innerHTML = '<i></i><i></i><i></i>';
+    thread.appendChild(typing);
+    setTimeout(function () {
+      typing.remove();
+      lines.forEach(function (l) { bubble(l[0], l[1]); });
+      if (then) then();
+    }, reduced ? 0 : 650);
   }
   window.BTL_SSDI_QUIZ = {
-    answers: function () { var a = {}; Object.keys(A).forEach(function (k) { a[k] = A[k]; }); a.web_outcome = outcome(a); a.quiz_version = 'ssdi-pilot-001-quiz-2026-10-19-v1-example'; return a; },
-    resultText: resultText
+    answers: function () { var a = {}; Object.keys(A).forEach(function (k) { a[k] = A[k]; }); a.web_outcome = R.outcome(a); a.criteria_version = R.version; return a; },
+    resultText: function () { return R.resultText(R.outcome(A)); }
   };
 
+  function progress(n) {
+    if (meter) meter.style.width = Math.round((n / total) * 100) + '%';
+    if (count) count.textContent = n < total ? 'Question ' + (n + 1) + ' of ' + total : 'Done';
+  }
+  function answer(step, value, label) {
+    A[step.q] = value;
+    dock.innerHTML = '';
+    bubble(label, 'u');
+    push('ee_quiz_step', { step: idx + 1 });
+    idx++; progress(idx); ask();
+  }
   function ask() {
-    while (idx < steps.length && steps[idx].when && !steps[idx].when()) idx++;
     if (idx >= steps.length) return finish();
     var step = steps[idx];
-    bubble(step.text, 's');
-    dock.innerHTML = '';
-    var chips = document.createElement('div'); chips.className = 'chips';
-    step.opts.forEach(function (pair) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = pair[1];
-      b.addEventListener('click', function () {
-        A[step.q] = pair[0]; answered++;
-        bubble(pair[1], 'u');
-        push('ee_quiz_step', { step: answered });
-        if (meter) meter.style.width = Math.round((answered / total) * 100) + '%';
-        idx++; ask();
-      });
-      chips.appendChild(b);
+    say([[step.text, 's'], [step.why, 'why']], function () {
+      var chips = document.createElement('div'); chips.className = 'chips';
+      if (step.select) {
+        var sel = document.createElement('select'); sel.className = 'chip-select'; sel.setAttribute('aria-label', 'Your state');
+        sel.innerHTML = '<option value="">Choose your state</option>' + step.select.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+        sel.addEventListener('change', function () { if (sel.value) answer(step, sel.value, sel.value); });
+        chips.appendChild(sel);
+      } else {
+        step.opts.forEach(function (pair) {
+          var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = pair[1];
+          b.addEventListener('click', function () { answer(step, pair[0], pair[1]); });
+          chips.appendChild(b);
+        });
+      }
+      dock.appendChild(chips);
+      /* Keep the answer buttons on screen as the conversation grows. */
+      if (idx > 0) dock.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
     });
-    dock.appendChild(chips);
   }
   function finish() {
-    var res = outcome(A);
+    var res = R.outcome(A);
     push('ee_quiz_complete', { result: res });
-    bubble(resultText(), 's');
-    bubble('If you’d like the reviewing firm to see this, add your name and number below. Nothing is sent until you submit.', 'note');
-    if (contactWrap) { contactWrap.hidden = false; contactWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    dock.innerHTML = '';
+    if (res === 'NOT_A_FIT') {
+      say([[R.resultText(res), 's'], ['You can always apply for free with Social Security at ssa.gov/disability.', 's']], function () {
+        var a = document.createElement('a'); a.className = 'ssa-link'; a.href = 'https://www.ssa.gov/disability/'; a.rel = 'noopener'; a.textContent = 'Go to ssa.gov/disability →';
+        dock.appendChild(a);
+      });
+      return;
+    }
+    say([['Good news: based on what you shared, you may qualify for a free review.', 'note'], ['Where should I call you? I’ll confirm a few details and connect you with the firm. Nothing is sent until you tap the button.', 's']], function () {
+      if (contactWrap) { contactWrap.hidden = false; var n = document.getElementById('full_name'); if (n) n.focus({ preventScroll: true }); contactWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); }
+    });
   }
+  /* After intake saves the lead, Sofia confirms in the chat and the form goes away. */
+  if (form) form.addEventListener('ee:lead-saved', function (ev) {
+    if (contactWrap) contactWrap.hidden = true;
+    var t = ev.detail && ev.detail.bestTime;
+    var when = t && t[0] !== 'asap' ? 'I’ll call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.'
+      : R.inHours() ? 'I’ll call you in the next few minutes.' : 'I’ll call you during business hours (' + R.hours.label + ').';
+    say([['You’re all set. ' + when + ' Keep your phone nearby.', 'note']]);
+  });
+
   push('ee_quiz_start');
+  progress(0);
   ask();
 })();
