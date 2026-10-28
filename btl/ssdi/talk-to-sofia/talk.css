@@ -51,18 +51,6 @@
 .cb-card{text-align:left;padding:24px 22px 20px}
 .cb-card h2{margin:0 0 14px;font-size:1.4rem}
 .cb-card .field label{display:block;margin:0 0 6px;font-weight:700}
-.when{border:0;margin:0 0 18px;padding:0}
-.when legend{margin:0 0 8px;font-weight:700;padding:0}
-.when-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.when-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:8px 6px;border:2px solid #d5d9e0;border-radius:14px;background:#fff;color:var(--ink);font:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
-.when-opt small{font-size:.78rem;font-weight:500;color:var(--muted)}
-.when-opt[data-v="asap"]{grid-column:1/-1}
-.when-opt[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft);color:var(--teal)}
-.when-opt[aria-pressed="true"] small{color:var(--teal)}
-/* consent by tapping the button: small print right under it */
-.clickwrap{margin:12px 2px 0}
-.clickwrap p{margin:0;font-size:.74rem;line-height:1.5;color:var(--muted)}
-.clickwrap a{color:var(--muted)}
 .done-note{font-size:.95rem}
 .end.ok .icon{animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}

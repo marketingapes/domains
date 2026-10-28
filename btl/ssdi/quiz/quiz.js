@@ -33,15 +33,18 @@
     if (extra) Object.keys(extra).forEach(function (k) { o[k] = extra[k]; });
     window.dataLayer.push(o);
   }
+  /* The thread has a fixed height; keep the newest message in view. */
+  function toBottom() { thread.scrollTop = thread.scrollHeight; }
   function bubble(text, who) {
     var d = document.createElement('div'); d.className = 'b ' + (who || 's'); d.textContent = text; thread.appendChild(d);
+    toBottom();
     return d;
   }
   /* Sofia "types" for a moment, then the message appears. */
   function say(lines, then) {
     var typing = document.createElement('div'); typing.className = 'b s typing'; typing.setAttribute('aria-hidden', 'true');
     typing.innerHTML = '<i></i><i></i><i></i>';
-    thread.appendChild(typing);
+    thread.appendChild(typing); toBottom();
     setTimeout(function () {
       typing.remove();
       lines.forEach(function (l) { bubble(l[0], l[1]); });
@@ -97,16 +100,26 @@
       return;
     }
     say([['Good news: based on what you shared, you may qualify for a free review.', 'note'], ['Where should I call you? I’ll confirm a few details and connect you with the firm. Nothing is sent until you tap the button.', 's']], function () {
-      if (contactWrap) { contactWrap.hidden = false; var n = document.getElementById('full_name'); if (n) n.focus({ preventScroll: true }); contactWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); }
+      if (contactWrap) { contactWrap.hidden = false; var chat = document.getElementById('chat'); if (chat) chat.classList.add('has-contact'); toBottom(); var n = document.getElementById('full_name'); if (n) n.focus({ preventScroll: true }); contactWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); }
     });
   }
   /* After intake saves the lead, Sofia confirms in the chat and the form goes away. */
   if (form) form.addEventListener('ee:lead-saved', function (ev) {
     if (contactWrap) contactWrap.hidden = true;
+    var chatEl = document.getElementById('chat'); if (chatEl) chatEl.classList.remove('has-contact');
     var t = ev.detail && ev.detail.bestTime;
     var when = t && t[0] !== 'asap' ? 'I’ll call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.'
       : R.inHours() ? 'I’ll call you in the next few minutes.' : 'I’ll call you during business hours (' + R.hours.label + ').';
     say([['You’re all set. ' + when + ' Keep your phone nearby.', 'note']]);
+  });
+
+  /* when should Sofia call: tap a time */
+  var bt = document.getElementById('best_time');
+  [].forEach.call(document.querySelectorAll('.when-opt'), function (b) {
+    b.addEventListener('click', function () {
+      [].forEach.call(document.querySelectorAll('.when-opt'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (bt) bt.value = b.getAttribute('data-v');
+    });
   });
 
   push('ee_quiz_start');

@@ -232,7 +232,10 @@ section.band{padding:48px 0}
 .chat-head small{color:var(--muted);font-size:.85rem}
 .chat-count{margin-left:auto;font-size:.85rem;font-weight:700;color:var(--teal);background:var(--teal-soft);padding:5px 10px;border-radius:999px;white-space:nowrap}
 .chat-meter{margin:0;border-radius:0;height:5px}
-.thread{display:flex;flex-direction:column;gap:10px;padding:18px 16px 6px;min-height:200px;max-height:none}
+/* The chat keeps one size: older messages scroll up inside it, so the box never grows down the page. */
+.thread{display:flex;flex-direction:column;gap:10px;padding:18px 16px 6px;height:clamp(240px,42vh,360px);overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;-webkit-mask-image:linear-gradient(transparent 0,#000 22px);mask-image:linear-gradient(transparent 0,#000 22px)}
+.thread>:first-child{margin-top:auto}
+.chat.has-contact .thread{height:clamp(150px,24vh,220px)}
 .b{max-width:88%;padding:12px 16px;border-radius:18px;font-size:1.05rem;line-height:1.45;animation:pop .28s ease}
 .b.s{align-self:flex-start;background:#eef4f6;color:var(--ink);border-bottom-left-radius:6px}
 .b.u{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:6px;font-weight:600}
@@ -288,3 +291,17 @@ section.band{padding:48px 0}
 .call-lines li.wait{opacity:0;transform:translateY(10px)}
 .call-note{margin:0;padding:12px 18px 18px;font-size:.88rem;color:var(--muted)}
 .call-lines li.gap{align-self:center;max-width:100%;padding:4px 12px;font-size:.88rem;font-style:italic;color:var(--muted);background:none}
+
+/* compact contact step (Talk to Sofia, quiz): tap-to-pick call time, consent by tapping the button in small print */
+.when{border:0;margin:0 0 18px;padding:0}
+.when legend{margin:0 0 8px;font-weight:700;padding:0}
+.when-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.when-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:8px 6px;border:2px solid #d5d9e0;border-radius:14px;background:#fff;color:var(--ink);font:inherit;font-size:1rem;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
+.when-opt small{font-size:.78rem;font-weight:500;color:var(--muted)}
+.when-opt[data-v="asap"]{grid-column:1/-1}
+.when-opt[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft);color:var(--teal)}
+.when-opt[aria-pressed="true"] small{color:var(--teal)}
+/* consent by tapping the button: small print right under it */
+.clickwrap{margin:12px 2px 0}
+.clickwrap p{margin:0;font-size:.74rem;line-height:1.5;color:var(--muted)}
+.clickwrap a{color:var(--muted)}
