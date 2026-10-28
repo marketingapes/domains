@@ -5,13 +5,15 @@
      names, phone numbers, emails, states and answers are NEVER pushed
    - builds the lead payload and "delivers" it
 
-   REFERENCE-BUILD SAFETY: delivery is SYNTHETIC unless a production endpoint is wired at go-live
-   by setting window.EE_INTAKE_ENDPOINT before this script loads. In synthetic mode nothing
-   leaves the browser: the payload is kept in sessionStorage ('ee_ssdi_last_lead') so the
-   Perspective demo can show the test lead truthfully, labeled as local-only.
+   Delivery: each page sets window.EE_INTAKE_ENDPOINT (the campaign-kit intake, Make 6777650) before this
+   script. The wire contract is btl.intake.web/v1, form-encoded (payload=<json>&submission_id=<uuid>) so Make
+   receives it without a CORS preflight. Success shows only when the webhook answers 2xx with
+   {status: received|duplicate, receipt_id}; the intake stores the lead before it answers.
+   The submission_id survives retries (sessionStorage), so a resend dedupes to the same receipt.
+   ?test=1 on the URL marks the lead synthetic: stored as lead.test, never emailed or dialed.
+   With no endpoint set, nothing leaves the browser (payload kept in sessionStorage 'ee_ssdi_last_lead').
 
-   TrustedForm: at go-live, set window.EE_TRUSTEDFORM = true and the account script below loads
-   and the cert URL joins the payload. It is intentionally NOT loaded in this reference build. */
+   TrustedForm: window.EE_TRUSTEDFORM = true loads the script; its cert URL joins the payload. */
 (function () {
   'use strict';
   var CAMPAIGN = 'BTL-SSDI-001';
@@ -20,6 +22,15 @@
   if (!form) return;
   var pageId = form.getAttribute('data-page-id') || 'btl-ssdi-unknown';
   var synthetic = !window.EE_INTAKE_ENDPOINT;
+  var isTest = /(?:^|[?&])test=1(?:&|$)/.test(location.search);
+  var SK = 'ee_sub_' + pageId;
+  function sid() {
+    try { var v = sessionStorage.getItem(SK); if (v) return v; } catch (e) {}
+    var u = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+    try { sessionStorage.setItem(SK, u); } catch (e) {}
+    return u;
+  }
+  function e164(raw) { var d = raw.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); return d.length === 10 ? '+1' + d : ''; }
 
   window.dataLayer = window.dataLayer || [];
   function push(evt, extra) {
@@ -80,22 +91,28 @@
     var scorer = window.BTL_SSDI || window.BTL_SSDI_QUIZ;
     var answers = scorer ? scorer.answers() : {};
     var R = window.SSDI_RULES, now = new Date();
+    var full = val('full_name'), parts = full.split(/\s+/);
+    var consentText = (document.querySelector('#consentBox label') || {}).textContent || '';
+    var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
     var payload = {
-      campaign_id: CAMPAIGN, page_id: pageId, tenant_id: TENANT, door: form.getAttribute('data-kind') || 'form',
+      schema: 'btl.intake.web/v1', submission_id: sid(),
+      tenant_id: TENANT, domain_id: 'btl', campaign_id: CAMPAIGN, page_id: pageId,
+      door: form.getAttribute('data-kind') || 'form',
+      request_type: answers.web_outcome ? 'screened_inquiry' : 'callback_request',
       submitted_at: now.toISOString(),
-      contact: { full_name: val('full_name'), phone: val('phone'), state: val('state') || answers.state || null },
-      answers: answers,
+      contact: { full_name: full, first_name: parts[0] || '', last_name: parts.slice(1).join(' '), phone_e164: e164(val('phone')), state: val('state') || answers.state || null },
+      screening: { web_outcome: answers.web_outcome || null, criteria_version: answers.criteria_version || (R && R.version) || null, answers: answers },
       /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
-      route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen',
-      transfer_window: R && R.inHours(now) ? 'open' : 'closed',
+      routing: { route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen', transfer_window: R && R.inHours(now) ? 'open' : 'closed' },
       consent: {
-        calls: !!(callsBox && callsBox.checked),
-        sms: !!(document.getElementById('consent_sms') || {}).checked,
-        text: (document.querySelector('#consentBox label') || {}).textContent || ''
+        version: 'btl-ssdi-001-consent-2026-10-27', captured_at: now.toISOString(), text: consentText,
+        calls: { granted: !!(callsBox && callsBox.checked) },
+        sms: { granted: !!(document.getElementById('consent_sms') || {}).checked }
       },
-      trustedform_cert_url: null, /* populated at go-live when EE_TRUSTEDFORM is enabled */
+      trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
       page_url: location.origin + location.pathname,
-      tracking: tracking()
+      attribution: tracking(),
+      test: { synthetic: isTest }
     };
 
     push('ee_lead_submit_attempt');
@@ -133,7 +150,13 @@
 
     if (synthetic) { setTimeout(succeed, 500); return; }
     fetch(window.EE_INTAKE_ENDPOINT, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-    }).then(function (r) { r.ok ? succeed() : fail(); }).catch(fail);
+      method: 'POST', body: new URLSearchParams({ payload: JSON.stringify(payload), submission_id: payload.submission_id })
+    }).then(function (r) {
+      return r.json().catch(function () { return null; }).then(function (j) {
+        if (!r.ok || !j || !j.receipt_id || ['received', 'accepted', 'duplicate'].indexOf(j.status) < 0) throw Error('no receipt');
+        try { sessionStorage.removeItem(SK); sessionStorage.setItem('ee_ssdi_last_receipt', j.receipt_id); } catch (e) {}
+        succeed();
+      });
+    }).catch(fail);
   });
 })();
