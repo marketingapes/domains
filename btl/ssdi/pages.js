@@ -1,7 +1,7 @@
-/* BTL-SSDI-001 page script for the callback form (/ssdi/) and Talk to Sofia (/ssdi/talk-to-sofia/):
-   picks the call time, opens the callback card in place, shows the thank-you after intake.js saves the lead,
-   and tags call clicks. The Sofia call links work only when <body data-sofia-tel> holds the SSDI line
-   (otherwise they are hidden: never a line that answers as another Sofia). Nothing identifying goes to dataLayer. */
+/* BTL-SSDI-001 page script for /ssdi/, /ssdi/talk-to-sofia/ and /ssdi/quiz/: fills the Sofia call links, opens the
+   callback form in place (Talk to Sofia), and shows the thank-you after intake.js saves the lead.
+   The Sofia call links work only when <body data-sofia-tel> holds the SSDI line (otherwise they are hidden:
+   never a line that answers as another Sofia). Nothing identifying goes to dataLayer. */
 (function () {
   'use strict';
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,16 +24,7 @@
     a.addEventListener('click', function () { push('ee_call_click', { placement: a.getAttribute('data-sofia-call') }); });
   });
 
-  /* when should Sofia call: tap a time */
-  var bt = $('best_time');
-  document.querySelectorAll('.when-opt').forEach(function (b) {
-    b.addEventListener('click', function () {
-      document.querySelectorAll('.when-opt').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      if (bt) bt.value = b.getAttribute('data-v');
-    });
-  });
-
-  /* callback card that opens in place (Talk to Sofia) */
+  /* callback form that opens in place (Talk to Sofia) */
   var open = $('openCb'), panel = $('cbPanel');
   function show() {
     if (!panel || !panel.classList.contains('closed')) return;
