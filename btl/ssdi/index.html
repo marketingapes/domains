@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- BTL-SSDI-001: the light "friendly" look (#367), kept beside the Glassman-style A pages at /ssdi/ for testing. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Free SSDI Consultation — Request a Call — Best Tort Lawyers</title>
 <meta name="description" content="Out of work for a year or more because of your health? Request a free call about Social Security Disability. Sofia, our AI intake assistant, calls you at a time that works. Best Tort Lawyers is not a law firm.">
 <link rel="canonical" href="https://besttortlawyers.com/ssdi/">
 <meta name="robots" content="noindex,follow">
-<meta name="theme-color" content="#0f2338">
+<meta name="theme-color" content="#d7f3ea">
 <meta name="ee-campaign" content="BTL-SSDI-001">
 <meta name="ee-page-id" content="btl-ssdi-main-form">
 <meta property="og:title" content="Out of work because of your health? Request a free SSDI consultation.">
@@ -24,125 +25,160 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/assets/ssdi/hero-woman-phone-960.jpg">
-<link rel="stylesheet" href="/ssdi/pages.css?v=20261028a">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ssdi/friendly.css?v=20261028h">
 <script>document.documentElement.className+=' js'</script>
 </head>
-<!-- data-sofia-tel: the SSDI Sofia's own line in E.164 (Vapi 9d3d31eb). Empty hides every "Talk to Sofia" call link
-     (never a line that answers as another Sofia). (202) 932-9700 moved to the SSDI Sofia on 2026-10-28 at Kyle's direction. -->
+<!-- data-sofia-tel: the SSDI Sofia's own line in E.164 (Vapi 9d3d31eb). Empty hides every "Call Sofia" link. -->
 <body data-sofia-tel="+12029329700">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-<a class="skip" href="#request">Skip to the callback form</a>
+<a class="skip" href="#request">Skip to the form</a>
 
-<div class="bar"><div class="in"><span><b>Free to check.</b> <span class="hide-s">Not the government. Never sold.</span></span><a href="#" data-sofia-call="topbar">Talk to Sofia: <span data-num>(202) 932-9700</span></a></div></div>
-<header class="nav"><div class="in">
-  <a class="brand" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="40" height="40" alt=""><span><b>Best Tort Lawyers</b><small>Social Security Disability</small></span></a>
-  <nav class="links" aria-label="SSDI pages"><a href="/ssdi/quiz/">Eligibility check</a><a href="/ssdi/" aria-current="page">Request a callback</a><a class="call" href="/ssdi/talk-to-sofia/">Talk to Sofia</a></nav>
-</div></header>
+<div class="hero">
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="40" height="40" alt=""><b>Best Tort Lawyers</b></a>
+    <a class="top-call" href="#" data-sofia-call="header"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span><span><small>Talk to Sofia</small><span data-num></span><b class="m">Call Sofia</b></span></a>
+  </div>
+</header>
 
 <main>
-<section class="hero" aria-labelledby="heroH"><div class="in hero-grid split">
-  <div class="hero-head">
-    <p class="eyebrow">Social Security Disability · Request a callback</p>
-    <h1 id="heroH">Out of work because of your health? Let’s talk.</h1>
-  </div>
-  <div class="hero-card" id="request">
-    <div class="card">
-      <div id="formBody">
-        <div class="card-head"><span class="k">Request a free consultation</span><span class="count">Takes a minute</span></div>
-        <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
-        <p class="hint">Just tell us where to reach you. Sofia asks the questions on the call.</p>
-        <form id="leadForm" novalidate data-page-id="btl-ssdi-main-form" data-kind="callback">
-          <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
-          <div class="grid2"><div class="field"><label for="full_name">Your name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div></div>
-          <div class="grid2"><div class="field"><label for="state">State you live in</label><select id="state" name="state" autocomplete="address-level1" data-states><option value="">Choose</option></select></div><div class="field"><label for="best_time">Best time to call</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning (9:30–12 ET)</option><option value="midday">Weekday midday (12–3 ET)</option><option value="afternoon">Weekday afternoon (3–6 ET)</option></select></div></div>
-          <button class="cta wide" type="submit" id="submitBtn">Request my free call <span aria-hidden="true">→</span></button>
+<section aria-labelledby="heroH">
+  <div class="wrap hero-grid split">
+    <div class="hero-copy">
+      <p class="tagline"><i aria-hidden="true"></i>Social Security Disability · Free consultation</p>
+      <h1 id="heroH">Out of work because of your health? Let’s talk about <em>SSDI</em>.</h1>
+      <p class="lede">Leave your name and number. Sofia, our AI intake assistant, calls you when it suits you, asks a few quick questions, and if it fits, connects you with a disability intake team.</p>
+    </div>
+
+    <div class="form-wrap" id="request">
+      <svg class="scribble" viewBox="0 0 88 70" aria-hidden="true"><path d="M4 8c22 2 44 10 56 28 5 8 8 16 8 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M58 52l10 10 10-12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <section class="card form-card" aria-labelledby="formH">
+        <span class="sticker">Free · No obligation</span>
+        <div id="formBody">
+          <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
+          <h2 id="formH">Request a free consultation</h2>
+          <p class="hint">Just tell us where to reach you. Sofia asks the questions on the call.</p>
+          <form id="leadForm" novalidate data-page-id="btl-ssdi-main-form" data-kind="callback">
+            <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
+            <div class="field">
+              <label for="full_name">Your name</label>
+              <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e" placeholder="First and last name">
+              <span class="ferr" id="full_name-e"></span>
+            </div>
+            <div class="two">
+              <div class="field">
+                <label for="phone">Mobile phone</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e" placeholder="(555) 555-5555">
+                <span class="ferr" id="phone-e"></span>
+              </div>
+              <div class="field">
+                <label for="state">Your state</label>
+                <select id="state" name="state" autocomplete="address-level1" data-states><option value="">Choose</option></select>
+              </div>
+            </div>
+            <fieldset class="when">
+              <legend>When should Sofia call?</legend>
+              <input type="hidden" id="best_time" name="best_time" value="asap">
+              <div class="when-opts">
+                <button type="button" class="when-opt" data-v="asap" aria-pressed="true">As soon as possible</button>
+                <button type="button" class="when-opt" data-v="morning" aria-pressed="false">Morning<small>9:30–12 ET</small></button>
+                <button type="button" class="when-opt" data-v="midday" aria-pressed="false">Midday<small>12–3 ET</small></button>
+                <button type="button" class="when-opt" data-v="afternoon" aria-pressed="false">Afternoon<small>3–6 ET</small></button>
+              </div>
+            </fieldset>
+            <button class="btn" type="submit" id="submitBtn">Request my free call <span class="arrow" aria-hidden="true">→</span></button>
             <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Request my free call"></div>
             <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-        </form>
-        <p class="alt-ways"><a href="#" data-sofia-call="form_alt">Call Sofia now: <span data-num>(202) 932-9700</span></a><a href="/ssdi/quiz/">Or take the two-minute check →</a></p>
-      </div>
-      <div class="ok-box" id="formDone" hidden><b tabindex="-1">You’re all set.</b><p id="doneText"></p><p>The call comes from Sofia, our AI intake assistant. Keep your phone nearby.</p></div>
+          </form>
+          <p class="alt-ways"><a href="#" data-sofia-call="form_alt">Call Sofia now: <span data-num></span></a><a href="/ssdi/quiz/">Or take the 1-minute quiz →</a></p>
+        </div>
+        <div class="done" id="formDone" hidden>
+          <div class="tick" aria-hidden="true">✓</div>
+          <h2 tabindex="-1">You’re all set!</h2>
+          <p id="doneText"></p>
+          <p class="small">The call comes from Sofia, our AI intake assistant. Keep your phone nearby.</p>
+        </div>
+      </section>
     </div>
-  </div>
-  <div class="hero-more">
-    <p class="lede">Leave your name and number. Sofia, our AI intake assistant, calls you at the time you pick, asks a few quick questions, and if it fits, connects you with a disability intake team.</p>
-    <ul class="chips"><li>Free to check</li><li>You pick the time</li><li>Not the government</li></ul>
-  </div>
-</div></section>
-<div class="trust"><div class="in">
-  <div><b>Free</b><span>to check</span></div>
-  <div><b>6</b><span>quick questions</span></div>
-  <div><b>24/7</b><span>Sofia answers</span></div>
-  <div><b>Never</b><span>sold</span></div>
-</div></div>
+    <div class="hero-fit">
+      <ul class="fit-list" aria-label="Who this free review is for">
+        <li>54 to 63 years old</li>
+        <li>Out of work for a year or more</li>
+        <li>Seeing a doctor for your condition</li>
+        <li>Not getting disability payments yet</li>
+        <li>Not working with a lawyer on it</li>
+      </ul>
+      <ul class="badges">
+        <li><b>$0</b> Free to ask</li>
+        <li><b>1 min</b> to request</li>
+        <li><b>No</b> obligation</li>
+      </ul>
+    </div>
 
-<section class="fit" aria-labelledby="fitH"><div class="in">
-  <figure><img src="/assets/ssdi/hero-woman-phone-960.jpg" width="960" height="542" alt="A woman at home on the phone, smiling" loading="lazy"></figure>
-  <div>
-    <p class="eyebrow dark">Who this review is for</p>
-    <h2 class="sec" id="fitH">A free review for people who are:</h2>
-    <ul class="checks">
-      <li>54 to 63 years old</li>
-      <li>Out of work for a year or more</li>
-      <li>Under a doctor’s care for their condition</li>
-      <li>Not getting disability payments from the government yet</li>
-      <li>Not working with a lawyer on it</li>
-    </ul>
-    <p class="sub tight">Not sure about one? That’s fine. Sofia goes over it with you on the call.</p>
   </div>
-</div></section>
-<section aria-labelledby="doorsH"><div class="in center">
-  <p class="eyebrow dark">Other ways to start</p>
-  <h2 class="sec" id="doorsH">Pick whatever’s easiest for you.</h2>
-  <p class="sub">Every path ends the same way: the disability intake team reviews your situation, free.</p>
-  <div class="doors">
-      <a class="door" href="/ssdi/quiz/"><img src="/assets/ssdi/ads/ssdi-quiz-1080x1080.jpg" width="1080" height="1080" alt="" loading="lazy"><div class="body"><span class="k">Two-minute check</span><h3>Check my eligibility</h3><p>Six quick questions. You see your result before we ask for your number.</p><span class="btn">Start the check →</span></div></a>
-      <a class="door" href="/ssdi/talk-to-sofia/"><img src="/assets/ssdi/ads/ssdi-sofia-1080x1080.jpg" width="1080" height="1080" alt="" loading="lazy"><div class="body"><span class="k">Talk it through</span><h3>Talk to Sofia now</h3><p>Call any time. Sofia asks six questions and, if it fits, connects you on the same call.</p><span class="btn">Talk to Sofia →</span></div></a>
-  </div>
-</div></section>
-<section class="band2" aria-labelledby="stepsH"><div class="in">
-  <p class="eyebrow dark">What happens next</p>
-  <h2 class="sec" id="stepsH">Four simple steps. No paperwork today.</h2>
-  <div class="steps">
-    <div><b>You reach out</b><span>Take the check, call Sofia, or ask for a callback.</span></div>
-    <div><b>Sofia asks six questions</b><span>She says she’s an AI, the call is recorded, and you can ask for a person anytime.</span></div>
-    <div><b>If it fits, you’re connected</b><span>With the disability intake team on the same call, weekdays 9:30 to 6 Eastern.</span></div>
-    <div><b>If not right now</b><span>A member of our team will reach out within 24 to 48 hours if you may have a claim.</span></div>
-  </div>
-</div></section>
+</section>
+</main>
+</div>
 
-<section aria-labelledby="faqH"><div class="in center">
-  <p class="eyebrow dark">Good questions</p>
-  <h2 class="sec" id="faqH">What people ask us</h2>
-  <div class="faq">
-    <details><summary>Does it cost anything?</summary><p>No. Checking is free, and the review is free. Disability lawyers are generally paid only if your claim is approved, with the fee limited by federal law.</p></details>
+<section class="band" aria-labelledby="howH">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2 class="title reveal" id="howH">How do you get started?</h2>
+    <p class="lead reveal">Three simple steps. No paperwork to fill out today.</p>
+    <ol class="steps">
+      <li class="reveal"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg></span><h3>Request a call</h3><p>Your name, your number and the best time. It takes about a minute.</p></li>
+      <li class="reveal"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><h3>A quick chat with Sofia</h3><p>Six plain questions: your state, age, work, doctor, benefits and lawyer. “Not sure” is fine.</p></li>
+      <li class="reveal"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 11l2 2 3.5-4"/></svg></span><h3>Talk with the intake team</h3><p>If it fits, she connects you on the same call, weekdays 9:30 to 6 Eastern. Free.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band white" aria-labelledby="faqH">
+  <div class="wrap">
+    <span class="eyebrow">Good questions</span>
+    <h2 class="title reveal" id="faqH">What people ask us</h2>
+    <p class="lead reveal">Straight answers, no fine print games.</p>
+    <div class="faq">
+      <details><summary>Does it cost anything?</summary><p>No. Checking is free, and the review is free. Disability lawyers are generally paid only if your claim is approved, with the fee limited by federal law.</p></details>
       <details><summary>Is this the government?</summary><p>No. Best Tort Lawyers is a private service and is not connected to the Social Security Administration. You can always apply directly with Social Security for free at ssa.gov.</p></details>
       <details><summary>Is Best Tort Lawyers a law firm?</summary><p>No. We connect people with participating law firms. We don’t give legal advice, and using this page doesn’t make anyone your lawyer.</p></details>
       <details><summary>When will someone call me?</summary><p>At the time you pick. “As soon as possible” on a weekday between 9:30 AM and 6 PM Eastern usually means within minutes; at night or on a weekend, she calls the next business day.</p></details>
       <details><summary>Who calls me?</summary><p>Sofia, our AI intake assistant. She says she’s an AI at the start of every call, and you can ask for a person anytime. If it fits, she connects you with a disability intake team, but only after you say yes.</p></details>
       <details><summary>Where does my information go?</summary><p>To Best Tort Lawyers and, if your answers fit, to the participating law firm that reviews your situation. It is not sold.</p></details>
+    </div>
   </div>
-</div></section>
-<section class="close center" aria-labelledby="closeH"><div class="in">
-  <h2 class="sec" id="closeH">Find out where you stand today.</h2>
-  <p>Free, about two minutes, and you can stop anytime.</p>
-  <div class="ctas"><a class="cta" href="#request">Request my free call →</a><a class="cta ghost" href="#" data-sofia-call="close">Call Sofia: <span data-num>(202) 932-9700</span></a></div>
-</div></section>
+</section>
 
-</main>
+<section class="band final" aria-labelledby="finalH">
+  <div class="wrap">
+    <div class="final-card reveal">
+      <h2 id="finalH">Ready when you are.</h2>
+      <p>It takes about a minute to ask for your free call. Sofia does the rest.</p>
+      <a class="btn" href="#request">Request my free call <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
 
-<footer><div class="in">
-  <nav aria-label="Footer"><a href="/ssdi/">Request a callback</a><a href="/ssdi/quiz/">Eligibility check</a><a href="/ssdi/talk-to-sofia/">Talk to Sofia</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-and-conditions/">Terms</a><a href="/sms-terms/">SMS Terms</a></nav>
-  <p><strong>ATTORNEY ADVERTISING.</strong> Best Tort Lawyers is not a law firm and does not provide legal advice. Using this website or submitting this form does not create an attorney-client relationship. This is a private service and is not affiliated with the Social Security Administration; you may apply for benefits directly with SSA at no cost. Participating law firms decide under their own criteria whether to review a matter. No review, representation, benefit approval or outcome is guaranteed. Prior results do not guarantee a similar outcome. Not available in California or Colorado. © 2026 Best Tort Lawyers</p>
-</div></footer>
+<footer class="foot">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="/ssdi/quiz/">Take the quiz</a>
+      <a href="/ssdi/talk-to-sofia/">Talk to Sofia</a>
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-and-conditions/">Terms</a>
+      <a href="/sms-terms/">SMS Terms</a>
+    </nav>
+    <p><strong>ATTORNEY ADVERTISING.</strong> Best Tort Lawyers is not a law firm and does not provide legal advice. Using this website or submitting this form does not create an attorney-client relationship. This is a private service and is not affiliated with the Social Security Administration; you may apply for benefits directly with SSA at no cost. Participating law firms decide under their own criteria whether to review a matter. No review, representation, benefit approval or outcome is guaranteed. Prior results do not guarantee a similar outcome. Not available in California or Colorado. © 2026 Best Tort Lawyers</p>
+  </div>
+</footer>
 
-<script src="/ssdi/states.js?v=20261027a"></script>
-<script src="/ssdi/criteria.js?v=20261027a" defer></script>
-<script src="/ssdi/pages.js?v=20261028a" defer></script>
+<script src="/ssdi/states.js?v=20261028h"></script>
+<script src="/ssdi/motion.js?v=20261028h" defer></script>
+<script src="/ssdi/criteria.js?v=20261028h" defer></script>
+<script src="/ssdi/friendly.js?v=20261028h" defer></script>
 <script>/* BTL-SSDI-001 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/ssdi/intake.js?v=20261028d" defer></script>
+<script src="/ssdi/intake.js?v=20261028h" defer></script>
 </body>
 </html>

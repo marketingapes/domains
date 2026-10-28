@@ -22,9 +22,9 @@ Add `?test=1` to any page URL to send a synthetic lead (stored as `lead.test`, n
 | `quiz/index.html` + `quiz/quiz.js` | Eligibility check in the hero card, one question at a time with "why we ask"; contact step only after a "may qualify" result | `btl-ssdi-quiz` |
 | `talk-to-sofia/index.html` | Sofia's number with a tap-to-call button, an example call, and a "Have Sofia call me" form that opens in place | `btl-ssdi-call-first` |
 
-All three share `pages.css` + `pages.js`: the Glassman SSDI layout (`btl/glassman-ssdi/`) in Best Tort Lawyers' navy and gold, with no firm named. `talk-to-sofia-b/` still uses the older `look.css` + `talk.js`.
+Since 2026-10-28 (evening) the main pages `/ssdi/`, `/ssdi/talk-to-sofia/` and `/ssdi/quiz/` use the light "friendly" look: `friendly.css` + `friendly.js`, chat-style `quiz/quiz.js`. Page ids are unchanged (`btl-ssdi-main-form`, `btl-ssdi-call-first`, `btl-ssdi-quiz`), so ads and Perspective keep working. `talk-to-sofia-b/` still uses the older `look.css`.
 
-**B version (`b/`):** the light "friendly" look from #367, kept for testing beside the A pages: `/ssdi/b/` (callback form, `btl-ssdi-b-form`), `/ssdi/b/talk-to-sofia/` (`btl-ssdi-b-call-first`), `/ssdi/b/quiz/` (`btl-ssdi-b-quiz`, chat quiz). Same intake, consent and Sofia line; its own `friendly.css`/`friendly.js` and quiz script so A changes never touch it.
+**B version (`b/`):** the dark Glassman-site layout (#368), kept for testing: `/ssdi/b/` (`btl-ssdi-b-form`), `/ssdi/b/talk-to-sofia/` (`btl-ssdi-b-call-first`), `/ssdi/b/quiz/` (`btl-ssdi-b-quiz`, card quiz in `b/quiz/quiz.js`). It uses `pages.css` + `pages.js` from `/ssdi/`. Links stay inside `/ssdi/b/`.
 
 ## Shared files
 
