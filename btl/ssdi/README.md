@@ -18,16 +18,18 @@ Add `?test=1` to any page URL to send a synthetic lead (stored as `lead.test`, n
 
 | Path | What it is | Page tag |
 |---|---|---|
-| `index.html` | Three-step form (about you → work and health → contact), tap answers, "why we ask" under each question | `btl-ssdi-main-form` |
-| `quiz/index.html` + `quiz/quiz.js` | Sofia chat: she types, asks, says why she asks; contact step only after a "may qualify" result | `btl-ssdi-quiz` |
-| `talk-to-sofia/index.html` + `talk.js` | Callback request plus an example call that plays as it scrolls in. The call button stays off until the SSDI Sofia has its own number | `btl-ssdi-call-first` |
+| `index.html` | "Request a free consultation" callback form (name, phone, state, best time, click-to-agree). No screening questions; Sofia screens on the call | `btl-ssdi-main-form` |
+| `quiz/index.html` + `quiz/quiz.js` | Eligibility check in the hero card, one question at a time with "why we ask"; contact step only after a "may qualify" result | `btl-ssdi-quiz` |
+| `talk-to-sofia/index.html` | Sofia's number with a tap-to-call button, an example call, and a "Have Sofia call me" form that opens in place | `btl-ssdi-call-first` |
+
+All three share `pages.css` + `pages.js`: the Glassman SSDI layout (`btl/glassman-ssdi/`) in Best Tort Lawyers' navy and gold, with no firm named. `talk-to-sofia-b/` still uses the older `look.css` + `talk.js`.
 
 ## Shared files
 
 | File | Role |
 |---|---|
 | `criteria.js` | The only place the buyer's criteria, hours and excluded states live. Outcomes: `QUALIFIED`, `FIRM_REVIEW` (a "Not sure" Sofia confirms on the call), `NOT_A_FIT`. Routes: `sofia_transfer`, `sofia_confirm`, `hold`; callback leads are `sofia_screen`. |
-| `qualifier.js` | Form steps and scoring for `index.html`. Not-a-fit visitors stop after step 2 and are never asked for contact details. |
+| `qualifier.js` | Form steps and scoring for the older multi-step form (no longer used by `index.html`). |
 | `intake.js` | Consent, payload (answers, route, `transfer_window`, UTMs and click IDs), delivery. Fires `ee:lead-saved` on the form after a save. dataLayer gets non-identifying events only. |
 | `look.css` | Design for all three pages: dark animated hero, Sofia ring and voice wave, tap tiles, promise cards. Motion is off under `prefers-reduced-motion`. |
 | `motion.js` | Scroll reveals. |
