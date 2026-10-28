@@ -21,13 +21,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
+<script>document.documentElement.className+=' js'</script>
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
-<link rel="stylesheet" href="/ssdi/look.css?v=20261027m">
+<link rel="stylesheet" href="/ssdi/look.css?v=20261028a">
+<link rel="stylesheet" href="/ssdi/talk-to-sofia/talk.css?v=20261028b">
 </head>
-<body>
+<!-- data-sofia-tel: the SSDI Sofia's own line in E.164. Empty = no call button (never a line that answers as another Sofia).
+     (202) 932-9700 was moved from the Paraquat Sofia to the SSDI Sofia (Vapi 9d3d31eb) on 2026-10-28 at Kyle's direction. -->
+<body class="talk" data-sofia-tel="+12029329700">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
-<a class="skip" href="#callback">Skip to the callback form</a>
+<a class="skip" href="#cbPanel">Skip to the callback form</a>
 
 <header class="bar dark">
   <div class="wrap">
@@ -37,105 +41,118 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </header>
 
 <main>
-<section class="hero dark talk-hero">
+<section class="hero dark stage" aria-labelledby="heroH">
   <div class="grid-lines" aria-hidden="true"></div>
-  <div class="wrap talk-grid">
-    <div class="talk-intro">
-      <p class="kicker">Social Security Disability (SSDI)</p>
-      <h1>Talk to Sofia about <span>Social Security Disability.</span></h1>
-      <p class="sub">Out of work for a year because of your health? Leave your name and number. Sofia, our AI intake assistant, calls you, asks six short questions, and if it fits, connects you with a participating disability law firm for a free review.</p>
-      <div class="sofia-stage" aria-hidden="true">
-        <span class="orb huge"><img src="/assets/sofia/sofia-portrait-440x784.jpg" width="150" height="150" alt=""><span class="live"></span></span>
-        <span class="wave big"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-        <span class="stage-label">Sofia · AI intake assistant</span>
-      </div>
+  <div class="wrap stage-in">
+    <div class="portrait" aria-hidden="true">
+      <span class="halo"></span>
+      <img src="/assets/sofia/sofia-portrait-440x784.jpg" width="440" height="784" alt="" fetchpriority="high">
+      <span class="tag"><i></i>Sofia · AI intake</span>
     </div>
 
-    <section class="card form-card talk-card" id="callback" aria-labelledby="cbH">
-      <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
-      <div id="cbBody">
-        <h2 id="cbH">Have Sofia call you</h2>
-        <p class="hint">Just your name and number. Sofia asks the questions on the call.</p>
-        <form id="leadForm" novalidate data-page-id="btl-ssdi-call-first" data-kind="callback">
-          <div class="field">
-            <label for="full_name">Your full name</label>
-            <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e">
-            <span class="ferr" id="full_name-e"></span>
-          </div>
-          <div class="field">
-            <label for="phone">Mobile phone number</label>
-            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e">
-            <span class="why">So Sofia can call you. We never sell it, and you can stop the calls anytime.</span>
-            <span class="ferr" id="phone-e"></span>
-          </div>
-          <div class="consent" id="consentBox"></div>
-          <button class="btn" type="submit" id="submitBtn">Have Sofia call me <span class="arrow" aria-hidden="true">→</span></button>
-          <p class="status" id="formStatus" role="status" aria-live="polite"></p>
-        </form>
-        <!-- No SSDI phone line yet. (202) 932-9700 is bound to the Paraquat Sofia, so it must not appear here.
-             When the SSDI Sofia has its own number, this becomes a tel: link again. -->
-        <div class="call-off" id="callSofia" aria-disabled="true">
-          <span aria-hidden="true">📞</span>
-          <span><b>Prefer to call?</b> Sofia’s phone line opens at launch.</span>
+    <h1 id="heroH">Out of work because of your health? <span>Talk to Sofia.</span></h1>
+    <p class="sub">Call Sofia, our AI intake assistant, or have her call you. She asks six quick questions, and if it fits, connects you with a disability intake team on the same call. Free.</p>
+
+    <div class="ticker" aria-hidden="true">
+      <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="ticker-text"><b>Sofia asks:</b> <span id="tick">Which state do you live in?</span><span class="caret"></span></span>
+    </div>
+
+    <div class="cta">
+      <button class="sofia-button" type="button" id="openCb" aria-expanded="false" aria-controls="cbPanel">
+        <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1l-2.22 2.2z"/></svg></span>
+        <span class="button-copy"><strong>Have Sofia call me</strong><small>About 20 seconds</small></span>
+        <span class="chev" aria-hidden="true">›</span>
+      </button>
+      <a class="call-button" id="callSofia" href="#" hidden data-placement="hero_call">
+        <span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5v5.4l3.6 2.1-.8 1.4L11 13.2V7z"/></svg></span>
+        <span class="button-copy"><strong>Call Sofia now</strong><small id="callNum"></small></span>
+        <span class="chev" aria-hidden="true">›</span>
+      </a>
+      <a class="quiz-link" href="/ssdi/quiz/">Rather tap through it? Take the 1-minute quiz <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="cb-panel closed" id="cbPanel">
+      <section class="card form-card cb-card" aria-labelledby="cbH">
+        <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
+        <div id="cbBody">
+          <h2 id="cbH">Have Sofia call you</h2>
+          <form id="leadForm" novalidate data-page-id="btl-ssdi-call-first" data-kind="callback">
+            <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
+            <div class="field">
+              <label for="full_name">Your name</label>
+              <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e">
+              <span class="ferr" id="full_name-e"></span>
+            </div>
+            <div class="field">
+              <label for="phone">Mobile phone</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e">
+              <span class="ferr" id="phone-e"></span>
+            </div>
+            <fieldset class="when">
+              <legend>When should she call?</legend>
+              <input type="hidden" id="best_time" name="best_time" value="asap">
+              <div class="when-opts">
+                <button type="button" class="when-opt" data-v="asap" aria-pressed="true">As soon as possible</button>
+                <button type="button" class="when-opt" data-v="morning" aria-pressed="false">Morning<small>9:30–12 ET</small></button>
+                <button type="button" class="when-opt" data-v="midday" aria-pressed="false">Midday<small>12–3 ET</small></button>
+                <button type="button" class="when-opt" data-v="afternoon" aria-pressed="false">Afternoon<small>3–6 ET</small></button>
+              </div>
+            </fieldset>
+            <button class="btn" type="submit" id="submitBtn">Have Sofia call me <span class="arrow" aria-hidden="true">→</span></button>
+            <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Have Sofia call me"></div>
+            <p class="status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
         </div>
+        <div class="end ok" id="cbDone" hidden>
+          <div class="icon" aria-hidden="true">✓</div>
+          <h2 tabindex="-1">You’re all set</h2>
+          <p id="cbDoneText"></p>
+          <p class="done-note">The call comes from Sofia, our AI intake assistant. Keep your phone nearby.</p>
+        </div>
+      </section>
+    </div>
+
+    <ul class="how3">
+      <li><span class="n" aria-hidden="true">6</span><b>Six quick questions</b><span>State, age, work, doctor, benefits, lawyer. One at a time, in plain words.</span></li>
+      <li><span class="n" aria-hidden="true">1</span><b>One call</b><span>If it fits, she connects you with the intake team right then. Or she books a time that works for you.</span></li>
+      <li><span class="n" aria-hidden="true">$0</span><b>Free</b><span>No cost to check. Say stop or hang up anytime.</span></li>
+    </ul>
+
+    <div class="handoff" aria-labelledby="hoH">
+      <h2 id="hoH">Who you talk to</h2>
+      <div class="flow" aria-label="You, then Sofia, then the disability intake team">
+        <span class="node">You</span><span class="pipe"><i></i></span><span class="node sofia"><img src="/assets/sofia/sofia-portrait-440x784.jpg" width="26" height="26" alt="">Sofia</span><span class="pipe"><i></i></span><span class="node">Intake team</span>
       </div>
-      <div class="end ok" id="cbDone" hidden>
-        <div class="icon" aria-hidden="true">✓</div>
-        <h2 tabindex="-1">You’re all set</h2>
-        <p id="cbDoneText"></p>
-        <p>Calls come from Sofia, our AI intake assistant. Keep your phone nearby.</p>
-      </div>
-      <p class="secure">Sofia calls weekdays, 9:30 AM to 6 PM Eastern. Calls are recorded.</p>
-    </section>
+      <p>Sofia says she’s an AI on every call. She only connects you after you say yes.</p>
+    </div>
   </div>
 </section>
 
 <section class="band white" id="example" aria-labelledby="exH">
   <div class="wrap">
-    <h2 class="title reveal" id="exH">What a call with Sofia sounds like</h2>
-    <p class="lead reveal">About three minutes. She tells you she’s AI, asks six short questions, and always asks before connecting you.</p>
-    <div class="call-demo card reveal" id="callDemo">
+    <h2 class="title" id="exH">What the call sounds like</h2>
+    <p class="lead">About three minutes. You can ask for a person at any point.</p>
+    <div class="call-demo card" id="callDemo">
       <div class="call-demo-head">
         <span class="orb"><img src="/assets/sofia/sofia-portrait-440x784.jpg" width="40" height="40" alt=""><span class="live" aria-hidden="true"></span></span>
-        <div><b>Sofia</b><small>Example call, not a real person</small></div>
-        <span class="call-timer" aria-hidden="true"><i></i>On call</span>
+        <div><b>Sofia</b><small>Example call</small></div>
+        <span class="call-timer" aria-hidden="true"><i></i><span id="callClock">0:00</span></span>
       </div>
       <ol class="call-lines" id="callLines">
         <li class="s">Hi, this is Sofia, an AI assistant with Best Tort Lawyers, calling about your disability review. This call is recorded. Is now a good time?</li>
         <li class="u">Yes, it is.</li>
-        <li class="s">Great. I have six short questions. First, which state do you live in?</li>
+        <li class="s">Great. Which state do you live in?</li>
         <li class="u">Ohio.</li>
         <li class="s">Thank you. How old are you?</li>
         <li class="u">I’m 58.</li>
         <li class="s">Have you been out of work for at least a year?</li>
         <li class="u">Yes, about two years now.</li>
-        <li class="gap">Three more short questions: your doctor’s care, any disability payments, and whether you have a lawyer.</li>
-        <li class="s">It looks like you may qualify. Is it okay if I connect you with the law firm now?</li>
+        <li class="gap">Three more: your doctor’s care, any disability payments, and whether you have a lawyer.</li>
+        <li class="s">It sounds like you may qualify for a free review. Can I connect you with the intake team now?</li>
         <li class="u">Yes, please.</li>
       </ol>
-      <p class="call-note">Example only. On a real call, Sofia asks every question one at a time, and you can ask for a person at any point.</p>
     </div>
-  </div>
-</section>
-
-<section class="band" id="promise" aria-labelledby="promiseH">
-  <div class="wrap">
-    <h2 class="title reveal" id="promiseH">Our promise to you</h2>
-    <p class="lead reveal">You’re trusting us with something personal. Here’s how we handle it.</p>
-    <div class="promises">
-      <div class="promise reveal"><div class="ic" aria-hidden="true">✦</div><h3>Sofia says she’s AI</h3><p>Every call starts with Sofia telling you she’s an AI assistant. Ask for a person anytime.</p></div>
-      <div class="promise reveal"><div class="ic" aria-hidden="true">🔒</div><h3>Never sold</h3><p>Your information goes only to us and, if it fits, the one law firm that reviews your situation.</p></div>
-      <div class="promise reveal"><div class="ic" aria-hidden="true">☎</div><h3>She asks first</h3><p>Sofia only connects you with the firm after you say yes.</p></div>
-      <div class="promise reveal"><div class="ic" aria-hidden="true">✋</div><h3>Stop anytime</h3><p>Hang up, say stop, or reply STOP to a text. No pressure and no cost.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="band final" aria-labelledby="altH">
-  <div class="wrap">
-    <h2 id="altH">Rather tap through the questions now?</h2>
-    <p>See your result in about a minute, before you share your number.</p>
-    <a class="btn" href="/ssdi/quiz/">Take the 1-minute quiz <span class="arrow" aria-hidden="true">→</span></a>
   </div>
 </section>
 </main>
@@ -153,11 +170,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </footer>
 
-<script src="/ssdi/motion.js?v=20261027a" defer></script>
 <script src="/ssdi/criteria.js?v=20261027a" defer></script>
 <script>/* BTL-SSDI-001 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/ssdi/intake.js?v=20261028c" defer></script>
-<script src="/ssdi/talk-to-sofia/talk.js?v=20261027a" defer></script>
+<script src="/ssdi/intake.js?v=20261028d" defer></script>
+<script src="/ssdi/talk-to-sofia/talk.js?v=20261028a" defer></script>
 </body>
 </html>

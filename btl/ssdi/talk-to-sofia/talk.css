@@ -1,0 +1,95 @@
+/* BTL-SSDI-001 Talk to Sofia: one centered stage like the Phillips Sofia pages, in the SSDI look (look.css).
+   Sofia's portrait, the headline, two big buttons; the callback card opens in place. Motion is off under reduced motion. */
+.stage{padding:34px 0 46px;text-align:center}
+.stage-in{display:flex;flex-direction:column;align-items:center;max-width:760px}
+.stage h1{margin:18px 0 12px;font-size:clamp(2.1rem,6.6vw,3.6rem)}
+.stage h1 span{display:inline-block}
+.stage .sub{max-width:40ch;margin:0 auto;font-size:1.12rem}
+
+/* portrait: spinning ring, soft glow, BTL gold tag */
+.portrait{position:relative;width:148px;height:148px;margin-top:6px}
+.portrait .halo{position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,#5eead4,#3b82f6,#c6a15b,#5eead4);animation:spin 7s linear infinite}
+.portrait .halo::after{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(circle,rgba(94,234,212,.35),transparent 65%);animation:breathe 3.2s ease-in-out infinite}
+.portrait img{position:relative;width:148px;height:148px;border-radius:50%;object-fit:cover;object-position:50% 16%;border:4px solid #0b1b2e}
+.portrait .tag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:7px;white-space:nowrap;padding:5px 12px;border-radius:999px;background:#0b1b2e;border:1px solid rgba(198,161,91,.55);color:#f6f1e7;font-size:.8rem;font-weight:700}
+.portrait .tag i{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:ping 2s ease-out infinite}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+
+/* "Sofia asks:" ticker */
+.ticker{display:inline-flex;align-items:center;gap:10px;margin:20px 0 4px;padding:10px 16px 10px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#dbe7f1;font-size:1rem;max-width:100%}
+.ticker .wave{height:22px;margin:0}
+.ticker .wave i{animation-duration:1s}
+.ticker-text{min-width:0;text-align:left}
+.ticker-text b{color:#5eead4;font-weight:700}
+.caret{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-2px;background:#5eead4;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* the two big buttons */
+.cta{display:grid;gap:12px;width:min(460px,100%);margin:22px auto 0}
+.sofia-button,.call-button{display:grid;grid-template-columns:52px 1fr 20px;align-items:center;gap:14px;width:100%;min-height:76px;padding:12px 18px 12px 12px;border:0;border-radius:20px;text-align:left;text-decoration:none;font:inherit;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.sofia-button{background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;box-shadow:0 14px 36px rgba(234,88,12,.38),inset 0 1px 0 rgba(255,255,255,.25)}
+.sofia-button:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(234,88,12,.48)}
+.call-button[hidden]{display:none}
+.call-button{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.call-button:hover{background:rgba(255,255,255,.12)}
+.btn-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18)}
+.btn-icon svg{width:24px;height:24px;fill:currentColor}
+.sofia-button .btn-icon{animation:ring 2.8s ease-in-out infinite}
+@keyframes ring{0%,70%,100%{transform:rotate(0)}74%{transform:rotate(-12deg)}78%{transform:rotate(10deg)}82%{transform:rotate(-8deg)}86%{transform:rotate(6deg)}}
+.button-copy strong{display:block;font-size:1.2rem;font-weight:800;letter-spacing:-.01em}
+.button-copy small{display:block;font-size:.88rem;opacity:.85;font-weight:500}
+.chev{font-size:1.8rem;line-height:1;opacity:.85;transition:transform .2s}
+.sofia-button[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.quiz-link{justify-self:center;color:#c7d6e3;font-size:.98rem;text-decoration:none;border-bottom:1px solid rgba(199,214,227,.35);padding-bottom:2px}
+.quiz-link:hover{color:#fff;border-color:#fff}
+
+/* callback card: opens in place */
+.cb-panel{width:min(520px,100%);margin:18px auto 0;display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s ease}
+.js .cb-panel.closed{grid-template-rows:0fr}
+.cb-panel>.cb-card{overflow:hidden;min-height:0}
+.js .cb-panel.closed>.cb-card{border:0;box-shadow:none;padding:0}
+.cb-card{text-align:left;padding:24px 22px 20px}
+.cb-card h2{margin:0 0 14px;font-size:1.4rem}
+.cb-card .field label{display:block;margin:0 0 6px;font-weight:700}
+.done-note{font-size:.95rem}
+.end.ok .icon{animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+
+/* three cards */
+.how3{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;text-align:left}
+.how3 li{padding:16px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#c7d6e3;font-size:.95rem;line-height:1.45}
+.how3 .n{display:block;font-size:1.6rem;font-weight:800;line-height:1;margin-bottom:8px;background:linear-gradient(90deg,#5eead4,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.how3 b{display:block;color:#fff;margin-bottom:4px;font-size:1.02rem}
+
+/* who you talk to: a pulse travels from you to Sofia to the team */
+.handoff{margin-top:34px;color:#c7d6e3}
+.handoff h2{margin:0 0 14px;color:#fff;font-size:1.35rem}
+.handoff p{margin:14px 0 0;font-size:.98rem}
+.flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap}
+.node{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;font-weight:700;font-size:.95rem;white-space:nowrap}
+.node.sofia{border-color:rgba(94,234,212,.5);background:rgba(94,234,212,.12)}
+.node.sofia img{width:26px;height:26px;border-radius:50%;object-fit:cover;object-position:50% 16%}
+.pipe{position:relative;width:46px;height:2px;background:rgba(255,255,255,.2);overflow:hidden}
+.pipe i{position:absolute;top:-2px;left:-10px;width:10px;height:6px;border-radius:3px;background:#5eead4;box-shadow:0 0 10px #5eead4;animation:travel 2.4s linear infinite}
+.pipe+.node+.pipe i{animation-delay:1.2s}
+@keyframes travel{to{left:100%}}
+
+/* example call clock */
+#callClock{font-variant-numeric:tabular-nums}
+
+@media (max-width:640px){
+  .stage{padding:24px 0 36px}
+  .portrait,.portrait img{width:120px;height:120px}
+  .stage .sub{font-size:1.04rem}
+  .ticker{font-size:.92rem}
+  .how3{grid-template-columns:1fr;gap:8px}
+  .how3 li{display:grid;grid-template-columns:48px 1fr;column-gap:12px;align-items:start;padding:12px 14px}
+  .how3 .n{grid-row:span 2;margin:2px 0 0;font-size:1.5rem}
+  .pipe{width:22px}
+  .node{padding:7px 10px;font-size:.88rem}
+}
+@media (max-width:360px){.node.sofia img{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .portrait .halo,.portrait .halo::after,.portrait .tag i,.sofia-button .btn-icon,.caret,.pipe i,.end.ok .icon{animation:none}
+  .cb-panel{transition:none}
+}

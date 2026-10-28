@@ -1,6 +1,7 @@
 /* BTL-SSDI-001 intake (shared by the form, the quiz and the Sofia callback panel).
    Mirrors the role of /paraquat/intake.js:
-   - renders per-channel consent checkboxes (NEVER prechecked) into #consentBox
+   - renders per-channel consent checkboxes (NEVER prechecked) into #consentBox, or a click-to-agree
+     disclosure under the button when #consentBox has data-consent="clickwrap"
    - pushes only non-identifying events to dataLayer (page_id, campaign_id, tenant_id) —
      names, phone numbers, emails, states and answers are NEVER pushed
    - builds the lead payload and "delivers" it
@@ -42,7 +43,13 @@
 
   /* ---- consent (per-channel, never prechecked) ---- */
   var box = document.getElementById('consentBox');
-  if (box) {
+  /* data-consent="clickwrap": consent is given by tapping the submit button, with the disclosure printed right under it.
+     The disclosure names the button, so the button text and this text must match. */
+  var clickwrap = !!(box && box.getAttribute('data-consent') === 'clickwrap');
+  if (box && clickwrap) {
+    var btnLabel = (box.getAttribute('data-button') || 'Submit');
+    box.innerHTML = '<p>By tapping \u201c' + btnLabel + ',\u201d you agree that Best Tort Lawyers, including Sofia, its AI voice assistant, and a participating law firm may call you at the number above about your disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. See our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms-and-conditions/">Terms</a>.</p>';
+  } else if (box) {
     box.innerHTML =
       '<span class="c-title">How may we contact you? Boxes start unchecked.</span>' +
       '<label><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span><b>Calls (required).</b> I agree that Best Tort Lawyers, including Sofia, its AI voice assistant, and a participating law firm may call me at the number I provided about my disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service.</span></label>' +
@@ -103,7 +110,7 @@
     var answers = scorer ? scorer.answers() : {};
     var R = window.SSDI_RULES, now = new Date();
     var full = val('full_name'), parts = full.split(/\s+/);
-    var consentText = (document.querySelector('#consentBox label') || {}).textContent || '';
+    var consentText = clickwrap ? box.textContent.trim() : ((document.querySelector('#consentBox label') || {}).textContent || '');
     var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
     var payload = {
       schema: 'btl.intake.web/v1', submission_id: sid(),
@@ -116,8 +123,9 @@
       /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
       routing: { route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen', transfer_window: R && R.inHours(now) ? 'open' : 'closed' },
       consent: {
-        version: 'btl-ssdi-001-consent-2026-10-27', captured_at: now.toISOString(), text: consentText,
-        calls: { granted: !!(callsBox && callsBox.checked) },
+        version: clickwrap ? 'btl-ssdi-001-consent-clickwrap-2026-10-28' : 'btl-ssdi-001-consent-2026-10-27', captured_at: now.toISOString(), text: consentText,
+        method: clickwrap ? 'clickwrap_submit' : 'checkbox',
+        calls: { granted: clickwrap || !!(callsBox && callsBox.checked) },
         sms: { granted: !!(document.getElementById('consent_sms') || {}).checked }
       },
       trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
