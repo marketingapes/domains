@@ -2,7 +2,7 @@
    Mirrors the role of /paraquat/intake.js:
    - renders per-channel consent checkboxes (NEVER prechecked) into #consentBox, or a click-to-agree
      disclosure under the button when #consentBox has data-consent="clickwrap"
-   - pushes only non-identifying events to dataLayer (page_id, campaign_id, tenant_id) —
+   - pushes only non-identifying events to dataLayer (page_id, campaign_id, tenant_id; generate_lead adds the receipt id) —
      names, phone numbers, emails, states and answers are NEVER pushed
    - builds the lead payload and "delivers" it
 
@@ -147,9 +147,12 @@
         ? 'Thank you. Sofia will call you in the next few minutes.'
         : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
     }
-    function succeed() {
+    function succeed(j) {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
+      /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
+         leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
+      if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}
@@ -177,7 +180,7 @@
       return r.json().catch(function () { return null; }).then(function (j) {
         if (!r.ok || !j || !j.receipt_id || ['received', 'accepted', 'duplicate'].indexOf(j.status) < 0) throw Error('no receipt');
         try { sessionStorage.removeItem(SK); sessionStorage.setItem('ee_ssdi_last_receipt', j.receipt_id); } catch (e) {}
-        succeed();
+        succeed(j);
       });
     }).catch(fail);
   });
