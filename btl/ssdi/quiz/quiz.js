@@ -101,9 +101,12 @@
     });
   }
   /* After intake saves the lead, Sofia confirms in the chat and the form goes away. */
-  if (form) form.addEventListener('ee:lead-saved', function () {
+  if (form) form.addEventListener('ee:lead-saved', function (ev) {
     if (contactWrap) contactWrap.hidden = true;
-    say([['You’re all set. ' + (R.inHours() ? 'I’ll call you in the next few minutes.' : 'I’ll call you during business hours (' + R.hours.label + ').') + ' Keep your phone nearby.', 'note']]);
+    var t = ev.detail && ev.detail.bestTime;
+    var when = t && t[0] !== 'asap' ? 'I’ll call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.'
+      : R.inHours() ? 'I’ll call you in the next few minutes.' : 'I’ll call you during business hours (' + R.hours.label + ').';
+    say([['You’re all set. ' + when + ' Keep your phone nearby.', 'note']]);
   });
 
   push('ee_quiz_start');

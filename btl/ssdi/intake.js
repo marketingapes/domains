@@ -49,7 +49,18 @@
       '<label><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span><b>Text messages.</b> I agree to receive text messages about my inquiry at the number I provided. Message and data rates may apply. Reply STOP to end.</span></label>';
   }
 
-  /* ---- TrustedForm (go-live only; dormant in the reference build) ---- */
+  /* ---- best time to call (inside the team's hours: weekdays 9:30–6 Eastern) ---- */
+  var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (9:30 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 6 Eastern)']];
+  if (box && !document.getElementById('best_time')) {
+    var bt = document.createElement('div'); bt.className = 'field';
+    bt.innerHTML = '<label for="best_time">Best time for a call</label><select id="best_time" name="best_time">' +
+      TIMES.map(function (t) { return '<option value="' + t[0] + '">' + t[1] + '</option>'; }).join('') +
+      '</select><span class="why">The team takes calls Monday to Friday, 9:30 to 6 Eastern. We never call before 9 AM your time.</span>';
+    box.parentNode.insertBefore(bt, box);
+  }
+  function bestTime() { var v = val('best_time') || 'asap'; for (var i = 0; i < TIMES.length; i++) if (TIMES[i][0] === v) return TIMES[i]; return TIMES[0]; }
+
+  /* ---- TrustedForm ---- */
   if (window.EE_TRUSTEDFORM) {
     (function () {
       var tf = document.createElement('script'); tf.type = 'text/javascript'; tf.async = true;
@@ -111,6 +122,7 @@
       },
       trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
       page_url: location.origin + location.pathname,
+      callback: { window: bestTime()[0], label: bestTime()[1] },
       attribution: tracking(),
       test: { synthetic: isTest }
     };
@@ -121,6 +133,8 @@
 
     /* After a submit every door gets the same thank-you: when Sofia will call. */
     function thanks() {
+      var t = bestTime();
+      if (t[0] !== 'asap') return 'Thank you. Sofia will call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.';
       return window.SSDI_RULES && window.SSDI_RULES.inHours()
         ? 'Thank you. Sofia will call you in the next few minutes.'
         : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
@@ -128,7 +142,7 @@
     function succeed() {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
-      form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks() } }));
+      form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}
         var flag = document.getElementById('previewFlag'); if (flag) flag.hidden = false;
