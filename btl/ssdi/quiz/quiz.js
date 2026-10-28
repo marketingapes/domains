@@ -113,15 +113,6 @@
     say([['You’re all set. ' + when + ' Keep your phone nearby.', 'note']]);
   });
 
-  /* when should Sofia call: tap a time */
-  var bt = document.getElementById('best_time');
-  [].forEach.call(document.querySelectorAll('.when-opt'), function (b) {
-    b.addEventListener('click', function () {
-      [].forEach.call(document.querySelectorAll('.when-opt'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      if (bt) bt.value = b.getAttribute('data-v');
-    });
-  });
-
   push('ee_quiz_start');
   progress(0);
   ask();
