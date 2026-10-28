@@ -23,14 +23,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PHC7459M');</script>
 <!-- End Google Tag Manager -->
 <link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/ssdi/look.css?v=20261027d">
+<link rel="stylesheet" href="/ssdi/look.css?v=20261027f">
 <link rel="preload" as="image" href="/assets/sofia/sofia-portrait-440x784.jpg">
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a class="skip" href="#check">Skip to the form</a>
 
-<header class="bar">
+<header class="bar dark">
   <div class="wrap">
     <a class="logo" href="/" aria-label="Best Tort Lawyers home"><img src="/assets/btl-seal.svg" width="38" height="38" alt=""><b>Best Tort Lawyers</b></a>
     <span class="pill">Free to check</span>
@@ -38,12 +38,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </header>
 
 <main>
-<section class="hero">
+<section class="hero dark">
+  <div class="grid-lines" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="kicker">Social Security Disability (SSDI)</p>
       <h1>Can’t work because of your health? <span>You may qualify for disability benefits help.</span></h1>
-      <p class="sub">Answer a few quick questions. If it fits, a participating disability law firm can review your situation for free.</p>
+      <p class="sub">Answer a few quick questions. You see your result before we ask for your number. If it fits, a participating disability law firm can review your situation for free.</p>
+      <div class="sofia-live" aria-label="Sofia, AI intake assistant">
+        <span class="orb"><img src="/assets/sofia/sofia-portrait-440x784.jpg" width="52" height="52" alt=""><span class="live" aria-hidden="true"></span></span>
+        <span><b>Sofia, AI intake assistant</b><small>Calls you after you check · weekdays 9:30–6 ET</small></span>
+        <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
     </div>
 
     <div class="hero-form" id="check">
@@ -59,6 +65,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="field">
               <label for="state">Which state do you live in?</label>
               <select id="state" name="state" data-q="state" data-states data-required autocomplete="address-level1" aria-describedby="state-e"><option value="">Choose your state</option></select>
+              <span class="why">This review isn’t available in California or Colorado.</span>
               <span class="ferr" id="state-e"></span>
             </div>
             <fieldset class="q" id="age" data-q="age" data-required>
@@ -68,7 +75,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <label class="tile"><input type="radio" name="age" value="54_63"><span>54 to 63</span></label>
                 <label class="tile"><input type="radio" name="age" value="64_plus"><span>64 or older</span></label>
               </div>
-              <span class="ferr" id="age-e"></span>
+              <span class="why">This review is for people 54 to 63. Social Security’s own rules give age more weight after 50.</span>
+                <span class="ferr" id="age-e"></span>
             </fieldset>
             <button class="btn" type="button" data-next>Continue <span class="arrow" aria-hidden="true">→</span></button>
           </div>
@@ -83,6 +91,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <label class="tile"><input type="radio" name="out_of_work" value="no"><span>No</span></label>
                   <label class="tile"><input type="radio" name="out_of_work" value="not_sure"><span>Not sure</span></label>
                 </div>
+                <span class="why">SSDI is for people whose health keeps them from working, so time out of work matters.</span>
                 <span class="ferr" id="out_of_work-e"></span>
               </fieldset>
               <fieldset class="q" id="doctor" data-q="doctor" data-required>
@@ -92,6 +101,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <label class="tile"><input type="radio" name="doctor" value="no"><span>No</span></label>
                   <label class="tile"><input type="radio" name="doctor" value="not_sure"><span>Not sure</span></label>
                 </div>
+                <span class="why">Records from regular medical care are the main evidence Social Security looks at.</span>
                 <span class="ferr" id="doctor-e"></span>
               </fieldset>
               <fieldset class="q" id="benefits" data-q="benefits" data-required>
@@ -101,6 +111,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <label class="tile"><input type="radio" name="benefits" value="no"><span>No</span></label>
                   <label class="tile"><input type="radio" name="benefits" value="not_sure"><span>Not sure</span></label>
                 </div>
+                <span class="why">If you already get disability payments, this review isn’t the right fit for you.</span>
                 <span class="ferr" id="benefits-e"></span>
               </fieldset>
               <fieldset class="q" id="lawyer" data-q="lawyer" data-required>
@@ -110,6 +121,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <label class="tile"><input type="radio" name="lawyer" value="no"><span>No</span></label>
                   <label class="tile"><input type="radio" name="lawyer" value="not_sure"><span>Not sure</span></label>
                 </div>
+                <span class="why">If you already have a lawyer, they should be the one handling your claim.</span>
                 <span class="ferr" id="lawyer-e"></span>
               </fieldset>
             <button class="btn" type="button" data-next>Continue <span class="arrow" aria-hidden="true">→</span></button>
@@ -127,6 +139,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="field">
               <label for="phone">Mobile phone number</label>
               <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e">
+              <span class="why">So Sofia can call you. We never sell it, and you can stop the calls anytime.</span>
               <span class="ferr" id="phone-e"></span>
             </div>
             <div class="consent" id="consentBox"></div>
@@ -172,16 +185,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </section>
 
+<section class="band" id="promise" aria-labelledby="promiseH">
+  <div class="wrap">
+    <h2 class="title reveal" id="promiseH">Our promise to you</h2>
+    <p class="lead reveal">You’re trusting us with something personal. Here’s how we handle it.</p>
+    <div class="promises">
+      <div class="promise reveal"><div class="ic" aria-hidden="true">①</div><h3>Questions first, number last</h3><p>You see your result before we ask how to reach you. If it isn’t a fit, we never ask.</p></div>
+      <div class="promise reveal"><div class="ic" aria-hidden="true">🔒</div><h3>Never sold</h3><p>Your answers go only to us and, if it fits, the one law firm that reviews your situation.</p></div>
+      <div class="promise reveal"><div class="ic" aria-hidden="true">✦</div><h3>Sofia says she’s AI</h3><p>Every call starts with Sofia telling you she’s an AI assistant. Ask for a person anytime.</p></div>
+      <div class="promise reveal"><div class="ic" aria-hidden="true">✋</div><h3>Stop anytime</h3><p>Hang up, say stop, or reply STOP to a text. No pressure and no cost to check.</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="band white" id="how" aria-labelledby="howH">
   <div class="wrap">
-    <h2 class="title" id="howH">What happens next</h2>
-    <p class="lead">No paperwork to start. No cost to check.</p>
+    <h2 class="title reveal" id="howH">What happens next</h2>
+    <p class="lead reveal">No paperwork to start. No cost to check.</p>
     <div class="steps3">
-      <div class="s3"><span class="n">1</span><h3>Answer a few questions</h3><p>About a minute, right here on this page.</p></div>
-      <div class="s3"><span class="n">2</span><h3>Sofia gives you a call</h3><p>She confirms a few details, usually within minutes on weekdays, 9:30 AM to 6 PM Eastern.</p></div>
-      <div class="s3"><span class="n">3</span><h3>Talk with the law firm</h3><p>If it fits, she connects you with a participating disability law firm for a free review.</p></div>
+      <div class="s3 reveal"><span class="n">1</span><h3>Answer a few questions</h3><p>About a minute, right here on this page.</p></div>
+      <div class="s3 reveal"><span class="n">2</span><h3>Sofia gives you a call</h3><p>She confirms a few details, usually within minutes on weekdays, 9:30 AM to 6 PM Eastern.</p></div>
+      <div class="s3 reveal"><span class="n">3</span><h3>Talk with the law firm</h3><p>If it fits, she connects you with a participating disability law firm for a free review.</p></div>
     </div>
-    <div class="sofia-card">
+    <div class="sofia-card reveal">
       <img src="/assets/sofia/sofia-portrait-440x784.jpg" width="64" height="64" alt="" loading="lazy">
       <p><b>Meet Sofia.</b> She’s our AI intake assistant, not a person or a lawyer. You can ask for a person at any point, and calls are recorded.</p>
     </div>
@@ -190,20 +216,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <section class="band" id="about" aria-labelledby="aboutH">
   <div class="wrap">
-    <h2 class="title" id="aboutH">Why people get help with SSDI</h2>
+    <h2 class="title reveal" id="aboutH">Why people get help with SSDI</h2>
     <p class="lead">Social Security Disability pays monthly benefits to people who can’t work because of a health condition and who paid into Social Security while they worked.</p>
     <div class="facts">
-      <div class="fact"><h3>The process is hard</h3><p>Many first applications are denied. A disability lawyer knows what Social Security looks for and can help with the application and any appeal.</p></div>
-      <div class="fact"><h3>No upfront cost</h3><p>Disability lawyers are generally paid only if you’re approved, and their fee is limited by federal law.</p></div>
-      <div class="fact"><h3>Your doctor’s care matters</h3><p>Regular treatment helps show how your condition keeps you from working. That’s why we ask about it.</p></div>
+      <div class="fact reveal"><h3>The process is hard</h3><p>Many first applications are denied. A disability lawyer knows what Social Security looks for and can help with the application and any appeal.</p></div>
+      <div class="fact reveal"><h3>No upfront cost</h3><p>Disability lawyers are generally paid only if you’re approved, and their fee is limited by federal law.</p></div>
+      <div class="fact reveal"><h3>Your doctor’s care matters</h3><p>Regular treatment helps show how your condition keeps you from working. That’s why we ask about it.</p></div>
     </div>
     <p class="src">General information only, not legal or medical advice. Source: Social Security Administration, <a href="https://www.ssa.gov/disability/" rel="noopener">ssa.gov/disability</a>.</p>
   </div>
 </section>
 
-<section class="band white" id="faq" aria-labelledby="faqH">
+<section class="band white" id="ready" aria-labelledby="readyH">
   <div class="wrap">
-    <h2 class="title" id="faqH">Questions people ask</h2>
+    <h2 class="title reveal" id="readyH">What to have ready for an SSDI claim</h2>
+    <p class="lead reveal">Useful whether or not you check with us. Social Security asks for these.</p>
+    <ol class="ready">
+      <li class="reveal">Names, addresses and phone numbers of your doctors, clinics and hospitals</li>
+      <li class="reveal">Dates of your visits and the tests or treatment you’ve had</li>
+      <li class="reveal">A list of your medicines and who prescribed them</li>
+      <li class="reveal">Your jobs over the last 5 years and the date you stopped working</li>
+    </ol>
+    <p class="src">Source: Social Security Administration, <a href="https://www.ssa.gov/disability/" rel="noopener">ssa.gov/disability</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="faq" aria-labelledby="faqH">
+  <div class="wrap">
+    <h2 class="title reveal" id="faqH">Questions people ask</h2>
     <div class="faq">
       <details><summary>Does it cost anything?</summary><p>No. Checking is free, and the review is free. Disability lawyers are generally paid only if your claim is approved, with the fee limited by federal law.</p></details>
       <details><summary>Is this the government?</summary><p>No. Best Tort Lawyers is a private service and is not connected to the Social Security Administration. You can always apply directly with Social Security for free at ssa.gov.</p></details>
@@ -238,6 +278,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script src="/ssdi/states.js?v=20261027a"></script>
+<script src="/ssdi/motion.js?v=20261027a" defer></script>
 <script src="/ssdi/criteria.js?v=20261027a" defer></script>
 <script src="/ssdi/qualifier.js?v=20261027c" defer></script>
 <script src="/ssdi/intake.js?v=20261027c" defer></script>
