@@ -20,8 +20,8 @@ def sub(s, old, new, count=None, must=True):
 def paths(s):
     s = s.replace('/assets/ssdi/', '\0A\0').replace('/ssdi/', '/glassman/ssdi/').replace('\0A\0', '/assets/ssdi/')
     s = s.replace('/glassman/ssdi/states.js', '/ssdi/states.js')
-    for k in ('quiz', 'sofia', 'form'):  # door cards use Glassman's own ad creatives, not the BTL ones
-        s = s.replace('/assets/ssdi/ads/ssdi-%s-1080x1080.jpg' % k, '/glassman-ssdi/img/ad-%s.jpg' % k)
+    for k in ('quiz', 'sofia', 'form'):  # door cards use the BTL door photos with the Glassman logo (brand_ads.py)
+        s = s.replace('/assets/ssdi/ads/ssdi-%s-1080x1080.jpg' % k, '/assets/glassman-ssdi/ads/glassman-ssdi-%s-1080x1080.jpg?v=20261029' % k)
     return s
 
 FOOT_NAV = ('<a href="/glassman/ssdi/">Request a callback</a><a href="/glassman/ssdi/quiz/">Eligibility check</a>'
