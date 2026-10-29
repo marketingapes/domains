@@ -13,8 +13,8 @@
   var STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
   var YN = [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']];
   var steps = [
-    { q: 'state', text: 'Which state do you live in?', why: 'This review isn’t available in California or Colorado.', select: STATES },
-    { q: 'age', text: 'How old are you?', why: 'This review is for people 54 to 63. Social Security’s own rules give age more weight after 50.', opts: [['under_54', 'Under 54'], ['54_63', '54 to 63'], ['64_plus', '64 or older']] },
+    { q: 'state', text: 'Which state do you live in?', why: 'This review isn’t available in North Dakota, South Dakota, Alaska or Hawaii.', select: STATES },
+    { q: 'age', text: 'How old are you?', why: 'This review is for people 48 to 64. Social Security’s own rules give age more weight after 50.', opts: [['under_48', 'Under 48'], ['48_64', '48 to 64'], ['65_plus', '65 or older']] },
     { q: 'out_of_work', text: 'Have you been out of work for at least a year?', why: 'SSDI is for people whose health keeps them from working, so time out of work matters.', opts: YN },
     { q: 'doctor', text: 'Are you currently under a doctor’s care?', why: 'Records from regular medical care are the main evidence Social Security looks at.', opts: YN },
     { q: 'benefits', text: 'Are you getting disability payments from the government right now?', why: 'If you already get disability payments, this review isn’t the right fit for you.', opts: YN },

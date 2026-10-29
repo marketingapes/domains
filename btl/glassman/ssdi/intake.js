@@ -56,13 +56,13 @@
       '<label><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span><b>Text messages.</b> I agree to receive text messages about my inquiry at the number I provided. Message and data rates may apply. Reply STOP to end.</span></label>';
   }
 
-  /* ---- best time to call (inside the team's hours: weekdays 9:30–6 Eastern) ---- */
-  var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (9:30 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 6 Eastern)']];
+  /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
+  var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 8 Eastern)']];
   if (box && !document.getElementById('best_time')) {
     var bt = document.createElement('div'); bt.className = 'field';
     bt.innerHTML = '<label for="best_time">Best time for a call</label><select id="best_time" name="best_time">' +
       TIMES.map(function (t) { return '<option value="' + t[0] + '">' + t[1] + '</option>'; }).join('') +
-      '</select><span class="why">The team takes calls Monday to Friday, 9:30 to 6 Eastern. We never call before 9 AM your time.</span>';
+      '</select><span class="why">The team takes calls Monday to Friday, 8 AM to 8 PM Eastern. We never call before 9 AM your time.</span>';
     box.parentNode.insertBefore(bt, box);
   }
   function bestTime() { var v = val('best_time') || 'asap'; for (var i = 0; i < TIMES.length; i++) if (TIMES[i][0] === v) return TIMES[i]; return TIMES[0]; }

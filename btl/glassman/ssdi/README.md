@@ -11,5 +11,5 @@ The BTL SSDI A pages (`/ssdi/`, Glassman-style layout) re-branded for Jeffrey Gl
 - Sofia line: (669) 209-9040, Vapi phone d9e1cabe "DEMO Sofia — Glassman SSDI" (assistant 32e90752).
 - Leads: campaign-kit intake (Make 6777650), tenant `glassman`, campaign `GLASSMAN-SSDI-002`. `?test=1` sends a synthetic lead.
 - Brand: logo, door images and colors from `/glassman-ssdi/` (jeffreysglassman.com palette). Firm phone (617) 777-7777, privacy/disclaimer links go to jeffreysglassman.com.
-- Criteria, hours and the CA/CO exclusion are still the same as `/ssdi/criteria.js` (the BTL SSDI buyer's box). Swap them in `criteria.js` and the page copy once Glassman gives his own.
+- Criteria (Oct 28): age 48–64, all states except ND, SD, AK and HI, intake Mon–Fri 8 AM–8 PM Eastern, from Dan Verrilli's Oct 27 list. The other quiz checks (out of work, doctor, benefits, lawyer) are unchanged until the rest of Dan's list is added. The Glassman Sofia on (669) has not been updated.
 - Built 2026-10-28 from the dark pages, which were at `/ssdi/` then and are now at `/ssdi/b/`. `build_from_ssdi.py` reads `/ssdi/`, so it no longer reproduces these pages as is; edit this folder directly.
