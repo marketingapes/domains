@@ -7,14 +7,14 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageMath
 
 ARIAL = "/System/Library/Fonts/Supplemental/Arial.ttf"
 ARIAL_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-TEXT = (224, 232, 244)
+TEXT = (208, 217, 230)   # renders at the subhead's own stem colour (about 212,221,234 after JPEG)
 HEAD = (255, 255, 255)
 
 def luma(p):
     r, g, b = p
     return 0.299 * r + 0.587 * g + 0.114 * b
 
-def fill(im, rects, radius=22, region=None):
+def fill(im, rects, radius=22, region=None, grain=5):
     """Repaint the rectangles (or a given mask) from the pixels around them (normalized blur).
     Other light text nearby is left out of the sources so it can't bleed in."""
     if region is None:
@@ -30,14 +30,16 @@ def fill(im, rects, radius=22, region=None):
         num = ImageChops.multiply(band, keep).filter(ImageFilter.GaussianBlur(radius)).convert("F")
         bands.append(ImageMath.lambda_eval(lambda a: a["n"] * 255.0 / (a["d"] + 0.01), n=num, d=den).convert("L"))
     est = Image.merge("RGB", bands)
-    noise = Image.effect_noise(im.size, 5).convert("L").point(lambda v: v - 128 + 128)
+    noise = Image.effect_noise(im.size, grain).convert("L").point(lambda v: v - 128 + 128)
     est = Image.merge("RGB", [ImageChops.add(b, noise, 1.0, -128) for b in est.split()])
     return Image.composite(est, im, region.filter(ImageFilter.GaussianBlur(2)))
 
-def draw_line(im, text, size, ink_left, ink_top):
+def draw_line(im, text, size, ink_left, ink_top, top_glyph=None):
+    """Draw a subhead line with its ink starting at ink_left; ink_top is the top of top_glyph (default: the whole line)."""
     f = ImageFont.truetype(ARIAL, size=size)
     bb = f.getbbox(text)
-    ImageDraw.Draw(im).text((ink_left - bb[0], ink_top - bb[1]), text, font=f, fill=TEXT)
+    top = f.getbbox(top_glyph)[1] if top_glyph else bb[1]
+    ImageDraw.Draw(im).text((ink_left - bb[0], ink_top - top), text, font=f, fill=TEXT)
 
 def swap_word(im, new, ink_left, ink_top, ink_right, ink_bottom):
     """Repaint a headline word (only its own glyph pixels, so no patch shows) and draw the
@@ -66,12 +68,13 @@ def build(src, dst, vertical, form, logo_png, logo_w, quiz=False):
         else:
             im = swap_word(im, "48–64", 794, 636, 990, 689)
     if form:
+        # Size and position were matched to the original subhead (cap height, baseline, left stem edge).
         if vertical:   # line 2 of the subhead: "available in CA or CO."
-            box, text, size, left, ink_top = (68, 1216, 604, 1276), "available in ND, SD, AK or HI.", 52.2, 77, 1226
+            box, text, size, left, line_top, glyph = (68, 1216, 604, 1276), "available in ND, SD, AK or HI.", 53.0, 74.5, 1226, None
         else:          # line 2 of the subhead: "CA or CO."
-            box, text, size, left, ink_top = (68, 726, 274, 774), "ND, SD, AK or HI.", 40.2, 77, 735
-        im = fill(im, [box])
-        draw_line(im, text, size, left, ink_top)
+            box, text, size, left, line_top, glyph = (68, 726, 274, 774), "ND, SD, AK or HI.", 41.5, 74.5, 735, "N"
+        im = fill(im, [box], grain=1.0)
+        draw_line(im, text, size, left, line_top, glyph)
     logo = Image.open(logo_png).convert("RGBA")
     logo = logo.resize((logo_w, round(logo.height * logo_w / logo.width)), Image.LANCZOS)
     # soft shade under the logo so the white wordmark holds on lighter photo areas
