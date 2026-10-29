@@ -1,17 +1,15 @@
-/* Glassman copy: same rules as /ssdi/criteria.js until the firm gives its own criteria. */
-/* GLASSMAN-SSDI-002 rules: the buyer's criteria, transfer hours and excluded states, in one place.
-   Read by the form (/glassman/ssdi/qualifier.js), the quiz (/glassman/ssdi/quiz/quiz.js) and intake (/glassman/ssdi/intake.js).
-   Criteria are the buyer's own (2026-10-27): age 54–63, out of work at least a year, not represented,
-   currently under a doctor's care, not receiving government disability payments.
-   Hours: Mon–Fri 9:30 AM–6:00 PM Eastern. Geo: all US except California and Colorado.
+/* GLASSMAN-SSDI-002 rules: Glassman's criteria, intake hours and excluded states, in one place.
+   Read by the quiz (/glassman/ssdi/quiz/quiz.js) and intake (/glassman/ssdi/intake.js).
+   From Dan Verrilli (COO), Oct 27: age 48–64, all states except ND, SD, AK and HI, intake staffed Mon–Fri 8 AM–8 PM
+   Eastern. The other checks (out of work, doctor, benefits, lawyer) stay as they were until the rest of his list is added.
    Outcomes: QUALIFIED = every answer matches; FIRM_REVIEW = a "Not sure" that Sofia confirms on the call;
    NOT_A_FIT = an answer outside the criteria. The visitor never sees which answer mattered. */
 (function () {
   'use strict';
-  var EXCLUDED_STATES = ['CA', 'CO'];
-  var DQ = { age: ['under_54', '64_plus'], out_of_work: ['no'], doctor: ['no'], benefits: ['yes'], lawyer: ['yes'] };
+  var EXCLUDED_STATES = ['ND', 'SD', 'AK', 'HI'];
+  var DQ = { age: ['under_48', '65_plus'], out_of_work: ['no'], doctor: ['no'], benefits: ['yes'], lawyer: ['yes'] };
   var RV = { out_of_work: ['not_sure'], doctor: ['not_sure'], benefits: ['not_sure'], lawyer: ['not_sure'] };
-  var HOURS = { tz: 'America/New_York', open: 9 * 60 + 30, close: 18 * 60, label: 'Monday–Friday, 9:30 AM–6:00 PM Eastern' };
+  var HOURS = { tz: 'America/New_York', open: 8 * 60, close: 20 * 60, label: 'Monday–Friday, 8:00 AM–8:00 PM Eastern' };
 
   function outcome(a) {
     var dq = EXCLUDED_STATES.indexOf(a.state) >= 0, rv = false;
@@ -44,7 +42,7 @@
   function route(result) { return result === 'QUALIFIED' ? 'sofia_transfer' : result === 'FIRM_REVIEW' ? 'sofia_confirm' : 'hold'; }
 
   window.SSDI_RULES = {
-    version: 'glassman-ssdi-002-criteria-2026-10-28',
+    version: 'glassman-ssdi-002-criteria-2026-10-28-dan',
     excludedStates: EXCLUDED_STATES.slice(),
     hours: HOURS,
     outcome: outcome,
