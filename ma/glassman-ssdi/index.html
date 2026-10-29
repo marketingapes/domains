@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#08101f">
+<title>Glassman SSDI Campaign | Marketing Apes</title>
+<meta name="description" content="The Jeffrey Glassman Injury Lawyers SSDI campaign: the three-way test, what happens to every caller, the $10,000 full blast and how we optimize.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one reading column with full-bleed navy bands for the call flow and the ad wall, matching the campaign's own creative. */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --ink:#0b1626; --muted:#4b5a6b; --line:#d9e1e7;
+  --navy:#08101f; --navy-2:#0f1d33; --on-navy:#e8eef5; --on-navy-muted:#9fb0c3;
+  --teal:#0f9e8c; --teal-bright:#2dd4bf; --teal-soft:#e0f5f1; --warn:#a15c07; --warn-soft:#fdf1df;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Public Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0a1120; --surface:#111c2f; --ink:#e8eef5; --muted:#a3b2c4; --line:#22324a;
+  --navy:#050b16; --navy-2:#0c1729; --on-navy:#e8eef5; --on-navy-muted:#9fb0c3;
+  --teal:#2dd4bf; --teal-bright:#5eead4; --teal-soft:#0f2e33; --warn:#f6b45c; --warn-soft:#2e2112; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0a1120; --surface:#111c2f; --ink:#e8eef5; --muted:#a3b2c4; --line:#22324a;
+  --navy:#050b16; --navy-2:#0c1729; --on-navy:#e8eef5; --on-navy-muted:#9fb0c3;
+  --teal:#2dd4bf; --teal-bright:#5eead4; --teal-soft:#0f2e33; --warn:#f6b45c; --warn-soft:#2e2112; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:68ch}
+h1,h2,h3{font-family:var(--display);line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+section{padding-block:56px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:1.12rem;color:var(--muted);max-width:62ch}
+a{color:var(--teal)}
+
+/* hero */
+.hero{background:var(--navy);color:var(--on-navy);padding-block:56px 48px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -20% -60% 40%;height:120%;background:radial-gradient(closest-side,rgba(45,212,191,.22),transparent);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center}
+.hero .eyebrow{color:var(--teal-bright)}
+.hero h1 em{font-style:normal;color:var(--teal-bright)}
+.hero .lede{color:var(--on-navy-muted)}
+.hero-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hero-figs img{border-radius:14px;border:1px solid rgba(255,255,255,.12);aspect-ratio:390/844;object-fit:cover;object-position:top;width:100%}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{font-size:.8rem;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(45,212,191,.12);color:var(--teal-bright);border:1px solid rgba(45,212,191,.3)}
+
+/* criteria */
+.crit{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.crit div{padding:18px 16px;border-right:1px solid var(--line);min-width:0}
+.crit div:last-child{border-right:0}
+.crit b{display:block;font-family:var(--display);font-size:1.5rem;line-height:1.1;margin-bottom:4px}
+.crit span{font-size:.88rem;color:var(--muted)}
+.terms{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.term{border-top:2px solid var(--teal);padding-top:10px}
+.term h3{font-size:.95rem}
+.term p{font-size:.94rem;color:var(--muted)}
+
+/* flow (navy band) */
+.band{background:var(--navy);color:var(--on-navy)}
+.band .eyebrow{color:var(--teal-bright)}
+.band .lede{color:var(--on-navy-muted)}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:s}
+.flow li{background:var(--navy-2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;counter-increment:s;min-width:0}
+.flow li::before{content:counter(s);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--teal-bright);color:#04121a;font-weight:700;font-size:.85rem;margin-bottom:10px}
+.flow h3{color:var(--on-navy);font-size:1rem;margin-bottom:6px}
+.flow p{font-size:.88rem;color:var(--on-navy-muted)}
+.try{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-top:4px;padding:14px 18px;border-radius:14px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.35)}
+.try-label{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--teal-bright)}
+.try-num{text-decoration:none;font-family:var(--display);font-size:1.6rem;color:#fff;user-select:all;font-variant-numeric:tabular-nums}
+.try-note{flex-basis:100%;font-size:.86rem;color:var(--on-navy-muted)}
+.nomatch{margin-top:18px;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:var(--surface)}
+.nomatch b{display:block;margin-bottom:4px}
+.nomatch q{font-style:italic}
+.whisper{margin-top:22px;border-left:3px solid var(--teal-bright);padding:14px 18px;background:var(--navy-2);border-radius:0 12px 12px 0;max-width:72ch}
+.whisper .label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--on-navy-muted);font-weight:700}
+.whisper q{display:block;font-family:var(--display);font-size:1.2rem;margin-top:4px;color:var(--on-navy)}
+
+/* doors */
+.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.door{display:flex;flex-direction:column;gap:12px;min-width:0}
+.door img{width:100%;border-radius:16px;border:1px solid var(--line);aspect-ratio:390/600;object-fit:cover;object-position:top;background:var(--surface)}
+.door .path{font-family:var(--mono);font-size:.8rem;color:var(--teal)}
+.door p{font-size:.94rem;color:var(--muted)}
+
+/* ad wall */
+.adwall{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ad{background:var(--navy-2);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ad .imgs{display:grid;grid-template-columns:1.78fr 1fr;gap:6px;padding:6px}
+.ad .imgs img{width:100%;border-radius:10px;display:block}
+.ad .imgs img.sq{aspect-ratio:1}
+.ad .imgs img.vt{aspect-ratio:9/16;height:100%;object-fit:cover}
+.ad .copy{padding:14px 16px 18px;display:flex;flex-direction:column;gap:8px}
+.ad .copy .door-tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-bright);font-weight:700}
+.ad .copy h3{color:var(--on-navy)}
+.ad .copy p{font-size:.88rem;color:var(--on-navy-muted)}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{height:8px;border-radius:4px;background:var(--teal)}
+.held{color:var(--muted)}
+
+/* search ad mock */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.serp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;font-family:Arial,Helvetica,sans-serif}
+.serp .sp{font-size:.78rem;font-weight:700;color:var(--ink)}
+.serp .url{font-size:.82rem;color:var(--muted)}
+.serp .hl{font-size:1.15rem;color:#1a4fd6;margin:4px 0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .serp .hl{color:#8ab4f8}}
+:root[data-theme="dark"] .serp .hl{color:#8ab4f8}
+.serp .ds{font-size:.9rem;color:var(--muted)}
+.kw{display:flex;flex-wrap:wrap;gap:6px}
+.kw span{font-family:var(--mono);font-size:.78rem;padding:4px 9px;border-radius:6px;background:var(--teal-soft);color:var(--ink)}
+.kw.neg span{background:var(--warn-soft);color:var(--warn)}
+
+/* lists */
+.checks{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
+.checks li{padding-left:26px;position:relative;font-size:.96rem}
+.checks li::before{content:"";position:absolute;left:0;top:.42em;width:14px;height:8px;border-left:2.5px solid var(--teal);border-bottom:2.5px solid var(--teal);transform:rotate(-45deg)}
+.asks{counter-reset:a;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.asks li{counter-increment:a;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.asks li::before{content:counter(a);font-family:var(--display);font-weight:700;font-size:1.3rem;color:var(--teal);line-height:1.2}
+.asks b{display:block}
+.asks span{color:var(--muted);font-size:.94rem}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.timeline div{border-left:2px solid var(--teal);padding:4px 0 4px 14px}
+.timeline b{font-family:var(--display);font-size:1.05rem;display:block}
+.timeline span{color:var(--muted);font-size:.92rem}
+footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.85rem}
+
+
+/* ad previews */
+.fbrow{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.fb{margin:0;background:#fff;color:#050505;border-radius:12px;overflow:hidden;font-family:Helvetica,Arial,sans-serif;min-width:0;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.fb-head{display:flex;gap:9px;align-items:center;padding:12px 14px 8px}
+.fb-av{width:38px;height:38px;border-radius:50%;background:#0b1626;padding:4px}
+.fb-head b{display:block;font-size:.9rem}
+.fb-head span{font-size:.76rem;color:#65676b}
+.fb-dots{margin-left:auto;color:#65676b;font-weight:700}
+.fb-text{font-size:.86rem;line-height:1.4;padding:0 14px 10px}
+.fb-img{display:block;width:100%;aspect-ratio:1}
+.fb-link{display:flex;gap:10px;align-items:center;justify-content:space-between;background:#f0f2f5;padding:10px 14px}
+.fb-link span{font-size:.7rem;color:#65676b;display:block}
+.fb-link b{font-size:.88rem;line-height:1.25;display:block}
+.fb-cta{flex:0 0 auto;background:#e4e6eb;border-radius:6px;padding:7px 12px;font-weight:700;font-size:.82rem !important;color:#050505 !important}
+.fb figcaption{background:var(--navy-2);color:var(--on-navy-muted);padding:10px 14px;font-family:var(--body);font-size:.84rem;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.fb figcaption a{color:var(--teal-bright);font-weight:600;text-decoration:none}
+.door a.open{color:var(--teal);font-weight:700;text-decoration:none}
+.door-tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-bright);font-weight:700}
+.sub-h{color:var(--on-navy);margin-top:8px}
+.igrow{display:grid;grid-template-columns:repeat(3,minmax(0,240px));gap:22px}
+.ig{margin:0;display:flex;flex-direction:column;gap:8px;color:var(--on-navy-muted);font-size:.84rem;text-align:center}
+.ig-frame{position:relative;border-radius:22px;overflow:hidden;border:6px solid #1c1c1e;aspect-ratio:9/16;background:#000}
+.ig-frame>img{width:100%;height:100%;object-fit:cover;display:block}
+.ig-top{position:absolute;inset:0 0 auto;padding:8px 10px;background:linear-gradient(rgba(0,0,0,.45),transparent)}
+.ig-bars{display:flex;gap:3px}.ig-bars i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.9)}.ig-bars i+i{background:rgba(255,255,255,.4)}
+.ig-who{display:flex;align-items:center;gap:6px;margin-top:7px;color:#fff;font-family:Helvetica,Arial,sans-serif;font-size:.72rem}
+.ig-who img{width:22px;height:22px;border-radius:50%;background:#0b1626;padding:2px}
+.ig-who span{opacity:.8}
+.ig-cta{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:#fff;color:#000;font-family:Helvetica,Arial,sans-serif;font-weight:700;font-size:.78rem;padding:7px 16px;border-radius:18px;white-space:nowrap}
+.serps{display:grid;gap:14px}
+.serp .ext{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:8px;font-size:.85rem}
+.serp .ext span{color:#1a4fd6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .serp .ext span{color:#8ab4f8}}
+:root[data-theme="dark"] .serp .ext span{color:#8ab4f8}
+/* sofia script */
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.call{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.call h3{margin-bottom:4px}
+.line{display:grid;grid-template-columns:62px 1fr;gap:10px;font-size:.93rem}
+.line b{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.line.s b{color:var(--teal)}
+.line.sys{grid-template-columns:1fr;font-size:.84rem;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:6px}
+.rec{font-family:var(--mono);font-size:.84rem}
+.rec td:first-child{color:var(--muted);white-space:nowrap}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--teal-bright);color:#04121a;font-weight:700;text-decoration:none;font-size:.92rem}
+.btn.invoice-cta{justify-content:center;min-height:56px;max-width:100%;padding:16px 24px;border-radius:12px;background:#087568;color:#fff;font-size:1.1rem;line-height:1.3;text-align:center;font-weight:800}
+.btn.invoice-cta:focus-visible{outline:0;box-shadow:0 0 0 3px #fff,0 0 0 6px #16243a}
+.btn.ghost{background:transparent;color:var(--on-navy);border:1px solid rgba(255,255,255,.3)}
+.btn:focus-visible,a:focus-visible{outline:2px solid var(--teal-bright);outline-offset:3px}
+
+@media (max-width:900px){
+  .fbrow,.calls{grid-template-columns:1fr} .igrow{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .hero .wrap,.two{grid-template-columns:1fr}
+  .crit{grid-template-columns:1fr 1fr}
+  .crit div{border-right:0;border-bottom:1px solid var(--line)}
+  .flow{grid-template-columns:1fr 1fr}
+  .doors,.adwall,.terms,.timeline{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+}
+@media (max-width:520px){ .igrow{grid-template-columns:1fr 1fr}  .flow{grid-template-columns:1fr} .crit{grid-template-columns:1fr} section{padding-block:40px} }
+
+/* strategy, phases, channels, optimization */
+.phases{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0;position:relative}
+.phase .when{font-family:var(--mono);font-size:.76rem;color:var(--teal)}
+.phase h3{font-size:1.08rem}
+.phase p{font-size:.92rem;color:var(--muted)}
+.phase ul{margin:0;padding-left:18px;font-size:.9rem;color:var(--muted);display:grid;gap:4px}
+.phase .amt{margin-top:auto;font-family:var(--mono);font-size:.86rem;color:var(--ink);padding-top:8px;border-top:1px dashed var(--line)}
+.chans{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.chan{border-top:3px solid var(--teal);background:var(--surface);border-radius:0 0 12px 12px;padding:14px;min-width:0}
+.chan b{display:block;font-family:var(--display);font-size:1rem}
+.chan small{display:block;color:var(--muted);font-size:.86rem;margin-top:4px}
+.chan .role{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.preview-nav{display:flex;flex-wrap:wrap;gap:8px}
+.preview-nav a{padding:7px 14px;border-radius:999px;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:600;font-size:.9rem;background:var(--surface)}
+.band .preview-nav a{background:transparent;color:var(--on-navy);border-color:rgba(255,255,255,.25)}
+.gpt{max-width:640px;background:#fff;color:#0d0d0d;border-radius:16px;border:1px solid #e5e5e5;font-family:Helvetica,Arial,sans-serif;padding:18px;display:flex;flex-direction:column;gap:12px}
+.gpt .u{align-self:flex-end;background:#f4f4f4;border-radius:18px;padding:10px 14px;max-width:80%;font-size:.92rem}
+.gpt .a{font-size:.92rem;line-height:1.5}
+.gpt .spon{border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center}
+.gpt .spon img{width:44px;height:44px;border-radius:8px;object-fit:cover}
+.gpt .spon small{display:block;color:#6b6b6b;font-size:.72rem}
+.gpt .spon b{display:block;font-size:.92rem}
+.gpt .spon span{display:block;font-size:.84rem;color:#3d3d3d}
+.gpt .spon a{background:#0d0d0d;color:#fff;text-decoration:none;border-radius:999px;padding:7px 12px;font-size:.8rem;font-weight:700;white-space:nowrap}
+.tt{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.tt-frame{position:relative;border-radius:22px;overflow:hidden;border:6px solid #111;aspect-ratio:9/16;background:#000;max-width:260px}
+.tt-frame img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8)}
+.tt-cap{position:absolute;left:12px;right:56px;bottom:16px;color:#fff;font-family:Helvetica,Arial,sans-serif;font-size:.78rem;line-height:1.35}
+.tt-cap b{display:block;font-size:.84rem}
+.tt-cap .sp{display:inline-block;margin-top:6px;background:rgba(255,255,255,.2);border-radius:4px;padding:2px 6px;font-size:.7rem}
+.tt-side{position:absolute;right:10px;bottom:70px;display:flex;flex-direction:column;gap:14px}
+.tt-side i{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85)}
+.tt-btn{position:absolute;left:12px;right:12px;bottom:-1px;background:#fe2c55;color:#fff;text-align:center;font-family:Helvetica,Arial,sans-serif;font-weight:700;font-size:.8rem;padding:8px 0;display:none}
+.script{counter-reset:sc;list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.script li{counter-increment:sc;display:grid;grid-template-columns:54px 1fr;gap:10px;font-size:.93rem}
+.script li::before{content:attr(data-t);font-family:var(--mono);font-size:.78rem;color:var(--teal);padding-top:2px}
+.loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.loop .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.loop .card h3{margin-bottom:8px}
+.loop .card ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.93rem;color:var(--muted)}
+.loop .card li b{color:var(--ink)}
+.feedback{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feedback div{border-left:3px solid var(--teal);padding:4px 0 4px 12px;font-size:.92rem;color:var(--muted)}
+.feedback b{display:block;color:var(--ink)}
+.fyi-head{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+details.more{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-top:14px}
+details.more>summary{cursor:pointer;padding:14px 18px;font-weight:700;font-family:var(--display)}
+details.more>section{padding-block:6px 24px !important}
+@media (max-width:900px){.phases{grid-template-columns:1fr 1fr}.chans{grid-template-columns:1fr 1fr}.loop,.feedback{grid-template-columns:1fr}.tt{grid-template-columns:1fr}}
+@media (max-width:520px){.phases,.chans{grid-template-columns:1fr}}
+
+.sprints{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
+.sprint{display:flex;flex-direction:column;gap:6px;padding:18px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:0}
+.sprint:nth-child(1){border-top:4px solid var(--teal)}
+.sprint:nth-child(2){border-top:4px solid #3b82f6}
+.sprint:nth-child(3){border-top:4px solid #8b5cf6}
+.sprint:nth-child(4){border-top:4px solid var(--warn)}
+.snum{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.samt{font-family:var(--display);font-size:1.9rem;line-height:1.05;font-variant-numeric:tabular-nums}
+.slen{font-family:var(--mono);font-size:.78rem;color:var(--teal)}
+.sprint p{font-size:.92rem;color:var(--muted)}
+.sgoal{margin-top:auto !important;padding-top:10px;border-top:1px dashed var(--line);color:var(--ink) !important}
+.gate{display:grid;gap:4px;padding:16px 18px;border-radius:14px;background:var(--teal-soft);border:1px solid var(--line)}
+.gate b{font-family:var(--display)}
+.gate span{color:var(--ink);font-size:.95rem}
+@media (max-width:900px){.sprints{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.sprints{grid-template-columns:1fr}}
+
+/* v7: three doors, after, launch options, optimization */
+.door-card{display:flex;flex-direction:column;gap:12px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px}
+.door-card img{width:100%;border-radius:12px;border:1px solid var(--line);aspect-ratio:390/560;object-fit:cover;object-position:top}
+.door-card .num{font-family:var(--mono);font-size:.78rem;color:var(--teal)}
+.door-card h3{font-size:1.2rem}
+.door-card p{font-size:.95rem;color:var(--muted)}
+.door-card .steps{margin:0;padding-left:18px;display:grid;gap:4px;font-size:.92rem;color:var(--ink)}
+.door-card a.open{margin-top:auto;color:var(--teal);font-weight:700;text-decoration:none}
+.outcomes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.outcome{border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.outcome.yes{background:var(--navy-2);border:1px solid rgba(45,212,191,.4)}
+.outcome.no{background:var(--navy-2);border:1px solid rgba(255,255,255,.12)}
+.outcome .tag{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--teal-bright)}
+.outcome h3{color:var(--on-navy)}
+.outcome p{color:var(--on-navy-muted);font-size:.96rem}
+.connected{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
+.connected span{padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:var(--on-navy);font-weight:600;font-size:.88rem}
+.connected i{color:var(--teal-bright);font-style:normal}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.option{border:1px solid var(--line);border-radius:18px;padding:22px;background:var(--surface);display:flex;flex-direction:column;gap:12px;min-width:0}
+.option.big{border:2px solid var(--teal)}
+.option .lbl{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--teal)}
+.option h3{font-size:1.45rem}
+.option p{color:var(--muted)}
+.option ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:.95rem}
+.chanrow{display:flex;flex-wrap:wrap;gap:6px}
+.chanrow span{font-size:.82rem;font-weight:700;padding:5px 10px;border-radius:8px;background:var(--teal-soft);color:var(--ink)}
+.opt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.opt-grid div{border-top:2px solid var(--teal);padding-top:10px;min-width:0}
+.opt-grid b{display:block;font-family:var(--display);margin-bottom:4px}
+.opt-grid span{color:var(--muted);font-size:.93rem}
+.adstrip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.adstrip img{width:100%;border-radius:12px;aspect-ratio:1;object-fit:cover;border:1px solid var(--line)}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.next div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.next b{display:block;font-family:var(--display);margin-bottom:4px}
+.next span{color:var(--muted);font-size:.94rem}
+.video-frame{aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--navy)}
+.video-frame iframe{display:block;width:100%;height:100%;border:0}
+.persp{display:grid;grid-template-columns:1fr auto;gap:12px 24px;align-items:center;margin-top:6px;padding:20px;border-radius:16px;background:var(--navy-2);border:1px solid rgba(45,212,191,.4)}
+.persp h3{color:var(--on-navy)}
+.persp p{color:var(--on-navy-muted);font-size:.96rem}
+.persp small{display:block;color:var(--on-navy-muted);font-size:.84rem}
+@media (max-width:900px){.persp{grid-template-columns:1fr}}
+@media (max-width:900px){.outcomes,.options{grid-template-columns:1fr}.opt-grid{grid-template-columns:1fr 1fr}.next{grid-template-columns:1fr}}
+@media (max-width:520px){.opt-grid,.adstrip{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<!-- Pay buttons (data-pay-link) stay hidden until this campaign's invoice link is added: set each href to it,
+     add target="_blank" rel="noopener noreferrer", and remove hidden. -->
+<header class="hero">
+  <div class="wrap">
+    <div class="stack">
+      <p class="eyebrow">Jeffrey Glassman Injury Lawyers · SSDI · Campaign plan</p>
+      <h1>Three ways in. <em>One connected campaign.</em></h1>
+      <p class="lede">For SSDI we test three ways for people to reach your firm, side by side: a landing page, a call with Sofia, and a quick quiz. Sofia runs the intake under your name and checks every person against your criteria. Then we put the campaign behind whichever way in turns into the most transfers your team accepts.</p>
+      <div class="btns" data-pay-link hidden><a class="btn invoice-cta" href="#launch" aria-describedby="invoice-onboarding">Pay the $10,000 invoice</a></div>
+      <div class="btns"><a class="btn" href="#test">The three-way test</a><a class="btn ghost" href="#launch">The $10,000 blast</a><a class="btn ghost" href="https://besttortlawyers.com/glassman/ssdi/?utm_source=marketingapes&utm_medium=campaign-plan&utm_campaign=GLASSMAN-SSDI-002">Open the pages</a></div>
+      <div class="try"><span class="try-label">Try it now: call Sofia</span><a class="try-num" href="tel:+16692099040">(669) 209-9040</a><span class="try-note">Demo SSDI line. Today's demo transfers to Kyle, not your intake team. Automated callbacks will be connected and tested before campaign launch.</span></div>
+    </div>
+    <div class="hero-figs" aria-label="The three ways in, on a phone">
+      <img src="img/page-form.jpg" alt="Glassman SSDI landing page on a phone">
+      <img src="img/page-sofia.jpg" alt="Talk to Sofia page on a phone">
+      <img src="img/page-quiz.jpg" alt="Two-minute check on a phone">
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- Walkthrough video: hidden until the Loom is added. Put its embed URL in the iframe src and its share URL
+     in the "Open video" link, then remove hidden from this section. -->
+<section id="walkthrough" aria-labelledby="walkthrough-title" hidden>
+  <div class="wrap stack" style="gap:18px">
+    <div class="stack narrow">
+      <p class="eyebrow">Kyle's walkthrough</p>
+      <h2 id="walkthrough-title">Watch the campaign walkthrough.</h2>
+      <p id="walkthrough-status">Call-in demo works now. Automated callbacks will be connected and tested before campaign launch.</p>
+    </div>
+    <div class="video-frame">
+      <iframe src="about:blank" title="Kyle's Loom walkthrough of the Glassman SSDI campaign" aria-describedby="walkthrough-status" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="btns" data-pay-link hidden><a class="btn invoice-cta" href="#launch" aria-describedby="invoice-onboarding">Pay the $10,000 invoice</a></div>
+    <p>Prefer a separate window? <a href="#walkthrough">Open video</a>.</p>
+  </div>
+</section>
+
+<section id="test">
+  <div class="wrap stack" style="gap:22px">
+    <div class="stack narrow">
+      <p class="eyebrow">The test</p>
+      <h2>We test all three, side by side.</h2>
+      <p class="lede">People don't all want the same thing. Some want to request a call, some want to talk right away, and some want to tap through a few questions on their own. Every ad points to one of these three, so we learn quickly which one your callers prefer.</p>
+    </div>
+    <div class="doors">
+      <article class="door-card"><span class="num">1 · Landing page</span><img src="img/page-form.jpg" alt="Glassman SSDI landing page" loading="lazy"><h3>Request a free consultation</h3><p>A clear, friendly landing page for a free review. Visitors leave their name, number and a good time to call. Sofia calls them back, asks the questions, and connects the ones who may qualify.</p><ol class="steps"><li>Name, number and state</li><li>Pick a good time to call</li><li>Sofia calls back at that time</li></ol><a class="open" href="https://besttortlawyers.com/glassman/ssdi/?utm_source=marketingapes&utm_medium=campaign-plan&utm_campaign=GLASSMAN-SSDI-002">Open the page →</a></article>
+      <article class="door-card"><span class="num">2 · Talk to Sofia</span><img src="img/page-sofia.jpg" alt="Talk to Sofia page" loading="lazy"><h3>Talk it through with Sofia</h3><p>Sofia is right there on the page. Visitors call her or have her call them. She explains how it works, asks a few questions, and tells them if they may qualify. If they do, she gets their free review started on the same call.</p><ol class="steps"><li>Call Sofia, or have her call you</li><li>A few questions, one at a time</li><li>May qualify: connected to the intake team</li></ol><a class="open" href="https://besttortlawyers.com/glassman/ssdi/talk-to-sofia/?utm_source=marketingapes&utm_medium=campaign-plan&utm_campaign=GLASSMAN-SSDI-002">Open the page →</a></article>
+      <article class="door-card"><span class="num">3 · Quiz with Sofia</span><img src="img/page-quiz.jpg" alt="Two-minute check" loading="lazy"><h3>The two-minute check</h3><p>For people who'd rather tap than talk. Six quick questions, one tap each, and they see the result before we ask for a phone number.</p><ol class="steps"><li>Six questions, one tap each</li><li>Result first, number last</li><li>May qualify: Sofia calls them</li></ol><a class="open" href="https://besttortlawyers.com/glassman/ssdi/quiz/?utm_source=marketingapes&utm_medium=campaign-plan&utm_campaign=GLASSMAN-SSDI-002">Open the page →</a></article>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="after">
+  <div class="wrap stack" style="gap:22px">
+    <div class="stack narrow">
+      <p class="eyebrow">What happens next</p>
+      <h2>Sofia runs the intake. Your team only takes the matches.</h2>
+    </div>
+    <div class="outcomes">
+      <div class="outcome yes"><span class="tag">May qualify</span><h3>Connected to your intake team, live</h3><p>Sofia confirms your criteria on the call and warm-transfers the caller to your intake line, introducing them by name, state and age. Your hours: Monday to Friday, 8 AM to 8 PM Eastern. Outside them, she books a callback time inside your hours.</p></div>
+      <div class="outcome no"><span class="tag">Not a match yet</span><h3>Saved, reviewed, followed up</h3><p>Sofia never turns anyone away. She saves their information, and they hear back within 24 to 48 hours if they may have a claim. They are not transferred live.</p></div>
+    </div>
+    <div class="stack" style="gap:8px">
+      <p class="eyebrow">Everything is connected</p>
+      <div class="connected"><span>Ad</span><i>→</i><span>Page</span><i>→</i><span>Sofia</span><i>→</i><span>Transfer to your team</span><i>→</i><span>Your outcome</span></div>
+      <p class="lede" style="font-size:.98rem">Every lead and every call is recorded, with consent proof, the answers, the recording and the ad it came from, so we can see which ad produced which accepted transfer.</p>
+    </div>
+    <div class="persp">
+      <div class="stack" style="gap:6px">
+        <p class="eyebrow">Perspective</p>
+        <h3>Your own campaign dashboard</h3>
+        <p>Your team gets Perspective: every inquiry and transfer, where it came from, and the outcome your team reports, in one place.</p>
+        <small>The preview uses sample data, not live Glassman results.</small>
+      </div>
+      <a class="btn" href="https://besttortlawyers.com/ssdi-preview-b/perspective/" target="_blank" rel="noopener noreferrer">Open the Perspective preview ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="launch">
+  <div class="wrap stack" style="gap:22px">
+    <div class="stack narrow">
+      <p class="eyebrow">How we start</p>
+      <h2>$10,000. One full blast. Simple.</h2>
+      <p class="lede">You pay one invoice: $2,500 is our fee and $7,500 goes into ads. We run the ads to these three pages, Sofia screens every caller against your criteria, and we warm-transfer the matched callers live to your intake line.</p>
+    </div>
+    <div class="options">
+      <article class="option big"><span class="lbl">The full blast</span><h3>$10,000: $2,500 fee + $7,500 in ads</h3><p>Paid up front by invoice. We start as soon as it's paid.</p><ul><li>Callers who match your criteria from Dan's October 27 list: ages 48 to 64, not represented, worked 5 of the last 10 years, seen a doctor in the last 12 months with prescribed medication, in any state except North Dakota, South Dakota, Alaska and Hawaii</li><li>Live transfers: Sofia introduces each caller by name, state and age, then connects them to your intake line, Monday to Friday, 8 AM to 8 PM Eastern</li><li>All $7,500 goes to ads. No additional spend without your approval</li><li>Every transfer comes with its consent proof, answers, call recording and the ad it came from, all in Perspective</li></ul>
+        <p id="invoice-onboarding">Payment starts onboarding and setup. Paid ads launch after final criteria, your intake line and hours are confirmed and the connection test passes. Results and signed cases are not guaranteed.</p>
+      </article>
+      <article class="option"><span class="lbl">After the blast</span><h3>Keep it going, then grow it</h3><p>Once the $7,500 is spent, we look at the results together and decide what's next. No automatic renewal.</p><ul><li>Run it again with what worked</li><li>Add channels that prove out: Google Search, ChatGPT ads, TikTok</li><li>Try new ways in and new audiences</li><li>Scale up whatever turns into signed cases</li></ul><div class="chanrow"><span>Facebook</span><span>Instagram</span><span>Google Search</span><span>+ more once it works</span></div></article>
+    </div>
+    <div class="stack" style="gap:10px;margin-top:6px">
+      <h3>What the ads look like</h3>
+      <div class="adstrip"><img src="img/glassman-ssdi-quiz-1080x1080.jpg" alt="Glassman quiz ad"><img src="img/glassman-ssdi-sofia-1080x1080.jpg" alt="Glassman Talk to Sofia ad"><img src="img/glassman-ssdi-form-1080x1080.jpg" alt="Glassman landing page ad"></div>
+      <p class="lede" style="font-size:.95rem">One ad per way in, starting on Facebook and Instagram. Every ad is labeled attorney advertising and says it's not affiliated with Social Security.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="optimize">
+  <div class="wrap stack" style="gap:22px">
+    <div class="stack narrow">
+      <p class="eyebrow">Optimizing in real time</p>
+      <h2>The budget chases the transfers your team takes, not clicks.</h2>
+    </div>
+    <div class="opt-grid">
+      <div><b style="color:var(--on-navy)">Every day</b><span style="color:var(--on-navy-muted)">Read transfers and acceptance by channel, page and ad. Pause what's sending people who aren't a match.</span></div>
+      <div><b style="color:var(--on-navy)">Winners get more</b><span style="color:var(--on-navy-muted)">The page, ad and channel with the lowest cost per accepted transfer get more budget, the same day.</span></div>
+      <div><b style="color:var(--on-navy)">Sofia teaches the ads</b><span style="color:var(--on-navy-muted)">Why callers didn't fit (age, benefits, a lawyer) tells us which ads and audiences to fix.</span></div>
+      <div><b style="color:var(--on-navy)">Fresh every week</b><span style="color:var(--on-navy-muted)">New creative against the current winner, and hours tuned to when callers answer and your team picks up.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack" style="gap:22px">
+    <div class="stack narrow">
+      <p class="eyebrow">Next steps</p>
+      <h2>Here's the plan. We'll go from there.</h2>
+    </div>
+    <div class="next">
+      <div><b>1 · Pay the invoice</b><span>$10,000: $2,500 fee and $7,500 in ads. Payment starts onboarding and setup.</span></div>
+      <div><b>2 · Send your toll-free intake line</b><span>The number Sofia should transfer to. We have your hours: Monday to Friday, 8 AM to 8 PM Eastern. Form leads go into LawRuler once LM Summary has the feed set up.</span></div>
+      <div><b>3 · Schedule a 15-minute intake/prequalification session</b><span>Before campaign launch, confirm the screening rules and test the handoff together. Paid ads launch after the criteria, destination and hours are confirmed and the connection test passes.</span></div>
+    </div>
+    <div class="btns" data-pay-link hidden><a class="btn invoice-cta" href="#launch" aria-describedby="invoice-onboarding">Pay the $10,000 invoice</a></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">Jeffrey Glassman Injury Lawyers · SSDI campaign plan · October 2026. Prepared by Marketing Apes. All ads are attorney advertising. Not affiliated with the Social Security Administration.</div></footer>
+
+</body>
+</html>
