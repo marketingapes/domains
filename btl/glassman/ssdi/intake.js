@@ -10,7 +10,8 @@
    script. The wire contract is btl.intake.web/v1, form-encoded (payload=<json>&submission_id=<uuid>) so Make
    receives it without a CORS preflight. Success shows only when the webhook answers 2xx with
    {status: received|duplicate, receipt_id}; the intake stores the lead before it answers.
-   The submission_id survives retries (sessionStorage), so a resend dedupes to the same receipt.
+   A compact session retry record freezes id/timestamps/proof and a SHA-256 fingerprint, without
+   storing raw names, email, phone or screening answers. Unchanged retries retain the exact payload.
    ?test=1 on the URL marks the lead synthetic: stored as lead.test, never emailed or dialed.
    With no endpoint set, nothing leaves the browser (payload kept in sessionStorage 'ee_ssdi_last_lead').
 
@@ -25,6 +26,8 @@
   var synthetic = !window.EE_INTAKE_ENDPOINT;
   var isTest = /(?:^|[?&])test=1(?:&|$)/.test(location.search);
   var SK = 'ee_sub_' + pageId;
+  var RK = 'ee_retry_' + pageId;
+  var pending = false, completed = false, retryPayload = null, retrySignature = null;
   function sid() {
     try { var v = sessionStorage.getItem(SK); if (v) return v; } catch (e) {}
     var u = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
@@ -32,6 +35,25 @@
     return u;
   }
   function e164(raw) { var d = raw.replace(/\D/g, ''); if (d.length === 11 && d[0] === '1') d = d.slice(1); return d.length === 10 ? '+1' + d : ''; }
+  async function fingerprint(value) {
+    try {
+      if (!window.crypto || !crypto.subtle || typeof TextEncoder === 'undefined') return null;
+      var bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+      return Array.from(new Uint8Array(bytes)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+    } catch (e) { return null; }
+  }
+  function storedRetry(hash) {
+    try {
+      var r = JSON.parse(sessionStorage.getItem(RK) || 'null');
+      if (!r || r.schema !== 'glassman.retry/v2' || r.signature_sha256 !== hash
+        || !/^[0-9a-f-]{36}$/.test(r.submission_id) || !/^[0-9a-f]{64}$/.test(r.signature_sha256)
+        || !Number.isFinite(Date.parse(r.submitted_at)) || new Date(r.submitted_at).toISOString() !== r.submitted_at
+        || !Number.isFinite(Date.parse(r.consent_captured_at)) || new Date(r.consent_captured_at).toISOString() !== r.consent_captured_at
+        || ['open', 'closed'].indexOf(r.transfer_window) < 0
+        || !(r.certificate_url === null || typeof r.certificate_url === 'string' && r.certificate_url.length <= 2000)) return null;
+      return r;
+    } catch (e) { return null; }
+  }
 
   window.dataLayer = window.dataLayer || [];
   function push(evt, extra) {
@@ -85,18 +107,30 @@
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'ttclid'].forEach(function (k) { var v = q.get(k); if (v) o[k] = v.slice(0, 250); });
     return o;
   }
-  function fieldErr(id, msg) { var e = document.getElementById(id + '-e'); if (e) e.textContent = msg || ''; }
+  function fieldErr(id, msg) {
+    var e = document.getElementById(id + '-e'), input = document.getElementById(id);
+    if (e) e.textContent = msg || '';
+    if (input) { if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid'); }
+  }
   function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
 
-  form.addEventListener('submit', function (ev) {
+  form.addEventListener('submit', async function (ev) {
     ev.preventDefault();
+    if (pending || completed) return;
     var status = document.getElementById('formStatus');
     var btn = document.getElementById('submitBtn');
     var ok = true;
-    ['full_name', 'phone'].forEach(function (id) {
+    ['first_name', 'last_name', 'email', 'phone'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el && el.hasAttribute('required') && !val(id)) { fieldErr(id, 'Required.'); ok = false; } else fieldErr(id, '');
     });
+    var emailInput = document.getElementById('email');
+    if (val('email') && (!emailInput || !emailInput.checkValidity() || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(val('email')))) {
+      fieldErr('email', 'Please enter a valid email address.'); ok = false;
+    }
+    if ((val('first_name') + ' ' + val('last_name')).length > 120) {
+      fieldErr('last_name', 'Please keep your first and last names to 120 characters in total.'); ok = false;
+    }
     var phone = val('phone').replace(/\D/g, '');
     if (phone && phone.length < 10) { fieldErr('phone', 'Please enter a valid phone number.'); ok = false; }
     var callsBox = document.getElementById('consent_calls');
@@ -104,12 +138,16 @@
       if (status) { status.className = 'status err'; status.textContent = 'Please check the “Calls” box so Sofia can call the number you provided.'; }
       ok = false;
     }
-    if (!ok) { push('ee_lead_submit_error', { reason: 'validation' }); return; }
+    if (!ok) {
+      push('ee_lead_submit_error', { reason: 'validation' });
+      var invalid = form.querySelector('[aria-invalid="true"]'); if (invalid) invalid.focus();
+      return;
+    }
 
     var scorer = window.BTL_SSDI || window.BTL_SSDI_QUIZ;
     var answers = scorer ? scorer.answers() : {};
     var R = window.SSDI_RULES, now = new Date();
-    var full = val('full_name'), parts = full.split(/\s+/);
+    var first = val('first_name'), last = val('last_name'), full = first + ' ' + last;
     var consentText = clickwrap ? box.textContent.trim() : ((document.querySelector('#consentBox label') || {}).textContent || '');
     var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
     var payload = {
@@ -118,7 +156,7 @@
       door: form.getAttribute('data-kind') || 'form',
       request_type: answers.web_outcome ? 'screened_inquiry' : 'callback_request',
       submitted_at: now.toISOString(),
-      contact: { full_name: full, first_name: parts[0] || '', last_name: parts.slice(1).join(' '), phone_e164: e164(val('phone')), state: val('state') || answers.state || null },
+      contact: { full_name: full, first_name: first, last_name: last, email: val('email'), phone_e164: e164(val('phone')), state: val('state') || answers.state || null },
       screening: { web_outcome: answers.web_outcome || null, criteria_version: answers.criteria_version || (R && R.version) || null, answers: answers },
       /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
       routing: { route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen', transfer_window: R && R.inHours(now) ? 'open' : 'closed' },
@@ -135,6 +173,38 @@
       test: { synthetic: isTest }
     };
 
+    /* Keep the exact original payload for an unchanged retry, including consent/submission time.
+       An edited inquiry gets a new id; it must not overwrite an earlier stored submission. */
+    var signature = JSON.stringify([payload.schema, payload.tenant_id, payload.domain_id, payload.campaign_id,
+      payload.page_id, payload.door, payload.request_type, payload.page_url, payload.contact, payload.screening, { route: payload.routing.route },
+      payload.consent.version, payload.consent.text, payload.consent.method, payload.consent.calls, payload.consent.sms,
+      payload.callback, payload.attribution, payload.test]);
+    // A late SDK certificate or hours boundary is passive context, not a user edit.
+    pending = true;
+    if (btn) btn.disabled = true;
+    if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
+    var hash = await fingerprint(signature);
+    if (retryPayload && signature === retrySignature) payload = retryPayload;
+    else {
+      var restored = !retryPayload && hash ? storedRetry(hash) : null;
+      if (restored) {
+        payload.submission_id = restored.submission_id; payload.submitted_at = restored.submitted_at;
+        payload.consent.captured_at = restored.consent_captured_at; payload.trustedform_cert_url = restored.certificate_url;
+        payload.routing.transfer_window = restored.transfer_window;
+      } else {
+        // Never pair a legacy/stale id with a newly generated payload after a refresh or edit.
+        try { sessionStorage.removeItem(SK); } catch (e) {}
+        payload.submission_id = sid();
+      }
+      retryPayload = payload; retrySignature = signature;
+    }
+    try {
+      if (hash) sessionStorage.setItem(RK, JSON.stringify({schema:'glassman.retry/v2', submission_id:payload.submission_id,
+        signature_sha256:hash, submitted_at:payload.submitted_at, consent_captured_at:payload.consent.captured_at,
+        certificate_url:payload.trustedform_cert_url, transfer_window:payload.routing.transfer_window}));
+      else sessionStorage.removeItem(RK);
+    } catch (e) { /* same-page memory retries still work when session storage is unavailable */ }
+
     push('ee_lead_submit_attempt');
     if (btn) { btn.disabled = true; }
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
@@ -148,6 +218,7 @@
         : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
     }
     function succeed() {
+      pending = false; completed = true;
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
@@ -165,6 +236,7 @@
       }
     }
     function fail() {
+      pending = false;
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_error', { reason: 'delivery' });
       if (status) { status.className = 'status err'; status.textContent = 'Something went wrong sending your inquiry. Please try again in a moment.'; }
@@ -176,7 +248,7 @@
     }).then(function (r) {
       return r.json().catch(function () { return null; }).then(function (j) {
         if (!r.ok || !j || !j.receipt_id || ['received', 'accepted', 'duplicate'].indexOf(j.status) < 0) throw Error('no receipt');
-        try { sessionStorage.removeItem(SK); sessionStorage.setItem('ee_ssdi_last_receipt', j.receipt_id); } catch (e) {}
+        try { sessionStorage.removeItem(SK); sessionStorage.removeItem(RK); sessionStorage.setItem('ee_ssdi_last_receipt', j.receipt_id); } catch (e) {}
         succeed();
       });
     }).catch(fail);

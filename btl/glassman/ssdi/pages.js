@@ -33,7 +33,7 @@
     push('ee_form_view');
     setTimeout(function () {
       panel.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-      var n = $('full_name'); if (n) n.focus({ preventScroll: true });
+      var n = $('first_name'); if (n) n.focus({ preventScroll: true });
     }, reduced ? 0 : 320);
   }
   if (open && panel) {
@@ -48,7 +48,7 @@
   document.querySelectorAll('a[href="#request"],a[href="#cbPanel"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       if (panel && a.getAttribute('href') === '#cbPanel') { e.preventDefault(); show(); return; }
-      var n = $('full_name'); if (n) setTimeout(function () { n.focus({ preventScroll: true }); }, reduced ? 0 : 450);
+      var n = $('first_name'); if (n) setTimeout(function () { n.focus({ preventScroll: true }); }, reduced ? 0 : 450);
     });
   });
 
