@@ -521,6 +521,105 @@
    "license": "CJ advertiser product feed (affiliate promotional use)",
    "alt": "Red Berkel Home Line Plus 200 food slicer",
    "fit": "contain"
+  },
+  "17357453": {
+   "source": "cj-product-feed",
+   "advertiser": "Groupon North America",
+   "advertiser_id": 5840172,
+   "product_id": "6de3a22f-5edf-470c-a476-c7d2b414ee3e",
+   "product_title": "Experience Nightmare Farms Tx: Seven Immersive Haunted Attractions & Trails Oct 16-Nov 1 (Up to 36% Off)",
+   "src": "https://img.grouponcdn.com/encore-service/7ThUUThyrW2FGG1yNpGW3o/0lI_ZPGcZGdI4aB2_1788888925720_png-1598x986/v1/c1200x627.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Halloween haunted attraction lit up at night",
+   "fit": "cover"
+  },
+  "17174428": {
+   "source": "cj-product-feed",
+   "advertiser": "M&M's",
+   "advertiser_id": 2603623,
+   "product_id": "701130-J8119",
+   "product_title": "halloween gift jar",
+   "src": "https://cdn.media.amplience.net/i/marsmmsprod/ct2160_img_01_701130-J8119",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "M&M'S Halloween gift jar filled with candy",
+   "fit": "contain"
+  },
+  "17178579": {
+   "source": "cj-product-feed",
+   "advertiser": "M&M's",
+   "advertiser_id": 2603623,
+   "product_id": "701130-J0136",
+   "product_title": "halloween bulk candy",
+   "src": "https://cdn.media.amplience.net/i/marsmmsprod/ct2164_img_01_701130-J0136",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Bag of Halloween M&M'S bulk candy",
+   "fit": "contain"
+  },
+  "17361218": {
+   "source": "cj-product-feed",
+   "advertiser": "Peet's Coffee",
+   "advertiser_id": 2346375,
+   "product_id": "501678",
+   "product_title": "Peet's Major Dickason's Blend® coffee beans, Espresso",
+   "src": "https://cdn.shopify.com/s/files/1/0319/0764/3436/files/25PCT_26DTC_Coffee_Bag_Dark_Major_Dickasons_Drop_Shadow_FV.png?v=1767117718",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Bag of Peet's Major Dickason's Blend coffee beans",
+   "fit": "contain"
+  },
+  "17364986": {
+   "source": "cj-product-feed",
+   "advertiser": "Budget Pet Care",
+   "advertiser_id": 4250177,
+   "product_id": "34",
+   "product_title": "Frontline Plus For Medium Dogs 23-44 Lbs (Blue) 6 Doses",
+   "src": "https://www.budgetpetcare.com/images/Productsize/frontline-plus-for-medium-dogs-23-44-lbs-blue.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Pack of Frontline Plus for medium dogs",
+   "fit": "contain"
+  },
+  "17364635": {
+   "source": "cj-product-feed",
+   "advertiser": "Canada Pet Care",
+   "advertiser_id": 4247933,
+   "product_id": "108",
+   "product_title": "Heartgard Plus Chewables Small Dogs Up To 25lbs (Blue) 6 Doses",
+   "src": "https://www.canadapetcare.com/images/ProductImagesNew/heartgard-plus-chewables-small-dogs-up-to-25lbs-blue_03112026_033226.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Pack of Heartgard Plus chewables for small dogs",
+   "fit": "contain"
+  },
+  "17364563": {
+   "source": "cj-product-feed",
+   "advertiser": "Best Vet Care",
+   "advertiser_id": 4247934,
+   "product_id": "1599",
+   "product_title": "Bravecto Topical For Medium Dogs (22 - 44 Lbs) Green 1 Dose",
+   "src": "https://www.bestvetcare.com/images_new/NEW_PROD/bravecto-topical-for-medium-dogs-22-44-lbs-green.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Pack of Bravecto topical for medium dogs",
+   "fit": "contain"
+  },
+  "17079095": {
+   "source": "cj-product-feed",
+   "advertiser": "Budget Pet Care",
+   "advertiser_id": 4250177,
+   "product_id": "968",
+   "product_title": "Simparica Chewables For Dogs 22.1-44 Lbs (Blue) 3 Doses",
+   "src": "https://www.budgetpetcare.com/images/Productsize/simparica-chewables-for-dogs-221-44-lbs-blue.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Pack of Simparica chewables for dogs",
+   "fit": "contain"
+  },
+  "15581166": {
+   "source": "cj-product-feed",
+   "advertiser": "Budget Pet Care",
+   "advertiser_id": 4250177,
+   "product_id": "927",
+   "product_title": "Nexgard Chewables For Small Dogs 4-10lbs (Orange) 11mg 12 Chews",
+   "src": "https://www.budgetpetcare.com/images/Productsize/nexgard-chewables-for-small-dogs-4-10lbs-orange-11mg.jpg",
+   "license": "CJ advertiser product feed (affiliate promotional use)",
+   "alt": "Box of NexGard chewables for small dogs, 4 to 10 lb",
+   "fit": "contain"
   }
  }
 }
