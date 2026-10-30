@@ -48,7 +48,8 @@
   var clickwrap = !!(box && box.getAttribute('data-consent') === 'clickwrap');
   if (box && clickwrap) {
     var btnLabel = (box.getAttribute('data-button') || 'Submit');
-    box.innerHTML = '<p>By tapping \u201c' + btnLabel + ',\u201d you agree that Best Tort Lawyers, including Sofia, its AI voice assistant, and a participating law firm may call you at the number above about your disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. See our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms-and-conditions/">Terms</a>.</p>';
+    var parties = box.getAttribute('data-parties') || 'Best Tort Lawyers, including Sofia, its AI voice assistant, and a participating law firm';
+    box.innerHTML = '<p>By tapping \u201c' + btnLabel + ',\u201d you agree that ' + parties + ' may call you at the number above about your disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. See our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms-and-conditions/">Terms</a>.</p>';
   } else if (box) {
     box.innerHTML =
       '<span class="c-title">How may we contact you? Boxes start unchecked.</span>' +
@@ -97,6 +98,11 @@
       var el = document.getElementById(id);
       if (el && el.hasAttribute('required') && !val(id)) { fieldErr(id, 'Required.'); ok = false; } else fieldErr(id, '');
     });
+    var nameParts = val('full_name').split(/\s+/);
+    if (document.getElementById('email')) {
+      if (val('full_name') && nameParts.length < 2) { fieldErr('full_name', 'Please enter your first and last name.'); ok = false; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('email'))) { fieldErr('email', 'Please enter a valid email.'); ok = false; }
+    }
     var phone = val('phone').replace(/\D/g, '');
     if (phone && phone.length < 10) { fieldErr('phone', 'Please enter a valid phone number.'); ok = false; }
     var callsBox = document.getElementById('consent_calls');
@@ -118,12 +124,12 @@
       door: form.getAttribute('data-kind') || 'form',
       request_type: answers.web_outcome ? 'screened_inquiry' : 'callback_request',
       submitted_at: now.toISOString(),
-      contact: { full_name: full, first_name: parts[0] || '', last_name: parts.slice(1).join(' '), phone_e164: e164(val('phone')), state: val('state') || answers.state || null },
+      contact: { full_name: full, first_name: parts[0] || '', last_name: parts.slice(1).join(' '), phone_e164: e164(val('phone')), email: val('email') || null, state: val('state') || answers.state || null },
       screening: { web_outcome: answers.web_outcome || null, criteria_version: answers.criteria_version || (R && R.version) || null, answers: answers },
       /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
       routing: { route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen', transfer_window: R && R.inHours(now) ? 'open' : 'closed' },
       consent: {
-        version: clickwrap ? 'btl-ssdi-001-consent-clickwrap-2026-10-28' : 'btl-ssdi-001-consent-2026-10-27', captured_at: now.toISOString(), text: consentText,
+        version: clickwrap ? (box.getAttribute('data-version') || 'btl-ssdi-001-consent-clickwrap-2026-10-28') : 'btl-ssdi-001-consent-2026-10-27', captured_at: now.toISOString(), text: consentText,
         method: clickwrap ? 'clickwrap_submit' : 'checkbox',
         calls: { granted: clickwrap || !!(callsBox && callsBox.checked) },
         sms: { granted: !!(document.getElementById('consent_sms') || {}).checked }
@@ -141,6 +147,7 @@
 
     /* After a submit every door gets the same thank-you: when Sofia will call. */
     function thanks() {
+      if (document.getElementById('email')) return 'Thank you. The intake team will call you.';
       var t = bestTime();
       if (t[0] !== 'asap') return 'Thank you. Sofia will call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.';
       return window.SSDI_RULES && window.SSDI_RULES.inHours()

@@ -99,7 +99,7 @@
       });
       return;
     }
-    say([['Good news: based on what you shared, you may qualify for a free review.', 'note'], ['Where should I call you? I’ll confirm a few details and connect you with the firm. Nothing is sent until you tap the button.', 's']], function () {
+    say([['Good news: based on what you shared, you may qualify for a free review.', 'note'], ['Where should the intake team reach you? Nothing is sent until you tap the button.', 's']], function () {
       if (contactWrap) { contactWrap.hidden = false; var chat = document.getElementById('chat'); if (chat) chat.classList.add('has-contact'); toBottom(); var n = document.getElementById('full_name'); if (n) n.focus({ preventScroll: true }); contactWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' }); }
     });
   }
@@ -107,9 +107,7 @@
   if (form) form.addEventListener('ee:lead-saved', function (ev) {
     if (contactWrap) contactWrap.hidden = true;
     var chatEl = document.getElementById('chat'); if (chatEl) chatEl.classList.remove('has-contact');
-    var t = ev.detail && ev.detail.bestTime;
-    var when = t && t[0] !== 'asap' ? 'I’ll call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.'
-      : R.inHours() ? 'I’ll call you in the next few minutes.' : 'I’ll call you during business hours (' + R.hours.label + ').';
+    var when = R.inHours() ? 'The intake team will call you soon.' : 'The intake team will call you during business hours (' + R.hours.label + ').';
     say([['You’re all set. ' + when + ' Keep your phone nearby.', 'note']]);
   });
 
