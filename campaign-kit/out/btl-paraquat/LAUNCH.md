@@ -34,7 +34,7 @@ Delivery: live_transfer · Sofia currently transfers to +16198530048 (internal: 
 | Gate | Test lead to intake.webhook returned a receipt and the stored record was found | **MISSING** | No signed evidence |
 | Gate | Live call transferred to the firm intake line (not a demo or internal line) | **MISSING** | No signed evidence |
 | Gate | TrustedForm certificate retained on a production test submission | **MISSING** | No signed evidence |
-| Gate | ee_lead_submit_success recorded as a Lead in Meta, Google, TikTok and ChatGPT ads | **MISSING** | No signed evidence |
+| Gate | Approved measurement verified for selected channels; policy-disabled channels documented | **MISSING** | No signed evidence |
 | Gate | Perspective portal shows the test lead | **MISSING** | No signed evidence |
 | Gate | Invoice paid / media authorization on file | **MISSING** | No signed evidence |
 | Gate | Kyle approved activation in chat (exact campaign + budget) | **MISSING** | No signed evidence |
