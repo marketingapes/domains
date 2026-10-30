@@ -73,8 +73,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="chat-contact" id="contactWrap" hidden>
         <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
         <form id="leadForm" novalidate data-page-id="btl-ssdi-quiz" data-kind="quiz">
+          <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
+          <input type="hidden" id="best_time" name="best_time" value="asap">
           <div class="field">
-            <label for="full_name">Your name</label>
+            <label for="full_name">First and last name</label>
             <input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e">
             <span class="ferr" id="full_name-e"></span>
           </div>
@@ -83,18 +85,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e">
             <span class="ferr" id="phone-e"></span>
           </div>
-          <fieldset class="when">
-            <legend>When should I call?</legend>
-            <input type="hidden" id="best_time" name="best_time" value="asap">
-            <div class="when-opts">
-              <button type="button" class="when-opt" data-v="asap" aria-pressed="true">As soon as possible</button>
-              <button type="button" class="when-opt" data-v="morning" aria-pressed="false">Morning<small>9:30–12 ET</small></button>
-              <button type="button" class="when-opt" data-v="midday" aria-pressed="false">Midday<small>12–3 ET</small></button>
-              <button type="button" class="when-opt" data-v="afternoon" aria-pressed="false">Afternoon<small>3–6 ET</small></button>
-            </div>
-          </fieldset>
-          <button class="btn" type="submit" id="submitBtn">Have Sofia call me <span class="arrow" aria-hidden="true">→</span></button>
-          <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Have Sofia call me"></div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required aria-describedby="email-e">
+            <span class="ferr" id="email-e"></span>
+          </div>
+          <button class="btn" type="submit" id="submitBtn">Request my free review <span class="arrow" aria-hidden="true">→</span></button>
+          <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Request my free review" data-version="btl-ssdi-001-consent-clickwrap-partner-2026-10-30" data-parties="Best Tort Lawyers may send your information to its intake partner, and that Best Tort Lawyers, its intake partner and a participating law firm"></div>
           <p class="status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -112,22 +109,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <p class="lead reveal">You’re trusting us with something personal. Here’s how we handle it.</p>
     <div class="promises">
       <div class="reveal"><h3>Questions first, number last</h3><p>You see your result before we ask how to reach you. If it isn’t a fit, we never ask.</p></div>
-      <div class="reveal"><h3>Never sold</h3><p>Your answers go only to us and, if it fits, the one law firm that reviews your situation.</p></div>
-      <div class="reveal"><h3>Sofia says she’s AI</h3><p>Every call starts with Sofia telling you she’s an AI assistant. Ask for a person anytime.</p></div>
+      <div class="reveal"><h3>Shared only if it fits</h3><p>If it may be a fit and you tap the button, we send your information to our intake partner so a participating law firm can review your situation.</p></div>
+      <div class="reveal"><h3>Sofia is AI</h3><p>Sofia is an AI assistant that walks you through these questions. She is not a person or an attorney.</p></div>
       <div class="reveal"><h3>Stop anytime</h3><p>Hang up, say stop, or reply STOP to a text. No pressure and no cost to check.</p></div>
     </div>
   </div>
 </section>
 
-<section class="band final" aria-labelledby="altH">
-  <div class="wrap">
-    <div class="final-card reveal">
-      <h2 id="altH">Rather just talk to someone?</h2>
-      <p>Skip the questions. Leave your name and number and Sofia calls you.</p>
-      <a class="btn" href="/ssdi/#request">Request a free call <span class="arrow" aria-hidden="true">→</span></a>
-    </div>
-  </div>
-</section>
 
 <footer class="foot">
   <div class="wrap">
@@ -145,9 +133,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/ssdi/friendly.js?v=20261028j" defer></script>
 <script src="/ssdi/motion.js?v=20261028h" defer></script>
 <script src="/ssdi/criteria.js?v=20261028h" defer></script>
-<script src="/ssdi/quiz/quiz.js?v=20261028h" defer></script>
+<script src="/ssdi/quiz/quiz.js?v=20261030a" defer></script>
 <script>/* BTL-SSDI-001 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/ssdi/intake.js?v=20261028k" defer></script>
+<script src="/ssdi/intake.js?v=20261030a" defer></script>
 </body>
 </html>
