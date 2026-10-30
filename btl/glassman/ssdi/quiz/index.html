@@ -56,7 +56,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
           <form id="leadForm" novalidate data-page-id="glassman-ssdi-quiz" data-kind="quiz">
             <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
-            <div class="grid2"><div class="field"><label for="full_name">Your name</label><input id="full_name" name="full_name" autocomplete="name" maxlength="100" required aria-describedby="full_name-e"><span class="ferr" id="full_name-e"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e"></span></div></div>
+            <div class="grid2"><div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="100" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e" aria-live="polite"></span></div><div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="100" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e" aria-live="polite"></span></div></div>
+          <div class="grid2"><div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="email-e"><span class="ferr" id="email-e" aria-live="polite"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e" aria-live="polite"></span></div></div>
             <div class="field"><label for="best_time">Best time to call</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning (8–12 ET)</option><option value="midday">Weekday midday (12–3 ET)</option><option value="afternoon">Weekday afternoon (3–8 ET)</option></select></div>
             <button class="cta wide" type="submit" id="submitBtn">Have Sofia call me <span aria-hidden="true">→</span></button>
             <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Have Sofia call me"></div>
@@ -114,10 +115,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div></footer>
 
 <script src="/glassman/ssdi/criteria.js?v=20261028m" defer></script>
-<script src="/glassman/ssdi/pages.js?v=20261028m" defer></script>
+<script src="/glassman/ssdi/pages.js?v=20261030-contact" defer></script>
 <script src="/glassman/ssdi/quiz/quiz.js?v=20261028m" defer></script>
 <script>/* GLASSMAN-SSDI-002 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/glassman/ssdi/intake.js?v=20261028m" defer></script>
+<script src="/glassman/ssdi/intake.js?v=20261030-contact" defer></script>
 </body>
 </html>
