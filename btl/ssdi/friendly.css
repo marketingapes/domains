@@ -152,6 +152,7 @@ h1,h2,h3{line-height:1.12;letter-spacing:-.02em;margin:0}
 .foot a{color:#e3eaf2}
 .foot nav{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 16px}
 .foot p{margin:0;max-width:900px}
+.foot p+p{margin-top:12px}
 
 /* ---------- Sofia pieces (talk page and quiz) ---------- */
 .sofia-card{position:relative;padding:26px 22px 22px;text-align:center}
