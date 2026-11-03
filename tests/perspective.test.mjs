@@ -55,7 +55,7 @@ test('flat Make feed: transfers merge onto the Litify lead by phone hash; unmatc
 test('portal is per-firm: the page names its client and the feed comes live from the hub', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
-  assert.match(html, /<body data-client="plg" data-hub="https:\/\/[a-z0-9.-]+">/);
+  assert.match(html, /<body data-client="plg" data-layout="results-leads" data-hub="https:\/\/[a-z0-9.-]+">/);
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
   assert.ok(js.includes("hub() + '/portal/' + encodeURIComponent(clientId()) + '/feed'"));
   assert.ok(!/HUB \+/.test(js), 'every request goes through hub()');
@@ -147,13 +147,13 @@ test('hub feed rows (BigQuery v_portal_leads) render: Litify rows keep our attri
 test('one portal: client sections, Settings only at the owner-only #admin route, no per-level pages', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
-  for (const v of ['overview', 'leads', 'marketing', 'litify', 'summary']) assert.match(html, new RegExp(`data-view="${v}"`));
+  for (const v of ['overview', 'leads']) assert.match(html, new RegExp(`data-view="${v}"`));
   assert.ok(!/data-view="settings"/.test(html), 'no Settings tab in the navigation');
   assert.match(html, /data-panel="settings"/);
   assert.ok(!/id="admin-link"/.test(html), 'no Admin/Settings link in the header (owner uses the #admin URL)');
-  assert.match(html, /<button class="btn" id="rq-top" type="button" hidden>\+ Request a Campaign<\/button>/);
+  assert.doesNotMatch(html, /id="rq-top"/);
   assert.ok(!/id="sm-tasks"|id="task-form"|Daily Handoffs/.test(html), 'no shared-task list or add-task form');
-  assert.match(html, /data-view="summary"[^>]*>Current Phillips Review</);
+  assert.doesNotMatch(html, /data-view="summary"|Current Phillips Review/);
   assert.match(html, /id="gate-wait"[^>]*>Signing in usually takes about 5 seconds[^<]*up to a minute/);
   const dirs = fs.readdirSync(new URL('../lfma/portal/', import.meta.url));
   assert.ok(!dirs.some((d) => /csuite|management|basic/i.test(d)), 'no separate portals per level');
@@ -170,21 +170,19 @@ test('overview numbers come from the server, summed across campaigns, and are bl
   P._state.feed = null;
 });
 
-test('proposals and campaign requests are section-gated tabs', async () => {
+test('Phillips exposes results and lead list without removing backend record capabilities', async () => {
   const fs = await import('node:fs');
   const html = fs.readFileSync(new URL('../lfma/portal/phillips/index.html', import.meta.url), 'utf8');
   const js = fs.readFileSync(new URL('../lfma/assets/portal/perspective.js', import.meta.url), 'utf8');
-  assert.match(html, /data-view="proposals"/);
-  assert.match(html, /data-view="requests"/);
-  assert.match(html, /data-panel="proposals"/);
-  assert.match(html, /data-panel="requests"/);
-  assert.match(html, /Sending it doesn't assign or schedule any setup, and nothing runs or spends until it is launched/);
-  assert.ok(!js.includes(".concat(['proposals', 'requests'])"), 'tabs are not forced open for every level');
-  assert.ok(js.includes("['proposals', 'Proposals'], ['requests', 'Request a Campaign']"), 'owner ticks both per level in Settings');
-  assert.ok(js.includes("'/proposals/' + encodeURIComponent(id) + '/share'"), 'owner names recipients');
-  assert.match(html, /not acceptance, a signature, an amendment or a budget change/);
-  assert.ok(js.includes("api('POST', '/requests'") && js.includes("'/proposals/' + encodeURIComponent(id) + '/ack'"));
-  assert.ok(js.includes('a.owner ? (p.acks'), 'only the owner sees who acknowledged');
+  assert.match(html, /data-view="overview"[^>]*>Results</);
+  assert.match(html, /data-view="leads"[^>]*>Lead list</);
+  for (const view of ['marketing','litify','summary','proposals','requests']) {
+    assert.ok(!html.includes('data-view="' + view + '"'));
+    assert.ok(!html.includes('data-panel="' + view + '"'));
+  }
+  assert.ok(js.includes("'/proposals/' + encodeURIComponent(id) + '/share'"), 'shared backend capabilities are preserved for other layouts');
+  assert.ok(js.includes("api('POST', '/requests'"));
+  assert.ok(js.includes('a.owner ? (p.acks'), 'owner-only record visibility remains');
 });
 
 test('recordings play only through the server with the session header; no provider link in the page', async () => {
@@ -327,3 +325,4 @@ test('campaign pages and ad previews render as https links only, opened without 
     assert.doesNotMatch(html, /javascript:|http:\/\/example\.com|>evil<|>plain</);
   } finally { globalThis.document = oldDocument; }
 });
+
