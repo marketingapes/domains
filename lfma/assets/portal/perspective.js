@@ -8,7 +8,7 @@
  *
  * Rules:
  * - A number with no connected source renders "—" with a note, never 0.
- * - "Signed" = Litify status Converted only.
+ * - Legacy overview.signed is the Litify Converted count, not verified retainer evidence.
  * - Uploaded Litify CSVs are parsed in the browser and matched on SHA-256 phone hashes;
  *   nothing is sent anywhere.
  */
@@ -38,6 +38,7 @@
     var m = /\/portal\/([a-z0-9-]+)\//.exec((root.location && root.location.pathname) || '');
     return m ? m[1] : '';
   }
+  function resultsOnly() { var b = root.document && root.document.body; return !!(b && b.getAttribute('data-layout') === 'results-leads'); }
   function firm() { var c = state.feed && state.feed.client; return (c && (c.short_name || c.name)) || 'your firm'; }
   function firmName() { var c = state.feed && state.feed.client; return (c && c.name) || ''; }
 
@@ -154,28 +155,39 @@
     var c = current();
     $('c-eyebrow').textContent = c.id === 'all' ? 'ALL CAMPAIGNS' : 'CAMPAIGN';
     $('c-title').textContent = c.name || c.label || '';
-    $('c-summary').textContent = c.summary || '';
+    $('c-summary').textContent = resultsOnly() ? '' : (c.summary || '');
     $('c-state').textContent = c.state || '';
-    if ($('c-links')) $('c-links').innerHTML = linksHtml(c.id === 'all' ? [] : c.links);
-    $('freshness').innerHTML = sourcesHTML(state.feed) + (state.litifyLabel ? '<div>Comparing against: ' + esc(state.litifyLabel) + '</div>' : '');
+    if ($('c-links')) $('c-links').innerHTML = resultsOnly() ? '' : linksHtml(c.id === 'all' ? [] : c.links);
+    $('freshness').innerHTML = (resultsOnly() ? '<details><summary>Data sources and freshness</summary>' + sourcesHTML(state.feed) + '</details>' : sourcesHTML(state.feed)) + (state.litifyLabel ? '<div>Comparing against: ' + esc(state.litifyLabel) + '</div>' : '');
   }
   function renderOverview() {
     var c = current(), m = metrics(c);
     var spendNote = c.spend && c.spend.as_of ? 'Platform spend as of ' + day(c.spend.as_of) : 'Ad platform spend not connected';
+    if (resultsOnly()) {
+      $('scoreboard').innerHTML = [
+        cell('Leads', fmtInt(m.leads), 'From the connected campaign sources', m.leads === null),
+        cell('AI reached', fmtInt(m.reached), 'Recorded AI contact', m.reached === null),
+        cell('Transfers', fmtInt(m.transfers), 'Recorded transfers to intake', m.transfers === null),
+        cell('Converted', fmtInt(m.signed), 'Litify CRM status; signed retainer not verified', m.signed === null),
+        cell('Spend', fmtMoney(m.spend), spendNote, m.spend === null)
+      ].join('');
+      $('funnel').innerHTML = '';
+      return;
+    }
     $('scoreboard').innerHTML = [
       cell('Total leads', fmtInt(m.leads), fmtInt(m.inLitify) + ' found in your Litify report'),
       cell('Budget', fmtMoney(m.budget), (c.budget && c.budget.note) || (m.budget === null ? 'No paid budget on this campaign' : ''), m.budget === null),
       cell('Spent', fmtMoney(m.spend), spendNote, m.spend === null),
       cell('AI reached', fmtInt(m.reached), m.reached === null ? 'AI outreach not tracked for these leads' : 'Leads the AI reached', m.reached === null),
-      cell('Signed', fmtInt(m.signed), 'Litify status Converted'),
+      cell('Converted', fmtInt(m.signed), 'Litify CRM status; signed retainer not verified'),
       cell('Intake completed', fmtInt(m.intake), m.intake === null ? 'Not tracked for these leads' : pct(m.intake, m.leads) + ' of leads', m.intake === null),
       cell('Transfers', fmtInt(m.transfers), m.transfers === null ? 'Not tracked for these leads' : 'Live transfers to your intake line', m.transfers === null),
       cell('Cost per lead', fmtMoney(m.cpl, true), m.cpl === null ? 'Needs spend' : 'Spend ÷ leads', m.cpl === null),
       cell('Cost per transfer', fmtMoney(m.cpt, true), m.cpt === null ? 'Needs spend and transfers' : 'Spend ÷ transfers', m.cpt === null),
-      cell('Cost per signed', fmtMoney(m.cps, true), m.cps === null ? 'Needs spend and a signed case' : 'Spend ÷ signed', m.cps === null)
+      cell('Cost per converted', fmtMoney(m.cps, true), m.cps === null ? 'Needs spend and a converted lead' : 'Spend ÷ converted', m.cps === null)
     ].join('');
     var steps = [['Leads', m.leads, ''], ['AI reached', m.reached, pct(m.reached, m.leads)], ['Intake done', m.intake, pct(m.intake, m.reached)],
-      ['Transferred', m.transfers, pct(m.transfers, m.intake)], ['In Litify', m.inLitify, pct(m.inLitify, m.leads)], ['Signed', m.signed, pct(m.signed, m.inLitify)]];
+      ['Transferred', m.transfers, pct(m.transfers, m.intake)], ['In Litify', m.inLitify, pct(m.inLitify, m.leads)], ['Converted', m.signed, pct(m.signed, m.inLitify)]];
     $('funnel').innerHTML = steps.map(function (s) { return '<div class="f-step"><b>' + fmtInt(s[1]) + '</b><span>' + esc(s[0]) + '</span>' + (s[2] ? '<i>' + s[2] + ' →</i>' : '') + '</div>'; }).join('');
   }
 
@@ -288,7 +300,7 @@
     $('lt-top').innerHTML = [
       ['In your Litify report', fmtInt(rows.length), state.litifyLabel || 'Daily “All Marketing Apes Leads” report'],
       ['Matched to our leads', fmtInt(matched), pct(matched, rows.length) + ' matched on phone'],
-      ['Converted (signed)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still open']
+      ['Converted (Litify status)', fmtInt(st.Converted || 0), (st['Turned Down'] || 0) + ' turned down · ' + rows.filter(function (r) { return r.status && r.status !== 'Turned Down' && r.status !== 'Converted'; }).length + ' still open']
     ].map(function (x) { return '<div class="panel"><div class="eyebrow">' + esc(x[0]) + '</div><div class="s-num" style="font-size:34px">' + x[1] + '</div><p style="margin:0">' + esc(x[2]) + '</p></div>'; }).join('');
     var reasons = sortedEntries(countBy(rows.filter(function (r) { return r.status === 'Turned Down'; }), function (r) { return r.reason || 'No reason given'; }));
     var max = reasons.length ? reasons[0][1] : 1;
@@ -397,7 +409,7 @@
 
   function renderSummary() {
     var c = current(), m = metrics(c);
-    $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' signed');
+    $('sm-head').textContent = (c.label || '') + (m.leads === null ? '' : ': ' + fmtInt(m.leads) + ' leads, ' + fmtInt(m.signed) + ' converted');
     var auto = m.leads === null ? [] : [
       fmtInt(m.leads) + ' leads in the connected sources; ' + fmtInt(m.inLitify) + ' appear in your Litify data.',
       fmtInt(m.signed) + ' converted, ' + fmtInt(m.working) + ' still open in Litify.',
@@ -565,7 +577,7 @@
   function allowedViews() {
     var a = access();
     if (!state.feed) return [];
-    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k); });
+    return SECTION_LABELS.map(function (x) { return x[0]; }).filter(function (k) { return k !== 'contact' && can(k) && (!resultsOnly() || k === 'overview' || k === 'leads'); });
   }
   function setView(v) {
     var ok = allowedViews();
@@ -651,7 +663,7 @@
     if (!feed || !Array.isArray(feed.leads) || !Array.isArray(feed.campaigns)) throw new Error('This feed is not a Perspective feed yet.');
     state.feed = feed;
     var ordered = campaignsAll(), preview = ordered.filter(function (c) { return (c.links || []).length; })[0];
-    state.campaign = state.campaign || (preview || ordered[0] || { id: 'all' }).id;
+    state.campaign = state.campaign || ((resultsOnly() ? ordered[0] : preview) || ordered[0] || { id: 'all' }).id;
     $('gate').hidden = true; $('app').hidden = false; $('lock-btn').hidden = false;
     var h = feedHealth(feed); $('feed-pill').textContent = h[0]; $('feed-pill').className = 'pill ' + h[1];
     var up = $('lt-upload'); if (up) up.hidden = !(feed.access && feed.access.owner && feed.access.role === 'owner');
@@ -793,31 +805,32 @@
     d.querySelector('.section-tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-view]'); if (b) setView(b.getAttribute('data-view')); });
     $('lead-list').addEventListener('click', function (e) { var b = e.target.closest('[data-lead]'); if (b) { state.lead = b.getAttribute('data-lead'); renderIntake(); } });
     ['q', 'f-stage', 'f-litify'].forEach(function (id) { $(id).addEventListener('input', renderIntake); });
-    ['lq', 'l-status', 'l-match'].forEach(function (id) { $(id).addEventListener('input', renderLitify); });
-    $('lt-file').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) loadLitifyFile(f); });
-    $('lt-save').addEventListener('click', saveLitify);
+    ['lq', 'l-status', 'l-match'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', renderLitify); });
+    if ($('lt-file')) $('lt-file').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) loadLitifyFile(f); });
+    if ($('lt-save')) $('lt-save').addEventListener('click', saveLitify);
     if ($('lt-upload-btn')) $('lt-upload-btn').addEventListener('click', uploadLitify);
-    $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('leads'); } });
-    $('sm-checklist').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
-    $('review-setup').addEventListener('click', setupReview);
+    if ($('lt-table')) $('lt-table').addEventListener('click', function (e) { var b = e.target.closest('[data-open-lead]'); if (b) { state.lead = b.getAttribute('data-open-lead'); setView('leads'); } });
+    if ($('sm-checklist')) $('sm-checklist').addEventListener('change', function (e) { var id = e.target.getAttribute('data-task'); if (id) setTask(id, e.target.checked, e.target); });
+    if ($('review-setup')) $('review-setup').addEventListener('click', setupReview);
     $('set-save').addEventListener('click', saveSettings);
-    $('pr-list').addEventListener('click', function (e) {
+    if ($('pr-list')) $('pr-list').addEventListener('click', function (e) {
       var b = e.target.closest('[data-ack]'); if (b) ackProposal(b.getAttribute('data-ack'), b);
       var u = e.target.closest('[data-unshare]'); if (u) shareProposal(u.getAttribute('data-unshare'), u.getAttribute('data-email'), false);
     });
-    $('pr-list').addEventListener('submit', function (e) { var f = e.target.closest('[data-share]'); if (f) { e.preventDefault(); shareProposal(f.getAttribute('data-share'), f.querySelector('input').value, true); } });
+    if ($('pr-list')) $('pr-list').addEventListener('submit', function (e) { var f = e.target.closest('[data-share]'); if (f) { e.preventDefault(); shareProposal(f.getAttribute('data-share'), f.querySelector('input').value, true); } });
     $('lead-detail').addEventListener('click', function (e) { var b = e.target.closest('[data-rec]'); if (b) playRecording(b.getAttribute('data-rec'), b); });
-    $('pr-form').addEventListener('submit', addProposal);
-    $('rq-form').addEventListener('submit', sendRequest);
+    if ($('pr-form')) $('pr-form').addEventListener('submit', addProposal);
+    if ($('rq-form')) $('rq-form').addEventListener('submit', sendRequest);
     if ($('rq-top')) $('rq-top').addEventListener('click', openRequest);
-    $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
+    if ($('rq-list')) $('rq-list').addEventListener('click', function (e) { var b = e.target.closest('[data-rq]'); if (b) decideRequest(b.getAttribute('data-rq'), b.getAttribute('data-decision'), b); });
   }
 
   var exported = { open: open, normalizeFeed: normalizeFeed, parseCSV: parseCSV, campaignForLitify: campaignForLitify, metrics: metrics, _state: state, _refresh: refresh, _lock: lock, _applyAuthAvailability: applyAuthAvailability, _checkAuthAvailability: checkAuthAvailability,
-                   _renderSummary: renderSummary, _renderRequests: renderRequests, _renderDetail: renderDetail };
+                   _allowedViews: allowedViews, _setView: setView, _renderOverview: renderOverview, _renderHead: renderHead, _resultsOnly: resultsOnly, _renderSummary: renderSummary, _renderRequests: renderRequests, _renderDetail: renderDetail };
   root.Perspective = exported;
   if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   if (root.document && root.document.getElementById && root.document.getElementById('gate')) {
     if (root.document.readyState === 'loading') root.document.addEventListener('DOMContentLoaded', mount); else mount();
   }
 })(typeof window !== 'undefined' ? window : globalThis);
+
