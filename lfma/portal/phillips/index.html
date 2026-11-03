@@ -116,9 +116,9 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 #c-links ul{margin:0;padding-left:18px;line-height:1.7;font-size:14px}
 .token-alt{margin-top:18px;font-size:13px}.token-alt summary{color:var(--muted,#5b6475)}
 </style>
-<script src="/assets/portal/perspective.js?v=20261006n" defer></script>
+<script src="/assets/portal/perspective.js?v=20261103-results" defer></script>
 </head>
-<body data-client="plg" data-hub="https://perspective-s3b8.onrender.com">
+<body data-client="plg" data-layout="results-leads" data-hub="https://perspective-s3b8.onrender.com">
 <main class="main">
   <header class="topline">
     <div class="brand"><img alt="Marketing Apes" src="/assets/portal/ape-logo.jpg"><div><strong>Perspective</strong><small>MARKETING APES · <span data-firm="name">PHILLIPS LAW GROUP</span></small></div></div>
@@ -152,20 +152,14 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <div id="app" hidden>
     <div class="portal-head">
       <h1 class="ph-title"><span data-firm="short">Phillips</span> Perspective</h1>
-      <div class="ph-actions"><button class="btn" id="rq-top" type="button" hidden>+ Request a Campaign</button></div>
     </div>
     <nav class="campaign-tabs" role="tablist" aria-label="Campaigns" id="campaign-tabs"></nav>
-    <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p><div id="c-links"></div></div><span class="pill" id="c-state"></span></div>
+    <div class="intro"><div><div class="eyebrow" id="c-eyebrow">CAMPAIGN</div><h1 id="c-title"></h1><p id="c-summary"></p></div><span class="pill" id="c-state"></span></div>
     <div class="fresh" id="freshness"></div>
 
     <nav class="section-tabs" role="tablist" aria-label="Sections">
-      <button role="tab" data-view="overview" aria-selected="true">Overview</button>
-      <button role="tab" data-view="leads" aria-selected="false">Leads &amp; AI Intake</button>
-      <button role="tab" data-view="marketing" aria-selected="false">Marketing</button>
-      <button role="tab" data-view="litify" aria-selected="false">Litify Outcomes</button>
-      <button role="tab" data-view="summary" aria-selected="false">Current Phillips Review</button>
-      <button role="tab" data-view="proposals" aria-selected="false">Proposals</button>
-      <button role="tab" data-view="requests" aria-selected="false">Request a Campaign</button>
+      <button role="tab" data-view="overview" aria-selected="true">Results</button>
+      <button role="tab" data-view="leads" aria-selected="false">Lead list</button>
     </nav>
     <p class="note" id="no-sections" hidden>There’s nothing to show for your sign-in yet. Contact Marketing Apes.</p>
 
@@ -189,84 +183,15 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       </div>
     </section>
 
-    <section class="view" data-panel="marketing" hidden>
-      <div class="grid3" id="mk-top"></div>
-      <div class="grid2" style="margin-top:16px">
-        <div class="panel"><div class="eyebrow">CHANNELS</div><h2 style="margin-top:8px">Where the leads came from</h2><div class="tbl-wrap"><table id="mk-channels"></table></div></div>
-        <div class="panel"><div class="eyebrow">LEADS BY WEEK</div><h2 style="margin-top:8px">Volume over time</h2><div class="bars" id="mk-weeks"></div></div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">ADS &amp; CREATIVE</div><h2 style="margin-top:8px">What people saw</h2><div class="ads" id="mk-ads"></div></div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">CHANGE LOG</div><h2 style="margin-top:8px">What changed and why</h2><div class="tbl-wrap"><table id="mk-log"></table></div></div>
-    </section>
 
-    <section class="view" data-panel="litify" hidden>
-      <div class="grid3" id="lt-top"></div>
-      <div class="grid2" style="margin-top:16px">
-        <div class="panel"><div class="eyebrow">WHY LEADS WERE TURNED DOWN</div><h2 style="margin-top:8px">Turn-down reasons</h2><div class="bars" id="lt-reasons"></div></div>
-        <div class="panel"><div class="eyebrow">REFRESH THE MATCH</div><h2 style="margin-top:8px">Your Litify report</h2>
-          <p>Matched from the daily “All Marketing Apes Leads” report. To re-match against a newer export, choose the CSV below. It is read in your browser only and is not uploaded.</p>
-          <div class="toolbar"><input type="file" id="lt-file" accept=".csv,text/csv" aria-label="Litify CSV"><button class="btn ghost" id="lt-save" type="button">Save matched report (CSV)</button></div>
-          <div class="toolbar" id="lt-upload" hidden><label class="eyebrow" for="lt-date">Report date</label><input type="date" id="lt-date"><button class="btn" id="lt-upload-btn" type="button">Load into Perspective</button></div>
-          <p class="fresh" id="lt-fileinfo"></p>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="toolbar"><input id="lq" type="search" placeholder="Search Litify intake, name, phone last 4" aria-label="Search Litify"><select id="l-status" aria-label="Status"><option value="">All statuses</option></select><select id="l-match" aria-label="Match"><option value="">All match states</option><option value="matched">Matched to our lead</option><option value="unmatched">No match yet</option></select></div>
-        <div class="tbl-wrap"><table id="lt-table"></table></div></div>
-    </section>
 
-    <section class="view" data-panel="summary" hidden>
-      <div class="panel"><div class="eyebrow">CURRENT PHILLIPS REVIEW</div><h2 style="margin-top:8px" id="sm-head"></h2>
-        <p class="note">Check an item off when it’s done. Everyone with access sees the same list, and each check shows the email of the person who checked it and when. Checking an item never changes a lead or its Litify outcome.</p>
-        <ul class="checklist" id="sm-checklist"></ul>
-        <button class="btn ghost" id="review-setup" type="button" hidden>Turn on check-offs for new items</button>
-        <p class="fresh" id="task-msg" role="status" aria-live="polite"></p>
-      </div>
-      <div class="panel" style="margin-top:16px"><div class="eyebrow">WHERE THINGS STAND</div><div id="sm-body"></div></div>
-    </section>
 
-    <section class="view" data-panel="proposals" hidden>
-      <div class="panel"><div class="eyebrow">AGREEMENTS &amp; PROPOSALS</div><h2 style="margin-top:8px">What we've signed and what's on the table</h2>
-        <p class="note">You see only the items Marketing Apes has shared with you. “Got it” records that you've read an item, with your name and the time. It is not acceptance, a signature, an amendment or a budget change.</p>
-        <div id="pr-list"></div>
-        <p class="fresh" id="pr-msg" role="status" aria-live="polite"></p>
-      </div>
-      <div class="panel" id="pr-form-wrap" style="margin-top:16px" hidden><div class="eyebrow">OWNER</div><h2 style="margin-top:8px">Add a proposal</h2>
-        <form id="pr-form">
-          <input id="pr-title" placeholder="Title" aria-label="Title" maxlength="200" required style="width:100%;margin-bottom:8px">
-          <input id="pr-summary" placeholder="One-line summary" aria-label="Summary" maxlength="1000" style="width:100%;margin-bottom:8px">
-          <textarea id="pr-body" placeholder="Details (a blank line starts a new paragraph)" aria-label="Details" maxlength="20000" rows="6" style="width:100%;margin-bottom:8px"></textarea>
-          <button class="btn" type="submit">Publish to the portal</button>
-        </form>
-      </div>
-    </section>
 
-    <section class="view" data-panel="requests" hidden>
-      <div class="grid2">
-        <div class="panel"><div class="eyebrow">REQUEST A CAMPAIGN</div><h2 style="margin-top:8px">Tell us what you want more of</h2>
-          <p class="note">Your request is saved with your name and the time. An owner approves or declines it; approving adds it as an inactive draft campaign. Sending it doesn't assign or schedule any setup, and nothing runs or spends until it is launched.</p>
-          <form id="rq-form">
-            <label class="eyebrow" for="rq-case">Case type</label>
-            <input id="rq-case" placeholder="e.g. Depo-Provera, rideshare assault, AZ auto" maxlength="120" required style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-states">States</label>
-            <input id="rq-states" placeholder="e.g. AZ, NV" maxlength="200" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-goal">Signed cases wanted per month</label>
-            <input id="rq-goal" type="number" min="0" max="10000" step="1" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-budget">Budget (optional, USD)</label>
-            <input id="rq-budget" type="number" min="0" step="1" style="width:100%;margin-bottom:8px">
-            <label class="eyebrow" for="rq-notes">Anything else</label>
-            <textarea id="rq-notes" maxlength="2000" rows="4" style="width:100%;margin-bottom:8px"></textarea>
-            <button class="btn" type="submit" id="rq-send">Send request</button>
-          </form>
-          <p class="fresh" id="rq-msg" role="status" aria-live="polite"></p>
-        </div>
-        <div class="panel"><div class="eyebrow">REQUESTS</div><h2 style="margin-top:8px">Requested campaigns</h2><ul class="checklist" id="rq-list"></ul></div>
-      </div>
-    </section>
 
     <section class="view" data-panel="settings" hidden>
       <div class="panel"><div class="eyebrow">OWNER ADMIN</div><h2 style="margin-top:8px">What each access level sees</h2>
         <p>Everyone uses this same portal. Tick the sections each level may open. The server removes everything else before it reaches their browser. A level with nothing ticked can’t sign in.</p>
-        <p class="note">Overview shows campaign totals: leads, funnel, signed, budget, spend and cost per lead/transfer/signed. Marketing adds the channel, ad and invoice detail. Litify Outcomes adds turn-down reasons and details. “Names &amp; phone digits” adds names, the last 4 phone digits and state wherever lead or Litify rows are shown.</p>
+        <p class="note">Results shows sourced campaign totals. Names and phone digits remain controlled by the existing access level. Converted is a CRM status; it does not verify a signed retainer.</p>
         <div class="tbl-wrap"><table id="set-table"></table></div>
         <div class="toolbar" style="margin-top:12px"><button class="btn" id="set-save" type="button">Save access levels</button></div>
         <p class="fresh" id="set-msg" role="status" aria-live="polite"></p>
@@ -274,8 +199,9 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       </div>
     </section>
 
-    <p class="foot">Perspective · Marketing Apes for <span data-firm="name">Phillips Law Group</span>. Lead counts come from our intake records and your Litify report; “Signed” counts only leads Litify marks Converted. Numbers without a connected source show “—”, never zero.</p>
+    <p class="foot">Perspective · Marketing Apes for Phillips Law Group. Converted is a Litify CRM status, not a verified signed retainer. Missing source data appears as “—”.</p>
   </div>
 </main>
 </body>
 </html>
+
