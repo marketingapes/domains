@@ -73,7 +73,7 @@ function serve(livePages) {
         page.on('pageerror', (e) => errors.push(String(e)));
         page.on('console', (m) => { if (m.type() === 'error' && !/Content Security Policy|fonts\.g|net::/.test(m.text())) errors.push(m.text()); });
         await page.route(/fonts\.googleapis|fonts\.gstatic/, (r) => r.abort());
-        const root = `${base}/_kit/${c.slug}/`;
+        const root = c.publish === false ? `${base}/_kit/${c.slug}/` : `${base}/c/${c.slug}/`;
         for (const n of ['index.html', 'quiz.html', 'sofia.html', 'form.html', 'ads.html']) {
           await page.goto(root + n);
           assert.equal(await page.locator('a[href^="tel:"]').count(), 0, `${c.slug} ${n}: no dialable link`);

@@ -1,0 +1,618 @@
+{
+  "_note": "Phillips Law Group rideshare sexual-abuse campaign (nationwide, excluding CA/CO/TX incidents/jurisdiction). Criteria copied from Michael Blom 2026-11-03; public quiz asks only non-graphic screens, firm intake asks the rest. publish:false until gates close. New slug — the old /rideshare-sex-abuse/ lane is untouched.",
+  "campaign_id": "PLG-RIDESHARE-SA-001",
+  "slug": "phillips-rideshare-sa",
+  "tenant_id": "btl",
+  "status": "draft",
+  "publish": true,
+  "disclaimer_top": "DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California, Colorado, Texas or that a California, Colorado, or Texas court would have jurisdiction over.",
+  "tort": {
+    "name": "rideshare sexual abuse",
+    "descriptor": "Uber or Lyft driver",
+    "headline": "Were you sexually assaulted by an Uber or Lyft driver?",
+    "lede": "Phillips Law Group may be able to help with rideshare assaults that happened in 2022 or later. Start with a private pre-check: seven yes/no questions, no story required. A person at the firm reviews every answer before anyone calls."
+  },
+  "geo": {
+    "states": [
+      "AL",
+      "AK",
+      "AZ",
+      "AR",
+      "CT",
+      "DE",
+      "DC",
+      "FL",
+      "GA",
+      "HI",
+      "ID",
+      "IL",
+      "IN",
+      "IA",
+      "KS",
+      "KY",
+      "LA",
+      "ME",
+      "MD",
+      "MA",
+      "MI",
+      "MN",
+      "MS",
+      "MO",
+      "MT",
+      "NE",
+      "NV",
+      "NH",
+      "NJ",
+      "NM",
+      "NY",
+      "NC",
+      "ND",
+      "OH",
+      "OK",
+      "OR",
+      "PA",
+      "RI",
+      "SC",
+      "SD",
+      "TN",
+      "UT",
+      "VT",
+      "VA",
+      "WA",
+      "WV",
+      "WI",
+      "WY"
+    ],
+    "allow_other": false,
+    "excluded_incident_states": [
+      "CA",
+      "CO",
+      "TX"
+    ],
+    "exclusion_source": "Michael Blom, Phillips Law Group — email \"Re: PLG rideshare\" 2026-11-03 04:58 UTC (Gmail msg 1a19fc639dec9847, thread 1a183a5948564e36); repeats the 2026-10-28 criteria"
+  },
+  "criteria": {
+    "source": "Michael Blom, Phillips Law Group — email \"Re: PLG rideshare\" 2026-11-03 04:58 UTC (Gmail msg 1a19fc639dec9847, thread 1a183a5948564e36); repeats the 2026-10-28 criteria",
+    "qualifies": [
+      "Not currently represented and no prior attorney on this matter",
+      "Assault occurred in 2022 or later",
+      "By an Uber or Lyft driver",
+      "Involving physical contact",
+      "Client can provide the ride receipt from the app (receipt emailed by Uber/Lyft and forwarded; phone screenshots not accepted)",
+      "Reported to at least one of: rideshare company, police, therapist/medical, friend or family member",
+      "Willing and able to provide corroborating statements, screenshots and communications to the attorneys",
+      "Incident did not occur in, and is not under the jurisdiction of, California, Colorado or Texas (firm instruction 2026-11-03)"
+    ],
+    "disqualifies": [
+      "Currently represented or had a prior attorney",
+      "Assault before 2022",
+      "Driver was not Uber or Lyft",
+      "No physical contact",
+      "Cannot provide the app ride receipt",
+      "Sex offender or felony conviction (asked by the firm, not on the public page)",
+      "Deceased victim",
+      "Incident in or under the jurisdiction of California, Colorado or Texas"
+    ],
+    "firm_only_screens": [
+      "Abuse category: billable (vaginal/anal rape, oral rape, digital penetration) vs 5% JV backend (masturbation/forced genital touching, under- or over-clothes groping, forced kissing) — firm intake classifies; never shown or promised on the page",
+      "Felony / sex-offender history",
+      "If reported to friend/family: name, relationship, may attorneys contact, willing to share their number",
+      "Legal authority if minor or incapacitated adult"
+    ],
+    "commercial_terms_not_criteria": "IO draft: 10 signed-retainer test at $1.6k CPA net-21 post-pay; 21-day replacement; refund policy; JV 5% backend. Not accepted; not a page claim."
+  },
+  "quiz": [
+    {
+      "key": "app",
+      "q": "Which app was the ride booked through?",
+      "options": [
+        {
+          "label": "Uber",
+          "value": "uber",
+          "signal": "good"
+        },
+        {
+          "label": "Lyft",
+          "value": "lyft",
+          "signal": "good"
+        },
+        {
+          "label": "Another service",
+          "value": "other",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "year",
+      "q": "When did it happen?",
+      "options": [
+        {
+          "label": "2022 or later",
+          "value": "2022_plus",
+          "signal": "good"
+        },
+        {
+          "label": "Before 2022",
+          "value": "pre_2022",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "state",
+      "q": "Where did the ride take place?",
+      "hint": "This campaign cannot help with incidents in California, Colorado or Texas.",
+      "options": [
+        {
+          "label": "A U.S. state other than California, Colorado or Texas",
+          "value": "other_state",
+          "signal": "good"
+        },
+        {
+          "label": "California, Colorado or Texas",
+          "value": "ca_co_tx",
+          "signal": "bad"
+        },
+        {
+          "label": "Not sure",
+          "value": "not_sure",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "contact",
+      "q": "Did the driver make unwanted physical sexual contact with you?",
+      "hint": "A yes or no is all we need here. You do not have to describe anything.",
+      "options": [
+        {
+          "label": "Yes",
+          "value": "yes",
+          "signal": "good"
+        },
+        {
+          "label": "No — it was verbal or non-physical",
+          "value": "no",
+          "signal": "bad"
+        },
+        {
+          "label": "Prefer not to say",
+          "value": "skip",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "reported",
+      "q": "Did you tell anyone at the time or since?",
+      "hint": "Uber or Lyft, police, a doctor or therapist, or a friend or family member all count.",
+      "options": [
+        {
+          "label": "Yes, at least one of those",
+          "value": "yes",
+          "signal": "good"
+        },
+        {
+          "label": "Not yet",
+          "value": "no",
+          "signal": "unsure"
+        },
+        {
+          "label": "Prefer not to say",
+          "value": "skip",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "receipt",
+      "q": "Could you get the ride receipt emailed from the app?",
+      "hint": "Uber and Lyft can email the receipt for any past ride. A forwarded email is what the firm needs; a phone screenshot is not enough.",
+      "options": [
+        {
+          "label": "Yes, I can do that",
+          "value": "yes",
+          "signal": "good"
+        },
+        {
+          "label": "Not sure how",
+          "value": "unsure",
+          "signal": "unsure"
+        },
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "unsure"
+        }
+      ]
+    },
+    {
+      "key": "lawyer",
+      "q": "Has a lawyer handled this, now or before?",
+      "options": [
+        {
+          "label": "No",
+          "value": "no",
+          "signal": "good"
+        },
+        {
+          "label": "Yes, a lawyer is handling it now",
+          "value": "handling",
+          "signal": "represented"
+        },
+        {
+          "label": "I had a lawyer before",
+          "value": "prior",
+          "signal": "represented"
+        }
+      ]
+    }
+  ],
+  "form_fields": [
+    {
+      "key": "app",
+      "label": "Which app was the ride booked through?",
+      "options": [
+        {
+          "value": "uber",
+          "label": "Uber"
+        },
+        {
+          "value": "lyft",
+          "label": "Lyft"
+        },
+        {
+          "value": "other",
+          "label": "Another service"
+        },
+        {
+          "value": "not_sure",
+          "label": "Not sure"
+        }
+      ]
+    },
+    {
+      "key": "year",
+      "label": "When did it happen?",
+      "options": [
+        {
+          "value": "2022_plus",
+          "label": "2022 or later"
+        },
+        {
+          "value": "pre_2022",
+          "label": "Before 2022"
+        },
+        {
+          "value": "not_sure",
+          "label": "Not sure"
+        }
+      ]
+    },
+    {
+      "key": "state",
+      "label": "Where did the ride take place?",
+      "options": [
+        {
+          "value": "other_state",
+          "label": "A U.S. state other than CA, CO or TX"
+        },
+        {
+          "value": "ca_co_tx",
+          "label": "California, Colorado or Texas"
+        },
+        {
+          "value": "not_sure",
+          "label": "Not sure"
+        }
+      ]
+    },
+    {
+      "key": "lawyer",
+      "label": "Has a lawyer handled this, now or before?",
+      "options": [
+        {
+          "value": "no",
+          "label": "No"
+        },
+        {
+          "value": "handling",
+          "label": "Yes, now"
+        },
+        {
+          "value": "prior",
+          "label": "I had one before"
+        }
+      ]
+    }
+  ],
+  "brand": {
+    "name": "Phillips Law Group",
+    "short": "PLG",
+    "phone_display": "Line pending — not assigned",
+    "phone_tel": "+12025550100",
+    "site_url": "https://www.phillipslaw.com/",
+    "privacy_url": "https://besttortlawyers.com/privacy-policy/",
+    "terms_url": "https://besttortlawyers.com/terms-and-conditions/",
+    "logo": "/assets/btl-seal.svg",
+    "logo_wide": "/assets/phillips-logo.webp",
+    "address": "Phillips Law Group · 3101 N. Central Ave, Suite 1500, Phoenix, AZ 85012",
+    "advertising_note": "ATTORNEY ADVERTISING. Phillips Law Group is a law firm. This page does not give legal advice, and using it, calling, requesting a callback or speaking with Sofia does not create an attorney-client relationship. Sofia is an AI intake assistant, not a person and not an attorney; she cannot determine legal eligibility. Phillips Law Group evaluates potential matters under its own criteria; any attorney-client relationship requires the firm's acceptance and a separate written agreement. No review, acceptance, representation, compensation or outcome is guaranteed. Prior results do not guarantee a similar outcome. Laws and time limits vary by state. Voice conversations may be recorded. Photographs are illustrative and do not depict any claimant or event. If you need support now, RAINN's National Sexual Assault Hotline is free and confidential, 24/7: 1-800-656-4673 (not affiliated with Phillips Law Group). In an emergency call 911.",
+    "team_name": "Phillips Law Group's intake team",
+    "fee_line": "Free, confidential review.",
+    "tagline": "You set the pace.",
+    "colors": {
+      "deep": "#0E1627",
+      "navy": "#15213B",
+      "blue": "#1F4FD8",
+      "blue_ink": "#173FB0",
+      "gold": "#DC0120",
+      "gold_ink": "#A8001A",
+      "bg2": "#F7F7F9",
+      "line": "#D8DCE4",
+      "ok": "#17643A"
+    },
+    "fonts": {
+      "display": "Lora",
+      "body": "Open Sans"
+    },
+    "trust": [
+      [
+        "Phillips Law Group",
+        "Reviews every inquiry"
+      ],
+      [
+        "Private",
+        "No story required here"
+      ],
+      [
+        "$0",
+        "Cost to check"
+      ],
+      [
+        "Your pace",
+        "Stop at any time"
+      ]
+    ]
+  },
+  "copy": {
+    "index": {
+      "eyebrow": "Phillips Law Group · Rideshare sexual abuse",
+      "chips": [
+        "Private pre-check",
+        "No story required",
+        "Free & confidential"
+      ]
+    },
+    "quiz": {
+      "eyebrow": "Phillips Law Group · private pre-check",
+      "h1": "Private pre-check. Seven yes/no questions.",
+      "lede": "Nothing here asks you to describe what happened. Your answers help Phillips Law Group's intake team see whether they can take a closer look — a person reviews every pre-check.",
+      "chips": [
+        "No story required",
+        "Skip any question",
+        "Free & confidential"
+      ]
+    },
+    "sofia": {
+      "eyebrow": "Phillips Law Group · talk with Sofia",
+      "h1": "Talk when you're ready. Sofia listens first.",
+      "lede": "Sofia is an AI intake assistant and says so; the call is recorded. She asks the same short questions, never for details of what happened, and connects you with a person at Phillips Law Group.",
+      "chips": [
+        "You can stop any time",
+        "No story required",
+        "A person takes over"
+      ]
+    },
+    "form": {
+      "eyebrow": "Phillips Law Group · request a callback",
+      "h1": "Ask for a call at a time that works for you.",
+      "lede": "Share a few basics and pick a time. Phillips Law Group's intake team reviews what you send and calls you — only you decide what to share.",
+      "chips": [
+        "Pick your time",
+        "Confidential",
+        "No story required"
+      ]
+    },
+    "results": {
+      "QUALIFIED": [
+        "Thank you. Based on your answers, Phillips Law Group may be able to review your situation.",
+        "A person will look at what you shared before anyone calls. Nothing is decided yet."
+      ],
+      "FIRM_REVIEW": [
+        "Thank you. Your answers need a person to look closer.",
+        "Phillips Law Group's intake team reviews every inquiry before deciding whether it can help."
+      ],
+      "NOT_A_FIT": [
+        "Thank you for checking.",
+        "From these answers this campaign may not be the right fit, but a person can still take a look if you ask. Support is available any time at RAINN, 1-800-656-4673."
+      ]
+    },
+    "steps": [
+      [
+        "You answer a few private questions",
+        "Yes or no. No story. Two minutes."
+      ],
+      [
+        "A person reviews",
+        "Phillips Law Group's intake team checks your answers and the receipt you can get from the app."
+      ],
+      [
+        "They call you back",
+        "At the time you chose, with a clear next step."
+      ],
+      [
+        "You decide",
+        "Any representation needs the firm's acceptance and your signed agreement."
+      ]
+    ],
+    "sofia_steps": [
+      [
+        "She tells you what she is",
+        "An AI assistant, and that the call is recorded."
+      ],
+      [
+        "A few yes/no questions",
+        "The same short questions as the online check — never the details."
+      ],
+      [
+        "Name, number, state",
+        "That is all she collects."
+      ],
+      [
+        "A person takes over",
+        "Sofia connects you with Phillips Law Group's intake team and steps out."
+      ]
+    ],
+    "hub": {
+      "card": {
+        "k": "Private pre-check",
+        "count": "2 minutes",
+        "fine": "Pre-check answers go only to Phillips Law Group's intake team. Nothing is decided until a person reviews them.",
+        "rows": [
+          {
+            "door": "quiz",
+            "primary": true,
+            "b": "Start the private pre-check",
+            "small": "7 yes/no questions · no story required"
+          },
+          {
+            "door": "sofia",
+            "b": "Prefer to talk? Sofia listens first",
+            "small": "AI intake assistant, then a person"
+          },
+          {
+            "door": "form",
+            "b": "Request a callback instead",
+            "small": "Pick a time; a person calls you"
+          }
+        ]
+      },
+      "doors": {
+        "h2": "Three private ways to start. Phillips Law Group behind all of them.",
+        "rows": [
+          {
+            "door": "quiz",
+            "k": "Pre-check · 2 minutes",
+            "h": "Seven yes/no questions",
+            "p": "Nothing asks you to describe what happened. See whether the firm can take a closer look.",
+            "btn": "Start the pre-check",
+            "cls": " gold"
+          },
+          {
+            "door": "sofia",
+            "k": "When you're ready",
+            "h": "Talk it through with Sofia",
+            "p": "An AI intake assistant asks the same short questions, never the details, then a person takes over.",
+            "btn": "Talk with Sofia",
+            "cls": ""
+          },
+          {
+            "door": "form",
+            "k": "On your schedule",
+            "h": "Request a callback",
+            "p": "Share a few basics and pick a time that works for you.",
+            "btn": "Request a callback",
+            "cls": ""
+          }
+        ]
+      }
+    }
+  },
+  "ads": [
+    {
+      "door": "quiz",
+      "headline": "Assaulted by an Uber or Lyft driver?",
+      "primary_text": "If a rideshare driver sexually assaulted you in 2022 or later, you may have a claim. Seven private yes/no questions — no story required. A person at Phillips Law Group reviews every inquiry. Free and confidential. DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California, Colorado, Texas or that a California, Colorado, or Texas court would have jurisdiction over.",
+      "cta": "LEARN_MORE"
+    },
+    {
+      "door": "sofia",
+      "headline": "Talk when you're ready",
+      "primary_text": "Sexually assaulted by an Uber or Lyft driver? Sofia, an AI intake assistant with Phillips Law Group, asks a few short questions — never the details — and connects you with a person. Free, confidential, you set the pace. DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California, Colorado, Texas or that a California, Colorado, or Texas court would have jurisdiction over.",
+      "cta": "LEARN_MORE"
+    },
+    {
+      "door": "form",
+      "headline": "Ask for a private callback",
+      "primary_text": "If a rideshare driver sexually assaulted you in 2022 or later, Phillips Law Group may be able to help. Pick a time and a person calls you back. No story required. Free, confidential. DISCLAIMER: This advertisement is not for legal services related to an incident that occurred in California, Colorado, Texas or that a California, Colorado, or Texas court would have jurisdiction over.",
+      "cta": "SIGN_UP"
+    }
+  ],
+  "sofia": {
+    "phone_display": "Line pending — not assigned",
+    "phone_tel": "+12025550100",
+    "assistant_id": null,
+    "language": "en",
+    "note": "No rideshare Sofia line or assistant exists yet. The (202) 932-9700 line is Sofia BTL Paraquat v4 and must NOT be reused. Provision via services/provision-bot DRY_RUN after firm approval."
+  },
+  "intake": {
+    "webhook": "https://hook.us2.make.com/r9lds9cy6t0goqsxmnyk9lnrirvjpld8",
+    "trustedform": true,
+    "consent_entity": "Phillips Law Group and its service providers (consent wording pending firm approval)",
+    "make_scenario_id": 6894292,
+    "make_hook_id": 3020649
+  },
+  "delivery": {
+    "mode": "scheduled_callback",
+    "firm_name": "Phillips Law Group",
+    "hours": "UNVERIFIED — firm intake hours and line not supplied",
+    "note": "Michael 2026-11-03: firm prefers signed retainers with intake, or warm transfers PLG converts. Destination line not supplied; no transfer configured."
+  },
+  "budget": {
+    "media_total_usd": 0,
+    "days": 14,
+    "note": "No budget approved. Kyle names campaign + budget in chat before activation."
+  },
+  "images": {
+    "hero": "/assets/phillips-rideshare/hero.jpg",
+    "og": "/assets/phillips-rideshare/og.jpg",
+    "ad_quiz": "/assets/phillips-rideshare/ad-quiz.jpg",
+    "ad_sofia": "/assets/phillips-rideshare/ad-sofia.jpg",
+    "ad_form": "/assets/phillips-rideshare/ad-form.jpg",
+    "story_quiz": "/assets/phillips-rideshare/story-quiz.jpg",
+    "story_sofia": "/assets/phillips-rideshare/story-sofia.jpg",
+    "story_form": "/assets/phillips-rideshare/story-form.jpg"
+  },
+  "evidence": {
+    "intake": {
+      "status": "UNTESTED",
+      "note": "Make scenario 6894292 (clone of 6437227 pattern: dedupe → BigQuery raw_lead_events → alert to Kyle only → receipt). INACTIVE. No synthetic test run yet (gate intake_receipt_tested still open). Phillips alert address intentionally not set.",
+      "source": "Make API create 2026-11-04 04:09 UTC by Claude"
+    },
+    "sofia_line": {
+      "status": "MISSING",
+      "note": "No rideshare line/assistant. (202) 932-9700 is Paraquat; not reused.",
+      "source": "BRIEF.md + origin/main btl/rideshare-sex-abuse/index.html, read 2026-11-03 by Claude"
+    },
+    "transfer": {
+      "status": "MISSING",
+      "note": "Phillips intake line for rideshare not supplied in the 2026-11-03 email.",
+      "source": "Gmail 1a19fc639dec9847"
+    },
+    "agreements": {
+      "status": "MISSING",
+      "note": "Both indemnification agreements unsigned (Carolina Quintanilla 2026-11-03 15:07 UTC).",
+      "source": "Gmail 1a1a1f3cba4a6510"
+    }
+  },
+  "gates": {
+    "criteria_approved": {
+      "by": "Michael Blom (Phillips Law Group)",
+      "at": "2026-11-03",
+      "evidence": "Michael Blom, Phillips Law Group — email \"Re: PLG rideshare\" 2026-11-03 04:58 UTC (Gmail msg 1a19fc639dec9847, thread 1a183a5948564e36); repeats the 2026-10-28 criteria. Criteria copied verbatim into criteria.qualifies/disqualifies; CO/TX no-market instruction and nationwide disclaimer applied."
+    }
+  },
+  "theme_css": ":root{--red:#DC0120;--red-ink:#A8001A;--ink:#0E1627;--paper:#FFFFFF;--soft:#F4F5F8;--r:18px}\nbody{background:var(--paper);color:var(--ink)}\n.bar,.trust,section:has(.doors),section:has(.steps),section:has(.proof),section.close,.hero::before{display:none!important}\n.nav{background:#fff;border-bottom:1px solid #E6E8EE}\n.nav .in{padding-block:10px}\n.nav .brand img{height:52px;width:auto}\n.nav .links a{color:var(--ink);font-weight:600}\n.nav .links a.call{background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px}\n.hero{background:linear-gradient(180deg,#0E1627 0%,#15213B 100%);color:#fff}\n.hero-grid{grid-template-columns:1fr;max-width:640px;margin:0 auto;gap:22px;padding-block:40px 56px;text-align:center}\n.hero-copy .eyebrow,.hero-copy .k{color:#FF5A6E;letter-spacing:.14em;font-size:12px;font-weight:700;text-transform:uppercase}\n.hero-copy h1{font-family:var(--display);font-size:clamp(30px,6.2vw,44px);line-height:1.1;margin:10px 0 12px}\n.hero-copy p,.hero-copy .lede{font-size:17px;line-height:1.55;color:#C9D0DE;margin:0 auto;max-width:560px}\n.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;list-style:none;padding:0;margin:16px 0 0}\n.chips li,.chips span,.chip{background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}\n.hero-copy .ctas{display:none}\n.card{border-radius:var(--r);padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);border:0;text-align:left}\n.card-head .k{color:var(--red);letter-spacing:.12em;text-transform:uppercase;font-size:12px;font-weight:700}\n.card-head .count{color:#6B7280;font-size:13px}\n.door-row{border-radius:14px;padding:14px 12px;border:1.5px solid #E6E8EE;margin:8px 0}\n.door-row .n{background:var(--soft);color:var(--ink);font-weight:700}\n.door-row b{font-size:17px}\n.door-row small{color:#6B7280}\n.door-row.primary{background:var(--red);border-color:var(--red);padding:18px 14px}\n.door-row.primary:hover{background:var(--red-ink)}\n.cta,.btn.gold{background:var(--red);color:#fff;border-radius:14px;box-shadow:none}\n.cta:hover,.btn.gold:hover{background:var(--red-ink)}\n.cta.alt{color:#fff;border-color:rgba(255,255,255,.6)}\n.prog i{background:var(--red)}\n.opts button{border-radius:14px;padding:16px 48px 16px 16px;font-size:17px}\n.opts button:hover,.opts button:focus-visible{border-color:var(--red);background:#FFF5F6}\n.opts button::after{color:var(--red)}\n.q h2,.q h3{font-family:var(--display);font-size:22px;line-height:1.25}\n.fine{color:#6B7280;font-size:13px}\nfooter,.foot{background:var(--soft);color:#4B5563}\nfooter .in,.foot .in{max-width:760px;margin:0 auto;text-align:center;font-size:13px;line-height:1.55}\nfooter img,.foot img{height:44px;width:auto;margin:0 auto 10px;display:block}\nfooter a,.foot a{color:var(--ink)}\n.firm-disclaimer{text-align:left}\n@media(max-width:640px){.nav .links a:not(.call){display:none}.nav .brand img{height:44px}.card{padding:18px}}"
+}

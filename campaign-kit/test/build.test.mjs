@@ -133,7 +133,12 @@ test('channel bundle is paused drafts only; preview-only campaigns get no kit la
     assert.equal(b['tiktok.json'].campaign.operation_status, 'DISABLE', f);
     assert.equal(b['openai-ads.json'].campaign.status, 'paused', f);
     assert.ok(b['google-search.json'].responsive_search_ad.headlines.every(h => h.length <= 30), f);
-    assert.ok(b['meta.json'].ads.every(a => a.status === 'PAUSED' && (a.link === null || a.link === undefined || !a.link.includes('/c/'))), `${f} no links to undeployed /c/ pages`);
+    assert.ok(b['meta.json'].ads.every(a => a.status === 'PAUSED'), `${f} all ads remain paused`);
+    if (c.publish === false) {
+      assert.ok(b['meta.json'].ads.every(a => a.link === null || a.link === undefined || !a.link.includes('/c/')), `${f} no links to undeployed /c/ pages`);
+    } else {
+      assert.ok(b['meta.json'].ads.every(a => new URL(a.link).pathname.startsWith(`/c/${c.slug}/`)), `${f} links target the published campaign`);
+    }
     assert.match(b['perspective.json'].make_intake_scenario.must.join(' '), /respond only AFTER the write succeeds/);
     const daily = ['meta.json', 'google-search.json', 'tiktok.json', 'openai-ads.json'].reduce((s, k) => s + b[k].campaign.daily_budget_usd, 0);
     assert.ok(Math.abs(daily * c.budget.days - c.budget.media_total_usd) <= c.budget.days * 4, `${f} daily budgets ≈ media total`);
