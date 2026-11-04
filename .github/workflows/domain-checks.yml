@@ -48,6 +48,7 @@ jobs:
           node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
           PLG_DISCLAIMER_ALTERNATIVE=1 node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
           PLG_DISCLAIMER_UNDER_FORM=1 node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
+          PLG_CLEAN_ROUTES=1 node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
       - name: Preserve validation receipt
         if: always()
         uses: actions/upload-artifact@v4
