@@ -1,10 +1,16 @@
-# Smaller disclaimer beneath the form — unapproved review only
+# Phillips rideshare pages with an under-form disclaimer
 
-New isolated namespace: `/review/phillips-rideshare-20261104/disclaimer-under-form-review/`.
+Namespace: `/review/phillips-rideshare-20261104/disclaimer-under-form-review/`.
 
-The exact nationwide disclaimer is retained, proposed at 11px Times New Roman beneath the callback form. Claim Check shows it under the contact form after the seven screens. Sofia shows it under the expandable callback form. Each page clearly identifies the alternative as unapproved and differing from Michael's written very-top / 12-point requirements. The review guide explains the difference and how to reveal the relevant forms.
+The three examples have clean campaign presentation: no preview banners, review captions, or preview wording in visible page text. The exact nationwide disclaimer remains under the form in the existing 11px Times New Roman treatment. This change adds no claim of firm approval or compliance; the separate operator guide retains the placement context.
 
-This does not assert compliance or firm approval. Original very-top / 12pt previews and the earlier above-fold alternative are preserved unchanged. No intake, phone routing, assistant, ad or retainer workflow is enabled by these pages.
+Functions remain deliberately unavailable:
+- Phone controls are non-dialable/disabled and say calling is unavailable here.
+- Callback submission buttons are visibly disabled and the form says it is not connected, with no request sent.
+- A dedicated local interaction script preserves the chat questions and expandable Sofia form, but has no receipt-generation, intake, phone or provider action. Native/programmatic form submissions are prevented; CSP still blocks outbound connections and form actions.
+- Quiz outcomes are an on-page screening result, never a queued lead, accepted matter or sent request.
+
+The original top-placement previews, earlier above-fold alternative, routing, assistant, ads, and other campaigns remain unchanged.
 
 Build: `python3 tools/build-phillips-under-form-review.py`.
-Validation: `PLG_DISCLAIMER_UNDER_FORM=1 node tests/phillips-rideshare-review.browser.cjs` passes 164 checks at 320/390/768/1280, including exact wording, computed 11px Roman type, below-form position, explicit unapproved labeling, mobile layout and browser-only synthetic receipts. The original mode passes 252 checks; the earlier below-header mode passes 164. All three modes run in CI. Screenshots of the complete legal block and surrounding form were inspected on phone and desktop.
+Validation: under-form mode passes 164 browser checks at 320/390/768/1280, including no preview wording, exact disclaimer/size/position, clean layout, disabled controls, prevented submissions, no fake receipt/outbox and no outbound intake. Existing placement modes also run in CI. Phone and desktop screenshots inspected.
