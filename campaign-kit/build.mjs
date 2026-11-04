@@ -165,7 +165,7 @@ ${live ? `<!-- Google Tag Manager (${esc(c.gtm)}). Non-identifying events only: 
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${js(c.gtm)});</script>` : '<!-- PREVIEW: GTM, TrustedForm, phone dialing and lead sending are off. -->'}
 <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'ee_page_view',page_id:${js(pid(c, page))},campaign_id:${js(c.campaign_id)},tenant_id:${js(c.tenant_id)},domain_id:${js(c.domain_id)}});</script>
 ${tf}</head><body>
-${live ? '' : '<div class="kit-preview" role="note"><b>Preview</b> · nothing on this page sends a lead, places a call or loads tracking.</div>\n'}<div class="bar"><div class="in"><span><b>${esc(b.fee_line)}</b> ${esc(b.tagline ?? 'Free consultation, 24/7.')}</span>${tel(c, c.sofia.phone_tel, c.sofia.phone_display, 'data-door="sofia"')}</div></div>
+${c.disclaimer_top ? `<div class="firm-disclaimer" role="note">${esc(c.disclaimer_top)}</div>\n` : ''}${live ? '' : '<div class="kit-preview" role="note"><b>Preview</b> · nothing on this page sends a lead, places a call or loads tracking.</div>\n'}<div class="bar"><div class="in"><span><b>${esc(b.fee_line)}</b> ${esc(b.tagline ?? 'Free consultation, 24/7.')}</span>${tel(c, c.sofia.phone_tel, c.sofia.phone_display, 'data-door="sofia"')}</div></div>
 <div class="nav"><div class="in"><a href="./" class="brand" aria-label="${esc(b.name)}">${b.logo_wide ? `<img src="${esc(b.logo_wide)}" alt="${esc(b.name)}">` : `<span class="wordmark"><img src="${esc(b.logo)}" alt="" width="36" height="36">${esc(b.name)}</span>`}</a><nav class="links"><a href="quiz.html">Case check</a><a href="form.html">Request a callback</a><a class="call" href="sofia.html">Talk to us now</a></nav></div></div>
 `;
 }
@@ -273,21 +273,31 @@ function sofiaCard(c) {
 </div>`;
 }
 
-const indexCard = c => `<div class="card doorsmini">
+const indexCard = c => {
+  const H = c.copy?.hub?.card;
+  if (H) return `<div class="card doorsmini">
+  <div class="card-head"><span class="k">${esc(H.k)}</span><span class="count">${esc(H.count || '')}</span></div>
+  ${H.rows.map((r, i) => `<a class="door-row${r.primary ? ' primary' : ''}" href="${PAGE_FILES[r.door]}" data-door="${esc(r.door)}"><span class="n">${i + 1}</span><span><b>${esc(r.b)}</b><small>${esc(r.small)}</small></span><span class="arr">→</span></a>`).join('\n  ')}
+  <p class="fine" style="margin:14px 0 0">${esc(H.fine || 'Every path ends with a person reviewing your situation.')}</p>
+</div>`;
+  return `<div class="card doorsmini">
   <div class="card-head"><span class="k">Start here</span><span class="count">Pick one</span></div>
   <a class="door-row" href="quiz.html" data-door="quiz"><span class="n">1</span><span><b>Check my claim</b><small>${c.quiz.length} questions, two minutes, instant result</small></span><span class="arr">→</span></a>
   <a class="door-row" href="sofia.html" data-door="sofia"><span class="n">2</span><span><b>Talk to someone now</b><small>Call ${esc(c.sofia.phone_display)}, any time</small></span><span class="arr">→</span></a>
   <a class="door-row" href="form.html" data-door="form"><span class="n">3</span><span><b>Request a callback</b><small>Send your details, pick a time</small></span><span class="arr">→</span></a>
   <p class="fine" style="margin:14px 0 0">Every path ends with a person reviewing your situation.</p>
 </div>`;
+};
 
 function doorsSection(c) {
   const img = d => c.images?.['ad_' + d] ? `<img src="${esc(c.images['ad_' + d])}" alt="" loading="lazy">` : '';
   const row = (d, k, h, p, btn, cls) => `<a class="door" href="${PAGE_FILES[d]}" data-door="${d}">${img(d)}<div class="body"><span class="k">${k}</span><h3>${h}</h3><p>${p}</p><span class="btn${cls}">${btn}</span></div></a>`;
-  return `<section><div class="in"><h2 class="sec center">Three ways to start. One team behind all of them.</h2><div class="doors">
-  ${row('quiz', 'Two minutes', `${c.quiz.length} quick questions`, 'See where you stand right away.', 'Take the check', ' gold')}
-  ${row('sofia', 'Right now', 'Talk it through', 'Call and tell Sofia what happened. She connects you with a person.', 'Call now', '')}
-  ${row('form', 'On your schedule', 'Request a callback', 'Send a few details and pick the time.', 'Start the form', '')}
+  return `<section><div class="in"><h2 class="sec center">${esc(c.copy?.hub?.doors?.h2 ?? 'Three ways to start. One team behind all of them.')}</h2><div class="doors">
+  ${(c.copy?.hub?.doors?.rows ?? [
+    {door: 'quiz', k: 'Two minutes', h: `${c.quiz.length} quick questions`, p: 'See where you stand right away.', btn: 'Take the check', cls: ' gold'},
+    {door: 'sofia', k: 'Right now', h: 'Talk it through', p: 'Call and tell Sofia what happened. She connects you with a person.', btn: 'Call now', cls: ''},
+    {door: 'form', k: 'On your schedule', h: 'Request a callback', p: 'Send a few details and pick the time.', btn: 'Start the form', cls: ''}
+  ]).map(r => row(r.door, esc(r.k), esc(r.h), esc(r.p), esc(r.btn), r.cls || '')).join('\n  ')}
 </div></div></section>`;
 }
 
@@ -410,12 +420,14 @@ export function renderPages(c) {
 export function renderCss(c) {
   const k = c.brand.colors, f = c.brand.fonts;
   const vars = `:root{--navy:${k.navy};--deep:${k.deep};--blue:${k.blue};--blue-ink:${k.blue_ink};--gold:${k.gold};--gold-ink:${k.gold_ink};--bg2:${k.bg2};--line:${k.line};--ok:${k.ok};--display:"${f.display}",Georgia,serif;--body:"${f.body}",system-ui,-apple-system,sans-serif;--hero-img:${c.images?.hero ? `url(${c.images.hero})` : 'none'}}
+.door-row.primary{background:var(--blue);color:#fff;border-radius:14px;padding:16px 14px;margin:6px 0 10px}.door-row.primary b,.door-row.primary small,.door-row.primary .arr,.door-row.primary .n{color:#fff}.door-row.primary .n{background:rgba(255,255,255,.18)}
+.firm-disclaimer{display:block;margin:0;padding:10px max(16px,env(safe-area-inset-left,0px));background:#fff;color:#111;border-bottom:1px solid #c7cbd2;font:12pt/1.4 "Times New Roman",Times,serif}
 .kit-preview{background:#fff4c2;color:#3d2e00;font:600 14px/1.4 var(--body);text-align:center;padding:8px max(16px,env(safe-area-inset-left,0px))}
 .tel-off{font-weight:700;cursor:not-allowed}.cta.tel-off{opacity:.75}
 .ok .ref{display:block;margin-top:10px;font-size:14px}.ok .ref em{font-style:normal;color:var(--muted)}.ok #again{margin-top:10px}
 .nav{background:var(--navy)}.wordmark{display:inline-flex;align-items:center;gap:10px;color:#fff;font-family:var(--display);font-size:20px;font-weight:700;text-decoration:none}.nav .wordmark img{width:36px}.brand{text-decoration:none}
 `;
-  return readFileSync(join(KIT, 'base.css'), 'utf8') + '\n/* campaign-kit brand tokens: ' + c.campaign_id + ' */\n' + vars;
+  return readFileSync(join(KIT, 'base.css'), 'utf8') + '\n/* campaign-kit brand tokens: ' + c.campaign_id + ' */\n' + vars + (c.theme_css ? '\n/* campaign theme */\n' + c.theme_css : '');
 }
 
 // ---------- creative assets: what is real, what is a placeholder, what is missing ----------

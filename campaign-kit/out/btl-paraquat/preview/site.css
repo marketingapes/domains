@@ -156,6 +156,8 @@ footer a{color:#fff}
 
 /* campaign-kit brand tokens: PARAQUAT-PILOT-001 */
 :root{--navy:#111827;--deep:#0B1220;--blue:#2457E6;--blue-ink:#1d47bd;--gold:#C6A15B;--gold-ink:#8a6a2c;--bg2:#F6F1E7;--line:#D9D2C5;--ok:#17643A;--display:"Lora",Georgia,serif;--body:"Open Sans",system-ui,-apple-system,sans-serif;--hero-img:url(/assets/paraquat-field-usda-nrcs.jpg)}
+.door-row.primary{background:var(--blue);color:#fff;border-radius:14px;padding:16px 14px;margin:6px 0 10px}.door-row.primary b,.door-row.primary small,.door-row.primary .arr,.door-row.primary .n{color:#fff}.door-row.primary .n{background:rgba(255,255,255,.18)}
+.firm-disclaimer{display:block;margin:0;padding:10px max(16px,env(safe-area-inset-left,0px));background:#fff;color:#111;border-bottom:1px solid #c7cbd2;font:12pt/1.4 "Times New Roman",Times,serif}
 .kit-preview{background:#fff4c2;color:#3d2e00;font:600 14px/1.4 var(--body);text-align:center;padding:8px max(16px,env(safe-area-inset-left,0px))}
 .tel-off{font-weight:700;cursor:not-allowed}.cta.tel-off{opacity:.75}
 .ok .ref{display:block;margin-top:10px;font-size:14px}.ok .ref em{font-style:normal;color:var(--muted)}.ok #again{margin-top:10px}
