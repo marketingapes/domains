@@ -68,23 +68,26 @@
   /* data-consent="clickwrap": consent is given by tapping the submit button, with the disclosure printed right under it.
      The disclosure names the button, so the button text and this text must match. */
   var clickwrap = !!(box && box.getAttribute('data-consent') === 'clickwrap');
-  if (box && clickwrap) {
-    var btnLabel = (box.getAttribute('data-button') || 'Submit');
-    box.innerHTML = '<p>By tapping \u201c' + btnLabel + ',\u201d you agree that Jeffrey Glassman Injury Lawyers, including Sofia, its AI voice assistant, may call or text you at the number above about your disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Message and data rates may apply; message frequency varies. Reply STOP to end texts, HELP for help. Consent is not a condition of any purchase or service. See our <a href="https://www.jeffreysglassman.com/privacy-policy.html">Privacy Policy</a> and <a href="https://www.jeffreysglassman.com/disclaimer.html">Disclaimer</a>.</p>';
-  } else if (box) {
-    box.innerHTML =
-      '<span class="c-title">How may we contact you? Boxes start unchecked.</span>' +
-      '<label><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span><b>Calls (required).</b> I agree that Jeffrey Glassman Injury Lawyers, including Sofia, its AI voice assistant, may call me at the number I provided about my disability inquiry, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service.</span></label>' +
-      '<label><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span><b>Text messages.</b> I agree to receive text messages about my inquiry at the number I provided. Message and data rates may apply. Reply STOP to end.</span></label>';
+  var consentVersion = 'glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1';
+  var callText = 'I agree that Marketing Apes and Jeffrey Glassman Injury Lawyers, including Sofia, the AI voice assistant, may call me at the number I provided about my request to speak with Jeffrey Glassman Injury Lawyers, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service.';
+  var smsText = 'I agree to receive text messages from Marketing Apes about my request to speak with Jeffrey Glassman Injury Lawyers, including request confirmations and callback scheduling. Message frequency varies. Message and data rates may apply. Reply STOP to stop texts or HELP for help. Text consent is optional and is not a condition of a purchase or service.';
+  if (box) {
+    var btnLabel = box.getAttribute('data-button') || 'Submit';
+    box.innerHTML = '<p>This page is operated by Marketing Apes for inquiries to Jeffrey Glassman Injury Lawyers. Marketing Apes does not provide legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a>.</p>' +
+      (clickwrap
+        ? '<p id="callDisclosure">By tapping “' + btnLabel + ',” ' + callText + '</p>'
+        : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure"><b>Calls (required).</b> ' + callText + '</span></label>') +
+      '<label class="channel-consent"><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span id="smsDisclosure"><b>Text messages (optional).</b> ' + smsText + '</span></label>' +
+      '<p>See Jeffrey Glassman Injury Lawyers’ <a href="https://www.jeffreysglassman.com/privacy-policy.html">Privacy Policy</a> and <a href="https://www.jeffreysglassman.com/disclaimer.html">Disclaimer</a>.</p>';
   }
 
   /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
   var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 8 Eastern)']];
   if (box && !document.getElementById('best_time')) {
     var bt = document.createElement('div'); bt.className = 'field';
-    bt.innerHTML = '<label for="best_time">Best time for a call</label><select id="best_time" name="best_time">' +
+    bt.innerHTML = '<label for="best_time">Preferred callback time (request only)</label><select id="best_time" name="best_time">' +
       TIMES.map(function (t) { return '<option value="' + t[0] + '">' + t[1] + '</option>'; }).join('') +
-      '</select><span class="why">The team takes calls Monday to Friday, 8 AM to 8 PM Eastern. We never call before 9 AM your time.</span>';
+      '</select><span class="why">Choose a preferred time for the team to review. This does not book an appointment.</span>';
     box.parentNode.insertBefore(bt, box);
   }
   function bestTime() { var v = val('best_time') || 'asap'; for (var i = 0; i < TIMES.length; i++) if (TIMES[i][0] === v) return TIMES[i]; return TIMES[0]; }
@@ -148,7 +151,9 @@
     var answers = scorer ? scorer.answers() : {};
     var R = window.SSDI_RULES, now = new Date();
     var first = val('first_name'), last = val('last_name'), full = first + ' ' + last;
-    var consentText = clickwrap ? box.textContent.trim() : ((document.querySelector('#consentBox label') || {}).textContent || '');
+    var callDisclosure = document.getElementById('callDisclosure').textContent.trim();
+    var smsDisclosure = document.getElementById('smsDisclosure').textContent.trim();
+    var consentText = callDisclosure + '\n' + smsDisclosure;
     var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
     var payload = {
       schema: 'btl.intake.web/v1', submission_id: sid(),
@@ -161,11 +166,12 @@
       /* callback = Sofia screens on the call; the web outcome only exists for the form and quiz */
       routing: { route: answers.web_outcome && R ? R.route(answers.web_outcome) : 'sofia_screen', transfer_window: R && R.inHours(now) ? 'open' : 'closed' },
       consent: {
-        version: clickwrap ? 'glassman-ssdi-002-consent-clickwrap-2026-11-05' : 'glassman-ssdi-002-consent-2026-10-28', captured_at: now.toISOString(), text: consentText,
+        version: consentVersion, captured_at: now.toISOString(), text: consentText,
         method: clickwrap ? 'clickwrap_submit' : 'checkbox',
-        calls: { granted: clickwrap || !!(callsBox && callsBox.checked) },
-        /* the click-to-agree line covers texts as well as calls (since 2026-11-05) */
-        sms: { granted: clickwrap || !!(document.getElementById('consent_sms') || {}).checked }
+        calls: { granted: clickwrap || !!(callsBox && callsBox.checked), text: callDisclosure,
+          version: consentVersion + '-calls', method: clickwrap ? 'clickwrap_submit' : 'checkbox', captured_at: now.toISOString() },
+        sms: { granted: !!(document.getElementById('consent_sms') || {}).checked, text: smsDisclosure,
+          version: consentVersion + '-sms', method: 'checkbox', captured_at: now.toISOString() }
       },
       trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
       page_url: location.origin + location.pathname,
@@ -176,9 +182,10 @@
 
     /* Keep the exact original payload for an unchanged retry, including consent/submission time.
        An edited inquiry gets a new id; it must not overwrite an earlier stored submission. */
+    // Channel timestamps share the submit capture time; exclude them from the edit fingerprint.
     var signature = JSON.stringify([payload.schema, payload.tenant_id, payload.domain_id, payload.campaign_id,
       payload.page_id, payload.door, payload.request_type, payload.page_url, payload.contact, payload.screening, { route: payload.routing.route },
-      payload.consent.version, payload.consent.text, payload.consent.method, payload.consent.calls, payload.consent.sms,
+      payload.consent.version, payload.consent.text, payload.consent.method, payload.consent.calls.granted, payload.consent.sms.granted,
       payload.callback, payload.attribution, payload.test]);
     // A late SDK certificate or hours boundary is passive context, not a user edit.
     pending = true;
@@ -190,7 +197,10 @@
       var restored = !retryPayload && hash ? storedRetry(hash) : null;
       if (restored) {
         payload.submission_id = restored.submission_id; payload.submitted_at = restored.submitted_at;
-        payload.consent.captured_at = restored.consent_captured_at; payload.trustedform_cert_url = restored.certificate_url;
+        payload.consent.captured_at = restored.consent_captured_at;
+        payload.consent.calls.captured_at = restored.consent_captured_at;
+        payload.consent.sms.captured_at = restored.consent_captured_at;
+        payload.trustedform_cert_url = restored.certificate_url;
         payload.routing.transfer_window = restored.transfer_window;
       } else {
         // Never pair a legacy/stale id with a newly generated payload after a refresh or edit.
@@ -210,14 +220,11 @@
     if (btn) { btn.disabled = true; }
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
 
-    /* After a submit every door gets the same thank-you: when Sofia will call. */
+    /* A receipt confirms storage of a request, not contact or a booked appointment. */
     function thanks() {
-      var t = bestTime();
-      if (t[0] !== 'asap') return 'Thank you. Sofia will call you at the time you picked: ' + t[1].charAt(0).toLowerCase() + t[1].slice(1) + '.';
-      return window.SSDI_RULES && window.SSDI_RULES.inHours()
-        ? 'Thank you. Sofia will call you in the next few minutes.'
-        : 'Thank you. Sofia will call you during business hours (' + (window.SSDI_RULES ? window.SSDI_RULES.hours.label : 'Monday–Friday') + ').';
+      return 'Your callback request was received. The team will review it. Your requested time: ' + bestTime()[1] + '.';
     }
+
     function succeed(j) {
       pending = false; completed = true;
       if (btn) { btn.disabled = false; }

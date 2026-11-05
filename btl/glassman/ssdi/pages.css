@@ -198,3 +198,8 @@ footer p{margin:0;max-width:900px}
 }
 
 .brand.gl img{width:min(240px,52vw);height:auto}
+
+/* Separate optional text consent, shared across all three doors. */
+.channel-consent{display:flex;align-items:flex-start;gap:10px;margin:14px 0;font-size:13px;line-height:1.5;color:var(--muted);cursor:pointer}
+.channel-consent input{flex:0 0 20px;width:20px;height:20px;margin:2px 0;accent-color:var(--blue)}
+.channel-consent input:focus-visible{outline:3px solid var(--blue);outline-offset:3px}

@@ -14,3 +14,62 @@ The BTL SSDI A pages (`/ssdi/`, Glassman-style layout) re-branded for Jeffrey Gl
 - Criteria (Oct 28): age 48–64, all states except ND, SD, AK and HI, intake Mon–Fri 8 AM–8 PM Eastern, from Dan Verrilli's Oct 27 list. The other quiz checks (out of work, doctor, benefits, lawyer) are unchanged until the rest of Dan's list is added. The Glassman Sofia on (669) has not been updated.
 - Ads and door cards (Oct 29): `/assets/glassman-ssdi/ads/` has the BTL SSDI door images (`/assets/ssdi/ads/`) with the Glassman logo in place of the Best Tort Lawyers label. The form image's state line reads "ND, SD, AK or HI" instead of "CA or CO", and the quiz image's headline says ages 48–64 instead of 54–63. `brand_ads.py` rebuilds them. The "Other ways to start" door cards on all three pages use the square ones, like `/ssdi/b/` (they used the text-only `/glassman-ssdi/img/ad-*.jpg` cards before).
 - Built 2026-10-28 from the dark pages, which were at `/ssdi/` then and are now at `/ssdi/b/`. `build_from_ssdi.py` reads `/ssdi/`, so it no longer reproduces these pages as is; edit this folder directly.
+
+
+Future consent update (2026-11-05): Marketing Apes operates these three pages for
+inquiries to Jeffrey Glassman Injury Lawyers. Submit records call consent; the
+separate SMS checkbox starts unchecked and is optional. Version
+`glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1` applies only to new
+submissions. Both `consent.calls` and `consent.sms` include `granted`, `text`,
+`version`, `method`, and `captured_at`. The original `consent.version`, `text`,
+`method`, and `captured_at` fields remain for the raw intake contract. The channel
+timestamps share the submit capture time and remain frozen on unchanged retries.
+A changed disclosure or SMS choice gets a fresh submission ID. Historical consent
+is not Marketing Apes consent. This page change does not enable calls or texts.
+
+Offline browser verification: run `node btl/glassman/ssdi/tests/consent.browser.mjs`
+from the repository root with Playwright installed, or set `PLAYWRIGHT_MODULE` to
+its `index.mjs`. Set `CHROMIUM_EXECUTABLE` if needed and `EVIDENCE_DIR` for
+screenshots (default `/tmp/glassman-consent-evidence`). The test intercepts all
+requests, serves repository files locally, and mocks every receipt; it never
+releases a webhook request. It uses the old intake fixture from commit `4349045`
+to verify that pending old consent cannot become new Marketing Apes SMS consent.
+
+Campaign privacy clarification (2026-11-05): only these three pages replace the
+blanket no-sale claims with “Shared for this inquiry” and a campaign-specific
+notice. It names Glassman and campaign providers and commits Marketing Apes to
+asking permission before its own referrals to another firm. Clearly labeled
+links point to BTL privacy/SMS/terms, Marketing Apes website privacy, and the
+firm's original privacy/disclaimer. No external policy or unseen service
+agreement is edited or asserted as verified.
+
+A successful receipt confirms that the callback request was received for review.
+The selected callback window is a requested preference, not a confirmed booking
+or a promise of an immediate call. Callback metadata, introductory copy, FAQ,
+door cards and thank-you copy reflect that. Consent text/version, phone route,
+callback payload values, receipt gate and conversion code are unchanged.
+
+Path clarification (2026-11-05): all three pages distinguish an inbound automated
+intake conversation from a callback request for team review. No blanket 24/7
+answering, same-call firm connection, or 24–48-hour callback promise remains in
+HTML or generated quiz result copy. A live transfer may be offered when available;
+no successful transfer or response time is promised. Screening criteria, hours,
+routing, consent and conversion code are unchanged.
+
+Approved form preview (2026-11-05): the callback cards on the quiz and Talk to
+Sofia pages now reference `glassman-ssdi-form-1254x1254.jpg`, copied byte-for-byte
+from the parent's verified Meta creative 3648447985307479. It is a JPEG despite
+the CDN URL's .png suffix: native 1254 × 1254, 115224 bytes, SHA256
+`a824eef320684a990a2f84432d518e46a7e40f036db310bc2c8f1d3b4a4901b5`.
+It visibly says “Submit an inquiry for review. Not available in ND, SD, AK or HI.”
+No pixels were generated, resized, cropped or re-encoded. HTML uses its actual
+native dimensions; existing responsive square layout is preserved. The old 1080
+asset is retained but no longer referenced by these campaign pages. The supplied
+vertical JPEG was verified separately and is not referenced or added to this
+campaign, which uses square cards.
+
+The root Glassman contact test checks separate consent proof and rejects
+the superseded automatic SMS grant. Offline browser tests also verify campaign
+privacy links, requested-time receipt copy, rejection of HTTP 200 without a
+receipt, one conversion for a first non-test receipt, and no conversion for a
+test or duplicate receipt. All network traffic is intercepted.

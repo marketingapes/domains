@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 const root = new URL('../btl/glassman/ssdi/', import.meta.url);
 test('all active Glassman forms have explicit accessible required contact fields', () => {
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
@@ -14,7 +15,24 @@ test('all active Glassman forms have explicit accessible required contact fields
     }
     assert.match(html,/<input id="email"[^>]+type="email"/);
     assert.doesNotMatch(html,/<input id="full_name"/);
+    assert.doesNotMatch(html,/Never<\/b><span>sold|Never sold|It is not sold/);
+    assert.match(html,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
+    assert.match(html,/Your requested time is a preference, not a confirmed appointment/);
+    assert.doesNotMatch(html,/Sofia calls you\.|calls you at the time you pick|usually means within minutes|She books a time/);
+    assert.match(html,/Call for an automated intake conversation/);
+    assert.match(html,/Or request a callback/);
+    assert.match(html,/A live transfer may be offered when available/);
+    assert.match(html,/Your chosen time is a preference, not a confirmed appointment/);
+    assert.doesNotMatch(html,/24\/7|same call|Call any time|24 to 48 hours|you’re connected/);
+    assert.doesNotMatch(html,/glassman-ssdi-form-1080x1080\.jpg/);
+    if (file !== 'index.html') assert.match(html,/glassman-ssdi-form-1254x1254\.jpg[^" ]*" width="1254" height="1254"/);
+
+
+
   }
+  const image=readFileSync(new URL('../../assets/glassman-ssdi/ads/glassman-ssdi-form-1254x1254.jpg',root));
+  assert.equal(image.length,115224);
+  assert.equal(createHash('sha256').update(image).digest('hex'),'a824eef320684a990a2f84432d518e46a7e40f036db310bc2c8f1d3b4a4901b5');
 });
 test('contact mapping never splits an ambiguous full name or grants email outreach consent',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
@@ -22,12 +40,28 @@ test('contact mapping never splits an ambiguous full name or grants email outrea
   assert.doesNotMatch(intake,/parts\[0\]|full\.split|consent_email/);
   assert.match(intake,/if \(pending \|\| completed\) return/);
 });
-test('click-to-agree consent covers texts and records sms consent',()=>{
+test('calls and optional Marketing Apes texts have separate future consent proof',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
-  assert.match(intake,/may call or text you at the number above/);
-  assert.match(intake,/Reply STOP to end texts, HELP for help\./);
-  assert.match(intake,/sms: \{ granted: clickwrap \|\| /);
-  assert.match(intake,/glassman-ssdi-002-consent-clickwrap-2026-11-05/);
+  assert.match(intake,/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
+  assert.match(intake,/Text messages \(optional\)/);
+  assert.match(intake,/sms: \{ granted: !!\(document.getElementById\('consent_sms'\)/);
+  assert.doesNotMatch(intake,/sms: \{ granted: clickwrap/);
+  assert.match(intake,/glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1/);
+  assert.match(intake,/version: consentVersion \+ '-sms', method: 'checkbox', captured_at:/);
+  assert.match(intake,/Reply STOP to stop texts or HELP for help/);
+  assert.match(intake,/Text consent is optional and is not a condition of a purchase or service/);
+  const smsInput = intake.match(/<input type="checkbox" id="consent_sms"[^>]*>/)?.[0];
+  assert.ok(smsInput, 'SMS has its own checkbox');
+  assert.doesNotMatch(smsInput,/\b(?:checked|required)\b/, 'SMS starts unchecked and is optional');
+  const callText = intake.match(/var callText = '([^']+)';/)?.[1];
+  assert.ok(callText);
+  assert.match(callText,/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
+  assert.doesNotMatch(callText,/text messages|may call or text/);
+  assert.match(intake,/calls: \{ granted: clickwrap \|\| .*text: callDisclosure/);
+  assert.match(intake,/sms: \{ granted: !!.*\.checked, text: smsDisclosure/);
+  assert.match(intake,/version: consentVersion \+ '-calls', method: clickwrap \? 'clickwrap_submit' : 'checkbox', captured_at:/);
+  assert.doesNotMatch(intake,/glassman-ssdi-002-consent-clickwrap-2026-11-05/);
+
 });
 test('generate_lead fires only for real first-time leads',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
