@@ -6,7 +6,7 @@ guides/checkout-comparison/ is generated from worksheet.py (restyled Oct 10, 202
 """
 import os, re, html, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-import svgs, deals, theme, client, events, worksheet, images
+import svgs, deals, theme, client, events, worksheet, images, seasonal
 from articles1 import A as A1
 from articles2 import A as A2
 
@@ -301,6 +301,13 @@ def deals_page():
 <section class="wrap section narrow-sec">
 <h2>About these deals</h2>
 <p>This page lists time-limited offers and ongoing store perks that merchants publish through the Commission Junction (CJ) affiliate network to Discount Deal Me. We keep the merchant's own wording in "Network terms" on every card, add a short summary written by AI, and score each offer the same way. We do not see or verify individual item prices, so always compare the price in your cart with other sellers. If a deal does not work as described, <a href="/contact/">tell us</a> and we will check it and remove it if needed.</p>
+</section>
+<section class="wrap section narrow-sec" aria-labelledby="season-h">
+<h2 id="season-h">Deal pages</h2>
+<ul class="checklist">
+<li><a href="/deals/halloween/">Halloween deals 2026</a>: Groupon, M&amp;M'S and Peet's codes, each with its end date.</li>
+<li><a href="/deals/pet-supplies/">Pet supply deals</a>: 35% off sales through Oct 15, plus ongoing pet codes.</li>
+</ul>
 </section>'''
     return page("Live deals", "Search live deals from official affiliate programs, filter by category, ending soon or no code needed, and see a transparent Deal Score for every offer.", "/deals/", body, "deals")
 
@@ -599,6 +606,18 @@ def offers_page():
 <p>Up to 25% off select countertop appliances and up to $120 off select stand mixers on kitchenaid.com, no code. Ends Sat Oct 10 at 8:59 PM PT. Select models only, so check your cart price.</p>
 <a class="btn btn-ghost" href="/deals/kitchenaid-harvest-event/">See the KitchenAid deal</a>
 </article>
+<article class="store store-alert" data-expires="2026-11-02T04:59:00Z">
+<div class="store-top"><span class="deal-merchant">Groupon, M&amp;M'S, Peet's</span><span class="deal-cat">Seasonal</span></div>
+<h2>Halloween deals 2026</h2>
+<p>Groupon's Spooky Sale (code HALLOWEEN), M&amp;M'S codes MONSTER and CAULDRON, Halloween Horror Nights tickets and Peet's three-day SPOOKY sale, each with its end date.</p>
+<a class="btn btn-ghost" href="/deals/halloween/">See the Halloween deals</a>
+</article>
+<article class="store store-alert">
+<div class="store-top"><span class="deal-merchant">Budget Pet Care, Canada Pet Care, Best Vet Care</span><span class="deal-cat">Pets</span></div>
+<h2>Pet supply deals</h2>
+<p>35% off pet supplies with code DISCOVER through Wed Oct 14 at 11:30 AM PT, two more 35% off sales, and ongoing pet codes that keep working after that.</p>
+<a class="btn btn-ghost" href="/deals/pet-supplies/">See the pet deals</a>
+</article>
 <div class="store-grid">{cards}</div>
 </section>
 <div class="wrap">{signup("offers")}</div>'''
@@ -671,6 +690,8 @@ def main():
     write("deals/index.html", deals_page())
     write("how-we-pick-deals/index.html", method_page())
     write("deals/kitchenaid-harvest-event/index.html", events.kitchenaid(head, nav, FOOT))
+    write("deals/halloween/index.html", seasonal.halloween(head, nav, FOOT))
+    write("deals/pet-supplies/index.html", seasonal.pets(head, nav, FOOT))
     write("offers/index.html", offers_page())
     write("deal-checklist/index.html", checklist_page())
     write("guides/checkout-comparison/index.html", checkout_page())
@@ -713,6 +734,7 @@ Allow: /
 Sitemap: {HOST}/sitemap.xml
 """)
     urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
+            ("/deals/halloween/", "2026-10-13"), ("/deals/pet-supplies/", "2026-10-13"),
             ("/articles/", SITE_UPDATED)] + [(f'/articles/{a["slug"]}/', UPDATED) for a in ARTS] + [
             ("/about/", SITE_UPDATED), ("/contact/", SITE_UPDATED), ("/privacy/", SITE_UPDATED), ("/terms/", SITE_UPDATED),
             ("/deal-checklist/", SITE_UPDATED), ("/guides/checkout-comparison/", SITE_UPDATED), ("/offers/", SITE_UPDATED)]
