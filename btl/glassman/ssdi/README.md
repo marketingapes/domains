@@ -40,5 +40,5 @@ sold” claims against the linked firm's Privacy Policy, which permits referrals
 for consideration. Those business assertions and the firm's policies are not
 changed here. No Marketing Apes privacy-policy URL or data-handling promises have
 been invented; confirm its applicable notice and actual data practices before
-publication. The root Glassman contact test still asserts the superseded bundled
-SMS behavior and needs a separately reviewed update outside this directory.
+publication. The root Glassman contact test checks separate consent proof and rejects the
+superseded automatic SMS grant.
