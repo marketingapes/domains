@@ -65,6 +65,16 @@ try {
   assert.match(notice,/share it with Jeffrey Glassman Injury Lawyers and the service providers running this campaign/);
   assert.match(notice,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
   assert.doesNotMatch(await page.locator('body').innerText(),/Never sold|It is not sold/i);
+  const steps=await page.locator('.steps').innerText();
+  assert.match(steps,/Call Sofia.*Call for an automated intake conversation/s);
+  assert.match(steps,/Or request a callback.*Submit your contact details for team review/s);
+  assert.match(steps,/A live transfer may be offered when available/);
+  assert.match(steps,/Your chosen time is a preference, not a confirmed appointment/);
+  assert.doesNotMatch(await page.locator('body').innerText(),/24\/7|same call|Call any time|24 to 48 hours|next few minutes/);
+  const resultCopies=await page.evaluate(()=>['2026-11-05T16:00:00Z','2026-11-08T03:00:00Z'].map(t=>SSDI_RULES.resultText('QUALIFIED',new Date(t))));
+  for(const copy of resultCopies) {assert.match(copy,/team will review your callback request/);assert.doesNotMatch(copy,/next few minutes|will call you|same call/);}
+  await page.locator('.steps').screenshot({path:path.join(evidence,(door.replaceAll('/','')||'form')+'-'+checked+'-paths-mobile.png')});
+
   assert.equal(await page.getByRole('link',{name:'How this campaign uses your information'}).getAttribute('href'),'#campaignPrivacy');
   for(const [label,url] of [['BTL Privacy Policy','https://besttortlawyers.com/privacy-policy/'],['BTL SMS Terms','https://besttortlawyers.com/sms-terms/'],['BTL Terms','https://besttortlawyers.com/terms-and-conditions/'],['Marketing Apes website privacy','https://marketingapes.com/privacy/'],['Firm Privacy Policy','https://www.jeffreysglassman.com/privacy-policy.html'],['Firm Disclaimer','https://www.jeffreysglassman.com/disclaimer.html']]) assert.equal(await page.getByRole('link',{name:label,exact:true}).getAttribute('href'),url);
   await page.locator('footer').screenshot({path:path.join(evidence,(door.replaceAll('/','')||'form')+'-'+checked+'-privacy-mobile.png')});

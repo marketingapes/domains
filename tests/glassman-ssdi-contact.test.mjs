@@ -18,6 +18,12 @@ test('all active Glassman forms have explicit accessible required contact fields
     assert.match(html,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
     assert.match(html,/Your requested time is a preference, not a confirmed appointment/);
     assert.doesNotMatch(html,/Sofia calls you\.|calls you at the time you pick|usually means within minutes|She books a time/);
+    assert.match(html,/Call for an automated intake conversation/);
+    assert.match(html,/Or request a callback/);
+    assert.match(html,/A live transfer may be offered when available/);
+    assert.match(html,/Your chosen time is a preference, not a confirmed appointment/);
+    assert.doesNotMatch(html,/24\/7|same call|Call any time|24 to 48 hours|you’re connected/);
+
 
   }
 });

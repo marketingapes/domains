@@ -49,11 +49,21 @@ or a promise of an immediate call. Callback metadata, introductory copy, FAQ,
 door cards and thank-you copy reflect that. Consent text/version, phone route,
 callback payload values, receipt gate and conversion code are unchanged.
 
-Before publication, verify the remaining broader inbound-call claims: the pages
-still describe Sofia connecting people to the firm on the same call and say she
-answers 24/7. Those describe inbound behavior and are outside this callback-copy
-correction. No claim that the callback dispatcher or an appointment exists is
-added. The root Glassman contact test checks separate consent proof and rejects
+Path clarification (2026-11-05): all three pages distinguish an inbound automated
+intake conversation from a callback request for team review. No blanket 24/7
+answering, same-call firm connection, or 24–48-hour callback promise remains in
+HTML or generated quiz result copy. A live transfer may be offered when available;
+no successful transfer or response time is promised. Screening criteria, hours,
+routing, consent and conversion code are unchanged.
+
+The form door image remains pending an approved replacement. It visibly says
+“Free review in about two minutes” and is displayed to consumers in callback
+cards on the quiz and Talk to Sofia pages. No image pixels were edited. The image
+is not merely an internal preview; replace it from the parent's verified approved
+source before release. Its current blob is
+`6f642fdc2f4176ee76902dbff0908326059cefae`.
+
+The root Glassman contact test checks separate consent proof and rejects
 the superseded automatic SMS grant. Offline browser tests also verify campaign
 privacy links, requested-time receipt copy, rejection of HTTP 200 without a
 receipt, one conversion for a first non-test receipt, and no conversion for a
