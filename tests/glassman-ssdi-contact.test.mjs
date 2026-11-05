@@ -14,6 +14,11 @@ test('all active Glassman forms have explicit accessible required contact fields
     }
     assert.match(html,/<input id="email"[^>]+type="email"/);
     assert.doesNotMatch(html,/<input id="full_name"/);
+    assert.doesNotMatch(html,/Never<\/b><span>sold|Never sold|It is not sold/);
+    assert.match(html,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
+    assert.match(html,/Your requested time is a preference, not a confirmed appointment/);
+    assert.doesNotMatch(html,/Sofia calls you\.|calls you at the time you pick|usually means within minutes|She books a time/);
+
   }
 });
 test('contact mapping never splits an ambiguous full name or grants email outreach consent',()=>{

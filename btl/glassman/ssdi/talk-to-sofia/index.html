@@ -62,23 +62,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div id="formBody">
           <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
           <h2>Have Sofia call you</h2>
-          <p class="hint">Your name and number. Sofia asks the questions on the call.</p>
+          <p class="hint">Your contact details and preferred time. The team will review your callback request.</p>
           <form id="leadForm" novalidate data-page-id="glassman-ssdi-call-first" data-kind="callback">
             <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
             <div class="grid2"><div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="100" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e" aria-live="polite"></span></div><div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="100" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e" aria-live="polite"></span></div></div>
           <div class="grid2"><div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="email-e"><span class="ferr" id="email-e" aria-live="polite"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e" aria-live="polite"></span></div></div>
-            <div class="field"><label for="best_time">Best time to call</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning (8–12 ET)</option><option value="midday">Weekday midday (12–3 ET)</option><option value="afternoon">Weekday afternoon (3–8 ET)</option></select></div>
+            <div class="field"><label for="best_time">Preferred callback time (request only)</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning (8–12 ET)</option><option value="midday">Weekday midday (12–3 ET)</option><option value="afternoon">Weekday afternoon (3–8 ET)</option></select></div>
             <button class="cta wide" type="submit" id="submitBtn">Have Sofia call me <span aria-hidden="true">→</span></button>
             <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Have Sofia call me"></div>
             <p class="status" id="formStatus" role="status" aria-live="polite"></p>
           </form>
         </div>
-        <div class="ok-box" id="formDone" hidden><b tabindex="-1">You’re all set.</b><p id="doneText"></p><p>The call comes from Sofia, our AI intake assistant. Keep your phone nearby.</p></div>
+        <div class="ok-box" id="formDone" hidden><b tabindex="-1">Request received.</b><p id="doneText"></p><p>Your requested time is a preference, not a confirmed appointment.</p></div>
       </div></div></div>
     </div>
   </div>
   <div class="hero-more">
-    <p class="lede">Sofia is our AI intake assistant. She says so, and the call is recorded. She asks six quick questions and, if it fits, connects you with our disability team on the same call. Calling after hours? She books a time for the team to call you back.</p>
+    <p class="lede">Sofia is our AI intake assistant. She says so, and the call is recorded. She asks six quick questions and, if it fits, connects you with our disability team on the same call. You can also submit a callback request with a preferred time; it is not a confirmed appointment.</p>
     <ul class="chips"><li>Answers 24/7</li><li>Ask for a person anytime</li><li>Free</li></ul>
   </div>
 </div></section>
@@ -86,7 +86,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <div><b>Free</b><span>to check</span></div>
   <div><b>6</b><span>quick questions</span></div>
   <div><b>24/7</b><span>Sofia answers</span></div>
-  <div><b>Never</b><span>sold</span></div>
+  <div><b>Shared</b><span>for this inquiry</span></div>
 </div></div>
 
 <section class="band2" aria-labelledby="stepsH"><div class="in">
@@ -106,7 +106,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <p class="sub">Every path ends the same way: our disability team reviews your situation, free.</p>
   <div class="doors">
       <a class="door" href="/glassman/ssdi/quiz/"><img src="/assets/glassman-ssdi/ads/glassman-ssdi-quiz-1080x1080.jpg?v=20261029" width="1080" height="1080" alt="" loading="lazy"><div class="body"><span class="k">Two-minute check</span><h3>Check my eligibility</h3><p>Six quick questions. You see your result before we ask for your number.</p><span class="btn">Start the check →</span></div></a>
-      <a class="door" href="/glassman/ssdi/#request"><img src="/assets/glassman-ssdi/ads/glassman-ssdi-form-1080x1080.jpg?v=20261029" width="1080" height="1080" alt="" loading="lazy"><div class="body"><span class="k">Request a callback</span><h3>Have us call you</h3><p>Leave your name and number and pick a time. Sofia calls you.</p><span class="btn">Request a callback →</span></div></a>
+      <a class="door" href="/glassman/ssdi/#request"><img src="/assets/glassman-ssdi/ads/glassman-ssdi-form-1080x1080.jpg?v=20261029" width="1080" height="1080" alt="" loading="lazy"><div class="body"><span class="k">Request a callback</span><h3>Have us call you</h3><p>Leave your contact details and request a preferred callback time. The team will review your request.</p><span class="btn">Request a callback →</span></div></a>
   </div>
 </div></section>
 
@@ -119,8 +119,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </main>
 
 <footer><div class="in">
-  <nav aria-label="Footer"><a href="/glassman/ssdi/">Request a callback</a><a href="/glassman/ssdi/quiz/">Eligibility check</a><a href="/glassman/ssdi/talk-to-sofia/">Talk to Sofia</a><a href="https://www.jeffreysglassman.com/privacy-policy.html">Firm Privacy Policy</a><a href="https://www.jeffreysglassman.com/disclaimer.html">Firm Disclaimer</a><a href="https://www.jeffreysglassman.com/">jeffreysglassman.com</a></nav>
-  <p>This page is operated by Marketing Apes for inquiries to Jeffrey Glassman Injury Lawyers. Marketing Apes does not provide legal advice.</p>
+  <nav aria-label="Footer"><a href="/glassman/ssdi/">Request a callback</a><a href="/glassman/ssdi/quiz/">Eligibility check</a><a href="/glassman/ssdi/talk-to-sofia/">Talk to Sofia</a><a href="https://www.jeffreysglassman.com/privacy-policy.html">Firm Privacy Policy</a><a href="https://www.jeffreysglassman.com/disclaimer.html">Firm Disclaimer</a><a href="https://www.jeffreysglassman.com/">jeffreysglassman.com</a><a href="https://besttortlawyers.com/privacy-policy/">BTL Privacy Policy</a><a href="https://besttortlawyers.com/sms-terms/">BTL SMS Terms</a><a href="https://besttortlawyers.com/terms-and-conditions/">BTL Terms</a><a href="https://marketingapes.com/privacy/">Marketing Apes website privacy</a></nav>
+  <p id="campaignPrivacy">Marketing Apes operates this page for inquiries to Jeffrey Glassman Injury Lawyers. For this campaign, we use the information you provide to handle your inquiry and contact choices, and share it with Jeffrey Glassman Injury Lawyers and the service providers running this campaign. Marketing Apes will ask your permission before referring your inquiry to another law firm. Marketing Apes does not provide legal advice.</p>
   <p><strong>ATTORNEY ADVERTISING.</strong> Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110 · <a href="tel:+16177777777">(617) 777-7777</a>. This page is not legal advice, and using it does not create an attorney-client relationship; that requires the firm’s acceptance and a written agreement. Sofia is an AI intake assistant, not a person and not an attorney; she cannot determine legal eligibility. Voice conversations are recorded and processed by our AI voice provider for quality, compliance and follow-up. Not affiliated with the Social Security Administration; you may apply for benefits directly with SSA at no cost, and benefits decisions are made by the SSA. No review, representation, benefit approval or outcome is guaranteed. Prior results do not guarantee a similar outcome. Not available in North Dakota, South Dakota, Alaska or Hawaii. © 2026 Jeffrey Glassman Injury Lawyers</p>
 </div></footer>
 
@@ -128,6 +128,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script src="/glassman/ssdi/pages.js?v=20261030-contact" defer></script>
 <script>/* GLASSMAN-SSDI-002 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/glassman/ssdi/intake.js?v=20261105-marketing-apes-v1" defer></script>
+<script src="/glassman/ssdi/intake.js?v=20261105-inquiry-notice-v1" defer></script>
 </body>
 </html>

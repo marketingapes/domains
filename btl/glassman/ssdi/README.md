@@ -35,10 +35,26 @@ requests, serves repository files locally, and mocks every receipt; it never
 releases a webhook request. It uses the old intake fixture from commit `4349045`
 to verify that pending old consent cannot become new Marketing Apes SMS consent.
 
-Publication review still needs to resolve the existing “Never sold”/“It is not
-sold” claims against the linked firm's Privacy Policy, which permits referrals
-for consideration. Those business assertions and the firm's policies are not
-changed here. No Marketing Apes privacy-policy URL or data-handling promises have
-been invented; confirm its applicable notice and actual data practices before
-publication. The root Glassman contact test checks separate consent proof and rejects the
-superseded automatic SMS grant.
+Campaign privacy clarification (2026-11-05): only these three pages replace the
+blanket no-sale claims with “Shared for this inquiry” and a campaign-specific
+notice. It names Glassman and campaign providers and commits Marketing Apes to
+asking permission before its own referrals to another firm. Clearly labeled
+links point to BTL privacy/SMS/terms, Marketing Apes website privacy, and the
+firm's original privacy/disclaimer. No external policy or unseen service
+agreement is edited or asserted as verified.
+
+A successful receipt confirms that the callback request was received for review.
+The selected callback window is a requested preference, not a confirmed booking
+or a promise of an immediate call. Callback metadata, introductory copy, FAQ,
+door cards and thank-you copy reflect that. Consent text/version, phone route,
+callback payload values, receipt gate and conversion code are unchanged.
+
+Before publication, verify the remaining broader inbound-call claims: the pages
+still describe Sofia connecting people to the firm on the same call and say she
+answers 24/7. Those describe inbound behavior and are outside this callback-copy
+correction. No claim that the callback dispatcher or an appointment exists is
+added. The root Glassman contact test checks separate consent proof and rejects
+the superseded automatic SMS grant. Offline browser tests also verify campaign
+privacy links, requested-time receipt copy, rejection of HTTP 200 without a
+receipt, one conversion for a first non-test receipt, and no conversion for a
+test or duplicate receipt. All network traffic is intercepted.
