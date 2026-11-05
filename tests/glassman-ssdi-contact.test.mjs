@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 const root = new URL('../btl/glassman/ssdi/', import.meta.url);
 test('all active Glassman forms have explicit accessible required contact fields', () => {
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
@@ -23,9 +24,15 @@ test('all active Glassman forms have explicit accessible required contact fields
     assert.match(html,/A live transfer may be offered when available/);
     assert.match(html,/Your chosen time is a preference, not a confirmed appointment/);
     assert.doesNotMatch(html,/24\/7|same call|Call any time|24 to 48 hours|you’re connected/);
+    assert.doesNotMatch(html,/glassman-ssdi-form-1080x1080\.jpg/);
+    if (file !== 'index.html') assert.match(html,/glassman-ssdi-form-1254x1254\.jpg[^" ]*" width="1254" height="1254"/);
+
 
 
   }
+  const image=readFileSync(new URL('../../assets/glassman-ssdi/ads/glassman-ssdi-form-1254x1254.jpg',root));
+  assert.equal(image.length,115224);
+  assert.equal(createHash('sha256').update(image).digest('hex'),'a824eef320684a990a2f84432d518e46a7e40f036db310bc2c8f1d3b4a4901b5');
 });
 test('contact mapping never splits an ambiguous full name or grants email outreach consent',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');

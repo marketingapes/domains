@@ -56,12 +56,17 @@ HTML or generated quiz result copy. A live transfer may be offered when availabl
 no successful transfer or response time is promised. Screening criteria, hours,
 routing, consent and conversion code are unchanged.
 
-The form door image remains pending an approved replacement. It visibly says
-“Free review in about two minutes” and is displayed to consumers in callback
-cards on the quiz and Talk to Sofia pages. No image pixels were edited. The image
-is not merely an internal preview; replace it from the parent's verified approved
-source before release. Its current blob is
-`6f642fdc2f4176ee76902dbff0908326059cefae`.
+Approved form preview (2026-11-05): the callback cards on the quiz and Talk to
+Sofia pages now reference `glassman-ssdi-form-1254x1254.jpg`, copied byte-for-byte
+from the parent's verified Meta creative 3648447985307479. It is a JPEG despite
+the CDN URL's .png suffix: native 1254 × 1254, 115224 bytes, SHA256
+`a824eef320684a990a2f84432d518e46a7e40f036db310bc2c8f1d3b4a4901b5`.
+It visibly says “Submit an inquiry for review. Not available in ND, SD, AK or HI.”
+No pixels were generated, resized, cropped or re-encoded. HTML uses its actual
+native dimensions; existing responsive square layout is preserved. The old 1080
+asset is retained but no longer referenced by these campaign pages. The supplied
+vertical JPEG was verified separately and is not referenced or added to this
+campaign, which uses square cards.
 
 The root Glassman contact test checks separate consent proof and rejects
 the superseded automatic SMS grant. Offline browser tests also verify campaign

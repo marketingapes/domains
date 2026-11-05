@@ -74,6 +74,16 @@ try {
   const resultCopies=await page.evaluate(()=>['2026-11-05T16:00:00Z','2026-11-08T03:00:00Z'].map(t=>SSDI_RULES.resultText('QUALIFIED',new Date(t))));
   for(const copy of resultCopies) {assert.match(copy,/team will review your callback request/);assert.doesNotMatch(copy,/next few minutes|will call you|same call/);}
   await page.locator('.steps').screenshot({path:path.join(evidence,(door.replaceAll('/','')||'form')+'-'+checked+'-paths-mobile.png')});
+  assert.equal(await page.locator('img[src*="glassman-ssdi-form-1080x1080"]').count(),0);
+  if(door) {
+   const approvedImage=page.locator('img[src*="glassman-ssdi-form-1254x1254"]');
+   await approvedImage.scrollIntoViewIfNeeded();
+   await approvedImage.evaluate(img=>img.decode());
+   assert.deepEqual(await approvedImage.evaluate(img=>[img.naturalWidth,img.naturalHeight]),[1254,1254]);
+   const box=await approvedImage.boundingBox();assert.ok(Math.abs(box.width-box.height)<1);
+   await approvedImage.locator('..').screenshot({path:path.join(evidence,door.replaceAll('/','')+'-'+checked+'-approved-card.png')});
+  }
+
 
   assert.equal(await page.getByRole('link',{name:'How this campaign uses your information'}).getAttribute('href'),'#campaignPrivacy');
   for(const [label,url] of [['BTL Privacy Policy','https://besttortlawyers.com/privacy-policy/'],['BTL SMS Terms','https://besttortlawyers.com/sms-terms/'],['BTL Terms','https://besttortlawyers.com/terms-and-conditions/'],['Marketing Apes website privacy','https://marketingapes.com/privacy/'],['Firm Privacy Policy','https://www.jeffreysglassman.com/privacy-policy.html'],['Firm Disclaimer','https://www.jeffreysglassman.com/disclaimer.html']]) assert.equal(await page.getByRole('link',{name:label,exact:true}).getAttribute('href'),url);
