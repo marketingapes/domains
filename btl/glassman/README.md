@@ -4,14 +4,17 @@ Static, noindex client shell for Jeffrey Glassman Injury Lawyers' SSDI campaign 
 Best Tort Lawyers site. This folder is inside the public publish path: keep it free of lead data,
 commercial or payment facts, invoice or account identifiers, source links, hook IDs and credentials.
 
-**Status: safe static preview only.** Nothing is connected: no reporting source, no submission backend,
-no sign-in. A static preview is not a live publication, and nothing here verifies current ad delivery.
+**Status: public planning preview; secure reporting implementation awaits activation.** The new
+`reporting/` page uses the existing Perspective email sign-in and aggregate endpoint. The backend
+reader, exact BTL origin allowance and tenant access still require approval and live verification.
+No reporting figures are embedded in public files. No submission backend is configured. A static preview is not a live publication, and nothing here verifies current ad delivery.
 
 | Path | What it is |
 |---|---|
-| `index.html` | Perspective planning snapshot dated 2026-11-05: campaign structure (setup, campaign media, intake & reporting), campaign journey, three entry paths, how review works, channel readiness, Reporting (not connected). No scripts, `connect-src 'none'`. |
+| `index.html` | Perspective planning snapshot dated 2026-11-05: campaign structure (setup, campaign media, intake & reporting), campaign journey, three entry paths, how review works, channel readiness, Reporting (not connected). No scripts, `connect-src 'none'`; links to secure reporting. |
 | `request/index.html` + `request.js` | Five-step guided brief (focus, who & where, contacts, angle & budget, review) with a live brief preview, review editing and browser back/forward. |
 | `request/brief.js` | Pure logic: validation, brief text, content hash, fail-closed receipt check. Unit-tested. |
+| `reporting/` | Signed-in aggregate view: memory-only session; explicit loading, unconfigured, error, unauthorized and stale states. Calls/spend/qualification/cases remain unavailable. |
 | `glassman.css` | Shared styles. System fonts only; no external requests. |
 
 Replaces the legacy request form, which posted to a webhook, ignored failures, showed "Request
@@ -33,12 +36,14 @@ received" regardless and promised an automatic invoice under superseded terms. N
 
 ## Activation blockers (nothing here is connected)
 
-Before this shell shows real reporting or accepts sent briefs, all of these need to be in place and verified:
+Reporting activation is documented in `marketingapes/evolutionengine` → `docs/glassman-reporting-summary.md`. It requires explicit approvals for the existing server identity, whole-workbook viewer access, the read-only scope, tenant/person/campaign mapping and narrowly scoped BTL origin allowance. A Sheet viewer grant covers every tab, even though application reads are limited to the aggregate block. No access has been changed.
 
-1. A Glassman tenant with approved owner and users, and permissions verified for those users only.
-2. The exact campaign mapping (which pages, ads and lead records belong to Glassman SSDI), de-duplicated against other BTL SSDI work.
+The following remain unverified for live use:
+
+1. A Glassman aggregate-only tenant with individually approved users and an overview-only level. Owner privileges are not required.
+2. An unambiguous exact campaign authorization mapping for the aggregate source.
 3. A read-only, server-side aggregate reporting source behind authentication. No direct browser access to any sheet, no widened sharing, no raw rows or event IDs in served assets.
-4. CORS/origin allowance for the BTL host on the Perspective backend (today only LFMA origins are allowed).
+4. Approval and activation of the exact BTL origin for Glassman sign-in and summary paths only.
 5. A receipt-capable request backend that durably stores the brief and returns the receipt contract above.
 6. Codex review, then a human-approved deploy. Local QA is not a live publication.
 
@@ -52,3 +57,5 @@ PLAYWRIGHT=/path/to/node_modules/playwright CHROMIUM=/path/to/chromium [SHOTS=/n
 
 The browser test serves `btl/` from 127.0.0.1, aborts every other host, and uses a local fake
 endpoint for the receipt cases. It proves page behaviour only.
+
+Reporting tests: `node --test tests/glassman-reporting.test.mjs` and `PLAYWRIGHT=/path/to/playwright CHROMIUM=/path/to/chromium node tests/glassman-reporting.browser.mjs`. All provider responses are synthetic.

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://perspective-s3b8.onrender.com; form-action 'none'; base-uri 'none'; object-src 'none'">
+<title>Campaign reporting · Glassman Perspective</title>
+<link rel="stylesheet" href="/glassman/glassman.css?v=1">
+<link rel="stylesheet" href="/glassman/reporting/reporting.css">
+<script type="module" src="/glassman/reporting/reporting.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead"><div class="wrap"><a class="brand" href="/glassman/"><img src="/glassman-ssdi/img/logo.svg" width="200" height="43" alt="Jeffrey Glassman Injury Lawyers"><span class="tag"><b>Perspective</b>Campaign reporting</span></a><a href="/glassman/">Campaign overview</a></div></header>
+<main id="main"><section><div class="wrap">
+<p class="eyebrow">SSDI · Your campaign at a glance</p><h1>See what <em>reached intake.</em></h1>
+<p>Reporting covers recorded web-intake events only. These are event counts, not unique people or qualified leads.</p>
+<p id="status" role="status" aria-live="polite" data-state="unconfigured">Reporting setup awaits activation. Sign in with an approved firm account to check access.</p>
+<noscript>JavaScript is needed to sign in. No campaign figures are included in this page.</noscript>
+<form id="signin"><label for="email">Approved email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required><button type="submit" class="button">Email a sign-in code</button></form>
+<form id="verify" hidden><label for="code">Six-digit code</label><input id="code" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required><button type="submit" class="button">Sign in</button><button id="restart" type="button">Use another email</button></form>
+<div id="session" hidden><button id="refresh" type="button" class="button">Check summary</button><button id="signout" type="button">Sign out</button><p>Checks read the last saved summary. They do not run a source refresh.</p></div>
+<div id="summary" hidden>
+<p id="freshness"></p>
+<div class="money" aria-label="Recorded web-intake events">
+<div><span class="fig" id="production"></span><span class="lab">Production intake events</span><p>Recorded submissions; qualification and delivery are not established by this count.</p></div>
+<div><span class="fig" id="synthetic"></span><span class="lab">Synthetic test events</span><p>Testing only. Excluded from the production count.</p></div>
+<div><span class="fig" id="total"></span><span class="lab">Total recorded events</span><p>Production and synthetic events together.</p></div>
+</div>
+<p id="limit"></p>
+<p>Source: private campaign reporting summary, from the exact Glassman SSDI web-intake source.</p>
+<p>Refreshed on demand. Automatic refresh is pending. This is not live reporting.</p>
+</div>
+<div class="empty"><h2>Other results</h2><ul><li>Calls and transfers: not connected</li><li>Ad spend and platform conversions: not connected</li><li>Qualified leads: not connected</li><li>Signed cases: not connected; requires outcomes from your team</li></ul></div>
+</div></section></main>
+<footer class="site"><div class="wrap"><p>Perspective · Marketing Apes for Jeffrey Glassman Injury Lawyers</p></div></footer>
+</body></html>

@@ -17,7 +17,7 @@ test('served Glassman assets carry no trackers, webhooks, external requests or l
     assert.doesNotMatch(src, /(?:src|href)\s*=\s*["']https?:\/\//i, `${name} loads nothing from another origin`);
     assert.doesNotMatch(src, /stop-loss|refund|\$5,000 ad spend|invoice is on its way|Request received/i, name);
   }
-  assert.deepEqual(readdirSync(dir).sort(), ['README.md', 'glassman.css', 'index.html', 'request', 'ssdi'].sort());
+  assert.deepEqual(readdirSync(dir).sort(), ['README.md', 'glassman.css', 'index.html', 'reporting', 'request', 'ssdi'].sort());
 });
 
 test('client copy explains campaign structure without financial facts, identifiers or unsupported delivery claims', () => {
