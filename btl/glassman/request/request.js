@@ -21,7 +21,7 @@ const steps = [...form.querySelectorAll('.step')];
 const S = load();
 let confirmedThisLoad = false;
 
-function fresh() { return { draft: emptyDraft(), step: 0, request_id: null, hash: null, pending: false, receipt: null }; }
+function fresh() { return { draft: emptyDraft(), step: 0, request_id: null, hash: null, pending: false, receipt: null, returnToReview: false }; }
 function load() {
   try {
     const raw = JSON.parse(sessionStorage.getItem(KEY) || 'null');
@@ -257,7 +257,12 @@ async function sendBrief() {
   renderSendButton();
   setStatus('wait', 'Sending…', ' Waiting for the server to confirm a saved receipt. This brief is not received until it does.');
   const result = await attempt;
-  if (S.request_id !== id) return; // content changed mid-flight; the old attempt no longer applies
+  if (S.request_id !== id) {
+    // The old result cannot confirm this draft, but its completed operation must
+    // release the busy UI even after an edit or a cleared/new brief.
+    renderSendButton();
+    return;
+  }
   const b = $('btn-send');
   if (result.ok) {
     S.pending = false; S.receipt = { request_id: id, receipt_id: result.receipt_id }; confirmedThisLoad = true; delete b.dataset.failed; save();

@@ -22,6 +22,7 @@ if (SHOTS) { try { await access(SHOTS); console.error('SHOTS must be a new direc
 const posts = [];
 const counters = {};
 const hung = [];
+const controlled = new Map();
 const receiptFor = (id) => 'RCPT-' + createHash('sha256').update(id).digest('hex').slice(0, 16);
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' };
 const server = http.createServer(async (req, res) => {
@@ -35,6 +36,9 @@ const server = http.createServer(async (req, res) => {
     const good = { schema: 'glassman.campaign-brief.receipt/v1', status: 'received', durable: true, request_id: body.request_id, receipt_id: receiptFor(body.request_id || '') };
     const json = (obj, code = 200) => { res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(obj)); };
     if (variant === 'hang') { hung.push(res); return; }
+    if (variant === 'editpending' || variant === 'clearpending') {
+      controlled.set(variant, () => json(good)); return;
+    }
     if (variant === 'http500') return json({ error: 'boom' }, 500);
     if (variant === 'html') { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<p>Thanks!</p>'); return; }
     if (variant === 'malformed') { res.writeHead(200, { 'content-type': 'application/json' }); res.end('{"status":"received",'); return; }
@@ -56,7 +60,7 @@ const server = http.createServer(async (req, res) => {
       let html = data.toString('utf8');
       const ep = url.searchParams.get('ep'), rawep = url.searchParams.get('rawep');
       const target = ep ? `/__brief/${ep}` : rawep;
-      if (target) html = html.replace('<meta name="glassman-request-endpoint" content="">', `<meta name="glassman-request-endpoint" content="${target.replace(/"/g, '&quot;')}">`).replace('<meta name="glassman-request-timeout-ms" content="">', '<meta name="glassman-request-timeout-ms" content="600">');
+      if (target) html = html.replace('<meta name="glassman-request-endpoint" content="">', `<meta name="glassman-request-endpoint" content="${target.replace(/"/g, '&quot;')}">`).replace('<meta name="glassman-request-timeout-ms" content="">', `<meta name="glassman-request-timeout-ms" content="${['editpending', 'clearpending'].includes(ep) ? 15000 : 600}">`);
       data = Buffer.from(html);
     }
     res.writeHead(200, { 'content-type': types[extname(path)] || 'application/octet-stream', 'cache-control': 'no-store' }); res.end(data);
@@ -78,6 +82,7 @@ async function context(width, extra = {}) {
   return ctx;
 }
 async function check(name, fn) {
+  if (process.env.CHECK_FILTER && !name.includes(process.env.CHECK_FILTER)) return;
   try { await fn(); results.push(['PASS', name]); console.log('PASS', name); }
   catch (e) { results.push(['FAIL', name]); console.log('FAIL', name, '\n ', e.message.split('\n').slice(0, 6).join('\n  ')); }
 }
@@ -96,6 +101,13 @@ async function seeded(ctx, query) {
   return page;
 }
 const postsFor = (v) => posts.filter((p) => p.variant === v);
+async function waitControlled(variant) {
+  for (let i = 0; i < 200 && !controlled.has(variant); i++) await new Promise((r) => setTimeout(r, 10));
+  assert.ok(controlled.has(variant), 'local server has received and held the mocked request');
+}
+function releaseControlled(variant) {
+  const respond = controlled.get(variant); controlled.delete(variant); respond();
+}
 const settle = (page) => page.waitForFunction(() => !/Sending/.test(document.getElementById('status').innerText) && document.getElementById('btn-send').getAttribute('aria-busy') === 'false');
 
 // ---------------- portal ----------------
@@ -302,6 +314,50 @@ await check('retry after failure reuses the brief ID and idempotency key; edited
   assert.notEqual(first, second, 'changed content is a different brief');
   await ctx2.close();
 });
+
+for (const operation of ['edit', 'clear']) {
+  await check(`pending send: ${operation} discards stale receipt and leaves the new brief sendable`, async () => {
+    const variant = `${operation}pending`;
+    const ctx = await context(1280); const page = await seeded(ctx, `?ep=${variant}`);
+    const requestStarted = page.waitForRequest((req) => req.url().endsWith(`/__brief/${variant}`));
+    await page.click('#btn-send'); await requestStarted; await waitControlled(variant);
+    const oldId = postsFor(variant).at(-1).body.request_id;
+    if (operation === 'edit') {
+      await page.click('button[aria-label="Edit Contacts"]');
+      await page.fill('#requester_name', 'A changed requester');
+      await page.click('#btn-return');
+    } else {
+      await page.click('#btn-clear'); await page.click('#btn-clear');
+      assert.equal(await current(page), 0);
+      await page.evaluate((d) => {
+        for (const el of document.getElementById('wizard').elements) {
+          if (!(el.name in d)) continue;
+          if (el.type === 'radio') el.checked = d[el.name] === el.value;
+          else if (el.type === 'checkbox') el.checked = d[el.name] === true;
+          else el.value = d[el.name];
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }, { ...DRAFT, requester_name: 'A new requester', acknowledged: true });
+      for (let i = 0; i < 4; i++) await page.click('#btn-next');
+    }
+    assert.equal(await current(page), 4);
+    const newId = await page.evaluate(() => JSON.parse(sessionStorage.getItem('glassman-brief-v1')).request_id);
+    assert.notEqual(newId, oldId);
+    assert.equal(await page.locator('#btn-send').isDisabled(), true, 'old request is still pending');
+    const response = page.waitForResponse((res) => res.url().endsWith(`/__brief/${variant}`));
+    releaseControlled(variant); await response;
+    await page.waitForFunction(() => document.getElementById('btn-send').getAttribute('aria-busy') === 'false', null, { timeout: 2000 });
+    assert.equal(await page.locator('#btn-send').isEnabled(), true);
+    assert.doesNotMatch(await status(page), /Received for review|Receipt RCPT/);
+    assert.equal(await page.locator('#locked-note').isHidden(), true);
+    const secondStarted = page.waitForRequest((req) => req.url().endsWith(`/__brief/${variant}`));
+    await page.click('#btn-send'); await secondStarted; await waitControlled(variant);
+    assert.equal(postsFor(variant).at(-1).body.request_id, newId);
+    releaseControlled(variant); await settle(page);
+    assert.match(await status(page), new RegExp(receiptFor(newId)));
+    await ctx.close();
+  });
+}
 
 await check('refresh mid-send: nothing is confirmed; resend reuses the same brief ID', async () => {
   const ctx = await context(1280); const page = await seeded(ctx, '?ep=hang');
