@@ -25,16 +25,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/assets/ssdi/hero-woman-phone-960.jpg">
-<link rel="stylesheet" href="/glassman/ssdi/pages.css?v=20261105-marketing-apes-v1">
+<link rel="stylesheet" href="/glassman/ssdi/pages.css?v=20261106-simple-form-339">
 <script>document.documentElement.className+=' js'</script>
 </head>
-<!-- data-sofia-tel: Glassman's Sofia line in E.164 (Vapi phone d9e1cabe "DEMO Sofia — Glassman SSDI", assistant 32e90752).
+<!-- data-sofia-tel: Glassman's Sofia line in E.164: (339) 329-6165, Twilio number imported to Vapi as 683be3e8 "Glassman SSDI — Massachusetts (339)", assistant 32e90752 → transfer via CallRail (619) 931-2870 → Glassman intake.
      Empty hides every "Talk to Sofia" call link. -->
-<body data-sofia-tel="+16692099040">
+<body data-sofia-tel="+13393296165">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a class="skip" href="#quizCard">Skip to the eligibility check</a>
 
-<div class="bar"><div class="in"><span><b>No fee unless we win.</b> <span class="hide-s">Free consultation. Not the government.</span></span><a href="#" data-sofia-call="topbar">Talk to Sofia: <span data-num>(669) 209-9040</span></a></div></div>
+<div class="bar"><div class="in"><span><b>No fee unless we win.</b> <span class="hide-s">Free consultation. Not the government.</span></span><a href="#" data-sofia-call="topbar">Talk to Sofia: <span data-num>(339) 329-6165</span></a></div></div>
 <header class="nav"><div class="in">
   <a class="brand gl" href="/glassman/ssdi/" aria-label="Jeffrey Glassman Injury Lawyers, SSDI home"><img src="/glassman-ssdi/img/logo.svg" width="240" height="52" alt="Jeffrey Glassman Injury Lawyers"></a>
   <nav class="links" aria-label="SSDI pages"><a href="/glassman/ssdi/quiz/" aria-current="page">Eligibility check</a><a href="/glassman/ssdi/">Request a callback</a><a class="call" href="/glassman/ssdi/talk-to-sofia/">Talk to Sofia</a></nav>
@@ -56,11 +56,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <p class="preview-flag" id="previewFlag" hidden>Preview: test mode, nothing is sent</p>
           <form id="leadForm" novalidate data-page-id="glassman-ssdi-quiz" data-kind="quiz">
             <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
-            <div class="grid2"><div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="100" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e" aria-live="polite"></span></div><div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="100" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e" aria-live="polite"></span></div></div>
+            <div class="grid2 names"><div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" maxlength="100" required aria-describedby="first_name-e"><span class="ferr" id="first_name-e" aria-live="polite"></span></div><div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" maxlength="100" required aria-describedby="last_name-e"><span class="ferr" id="last_name-e" aria-live="polite"></span></div></div>
           <div class="grid2"><div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="254" required aria-describedby="email-e"><span class="ferr" id="email-e" aria-live="polite"></span></div><div class="field"><label for="phone">Mobile phone</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="phone-e"><span class="ferr" id="phone-e" aria-live="polite"></span></div></div>
-            <div class="field"><label for="best_time">Preferred callback time (request only)</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning (8–12 ET)</option><option value="midday">Weekday midday (12–3 ET)</option><option value="afternoon">Weekday afternoon (3–8 ET)</option></select></div>
-            <button class="cta wide" type="submit" id="submitBtn">Have Sofia call me <span aria-hidden="true">→</span></button>
-            <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Have Sofia call me"></div>
+            <div class="field"><label for="best_time">Best time to reach you</label><select id="best_time" name="best_time"><option value="asap">As soon as possible</option><option value="morning">Weekday morning, 8–12 ET</option><option value="midday">Weekday midday, 12–3 ET</option><option value="afternoon">Weekday afternoon, 3–8 ET</option></select></div>
+            <div id="smsChoice"></div>
+            <button class="cta wide" type="submit" id="submitBtn">Request my free call <span aria-hidden="true">→</span></button>
+            <div class="clickwrap" id="consentBox" data-consent="clickwrap" data-button="Request my free call"></div>
             <p class="status" id="formStatus" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -104,7 +105,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <section class="close center" aria-labelledby="closeH"><div class="in">
   <h2 class="sec" id="closeH">Find out where you stand today.</h2>
   <p>Free, about two minutes, and you can stop anytime.</p>
-  <div class="ctas"><a class="cta" href="/glassman/ssdi/#request">Request a callback instead →</a><a class="cta ghost" href="#" data-sofia-call="close">Call Sofia: <span data-num>(669) 209-9040</span></a></div>
+  <div class="ctas"><a class="cta" href="/glassman/ssdi/#request">Request a callback instead →</a><a class="cta ghost" href="#" data-sofia-call="close">Call Sofia: <span data-num>(339) 329-6165</span></a></div>
 </div></section>
 
 </main>
@@ -116,10 +117,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div></footer>
 
 <script src="/glassman/ssdi/criteria.js?v=20261105-request-copy-v1" defer></script>
-<script src="/glassman/ssdi/pages.js?v=20261030-contact" defer></script>
+<script src="/glassman/ssdi/pages.js?v=20261106-339" defer></script>
 <script src="/glassman/ssdi/quiz/quiz.js?v=20261028m" defer></script>
 <script>/* GLASSMAN-SSDI-002 live wiring: campaign-kit intake (Make 6777650, stores before it answers) + TrustedForm. */
 window.EE_INTAKE_ENDPOINT = 'https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va'; window.EE_TRUSTEDFORM = true;</script>
-<script src="/glassman/ssdi/intake.js?v=20261105-inquiry-notice-v1" defer></script>
+<script src="/glassman/ssdi/intake.js?v=20261106-simple-form-339" defer></script>
 </body>
 </html>
