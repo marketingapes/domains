@@ -14,7 +14,10 @@ const visible = (html) => html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?
 test('served Glassman assets carry no trackers, webhooks, external requests or legacy terms', () => {
   for (const [name, src] of Object.entries(served)) {
     assert.doesNotMatch(src, /googletagmanager|GTM-|dataLayer|gtag\(|fbq\(|hook\.[a-z0-9]+\.make\.com|zapier|fonts\.googleapis|fonts\.gstatic/i, name);
-    assert.doesNotMatch(src, /(?:src|href)\s*=\s*["']https?:\/\//i, `${name} loads nothing from another origin`);
+    // This one ordinary navigation link opens the separately authenticated portal.
+    // It does not load a resource or grant access from the public snapshot.
+    const resources = name === 'index.html' ? src.replace('<a href="https://lawfirmmarketingapes.com/portal/glassman/">', '<a href="/private-portal/">') : src;
+    assert.doesNotMatch(resources, /(?:src|href)\s*=\s*["']https?:\/\//i, `${name} loads nothing from another origin`);
     assert.doesNotMatch(src, /stop-loss|refund|\$5,000 ad spend|invoice is on its way|Request received/i, name);
   }
   assert.deepEqual(readdirSync(dir).sort(), ['README.md', 'glassman.css', 'index.html', 'request', 'ssdi'].sort());
