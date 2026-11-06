@@ -25,7 +25,7 @@ try {
     const page = await ctx.newPage();
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
     let mode='ok', requests=[], held, release;
-    const good = () => ({schema:'glassman-reporting-summary/v1',status:'ok',client:'glassman',refresh_mode:'on_demand',
+    const good = () => ({schema:'glassman-reporting-summary/v1',status:'ok',client:'glassman',campaign_id:'GLASSMAN-SSDI-002',refresh_mode:'on_demand',
       source_as_of:new Date(Date.now()-(mode==='stale'?2*86400000:3600000)).toISOString().replace(/\.\d{3}Z$/,'Z'),
       counts:{production_web_intake_events:0,synthetic_test_events:3,recorded_web_intake_events:3},
       freshness:{status:mode==='stale'?'stale':'fresh'},limit:{event_bound:900,reached:false}});
@@ -76,6 +76,38 @@ try {
     await page.locator('#verify:not([hidden])').waitFor();await page.fill('#code','123456');await page.locator('#verify button[type=submit]').click();await page.locator('#summary:not([hidden])').waitFor();
     mode='unauthorized';await page.click('#refresh');await page.locator('#signin:not([hidden])').waitFor();
     assert.equal(await page.locator('#summary').isHidden(),true);assert.equal(await page.locator('#production').innerText(),'');checks++;
+    // Ignore AbortSignal deliberately: old transport replies can finish after reset/new requests.
+    await page.evaluate(() => {
+      window.__pending = [];
+      window.fetch = (url) => new Promise(resolve => {
+        window.__pending.push({path: new URL(url).pathname, finish: body => resolve({status:200, ok:true, json:async()=>body})});
+      });
+    });
+    const pendingCount = n => page.waitForFunction(n => window.__pending.length === n, n);
+    const finish = (index, body) => page.evaluate(({index,body}) => window.__pending[index].finish(body), {index,body});
+    await page.fill('#email','synthetic@example.test');await page.locator('#signin button').click();await pendingCount(1);
+    await finish(0,{sent:true});await page.locator('#verify:not([hidden])').waitFor();
+    await page.fill('#code','123456');await page.locator('#verify button[type=submit]').click();await pendingCount(2);
+    await page.click('#restart');
+    assert.equal(await page.locator('#signin button').isEnabled(),true,'reset restores controls before old request finishes');
+    await page.fill('#email','new@example.test');await page.locator('#signin button').click();await pendingCount(3);
+    await finish(1,{session:'ps1.old.session'});await page.waitForTimeout(50);
+    assert.equal(await page.locator('#signin button').isDisabled(),true,'old verify cannot finish new login');
+    assert.equal(await page.locator('#status').getAttribute('data-state'),'loading');
+    assert.equal(await page.locator('#session').isHidden(),true);checks++;
+    await finish(2,{sent:true});await page.locator('#verify:not([hidden])').waitFor();
+    await page.fill('#code','123456');await page.locator('#verify button[type=submit]').click();await pendingCount(4);
+    await finish(3,{session:'ps1.new.session'});await pendingCount(5);
+    assert.ok((await page.evaluate(()=>window.__pending[4].path)).endsWith('/reporting-summary'));
+    await page.click('#signout');
+    assert.equal(await page.locator('#signin button').isEnabled(),true);
+    await page.fill('#email','third@example.test');await page.locator('#signin button').click();await pendingCount(6);
+    await finish(4,good());await page.waitForTimeout(50);
+    assert.equal(await page.locator('#signin button').isDisabled(),true,'old summary cannot finish new login');
+    assert.equal(await page.locator('#summary').isHidden(),true);assert.equal(await page.locator('#production').innerText(),'');
+    assert.equal(await page.locator('#status').getAttribute('data-state'),'loading');
+    await finish(5,{sent:true});await page.locator('#verify:not([hidden])').waitFor();
+    assert.equal(await page.locator('#verify button[type=submit]').isEnabled(),true,'current request restores controls');checks++;
     assert.deepEqual(errors,[]);await ctx.close();
   }
   console.log(`${checks} Glassman reporting browser checks passed (390px and 1280px; all provider responses mocked).`);

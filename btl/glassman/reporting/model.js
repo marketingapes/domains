@@ -1,6 +1,6 @@
 // Only allow validated aggregate counts and timestamps to enter the view.
 export function summary(value, now = Date.now()) {
-  if (!value || value.schema !== 'glassman-reporting-summary/v1' || value.status !== 'ok' || value.client !== 'glassman' || value.refresh_mode !== 'on_demand') throw Error('Invalid summary');
+  if (!value || value.schema !== 'glassman-reporting-summary/v1' || value.status !== 'ok' || value.client !== 'glassman' || value.campaign_id !== 'GLASSMAN-SSDI-002' || value.refresh_mode !== 'on_demand') throw Error('Invalid summary');
   const c = value.counts;
   const keys = ['recorded_web_intake_events', 'production_web_intake_events', 'synthetic_test_events'];
   if (!c || keys.some(k => !Number.isSafeInteger(c[k]) || c[k] < 0 || c[k] > 10000000) || c[keys[0]] !== c[keys[1]] + c[keys[2]]) throw Error('Invalid counts');

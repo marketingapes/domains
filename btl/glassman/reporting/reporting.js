@@ -2,13 +2,14 @@ import { summary } from './model.js';
 const HUB = 'https://perspective-s3b8.onrender.com/portal/glassman/';
 const $ = id => document.getElementById(id);
 let token = '', email = '', generation = 0, pending;
+function controls(busy) { document.querySelectorAll('button[type="submit"], #refresh').forEach(b => b.disabled = busy); }
 function state(name, message) { $('status').dataset.state = name; $('status').textContent = message; }
 function clearSummary() {
   $('summary').hidden = true;
   for (const id of ['production', 'synthetic', 'total', 'freshness', 'limit']) $(id).textContent = '';
 }
 function reset(message = 'Signed out. Sign in with an approved firm account.') {
-  generation++; pending?.abort(); token = ''; email = ''; clearSummary();
+  generation++; pending?.abort(); pending = null; controls(false); token = ''; email = ''; clearSummary();
   $('signin').reset(); $('verify').reset(); $('signin').hidden = false; $('verify').hidden = true; $('session').hidden = true;
   state('unauthorized', message);
 }
@@ -17,7 +18,7 @@ async function request(path, body) {
   const mine = ++generation;
   const timeout = setTimeout(() => controller.abort(), 20000);
   clearSummary(); state('loading', 'Checking secure reporting…');
-  document.querySelectorAll('button[type="submit"], #refresh').forEach(b => b.disabled = true);
+  controls(true);
   try {
     const response = await fetch(HUB + path, { method: body ? 'POST' : 'GET', headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       ...(body ? { body: JSON.stringify(body) } : {}), signal: controller.signal, credentials: 'omit', cache: 'no-store', redirect: 'error', referrerPolicy: 'no-referrer' });
@@ -34,8 +35,7 @@ async function request(path, body) {
     return null;
   } finally {
     clearTimeout(timeout);
-    if (mine === generation) pending = null;
-    document.querySelectorAll('button[type="submit"], #refresh').forEach(b => b.disabled = false);
+    if (mine === generation) { pending = null; controls(false); }
   }
 }
 async function refresh() {
