@@ -11,7 +11,7 @@ const legacyIntake = execFileSync('git', ['show', '4349045:btl/glassman/ssdi/int
 const evidence = process.env.EVIDENCE_DIR || '/tmp/glassman-consent-evidence';
 await mkdir(evidence, { recursive: true });
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROMIUM_EXECUTABLE ? {executablePath:process.env.CHROMIUM_EXECUTABLE} : {}) });
-const version = 'glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1';
+const version = 'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1';
 let passed = 0;
 try {
  for (const door of ['', 'quiz/', 'talk-to-sofia/']) for (const checked of [false, true]) {
@@ -52,13 +52,11 @@ try {
    legacyEvent=sent.shift();assert.equal(legacyEvent.consent.sms.granted,true);legacyMode=false;
   }
   await open();
-  const sms=page.getByRole('checkbox',{name:/Text messages \(optional\)/});
-  assert.equal(await sms.isChecked(),false); assert.equal(await sms.getAttribute('required'),null);
-  if(checked) await sms.check();
-  const callText=await page.locator('#callDisclosure').innerText(), smsText=await page.locator('#smsDisclosure').innerText();
-  for(const t of [callText,smsText]) {assert.match(t,/Marketing Apes/);assert.match(t,/Jeffrey Glassman Injury Lawyers/);}
-  assert.doesNotMatch(callText,/text messages|may call or text/);
-  assert.match(smsText,/Reply STOP.*HELP/);
+  assert.equal(await page.locator('#leadForm input[type=checkbox]').count(),0); // one tap-to-agree line, no checkboxes
+  const callText=await page.locator('#callDisclosure').innerText();
+  assert.match(callText,/^By tapping “Request my free call,” you agree that Marketing Apes and Jeffrey Glassman Injury Lawyers/);
+  for(const re of [/may call and text you/,/AI or prerecorded voice/,/Calls are recorded/,/not a condition of any purchase or service/,/Msg frequency varies/,/Msg & data rates may apply/,/Reply STOP to opt out, HELP for help/]) assert.match(callText,re);
+  assert.equal(await page.getByRole('link',{name:'SMS Terms',exact:true}).getAttribute('href'),'https://besttortlawyers.com/sms-terms/');
   const notice=await page.locator('#campaignPrivacy').innerText();
   assert.match(notice,/Marketing Apes operates this page for inquiries to Jeffrey Glassman Injury Lawyers/);
   assert.match(notice,/For this campaign, we use the information you provide to handle your inquiry and contact choices/);
@@ -99,19 +97,19 @@ try {
   async function submitFailure() {await page.locator('#submitBtn').click();await page.waitForFunction(()=>document.querySelector('#formStatus').classList.contains('err'));assert.equal(await page.locator('#formDone').isVisible(),false);assert.equal((await page.evaluate(()=>window.dataLayer)).some(e=>e.event==='generate_lead'),false);}
   await submitFailure(); await submitFailure();
   assert.deepEqual(sent[1],sent[0]);
-  await open(); if(checked) await page.locator('#consent_sms').check();
+  await open();
   await submitFailure(); assert.deepEqual(sent[2],sent[0]); // restored retry proof, including both channel times
   const first=sent[0];
-  if(legacyEvent) {assert.notEqual(first.submission_id,legacyEvent.submission_id);assert.notEqual(first.consent.version,legacyEvent.consent.version);assert.equal(first.consent.sms.granted,false);}
+  if(legacyEvent) {assert.notEqual(first.submission_id,legacyEvent.submission_id);assert.notEqual(first.consent.version,legacyEvent.consent.version);assert.equal(first.consent.sms.granted,true);}
   assert.equal(first.schema,'btl.intake.web/v1');assert.equal(first.tenant_id,'glassman');assert.equal(first.domain_id,'btl');assert.equal(first.campaign_id,'GLASSMAN-SSDI-002');
   assert.equal(first.attribution.utm_source,'offline');assert.equal(first.test.synthetic,!checked);
   assert.equal(first.routing.route,door==='quiz/'?'sofia_transfer':'sofia_screen');
-  assert.equal(first.consent.version,version);assert.equal(first.consent.calls.granted,true);assert.equal(first.consent.sms.granted,checked);
-  assert.equal(first.consent.calls.text,callText);assert.equal(first.consent.sms.text,smsText);
+  assert.equal(first.consent.version,version);assert.equal(first.consent.calls.granted,true);assert.equal(first.consent.sms.granted,true);
+  assert.equal(first.consent.calls.text,callText);assert.equal(first.consent.sms.text,callText);assert.equal(first.consent.text,callText);
   for(const channel of ['calls','sms']) {assert.equal(first.consent[channel].version,version+'-'+channel);assert.equal(first.consent[channel].captured_at,first.consent.captured_at);assert.ok(Number.isFinite(Date.parse(first.consent[channel].captured_at)));}
-  assert.equal(first.consent.sms.method,'checkbox');assert.equal(first.consent.calls.method,'clickwrap_submit');
-  await page.locator('#consent_sms').setChecked(!checked); await submitFailure();
-  assert.notEqual(sent[3].submission_id,first.submission_id);assert.equal(sent[3].consent.sms.granted,!checked);
+  assert.equal(first.consent.sms.method,'clickwrap_submit');assert.equal(first.consent.calls.method,'clickwrap_submit');
+  await page.locator('#best_time').selectOption(checked?'afternoon':'midday'); await submitFailure(); // an edit gets a new id
+  assert.notEqual(sent[3].submission_id,first.submission_id);assert.equal(sent[3].callback.window,checked?'afternoon':'midday');
   accept=true;receiptMissing=true;await submitFailure(); // HTTP 200 without a receipt is not success
   assert.deepEqual(sent[4],sent[3]);
   receiptMissing=false;await page.locator('#submitBtn').click();await page.locator('#formDone').waitFor({state:'visible'});
@@ -128,7 +126,7 @@ try {
   assert.equal(await page.evaluate(()=>sessionStorage.getItem('ee_retry_'+document.querySelector('#leadForm').dataset.pageId)),null);
   assert.equal((await page.evaluate(()=>window.dataLayer)).some(e=>JSON.stringify(e).includes('offline@example.invalid')),false);
   assert.deepEqual(errors,[]);
-  console.log('PASS',door||'form',checked?'SMS checked':'SMS unchecked','retries/reload/edit/receipt/identity/layout');passed++;
+  console.log('PASS',door||'form',checked?'live mode':'test mode','retries/reload/edit/receipt/identity/layout');passed++;
   await context.close();
  }
  console.log(`${passed} offline browser scenarios passed; no external requests released.`);

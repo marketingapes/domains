@@ -1,7 +1,7 @@
 /* GLASSMAN-SSDI-002 intake (shared by the form, the quiz and the Sofia callback panel).
    Mirrors the role of /paraquat/intake.js:
-   - renders per-channel consent checkboxes (NEVER prechecked) into #consentBox, or a click-to-agree
-     disclosure under the button when #consentBox has data-consent="clickwrap"
+   - renders one click-to-agree disclosure (calls and texts) under the button when #consentBox has
+     data-consent="clickwrap"; otherwise a single consent checkbox that is NEVER prechecked
    - pushes only non-identifying events to dataLayer (page_id, campaign_id, tenant_id; generate_lead adds the receipt id) —
      names, phone numbers, emails, states and answers are NEVER pushed
    - builds the lead payload and "delivers" it
@@ -68,21 +68,15 @@
   /* data-consent="clickwrap": consent is given by tapping the submit button, with the disclosure printed right under it.
      The disclosure names the button, so the button text and this text must match. */
   var clickwrap = !!(box && box.getAttribute('data-consent') === 'clickwrap');
-  var consentVersion = 'glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1';
-  var callText = 'I agree that Marketing Apes and Jeffrey Glassman Injury Lawyers, including Sofia, the AI voice assistant, may call me at the number I provided about my request to speak with Jeffrey Glassman Injury Lawyers, including with automated technology and artificial or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service.';
-  var smsText = 'I agree to receive text messages from Marketing Apes about my request to speak with Jeffrey Glassman Injury Lawyers, including request confirmations and callback scheduling. Message frequency varies. Message and data rates may apply. Reply STOP to stop texts or HELP for help. Text consent is optional and is not a condition of a purchase or service.';
+  var consentVersion = 'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1';
+  /* One tap-to-agree disclosure covers calls and texts; there are no consent checkboxes on these pages. */
+  var consentBody = 'you agree that Marketing Apes and Jeffrey Glassman Injury Lawyers, including Sofia, our AI assistant, may call and text you at the number provided about your request, including with automated technology and AI or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help.';
   if (box) {
     var btnLabel = box.getAttribute('data-button') || 'Submit';
-    var smsLabel = '<label class="channel-consent"><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span id="smsDisclosure"><b>Text messages (optional).</b> ' + smsText + '</span></label>';
-    /* #smsChoice (above the button) holds the optional text choice, so it is made before tapping submit;
-       the call disclosure stays right under the button it names. Without #smsChoice it renders inside the box. */
-    var smsSlot = document.getElementById('smsChoice');
-    if (smsSlot) smsSlot.innerHTML = smsLabel;
     box.innerHTML = (clickwrap
-        ? '<p id="callDisclosure">By tapping “' + btnLabel + ',” ' + callText + '</p>'
-        : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure"><b>Calls (required).</b> ' + callText + '</span></label>') +
-      (smsSlot ? '' : smsLabel) +
-      '<p>Operated by Marketing Apes for Jeffrey Glassman Injury Lawyers. Not legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a>.</p>';
+        ? '<p id="callDisclosure">By tapping \u201c' + btnLabel + ',\u201d ' + consentBody + '</p>'
+        : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure">By checking this box, ' + consentBody + '</span></label>') +
+      '<p>Operated by Marketing Apes for Jeffrey Glassman Injury Lawyers. Not legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a> \u00b7 <a href="https://besttortlawyers.com/sms-terms/">SMS Terms</a></p>';
   }
 
   /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
@@ -142,7 +136,7 @@
     if (phone && phone.length < 10) { fieldErr('phone', 'Please enter a valid phone number.'); ok = false; }
     var callsBox = document.getElementById('consent_calls');
     if (phone && callsBox && !callsBox.checked) {
-      if (status) { status.className = 'status err'; status.textContent = 'Please check the “Calls” box so Sofia can call the number you provided.'; }
+      if (status) { status.className = 'status err'; status.textContent = 'Please check the box so the team can call or text the number you provided.'; }
       ok = false;
     }
     if (!ok) {
@@ -156,8 +150,8 @@
     var R = window.SSDI_RULES, now = new Date();
     var first = val('first_name'), last = val('last_name'), full = first + ' ' + last;
     var callDisclosure = document.getElementById('callDisclosure').textContent.trim();
-    var smsDisclosure = document.getElementById('smsDisclosure').textContent.trim();
-    var consentText = callDisclosure + '\n' + smsDisclosure;
+    var consentText = callDisclosure;
+    var agreed = clickwrap || !!(callsBox && callsBox.checked);
     var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
     var payload = {
       schema: 'btl.intake.web/v1', submission_id: sid(),
@@ -172,10 +166,10 @@
       consent: {
         version: consentVersion, captured_at: now.toISOString(), text: consentText,
         method: clickwrap ? 'clickwrap_submit' : 'checkbox',
-        calls: { granted: clickwrap || !!(callsBox && callsBox.checked), text: callDisclosure,
+        calls: { granted: agreed, text: callDisclosure,
           version: consentVersion + '-calls', method: clickwrap ? 'clickwrap_submit' : 'checkbox', captured_at: now.toISOString() },
-        sms: { granted: !!(document.getElementById('consent_sms') || {}).checked, text: smsDisclosure,
-          version: consentVersion + '-sms', method: 'checkbox', captured_at: now.toISOString() }
+        sms: { granted: agreed, text: callDisclosure,
+          version: consentVersion + '-sms', method: clickwrap ? 'clickwrap_submit' : 'checkbox', captured_at: now.toISOString() }
       },
       trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
       page_url: location.origin + location.pathname,

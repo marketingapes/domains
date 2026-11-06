@@ -16,16 +16,13 @@ The BTL SSDI A pages (`/ssdi/`, Glassman-style layout) re-branded for Jeffrey Gl
 - Built 2026-10-28 from the dark pages, which were at `/ssdi/` then and are now at `/ssdi/b/`. `build_from_ssdi.py` reads `/ssdi/`, so it no longer reproduces these pages as is; edit this folder directly.
 
 
-Future consent update (2026-11-05): Marketing Apes operates these three pages for
-inquiries to Jeffrey Glassman Injury Lawyers. Submit records call consent; the
-separate SMS checkbox starts unchecked and is optional. Version
-`glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1` applies only to new
-submissions. Both `consent.calls` and `consent.sms` include `granted`, `text`,
-`version`, `method`, and `captured_at`. The original `consent.version`, `text`,
-`method`, and `captured_at` fields remain for the raw intake contract. The channel
-timestamps share the submit capture time and remain frozen on unchanged retries.
-A changed disclosure or SMS choice gets a fresh submission ID. Historical consent
-is not Marketing Apes consent. This page change does not enable calls or texts.
+Consent (2026-11-06): no checkboxes. Tapping "Request my free call" agrees to calls
+and texts from Marketing Apes and Jeffrey Glassman Injury Lawyers (including Sofia,
+AI or prerecorded voice), with frequency, rates and STOP/HELP in the same line. Version
+`glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1` applies only to new
+submissions; `consent.calls` and `consent.sms` both record `granted`, `text`,
+`version`, `method` (`clickwrap_submit`) and `captured_at`. Earlier submissions keep
+the version they were captured under. This page change does not enable calls or texts.
 
 Offline browser verification: run `node btl/glassman/ssdi/tests/consent.browser.mjs`
 from the repository root with Playwright installed, or set `PLAYWRIGHT_MODULE` to
