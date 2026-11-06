@@ -40,28 +40,26 @@ test('contact mapping never splits an ambiguous full name or grants email outrea
   assert.doesNotMatch(intake,/parts\[0\]|full\.split|consent_email/);
   assert.match(intake,/if \(pending \|\| completed\) return/);
 });
-test('calls and optional Marketing Apes texts have separate future consent proof',()=>{
+test('one tap-to-agree line covers calls and texts, with no consent checkbox on the live pages',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
-  assert.match(intake,/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
-  assert.match(intake,/Text messages \(optional\)/);
-  assert.match(intake,/sms: \{ granted: !!\(document.getElementById\('consent_sms'\)/);
-  assert.doesNotMatch(intake,/sms: \{ granted: clickwrap/);
-  assert.match(intake,/glassman-ssdi-002-consent-marketing-apes-2026-11-05-v1/);
-  assert.match(intake,/version: consentVersion \+ '-sms', method: 'checkbox', captured_at:/);
-  assert.match(intake,/Reply STOP to stop texts or HELP for help/);
-  assert.match(intake,/Text consent is optional and is not a condition of a purchase or service/);
-  const smsInput = intake.match(/<input type="checkbox" id="consent_sms"[^>]*>/)?.[0];
-  assert.ok(smsInput, 'SMS has its own checkbox');
-  assert.doesNotMatch(smsInput,/\b(?:checked|required)\b/, 'SMS starts unchecked and is optional');
-  const callText = intake.match(/var callText = '([^']+)';/)?.[1];
-  assert.ok(callText);
-  assert.match(callText,/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
-  assert.doesNotMatch(callText,/text messages|may call or text/);
-  assert.match(intake,/calls: \{ granted: clickwrap \|\| .*text: callDisclosure/);
-  assert.match(intake,/sms: \{ granted: !!.*\.checked, text: smsDisclosure/);
+  assert.match(intake,/glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1/);
+  assert.doesNotMatch(intake,/glassman-ssdi-002-consent-clickwrap-2026-11-05|id="consent_sms"/);
+  const body = intake.match(/var consentBody = '([^']+)';/)?.[1];
+  assert.ok(body);
+  for (const re of [/Marketing Apes and Jeffrey Glassman Injury Lawyers/,/may call and text you/,/AI or prerecorded voice/,/Calls are recorded/,
+    /Consent is not a condition of any purchase or service/,/Msg frequency varies/,/Msg & data rates may apply/,/Reply STOP to opt out, HELP for help/]) assert.match(body,re);
+  assert.match(intake,/var agreed = clickwrap \|\| !!\(callsBox && callsBox\.checked\);/);
+  assert.match(intake,/calls: \{ granted: agreed, text: callDisclosure/);
+  assert.match(intake,/sms: \{ granted: agreed, text: callDisclosure/);
   assert.match(intake,/version: consentVersion \+ '-calls', method: clickwrap \? 'clickwrap_submit' : 'checkbox', captured_at:/);
-  assert.doesNotMatch(intake,/glassman-ssdi-002-consent-clickwrap-2026-11-05/);
-
+  assert.match(intake,/version: consentVersion \+ '-sms', method: clickwrap \? 'clickwrap_submit' : 'checkbox', captured_at:/);
+  assert.match(intake,/href="https:\/\/besttortlawyers\.com\/sms-terms\/">SMS Terms/);
+  for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
+    const html=readFileSync(new URL(file,root),'utf8');
+    assert.match(html,/data-consent="clickwrap" data-button="Request my free call"/);
+    assert.match(html,/id="submitBtn">Request my free call /);
+    assert.doesNotMatch(html,/type="checkbox"/);
+  }
 });
 test('generate_lead fires only for real first-time leads',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
