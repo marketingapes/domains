@@ -49,8 +49,8 @@ def page(rel, pid_old, pid_new):
     s = s.replace('a free SSDI review by a participating law firm', 'a free SSDI review by ' + FIRM)
     s = sub(s, '<link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml">', '<link rel="icon" href="%s" type="image/svg+xml">' % LOGO)
     s = re.sub(r'<!-- data-sofia-tel:.*?-->', '<!-- data-sofia-tel: Glassman\'s Sofia line in E.164 (Vapi phone d9e1cabe "DEMO Sofia — Glassman SSDI", assistant 32e90752).\n     Empty hides every "Talk to Sofia" call link. -->', s, flags=re.S)
-    s = sub(s, 'data-sofia-tel="+12029329700"', 'data-sofia-tel="+16692099040"')
-    s = s.replace('(202) 932-9700', '(669) 209-9040')
+    s = sub(s, 'data-sofia-tel="+12029329700"', 'data-sofia-tel="+13393296165"')
+    s = s.replace('(202) 932-9700', '(339) 329-6165')
     s = sub(s, '<span><b>Free to check.</b> <span class="hide-s">Not the government. Never sold.</span></span>',
             '<span><b>No fee unless we win.</b> <span class="hide-s">Free consultation. Not the government.</span></span>')
     s = re.sub(r'<a class="brand" href="/" aria-label="Best Tort Lawyers home">.*?</a>',

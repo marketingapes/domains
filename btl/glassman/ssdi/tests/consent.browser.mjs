@@ -88,7 +88,7 @@ try {
   assert.equal(await page.getByRole('link',{name:'How this campaign uses your information'}).getAttribute('href'),'#campaignPrivacy');
   for(const [label,url] of [['BTL Privacy Policy','https://besttortlawyers.com/privacy-policy/'],['BTL SMS Terms','https://besttortlawyers.com/sms-terms/'],['BTL Terms','https://besttortlawyers.com/terms-and-conditions/'],['Marketing Apes website privacy','https://marketingapes.com/privacy/'],['Firm Privacy Policy','https://www.jeffreysglassman.com/privacy-policy.html'],['Firm Disclaimer','https://www.jeffreysglassman.com/disclaimer.html']]) assert.equal(await page.getByRole('link',{name:label,exact:true}).getAttribute('href'),url);
   await page.locator('footer').screenshot({path:path.join(evidence,(door.replaceAll('/','')||'form')+'-'+checked+'-privacy-mobile.png')});
-  assert.equal(await page.locator('[data-sofia-call]').first().getAttribute('href'),'tel:+16692099040');
+  assert.equal(await page.locator('[data-sofia-call]').first().getAttribute('href'),'tel:+13393296165');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.locator('#consentBox').screenshot({path:path.join(evidence,(door.replaceAll('/','')||'form')+'-'+checked+'-mobile.png')});
   await page.setViewportSize({width:1440,height:1000});

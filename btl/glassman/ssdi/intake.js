@@ -73,19 +73,23 @@
   var smsText = 'I agree to receive text messages from Marketing Apes about my request to speak with Jeffrey Glassman Injury Lawyers, including request confirmations and callback scheduling. Message frequency varies. Message and data rates may apply. Reply STOP to stop texts or HELP for help. Text consent is optional and is not a condition of a purchase or service.';
   if (box) {
     var btnLabel = box.getAttribute('data-button') || 'Submit';
-    box.innerHTML = '<p>This page is operated by Marketing Apes for inquiries to Jeffrey Glassman Injury Lawyers. Marketing Apes does not provide legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a>.</p>' +
-      (clickwrap
+    var smsLabel = '<label class="channel-consent"><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span id="smsDisclosure"><b>Text messages (optional).</b> ' + smsText + '</span></label>';
+    /* #smsChoice (above the button) holds the optional text choice, so it is made before tapping submit;
+       the call disclosure stays right under the button it names. Without #smsChoice it renders inside the box. */
+    var smsSlot = document.getElementById('smsChoice');
+    if (smsSlot) smsSlot.innerHTML = smsLabel;
+    box.innerHTML = (clickwrap
         ? '<p id="callDisclosure">By tapping “' + btnLabel + ',” ' + callText + '</p>'
         : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure"><b>Calls (required).</b> ' + callText + '</span></label>') +
-      '<label class="channel-consent"><input type="checkbox" id="consent_sms" name="consent_sms" value="yes"><span id="smsDisclosure"><b>Text messages (optional).</b> ' + smsText + '</span></label>' +
-      '<p>See Jeffrey Glassman Injury Lawyers’ <a href="https://www.jeffreysglassman.com/privacy-policy.html">Privacy Policy</a> and <a href="https://www.jeffreysglassman.com/disclaimer.html">Disclaimer</a>.</p>';
+      (smsSlot ? '' : smsLabel) +
+      '<p>Operated by Marketing Apes for Jeffrey Glassman Injury Lawyers. Not legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a>.</p>';
   }
 
   /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
   var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 8 Eastern)']];
   if (box && !document.getElementById('best_time')) {
     var bt = document.createElement('div'); bt.className = 'field';
-    bt.innerHTML = '<label for="best_time">Preferred callback time (request only)</label><select id="best_time" name="best_time">' +
+    bt.innerHTML = '<label for="best_time">Best time to reach you</label><select id="best_time" name="best_time">' +
       TIMES.map(function (t) { return '<option value="' + t[0] + '">' + t[1] + '</option>'; }).join('') +
       '</select><span class="why">Choose a preferred time for the team to review. This does not book an appointment.</span>';
     box.parentNode.insertBefore(bt, box);
