@@ -299,3 +299,10 @@ Next brief: update this file so the next AI can pick up clean.
 The AI that produces evidence plays. The AI that guesses sits.
 
 Boolean everything. Measure truth. Compound the winners. Cut the rest.
+
+
+## Glassman Perspective and request correction — 2026-11-05 (local implementation)
+
+The local `/glassman/` shell and replacement `/glassman/request/` use an LFMA-style guided brief. The legacy Make submission, automatic invoice claim, superseded package/refund terms and unconditional success path have been removed locally. This does not mean deployed. Sending is unconfigured: copy/download only, with no receipt claim. The owner-only reporting Sheet is not connected to this page. Real figures require an authenticated, server-side aggregate source, verified Glassman tenant/user access and approved BTL origin; no source sharing or permissions were changed. Google is not ready. Facebook delivery remains unverified. Callback, outbound, ad activation and spend are outside this change.
+
+Release-pass correction (2026-11-05, Claude, local only): the public `/glassman/` shell is a safe static preview and not connected. It carries no client commercial or payment facts (amounts, balance, invoice or payment dates), no account or source identifiers, and no claim about prior or current ad delivery. Campaign structure is described in general terms only. Delivery is unverified; a dated manual note reported Facebook paused, which is not live-verified. Real figures wait for verified Glassman access and the separate reporting worker's final source.
