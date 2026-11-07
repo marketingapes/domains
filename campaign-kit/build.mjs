@@ -14,6 +14,7 @@
 // Pages are PREVIEWS unless the config says status:"live" and every launch gate carries evidence. A preview has
 // no GTM, no TrustedForm, no dialable phone link, no webhook and a connect-src 'none' CSP, so it cannot reach
 // production. Nothing here calls an ad platform, Vapi, Make or a buyer; every channel file is a PAUSED draft.
+import {validateCommercial, renderCommercial, allocateMedia} from './media-plan.mjs';
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -112,6 +113,8 @@ export function normalize(raw) {
   }
   if (c.delivery?.mode === 'api_webhook') need(/^https:\/\//.test(c.delivery.buyer_webhook ?? ''), 'delivery.buyer_webhook (https) required for api_webhook');
   need(Array.isArray(c.criteria?.qualifies) && c.criteria.qualifies.length, 'criteria.qualifies: list the buyer-approved criteria');
+  need(['EXACT', 'EXACT_AND_PHRASE'].includes(c.channels?.google?.match), 'channels.google.match must be EXACT or EXACT_AND_PHRASE');
+  errs.push(...validateCommercial(c));
   if (errs.length) throw Error(`${c.slug ?? '?'}: invalid campaign config\n  - ` + errs.join('\n  - '));
   c.copy = copyDefaults(c);
   c.form_fields ??= c.quiz.slice(0, 2).map(q => ({key: q.key, label: q.q, options: q.options.map(o => ({value: o.value, label: o.label}))}));
@@ -515,7 +518,8 @@ export function renderBundle(c) {
   const usd = c.budget.media_total_usd, days = c.budget.days, base = `${c.domain_id === 'besttortlawyers.com' ? 'https://besttortlawyers.com' : 'https://' + c.domain_id}/c/${c.slug}/`;
   const landing = c.landing ?? (c.publish === false ? null : Object.fromEntries(DOORS.map(d => [d, base + PAGE_FILES[d]])));
   const url = (door, source, medium = 'paid') => landing?.[door] && `${landing[door]}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${encodeURIComponent(c.campaign_id)}&utm_content=${door}`;
-  const daily = ch => Math.max(1, Math.round((usd * c.split[ch]) / days));
+  const mediaPlan = c.commercial ? allocateMedia(usd, c.split, days) : null;
+  const daily = ch => mediaPlan ? mediaPlan[ch].daily_reference_usd : Math.max(1, Math.round((usd * c.split[ch]) / days));
   const name = (ch, extra = '') => `${c.campaign_id} | ${c.tort.name} | ${ch}${extra} | DRAFT PAUSED | campaign-kit ${KIT_VERSION}`;
   const states = c.geo.states.includes('US') ? ['US'] : c.geo.states;
 
@@ -531,7 +535,7 @@ export function renderBundle(c) {
   const google = {
     status: 'PAUSED_DRAFT', customer_id: c.channels.google.customer_id, note: 'Create via Ryze google_ads.runRawMutate with status PAUSED. Conversion = ee_lead_submit_success via GTM.',
     campaign: {name: name('Google Search'), advertising_channel_type: 'SEARCH', status: 'PAUSED', daily_budget_usd: daily('google'), geo: states},
-    ad_group: {name: `${c.campaign_id} | core`, keywords: kw.flatMap(k => [{text: k, match: 'EXACT'}, {text: k, match: 'PHRASE'}]), negative_keywords: c.negative_keywords ?? ['jobs', 'settlement amounts reddit', 'free download']},
+    ad_group: {name: `${c.campaign_id} | core`, keywords: kw.flatMap(k => c.channels.google.match === 'EXACT' ? [{text: k, match: 'EXACT'}] : [{text: k, match: 'EXACT'}, {text: k, match: 'PHRASE'}]), negative_keywords: c.negative_keywords ?? ['jobs', 'settlement amounts reddit', 'free download']},
     responsive_search_ad: {final_url: url('quiz', 'google'), headlines: [`${c.tort.name} Claim Check`, 'Free 2-Minute Claim Check', 'Talk To Sofia 24/7', 'A Person Reviews Every Claim', 'No Cost To Check', `Hurt By ${c.tort.name}?`].map(h => h.slice(0, 30)), descriptions: [`Answer ${c.quiz.length} quick questions and see where you stand. A person reviews every inquiry.`, 'Prefer to talk? Call Sofia any time, or request a callback at a time you choose.'].map(d => d.slice(0, 90))},
     call_asset: {phone: c.sofia.phone_tel},
   };
@@ -560,7 +564,8 @@ export function renderBundle(c) {
       source_binding: {system: 'bigquery', table: 'marketing-apes-master-database.evolution_engine.raw_lead_events', source, domain_id: 'btl', payload_version: 'btl.intake.web/v1', event_type: 'lead.received'},
       page_sources: {[pid(c, 'form')]: 'form', [pid(c, 'quiz')]: 'quiz', [pid(c, 'sofia')]: 'sofia'}, privacy_floor: 10, staleness_seconds: 900, max_future_skew_seconds: 120},
     'legal-web-lead/sql': `copy sql/paraquat-overview.sql → sql/${c.slug}-overview.sql; edit CONFIG lines (source "${source}", page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)`,
-    'evolutionengine/affiliate-hub/portal.py BASIC_PORTALS': {[c.slug]: {view: `v_${c.slug.replace(/-/g, '_')}_portal_leads`, campaign_id: c.campaign_id, title: `${c.tort.name} · ${c.brand.name}`, transfer_poll_seconds: 900, self_register: true, open_demo: true}},
+    privacy: {access: 'private', applied: false, requires: 'Verify authentication, firm-scoped authorization, logout and cross-tenant isolation before release. Flags alone do not prove privacy.'},
+    'evolutionengine/affiliate-hub/portal.py BASIC_PORTALS': {[c.slug]: {view: `v_${c.slug.replace(/-/g, '_')}_portal_leads`, campaign_id: c.campaign_id, title: `${c.tort.name} · ${c.brand.name}`, transfer_poll_seconds: 900, self_register: false, open_demo: false}},
     'evolutionengine/sql/views': `copy sql/views/paraquat_portal.sql → v_${c.slug.replace(/-/g, '_')}_portal_leads; sources ${source}, vapi:btl-${c.slug}-*, callrail:btl-${c.slug}-transfer`,
   };
   const tracking = {
@@ -586,7 +591,7 @@ Criteria (as configured — not a legal determination):
 - Qualifies: ${c.criteria.qualifies.join('; ')}
 - Does not qualify: ${(c.criteria.disqualifies ?? []).join('; ') || 'not specified'}
 `;
-  return {'meta.json': meta, 'google-search.json': google, 'tiktok.json': tiktok, 'openai-ads.json': openai, 'sofia.json': sofia, 'delivery.json': delivery, 'perspective.json': perspective, 'tracking.json': tracking, 'assets.json': assetManifest(c), 'LAUNCH.md': launch};
+  return {'meta.json': meta, 'google-search.json': google, 'tiktok.json': tiktok, 'openai-ads.json': openai, 'sofia.json': sofia, 'delivery.json': delivery, 'perspective.json': perspective, 'tracking.json': tracking, 'commercial.json': renderCommercial(c), 'assets.json': assetManifest(c), 'LAUNCH.md': launch};
 }
 
 // ---------- write ----------
@@ -618,3 +623,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const f of files) { if (!existsSync(f)) { console.error('missing ' + f); process.exit(1); } console.log(JSON.stringify(build(f))); }
   if (args[0] === '--all') writeBriefChecklist(files.map(f => normalize(JSON.parse(readFileSync(f, 'utf8')))));
 }
+

@@ -49,14 +49,19 @@
     "max_future_skew_seconds": 120
   },
   "legal-web-lead/sql": "copy sql/paraquat-overview.sql → sql/glassman-bard-powerport-overview.sql; edit CONFIG lines (source \"make:btl-glassman-bard-powerport-web\", page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)",
+  "privacy": {
+    "access": "private",
+    "applied": false,
+    "requires": "Verify authentication, firm-scoped authorization, logout and cross-tenant isolation before release. Flags alone do not prove privacy."
+  },
   "evolutionengine/affiliate-hub/portal.py BASIC_PORTALS": {
     "glassman-bard-powerport": {
       "view": "v_glassman_bard_powerport_portal_leads",
       "campaign_id": "GLASSMAN-BARD-POWERPORT-001",
       "title": "Bard PowerPort · Jeffrey Glassman Injury Lawyers",
       "transfer_poll_seconds": 900,
-      "self_register": true,
-      "open_demo": true
+      "self_register": false,
+      "open_demo": false
     }
   },
   "evolutionengine/sql/views": "copy sql/views/paraquat_portal.sql → v_glassman_bard_powerport_portal_leads; sources make:btl-glassman-bard-powerport-web, vapi:btl-glassman-bard-powerport-*, callrail:btl-glassman-bard-powerport-transfer"
