@@ -28,7 +28,8 @@ try {
     sent.push(JSON.parse(new URLSearchParams(req.postData()).get('payload')));
     return route.fulfill({status:accept?200:503,contentType:'application/json',body:JSON.stringify(accept?{status:duplicate?'duplicate':'received',...(receiptMissing?{}:{receipt_id:'offline-receipt'}),mode:checked?'live':'test'}:{error:'offline retry'})});
    }
-   if (url.origin!=='http://localhost:9876') return route.abort();
+   if (url.hostname === "api.trustedform.com") return route.fulfill({contentType:"application/javascript",body:'document.querySelector("[name=xxTrustedFormCertUrl]").value="https://cert.trustedform.com/"+"a".repeat(40);'});
+        if (url.origin!=='http://localhost:9876') return route.abort();
    if(legacyMode && url.pathname==='/glassman/ssdi/intake.js') return route.fulfill({contentType:'application/javascript',body:legacyIntake});
    let pathname=decodeURIComponent(url.pathname); if(pathname.endsWith('/')) pathname+='index.html';
    const file=path.resolve(root,'btl', '.'+pathname);
