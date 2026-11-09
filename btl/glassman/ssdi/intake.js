@@ -191,7 +191,8 @@
       fieldErr('last_name', 'Please keep your first and last names to 120 characters in total.'); ok = false;
     }
     var phone = val('phone').replace(/\D/g, '');
-    if (phone && phone.length < 10) { fieldErr('phone', 'Please enter a valid phone number.'); ok = false; }
+    /* The intake needs a US number it can text and call; anything e164() can't read would arrive blank and be rejected. */
+    if (phone && !e164(val('phone'))) { fieldErr('phone', 'Please enter a 10-digit US mobile number.'); ok = false; }
     var callsBox = document.getElementById('consent_calls');
     if (phone && callsBox && !callsBox.checked) {
       if (status) { status.className = 'status err'; status.textContent = 'Please check the box so the team can call or text the number you provided.'; }
@@ -294,8 +295,10 @@
       if (!otherOptions) push('ee_lead_submit_success');
       /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
          leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
+      var conversion = !otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate';
+      /* eventCallback tells the thank-you redirect (below) when GTM has finished the generate_lead tags. */
       if (otherOptions) push('ee_other_options_request_received');
-      else if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
+      else if (conversion) push('generate_lead', { lead_id: j.receipt_id, eventCallback: function () { tagsDone = true; }, eventTimeout: 2000 });
       /* TikTok's web ad group optimizes for TikTok's standard SubmitForm event, but GTM forwards generate_lead to TikTok
          only under its own name. Same real-first-time-lead rule; event_id is the receipt; no contact or screening data. */
       if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate' && window.ttq && typeof window.ttq.track === 'function') {
@@ -327,6 +330,34 @@
         status.className = 'status ok';
         status.textContent = thanks();
       }
+      thankYou(conversion, j);
+    }
+
+    /* Every saved request ends on a thank-you page: callback requests and quiz matches (QUALIFIED, FIRM_REVIEW) on
+       /glassman/ssdi/thank-you/, quiz non-matches that asked to check other options on /glassman/ssdi/thank-you/other-options/.
+       The conversions above fire on this page first: a real first-time lead waits for GTM's generate_lead callback
+       (at least 1.5 s so the pixels and the ChatGPT-ads SDK can send, at most 2.5 s); anything else leaves after 0.4 s.
+       The in-place confirmation shows meanwhile. The thank-you pages fire no conversions of their own. Only the kind,
+       requested time and receipt go along, in sessionStorage — never contact or screening data. ?test=1 is carried over.
+       A listener can cancel the 'ee:thank-you' event to stay on the page. */
+    var tagsDone = false;
+    function thankYou(conversion, j) {
+      var url = '/glassman/ssdi/thank-you/' + (otherOptions ? 'other-options/' : '') + (isTest ? '?test=1' : '');
+      try {
+        sessionStorage.setItem('ee_ssdi_thanks', JSON.stringify({ kind: otherOptions ? 'other_options' : 'callback',
+          time: bestTime()[1], receipt: j && j.receipt_id ? String(j.receipt_id).slice(0, 40) : null,
+          real: !!(j && !isTest && j.mode !== 'test' && j.status !== 'duplicate'), at: Date.now() }));
+      } catch (e) {}
+      var started = Date.now(), gone = false;
+      function go() {
+        if (gone) return; gone = true;
+        if (form.dispatchEvent(new CustomEvent('ee:thank-you', { cancelable: true, detail: { url: url } }))) location.assign(url);
+      }
+      if (!conversion) { setTimeout(go, 400); return; }
+      (function wait() {
+        var t = Date.now() - started;
+        if (t >= 2500 || (tagsDone && t >= 1500)) go(); else setTimeout(wait, 100);
+      })();
     }
     function fail() {
       pending = false;

@@ -63,7 +63,8 @@ test('one tap-to-agree line covers calls and texts, with no consent checkbox on 
 });
 test('generate_lead fires only for real first-time leads',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
-  assert.match(intake,/if \(j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate'\) push\('generate_lead', \{ lead_id: j\.receipt_id \}\)/);
+  assert.match(intake,/var conversion = !otherOptions && j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate';/);
+  assert.match(intake,/else if \(conversion\) push\('generate_lead', \{ lead_id: j\.receipt_id, eventCallback:/);
   assert.match(intake,/succeed\(j\);/);
 });
 test('TikTok SubmitForm fires only for real first-time leads, keyed by receipt, with no contact data',()=>{
@@ -98,6 +99,38 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261109-signed-ids/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261109-thank-you/);
   }
+});
+test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
+  const intake = readFileSync(new URL('intake.js', root), 'utf8');
+  assert.match(intake, /if \(phone && !e164\(val\('phone'\)\)\) \{ fieldErr\('phone', 'Please enter a 10-digit US mobile number\.'\)/);
+  assert.match(intake, /'\/glassman\/ssdi\/thank-you\/' \+ \(otherOptions \? 'other-options\/' : ''\) \+ \(isTest \? '\?test=1' : ''\)/);
+  assert.match(intake, /new CustomEvent\('ee:thank-you', \{ cancelable: true/);
+  assert.match(intake, /thankYou\(conversion, j\);/);
+  // what travels to the thank-you page: kind, time, receipt, real, timestamp. Never contact or screening data.
+  const rec = intake.slice(intake.indexOf("sessionStorage.setItem('ee_ssdi_thanks'"), intake.indexOf('at: Date.now() }));'));
+  assert.ok(rec.length > 0);
+  assert.doesNotMatch(rec, /contact|email|phone|first|last|state|screening|answers/);
+  for (const [file, kind, pid] of [['thank-you/index.html', 'callback', 'glassman-ssdi-thank-you'], ['thank-you/other-options/index.html', 'other_options', 'glassman-ssdi-thank-you-other-options']]) {
+    const html = readFileSync(new URL(file, root), 'utf8');
+    assert.match(html, new RegExp('<main data-thank-you="' + kind + '">'));
+    assert.match(html, new RegExp('<meta name="ee-page-id" content="' + pid + '">'));
+    assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
+    assert.match(html, /GTM-PHC7459M/);
+    assert.match(html, /<section id="networkTools"[^>]+hidden/);
+    assert.match(html, /thank-you\/network\.js\?v=/);
+    assert.match(html, /thank-you\/thanks\.js\?v=/);
+    assert.doesNotMatch(html, /intake\.js|generate_lead|oaiq|ttq\.track|fbq\(/, 'thank-you pages never re-send conversions');
+    assert.match(html, /ATTORNEY ADVERTISING/);
+  }
+  const oo = readFileSync(new URL('thank-you/other-options/index.html', root), 'utf8');
+  assert.doesNotMatch(oo, /data-sofia-tel="\+1|data-sofia-call/, 'no Glassman Sofia line on the other-options page');
+  assert.match(oo, /received by Marketing Apes/);
+  const network = readFileSync(new URL('thank-you/network.js', root), 'utf8');
+  assert.match(network, /callback: '',\s*other_options: ''/, 'network slot ships empty until Kyle approves a tool');
+  const thanks = readFileSync(new URL('thank-you/thanks.js', root), 'utf8');
+  assert.match(thanks, /sessionStorage\.removeItem\('ee_ssdi_thanks'\)/);
+  assert.match(thanks, /fresh: !!\(rec && rec\.real === true && !test\)/);
+  assert.doesNotMatch(thanks, /generate_lead|fbq|ttq|oaiq/);
 });
