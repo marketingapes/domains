@@ -40,7 +40,7 @@ const cases = [
         await page.goto(origin+quizPath);
         assert.equal(await page.locator('#contactWrap').isVisible(),false);
         await page.getByLabel('Your state',{exact:true}).selectOption(state);
-        for (const answer of answers) await page.locator('#qBody').getByRole('button',{name:answer,exact:true}).click();
+        for (const answer of answers) await page.locator('#qBody').getByRole('button',{name:new RegExp('^'+answer+'(?:$| )')}).click();
       }
       async function fill() {
         for (const [id,value] of Object.entries({first_name:'Offline',last_name:'Test',email:'offline@example.invalid',phone:'2025550100'})) await page.locator('#'+id).fill(value);
@@ -71,7 +71,7 @@ const cases = [
       assert.match(await page.locator('#callDisclosure').innerText(),/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
       await page.getByRole('button',{name:'← Change an answer',exact:true}).click();
       assert.equal(await page.locator('#contactWrap').isVisible(),false);
-      await page.locator('#qBody').getByRole('button',{name:'Yes',exact:true}).click();
+      await page.locator('#qBody').getByRole('button',{name:/^Yes(?:$| )/}).click();
       await validateOtherOptions(); await fill();
       // Missing receipt and HTTP failures must not display success or count a conversion.
       response={status:'received'};
