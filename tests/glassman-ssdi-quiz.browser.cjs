@@ -31,6 +31,7 @@ const cases = [
           sent.push(JSON.parse(new URLSearchParams(req.postData()).get('payload')));
           return route.fulfill({status:http,contentType:'application/json',body:JSON.stringify(response)});
         }
+        if (url.hostname === "api.trustedform.com") return route.fulfill({contentType:"application/javascript",body:'document.querySelector("[name=xxTrustedFormCertUrl]").value="https://cert.trustedform.com/"+"a".repeat(40);'});
         if (url.origin !== origin) return route.abort();
         const local = path.resolve(root,'btl','.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
         assert.ok(local.startsWith(path.join(root,'btl')+path.sep));

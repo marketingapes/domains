@@ -15,7 +15,8 @@
    ?test=1 on the URL marks the lead synthetic: stored as lead.test, never emailed or dialed.
    With no endpoint set, nothing leaves the browser (payload kept in sessionStorage 'ee_ssdi_last_lead').
 
-   TrustedForm: window.EE_TRUSTEDFORM = true loads the script; its cert URL joins the payload. */
+   TrustedForm: window.EE_TRUSTEDFORM = true loads the script and requires a certificate URL before
+   sending. A delayed/blocked SDK never silently sends an empty certificate. */
 (function () {
   'use strict';
   var CAMPAIGN = 'GLASSMAN-SSDI-002';
@@ -111,6 +112,28 @@
   function bestTime() { var v = val('best_time') || 'asap'; for (var i = 0; i < TIMES.length; i++) if (TIMES[i][0] === v) return TIMES[i]; return TIMES[0]; }
 
   /* ---- TrustedForm ---- */
+  function validCertificate(value) {
+    if (typeof value !== 'string' || value.length > 2000) return null;
+    var cert = value.trim();
+    // Certificate identifiers differ by issuance method; do not require one legacy ID length.
+    return /^https:\/\/cert\.trustedform\.com\/[a-z0-9_-]+$/i.test(cert) ? cert : null;
+  }
+  function certificate() {
+    var fields = form.querySelectorAll('[name="xxTrustedFormCertUrl"]');
+    for (var i = 0; i < fields.length; i++) {
+      var cert = validCertificate(fields[i].value);
+      if (cert) return cert;
+    }
+    return null;
+  }
+  async function waitForCertificate() {
+    var deadline = Date.now() + 8000, cert = certificate();
+    while (!cert && Date.now() < deadline) {
+      await new Promise(function (resolve) { setTimeout(resolve, 100); });
+      cert = certificate();
+    }
+    return cert;
+  }
   if (window.EE_TRUSTEDFORM) {
     (function () {
       var tf = document.createElement('script'); tf.type = 'text/javascript'; tf.async = true;
@@ -119,8 +142,15 @@
     })();
   }
 
-  var started = false;
-  form.addEventListener('input', function () { if (!started) { started = true; push('ee_form_start'); } }, true);
+  var started = false, editVersion = 0;
+  form.addEventListener('input', function (ev) { if (ev.target.type !== 'hidden') editVersion++; if (!started) { started = true; push('ee_form_start'); } }, true);
+  form.addEventListener('change', function (ev) { if (ev.target.type !== 'hidden') editVersion++; }, true);
+  form.addEventListener('ee:quiz-result', function () { editVersion++; });
+  // Remember interruptions even if the visitor reopens the same form before the SDK finishes.
+  ['openCb', 'qBody'].forEach(function (id) {
+    var control = document.getElementById(id);
+    if (control) control.addEventListener('click', function () { editVersion++; }, true);
+  });
 
   /* Ad click IDs and UTMs from the landing URL, kept for attribution and the buyer's posting. */
   function tracking() {
@@ -173,7 +203,7 @@
     var callDisclosure = document.getElementById('callDisclosure').textContent.trim();
     var consentText = callDisclosure;
     var agreed = clickwrap || !!(callsBox && callsBox.checked);
-    var tfEl = form.querySelector('[name="xxTrustedFormCertUrl"]');
+    var submittedVersion = editVersion;
     var payload = {
       schema: 'btl.intake.web/v1', submission_id: sid(),
       tenant_id: TENANT, domain_id: 'btl', campaign_id: CAMPAIGN, page_id: pageId,
@@ -192,7 +222,7 @@
         sms: { granted: agreed, text: callDisclosure,
           version: consentVersion + '-sms', method: clickwrap ? 'clickwrap_submit' : 'checkbox', captured_at: now.toISOString() }
       },
-      trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
+      trustedform_cert_url: certificate(),
       page_url: location.origin + location.pathname,
       callback: { window: bestTime()[0], label: bestTime()[1] },
       attribution: tracking(),
@@ -217,10 +247,12 @@
     if (btn) btn.disabled = true;
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
     var hash = await fingerprint(signature);
-    if (retryPayload && signature === retrySignature) payload = retryPayload;
+    var retrying = false;
+    if (retryPayload && signature === retrySignature) { payload = retryPayload; retrying = true; }
     else {
       var restored = !retryPayload && hash ? storedRetry(hash) : null;
       if (restored) {
+        retrying = true;
         payload.submission_id = restored.submission_id; payload.submitted_at = restored.submitted_at;
         payload.consent.captured_at = restored.consent_captured_at;
         payload.consent.calls.captured_at = restored.consent_captured_at;
@@ -232,8 +264,28 @@
         try { sessionStorage.removeItem(SK); } catch (e) {}
         payload.submission_id = sid();
       }
-      retryPayload = payload; retrySignature = signature;
     }
+    if (window.EE_TRUSTEDFORM && !validCertificate(payload.trustedform_cert_url)) {
+      // Never replace proof on an already-attempted request with a later page's certificate.
+      // Legacy retries without proof stop here rather than create a duplicate or invent consent evidence.
+      if (!retrying) payload.trustedform_cert_url = await waitForCertificate();
+      var interrupted = submittedVersion !== editVersion || !!form.closest('[hidden], .closed');
+      if (!validCertificate(payload.trustedform_cert_url) || interrupted) {
+        pending = false;
+        if (btn) btn.disabled = false;
+        push(otherOptions ? 'ee_other_options_submit_error' : 'ee_lead_submit_error', { reason: 'trustedform' });
+        if (status) {
+          status.className = 'status err';
+          status.textContent = retrying
+            ? 'Your earlier request may have been received, but its verification is incomplete. It has not been sent again.'
+            : interrupted
+              ? 'The form changed while we were verifying it. Please review your details and submit again.'
+              : 'We couldn’t finish verifying the form. Your details have not been sent. Please try again in a moment.';
+        }
+        return;
+      }
+    }
+    retryPayload = payload; retrySignature = signature;
     try {
       if (hash) sessionStorage.setItem(RK, JSON.stringify({schema:'glassman.retry/v2', submission_id:payload.submission_id,
         signature_sha256:hash, submitted_at:payload.submitted_at, consent_captured_at:payload.consent.captured_at,

@@ -85,3 +85,13 @@ Review clarification: the quiz privacy footer distinguishes Glassman review
 requests from Marketing Apes other-options requests. Other-options submissions
 use separate ee_other_options_* attempt/error/receipt events and never emit
 ee_lead_submit_* events. Existing non-quiz buttons retain their original markup.
+
+TrustedForm requirement (2026-11-09): all three Glassman forms wait up to eight
+seconds for an HTTPS cert.trustedform.com certificate before sending. A missing
+or malformed certificate stops submission with a retryable error; it does not
+create a success receipt. The top-level trustedform_cert_url is preserved across
+unchanged retries, including reloads. Already-attempted legacy requests without
+a certificate are not silently resent or assigned a new identity. This checks
+URL shape, not certificate retention, claim status, or legal validity. No
+certificate URL is put in analytics. Run the offline TrustedForm browser suite
+with node tests/glassman-trustedform.browser.cjs; provider calls are intercepted.
