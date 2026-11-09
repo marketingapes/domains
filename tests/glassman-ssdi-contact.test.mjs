@@ -66,3 +66,12 @@ test('generate_lead fires only for real first-time leads',()=>{
   assert.match(intake,/if \(j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate'\) push\('generate_lead', \{ lead_id: j\.receipt_id \}\)/);
   assert.match(intake,/succeed\(j\);/);
 });
+test('TikTok SubmitForm fires only for real first-time leads, keyed by receipt, with no contact data',()=>{
+  const intake=readFileSync(new URL('intake.js',root),'utf8');
+  const line=intake.split('\n').find(l=>l.includes("ttq.track('SubmitForm'"));
+  assert.ok(line,'SubmitForm call present');
+  assert.match(intake,/if \(!otherOptions && j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate' && window\.ttq && typeof window\.ttq\.track === 'function'\)/);
+  assert.match(line,/\{ content_name: CAMPAIGN \}, \{ event_id: j\.receipt_id \}/);
+  assert.doesNotMatch(line,/email|phone|first|last|answers|screening|state/);
+  assert.equal((intake.match(/ttq\.track\(/g)||[]).length,1);
+});

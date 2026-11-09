@@ -259,6 +259,11 @@
          leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
       if (otherOptions) push('ee_other_options_request_received');
       else if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
+      /* TikTok's web ad group optimizes for TikTok's standard SubmitForm event, but GTM forwards generate_lead to TikTok
+         only under its own name. Same real-first-time-lead rule; event_id is the receipt; no contact or screening data. */
+      if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate' && window.ttq && typeof window.ttq.track === 'function') {
+        try { window.ttq.track('SubmitForm', { content_name: CAMPAIGN }, { event_id: j.receipt_id }); } catch (e) {}
+      }
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}
