@@ -86,3 +86,18 @@ test('OpenAI lead_created loads the SDK only at a real first-time lead, with no 
   assert.equal((intake.match(/oaiq\.min\.js/g)||[]).length,1,'SDK is not loaded anywhere else (no page-view load)');
   assert.ok(intake.indexOf('function succeed(')<i,'SDK load lives inside succeed(), after a stored receipt');
 });
+test('attribution keeps the landing ad click IDs and platform cookie IDs, never contact data', () => {
+  const intake = readFileSync(new URL('intake.js', root), 'utf8');
+  const start = intake.indexOf("var AK = 'ee_attr_glassman_ssdi'");
+  const block = intake.slice(start, intake.indexOf('function fieldErr(', start));
+  assert.ok(start > 0, 'landing attribution store present');
+  for (const k of ['fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid']) assert.ok(block.includes("'" + k + "'"), k + ' captured');
+  for (const c of ["cookie('_fbp')", "cookie('_fbc')", "cookie('_ttp')", "cookie('_gcl_aw')", "cookie('_ga')"]) assert.ok(block.includes(c), c + ' read');
+  assert.match(block, /localStorage\.setItem\(AK/);
+  assert.match(block, /90 \* 864e5/);
+  assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
+  assert.match(intake, /attribution: tracking\(\),/);
+  for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261109-signed-ids/);
+  }
+});

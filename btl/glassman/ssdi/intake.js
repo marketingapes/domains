@@ -122,10 +122,47 @@
   var started = false;
   form.addEventListener('input', function () { if (!started) { started = true; push('ee_form_start'); } }, true);
 
-  /* Ad click IDs and UTMs from the landing URL, kept for attribution and the buyer's posting. */
-  function tracking() {
+  /* Ad click IDs and UTMs, kept for attribution and so a case that signs later can be matched back to its ad.
+     The landing page's IDs are remembered in this browser for 90 days (a visitor who lands on the overview and then
+     opens the quiz keeps them); a newer ad click replaces them. The platforms' own first-party cookie IDs
+     (_fbp/_fbc, _ttp, _gcl_aw) and the GA client id are read at submit. IDs only: no contact or screening data. */
+  var AK = 'ee_attr_glassman_ssdi';
+  var CLICK_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid'];
+  function urlTracking() {
     var q = new URLSearchParams(location.search), o = {};
-    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'ttclid'].forEach(function (k) { var v = q.get(k); if (v) o[k] = v.slice(0, 250); });
+    CLICK_KEYS.forEach(function (k) { var v = q.get(k); if (v) o[k] = v.slice(0, 250); });
+    return o;
+  }
+  (function rememberLanding() {
+    var o = urlTracking();
+    if (!Object.keys(o).length) return;
+    try { localStorage.setItem(AK, JSON.stringify({ o: o, at: Date.now(), page: location.pathname })); } catch (e) {}
+  })();
+  function savedTracking() {
+    try {
+      var s = JSON.parse(localStorage.getItem(AK) || 'null');
+      if (s && s.o && typeof s.at === 'number' && Date.now() - s.at < 90 * 864e5) return s;
+    } catch (e) {}
+    return null;
+  }
+  function cookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    try { return m ? decodeURIComponent(m[1]).slice(0, 250) : ''; } catch (e) { return ''; }
+  }
+  function tracking() {
+    var s = savedTracking(), o = {};
+    if (s) {
+      CLICK_KEYS.forEach(function (k) { if (typeof s.o[k] === 'string' && s.o[k]) o[k] = s.o[k].slice(0, 250); });
+      o.landing_page = String(s.page || '').slice(0, 200);
+      o.landed_at = new Date(s.at).toISOString();
+    }
+    var fbp = cookie('_fbp'), fbc = cookie('_fbc'), ttp = cookie('_ttp'), gclAw = cookie('_gcl_aw'), ga = cookie('_ga').split('.');
+    if (!fbc && o.fbclid && s) fbc = 'fb.1.' + s.at + '.' + o.fbclid;
+    if (fbp) o.fbp = fbp;
+    if (fbc) o.fbc = fbc;
+    if (ttp) o.ttp = ttp;
+    if (gclAw) o.gcl_aw = gclAw;
+    if (ga.length >= 4) o.ga_client_id = ga.slice(-2).join('.');
     return o;
   }
   function fieldErr(id, msg) {
