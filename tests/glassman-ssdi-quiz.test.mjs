@@ -61,6 +61,12 @@ test('alternative requests retain hold and disqualification, have separate conse
   assert.match(js,/glassman-ssdi-other-options-marketing-apes-2026-11-09-v1/);
   assert.match(js,/if \(otherOptions\) push\('ee_other_options_request_received'\);\s*else if[^\n]+push\('generate_lead'/);
   assert.match(js,/Your request to check other options was received by Marketing Apes/);
+  assert.match(js,/if \(!otherOptions\) push\('ee_lead_submit_success'\)/);
+  assert.match(js,/if \(btn && pageId === 'glassman-ssdi-quiz'\)/);
+  assert.match(js,/arrow\.setAttribute\('aria-hidden', 'true'\)/);
+  const notice=read('quiz/index.html');
+  assert.match(notice,/Optional requests to check other firms are handled by Marketing Apes and its service providers/);
+  assert.doesNotMatch(notice,/and share it with Jeffrey Glassman/);
   assert.match(read('quiz/index.html'),/quiz\.js\?v=20261109-other-options-v1/);
   assert.match(read('quiz/index.html'),/intake\.js\?v=20261109-other-options-v1/);
   assert.doesNotMatch(read('quiz/quiz.js'),/ssa\.gov|location\.href|window\.open/);

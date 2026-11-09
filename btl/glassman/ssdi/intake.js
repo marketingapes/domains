@@ -80,7 +80,11 @@
     var otherOptions = otherOptionsRequest();
     var btnLabel = otherOptions ? 'Check other options' : (box.getAttribute('data-button') || 'Submit');
     var btn = document.getElementById('submitBtn');
-    if (btn) btn.textContent = btnLabel + ' →';
+    if (btn && pageId === 'glassman-ssdi-quiz') {
+      btn.textContent = btnLabel + ' ';
+      var arrow = document.createElement('span'); arrow.setAttribute('aria-hidden', 'true'); arrow.textContent = '→';
+      btn.appendChild(arrow);
+    }
     consentVersion = otherOptions ? 'glassman-ssdi-other-options-marketing-apes-2026-11-09-v1'
       : 'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1';
     var disclosure = otherOptions
@@ -136,6 +140,7 @@
     if (pending || completed) return;
     var status = document.getElementById('formStatus');
     var btn = document.getElementById('submitBtn');
+    var otherOptions = otherOptionsRequest();
     var ok = true;
     ['first_name', 'last_name', 'email', 'phone'].forEach(function (id) {
       var el = document.getElementById(id);
@@ -156,14 +161,13 @@
       ok = false;
     }
     if (!ok) {
-      push('ee_lead_submit_error', { reason: 'validation' });
+      push(otherOptions ? 'ee_other_options_submit_error' : 'ee_lead_submit_error', { reason: 'validation' });
       var invalid = form.querySelector('[aria-invalid="true"]'); if (invalid) invalid.focus();
       return;
     }
 
     var scorer = window.BTL_SSDI || window.BTL_SSDI_QUIZ;
     var answers = scorer ? scorer.answers() : {};
-    var otherOptions = otherOptionsRequest();
     var R = window.SSDI_RULES, now = new Date();
     var first = val('first_name'), last = val('last_name'), full = first + ' ' + last;
     var callDisclosure = document.getElementById('callDisclosure').textContent.trim();
@@ -237,7 +241,7 @@
       else sessionStorage.removeItem(RK);
     } catch (e) { /* same-page memory retries still work when session storage is unavailable */ }
 
-    push('ee_lead_submit_attempt');
+    push(otherOptions ? 'ee_other_options_submit_attempt' : 'ee_lead_submit_attempt');
     if (btn) { btn.disabled = true; }
     if (status) { status.className = 'status'; status.textContent = 'Checking…'; }
 
@@ -250,7 +254,7 @@
     function succeed(j) {
       pending = false; completed = true;
       if (btn) { btn.disabled = false; }
-      push('ee_lead_submit_success');
+      if (!otherOptions) push('ee_lead_submit_success');
       /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
          leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
       if (otherOptions) push('ee_other_options_request_received');
@@ -272,7 +276,7 @@
     function fail() {
       pending = false;
       if (btn) { btn.disabled = false; }
-      push('ee_lead_submit_error', { reason: 'delivery' });
+      push(otherOptions ? 'ee_other_options_submit_error' : 'ee_lead_submit_error', { reason: 'delivery' });
       if (status) { status.className = 'status err'; status.textContent = 'Something went wrong sending your inquiry. Please try again in a moment.'; }
     }
 

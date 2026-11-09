@@ -54,6 +54,11 @@ const cases = [
         assert.match(await page.locator('#callDisclosure').innerText(),/^By tapping “Check other options,” you agree that Marketing Apes,/);
         assert.doesNotMatch(await page.locator('#callDisclosure').innerText(),/Jeffrey Glassman/);
         assert.equal(await page.locator('#submitBtn').innerText(),'Check other options →');
+        assert.equal(await page.locator('#submitBtn span').getAttribute('aria-hidden'),'true');
+        const notice = await page.locator('#campaignPrivacy').innerText();
+        assert.match(notice,/Requests for a Glassman review are shared with Jeffrey Glassman/);
+        assert.match(notice,/Optional requests to check other firms are handled by Marketing Apes and its service providers/);
+        assert.doesNotMatch(notice,/and share it with Jeffrey Glassman/);
         assert.equal(await page.evaluate(()=>BTL_SSDI_QUIZ.answers().web_outcome),'NOT_A_FIT');
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
       }
@@ -103,6 +108,7 @@ const cases = [
       assert.doesNotMatch(await page.locator('#doneText').innerText(),/will call|delivered|sent to.*firm|appointment confirmed/);
       let events=await page.evaluate(()=>window.dataLayer);
       assert.equal(events.filter(e=>e.event==='generate_lead').length,0);
+      assert.equal(events.filter(e=>/^ee_lead_submit_/.test(e.event)).length,0);
       assert.equal(events.filter(e=>e.event==='ee_other_options_request_received').length,1);
       assert.equal(events.some(e=>JSON.stringify(e).includes('offline@example.invalid')),false);
       await page.evaluate(()=>document.querySelector('#leadForm').requestSubmit());

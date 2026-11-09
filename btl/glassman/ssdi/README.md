@@ -80,3 +80,8 @@ receipt confirms storage only and does not fire generate_lead. Qualified and
 uncertain paths retain their existing behavior. Run
 `node tests/glassman-ssdi-quiz.browser.cjs` for offline mobile/desktop verification;
 all provider requests and receipts are mocked.
+
+Review clarification: the quiz privacy footer distinguishes Glassman review
+requests from Marketing Apes other-options requests. Other-options submissions
+use separate ee_other_options_* attempt/error/receipt events and never emit
+ee_lead_submit_* events. Existing non-quiz buttons retain their original markup.
