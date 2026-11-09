@@ -60,7 +60,7 @@ try {
   const notice=await page.locator('#campaignPrivacy').innerText();
   assert.match(notice,/Marketing Apes operates this page for inquiries to Jeffrey Glassman Injury Lawyers/);
   assert.match(notice,/For this campaign, we use the information you provide to handle your inquiry and contact choices/);
-  assert.match(notice,/share it with Jeffrey Glassman Injury Lawyers and the service providers running this campaign/);
+  assert.match(notice,door==='quiz/'?/Requests for a Glassman review are shared with Jeffrey Glassman Injury Lawyers and the service providers running this campaign/:/share it with Jeffrey Glassman Injury Lawyers and the service providers running this campaign/);
   assert.match(notice,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
   assert.doesNotMatch(await page.locator('body').innerText(),/Never sold|It is not sold/i);
   const steps=await page.locator('.steps').innerText();

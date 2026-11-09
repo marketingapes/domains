@@ -70,3 +70,18 @@ the superseded automatic SMS grant. Offline browser tests also verify campaign
 privacy links, requested-time receipt copy, rejection of HTTP 200 without a
 receipt, one conversion for a first non-test receipt, and no conversion for a
 test or duplicate receipt. All network traffic is intercepted.
+
+Quiz other-options request (2026-11-09): a NOT_A_FIT result now offers an optional
+contact form in place of the SSA link and Change an answer button. The request
+retains NOT_A_FIT and routing hold, records request_type other_firm_review_request
+and followup_request.referral_authorized=false, and uses separate Marketing Apes-only
+contact consent. It is not a qualified Glassman lead or a referral permission. The
+receipt confirms storage only and does not fire generate_lead. Qualified and
+uncertain paths retain their existing behavior. Run
+`node tests/glassman-ssdi-quiz.browser.cjs` for offline mobile/desktop verification;
+all provider requests and receipts are mocked.
+
+Review clarification: the quiz privacy footer distinguishes Glassman review
+requests from Marketing Apes other-options requests. Other-options submissions
+use separate ee_other_options_* attempt/error/receipt events and never emit
+ee_lead_submit_* events. Existing non-quiz buttons retain their original markup.
