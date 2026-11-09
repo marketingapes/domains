@@ -53,7 +53,8 @@ const cases = [
         assert.doesNotMatch(await page.locator('#qBody').innerText(),/ssa.gov|Change an answer|qualify for a free review/);
         assert.match(await page.locator('#callDisclosure').innerText(),/^By tapping “Check other options,” you agree that Marketing Apes,/);
         assert.doesNotMatch(await page.locator('#callDisclosure').innerText(),/Jeffrey Glassman/);
-        assert.equal(await page.locator('#submitBtn').innerText(),'Check other options →');
+        assert.equal(await page.locator('#submitBtn').textContent(),'Check other options →');
+        assert.equal(await page.getByRole('button',{name:'Check other options',exact:true}).count(),1);
         assert.equal(await page.locator('#submitBtn span').getAttribute('aria-hidden'),'true');
         const notice = await page.locator('#campaignPrivacy').innerText();
         assert.match(notice,/Requests for a Glassman review are shared with Jeffrey Glassman/);
@@ -121,7 +122,7 @@ const cases = [
       // Qualified and uncertain paths retain their existing form, consent, scoring and conversion.
       for (const [label,answers,outcome,route] of [['qualified',standard,'QUALIFIED','sofia_transfer'],['uncertain',['48 to 64','Not sure','Yes','No','No'],'FIRM_REVIEW','sofia_confirm']]) {
         await open('MA',answers);await fill();
-        assert.equal(await page.locator('#submitBtn').innerText(),'Request my free call →');
+        assert.equal(await page.locator('#submitBtn').textContent(),'Request my free call →');
         assert.match(await page.locator('#callDisclosure').innerText(),/Marketing Apes and Jeffrey Glassman Injury Lawyers/);
         await page.locator('#submitBtn').click();await page.locator('#formDone').waitFor({state:'visible'});
         const latest=sent.at(-1);assert.equal(latest.screening.web_outcome,outcome);assert.equal(latest.routing.route,route);
