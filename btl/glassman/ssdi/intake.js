@@ -71,13 +71,29 @@
   var consentVersion = 'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1';
   /* One tap-to-agree disclosure covers calls and texts; there are no consent checkboxes on these pages. */
   var consentBody = 'you agree that Marketing Apes and Jeffrey Glassman Injury Lawyers, including Sofia, our AI assistant, may call and text you at the number provided about your request, including with automated technology and AI or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help.';
-  if (box) {
-    var btnLabel = box.getAttribute('data-button') || 'Submit';
-    box.innerHTML = (clickwrap
-        ? '<p id="callDisclosure">By tapping \u201c' + btnLabel + ',\u201d ' + consentBody + '</p>'
-        : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure">By checking this box, ' + consentBody + '</span></label>') +
-      '<p>Operated by Marketing Apes for Jeffrey Glassman Injury Lawyers. Not legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a> \u00b7 <a href="https://besttortlawyers.com/sms-terms/">SMS Terms</a></p>';
+  function otherOptionsRequest() {
+    return pageId === 'glassman-ssdi-quiz' && window.BTL_SSDI_QUIZ &&
+      window.BTL_SSDI_QUIZ.answers().web_outcome === 'NOT_A_FIT';
   }
+  function renderConsent() {
+    if (!box) return;
+    var otherOptions = otherOptionsRequest();
+    var btnLabel = otherOptions ? 'Check other options' : (box.getAttribute('data-button') || 'Submit');
+    var btn = document.getElementById('submitBtn');
+    if (btn) btn.textContent = btnLabel + ' →';
+    consentVersion = otherOptions ? 'glassman-ssdi-other-options-marketing-apes-2026-11-09-v1'
+      : 'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1';
+    var disclosure = otherOptions
+      ? 'you agree that Marketing Apes, including Sofia, our AI assistant, may call and text you at the number provided about your request to check other options, including with automated technology and AI or prerecorded voice. Calls are recorded. Consent is not a condition of any purchase or service. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help.'
+      : consentBody;
+    box.innerHTML = (clickwrap
+        ? '<p id="callDisclosure">By tapping \u201c' + btnLabel + ',\u201d ' + disclosure + '</p>'
+        : '<label class="channel-consent"><input type="checkbox" id="consent_calls" name="consent_calls" value="yes"><span id="callDisclosure">By checking this box, ' + disclosure + '</span></label>') +
+      '<p>' + (otherOptions ? 'This optional request is handled by Marketing Apes. We will ask your permission before referring your inquiry to another law firm.' : 'Operated by Marketing Apes for Jeffrey Glassman Injury Lawyers.') +
+      ' Not legal advice. <a href="#campaignPrivacy">How this campaign uses your information</a> \u00b7 <a href="https://besttortlawyers.com/sms-terms/">SMS Terms</a></p>';
+  }
+  renderConsent();
+  form.addEventListener('ee:quiz-result', renderConsent);
 
   /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
   var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 8 Eastern)']];
@@ -147,6 +163,7 @@
 
     var scorer = window.BTL_SSDI || window.BTL_SSDI_QUIZ;
     var answers = scorer ? scorer.answers() : {};
+    var otherOptions = otherOptionsRequest();
     var R = window.SSDI_RULES, now = new Date();
     var first = val('first_name'), last = val('last_name'), full = first + ' ' + last;
     var callDisclosure = document.getElementById('callDisclosure').textContent.trim();
@@ -157,7 +174,7 @@
       schema: 'btl.intake.web/v1', submission_id: sid(),
       tenant_id: TENANT, domain_id: 'btl', campaign_id: CAMPAIGN, page_id: pageId,
       door: form.getAttribute('data-kind') || 'form',
-      request_type: answers.web_outcome ? 'screened_inquiry' : 'callback_request',
+      request_type: otherOptions ? 'other_firm_review_request' : (answers.web_outcome ? 'screened_inquiry' : 'callback_request'),
       submitted_at: now.toISOString(),
       contact: { full_name: full, first_name: first, last_name: last, email: val('email'), phone_e164: e164(val('phone')), state: val('state') || answers.state || null },
       screening: { web_outcome: answers.web_outcome || null, criteria_version: answers.criteria_version || (R && R.version) || null, answers: answers },
@@ -177,6 +194,12 @@
       attribution: tracking(),
       test: { synthetic: isTest }
     };
+
+    if (otherOptions) {
+      // A request for Marketing Apes to review options is not a referral or a qualified Glassman lead.
+      payload.routing.route = 'hold';
+      payload.followup_request = { type: 'other_firm_review', requested: true, referral_authorized: false };
+    }
 
     /* Keep the exact original payload for an unchanged retry, including consent/submission time.
        An edited inquiry gets a new id; it must not overwrite an earlier stored submission. */
@@ -220,6 +243,7 @@
 
     /* A receipt confirms storage of a request, not contact or a booked appointment. */
     function thanks() {
+      if (otherOptions) return 'Your request to check other options was received by Marketing Apes. A match or callback is not guaranteed. We’ll ask your permission before sharing your information with another firm.';
       return 'Your callback request was received. The team will review it. Your requested time: ' + bestTime()[1] + '.';
     }
 
@@ -229,7 +253,8 @@
       push('ee_lead_submit_success');
       /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
          leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
-      if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
+      if (otherOptions) push('ee_other_options_request_received');
+      else if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}

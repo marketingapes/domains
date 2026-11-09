@@ -44,6 +44,7 @@ jobs:
           node tests/perspective-isolation.browser.cjs 2>&1 | tee perspective-browser.log
           node tests/perspective-ux.browser.cjs 2>&1 | tee -a perspective-browser.log
           PLAYWRIGHT="$(node -p 'require.resolve("playwright")')" CHROMIUM="$(node -p 'require("playwright").chromium.executablePath()')" node tests/glassman-perspective.browser.mjs 2>&1 | tee -a perspective-browser.log
+          node tests/glassman-ssdi-quiz.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/plg-az-accident.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/campaign-kit.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log

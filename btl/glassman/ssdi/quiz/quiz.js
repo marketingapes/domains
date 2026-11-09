@@ -1,7 +1,7 @@
 /* GLASSMAN-SSDI-002 eligibility check (/glassman/ssdi/quiz/). One question at a time in the hero card, with a progress bar,
    a "why we ask" line and a back link, like the Glassman SSDI quiz.
    Scoring lives in /glassman/ssdi/criteria.js (the buyer's criteria), shared with the form.
-   The visitor never sees which answer mattered; a visitor who is not a fit is never asked for contact details.
+   The visitor never sees which answer mattered; visitors outside the criteria may optionally request other-options review.
    Answers go only to the intake payload (intake.js), never to dataLayer — dataLayer receives step counts and the result category only. */
 (function () {
   'use strict';
@@ -80,17 +80,21 @@
     push('ee_quiz_complete', { result: res });
     progress();
     body.innerHTML = '';
-    var p = el('p', res === 'NOT_A_FIT' ? 'result' : 'result good', R.resultText(res));
+    var otherOptions = res === 'NOT_A_FIT';
+    var p = el('p', otherOptions ? 'result' : 'result good', otherOptions
+      ? 'Thank you for sharing. Your answers don’t match the current criteria for this review. This is not a legal opinion about your situation.'
+      : R.resultText(res));
     p.tabIndex = -1;
     body.appendChild(p);
-    if (res === 'NOT_A_FIT') {
-      body.appendChild(el('p', 'qs', 'You can always apply for free with Social Security.'));
-      var a = el('a', 'cta alt wide', 'Go to ssa.gov/disability →'); a.href = 'https://www.ssa.gov/disability/'; a.rel = 'noopener';
-      body.appendChild(a);
-    } else if (contact) {
-      contact.hidden = false;
+    if (otherOptions) {
+      body.appendChild(el('h2', 'qh', 'Would you like us to check other options?'));
+      body.appendChild(el('p', 'qs', 'If you’d like, leave your details below and ask Marketing Apes to check whether another firm is reviewing cases like yours. A match or callback is not guaranteed. We’ll ask your permission before sharing your information with another firm.'));
+    } else {
+      body.appendChild(backLink('← Change an answer', total - 1));
     }
-    body.appendChild(backLink('← Change an answer', total - 1));
+    if (contact) contact.hidden = false;
+    var form = $('leadForm');
+    if (form) form.dispatchEvent(new CustomEvent('ee:quiz-result', { detail: { outcome: res } }));
     p.focus({ preventScroll: true });
   }
 
