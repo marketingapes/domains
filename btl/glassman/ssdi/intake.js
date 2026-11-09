@@ -264,6 +264,19 @@
       if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate' && window.ttq && typeof window.ttq.track === 'function') {
         try { window.ttq.track('SubmitForm', { content_name: CAMPAIGN }, { event_id: j.receipt_id }); } catch (e) {}
       }
+      /* ChatGPT ads (OpenAI) conversion. The OpenAI SDK is loaded only here, at a real first-time lead — never on a page
+         view, a test, a duplicate or an other-options request — and records lead_created with no contact or screening data. */
+      if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') {
+        try {
+          if (typeof window.oaiq !== 'function') {
+            var oq = function () { oq.q.push(arguments); }; oq.q = []; window.oaiq = oq;
+            var os = document.createElement('script'); os.async = true; os.src = 'https://bzrcdn.openai.com/sdk/oaiq.min.js';
+            document.head.appendChild(os);
+            window.oaiq('init', { pixelId: 'QNfxrnZGsp74sFs5M93mJh' });
+          }
+          window.oaiq('measure', 'lead_created', { type: 'customer_action', amount: 0, currency: 'USD' });
+        } catch (e) {}
+      }
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}

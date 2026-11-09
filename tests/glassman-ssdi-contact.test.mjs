@@ -75,3 +75,14 @@ test('TikTok SubmitForm fires only for real first-time leads, keyed by receipt, 
   assert.doesNotMatch(line,/email|phone|first|last|answers|screening|state/);
   assert.equal((intake.match(/ttq\.track\(/g)||[]).length,1);
 });
+test('OpenAI lead_created loads the SDK only at a real first-time lead, with no contact data',()=>{
+  const intake=readFileSync(new URL('intake.js',root),'utf8');
+  const i=intake.indexOf("oaiq.min.js");
+  assert.ok(i>0,'OpenAI SDK referenced');
+  const block=intake.slice(intake.lastIndexOf("if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') {",i), intake.indexOf("form.dispatchEvent(new CustomEvent('ee:lead-saved'",i));
+  assert.match(block,/^if \(!otherOptions && j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate'\) \{/);
+  assert.match(block,/oaiq\('measure', 'lead_created', \{ type: 'customer_action', amount: 0, currency: 'USD' \}\)/);
+  assert.doesNotMatch(block,/email|phone|first_name|last_name|answers|screening|debug/);
+  assert.equal((intake.match(/oaiq\.min\.js/g)||[]).length,1,'SDK is not loaded anywhere else (no page-view load)');
+  assert.ok(intake.indexOf('function succeed(')<i,'SDK load lives inside succeed(), after a stored receipt');
+});
