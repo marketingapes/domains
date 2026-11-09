@@ -24,6 +24,8 @@ const cases = [
       const page = await ctx.newPage(), sent = [], errors = [];
       let response = {status:'received',receipt_id:'offline-quiz-receipt',mode:'live'}, http = 200;
       page.on('pageerror', e => errors.push(String(e)));
+      // Hold the thank-you redirect so the form page can be inspected; record where it would have gone.
+      await ctx.addInitScript(() => document.addEventListener('ee:thank-you', e => { e.preventDefault(); window.__thankYou = e.detail.url; }, true));
       await ctx.route('**/*', async route => {
         const req = route.request(), url = new URL(req.url());
         if (req.method() === 'POST') {
@@ -112,6 +114,8 @@ const cases = [
       assert.equal(events.filter(e=>/^ee_lead_submit_/.test(e.event)).length,0);
       assert.equal(events.filter(e=>e.event==='ee_other_options_request_received').length,1);
       assert.equal(events.some(e=>JSON.stringify(e).includes('offline@example.invalid')),false);
+      await page.waitForFunction(()=>window.__thankYou);
+      assert.equal(await page.evaluate(()=>window.__thankYou),'/glassman/ssdi/thank-you/other-options/');
       await page.evaluate(()=>document.querySelector('#leadForm').requestSubmit());
       assert.equal(sent.length,3,'a saved request cannot be duplicated');
       if (process.env.SHOTS) await page.locator('#formDone').screenshot({path:path.join(process.env.SHOTS,`other-options-receipt-${width}.png`)});
@@ -129,7 +133,27 @@ const cases = [
         assert.equal(latest.request_type,'screened_inquiry');assert.equal(latest.followup_request,undefined);
         assert.equal(latest.consent.version,'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1');
         assert.equal((await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='generate_lead').length,1);
+        await page.waitForFunction(()=>window.__thankYou,null,{timeout:4000});
+        assert.equal(await page.evaluate(()=>window.__thankYou),'/glassman/ssdi/thank-you/');
         console.log(`PASS ${label} unaffected @${width}`);passed++;
+      }
+      // The thank-you pages: requested time from the submit, one fresh view, nothing on reload, no conversions resent.
+      for (const [url,kind] of [['/glassman/ssdi/thank-you/','callback'],['/glassman/ssdi/thank-you/other-options/','other_options']]) {
+        await page.goto(origin+quizPath);
+        await page.evaluate(k=>sessionStorage.setItem('ee_ssdi_thanks',JSON.stringify({kind:k,time:'As soon as possible',receipt:'BTLK-0000000000',real:true,at:Date.now()})),kind);
+        await page.goto(origin+url);
+        await page.locator('#tyCard').waitFor({state:'visible'});
+        assert.match(await page.locator('#tyTime').innerText(),/Your requested time: As soon as possible\./);
+        let ev=(await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='ee_thank_you_view');
+        assert.equal(ev.length,1);assert.equal(ev[0].thank_you,kind);assert.equal(ev[0].fresh,true);assert.equal(ev[0].lead_id,'BTLK-0000000000');
+        assert.equal((await page.evaluate(()=>window.dataLayer)).some(e=>e.event==='generate_lead'),false);
+        assert.equal(await page.locator('#networkTools').isVisible(),false);
+        await page.reload();
+        ev=(await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='ee_thank_you_view');
+        assert.equal(ev[0].fresh,false);assert.equal(ev[0].lead_id,undefined);
+        assert.equal(await page.locator('#tyTime').isVisible(),false);
+        if (process.env.SHOTS) await page.screenshot({path:path.join(process.env.SHOTS,`thank-you-${kind}-${width}.png`),fullPage:true});
+        console.log(`PASS thank-you ${kind} @${width}`);passed++;
       }
       assert.deepEqual(errors,[]);
       console.log(`PASS other-options consent, payload, failure, retry, receipt, reload and conversion @${width}`);passed++;
