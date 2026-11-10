@@ -67,7 +67,7 @@ test('alternative requests retain hold and disqualification, have separate conse
   const notice=read('quiz/index.html');
   assert.match(notice,/Optional requests to check other firms are handled by Marketing Apes and its service providers/);
   assert.doesNotMatch(notice,/and share it with Jeffrey Glassman/);
-  assert.match(read('quiz/index.html'),/quiz\.js\?v=20261109-other-options-v1/);
-  assert.match(read('quiz/index.html'),/intake\.js\?v=20261109-thank-you/);
+  assert.match(read('quiz/index.html'),/quiz\.js\?v=20261110-criteria-v2/);
+  assert.match(read('quiz/index.html'),/intake\.js\?v=20261110-hours-730/);
   assert.doesNotMatch(read('quiz/quiz.js'),/ssa\.gov|location\.href|window\.open/);
 });
