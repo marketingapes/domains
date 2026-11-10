@@ -16,7 +16,7 @@ BRAND = "Discount Deal Me"
 EMAIL = "hello@discountdealme.com"
 UPDATED = "2026-09-23"
 UPDATED_H = "September 23, 2026"
-SITE_UPDATED = "2026-10-10"
+SITE_UPDATED = "2026-11-10"
 ARTS = A1 + A2
 from extras import EXTRA
 for _a in ARTS:
@@ -169,7 +169,11 @@ def home():
     counts = {c: sum(1 for d in LIVE if d["category"] == c) for c in CATS}
     cats = "".join(f'<a class="cat" href="/deals/?cat={e(c)}"><span>{e(c)}</span><b data-cat-count="{e(c)}">{counts[c]}</b></a>' for c in CATS)
     guides = guide_card(ARTS[0], big=True) + "".join(guide_card(a) for a in ARTS[1:7])
-    body = f'''<section class="hero">
+    body = f'''<aside class="bfcm-banner wrap" role="note">
+<p><strong>Black Friday is Friday Nov 27. Cyber Monday is Monday Nov 30.</strong>
+The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date.</p>
+</aside>
+<section class="hero">
 <div class="wrap hero-grid">
 <div class="hero-copy">
 {feed_status()}
@@ -595,8 +599,8 @@ def offers_page():
 <section class="wrap section">
 <article class="store store-alert" data-expires="2026-10-11T03:59:00Z">
 <div class="store-top"><span class="deal-merchant">KitchenAid</span><span class="deal-cat">Ending soon</span></div>
-<h2>KitchenAid Harvest Event</h2>
-<p>Up to 25% off select countertop appliances and up to $120 off select stand mixers on kitchenaid.com, no code. Ends Sat Oct 10 at 8:59 PM PT. Select models only, so check your cart price.</p>
+<h2>KitchenAid Harvest Event (ended Oct 10)</h2>
+<p>This sale ended Saturday Oct 10, 2026 at 8:59 PM PT. The page remains as a record. Use the deal finder for current offers.</p>
 <a class="btn btn-ghost" href="/deals/kitchenaid-harvest-event/">See the KitchenAid deal</a>
 </article>
 <div class="store-grid">{cards}</div>

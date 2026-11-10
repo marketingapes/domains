@@ -44,8 +44,8 @@ def kitchenaid(head, nav, foot):
 <article class="wrap article event">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/deals/">Live deals</a> <span aria-hidden="true">/</span> <span>KitchenAid Harvest Event</span></nav>
 <header class="art-head">
-<p class="status-pill" role="status"><span class="dot" aria-hidden="true"></span><span id="deal-status">Ends Sat Oct 10, 8:59 PM PT</span></p>
-<h1>KitchenAid Harvest Event: up to 25% off select countertop appliances</h1>
+<p class="status-pill" role="status"><span class="dot" aria-hidden="true"></span><span id="deal-status">Sale ended Sat Oct 10, 8:59 PM PT</span></p>
+<h1>KitchenAid Harvest Event (ended Oct 10, 2026)</h1>
 <p class="byline">By the Discount Deal Me team &middot; Checked against KitchenAid's affiliate promo terms on <time datetime="2026-10-10">October 10, 2026</time></p>
 </header>
 <p class="disclose"><strong>#ad &middot; Affiliate links.</strong> Discount Deal Me may earn a commission if you buy through the KitchenAid links on this page, at no extra cost to you. It does not change the price, and KitchenAid did not review this page.</p>
@@ -158,10 +158,9 @@ def kitchenaid(head, nav, foot):
     ld = {"@context": "https://schema.org", "@type": "Article", "headline": "KitchenAid Harvest Event: up to 25% off select countertop appliances",
           "datePublished": "2026-10-10", "dateModified": "2026-10-10", "author": {"@type": "Organization", "name": "The Discount Deal Me team"},
           "publisher": {"@type": "Organization", "name": "Discount Deal Me"}, "mainEntityOfPage": "https://discountdealme.com/deals/kitchenaid-harvest-event/"}
-    h = head("KitchenAid Harvest Event: Up to 25% Off Select Countertop Appliances (Ends Oct 10)",
-             "KitchenAid's Harvest Event: up to 25% off select countertop appliances and up to $120 off select stand mixers, no code. Ends Sat Oct 10, 2026 at 11:59 PM ET (8:59 PM PT). What to check before you buy.",
+    h = head("Ended: KitchenAid Harvest Event (Oct 10, 2026)",
+             "KitchenAid's Harvest Event ended Saturday, October 10, 2026 at 11:59 PM ET (8:59 PM PT). The listed prices are no longer available. See today's live deals.",
              "/deals/kitchenaid-harvest-event/", og_type="article", extra=STYLE)
-    h = h.replace("<title>KitchenAid Harvest Event: Up to 25% Off Select Countertop Appliances (Ends Oct 10) | Discount Deal Me</title>",
-                  "<title>KitchenAid Harvest Event: Up to 25% Off Select Countertop Appliances (Ends Oct 10) | Discount Deal Me</title>")
+    h = h.replace("<body>", '<body class="is-ended">', 1)
     tail = foot.replace("<script src=\"/assets/site.js", script + f'<script type="application/ld+json">{json.dumps(ld)}</script>\n<script src="/assets/site.js', 1)
     return h + nav("deals") + body + tail

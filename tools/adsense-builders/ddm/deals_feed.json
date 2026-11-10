@@ -1,38 +1,7 @@
 {
- "source": "CJ link-search, DDM property 101511733",
- "checked_at": "2026-10-10T16:06:20Z",
+ "source": "CJ link-search, DDM property 101511733; date-filtered 2026-11-10 PT (no new network pull; expired rows removed)",
+ "checked_at": "2026-11-10T13:10:42Z",
  "deals": [
-  {
-   "link_id": "17360704",
-   "merchant": "KitchenAid",
-   "sold_by": "brand",
-   "category": "Kitchen",
-   "title": "Up to 50% off select refurbished appliances",
-   "value": {
-    "kind": "pct",
-    "amount": 50,
-    "upto": true
-   },
-   "conditions": [
-    "select",
-    "refurbished"
-   ],
-   "event_page": "/deals/kitchenaid-harvest-event/#refurb",
-   "summary_ai": "KitchenAid's refurbished sale lists up to 50% off select refurbished countertop appliances. It can't be combined with other offers and excludes in-home delivery products; check the refurbished warranty before buying.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "1845109",
-    "advertiser_name": "ShopKitchenAid.com",
-    "link_name": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season.",
-    "terms": "Refurbished Sale Up to 50% off select refurbished countertop appliances, just in time for hosting season. \"Ends 10/12/2026 11:59PM EST. Excludes in-home delivery products. Discount taken off regular price excluding taxes, shipping, gift wrapping, and engraving. Only valid on select refurbished orders on kitchenaid.com. Offer subject to change. No cash value. Cannot be combined with other offers or rebates. While Supplies Last.*",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-05T04:00:00Z",
-    "ends": "2026-10-13T04:00:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17360704-1790993713000",
-    "destination": "https://www.kitchenaid.com/countertop-appliances/sale/deal-of-the-week"
-   }
-  },
   {
    "link_id": "17107552",
    "merchant": "KitchenAid",
@@ -58,89 +27,6 @@
     "ends": "2030-01-01T08:00:00Z",
     "click_url": "https://www.anrdoezrs.net/click-101511733-17107552-1753748256000",
     "destination": "https://www.kitchenaid.com/countertop-appliances/sale"
-   }
-  },
-  {
-   "link_id": "17361837",
-   "merchant": "Rowenta",
-   "sold_by": "brand",
-   "category": "Home",
-   "title": "$100 off the Compact Steam Pro steam station",
-   "value": {
-    "kind": "usd",
-    "amount": 100,
-    "upto": false
-   },
-   "conditions": [],
-   "summary_ai": "Rowenta lists $100 off its Compact Steam Pro professional-grade steam station, a short sale valid Oct 8-Oct 11, 2026. It's a single-product offer, so compare the final price with other retailers.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "4685883",
-    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
-    "link_name": "Rowenta - Compact Steam Pro Steam Station Professional-Grade - $100 Off",
-    "terms": "The Rowenta Compact Steam Pro Steam Station Professional-Grade delivers 6.8-bar pressure and up to 380 g/min steam output for fast, professional results. Offer valid Oct 8-Oct 11, 2026.",
-    "promotion_type": "",
-    "code": "",
-    "starts": "2026-10-08T05:00:00Z",
-    "ends": "2026-10-12T04:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361837-1791326700000",
-    "destination": "https://www.rowentausa.com/compact-steam-pro-steam-generator-iron-professional-grade.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
-   }
-  },
-  {
-   "link_id": "17361836",
-   "merchant": "Rowenta",
-   "sold_by": "brand",
-   "category": "Home",
-   "title": "$40 off the Freemove Force cordless steam iron",
-   "value": {
-    "kind": "usd",
-    "amount": 40,
-    "upto": false
-   },
-   "conditions": [],
-   "summary_ai": "The Rowenta Freemove Force cordless steam iron is $40 off on rowentausa.com, valid Oct 6-Oct 19, 2026. One product, no code listed in the network terms.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "4685883",
-    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
-    "link_name": "Rowenta - Freemove Force Cordless Steam Iron - $40 Off",
-    "terms": "The Rowenta Freemove Force Cordless Steam Iron heats up in 30 seconds and delivers powerful steam with total freedom of movement. Offer valid Oct 6-Oct 19, 2026.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-06T05:00:00Z",
-    "ends": "2026-10-20T04:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361836-1791326700000",
-    "destination": "https://www.rowentausa.com/freemove-force-cordless-steam-iron.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
-   }
-  },
-  {
-   "link_id": "17361829",
-   "merchant": "Rowenta",
-   "sold_by": "brand",
-   "category": "Home",
-   "title": "Up to $84 off fans",
-   "value": {
-    "kind": "usd",
-    "amount": 84,
-    "upto": true
-   },
-   "conditions": [
-    "select"
-   ],
-   "summary_ai": "Rowenta fans are up to $84 off through Oct 31, 2026, from desk fans to outdoor models. The top figure applies to specific models, so check the one you want.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "4685883",
-    "advertiser_name": "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal",
-    "link_name": "Rowenta - Fans - Up to $84 Off",
-    "terms": "Rowenta fans deliver powerful performance with whisper-quiet operation, from desk fans to outdoor models. Find the right fit for your space. Offer valid Oct 1-Oct 31, 2026.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-01T05:00:00Z",
-    "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.jdoqocy.com/click-101511733-17361829-1791326698000",
-    "destination": "https://www.rowentausa.com/fans.html?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WciQy_US_ROW_LC_.NSF_.NSSFP_PU_AFFMK_OTHER"
    }
   },
   {
@@ -287,66 +173,6 @@
    }
   },
   {
-   "link_id": "17358487",
-   "merchant": "Groupon",
-   "sold_by": "marketplace",
-   "category": "Experiences",
-   "title": "One World Observatory NYC: up to 50% off",
-   "region": "NYC area",
-   "value": {
-    "kind": "pct",
-    "amount": 50,
-    "upto": true
-   },
-   "conditions": [
-    "local"
-   ],
-   "summary_ai": "A Groupon flash sale on One World Observatory tickets in New York, up to 50% off for a limited time. Groupon lists it for the NYC, New Jersey and Philadelphia-area markets; read the voucher's fine print and dates.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "5840172",
-    "advertiser_name": "Groupon North America",
-    "link_name": "One World Observatory NYC Flash Sale October 2026",
-    "terms": "One World Observatory NYC - up to 50% off flash sale, limited time only. Markets: NYC, Long Island, Westchester, North & Central NJ, Fairfield County, Philadelphia, Allentown/Reading.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-01T04:00:00Z",
-    "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.dpbolvw.net/click-101511733-17358487-1790852400000",
-    "destination": "https://www.groupon.com/deals/gl-one-world-observatory-9"
-   }
-  },
-  {
-   "link_id": "17358489",
-   "merchant": "Groupon",
-   "sold_by": "marketplace",
-   "category": "Experiences",
-   "title": "View Boston Observation Deck: up to 40% off",
-   "region": "Boston and Northeast",
-   "value": {
-    "kind": "pct",
-    "amount": 40,
-    "upto": true
-   },
-   "conditions": [
-    "local"
-   ],
-   "summary_ai": "Up to 40% off View Boston Observation Deck tickets through Groupon, a limited-time flash sale aimed at Boston and nearby Northeast markets. Check the voucher's valid dates before buying.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "5840172",
-    "advertiser_name": "Groupon North America",
-    "link_name": "View Boston Observation Deck Flash Sale October 2026",
-    "terms": "View Boston Observation Deck - up to 40% off flash sale, limited time only. Markets: Boston, Worcester, Springfield, Providence, Hartford, Portland ME, Albany, Syracuse, NYC, Long Island, North & Central NJ, Philadelphia, Allentown/Reading.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-01T04:00:00Z",
-    "ends": "2026-11-01T03:59:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17358489-1790852400000",
-    "destination": "https://www.groupon.com/deals/gl-view-boston-observation-deck-2"
-   }
-  },
-  {
    "link_id": "17358492",
    "merchant": "Groupon",
    "sold_by": "marketplace",
@@ -374,61 +200,6 @@
     "ends": "2026-12-19T04:59:00Z",
     "click_url": "https://www.anrdoezrs.net/click-101511733-17358492-1790852400000",
     "destination": "https://www.groupon.com/deals/gl-aquarium-of-the-pacific"
-   }
-  },
-  {
-   "link_id": "17358482",
-   "merchant": "Groupon",
-   "sold_by": "marketplace",
-   "category": "Memberships",
-   "title": "Costco membership with a $20 or $40 shop card",
-   "value": {
-    "kind": "perk"
-   },
-   "conditions": [
-    "membership"
-   ],
-   "summary_ai": "A one-year Costco membership through Groupon that includes a $20 or $40 Digital Costco Shop Card, extended through Oct 25. It's not eligible for Groupon's sitewide promo codes.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "5840172",
-    "advertiser_name": "Groupon North America",
-    "link_name": "Costco Membership + Digital Shop Card (Extended) October 2026",
-    "terms": "Get a one-year Costco membership that includes a $20 or $40 Digital Costco Shop Card. Extended through Oct 25. Not eligible for sitewide promo codes.",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-01T04:00:00Z",
-    "ends": "2026-10-26T03:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17358482-1790852400000",
-    "destination": "https://www.groupon.com/deals/n-costco-membership"
-   }
-  },
-  {
-   "link_id": "17361800",
-   "merchant": "Groupon",
-   "sold_by": "marketplace",
-   "category": "Memberships",
-   "title": "BJ's Wholesale Club membership for $10",
-   "value": {
-    "kind": "price_from",
-    "amount": 10
-   },
-   "conditions": [
-    "membership"
-   ],
-   "summary_ai": "Groupon lists a BJ's Wholesale Club membership for just $10. Check what membership tier it covers and whether it renews at full price.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "5840172",
-    "advertiser_name": "Groupon North America",
-    "link_name": "Now Just $10: Membership Savings Start Here (Join Now)",
-    "terms": "Now Just $10: Membership Savings Start Here (Join Now)",
-    "promotion_type": "Sale/Discount",
-    "code": "",
-    "starts": "2026-10-07T07:00:00Z",
-    "ends": "2026-11-03T07:59:00Z",
-    "click_url": "https://www.kqzyfj.com/click-101511733-17361800-1791323023000",
-    "destination": "https://www.groupon.com/deals/n-bjs-wholesale-club-inner-circle-membership-16"
    }
   },
   {
@@ -539,35 +310,6 @@
     "ends": "2050-09-19T18:30:00Z",
     "click_url": "https://www.kqzyfj.com/click-101511733-15890984-1782343923000",
     "destination": "https://sockwellusa.com"
-   }
-  },
-  {
-   "link_id": "17363630",
-   "merchant": "Budget Pet Care",
-   "sold_by": "brand",
-   "category": "Pets",
-   "title": "30% off flea and tick protection + free shipping",
-   "value": {
-    "kind": "pct",
-    "amount": 30,
-    "upto": false
-   },
-   "conditions": [
-    "select"
-   ],
-   "summary_ai": "Budget Pet Care's 10.10 sale takes 30% off flea and tick protection with free shipping when you use the code. Make sure the product and dose match your pet's weight and your vet's advice.",
-   "network": {
-    "name": "CJ",
-    "advertiser_id": "4250177",
-    "advertiser_name": "Budget Pet Care",
-    "link_name": "10.10 Sale",
-    "terms": "Stock Up for Less This 10.10 Sale! Get 30% OFF Flea & Tick Protection + Free Shipping - Shop Now with OCTSALE!",
-    "promotion_type": "Coupon",
-    "code": "OCTSALE",
-    "starts": "2026-10-09T03:47:00Z",
-    "ends": "2026-10-14T18:30:00Z",
-    "click_url": "https://www.anrdoezrs.net/click-101511733-17363630-1791543274000",
-    "destination": "https://www.budgetpetcare.com/frontline-plus-for-dogs/dog-flea-and-tick-treatment-3.aspx?utm_source=cjbanner&utm_campaign=10-10-sale&Coupon_no=OCTSALE"
    }
   },
   {
