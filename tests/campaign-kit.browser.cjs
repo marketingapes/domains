@@ -3,6 +3,7 @@
 // quiz and form reach a PREVIEW receipt that survives a reload, mobile has no sideways scroll.
 // LIVE receipt rule: a synthetic live build against a local mock intake — a receipt shows "Received", a retry dedupes
 // to the same receipt, and a receipt-less {"ok":true} or a 500 shows the phone fallback instead.
+// ONBOARDING: generated --all output, local draft/export/revision, separate commercial models and no requests/storage.
 // Run: node tests/campaign-kit.browser.cjs   (SHOTS=/dir saves screenshots; CHROMIUM=/path overrides the browser)
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
@@ -31,7 +32,8 @@ function serve(livePages) {
     let file;
     const kit = url.match(/^\/_kit\/([a-z0-9-]+)\/(.*)$/), live = url.match(/^\/_live\/(.*)$/);
     if (live) { const name = live[1] || 'index.html'; if (livePages[name]) { r.setHeader('content-type', TYPES[path.extname(name)]); return r.end(livePages[name]); } }
-    if (kit) file = path.join(KIT, 'out', kit[1], 'preview', kit[2] || 'index.html');
+    if (url === '/_onboarding/' || url === '/_onboarding/index.html') file = path.join(KIT, 'out', 'onboarding', 'preview', 'index.html');
+    else if (kit) file = path.join(KIT, 'out', kit[1], 'preview', kit[2] || 'index.html');
     else file = path.join(BTL, url.endsWith('/') ? url + 'index.html' : url);
     if (!file.startsWith(ROOT)) { r.statusCode = 403; return r.end(); }
     let data = null;
@@ -115,6 +117,98 @@ function serve(livePages) {
       }
     }
 
+    // ---------------- ONBOARDING: generated output, never a provider order ----------------
+    assert.ok(fs.existsSync(path.join(KIT, 'out', 'onboarding', 'preview', 'index.html')), 'run build.mjs --all before browser checks');
+    for (const [w, h] of [[390, 844], [1280, 800]]) {
+      const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: 'reduce', acceptDownloads: true });
+      const page = await ctx.newPage(), outside = [], errors = [], posts = [];
+      const equal = (actual, expected, message) => { assert.deepEqual(actual, expected, `onboarding @${w}: ${message}`); checks += 1; };
+      const ok = (value, message) => { assert.ok(value, `onboarding @${w}: ${message}`); checks += 1; };
+      const fits = async label => ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${label} has no sideways scroll`);
+      page.on('request', request => {
+        const u = new URL(request.url());
+        if (['http:', 'https:', 'ws:', 'wss:'].includes(u.protocol) && u.origin !== base) outside.push(request.url());
+        if (request.method() !== 'GET') posts.push({url: request.url(), method: request.method()});
+      });
+      page.on('pageerror', e => errors.push(String(e)));
+      page.on('console', m => { if (m.type() === 'error' && !/Content Security Policy|violates the following Content Security Policy/.test(m.text())) errors.push(m.text()); });
+      await page.goto(base + '/_onboarding/');
+      await fits('first step');
+      equal(await page.locator('a[href^="tel:"],a[href^="mailto:"]').count(), 0, 'no calling or messaging links');
+      const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+      ok(csp.includes("connect-src 'none'") && csp.includes("form-action 'none'"), 'capture and form networking blocked');
+      await page.click('#next');
+      ok(await page.locator('#errors').isVisible(), 'empty first step shows errors');
+      ok((await page.textContent('#error-topic')).length > 0, 'topic required');
+      ok((await page.textContent('#error-states')).length > 0, 'states required');
+      equal(await page.evaluate(() => window.BTL_ONBOARDING.getDraft()), null, 'invalid inputs create no draft');
+
+      await page.click('#demo');
+      for (let step = 0; step < 3; step++) { await page.click('#next'); await fits(`step ${step + 2}`); }
+      await page.click('#prepare');
+      ok(await page.locator('#errors').isVisible(), 'draft acknowledgement required');
+      await page.check('#scope-ack');
+      await page.click('#prepare');
+      await page.locator('#draft-result').waitFor({state: 'visible'});
+      let draft = await page.evaluate(() => window.BTL_ONBOARDING.getDraft());
+      ok(/^DRAFT-[A-Z0-9-]+$/.test(draft.draft_id), 'reference is explicitly a draft');
+      equal(draft.status, 'LOCAL_DRAFT_NOT_SUBMITTED', 'no submitted-order claim');
+      equal(draft.synthetic, true, 'example remains synthetic');
+      equal(draft.commercial_preview.service_fee_cents, 250000, 'service fee separate');
+      equal(draft.commercial_preview.media_budget_cents, 500000, 'explicit example media');
+      equal(draft.commercial_preview.total_cents, 750000, 'exact example total');
+      ok(Object.values(draft.authorization).every(v => v === false), 'draft authorizes no provider action');
+      const firstDraft = draft.draft_id;
+      await page.evaluate(() => document.getElementById('order-form').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true})));
+      equal(await page.evaluate(() => window.BTL_ONBOARDING.getDraft().draft_id), firstDraft, 'duplicate submit retains the same draft');
+      await fits('prepared draft');
+      await shot(page, `onboarding-draft-${w}`);
+
+      const [download] = await Promise.all([page.waitForEvent('download'), page.click('#download')]);
+      equal(download.suggestedFilename(), firstDraft.toLowerCase() + '.json', 'download is bound to the draft');
+      const stream = await download.createReadStream();
+      ok(stream, 'download stream available');
+      let downloaded = '';
+      for await (const chunk of stream) downloaded += chunk.toString();
+      equal(JSON.parse(downloaded), draft, 'download contains the exact reviewed draft');
+
+      await page.click('#revise');
+      await page.fill('#media', '6000.25');
+      equal(await page.evaluate(() => window.BTL_ONBOARDING.getDraft()), null, 'editing invalidates the previous draft');
+      await page.click('#prepare');
+      draft = await page.evaluate(() => window.BTL_ONBOARDING.getDraft());
+      ok(draft.draft_id !== firstDraft, 'material edit gets a fresh draft reference');
+      equal(draft.revision, 2, 'revision advances');
+      equal(draft.commercial_preview.total_cents, 850025, 'revised amount uses exact cents');
+
+      for (const model of ['qualified_lead_program', 'network_membership', 'founding_partner']) {
+        await page.click('#revise');
+        await page.click('[data-step="0"]');
+        await page.selectOption('#commercial-model', model);
+        const sidebar = await page.textContent('#plan-lines');
+        ok(!sidebar.includes('$2,500') && !sidebar.includes('$6,000.25'), `${model} does not display managed charges`);
+        await page.click('[data-step="3"]');
+        ok(await page.locator('#managed-budget').isHidden(), `${model} hides managed budget inputs`);
+        await page.check('#scope-ack');
+        await page.click('#prepare');
+        draft = await page.evaluate(() => window.BTL_ONBOARDING.getDraft());
+        equal(draft.request.commercial_model, model, 'selected model retained');
+        equal([draft.commercial_preview.service_fee_cents, draft.commercial_preview.media_budget_cents, draft.commercial_preview.total_cents], [null, null, null], `${model} has no invented invoice amount`);
+        equal(draft.commercial_preview.line_items, [], `${model} cannot double-bill fee/media`);
+        equal(draft.request.budget.media_usd, '', `${model} clears managed media from exported request`);
+        await fits(`${model} draft`);
+      }
+      equal(await page.evaluate(() => ({local: localStorage.length, session: sessionStorage.length})), {local: 0, session: 0}, 'business details never persist in browser storage');
+      equal(await ctx.cookies(), [], 'no cookies');
+      await page.reload();
+      equal(await page.evaluate(() => window.BTL_ONBOARDING.getDraft()), null, 'reload cannot restore an old order');
+      equal(await page.inputValue('#firm-name'), '', 'reload clears business contact details');
+      equal(posts, [], 'no submission/payment/provider request');
+      equal(outside, [], 'no outside requests');
+      equal(errors, [], 'no browser errors');
+      await ctx.close();
+    }
+
     // ---------------- LIVE receipt rule against the mock intake ----------------
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await ctx.newPage();
@@ -138,8 +232,9 @@ function serve(livePages) {
     assert.equal(await page.textContent('#ref'), liveRef, 'live receipt survives reload');
     checks += 6;
     await ctx.close();
-    console.log(`campaign-kit browser: ${checks} checks passed (${configs.length} preview configs, 2 widths, live receipt rule)`);
+    console.log(`campaign-kit browser: ${checks} checks passed (${configs.length} preview configs, onboarding at 2 widths, live receipt rule)`);
   } finally {
     await browser.close(); s2.srv.close();
   }
 })().catch((e) => { console.error(e); process.exit(1); });
+
