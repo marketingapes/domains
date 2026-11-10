@@ -80,6 +80,9 @@ function serve(livePages) {
           assert.equal(await page.locator('a[href^="tel:"]').count(),0);
           assert.equal(await page.locator('input').count(),0);
           assert.equal(await page.locator('h1').count(),1);
+          assert.doesNotMatch(await page.locator('body').innerText(),/case[\s-]*manager/i);
+          assert.match(await page.locator('.process-section').innerText(),/if you pre-qualify, schedule directly or choose an AI scheduling call/);
+
           assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
           assert.ok(await page.evaluate(()=>fetch('https://example.invalid/blocked').then(()=>false,()=>true)));
           await shot(page,`${c.slug}-hero-${w}`);
@@ -93,6 +96,13 @@ function serve(livePages) {
             await page.click('#request-consultation');
             assert.ok(await page.locator('#consultation-dialog').isVisible());
             assert.match(await page.locator('#consultation-dialog').innerText(),/No request has been sent/);
+            assert.match(await page.locator('#consultation-dialog').innerText(),/Intake, direct self-scheduling and the AI scheduling call are not connected/);
+            assert.doesNotMatch(await page.locator('#screen-result').innerText(),/case[\s-]*manager/i);
+            await page.click('#done-dialog');
+            assert.ok(await page.locator('#consultation-dialog').isHidden());
+            await page.click('#request-consultation');
+            assert.ok(await page.locator('#consultation-dialog').isVisible());
+
             await page.keyboard.press('Escape');
             assert.ok(await page.locator('#consultation-dialog').isHidden());
             await page.click('#reset-screen');

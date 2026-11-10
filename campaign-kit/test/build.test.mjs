@@ -167,6 +167,17 @@ test('provider review remains draft-only and cannot inherit production defaults'
   assert.ok(!escaped.includes('<script>bad</script>'));
 });
 
+test('provider scheduling copy follows the proposed qualified-form flow without enabling it', () => {
+  const raw=configs.find(([f])=>f==='devin-multiplan.json')[1], c=normalize(raw);
+  const html=renderPages(c)['index.html'], notes=renderBundle(c)['REVIEW.md'];
+  for (const content of [html,notes]) assert.doesNotMatch(content,/case[\s-]*manager/i);
+  assert.match(html,/complete the form, then, if you pre-qualify, schedule directly or choose an AI scheduling call/);
+  assert.match(html,/This demo does not determine qualification/);
+  assert.match(html,/Intake, direct self-scheduling and the AI scheduling call are not connected/);
+  assert.match(html,/does not ask for contact details, place a call, select an appointment/);
+  assert.match(notes,/Neither scheduling route is connected/);
+});
+
 test('provider screen routes every answer combination without a legal decision', () => {
   assert.equal(providerRoute({}),'incomplete');
   let count=0;
