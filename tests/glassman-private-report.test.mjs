@@ -61,7 +61,7 @@ test('v2 report renders every section with honest spend states',async()=>{
  assert.equal(p.element('metrics').hidden,false);assert.equal(p.element('detail').hidden,false);assert.equal(p.element('v1-note').hidden,true);
  assert.equal(p.text('web-count'),'7');assert.equal(p.text('test-count'),'12');assert.equal(p.text('contacted-count'),'4');
  assert.equal(p.text('cpl-value'),'$17.28');assert.match(p.text('cpl-note'),/\$69\.12 loaded spend over 4 leads/);
- assert.match(p.text('day-body'),/Meta \(Facebook \/ Instagram\) 4 \$69\.12 \$17\.28/);
+ assert.match(p.text('day-body'),/Meta \(Facebook, Instagram\) 4 \$69\.12 \$17\.28/);
  assert.match(p.text('day-body'),/Direct or unknown 3 Not loaded Not loaded/);
  assert.match(p.text('channel-body'),/Direct or unknown 3 Not loaded Not loaded/);
  assert.match(p.text('door-body'),/Callback form 6.*Eligibility quiz 1.*Talk to Sofia 0.*Meta lead form 0/);

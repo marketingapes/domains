@@ -7,7 +7,7 @@ const status=text=>{el("status").textContent=text;};
 const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note"];
 const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list"];
 const V2_PARTS=["contacted-card","cpl-card","range","detail"];
-const CHANNELS={meta:"Meta (Facebook / Instagram)",google:"Google",bing:"Bing",tiktok:"TikTok",openai:"ChatGPT",direct_or_unknown:"Direct or unknown"};
+const CHANNELS={meta:"Meta (Facebook, Instagram)",google:"Google",bing:"Bing",tiktok:"TikTok",openai:"ChatGPT",direct_or_unknown:"Direct or unknown"};
 const OUTCOMES=[["QUALIFIED","Qualified"],["FIRM_REVIEW","Firm review"],["NOT_A_FIT","Not a fit"],["other","Other result"],["not_screened","Not screened on the page"]];
 const FUNNEL=[["leads","Requests received"],["contacted","Reached by text or call"],["texted","Sent a text"],["called","Called by the assistant"],
  ["transfer_attempted","Live transfer attempted"],["transfer_connected","Live transfer connected"],["callback_booked","Callback time booked"],
