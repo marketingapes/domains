@@ -85,7 +85,20 @@ function serve(livePages) {
 
           assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
           assert.ok(await page.evaluate(()=>fetch('https://example.invalid/blocked').then(()=>false,()=>true)));
+          assert.ok(await page.locator('.hero-art img').evaluateAll(images => images.every(img => img.complete && img.naturalWidth > 0)));
+          assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://besttortlawyers.com/c/multiplan/');
           await shot(page,`${c.slug}-hero-${w}`);
+          await page.locator('#attorney').scrollIntoViewIfNeeded();
+          await page.waitForFunction(() => { const img = document.querySelector('.attorney-photo img'); return img.complete && img.naturalWidth > 0; });
+          await page.locator('.attorney-photo img').evaluate(img => img.decode());
+          await shot(page,`${c.slug}-attorney-${w}`);
+          if (process.env.SHOTS) await page.screenshot({path:path.join(process.env.SHOTS,`${c.slug}-full-${w}.jpg`),type:'jpeg',quality:85,fullPage:true});
+          for (const alias of c.legacy_slugs ?? []) {
+            await page.goto(`${base}/c/${alias}/`);
+            assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://besttortlawyers.com/c/multiplan/');
+            assert.ok(await page.locator('#provider-screen').isVisible());
+          }
+          await page.goto(root);
           await page.click('#provider-screen button');
           assert.ok(await page.locator('#screen-error').isVisible());
           assert.ok(await page.locator('#screen-result').isHidden());

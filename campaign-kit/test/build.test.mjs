@@ -187,3 +187,23 @@ test('provider screen routes every answer combination without a legal decision',
   }
   assert.equal(count,48);
 });
+
+
+test('MultiPlan uses verified portraits and reproducible canonical and legacy routes', () => {
+  const raw = configs.find(([f]) => f === 'devin-multiplan.json')[1], c = normalize(raw);
+  const html = renderPages(c)['index.html'];
+  assert.equal(c.slug, 'multiplan');
+  assert.deepEqual(c.legacy_slugs, ['devin-multiplan']);
+  assert.throws(() => normalize({...raw, legacy_slugs:['../escape']}), /approved legacy alias/);
+  assert.match(html, /rel="canonical" href="https:\/\/besttortlawyers.com\/c\/multiplan\/"/);
+  assert.match(html, /Devin van der Hahn, Managing Partner and Founder/);
+  assert.match(html, /devin-portrait.jpg/);
+  assert.match(html, /devin-square.png/);
+  assert.match(html, /vanderhahn-logo.png/);
+  assert.doesNotMatch(html, /provider-review.svg|firm-monogram/);
+  assert.ok(html.indexOf('id="review"') < html.indexOf('id="overview"'));
+  for (const slug of [c.slug, ...c.legacy_slugs]) {
+    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'index.html'),'utf8'), html);
+    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'site.css'),'utf8'), renderCss(c));
+  }
+});
