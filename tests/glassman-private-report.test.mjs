@@ -23,20 +23,23 @@ test('fixed HTTPS endpoint and strict campaign schema',()=>{
 
 // A small fake DOM: enough to sign in, load a report and read what was rendered.
 function page(responses){
- const elements=new Map(),handlers={},calls=[];
+ const elements=new Map(),handlers={},calls=[],downloads=[];
  const node=(tag)=>({tag,value:'',hidden:true,textContent:'',className:'',children:[],
-  addEventListener(ev,fn){handlers[this.id+':'+ev]=fn;},append(...c){this.children.push(...c);},replaceChildren(){this.children=[];}});
+  addEventListener(ev,fn){handlers[this.id+':'+ev]=fn;},append(...c){this.children.push(...c);},replaceChildren(){this.children=[];},
+  click(){downloads.push({name:this.download,href:this.href});}});
+ const blobs=[];function Blob(parts,opts){this.parts=parts;this.opts=opts;}
+ const URL={createObjectURL(b){blobs.push(b);return 'blob:test';},revokeObjectURL(){}};
  const element=id=>{if(!elements.has(id)){const n=node('x');n.id=id;elements.set(id,n);}return elements.get(id);};
  const text=n=>n.textContent+n.children.map(text).join(' ');
- const fetch=async(url,opts)=>{calls.push({url,opts});const r=responses.shift();return {ok:r.status===200,status:r.status,json:async()=>r.body};};
- vm.runInNewContext(js,{document:{getElementById:element,createElement:node},window:{addEventListener(){}},fetch,setTimeout(){},clearTimeout(){},Date,Number,Error,String,JSON});
+ const fetch=async(url,opts)=>{calls.push({url,opts});const r=responses.shift()||{status:403,body:{}};return {ok:r.status===200,status:r.status,json:async()=>r.body};};
+ vm.runInNewContext(js,{document:{getElementById:element,createElement:node},window:{addEventListener(){}},fetch,setTimeout(){},clearTimeout(){},Date,Number,Error,String,JSON,Blob,URL});
  const run=async()=>{
   element('email').value='test@example.invalid';
   await handlers['sign-in:submit']({preventDefault(){},submitter:{disabled:false}});
   element('code').value='123456';
   await handlers['verify:submit']({preventDefault(){},submitter:{disabled:false}});
  };
- return {element,text:id=>text(element(id)),calls,run,handlers};
+ return {element,text:id=>text(element(id)),calls,run,handlers,downloads,blobs};
 }
 const V2={schema:'glassman.web-summary/v2',campaign_id:'GLASSMAN-SSDI-002',generated_at:'2026-11-09T23:00:00Z',timezone:'America/New_York',
  totals:{real_leads:7,test_records:12,first_day:'2026-11-06',last_day:'2026-11-09',first_lead_at:'2026-11-06T20:28:38Z',last_lead_at:'2026-11-09T22:27:46Z',
@@ -98,6 +101,56 @@ test('a v1 server still works; malformed reports and signed-out sessions show no
 test('page has the v2 report regions and keeps them hidden until data loads',()=>{
  for(const id of ['detail','contacted-card','cpl-card','range','v1-note'])assert.match(html,new RegExp('id="'+id+'" hidden'));
  for(const id of ['funnel-body','day-body','channel-body','door-body','outcome-body','spend-list'])assert.match(html,new RegExp('id="'+id+'"'));
- assert.match(html,/reporting\.js\?v=2/);assert.match(html,/<th scope="col"/);
- assert.doesNotMatch(js,/\.name\b|phone|state_code|receipt/i);
+ assert.match(html,/reporting\.js\?v=3/);assert.match(html,/<th scope="col"/);
+});
+
+// ---------- lead list for matching: contact details, only for logins that are granted it ----------
+const LIST={schema:'glassman.lead-list/v1',campaign_id:'GLASSMAN-SSDI-002',generated_at:'2026-11-09T23:00:00Z',timezone:'America/New_York',limit:500,count:2,
+ leads:[{received_at:'2026-11-09T22:27:46Z',receipt_id:'BTLK-0123456789',first_name:'Pat',last_name:'Example',phone:'(305) 555-0100',email:'pat@example.invalid',
+   state:'FL',channel:'meta',door:'callback_form',web_outcome:null,status:'delivered_to_firm_crm',requested_callback_eastern:null,lawruler_lead_id:'48211',lawruler_at:'2026-11-09T22:28:10Z'},
+  {received_at:'2026-11-06T20:28:38Z',receipt_id:'BTLK-ABCDEF0123',first_name:'=Sam',last_name:'Sample "Jr"',phone:'',email:'',
+   state:'',channel:'direct_or_unknown',door:'quiz',web_outcome:'QUALIFIED',status:'called_not_transferred',requested_callback_eastern:'2026-11-07 10:30',lawruler_lead_id:null,lawruler_at:null}]};
+test('lead list shows only for a login that is granted it, with the LawRuler lead ID',async()=>{
+ const p=page([ok({}),ok({session:'ps1.a.b'}),ok(V2),ok(LIST)]);await p.run();
+ assert.equal(p.calls[3].url,'https://perspective-s3b8.onrender.com/portal/glassman/lead-list');
+ assert.equal(p.calls[3].opts.headers.Authorization,'Bearer ps1.a.b');assert.equal(p.calls[3].opts.credentials,'omit');assert.equal(p.calls[3].opts.cache,'no-store');
+ assert.equal(p.element('match').hidden,false);
+ const t=p.text('match-body');
+ for(const s of ['Pat Example','(305) 555-0100','pat@example.invalid','FL','Meta (Facebook, Instagram)','Callback form','Not screened on the page','Posted to LawRuler','48211','BTLK-0123456789',
+  'Eligibility quiz','Qualified','Called, not transferred · callback asked for 2026-11-07 10:30','Not posted yet','Not given','BTLK-ABCDEF0123'])assert.ok(t.includes(s),s);
+ assert.match(t,/Nov 9, 2026, 5:27\sPM/);
+ assert.equal(p.text('match-count'),'2 leads · 1 with a LawRuler lead ID');
+ // the download carries the same rows, with spreadsheet formulas defused and quotes escaped
+ p.handlers['match-csv:click']();
+ assert.equal(p.downloads.length,1);assert.equal(p.downloads[0].name,'glassman-ssdi-leads.csv');
+ const csv=p.blobs[0].parts.join('');
+ assert.match(csv,/"First name","Last name","Phone","Email"/);assert.match(csv,/"LawRuler lead ID"/);
+ assert.ok(csv.includes('"Pat","Example","(305) 555-0100","pat@example.invalid","FL"'));assert.ok(csv.includes('"48211"'));
+ assert.ok(csv.includes(`"'=Sam","Sample ""Jr"""`));
+ // locking clears the list and disables the download
+ p.handlers['lock:click']();
+ assert.equal(p.element('match').hidden,true);assert.equal(p.text('match-body'),'');assert.equal(p.text('match-count'),'');
+ p.handlers['match-csv:click']();assert.equal(p.downloads.length,1);
+});
+test('a login without the lead list still gets the totals; a bad list shows nothing',async()=>{
+ let p=page([ok({}),ok({session:'s'}),ok(V2),{status:403,body:{}}]);await p.run();
+ assert.equal(p.element('metrics').hidden,false);assert.equal(p.text('web-count'),'7');assert.equal(p.element('match').hidden,true);assert.equal(p.text('match-body'),'');
+ assert.match(p.text('status'),/Connected/);
+ p=page([ok({}),ok({session:'s'}),ok(V2),ok({...LIST,campaign_id:'OTHER'})]);await p.run();
+ assert.equal(p.element('metrics').hidden,false);assert.equal(p.element('match').hidden,true);assert.equal(p.text('match-body'),'');
+ p=page([ok({}),ok({session:'s'}),ok(V2),ok({...LIST,leads:[{...LIST.leads[0],first_name:{toString(){return 'x';}}}]})]);await p.run();
+ assert.equal(p.element('match').hidden,true);
+ p=page([ok({}),ok({session:'s'}),ok(V2),{status:503,body:{}}]);await p.run();
+ assert.equal(p.element('metrics').hidden,false);assert.equal(p.element('match').hidden,true);
+ p=page([ok({}),ok({session:'s'}),ok(V2),{status:401,body:{}}]);await p.run();
+ assert.equal(p.element('metrics').hidden,true);assert.match(p.text('status'),/Sign-in required/);
+ p=page([ok({}),ok({session:'s'}),ok(V2),ok({...LIST,count:0,leads:[]})]);await p.run();
+ assert.equal(p.element('match').hidden,false);assert.match(p.text('match-body'),/No real leads yet/);assert.equal(p.element('match-csv').hidden,true);
+});
+test('lead list page region is hidden until loaded and never carries screening or health fields',()=>{
+ assert.match(html,/id="match" hidden/);assert.match(html,/id="match-body"/);assert.match(html,/id="match-csv"/);
+ assert.match(html,/never screening answers or health details/);assert.match(html,/LawRuler lead ID/);
+ assert.equal((js.match(/\/lead-list/g)||[]).length,1);
+ assert.doesNotMatch(js,/answers|diagnos|condition|disabilit|trustedform|fbclid|gclid|ttclid|user_agent|\bip\b/i);
+ assert.doesNotMatch(js,/console\.|navigator\.sendBeacon|XMLHttpRequest/);
 });

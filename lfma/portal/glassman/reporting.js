@@ -2,7 +2,7 @@
 "use strict";
 const base="https://perspective-s3b8.onrender.com/portal/glassman";
 const el=id=>document.getElementById(id);
-let email="",session="",timer,generation=0;
+let email="",session="",timer,generation=0,matchRows=[];
 const status=text=>{el("status").textContent=text;};
 const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note"];
 const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list"];
@@ -13,6 +13,12 @@ const FUNNEL=[["leads","Requests received"],["contacted","Reached by text or cal
  ["transfer_attempted","Live transfer attempted"],["transfer_connected","Live transfer connected"],["callback_booked","Callback time booked"],
  ["callback_sent_to_firm","Callback request sent to the firm"],["sent_to_firm_crm","Sent to the firm's case system (LawRuler)"],
  ["held_not_a_fit","Held: not a fit"],["not_yet_contacted","Not yet contacted"]];
+const DOORS={callback_form:"Callback form",quiz:"Eligibility quiz",talk_to_sofia:"Talk to Sofia",meta_form:"Meta lead form",other:"Other"};
+const RESULTS={QUALIFIED:"Qualified",FIRM_REVIEW:"Firm review",NOT_A_FIT:"Not a fit"};
+const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Live transfer connected",callback_request_sent_to_firm:"Callback request sent to the firm",
+ transfer_attempted_not_connected:"Transfer tried, not connected",called_not_transferred:"Called, not transferred",queued_for_call:"Queued for a call",
+ texted_not_called:"Texted, not called yet",held_not_a_fit:"Held: not a fit",stored_no_contact:"Not yet contacted"};
+const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference"];
 function lock(){
  generation++;session="";clearTimeout(timer);
  el("metrics").hidden=true;el("sign-in").hidden=false;el("verify").hidden=true;
@@ -20,8 +26,10 @@ function lock(){
  for(const id of TABLES)el(id).replaceChildren();
  for(const id of V2_PARTS)el(id).hidden=true;
  el("v1-note").hidden=true;
+ clearMatch();
  el("code").value="";status("Sign-in required. No private data loaded.");
 }
+function clearMatch(){matchRows=[];el("match").hidden=true;el("match-body").replaceChildren();el("match-count").textContent="";}
 async function request(path,body,token){
  const response=await fetch(base+path,{method:body?"POST":"GET",mode:"cors",credentials:"omit",cache:"no-store",
  headers:{...(body?{"Content-Type":"application/json"}:{}),...(token?{Authorization:"Bearer "+token}:{})},
@@ -97,12 +105,62 @@ function showV1(d){
  el("source-time").textContent=time(d.source_updated_at);el("generated-time").textContent=time(d.generated_at);
  for(const id of V2_PARTS)el(id).hidden=true;el("v1-note").hidden=false;
 }
+function eastern(value){
+ const date=new Date(value);
+ return value&&!Number.isNaN(date.valueOf())?date.toLocaleString("en-US",{timeZone:"America/New_York",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}):"";
+}
+const text=v=>typeof v==="string";
+const textOrNull=v=>v===null||text(v);
+function validMatch(d){
+ return d.schema==="glassman.lead-list/v1"&&d.campaign_id==="GLASSMAN-SSDI-002"&&Array.isArray(d.leads)&&d.leads.length<=500&&
+  d.leads.every(r=>r&&text(r.receipt_id)&&text(r.first_name)&&text(r.last_name)&&text(r.phone)&&text(r.email)&&text(r.state)&&text(r.channel)&&
+   text(r.door)&&text(r.status)&&textOrNull(r.web_outcome)&&textOrNull(r.requested_callback_eastern)&&textOrNull(r.lawruler_lead_id)&&textOrNull(r.lawruler_at));
+}
+function showMatch(d){
+ matchRows=d.leads.map(r=>[eastern(r.received_at),r.first_name,r.last_name,r.phone,r.email,r.state,channel(r.channel),DOORS[r.door]||"Other",
+  r.web_outcome?RESULTS[r.web_outcome]||"Other result":"Not screened on the page",STATUSES[r.status]||"Not yet contacted",r.requested_callback_eastern||"",
+  r.lawruler_lead_id||"",r.lawruler_lead_id?eastern(r.lawruler_at):"",r.receipt_id]);
+ const body=el("match-body");body.replaceChildren();
+ if(!matchRows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=11;td.textContent="No real leads yet.";tr.append(td);body.append(tr);}
+ for(const m of matchRows){
+  const cells=[m[0],(m[1]+" "+m[2]).trim()||"Not given",m[3]||"Not given",m[4]||"Not given",m[5]||"—",m[6],m[7],m[8],
+   m[9]+(m[10]?" · callback asked for "+m[10]:""),m[11]||"Not posted yet",m[13]];
+  const tr=document.createElement("tr");
+  cells.forEach((value,i)=>{const td=document.createElement(i?"td":"th");if(!i)td.scope="row";if(i===8)td.className="wrap";td.textContent=value;tr.append(td);});
+  body.append(tr);
+ }
+ const posted=matchRows.filter(m=>m[11]).length;
+ el("match-count").textContent=matchRows.length+(matchRows.length===1?" lead":" leads")+" · "+posted+" with a LawRuler lead ID"+(d.leads.length>=500?" · showing the newest 500":"");
+ el("match-csv").hidden=!matchRows.length;el("match").hidden=false;
+}
+async function loadMatch(g){
+ try{
+  const d=await request("/lead-list",null,session);
+  if(g!==generation||!session)return;
+  if(!validMatch(d))throw new Error("Unexpected lead list");
+  showMatch(d);
+ }catch(e){
+  if(g!==generation)return;
+  if(e.status===401){lock();return;}
+  if(e.status===403||e.status===404||!matchRows.length){clearMatch();return;}
+  el("match-count").textContent="Lead list refresh failed. This list is from the previous successful refresh.";
+ }
+}
+function csvCell(value){let s=String(value);if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
+function downloadMatch(){
+ if(!session||!matchRows.length)return;
+ const lines=[MATCH_HEAD,...matchRows].map(r=>r.map(csvCell).join(","));
+ const url=URL.createObjectURL(new Blob(["\ufeff"+lines.join("\r\n")+"\r\n"],{type:"text/csv;charset=utf-8"}));
+ const a=document.createElement("a");a.href=url;a.download="glassman-ssdi-leads.csv";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 async function refresh(g){
  try{
   const d=await request("/web-summary?v=2",null,session);
   if(g!==generation||!session)return;
   if(validV2(d))showV2(d);else if(validV1(d))showV1(d);else throw new Error("Unexpected report");
   el("metrics").hidden=false;status("Connected. The report refreshes every minute.");
+  await loadMatch(g);
  }catch(e){
   if(g!==generation)return;
   if(e.status===401||e.status===403){lock();return;}
@@ -125,6 +183,6 @@ el("verify").addEventListener("submit",async e=>{
  catch{if(g===generation)status("Could not verify code. Try again or change email to request a new one.");}
  finally{button.disabled=false;}
 });
-el("back").addEventListener("click",lock);el("lock").addEventListener("click",lock);
+el("back").addEventListener("click",lock);el("lock").addEventListener("click",lock);el("match-csv").addEventListener("click",downloadMatch);
 window.addEventListener("pagehide",lock);window.addEventListener("pageshow",e=>{if(e.persisted)lock();});
 })();
