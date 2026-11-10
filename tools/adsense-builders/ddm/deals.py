@@ -85,9 +85,7 @@ def deals(now=None):
 
 
 def tracked(d, sid):
-    url = d["network"]["click_url"]
-    sep = "&" if "?" in url else "?"
-    return url + sep + "sid=" + sid + "&utm_source=ddm&utm_medium=site&utm_campaign=bfcm-2026"
+    return d["network"]["click_url"] + "?sid=" + sid
 
 
 def public_feed():
