@@ -1,7 +1,7 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://perspective-s3b8.onrender.com; img-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>Glassman · Private Perspective</title><link rel="stylesheet" href="./reporting.css?v=2"><script src="./reporting.js?v=2" defer></script></head><body><main>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://perspective-s3b8.onrender.com; img-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>Glassman · Private Perspective</title><link rel="stylesheet" href="./reporting.css?v=3"><script src="./reporting.js?v=3" defer></script></head><body><main>
 <header><p class="eyebrow">Perspective · Marketing Apes</p><h1>Glassman SSDI</h1><p>Private campaign reporting, connected to the same records as your campaign Sheet.</p></header>
 <section aria-labelledby="report-title"><h2 id="report-title">Campaign report</h2>
-<p>This view measures saved web requests, not fully qualified leads or signed clients. Test records are never counted as leads. Every figure is a total; no individual person is shown.</p>
+<p>This view measures saved web requests, not fully qualified leads or signed clients. Test records are never counted as leads. The figures are totals. If your access includes it, a lead list for matching with your own records appears at the end; it shows contact details only, never screening answers or health details.</p>
 <form id="sign-in"><label for="email">Approved email address</label><input id="email" type="email" autocomplete="email" required><button type="submit">Email sign-in code</button></form>
 <form id="verify" hidden><label for="code">Six-digit code</label><input id="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required><button type="submit">Open reporting</button><button id="back" type="button">Change email</button></form>
 <p id="status" role="status" aria-live="polite">Sign-in required. No private data loaded.</p>
@@ -27,6 +27,13 @@
 <h3 id="outcome-title">Eligibility check results</h3><p class="hint">The result shown on the eligibility quiz or Meta form. Callback-form requests are not screened on the page.</p>
 <div class="scroll"><table aria-labelledby="outcome-title"><thead><tr><th scope="col">Result</th><th scope="col" class="num">Leads</th></tr></thead><tbody id="outcome-body"></tbody></table></div>
 <h3 id="spend-title">Ad spend</h3><p id="spend-note"></p><ul id="spend-list" aria-labelledby="spend-title"></ul>
+</div>
+<div id="match" hidden>
+<h3 id="match-title">Lead list for matching</h3><p class="hint">One row per real web request, newest first, so your intake team can match each person to your own records. Times are Eastern. The LawRuler lead ID appears once the request has been posted to LawRuler; “Not posted yet” means we have no ID for it.</p>
+<p id="match-count"></p>
+<div class="scroll"><table aria-labelledby="match-title"><thead><tr><th scope="col">Received</th><th scope="col">Name</th><th scope="col">Phone</th><th scope="col">Email</th><th scope="col">State</th><th scope="col">Channel</th><th scope="col">Way in</th><th scope="col">Page result</th><th scope="col">Status</th><th scope="col">LawRuler lead ID</th><th scope="col">Our reference</th></tr></thead><tbody id="match-body"></tbody></table></div>
+<button id="match-csv" type="button">Download list (CSV)</button>
+<p class="hint">The download holds personal contact details. Keep it inside your firm.</p>
 </div>
 <button id="lock" type="button">Lock reporting</button></div></section>
 <footer><a href="https://besttortlawyers.com/glassman/">Back to campaign overview</a><p>Read-only. This page does not launch ads, contact leads or change cases. Signed cases are not connected to this view.</p></footer>
