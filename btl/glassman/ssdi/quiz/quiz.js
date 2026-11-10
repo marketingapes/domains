@@ -15,8 +15,8 @@
   var steps = [
     { q: 'state', text: 'Which state do you live in?', why: 'This review isn’t available in North Dakota, South Dakota, Alaska or Hawaii.', select: STATES },
     { q: 'age', text: 'How old are you?', why: 'This review is for people 48 to 64. Social Security’s own rules give age more weight after 50.', opts: [['under_48', 'Under 48'], ['48_64', '48 to 64'], ['65_plus', '65 or older']] },
-    { q: 'out_of_work', text: 'Have you been out of work for at least a year?', why: 'SSDI is for people whose health keeps them from working, so time out of work matters.', opts: YN },
-    { q: 'doctor', text: 'Are you currently under a doctor’s care?', why: 'Records from regular medical care are the main evidence Social Security looks at.', opts: YN },
+    { q: 'stopped_work_5yr', text: 'Did you stop working within the past five years?', why: 'This review is for people who stopped working within the past five years.', opts: YN },
+    { q: 'doctor', text: 'Have you been treated or diagnosed by a doctor for your condition?', why: 'Medical records are the main evidence Social Security looks at.', opts: YN },
     { q: 'benefits', text: 'Are you getting disability payments from the government right now?', why: 'If you already get disability payments, this review isn’t the right fit for you.', opts: YN },
     { q: 'lawyer', text: 'Last one. Do you already have a lawyer for your disability claim?', why: 'If you already have a lawyer, they should be the one handling your claim.', opts: YN }
   ];
