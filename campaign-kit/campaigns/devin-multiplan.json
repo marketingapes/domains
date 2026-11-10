@@ -1,0 +1,19 @@
+{
+  "layout": "provider-review",
+  "slug": "devin-multiplan",
+  "status": "draft",
+  "publish": true,
+  "title": "MultiPlan & out-of-network payments",
+  "headline": "Questions about out-of-network payments?",
+  "intro": "Start with the facts behind your practice, facility or group’s commercial out-of-network billing. A short preliminary screen can help organize a conversation about whether further review may be appropriate.",
+  "firm_name": "VanderHahn LLP",
+  "attorney_name": "Devin van der Hahn",
+  "firm_source": "https://www.vanderhahn.com/service/healthcare-litigation/",
+  "hero_image": "/assets/devin-multiplan/provider-review.svg",
+  "billing_image": "/assets/devin-multiplan/billing-path.svg",
+  "questions": [
+    {"key":"role","label":"What is your role?","help":"Choose the closest fit for your practice, facility or group.","options":[{"value":"owner","label":"Owner, executive or clinical leader"},{"value":"admin","label":"Practice, facility or group administrator"},{"value":"finance","label":"CFO, finance or revenue-cycle leader"},{"value":"other","label":"Another role / not sure"}]},
+    {"key":"oon","label":"Did your organization bill commercial out-of-network services during 2015–2026?","help":"An estimate is fine. You do not need to upload records here.","options":[{"value":"yes","label":"Yes"},{"value":"unsure","label":"I’m not sure"},{"value":"no","label":"No"}]},
+    {"key":"volume","label":"About how much did you bill annually for those out-of-network services?","help":"Use billed charges, not payments received, a claimed loss or a claim’s potential value.","options":[{"value":"million","label":"$1 million or more"},{"value":"near","label":"Near $1 million"},{"value":"below","label":"Below that range"},{"value":"unsure","label":"I’m not sure"}]}
+  ]
+}

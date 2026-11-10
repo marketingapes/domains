@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync, readdirSync} from 'node:fs';
 import {join, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {normalize, renderPages, renderBundle, renderCss, assetManifest, checklist, imageSize, GATES, STATUSES, PREVIEW_CSP} from '../build.mjs';
+import {normalize, renderPages, renderBundle, renderCss, assetManifest, checklist, imageSize, GATES, STATUSES, PREVIEW_CSP, providerRoute} from '../build.mjs';
 
 const kit = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = join(kit, 'campaigns');
@@ -26,7 +26,7 @@ test('every shipped config builds as a PREVIEW that cannot reach production', ()
   for (const [f, raw] of configs) {
     const c = normalize(raw), pages = renderPages(c);
     assert.equal(c.mode, 'preview', f);
-    assert.deepEqual(Object.keys(pages).sort(), ['ads.html', 'form.html', 'index.html', 'quiz.html', 'sofia.html'], f);
+    assert.deepEqual(Object.keys(pages).sort(), c.layout === 'provider-review' ? ['index.html'] : ['ads.html', 'form.html', 'index.html', 'quiz.html', 'sofia.html'], f);
     for (const [n, html] of Object.entries(pages)) {
       for (const re of FORBIDDEN) assert.ok(!re.test(html), `${f} ${n} must not contain ${re}`);
       assert.ok(html.includes(`content="${PREVIEW_CSP}"`), `${f} ${n} carries the preview CSP`);
@@ -34,7 +34,7 @@ test('every shipped config builds as a PREVIEW that cannot reach production', ()
       assert.match(html, /<meta name="robots" content="noindex,follow">/);
       assert.ok(html.includes('class="kit-preview"'), `${f} ${n} shows the preview banner`);
     }
-    for (const n of ['quiz.html', 'form.html']) assert.ok(pages[n].includes('"webhook":null,"preview":true'), `${f} ${n} has no webhook`);
+    for (const n of c.layout === 'provider-review' ? [] : ['quiz.html', 'form.html']) assert.ok(pages[n].includes('"webhook":null,"preview":true'), `${f} ${n} has no webhook`);
   }
 });
 
@@ -128,6 +128,7 @@ test('config text is escaped and bad configs are refused', () => {
 test('channel bundle is paused drafts only; preview-only campaigns get no kit landing links', () => {
   for (const [f, raw] of configs) {
     const c = normalize(raw), b = renderBundle(c);
+    if (c.layout === 'provider-review') { assert.deepEqual(Object.keys(b), ['REVIEW.md']); continue; }
     assert.equal(b['meta.json'].campaign.status, 'PAUSED', f);
     assert.equal(b['google-search.json'].campaign.status, 'PAUSED', f);
     assert.equal(b['tiktok.json'].campaign.operation_status, 'DISABLE', f);
@@ -143,4 +144,35 @@ test('channel bundle is paused drafts only; preview-only campaigns get no kit la
     const daily = ['meta.json', 'google-search.json', 'tiktok.json', 'openai-ads.json'].reduce((s, k) => s + b[k].campaign.daily_budget_usd, 0);
     assert.ok(Math.abs(daily * c.budget.days - c.budget.media_total_usd) <= c.budget.days * 4, `${f} daily budgets ≈ media total`);
   }
+});
+
+
+test('provider review remains draft-only and cannot inherit production defaults', () => {
+  const raw=configs.find(([f])=>f==='devin-multiplan.json')[1], c=normalize(raw), html=renderPages(c)['index.html'];
+  assert.equal(c.campaign_id,null); assert.equal(c.tenant_id,null);
+  for (const key of ['budget','channels','sofia','geo','intake','gtm','delivery']) assert.equal(c[key],undefined,key);
+  assert.throws(()=>normalize({...raw,status:'live'}),/must remain draft/);
+  assert.throws(()=>normalize({...raw,intake:{webhook:'https://example.test'}}),/unsupported field/);
+  assert.throws(()=>normalize({...raw,campaign_id:'INVENTED-ID'}),/unsupported field/);
+  assert.throws(()=>normalize({...raw,slug:'../bad'}),/lower-kebab/);
+  assert.throws(()=>normalize({...raw,hero_image:'https://example.test/a.svg'}),/local hero_image/);
+  assert.throws(()=>normalize({...raw,questions:raw.questions.slice(1)}),/three questions/);
+  for (const re of [/localStorage/,/sessionStorage/,/fetch\(/,/XMLHttpRequest/,/sendBeacon/,/type="email"/,/type="tel"/,/<input/,/mail.google/,/docs.google/,/2,500/,/5,000/,/payment (?:is |was )?confirmed/i]) assert.ok(!re.test(html),String(re));
+  assert.equal((html.match(/<h1>/g)||[]).length,1);
+  assert.match(html,/No request has been sent/);
+  assert.match(html,/Near \$1 million/);
+  assert.match(html,/ambulatory surgery centers/);
+  assert.match(html,/No patient records needed/);
+  const escaped=renderPages(normalize({...raw,headline:'<script>bad</script>'}))['index.html'];
+  assert.ok(!escaped.includes('<script>bad</script>'));
+});
+
+test('provider screen routes every answer combination without a legal decision', () => {
+  assert.equal(providerRoute({}),'incomplete');
+  let count=0;
+  for (const role of ['owner','admin','finance','other']) for (const oon of ['yes','unsure','no']) for (const volume of ['million','near','below','unsure']) {
+    const expected=oon==='no'?'scope':role==='other'||oon==='unsure'||['below','unsure'].includes(volume)?'clarify':'conversation';
+    assert.equal(providerRoute({role,oon,volume}),expected);count++;
+  }
+  assert.equal(count,48);
 });
