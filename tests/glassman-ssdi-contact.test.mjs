@@ -99,7 +99,7 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261110-hours-730/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-exact-time/);
   }
 });
 test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
@@ -133,4 +133,12 @@ test('every saved request ends on a thank-you page; a phone the intake cannot di
   assert.match(thanks, /sessionStorage\.removeItem\('ee_ssdi_thanks'\)/);
   assert.match(thanks, /fresh: !!\(rec && rec\.real === true && !test\)/);
   assert.doesNotMatch(thanks, /generate_lead|fbq|ttq|oaiq/);
+});
+
+test('outside intake hours the pages ask for an exact callback day, time and zone as an unconfirmed request', () => {
+  const js = readFileSync(new URL('intake.js', root), 'utf8');
+  for (const key of ['preferred_date', 'preferred_time', 'timezone', 'preferred_at_eastern', 'preferred_utc', 'preferred_label']) assert.match(js, new RegExp(key));
+  assert.match(js, /not a booked appointment/);
+  assert.match(js, /RL\.inHours\(new Date\(\)\) && !forced/);
+  assert.doesNotMatch(js, /dataLayer\.push\([^)]*preferred_/);
 });
