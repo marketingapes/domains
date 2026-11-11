@@ -99,7 +99,7 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-exact-time-2/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-ad-ids/);
   }
 });
 test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
@@ -145,4 +145,16 @@ test('outside intake hours the pages ask for an exact callback day, time and zon
   assert.match(js, /openSlots\(z\.date, 'America\/New_York'\)\.length/, 'a day with no open slot is not offered');
   assert.match(js, /if \(exactExpired\(\)\)/, 'an expired choice blocks submit instead of falling back silently');
   assert.match(js, /loc\.time < '09:00'/, 'never before 9:00 AM in the visitor zone');
+});
+
+test('ad platform campaign, ad set / ad group and ad ids are kept in attribution only, bounded, never in dataLayer', () => {
+  const js = readFileSync(new URL('intake.js', root), 'utf8');
+  assert.match(js, /var AD_ID_KEYS = \['utm_id', 'campaign_id', 'adgroup_id', 'adset_id', 'ad_id'\]/);
+  const a = js.indexOf('  function adId('), b = js.indexOf('\n', a);
+  const adId = new Function(js.slice(a, b) + '; return adId;')();
+  assert.equal(adId('120255315598790231'), '120255315598790231');
+  assert.equal(adId('cmpn_6aeffa79'), 'cmpn_6aeffa79');
+  for (const bad of ['{{ad.id}}', '__CID__', '{creative}', '', 'a b', 'x'.repeat(65), null, '<script>']) assert.equal(adId(bad), '', String(bad));
+  assert.match(js, /campaign_id: CAMPAIGN, page_id: pageId/, 'the payload campaign_id stays the campaign code');
+  assert.doesNotMatch(js, /push\([^)]*AD_ID_KEYS|push\([^)]*adgroup_id|push\([^)]*adset_id/);
 });
