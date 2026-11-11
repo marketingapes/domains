@@ -99,7 +99,7 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-exact-time/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-exact-time-2/);
   }
 });
 test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
@@ -141,4 +141,8 @@ test('outside intake hours the pages ask for an exact callback day, time and zon
   assert.match(js, /not a booked appointment/);
   assert.match(js, /RL\.inHours\(new Date\(\)\) && !forced/);
   assert.doesNotMatch(js, /dataLayer\.push\([^)]*preferred_/);
+  assert.match(js, /ms <= Date\.now\(\) \+ SLOT_LEAD_MS/, 'past slots are never offered');
+  assert.match(js, /openSlots\(z\.date, 'America\/New_York'\)\.length/, 'a day with no open slot is not offered');
+  assert.match(js, /if \(exactExpired\(\)\)/, 'an expired choice blocks submit instead of falling back silently');
+  assert.match(js, /loc\.time < '09:00'/, 'never before 9:00 AM in the visitor zone');
 });

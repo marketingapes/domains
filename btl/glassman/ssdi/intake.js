@@ -133,11 +133,25 @@
     }
     return ms;
   }
+  var SLOT_LEAD_MS = 30 * 60 * 1000; /* a requested time must be at least 30 minutes ahead */
+  /* Eastern slot times (HH:MM) still ahead of now on an Eastern date, never before 9:00 AM in the visitor's zone. */
+  function openSlots(day, tz) {
+    var out = [];
+    for (var m = 8 * 60; m <= 19 * 60; m += 30) {
+      var et = ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2), ms = zonedMs(day, et, 'America/New_York');
+      if (ms <= Date.now() + SLOT_LEAD_MS) continue;
+      var loc = zoneParts(ms, tz);
+      if (loc.time < '09:00') continue;
+      out.push({ et: et, clock: loc.clock });
+    }
+    return out;
+  }
+  /* The next five intake days that still have at least one open slot (today drops out once its slots have passed). */
   function exactDays() {
     var out = [], ms = Date.now();
-    for (var i = 0; i < 12 && out.length < 5; i++) {
+    for (var i = 0; i < 14 && out.length < 5; i++) {
       var z = zoneParts(ms + i * 864e5, 'America/New_York');
-      if (z.weekday !== 'Sat' && z.weekday !== 'Sun') out.push(z);
+      if (z.weekday !== 'Sat' && z.weekday !== 'Sun' && openSlots(z.date, 'America/New_York').length) out.push(z);
     }
     return out;
   }
@@ -157,17 +171,14 @@
       '<select id="cb_time" name="cb_time" aria-label="Preferred time"></select>' +
       '<select id="cb_zone" name="cb_zone" aria-label="Your time zone">' +
       ZONES.map(function (z) { return '<option value="' + z[0] + '"' + (z[0] === zone ? ' selected' : '') + '>' + z[1] + ' time</option>'; }).join('') + '</select>' +
+      '<span class="ferr" id="cb_day-e" aria-live="polite"></span>' +
       '<span class="why">This is a request for the team, not a booked appointment. Intake hours are Monday to Friday, 8:00 AM to 7:30 PM Eastern.</span>';
     host.parentNode.insertBefore(wrap, host.nextSibling);
     function fillTimes() {
-      var tz = val('cb_zone') || 'America/New_York', day = val('cb_day') || exactDays()[0].date, keep = val('cb_time'), html = '';
-      for (var m = 8 * 60; m <= 19 * 60; m += 30) {
-        var et = ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2);
-        var loc = zoneParts(zonedMs(day, et, 'America/New_York'), tz);
-        if (loc.time < '09:00') continue; /* calls start at 9:00 AM in the visitor's own zone */
-        html += '<option value="' + et + '"' + (et === keep ? ' selected' : '') + '>' + loc.clock + '</option>';
-      }
+      var tz = val('cb_zone') || 'America/New_York', days = exactDays(), day = val('cb_day') || (days[0] ? days[0].date : ''), keep = val('cb_time'), html = '';
+      (day ? openSlots(day, tz) : []).forEach(function (o) { html += '<option value="' + o.et + '"' + (o.et === keep ? ' selected' : '') + '>' + o.clock + '</option>'; });
       document.getElementById('cb_time').innerHTML = html;
+      fieldErr('cb_day', '');
     }
     fillTimes();
     document.getElementById('cb_zone').addEventListener('change', fillTimes);
@@ -180,13 +191,15 @@
     var tz = val('cb_zone') || 'America/New_York', name = 'Eastern';
     ZONES.forEach(function (z) { if (z[0] === tz) name = z[1]; });
     var ms = zonedMs(val('cb_day'), val('cb_time'), 'America/New_York');
-    if (!(ms > Date.now())) return null;
+    if (!(ms > Date.now() + SLOT_LEAD_MS) || zoneParts(ms, tz).time < '09:00') return null;
     var loc = zoneParts(ms, tz);
     return { preferred_date: loc.date, preferred_time: loc.time, timezone: tz,
       preferred_at_eastern: val('cb_day') + ' ' + val('cb_time'), preferred_utc: new Date(ms).toISOString(),
       preferred_label: loc.day + ', ' + loc.clock + ' ' + name + ' time' };
   }
   function timeLabel() { var x = exactTime(); return x ? x.preferred_label : bestTime()[1]; }
+  /* True when a day was chosen but its time is no longer open (the page sat open, or the zone changed). */
+  function exactExpired() { return exactOn && !!val('cb_day') && !exactTime(); }
 
   /* ---- TrustedForm ---- */
   if (window.EE_TRUSTEDFORM) {
@@ -276,6 +289,13 @@
       if (status) { status.className = 'status err'; status.textContent = 'Please check the box so the team can call or text the number you provided.'; }
       ok = false;
     }
+    if (exactExpired()) {
+      var cbDay = document.getElementById('cb_day'), cbTime = document.getElementById('cb_time');
+      if (cbTime) { cbTime.innerHTML = ''; openSlots(val('cb_day'), val('cb_zone') || 'America/New_York').forEach(function (o) { cbTime.innerHTML += '<option value="' + o.et + '">' + o.clock + '</option>'; }); }
+      fieldErr('cb_day', 'That time has passed or is no longer open. Please choose another day or time, or pick No preference.');
+      if (cbDay) cbDay.setAttribute('aria-describedby', 'cb_day-e');
+      ok = false;
+    } else if (exactOn) fieldErr('cb_day', '');
     if (!ok) {
       push(otherOptions ? 'ee_other_options_submit_error' : 'ee_lead_submit_error', { reason: 'validation' });
       var invalid = form.querySelector('[aria-invalid="true"]'); if (invalid) invalid.focus();
