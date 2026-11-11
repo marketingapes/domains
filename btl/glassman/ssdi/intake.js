@@ -113,7 +113,7 @@
   /* ---- outside intake hours: exact preferred callback day, time and time zone ----
      Shown only when the page loads outside Glassman's intake hours (or with ?callback_time=1, for checking the field).
      It records a request, never an appointment. Slots are the intake hours (8:00 AM to 7:00 PM Eastern, weekdays),
-     shown in the visitor's own time zone. Nothing here goes to dataLayer. */
+     shown in the visitor's own time zone and never earlier than 9:00 AM there. Nothing here goes to dataLayer. */
   var ZONES = [['America/New_York', 'Eastern'], ['America/Chicago', 'Central'], ['America/Denver', 'Mountain'], ['America/Phoenix', 'Arizona'], ['America/Los_Angeles', 'Pacific']];
   function zoneParts(ms, tz) {
     var o = {};
@@ -151,7 +151,7 @@
     var myZone = ''; try { myZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
     var zone = ZONES.some(function (z) { return z[0] === myZone; }) ? myZone : 'America/New_York';
     var wrap = document.createElement('div'); wrap.className = 'field'; wrap.id = 'cb_exact';
-    wrap.innerHTML = '<label for="cb_day">Our intake team is closed right now. When should they call you?</label>' +
+    wrap.innerHTML = '<label for="cb_day">Our intake team is closed right now. When should we call you?</label>' +
       '<select id="cb_day" name="cb_day"><option value="">No preference</option>' +
       exactDays().map(function (d) { return '<option value="' + d.date + '">' + d.day + '</option>'; }).join('') + '</select>' +
       '<select id="cb_time" name="cb_time" aria-label="Preferred time"></select>' +
@@ -163,7 +163,9 @@
       var tz = val('cb_zone') || 'America/New_York', day = val('cb_day') || exactDays()[0].date, keep = val('cb_time'), html = '';
       for (var m = 8 * 60; m <= 19 * 60; m += 30) {
         var et = ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2);
-        html += '<option value="' + et + '"' + (et === keep ? ' selected' : '') + '>' + zoneParts(zonedMs(day, et, 'America/New_York'), tz).clock + '</option>';
+        var loc = zoneParts(zonedMs(day, et, 'America/New_York'), tz);
+        if (loc.time < '09:00') continue; /* calls start at 9:00 AM in the visitor's own zone */
+        html += '<option value="' + et + '"' + (et === keep ? ' selected' : '') + '>' + loc.clock + '</option>';
       }
       document.getElementById('cb_time').innerHTML = html;
     }
