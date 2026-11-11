@@ -1,0 +1,216 @@
+{
+  "fixture_notice": "FICTIONAL TEST DATA ONLY. Never loaded by a production route.",
+  "marketing": {
+    "schema": "glassman.marketing-report/v1",
+    "campaign_id": "GLASSMAN-SSDI-002",
+    "generated_at": "2026-11-11T16:00:00Z",
+    "timezone": "America/New_York",
+    "range": {
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "days": 30
+    },
+    "spend_visible": true,
+    "rows": [
+      {
+        "date": "2026-11-10",
+        "channel": "meta",
+        "leads": 2,
+        "spend": 25.5,
+        "impressions": 300,
+        "clicks": 6,
+        "landing_page_views": null,
+        "platform_leads": null,
+        "source": "Stored platform report",
+        "loaded_at": "2026-11-11T08:00:00Z",
+        "leads_loaded": true,
+        "spend_loaded": true
+      }
+    ],
+    "coverage": {
+      "note": "Only stored dates and channels are shown. Missing metrics are unknown, not zero. Leads are recorded web requests, excluding tests. Platform leads are a separate measure. Clicks means platform link clicks. Spend coverage is partial; daily account completeness is not certified.",
+      "channels": [
+        {
+          "channel": "meta",
+          "label": "Meta",
+          "spend_loaded": true,
+          "leads_loaded": true,
+          "spend_days": 1,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "google",
+          "label": "Google",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "bing",
+          "label": "Microsoft Ads",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "tiktok",
+          "label": "TikTok",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "openai",
+          "label": "OpenAI",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "direct_or_unknown",
+          "label": "Direct / unknown",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        },
+        {
+          "channel": "other",
+          "label": "Other",
+          "spend_loaded": false,
+          "leads_loaded": false,
+          "spend_days": 0,
+          "lead_days_missing_spend": 0
+        }
+      ],
+      "firm_outcomes_available": null,
+      "spend": {
+        "as_of": "2026-11-11T08:00:00Z",
+        "age_seconds": 28800,
+        "status": "recent"
+      },
+      "leads": {
+        "as_of": "2026-11-10T16:00:00Z",
+        "age_seconds": 86400,
+        "status": "recent"
+      }
+    },
+    "provenance_warnings": [
+      "Stored platform data is not a live ad-account sync.",
+      "No message, phone, email, name, receipt, screening, or case data is exposed by this report."
+    ]
+  },
+  "status": {
+    "schema": "glassman.lead-status/v1",
+    "campaign_id": "GLASSMAN-SSDI-002",
+    "timezone": "America/New_York",
+    "generated_at": "2026-11-11T16:00:00Z",
+    "leads": [
+      {
+        "receipt_id": "BTLK-F000000001",
+        "stage": null,
+        "stage_date": null,
+        "reported_by": null,
+        "source_note": null,
+        "loaded_at": null,
+        "lawruler_lead_id": null
+      }
+    ],
+    "limit": 500,
+    "truncated": false,
+    "count": 1,
+    "capabilities": {
+      "can_update": false,
+      "reason": "No authorized portal status-write route exists. Existing firm outcomes are read-only; no change is saved from this portal."
+    },
+    "coverage": {
+      "recorded_outcomes": 0,
+      "firm_outcomes_available": false,
+      "note": "Latest stored outcome per exact real web receipt. Missing outcome means awaiting an update, not declined or unsigned. LawRuler-only rows without a verified receipt crosswalk are not included. Free-text reporter names and notes are omitted."
+    }
+  },
+  "activity": {
+    "schema": "glassman.lead-activity/v1",
+    "campaign_id": "GLASSMAN-SSDI-002",
+    "receipt_id": "BTLK-F000000001",
+    "generated_at": "2026-11-11T16:00:00Z",
+    "events": [
+      {
+        "id": "6398c0324e9bae8c55b0ba871c2a3e5ffc5c1caabfb9370ce5f6c09d2747ec01",
+        "kind": "sms",
+        "status": "sent",
+        "direction": "outbound",
+        "title": "Text submission recorded",
+        "occurred_at": null,
+        "recorded_at": "2026-11-10T16:01:00Z",
+        "source": "make:glassman-sms",
+        "started_at": null,
+        "source_event_id": "evt-4ace213cce7d756c363b8c768e8d4a8737dd14899f6fda0672bce36ceb82ff58",
+        "evidence": "A text-send event was saved. Delivery, reading and a reply are not confirmed by this record.",
+        "body": null,
+        "transcript": null,
+        "summary": null,
+        "recording_id": null
+      }
+    ],
+    "truncated": false,
+    "coverage": [
+      {
+        "label": "Texts",
+        "status": "not_captured",
+        "note": "Send markers may appear above. Message bodies, delivery confirmations and inbound replies are not in this feed."
+      },
+      {
+        "label": "Email",
+        "status": "not_connected",
+        "note": "A Glassman email feed is not connected here. Missing records do not prove that no email was sent."
+      },
+      {
+        "label": "AI call content",
+        "status": "not_captured",
+        "note": "Operational call reports are available. Transcripts, summaries and recording metadata are omitted by the current warehouse ingestion."
+      },
+      {
+        "label": "CallRail",
+        "status": "not_connected",
+        "note": "Transfer recordings and summaries require a verified provider crosswalk before appearing on a lead."
+      },
+      {
+        "label": "Firm outcomes",
+        "status": "not_connected",
+        "note": "Firm outcomes are read separately in Lead Status. No firm outcome is inferred from automation activity."
+      }
+    ]
+  },
+  "lead_list": {
+    "schema": "glassman.lead-list/v1",
+    "campaign_id": "GLASSMAN-SSDI-002",
+    "generated_at": "2026-11-11T16:00:00Z",
+    "timezone": "America/New_York",
+    "limit": 500,
+    "count": 1,
+    "scope": "Fictional test data only",
+    "leads": [
+      {
+        "received_at": "2026-11-10T16:00:00Z",
+        "receipt_id": "BTLK-F000000001",
+        "first_name": "Fictional",
+        "last_name": "Example",
+        "phone": "",
+        "email": "example@example.invalid",
+        "state": "NY",
+        "channel": "meta",
+        "door": "callback_form",
+        "web_outcome": null,
+        "status": "texted_not_called",
+        "requested_callback_eastern": null,
+        "lawruler_lead_id": null,
+        "lawruler_at": null
+      }
+    ]
+  }
+}
