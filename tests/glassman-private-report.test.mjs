@@ -22,7 +22,7 @@ test('fixed HTTPS endpoint and strict campaign schema',()=>{
 });
 
 // A small fake DOM: enough to sign in, load a report and read what was rendered.
-function page(responses){
+function page(responses,extensions={}){
  const elements=new Map(),handlers={},calls=[],downloads=[];
  const node=(tag)=>({tag,value:'',hidden:true,textContent:'',className:'',children:[],
   addEventListener(ev,fn){handlers[this.id+':'+ev]=fn;},append(...c){this.children.push(...c);},replaceChildren(){this.children=[];},
@@ -32,7 +32,7 @@ function page(responses){
  const element=id=>{if(!elements.has(id)){const n=node('x');n.id=id;elements.set(id,n);}return elements.get(id);};
  const text=n=>n.textContent+n.children.map(text).join(' ');
  const fetch=async(url,opts)=>{calls.push({url,opts});const r=responses.shift()||{status:403,body:{}};return {ok:r.status===200,status:r.status,json:async()=>r.body};};
- vm.runInNewContext(js,{document:{getElementById:element,createElement:node},window:{addEventListener(){}},fetch,setTimeout(){},clearTimeout(){},Date,Number,Error,String,JSON,Blob,URL});
+ vm.runInNewContext(js,{document:{getElementById:element,createElement:node},window:{addEventListener(){},...extensions},fetch,setTimeout(){},clearTimeout(){},Date,Number,Error,String,JSON,Blob,URL});
  const run=async()=>{
   element('email').value='test@example.invalid';
   await handlers['sign-in:submit']({preventDefault(){},submitter:{disabled:false}});
@@ -69,7 +69,7 @@ test('v2 report renders every section with honest spend states',async()=>{
  assert.match(p.text('channel-body'),/Direct or unknown 3 Not loaded Not loaded/);
  assert.match(p.text('door-body'),/Callback form 6.*Eligibility quiz 1.*Talk to Sofia 0.*Meta lead form 0/);
  assert.match(p.text('outcome-body'),/Qualified 1.*Firm review 0.*Not a fit 0/);
- for(const s of ['Reached by text or call 4','Called by the assistant 4','Live transfer attempted 2','Live transfer connected 0','Callback time booked 4','LawRuler) 0','Not yet contacted 3'])
+ for(const s of ['Text or call activity recorded 4','Called by the assistant 4','Live transfer attempted 2','Legacy transfer signal (unverified) 0','Assistant callback scheduled 4','LawRuler) 0','No follow-up recorded 3'])
   assert.ok(p.text('funnel-body').includes(s),s);
  assert.match(p.text('spend-list'),/Meta Insights API/);assert.match(p.text('spend-list'),/spend not loaded \(3 leads\)/);
  assert.match(p.text('status'),/Connected/);
@@ -101,7 +101,7 @@ test('a v1 server still works; malformed reports and signed-out sessions show no
 test('page has the v2 report regions and keeps them hidden until data loads',()=>{
  for(const id of ['detail','contacted-card','cpl-card','range','v1-note'])assert.match(html,new RegExp('id="'+id+'" hidden'));
  for(const id of ['funnel-body','day-body','channel-body','door-body','outcome-body','spend-list'])assert.match(html,new RegExp('id="'+id+'"'));
- assert.match(html,/reporting\.js\?v=3/);assert.match(html,/<th scope="col"/);
+ assert.match(html,/reporting\.js\?v=6/);assert.match(html,/<th scope="col"/);
 });
 
 // ---------- lead list for matching: contact details, only for logins that are granted it ----------
@@ -117,7 +117,7 @@ test('lead list shows only for a login that is granted it, with the LawRuler lea
  assert.equal(p.element('match').hidden,false);
  const t=p.text('match-body');
  for(const s of ['Pat Example','(305) 555-0100','pat@example.invalid','FL','Meta (Facebook, Instagram)','Callback form','Not screened on the page','Posted to LawRuler','48211','BTLK-0123456789',
-  'Eligibility quiz','Qualified','Called, not transferred · callback asked for 2026-11-07 10:30','Not posted yet','Not given','BTLK-ABCDEF0123'])assert.ok(t.includes(s),s);
+  'Eligibility quiz','Qualified','Call report recorded · callback asked for 2026-11-07 10:30','No verified ID','Not given','BTLK-ABCDEF0123'])assert.ok(t.includes(s),s);
  assert.match(t,/Nov 9, 2026, 5:27\sPM/);
  assert.equal(p.text('match-count'),'2 leads · 1 with a LawRuler lead ID');
  // the download carries the same rows, with spreadsheet formulas defused and quotes escaped
@@ -154,3 +154,9 @@ test('lead list page region is hidden until loaded and never carries screening o
  assert.doesNotMatch(js,/answers|diagnos|condition|disabilit|trustedform|fbclid|gclid|ttclid|user_agent|\bip\b/i);
  assert.doesNotMatch(js,/console\.|navigator\.sendBeacon|XMLHttpRequest/);
 });
+
+test('approved dashboard does not require overview access before independent permitted sections',async()=>{let marketing=0,leadStatus=0;const dashboard={loadMarketing:async()=>{marketing++;},setLeads:async()=>{leadStatus++;},clear(){},clearStatus(){}};const p=page([ok({}),ok({session:'s',user:{email:'kyleg@marketingapes.com',role:'basic',sections:['overview','leads'],contact:true}}),ok(LIST)],{GlassmanDashboard:()=>dashboard});await p.run();assert.equal(marketing,1);assert.equal(leadStatus,1);assert.equal(p.calls.length,3);assert.match(p.calls[2].url,/lead-list$/);assert.equal(p.element('metrics').hidden,false);});
+
+test('non-Kyle and missing grants keep legacy data without new-detail requests or buttons',async()=>{for(const user of [{email:'dan@example.invalid',sections:['overview','leads'],contact:true},{email:'kyleg@marketingapes.com',sections:['overview'],contact:true},{email:'kyleg@marketingapes.com',sections:['overview','leads'],contact:false},null]){let newCalls=0;const p=page([ok({}),ok({session:'s',user}),ok(V2),ok(LIST)],{GlassmanDashboard:()=>({loadMarketing(){newCalls++;},setLeads(){newCalls++;},clear(){},clearStatus(){}})});await p.run();assert.equal(newCalls,0);assert.equal(p.element('legacy-report').hidden,false);assert.equal(p.text('web-count'),'7');assert.doesNotMatch(p.text('match-body'),/View activity|View full intake/);assert.equal(p.calls.length,4);}});
+
+test('intake clears on lock, navigation, expiry and lead-list loss without persistent session',()=>{assert.match(js,/expiryTimer=setTimeout\(lock,12\*60\*60\*1000\)/);assert.match(js,/clearTimeout\(expiryTimer\)/);assert.match(js,/hashchange.*intake\?\.clear/);assert.match(js,/popstate.*intake\?\.clear/);assert.match(js,/pagehide",lock/);assert.match(js,/function clearMatch\(\)\{intake\?\.clear/);assert.match(js,/function openActivity\(lead\).*intake\?\.clear/);assert.match(js,/verifiedUser=d.user\|\|null/);});
