@@ -1,0 +1,86 @@
+{
+  "layout": "provider-review",
+  "slug": "multiplan",
+  "status": "draft",
+  "publish": true,
+  "title": "MultiPlan & out-of-network payments",
+  "headline": "A clearer picture of your out-of-network payments.",
+  "intro": "For healthcare practices, facilities and provider groups with questions about MultiPlan-related commercial payments. Start with three simple questions, then explore what a conversation with Devin van der Hahn could look like.",
+  "firm_name": "VanderHahn LLP",
+  "attorney_name": "Devin van der Hahn",
+  "firm_source": "https://www.vanderhahn.com/service/healthcare-litigation/",
+  "hero_image": "/assets/devin-multiplan/devin-portrait.jpg",
+  "billing_image": "/assets/devin-multiplan/billing-path.svg",
+  "questions": [
+    {
+      "key": "role",
+      "label": "What is your role?",
+      "help": "Choose the closest fit for your practice, facility or group.",
+      "options": [
+        {
+          "value": "owner",
+          "label": "Owner, executive or clinical leader"
+        },
+        {
+          "value": "admin",
+          "label": "Practice, facility or group administrator"
+        },
+        {
+          "value": "finance",
+          "label": "CFO, finance or revenue-cycle leader"
+        },
+        {
+          "value": "other",
+          "label": "Another role / not sure"
+        }
+      ]
+    },
+    {
+      "key": "oon",
+      "label": "Did your organization bill commercial out-of-network services during 2015\u20132026?",
+      "help": "An estimate is fine. You do not need to upload records here.",
+      "options": [
+        {
+          "value": "yes",
+          "label": "Yes"
+        },
+        {
+          "value": "unsure",
+          "label": "I\u2019m not sure"
+        },
+        {
+          "value": "no",
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "key": "volume",
+      "label": "About how much did you bill annually for those out-of-network services?",
+      "help": "Use billed charges, not payments received, a claimed loss or a claim\u2019s potential value.",
+      "options": [
+        {
+          "value": "million",
+          "label": "$1 million or more"
+        },
+        {
+          "value": "near",
+          "label": "Near $1 million"
+        },
+        {
+          "value": "below",
+          "label": "Below that range"
+        },
+        {
+          "value": "unsure",
+          "label": "I\u2019m not sure"
+        }
+      ]
+    }
+  ],
+  "legacy_slugs": [
+    "devin-multiplan"
+  ],
+  "attorney_image": "/assets/devin-multiplan/devin-square.png",
+  "firm_logo": "/assets/devin-multiplan/vanderhahn-logo.png"
+}

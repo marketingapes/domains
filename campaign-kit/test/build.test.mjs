@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync, readdirSync} from 'node:fs';
 import {join, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {normalize, renderPages, renderBundle, renderCss, assetManifest, checklist, imageSize, GATES, STATUSES, PREVIEW_CSP} from '../build.mjs';
+import {normalize, renderPages, renderBundle, renderCss, assetManifest, checklist, imageSize, GATES, STATUSES, PREVIEW_CSP, providerRoute} from '../build.mjs';
 
 const kit = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = join(kit, 'campaigns');
@@ -26,7 +26,7 @@ test('every shipped config builds as a PREVIEW that cannot reach production', ()
   for (const [f, raw] of configs) {
     const c = normalize(raw), pages = renderPages(c);
     assert.equal(c.mode, 'preview', f);
-    assert.deepEqual(Object.keys(pages).sort(), ['ads.html', 'form.html', 'index.html', 'quiz.html', 'sofia.html'], f);
+    assert.deepEqual(Object.keys(pages).sort(), c.layout === 'provider-review' ? ['index.html'] : ['ads.html', 'form.html', 'index.html', 'quiz.html', 'sofia.html'], f);
     for (const [n, html] of Object.entries(pages)) {
       for (const re of FORBIDDEN) assert.ok(!re.test(html), `${f} ${n} must not contain ${re}`);
       assert.ok(html.includes(`content="${PREVIEW_CSP}"`), `${f} ${n} carries the preview CSP`);
@@ -34,7 +34,7 @@ test('every shipped config builds as a PREVIEW that cannot reach production', ()
       assert.match(html, /<meta name="robots" content="noindex,follow">/);
       assert.ok(html.includes('class="kit-preview"'), `${f} ${n} shows the preview banner`);
     }
-    for (const n of ['quiz.html', 'form.html']) assert.ok(pages[n].includes('"webhook":null,"preview":true'), `${f} ${n} has no webhook`);
+    for (const n of c.layout === 'provider-review' ? [] : ['quiz.html', 'form.html']) assert.ok(pages[n].includes('"webhook":null,"preview":true'), `${f} ${n} has no webhook`);
   }
 });
 
@@ -128,6 +128,7 @@ test('config text is escaped and bad configs are refused', () => {
 test('channel bundle is paused drafts only; preview-only campaigns get no kit landing links', () => {
   for (const [f, raw] of configs) {
     const c = normalize(raw), b = renderBundle(c);
+    if (c.layout === 'provider-review') { assert.deepEqual(Object.keys(b), ['REVIEW.md']); continue; }
     assert.equal(b['meta.json'].campaign.status, 'PAUSED', f);
     assert.equal(b['google-search.json'].campaign.status, 'PAUSED', f);
     assert.equal(b['tiktok.json'].campaign.operation_status, 'DISABLE', f);
@@ -142,5 +143,67 @@ test('channel bundle is paused drafts only; preview-only campaigns get no kit la
     assert.match(b['perspective.json'].make_intake_scenario.must.join(' '), /respond only AFTER the write succeeds/);
     const daily = ['meta.json', 'google-search.json', 'tiktok.json', 'openai-ads.json'].reduce((s, k) => s + b[k].campaign.daily_budget_usd, 0);
     assert.ok(Math.abs(daily * c.budget.days - c.budget.media_total_usd) <= c.budget.days * 4, `${f} daily budgets ≈ media total`);
+  }
+});
+
+
+test('provider review remains draft-only and cannot inherit production defaults', () => {
+  const raw=configs.find(([f])=>f==='devin-multiplan.json')[1], c=normalize(raw), html=renderPages(c)['index.html'];
+  assert.equal(c.campaign_id,null); assert.equal(c.tenant_id,null);
+  for (const key of ['budget','channels','sofia','geo','intake','gtm','delivery']) assert.equal(c[key],undefined,key);
+  assert.throws(()=>normalize({...raw,status:'live'}),/must remain draft/);
+  assert.throws(()=>normalize({...raw,intake:{webhook:'https://example.test'}}),/unsupported field/);
+  assert.throws(()=>normalize({...raw,campaign_id:'INVENTED-ID'}),/unsupported field/);
+  assert.throws(()=>normalize({...raw,slug:'../bad'}),/lower-kebab/);
+  assert.throws(()=>normalize({...raw,hero_image:'https://example.test/a.svg'}),/local hero_image/);
+  assert.throws(()=>normalize({...raw,questions:raw.questions.slice(1)}),/three questions/);
+  for (const re of [/localStorage/,/sessionStorage/,/fetch\(/,/XMLHttpRequest/,/sendBeacon/,/type="email"/,/type="tel"/,/<input/,/mail.google/,/docs.google/,/2,500/,/5,000/,/payment (?:is |was )?confirmed/i]) assert.ok(!re.test(html),String(re));
+  assert.equal((html.match(/<h1>/g)||[]).length,1);
+  assert.match(html,/No request has been sent/);
+  assert.match(html,/Near \$1 million/);
+  assert.match(html,/ambulatory surgery centers/);
+  assert.match(html,/No patient records needed/);
+  const escaped=renderPages(normalize({...raw,headline:'<script>bad</script>'}))['index.html'];
+  assert.ok(!escaped.includes('<script>bad</script>'));
+});
+
+test('provider scheduling copy follows the proposed qualified-form flow without enabling it', () => {
+  const raw=configs.find(([f])=>f==='devin-multiplan.json')[1], c=normalize(raw);
+  const html=renderPages(c)['index.html'], notes=renderBundle(c)['REVIEW.md'];
+  for (const content of [html,notes]) assert.doesNotMatch(content,/case[\s-]*manager/i);
+  assert.match(html,/complete the form, then, if you pre-qualify, schedule directly or choose an AI scheduling call/);
+  assert.match(html,/This demo does not determine qualification/);
+  assert.match(html,/Intake, direct self-scheduling and the AI scheduling call are not connected/);
+  assert.match(html,/does not ask for contact details, place a call, select an appointment/);
+  assert.match(notes,/Neither scheduling route is connected/);
+});
+
+test('provider screen routes every answer combination without a legal decision', () => {
+  assert.equal(providerRoute({}),'incomplete');
+  let count=0;
+  for (const role of ['owner','admin','finance','other']) for (const oon of ['yes','unsure','no']) for (const volume of ['million','near','below','unsure']) {
+    const expected=oon==='no'?'scope':role==='other'||oon==='unsure'||['below','unsure'].includes(volume)?'clarify':'conversation';
+    assert.equal(providerRoute({role,oon,volume}),expected);count++;
+  }
+  assert.equal(count,48);
+});
+
+
+test('MultiPlan uses verified portraits and reproducible canonical and legacy routes', () => {
+  const raw = configs.find(([f]) => f === 'devin-multiplan.json')[1], c = normalize(raw);
+  const html = renderPages(c)['index.html'];
+  assert.equal(c.slug, 'multiplan');
+  assert.deepEqual(c.legacy_slugs, ['devin-multiplan']);
+  assert.throws(() => normalize({...raw, legacy_slugs:['../escape']}), /approved legacy alias/);
+  assert.match(html, /rel="canonical" href="https:\/\/besttortlawyers.com\/c\/multiplan\/"/);
+  assert.match(html, /Devin van der Hahn, Managing Partner and Founder/);
+  assert.match(html, /devin-portrait.jpg/);
+  assert.match(html, /devin-square.png/);
+  assert.match(html, /vanderhahn-logo.png/);
+  assert.doesNotMatch(html, /provider-review.svg|firm-monogram/);
+  assert.ok(html.indexOf('id="review"') < html.indexOf('id="overview"'));
+  for (const slug of [c.slug, ...c.legacy_slugs]) {
+    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'index.html'),'utf8'), html);
+    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'site.css'),'utf8'), renderCss(c));
   }
 });

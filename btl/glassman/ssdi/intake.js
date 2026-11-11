@@ -99,8 +99,8 @@
   renderConsent();
   form.addEventListener('ee:quiz-result', renderConsent);
 
-  /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–8 PM Eastern) ---- */
-  var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 8 Eastern)']];
+  /* ---- best time to call (inside Glassman's intake hours: weekdays 8 AM–7:30 PM Eastern) ---- */
+  var TIMES = [['asap', 'As soon as possible'], ['morning', 'Weekday morning (8 to noon Eastern)'], ['midday', 'Weekday midday (noon to 3 Eastern)'], ['afternoon', 'Weekday afternoon (3 to 7:30 PM Eastern)']];
   if (box && !document.getElementById('best_time')) {
     var bt = document.createElement('div'); bt.className = 'field';
     bt.innerHTML = '<label for="best_time">Best time to reach you</label><select id="best_time" name="best_time">' +

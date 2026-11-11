@@ -74,6 +74,58 @@ function serve(livePages) {
         page.on('console', (m) => { if (m.type() === 'error' && !/Content Security Policy|fonts\.g|net::/.test(m.text())) errors.push(m.text()); });
         await page.route(/fonts\.googleapis|fonts\.gstatic/, (r) => r.abort());
         const root = c.publish === false ? `${base}/_kit/${c.slug}/` : `${base}/c/${c.slug}/`;
+        if (c.layout === 'provider-review') {
+          await page.goto(root);
+          assert.ok(await page.locator('.kit-preview').isVisible());
+          assert.equal(await page.locator('a[href^="tel:"]').count(),0);
+          assert.equal(await page.locator('input').count(),0);
+          assert.equal(await page.locator('h1').count(),1);
+          assert.doesNotMatch(await page.locator('body').innerText(),/case[\s-]*manager/i);
+          assert.match(await page.locator('.process-section').innerText(),/if you pre-qualify, schedule directly or choose an AI scheduling call/);
+
+          assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+          assert.ok(await page.evaluate(()=>fetch('https://example.invalid/blocked').then(()=>false,()=>true)));
+          assert.ok(await page.locator('.hero-art img').evaluateAll(images => images.every(img => img.complete && img.naturalWidth > 0)));
+          assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://besttortlawyers.com/c/multiplan/');
+          await shot(page,`${c.slug}-hero-${w}`);
+          await page.locator('#attorney').scrollIntoViewIfNeeded();
+          await page.waitForFunction(() => { const img = document.querySelector('.attorney-photo img'); return img.complete && img.naturalWidth > 0; });
+          await page.locator('.attorney-photo img').evaluate(img => img.decode());
+          await shot(page,`${c.slug}-attorney-${w}`);
+          if (process.env.SHOTS) await page.screenshot({path:path.join(process.env.SHOTS,`${c.slug}-full-${w}.jpg`),type:'jpeg',quality:85,fullPage:true});
+          for (const alias of c.legacy_slugs ?? []) {
+            await page.goto(`${base}/c/${alias}/`);
+            assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://besttortlawyers.com/c/multiplan/');
+            assert.ok(await page.locator('#provider-screen').isVisible());
+          }
+          await page.goto(root);
+          await page.click('#provider-screen button');
+          assert.ok(await page.locator('#screen-error').isVisible());
+          assert.ok(await page.locator('#screen-result').isHidden());
+          for (const [role,oon,volume,route] of [['owner','yes','million','conversation'],['finance','yes','near','conversation'],['admin','unsure','unsure','clarify'],['other','yes','below','clarify'],['owner','no','million','scope']]) {
+            await page.selectOption('#role',role);await page.selectOption('#oon',oon);await page.selectOption('#volume',volume);
+            await page.click('#provider-screen button');
+            assert.equal(await page.locator('#screen-result').getAttribute('data-route'),route);
+            await page.click('#request-consultation');
+            assert.ok(await page.locator('#consultation-dialog').isVisible());
+            assert.match(await page.locator('#consultation-dialog').innerText(),/No request has been sent/);
+            assert.match(await page.locator('#consultation-dialog').innerText(),/Intake, direct self-scheduling and the AI scheduling call are not connected/);
+            assert.doesNotMatch(await page.locator('#screen-result').innerText(),/case[\s-]*manager/i);
+            await page.click('#done-dialog');
+            assert.ok(await page.locator('#consultation-dialog').isHidden());
+            await page.click('#request-consultation');
+            assert.ok(await page.locator('#consultation-dialog').isVisible());
+
+            await page.keyboard.press('Escape');
+            assert.ok(await page.locator('#consultation-dialog').isHidden());
+            await page.click('#reset-screen');
+          }
+          await page.locator('#review').scrollIntoViewIfNeeded();await shot(page,`${c.slug}-screen-${w}`);
+          await page.reload();assert.equal(await page.inputValue('#role'),'');
+          assert.deepEqual(await page.evaluate(()=>({local:localStorage.length,session:sessionStorage.length})),{local:0,session:0});
+          assert.deepEqual(outside,[]);assert.deepEqual(errors,[]);
+          checks+=35;await ctx.close();continue;
+        }
         for (const n of ['index.html', 'quiz.html', 'sofia.html', 'form.html', 'ads.html']) {
           await page.goto(root + n);
           assert.equal(await page.locator('a[href^="tel:"]').count(), 0, `${c.slug} ${n}: no dialable link`);

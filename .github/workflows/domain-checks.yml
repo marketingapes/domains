@@ -46,7 +46,7 @@ jobs:
           PLAYWRIGHT="$(node -p 'require.resolve("playwright")')" CHROMIUM="$(node -p 'require("playwright").chromium.executablePath()')" node tests/glassman-perspective.browser.mjs 2>&1 | tee -a perspective-browser.log
           SHOTS=glassman-quiz-evidence node tests/glassman-ssdi-quiz.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/plg-az-accident.browser.cjs 2>&1 | tee -a perspective-browser.log
-          node tests/campaign-kit.browser.cjs 2>&1 | tee -a perspective-browser.log
+          SHOTS=campaign-kit-evidence node tests/campaign-kit.browser.cjs 2>&1 | tee -a perspective-browser.log
           node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
           PLG_DISCLAIMER_ALTERNATIVE=1 node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
           PLG_DISCLAIMER_UNDER_FORM=1 node tests/phillips-rideshare-review.browser.cjs 2>&1 | tee -a perspective-browser.log
@@ -60,5 +60,6 @@ jobs:
             release-checks.log
             perspective-browser.log
             glassman-quiz-evidence/
+            campaign-kit-evidence/
           if-no-files-found: warn
           retention-days: 7

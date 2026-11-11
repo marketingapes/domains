@@ -99,7 +99,7 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261109-thank-you/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261110-hours-730/);
   }
 });
 test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
