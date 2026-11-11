@@ -110,6 +110,82 @@
   }
   function bestTime() { var v = val('best_time') || 'asap'; for (var i = 0; i < TIMES.length; i++) if (TIMES[i][0] === v) return TIMES[i]; return TIMES[0]; }
 
+  /* ---- outside intake hours: exact preferred callback day, time and time zone ----
+     Shown only when the page loads outside Glassman's intake hours (or with ?callback_time=1, for checking the field).
+     It records a request, never an appointment. Slots are the intake hours (8:00 AM to 7:00 PM Eastern, weekdays),
+     shown in the visitor's own time zone. Nothing here goes to dataLayer. */
+  var ZONES = [['America/New_York', 'Eastern'], ['America/Chicago', 'Central'], ['America/Denver', 'Mountain'], ['America/Phoenix', 'Arizona'], ['America/Los_Angeles', 'Pacific']];
+  function zoneParts(ms, tz) {
+    var o = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date(ms)).forEach(function (x) { o[x.type] = x.value; });
+    var mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].indexOf(o.month) + 1;
+    var h = +o.hour % 24, h12 = h % 12 === 0 ? 12 : h % 12;
+    return { date: o.year + '-' + ('0' + mon).slice(-2) + '-' + ('0' + o.day).slice(-2), time: ('0' + h).slice(-2) + ':' + o.minute,
+      weekday: o.weekday, day: o.weekday + ', ' + o.month + ' ' + o.day, clock: h12 + ':' + o.minute + (h < 12 ? ' AM' : ' PM') };
+  }
+  /* The UTC instant of a wall-clock date and time in a zone (two passes settle the daylight-saving offset). */
+  function zonedMs(date, time, tz) {
+    var d = date.split('-'), t = time.split(':'), want = Date.UTC(+d[0], +d[1] - 1, +d[2], +t[0], +t[1]), ms = want;
+    for (var i = 0; i < 2; i++) {
+      var z = zoneParts(ms, tz), zd = z.date.split('-'), zt = z.time.split(':');
+      ms += want - Date.UTC(+zd[0], +zd[1] - 1, +zd[2], +zt[0], +zt[1]);
+    }
+    return ms;
+  }
+  function exactDays() {
+    var out = [], ms = Date.now();
+    for (var i = 0; i < 12 && out.length < 5; i++) {
+      var z = zoneParts(ms + i * 864e5, 'America/New_York');
+      if (z.weekday !== 'Sat' && z.weekday !== 'Sun') out.push(z);
+    }
+    return out;
+  }
+  var exactOn = false;
+  (function exactTimeField() {
+    var RL = window.SSDI_RULES, sel = document.getElementById('best_time');
+    var forced = /[?&]callback_time=1(?:&|$)/.test(location.search);
+    if (!sel || !RL || (RL.inHours(new Date()) && !forced) || document.getElementById('cb_day')) return;
+    var host = sel.closest ? sel.closest('.field') : sel.parentNode;
+    if (!host || !host.parentNode) return;
+    var myZone = ''; try { myZone = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+    var zone = ZONES.some(function (z) { return z[0] === myZone; }) ? myZone : 'America/New_York';
+    var wrap = document.createElement('div'); wrap.className = 'field'; wrap.id = 'cb_exact';
+    wrap.innerHTML = '<label for="cb_day">Our intake team is closed right now. When should they call you?</label>' +
+      '<select id="cb_day" name="cb_day"><option value="">No preference</option>' +
+      exactDays().map(function (d) { return '<option value="' + d.date + '">' + d.day + '</option>'; }).join('') + '</select>' +
+      '<select id="cb_time" name="cb_time" aria-label="Preferred time"></select>' +
+      '<select id="cb_zone" name="cb_zone" aria-label="Your time zone">' +
+      ZONES.map(function (z) { return '<option value="' + z[0] + '"' + (z[0] === zone ? ' selected' : '') + '>' + z[1] + ' time</option>'; }).join('') + '</select>' +
+      '<span class="why">This is a request for the team, not a booked appointment. Intake hours are Monday to Friday, 8:00 AM to 7:30 PM Eastern.</span>';
+    host.parentNode.insertBefore(wrap, host.nextSibling);
+    function fillTimes() {
+      var tz = val('cb_zone') || 'America/New_York', day = val('cb_day') || exactDays()[0].date, keep = val('cb_time'), html = '';
+      for (var m = 8 * 60; m <= 19 * 60; m += 30) {
+        var et = ('0' + Math.floor(m / 60)).slice(-2) + ':' + ('0' + (m % 60)).slice(-2);
+        html += '<option value="' + et + '"' + (et === keep ? ' selected' : '') + '>' + zoneParts(zonedMs(day, et, 'America/New_York'), tz).clock + '</option>';
+      }
+      document.getElementById('cb_time').innerHTML = html;
+    }
+    fillTimes();
+    document.getElementById('cb_zone').addEventListener('change', fillTimes);
+    document.getElementById('cb_day').addEventListener('change', fillTimes);
+    exactOn = true;
+  })();
+  /* The chosen request, or null. Day and time are stored in the visitor's zone, with the Eastern and UTC equivalents. */
+  function exactTime() {
+    if (!exactOn || !val('cb_day') || !val('cb_time')) return null;
+    var tz = val('cb_zone') || 'America/New_York', name = 'Eastern';
+    ZONES.forEach(function (z) { if (z[0] === tz) name = z[1]; });
+    var ms = zonedMs(val('cb_day'), val('cb_time'), 'America/New_York');
+    if (!(ms > Date.now())) return null;
+    var loc = zoneParts(ms, tz);
+    return { preferred_date: loc.date, preferred_time: loc.time, timezone: tz,
+      preferred_at_eastern: val('cb_day') + ' ' + val('cb_time'), preferred_utc: new Date(ms).toISOString(),
+      preferred_label: loc.day + ', ' + loc.clock + ' ' + name + ' time' };
+  }
+  function timeLabel() { var x = exactTime(); return x ? x.preferred_label : bestTime()[1]; }
+
   /* ---- TrustedForm ---- */
   if (window.EE_TRUSTEDFORM) {
     (function () {
@@ -232,7 +308,7 @@
       },
       trustedform_cert_url: tfEl && tfEl.value ? tfEl.value : null,
       page_url: location.origin + location.pathname,
-      callback: { window: bestTime()[0], label: bestTime()[1] },
+      callback: (function () { var c = { window: bestTime()[0], label: bestTime()[1] }, x = exactTime(); if (x) Object.keys(x).forEach(function (k) { c[k] = x[k]; }); return c; })(),
       attribution: tracking(),
       test: { synthetic: isTest }
     };
@@ -286,7 +362,7 @@
     /* A receipt confirms storage of a request, not contact or a booked appointment. */
     function thanks() {
       if (otherOptions) return 'Your request to check other options was received by Marketing Apes. A match or callback is not guaranteed. We’ll ask your permission before sharing your information with another firm.';
-      return 'Your callback request was received. The team will review it. Your requested time: ' + bestTime()[1] + '.';
+      return 'Your callback request was received. The team will review it. Your requested time: ' + timeLabel() + '.';
     }
 
     function succeed(j) {
@@ -345,7 +421,7 @@
       var url = '/glassman/ssdi/thank-you/' + (otherOptions ? 'other-options/' : '') + (isTest ? '?test=1' : '');
       try {
         sessionStorage.setItem('ee_ssdi_thanks', JSON.stringify({ kind: otherOptions ? 'other_options' : 'callback',
-          time: bestTime()[1], receipt: j && j.receipt_id ? String(j.receipt_id).slice(0, 40) : null,
+          time: timeLabel(), receipt: j && j.receipt_id ? String(j.receipt_id).slice(0, 40) : null,
           real: !!(j && !isTest && j.mode !== 'test' && j.status !== 'duplicate'), at: Date.now() }));
       } catch (e) {}
       var started = Date.now(), gone = false;
