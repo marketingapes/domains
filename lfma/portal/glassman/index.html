@@ -1,22 +1,33 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://perspective-s3b8.onrender.com; img-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>Glassman · Private Perspective</title><link rel="stylesheet" href="./reporting.css?v=3"><script src="./reporting.js?v=3" defer></script></head><body><main>
-<header><p class="eyebrow">Perspective · Marketing Apes</p><h1>Glassman SSDI</h1><p>Private campaign reporting, connected to the same records as your campaign Sheet.</p></header>
-<section aria-labelledby="report-title"><h2 id="report-title">Campaign report</h2>
-<p>This view measures saved web requests, not fully qualified leads or signed clients. Test records are never counted as leads. The figures are totals. If your access includes it, a lead list for matching with your own records appears at the end; it shows contact details only, never screening answers or health details.</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://perspective-s3b8.onrender.com; media-src blob:; img-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>Glassman · Private Perspective</title><link rel="stylesheet" href="./reporting.css?v=7"><script src="./lead-intake.js?v=1" defer></script><script src="./lead-activity.js?v=1" defer></script><script src="./portal-dashboard.js?v=1" defer></script><script src="./reporting.js?v=6" defer></script></head><body><main>
+<header><p class="eyebrow">Perspective · Marketing Apes</p><div class="title-row"><h1>Glassman SSDI</h1><span class="demo-badge">Private reporting</span></div><p>See the marketing. Follow the work. Know where each lead stands.</p><p class="demo-notice">Authenticated reporting. Only the data included in your access is shown.</p></header>
+<section aria-labelledby="report-title"><h2 id="report-title">Campaign report</h2><nav class="portal-nav" aria-label="Report areas"><a href="#marketing-area">1. Marketing</a><a href="#working-area">2. Working leads</a><a href="#handoff-area">3. Lead Status</a></nav>
+<p class="intro-line">A simple view from first click to firm follow-up. Saved requests are not fully qualified leads or signed clients. Tests are excluded.</p>
 <form id="sign-in"><label for="email">Approved email address</label><input id="email" type="email" autocomplete="email" required><button type="submit">Email sign-in code</button></form>
 <form id="verify" hidden><label for="code">Six-digit code</label><input id="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required><button type="submit">Open reporting</button><button id="back" type="button">Change email</button></form>
 <p id="status" role="status" aria-live="polite">Sign-in required. No private data loaded.</p>
 <div id="metrics" hidden>
+<div class="area-heading"><div><p class="section-kicker">Campaign performance</p><h2 id="marketing-area" tabindex="-1">1. Marketing</h2><p>Spend, channels and the requests they bring in.</p></div><span class="source-badge">Source-backed report</span></div>
+<div id="marketing-report">
+<div class="report-toolbar"><div><label for="report-period">Reporting period</label><select id="report-period"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select></div><div><label for="report-channel">Channel</label><select id="report-channel"><option value="all">All channels</option></select></div><p id="marketing-window" aria-live="polite"></p></div>
+<p id="marketing-feedback" role="status" aria-live="polite">Marketing report requires signed-in access.</p>
+<div id="marketing-kpis" class="marketing-kpis"></div>
+<p class="metric-note" id="marketing-scope"></p>
+<div class="report-grid"><article class="report-panel"><div class="panel-heading"><h3>Requests by day</h3><span>Unique requests</span></div><div id="daily-chart" class="daily-chart" role="img"></div><p id="daily-note" class="metric-note"></p></article><article class="report-panel"><div class="panel-heading"><h3>Spend by channel</h3><span>USD</span></div><div id="spend-bars"></div><p class="metric-note">Only loaded source records are included. Missing channel or date coverage is unknown, never $0.</p></article></div>
+<article class="report-panel"><div class="panel-heading"><h3 id="performance-title">Channel performance</h3><span id="coverage-label"></span></div><div class="scroll"><table class="performance-table" aria-labelledby="performance-title"><thead><tr><th>Channel</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Requests</th><th>Cost / request</th></tr></thead><tbody id="performance-body"></tbody></table></div><p class="metric-note">CTR uses rows with both clicks and impressions. Cost per request uses loaded spend rows with linked request counts. This is not full-period acquisition cost when data is incomplete.</p></article>
+<div class="coverage-strip"><div><span class="small-label">Source freshness</span><strong id="marketing-freshness">Not loaded</strong><span id="marketing-source"></span></div><div><span class="small-label">Firm outcomes</span><strong>Separately reported</strong><span>Transfer or CRM activity is not a signed case</span></div><div><span class="small-label">Data boundary</span><strong>Existing access controls</strong><span>Personal details require explicit contact access</span></div></div>
+</div>
+<div id="legacy-report" hidden>
 <div class="cards">
 <article><h3>Web requests</h3><strong id="web-count"></strong><p>Real requests. Tests excluded</p></article>
 <article><h3>Test records</h3><strong id="test-count"></strong><p>Never counted as campaign leads</p></article>
-<article id="contacted-card" hidden><h3>Reached by text or call</h3><strong id="contacted-count"></strong><p id="contacted-note"></p></article>
+<article id="contacted-card" hidden><h3>Follow-up recorded</h3><strong id="contacted-count"></strong><p id="contacted-note"></p></article>
 <article id="cpl-card" hidden><h3>Cost per lead</h3><strong id="cpl-value"></strong><p id="cpl-note"></p></article>
 </div>
 <p id="range" hidden></p>
 <p>Source updated: <time id="source-time"></time></p><p>Report generated: <time id="generated-time"></time></p>
 <p id="v1-note" hidden>Detailed reporting is not available from the server yet. Showing request totals only.</p>
 <div id="detail" hidden>
-<h3 id="funnel-title">Follow-up after the request</h3><p class="hint">How many requests reached each step. Calls and texts come from the assistant's call and text records; a request can count in more than one step.</p>
+<details class="report-detail"><summary>Marketing breakdown and follow-up totals</summary><h3 id="funnel-title">Follow-up after the request</h3><p class="hint">How many requests reached each step. Calls and texts come from the assistant's call and text records; a request can count in more than one step. A sent text does not prove delivery or a reply. A call report does not prove a person answered. Legacy transfer counts require provider verification.</p>
 <div class="scroll"><table aria-labelledby="funnel-title"><thead><tr><th scope="col">Step</th><th scope="col" class="num">Requests</th></tr></thead><tbody id="funnel-body"></tbody></table></div>
 <h3 id="day-title">By day and channel</h3><p class="hint">Dates are Eastern time. Spend appears only where it has been loaded; “Not loaded” means unknown, not zero.</p>
 <div class="scroll"><table aria-labelledby="day-title"><thead><tr><th scope="col">Date</th><th scope="col">Channel</th><th scope="col" class="num">Leads</th><th scope="col" class="num">Spend</th><th scope="col" class="num">Cost per lead</th></tr></thead><tbody id="day-body"></tbody></table></div>
@@ -26,15 +37,34 @@
 <div class="scroll"><table aria-labelledby="door-title"><thead><tr><th scope="col">Page</th><th scope="col" class="num">Leads</th></tr></thead><tbody id="door-body"></tbody></table></div>
 <h3 id="outcome-title">Eligibility check results</h3><p class="hint">The result shown on the eligibility quiz or Meta form. Callback-form requests are not screened on the page.</p>
 <div class="scroll"><table aria-labelledby="outcome-title"><thead><tr><th scope="col">Result</th><th scope="col" class="num">Leads</th></tr></thead><tbody id="outcome-body"></tbody></table></div>
-<h3 id="spend-title">Ad spend</h3><p id="spend-note"></p><ul id="spend-list" aria-labelledby="spend-title"></ul>
+<h3 id="spend-title">Ad spend</h3><p id="spend-note"></p><ul id="spend-list" aria-labelledby="spend-title"></ul></details>
 </div>
+</div>
+<h2 id="working-area" tabindex="-1">2. Working leads</h2><p id="work-status" role="status">Lead details appear only when your signed-in access includes them.</p>
 <div id="match" hidden>
-<h3 id="match-title">Lead list for matching</h3><p class="hint">One row per real web request, newest first, so your intake team can match each person to your own records. Times are Eastern. The LawRuler lead ID appears once the request has been posted to LawRuler; “Not posted yet” means we have no ID for it.</p>
-<p id="match-count"></p>
-<div class="scroll"><table aria-labelledby="match-title"><thead><tr><th scope="col">Received</th><th scope="col">Name</th><th scope="col">Phone</th><th scope="col">Email</th><th scope="col">State</th><th scope="col">Channel</th><th scope="col">Way in</th><th scope="col">Page result</th><th scope="col">Status</th><th scope="col">LawRuler lead ID</th><th scope="col">Our reference</th></tr></thead><tbody id="match-body"></tbody></table></div>
+<h3 id="match-title">Find a lead</h3><p class="hint">One row per authorized non-test request, never screening answers or health details. Times are Eastern. A CRM ID is a provider record reference, not a confirmed intake or signed case.</p>
+<label for="lead-search">Search name, email, phone or reference</label><input id="lead-search" type="search" autocomplete="off" placeholder="Find a lead"><p id="match-count" aria-live="polite"></p>
+<div class="scroll"><table aria-labelledby="match-title"><thead><tr><th scope="col">Received</th><th scope="col">Name</th><th scope="col">Phone</th><th scope="col">Email</th><th scope="col">State</th><th scope="col">Channel</th><th scope="col">Way in</th><th scope="col">Page result</th><th scope="col">Status</th><th scope="col">LawRuler lead ID</th><th scope="col">Our reference</th><th scope="col">Activity</th></tr></thead><tbody id="match-body"></tbody></table></div>
 <button id="match-csv" type="button">Download list (CSV)</button>
 <p class="hint">The download holds personal contact details. Keep it inside your firm.</p>
+<section id="lead-intake" hidden aria-labelledby="intake-title">
+<div class="activity-top"><h3 id="intake-title" tabindex="-1"></h3><button id="intake-close" type="button" class="secondary">Close intake</button></div>
+<p id="intake-status" role="status" aria-live="polite"></p><div id="intake-content"></div>
+</section>
+<div id="lead-activity" hidden aria-labelledby="activity-title">
+<div class="activity-top"><h3 id="activity-title" tabindex="-1"></h3><button id="activity-close" type="button" class="secondary">Close lead</button></div>
+<p id="activity-contact"></p><p id="activity-status" role="status" aria-live="polite"></p>
+<label for="activity-filter">Show activity</label><select id="activity-filter"><option value="all">All activity</option><option value="sms">Texts</option><option value="email">Email</option><option value="call">Calls</option><option value="callback">Callbacks</option><option value="handoff">Firm handoff</option></select>
+<ol id="activity-events" class="timeline"></ol><div id="activity-coverage"></div>
 </div>
+</div>
+<div class="area-heading status-heading"><div><p class="section-kicker">After the handoff</p><h2 id="handoff-area" tabindex="-1">3. Lead Status</h2><p>A clear view of the firm's reported outcome and the evidence behind it.</p></div><span class="source-badge">Read-only</span></div>
+<div class="status-explainer"><strong>Firm-reported status</strong><span id="status-capability">Updates are read-only until an authorized, persistent status connection is enabled. This page never pretends an update was saved.</span></div>
+<div id="status-counts" class="status-counts"></div>
+<div class="status-toolbar"><label for="status-filter">Show leads</label><select id="status-filter"><option value="all">All accessible leads</option><option value="waiting">Awaiting firm update</option><option value="reported">With a reported outcome</option></select></div>
+<p id="status-feedback" role="status" aria-live="polite">Lead status requires contact access.</p>
+<div id="status-cards" class="status-cards"></div>
+<p class="metric-note">A reported stage, transfer connection, CRM receipt and signed case remain separate facts. Unknown means no verified linked outcome is available.</p>
 <button id="lock" type="button">Lock reporting</button></div></section>
-<footer><a href="https://besttortlawyers.com/glassman/">Back to campaign overview</a><p>Read-only. This page does not launch ads, contact leads or change cases. Signed cases are not connected to this view.</p></footer>
+<footer><a href="https://besttortlawyers.com/glassman/">Back to campaign overview</a><p>Read-only. This page does not launch ads, contact leads or change cases. Data and source freshness are shown where available.</p></footer>
 </main></body></html>
