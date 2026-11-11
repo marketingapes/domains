@@ -219,9 +219,16 @@
      (_fbp/_fbc, _ttp, _gcl_aw) and the GA client id are read at submit. IDs only: no contact or screening data. */
   var AK = 'ee_attr_glassman_ssdi';
   var CLICK_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid'];
+  /* The ad platform's own campaign, ad set / ad group and ad ids, as each platform's URL template sends them
+     (Meta: campaign_id, adset_id, ad_id; TikTok: utm_id, campaign_id, adgroup_id, ad_id; Google: campaign_id, adgroup_id, ad_id).
+     Kept only inside payload.attribution: the payload's own campaign_id stays the campaign code. Short ids only; an
+     unfilled template ({{ad.id}}, __CID__, {creative}) is dropped. Never pushed to dataLayer. */
+  var AD_ID_KEYS = ['utm_id', 'campaign_id', 'adgroup_id', 'adset_id', 'ad_id'];
+  function adId(v) { return typeof v === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$/.test(v) && !/^__|__$/.test(v) ? v : ''; }
   function urlTracking() {
     var q = new URLSearchParams(location.search), o = {};
     CLICK_KEYS.forEach(function (k) { var v = q.get(k); if (v) o[k] = v.slice(0, 250); });
+    AD_ID_KEYS.forEach(function (k) { var v = adId(q.get(k)); if (v) o[k] = v; });
     return o;
   }
   (function rememberLanding() {
@@ -244,6 +251,7 @@
     var s = savedTracking(), o = {};
     if (s) {
       CLICK_KEYS.forEach(function (k) { if (typeof s.o[k] === 'string' && s.o[k]) o[k] = s.o[k].slice(0, 250); });
+      AD_ID_KEYS.forEach(function (k) { var v = adId(s.o[k]); if (v) o[k] = v; });
       o.landing_page = String(s.page || '').slice(0, 200);
       o.landed_at = new Date(s.at).toISOString();
     }
