@@ -10,6 +10,8 @@ Free, low-friction intake. Sofia is an AI assistant, not an attorney. If a parti
 
 Canonical page: https://doihaveaclaim.ai/
 
+Quick screen (preview): https://doihaveaclaim.ai/quiz/ — a short set of questions that points a person to the network domain that reviews that kind of matter. A matching answer means someone may potentially qualify for a lawyer to review the facts; it is not a decision about a case.
+
 ## What this site is not
 
 - Not a law firm or a case-value calculator
