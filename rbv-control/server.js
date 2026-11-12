@@ -1,3 +1,4 @@
+import { createCloudflareAuth } from "./cloudflare-auth.js";
 import { createServer } from "node:http";
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
@@ -5,10 +6,11 @@ import { toNodeHandler } from "@modelcontextprotocol/node";
 import * as z from "zod/v4";
 
 const PORT = Number(process.env.PORT || 10000);
-const VERSION = "0.3.0";
+const VERSION = "0.3.1";
 const CANONICAL_URL = "https://rbvvolleyball.tonedntasty.com";
 const RENDER_URL = "https://rbv-volleyball.onrender.com";
-const CONTROL_URL = "https://rbv-control.onrender.com";
+const CONTROL_URL = process.env.RBV_CONTROL_URL || "https://rbv-control.tonedntasty.com";
+const auth = createCloudflareAuth(process.env);
 const REPO = "marketingapes/domains";
 const BRANCH = "feat/rbv-volleyball-render-migration-20260914";
 const SITE_ROOT = "rbvvolleyball/site";
@@ -570,6 +572,17 @@ const httpServer = createServer(async (req, res) => {
     res.writeHead(200, { "content-type": "application/json; charset=utf-8", "access-control-allow-origin": "*", "cache-control": "no-store" });
     res.end(JSON.stringify({ status: "ok", service: "rbv-volleyball-control", version: VERSION, mode: GITHUB_TOKEN ? "safe_operator" : "preview_only", write_configured: !!GITHUB_TOKEN, mcp: "/mcp" }));
     return;
+  }
+  if (url.pathname === "/.well-known/oauth-protected-resource" || url.pathname === "/.well-known/oauth-protected-resource/mcp") {
+    res.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" });
+    res.end(JSON.stringify({resource: CONTROL_URL + "/mcp", authorization_servers: ["https://marketingapes.cloudflareaccess.com"]})); return;
+  }
+  if (url.pathname === "/mcp" || url.pathname.startsWith("/upload/")) {
+    const access = await auth.authorize(req.headers["cf-access-jwt-assertion"]);
+    if (!access.ok) {
+      res.writeHead(access.status, { "content-type": "application/json", "cache-control": "no-store", "www-authenticate": 'Bearer resource_metadata="' + CONTROL_URL + '/.well-known/oauth-protected-resource/mcp"' });
+      res.end(JSON.stringify({error: access.error})); return;
+    }
   }
   if (url.pathname.startsWith("/upload/")) {
     const token = decodeURIComponent(url.pathname.slice("/upload/".length));
