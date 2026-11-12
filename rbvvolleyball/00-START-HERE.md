@@ -329,6 +329,19 @@ If the control service reports publishing is not configured, check `RBV_GITHUB_T
 
 Append newest entries at the top of this section. Preserve prior entries.
 
+## 2026-11-12 — RBV MCP origin authentication deployed; connection repair pending
+
+- Approved by Kyle: protect only RBV editing service with Cloudflare Access for Lindsay and Kyle; public website remains public.
+- New MCP endpoint: `https://rbv-control.tonedntasty.com/mcp`; existing ChatGPT plugin must be updated to this endpoint with OAuth.
+- Cloudflare Access application: `fe2f9bf0-bdd0-4c23-852c-706fc49e7dc3`, issuer `https://marketingapes.cloudflareaccess.com`; email PIN, exact allowlist `lindsgosselin@gmail.com` and `kyleg@marketingapes.com`.
+- Origin patch: commit `c4a83e3893a805d257e4bd5cddcc89fea968b955`; Render deploy `dep-dbr15vung96s73973cj0` live, version 0.3.1.
+- Origin validates signed Access JWT issuer, audience, expiry, subject and allowed email on MCP and upload routes. Anonymous and forged-assertion requests return 401.
+- New control DNS was temporarily DNS-only for Render verification, then restored to proxied. Custom hostname returned Render health over HTTPS with successful TLS verification. Public volleyball DNS was not changed.
+- OAuth discovery verified S256, dynamic registration, refresh tokens and protected-resource metadata.
+- Public website and public Render origin both returned HTTP200 with identical content after deployment.
+- Pending: securely replace rejected `RBV_GITHUB_TOKEN`; update existing plugin endpoint/authentication without changing its identity/audience; verify real operator OAuth login, GitHub read and an explicitly approved publish end to end.
+- `write_configured: true` on health only means a credential is present, NOT that GitHub accepted it. Do not claim editing repaired yet.
+
 ## 2026-10-12 — Page updated: index.html
 
 - Published approved page change.
