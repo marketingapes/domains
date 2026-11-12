@@ -69,13 +69,36 @@ test('v2 report renders every section with honest spend states',async()=>{
  assert.match(p.text('channel-body'),/Direct or unknown 3 Not loaded Not loaded/);
  assert.match(p.text('door-body'),/Callback form 6.*Eligibility quiz 1.*Talk to Sofia 0.*Meta lead form 0/);
  assert.match(p.text('outcome-body'),/Qualified 1.*Firm review 0.*Not a fit 0/);
- for(const s of ['Reached by text or call 4','Called by the assistant 4','Live transfer attempted 2','Live transfer connected 0','Callback time booked 4','LawRuler) 0','Not yet contacted 3'])
+ for(const s of ['Requests with a call or text attempt 4','Requests the assistant tried to call 4','Live transfer attempted 2',"Live transfer handed to the firm's phone line 0",'Callback time booked 4','LawRuler) 0','Not yet contacted 3'])
   assert.ok(p.text('funnel-body').includes(s),s);
  assert.match(p.text('spend-list'),/Meta Insights API/);assert.match(p.text('spend-list'),/spend not loaded \(3 leads\)/);
  assert.match(p.text('status'),/Connected/);
+ // an older server sends no activity or firm block: nothing is called "reached", and the firm table stays hidden
+ assert.doesNotMatch(p.text('funnel-body')+html,/Reached by/);assert.match(p.text('contacted-note'),/conversation count unavailable/);
+ assert.equal(p.element('firm-part').hidden,true);assert.equal(p.text('firm-body'),'');
  // locking clears every figure and table
  p.handlers['lock:click']();
  assert.equal(p.element('metrics').hidden,true);assert.equal(p.text('day-body'),'');assert.equal(p.text('web-count'),'');assert.equal(p.text('spend-list'),'');
+});
+test('requests, people, call attempts and conversations are shown as different things',async()=>{
+ const full={...V2,activity:{people:6,call_attempts:9,spoke_live:1,live_transfers:1,inbound_calls:5},
+  firm:{people_at_firm:5,lawruler_records:4,live_transfer_only:1,status_as_of:'2026-11-12',
+   statuses:[{status:'Unable to Reach Lead',people:2},{status:'No status reported yet',people:2},{status:'IntakePartial - iClaim error',people:1}]}};
+ let p=page([ok({}),ok({session:'s'}),ok(full)]);await p.run();
+ assert.equal(p.text('web-count'),'7');assert.equal(p.text('contacted-count'),'9');
+ assert.equal(p.text('contacted-note'),'1 live conversations · 1 live transfers · 3 requests not yet called');
+ assert.match(p.text('range'),/7 requests came from 6 people/);
+ for(const s of ['Requests received 7','People (repeat requests counted once) 6','Calls the assistant placed 9','Live conversations with the assistant 1',"Calls people made to the assistant's line 5"])
+  assert.ok(p.text('funnel-body').includes(s),s);
+ assert.equal(p.element('firm-part').hidden,false);
+ for(const s of ['People sent to your team 5','Records in LawRuler 4','no LawRuler record from us yet 1','Your latest status: Unable to Reach Lead 2','Your latest status: IntakePartial - iClaim error 1'])
+  assert.ok(p.text('firm-body').includes(s),s);
+ assert.match(p.text('firm-note'),/disposition report of Nov 12, 2026/);
+ p.handlers['lock:click']();
+ assert.equal(p.element('firm-part').hidden,true);assert.equal(p.text('firm-body'),'');assert.equal(p.text('firm-note'),'');
+ // a malformed block is ignored, never rendered
+ p=page([ok({}),ok({session:'s'}),ok({...full,activity:{...full.activity,people:-1},firm:{...full.firm,statuses:[{status:{},people:1}]}})]);await p.run();
+ assert.equal(p.element('metrics').hidden,false);assert.equal(p.element('firm-part').hidden,true);assert.equal(p.text('contacted-count'),'4');
 });
 test('no spend loaded and no spend access are shown as such, never as $0',async()=>{
  const none={...V2,totals:{...V2.totals,spend_loaded:null,leads_on_spend_days:null,cpl_on_spend_days:null},
@@ -100,14 +123,16 @@ test('a v1 server still works; malformed reports and signed-out sessions show no
 });
 test('page has the v2 report regions and keeps them hidden until data loads',()=>{
  for(const id of ['detail','contacted-card','cpl-card','range','v1-note'])assert.match(html,new RegExp('id="'+id+'" hidden'));
- for(const id of ['funnel-body','day-body','channel-body','door-body','outcome-body','spend-list'])assert.match(html,new RegExp('id="'+id+'"'));
- assert.match(html,/reporting\.js\?v=3/);assert.match(html,/<th scope="col"/);
+ for(const id of ['funnel-body','day-body','channel-body','door-body','outcome-body','spend-list','firm-body','firm-note'])assert.match(html,new RegExp('id="'+id+'"'));
+ assert.match(html,/id="firm-part" hidden/);assert.match(html,/a call attempt is not a conversation/);
+ assert.match(html,/reporting\.js\?v=4/);assert.match(html,/<th scope="col"/);
 });
 
 // ---------- lead list for matching: contact details, only for logins that are granted it ----------
 const LIST={schema:'glassman.lead-list/v1',campaign_id:'GLASSMAN-SSDI-002',generated_at:'2026-11-09T23:00:00Z',timezone:'America/New_York',limit:500,count:2,
  leads:[{received_at:'2026-11-09T22:27:46Z',receipt_id:'BTLK-0123456789',first_name:'Pat',last_name:'Example',phone:'(305) 555-0100',email:'pat@example.invalid',
-   state:'FL',channel:'meta',door:'callback_form',web_outcome:null,status:'delivered_to_firm_crm',requested_callback_eastern:null,lawruler_lead_id:'48211',lawruler_at:'2026-11-09T22:28:10Z'},
+   state:'FL',channel:'meta',door:'callback_form',web_outcome:null,status:'delivered_to_firm_crm',requested_callback_eastern:null,lawruler_lead_id:'48211',lawruler_at:'2026-11-09T22:28:10Z',
+   firm_status:'Unable to Reach Lead',firm_status_date:'2026-11-12'},
   {received_at:'2026-11-06T20:28:38Z',receipt_id:'BTLK-ABCDEF0123',first_name:'=Sam',last_name:'Sample "Jr"',phone:'',email:'',
    state:'',channel:'direct_or_unknown',door:'quiz',web_outcome:'QUALIFIED',status:'called_not_transferred',requested_callback_eastern:'2026-11-07 10:30',lawruler_lead_id:null,lawruler_at:null}]};
 test('lead list shows only for a login that is granted it, with the LawRuler lead ID',async()=>{
@@ -117,7 +142,7 @@ test('lead list shows only for a login that is granted it, with the LawRuler lea
  assert.equal(p.element('match').hidden,false);
  const t=p.text('match-body');
  for(const s of ['Pat Example','(305) 555-0100','pat@example.invalid','FL','Meta (Facebook, Instagram)','Callback form','Not screened on the page','Posted to LawRuler','48211','BTLK-0123456789',
-  'Eligibility quiz','Qualified','Called, not transferred · callback asked for 2026-11-07 10:30','Not posted yet','Not given','BTLK-ABCDEF0123'])assert.ok(t.includes(s),s);
+  'Eligibility quiz','Qualified','Call attempted, not transferred · callback asked for 2026-11-07 10:30','Not posted yet','Not given','BTLK-ABCDEF0123','Unable to Reach Lead'])assert.ok(t.includes(s),s);
  assert.match(t,/Nov 9, 2026, 5:27\sPM/);
  assert.equal(p.text('match-count'),'2 leads · 1 with a LawRuler lead ID');
  // the download carries the same rows, with spreadsheet formulas defused and quotes escaped
@@ -125,6 +150,7 @@ test('lead list shows only for a login that is granted it, with the LawRuler lea
  assert.equal(p.downloads.length,1);assert.equal(p.downloads[0].name,'glassman-ssdi-leads.csv');
  const csv=p.blobs[0].parts.join('');
  assert.match(csv,/"First name","Last name","Phone","Email"/);assert.match(csv,/"LawRuler lead ID"/);
+ assert.match(csv,/"Our reference","Firm status","Firm status date"/);assert.ok(csv.includes('"BTLK-0123456789","Unable to Reach Lead","2026-11-12"'));
  assert.ok(csv.includes('"Pat","Example","(305) 555-0100","pat@example.invalid","FL"'));assert.ok(csv.includes('"48211"'));
  assert.ok(csv.includes(`"'=Sam","Sample ""Jr"""`));
  // locking clears the list and disables the download

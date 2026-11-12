@@ -4,28 +4,30 @@ const base="https://perspective-s3b8.onrender.com/portal/glassman";
 const el=id=>document.getElementById(id);
 let email="",session="",timer,generation=0,matchRows=[];
 const status=text=>{el("status").textContent=text;};
-const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note"];
-const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list"];
+const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note","firm-note"];
+const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list","firm-body"];
 const V2_PARTS=["contacted-card","cpl-card","range","detail"];
 const CHANNELS={meta:"Meta (Facebook, Instagram)",google:"Google",bing:"Bing",tiktok:"TikTok",openai:"ChatGPT",direct_or_unknown:"Direct or unknown"};
 const OUTCOMES=[["QUALIFIED","Qualified"],["FIRM_REVIEW","Firm review"],["NOT_A_FIT","Not a fit"],["other","Other result"],["not_screened","Not screened on the page"]];
-const FUNNEL=[["leads","Requests received"],["contacted","Reached by text or call"],["texted","Sent a text"],["called","Called by the assistant"],
- ["transfer_attempted","Live transfer attempted"],["transfer_connected","Live transfer connected"],["callback_booked","Callback time booked"],
- ["callback_sent_to_firm","Callback request sent to the firm"],["sent_to_firm_crm","Sent to the firm's case system (LawRuler)"],
+// A request is one saved submission. A call attempt is not a conversation, so neither is ever labelled "reached".
+const FUNNEL=[["leads","Requests received"],["contacted","Requests with a call or text attempt"],["texted","Sent a text"],["called","Requests the assistant tried to call"],
+ ["transfer_attempted","Live transfer attempted"],["transfer_connected","Live transfer handed to the firm's phone line"],["callback_booked","Callback time booked"],
+ ["callback_sent_to_firm","Callback request sent to the firm"],["sent_to_firm_crm","Requests posted to the firm's case system (LawRuler)"],
  ["held_not_a_fit","Held: not a fit"],["not_yet_contacted","Not yet contacted"]];
-const DOORS={callback_form:"Callback form",quiz:"Eligibility quiz",talk_to_sofia:"Talk to Sofia",meta_form:"Meta lead form",other:"Other"};
+const ACTIVITY=["people","call_attempts","spoke_live","live_transfers","inbound_calls"];
+const DOORS={callback_form:"Callback form",quiz:"Eligibility quiz",talk_to_sofia:"Talk to Sofia",meta_form:"Meta lead form",tiktok_form:"TikTok lead form",other:"Other"};
 const RESULTS={QUALIFIED:"Qualified",FIRM_REVIEW:"Firm review",NOT_A_FIT:"Not a fit"};
-const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Live transfer connected",callback_request_sent_to_firm:"Callback request sent to the firm",
- transfer_attempted_not_connected:"Transfer tried, not connected",called_not_transferred:"Called, not transferred",queued_for_call:"Queued for a call",
+const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Live transfer to the firm's phone line",callback_request_sent_to_firm:"Callback request sent to the firm",
+ transfer_attempted_not_connected:"Transfer tried, not connected",called_not_transferred:"Call attempted, not transferred",queued_for_call:"Queued for a call",
  texted_not_called:"Texted, not called yet",held_not_a_fit:"Held: not a fit",stored_no_contact:"Not yet contacted"};
-const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference"];
+const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference","Firm status","Firm status date"];
 function lock(){
  generation++;session="";clearTimeout(timer);
  el("metrics").hidden=true;el("sign-in").hidden=false;el("verify").hidden=true;
  for(const id of TEXT_IDS)el(id).textContent="";
  for(const id of TABLES)el(id).replaceChildren();
  for(const id of V2_PARTS)el(id).hidden=true;
- el("v1-note").hidden=true;
+ el("v1-note").hidden=true;el("firm-part").hidden=true;
  clearMatch();
  el("code").value="";status("Sign-in required. No private data loaded.");
 }
@@ -58,6 +60,13 @@ function validV2(d){
   d.by_channel.every(r=>count(r.leads)&&(r.spend===null||money(r.spend))&&(r.cpl===null||money(r.cpl)))&&
   d.by_door.every(r=>typeof r.label==="string"&&count(r.leads));
 }
+// Added 2026-11-12. Both are optional: an older server, or a failed facts query, sends neither and the page says so.
+function activityOf(d){const a=d.activity;return a&&ACTIVITY.every(k=>count(a[k]))?a:null;}
+function firmOf(d){
+ const f=d.firm;
+ return f&&count(f.people_at_firm)&&count(f.lawruler_records)&&count(f.live_transfer_only)&&Array.isArray(f.statuses)&&f.statuses.length<=50&&
+  f.statuses.every(r=>r&&typeof r.status==="string"&&count(r.people))?f:null;
+}
 function validV1(d){
  return d.schema==="glassman.web-summary/v1"&&d.campaign_id==="GLASSMAN-SSDI-002"&&
   Number.isInteger(d.web_requests)&&d.web_requests>=0&&Number.isInteger(d.test_requests)&&d.test_requests>=0;
@@ -79,14 +88,27 @@ function cplText(spend,cpl,visible,leads){
 function showV2(d){
  const t=d.totals,h=d.handoff,s=d.spend;
  el("web-count").textContent=String(t.real_leads);el("test-count").textContent=String(t.test_records);
- el("contacted-count").textContent=String(h.contacted);
- el("contacted-note").textContent=h.called+" called · "+h.transfer_connected+" live transfers connected · "+h.not_yet_contacted+" not yet contacted";
+ const a=activityOf(d),f=firmOf(d);
+ el("contacted-count").textContent=String(a?a.call_attempts:h.called);
+ el("contacted-note").textContent=a?a.spoke_live+" live conversations · "+a.live_transfers+" live transfers · "+h.not_yet_contacted+" requests not yet called"
+  :h.called+" requests with a call attempt · "+h.not_yet_contacted+" not yet called · conversation count unavailable";
  if(!s.visible){el("cpl-value").textContent="—";el("cpl-note").textContent="Spend is not included in your access.";}
  else if(!money(t.cpl_on_spend_days)){el("cpl-value").textContent="Not loaded";el("cpl-note").textContent="No cost per lead until ad spend is loaded for days with leads.";}
  else{el("cpl-value").textContent=usd(t.cpl_on_spend_days);el("cpl-note").textContent=usd(t.spend_loaded)+" loaded spend over "+t.leads_on_spend_days+" leads on those days";}
- el("range").textContent=t.first_day?"Leads from "+day(t.first_day)+" to "+day(t.last_day)+" (Eastern time).":"No real leads yet.";
+ el("range").textContent=t.first_day?"Requests from "+day(t.first_day)+" to "+day(t.last_day)+" (Eastern time)."+
+  (a?" "+t.real_leads+" requests came from "+a.people+" people; a person who sends two requests is one person.":""):"No real requests yet.";
  el("source-time").textContent=time(t.last_lead_at);el("generated-time").textContent=time(d.generated_at);
- fill("funnel-body",FUNNEL.map(([k,label])=>[label,String(h[k])]),"No requests yet.",2);
+ const steps=FUNNEL.map(([k,label])=>[label,String(h[k])]);
+ if(a){steps.splice(1,0,["People (repeat requests counted once)",String(a.people)]);
+  steps.splice(5,0,["Calls the assistant placed",String(a.call_attempts)],["Live conversations with the assistant",String(a.spoke_live)],["Calls people made to the assistant's line",String(a.inbound_calls)]);}
+ fill("funnel-body",steps,"No requests yet.",2);
+ if(f){
+  fill("firm-body",[["People sent to your team",String(f.people_at_firm)],["Records in LawRuler",String(f.lawruler_records)],
+   ["Sent by live phone transfer only, no LawRuler record from us yet",String(f.live_transfer_only)],
+   ...f.statuses.map(r=>["Your latest status: "+r.status,String(r.people)])],"Nothing has been sent to your team yet.",2);
+  el("firm-note").textContent=/^\d{4}-\d{2}-\d{2}$/.test(String(f.status_as_of||""))?"Statuses are from your intake team's disposition report of "+day(f.status_as_of)+".":"No disposition report has been loaded yet.";
+ }else{el("firm-body").replaceChildren();el("firm-note").textContent="";}
+ el("firm-part").hidden=!f;
  fill("day-body",d.by_day.map(r=>[day(r.date),channel(r.channel),String(r.leads),!s.visible?"—":r.spend===null?"Not loaded":usd(r.spend),cplText(r.spend,r.cpl,s.visible,r.leads)]),"No leads yet.",5,2);
  fill("channel-body",d.by_channel.map(r=>[channel(r.channel),String(r.leads),!s.visible?"—":r.spend===null?"Not loaded":usd(r.spend),
   !s.visible?"—":r.spend===null?"Not loaded":r.cpl===null?(r.lead_days_missing_spend?"Partial spend":"—"):usd(r.cpl)]),"No leads yet.",4);
@@ -114,17 +136,18 @@ const textOrNull=v=>v===null||text(v);
 function validMatch(d){
  return d.schema==="glassman.lead-list/v1"&&d.campaign_id==="GLASSMAN-SSDI-002"&&Array.isArray(d.leads)&&d.leads.length<=500&&
   d.leads.every(r=>r&&text(r.receipt_id)&&text(r.first_name)&&text(r.last_name)&&text(r.phone)&&text(r.email)&&text(r.state)&&text(r.channel)&&
-   text(r.door)&&text(r.status)&&textOrNull(r.web_outcome)&&textOrNull(r.requested_callback_eastern)&&textOrNull(r.lawruler_lead_id)&&textOrNull(r.lawruler_at));
+   text(r.door)&&text(r.status)&&textOrNull(r.web_outcome)&&textOrNull(r.requested_callback_eastern)&&textOrNull(r.lawruler_lead_id)&&textOrNull(r.lawruler_at)&&
+   (r.firm_status===undefined||textOrNull(r.firm_status))&&(r.firm_status_date===undefined||textOrNull(r.firm_status_date)));
 }
 function showMatch(d){
  matchRows=d.leads.map(r=>[eastern(r.received_at),r.first_name,r.last_name,r.phone,r.email,r.state,channel(r.channel),DOORS[r.door]||"Other",
   r.web_outcome?RESULTS[r.web_outcome]||"Other result":"Not screened on the page",STATUSES[r.status]||"Not yet contacted",r.requested_callback_eastern||"",
-  r.lawruler_lead_id||"",r.lawruler_lead_id?eastern(r.lawruler_at):"",r.receipt_id]);
+  r.lawruler_lead_id||"",r.lawruler_lead_id?eastern(r.lawruler_at):"",r.receipt_id,r.firm_status||"",r.firm_status_date||""]);
  const body=el("match-body");body.replaceChildren();
- if(!matchRows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=11;td.textContent="No real leads yet.";tr.append(td);body.append(tr);}
+ if(!matchRows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=12;td.textContent="No real leads yet.";tr.append(td);body.append(tr);}
  for(const m of matchRows){
   const cells=[m[0],(m[1]+" "+m[2]).trim()||"Not given",m[3]||"Not given",m[4]||"Not given",m[5]||"—",m[6],m[7],m[8],
-   m[9]+(m[10]?" · callback asked for "+m[10]:""),m[11]||"Not posted yet",m[13]];
+   m[9]+(m[10]?" · callback asked for "+m[10]:""),m[11]||"Not posted yet",m[14]||(m[11]?"No status reported yet":"—"),m[13]];
   const tr=document.createElement("tr");
   cells.forEach((value,i)=>{const td=document.createElement(i?"td":"th");if(!i)td.scope="row";if(i===8)td.className="wrap";td.textContent=value;tr.append(td);});
   body.append(tr);
