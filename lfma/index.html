@@ -780,6 +780,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
         <div class="actions" style="justify-content:flex-start"><button type="button" class="btn ghost small" id="copyReq">Copy request</button><button type="button" class="btn ghost small" id="editBtn">Edit answers</button></div>
       </div>
     </form>
+    <section id="campaignPreview" hidden aria-live="polite" aria-label="Generated campaign concepts"></section>
 
   </section>
 
@@ -897,6 +898,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   var lastEnvelope = null;
   function markStale() {
+    var preview = document.getElementById("campaignPreview");
+    if (preview) { preview.hidden = true; preview.replaceChildren(); }
     var res = document.getElementById('result');
     if (res.hidden || res.classList.contains('is-stale')) return;
     lastEnvelope = null;
@@ -1062,6 +1065,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       pricing: { service_fee_usd: 2500, media_usd: 7500, total_usd: 10000, auto_renew: false },
       routing: { via: 'Make', connected: false }, provider_campaigns: 'none_created', builder_assets_bound: assetsBound
     };
+    window.dispatchEvent(new CustomEvent("lfma:campaign-request-prepared", { detail: env.request_raw }));
     lastEnvelope = env;
     document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
     var dl = document.getElementById('resultList'); dl.textContent = '';
@@ -1150,6 +1154,20 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   render();
 })();
+</script>
+
+<script type="module">
+import { mountCampaignPreview } from '/assets/campaign-request-preview.mjs';
+window.addEventListener('lfma:campaign-request-prepared', function (event) {
+  var root = document.getElementById('campaignPreview');
+  try { mountCampaignPreview(root, event.detail); }
+  catch (error) {
+    root.replaceChildren(); root.hidden = false;
+    var message = document.createElement('p');
+    message.textContent = 'Preview could not be generated. ' + error.message + ' Your request delivery is handled separately.';
+    root.append(message);
+  }
+});
 </script>
 
 </body>
