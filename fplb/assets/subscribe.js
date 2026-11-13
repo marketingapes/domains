@@ -27,5 +27,7 @@
         message.textContent = 'We couldn’t confirm your signup. Please try again later.';
       } finally { busy = false; button.disabled = false; }
     });
+    // Enable only after the submit handler is attached; no-JS never sends an email in a URL.
+    button.disabled = false;
   });
 })();
