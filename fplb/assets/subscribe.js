@@ -7,13 +7,18 @@
       if (busy || !form.reportValidity()) return;
       busy = true; button.disabled = true; message.textContent = 'Saving your signup…';
       try {
-        var response = await fetch('https://affiliate-hub-tbks.onrender.com/subscribe', {
-          method: 'POST', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email: form.elements.email.value.trim(), source: location.origin + location.pathname, list: 'blue-journey'}),
+        var query = new URLSearchParams(location.search);
+        var payload = new URLSearchParams({email: form.elements.email.value.trim(), lead_id: crypto.randomUUID(),
+          page_url: 'https://forpetslikeblue.com/', consent_text: form.querySelector('#blue-consent').textContent.trim(),
+          consent_version: 'fplb-blue-journey-v1', consent_timestamp: new Date().toISOString(), source: 'website-newsletter',
+          is_test: 'false', session_id: '', utm_source: query.get('utm_source') || '',
+          utm_medium: query.get('utm_medium') || '', utm_campaign: query.get('utm_campaign') || ''});
+        var response = await fetch('https://hook.us2.make.com/rja3ef7xwvelfcphav5numibd4wr9dh0', {
+          method: 'POST', body: payload,
           signal: AbortSignal.timeout(15000)
         });
         var receipt = await response.json();
-        if (!response.ok || receipt.stored !== true || receipt.consent_stored !== true) throw new Error('not stored');
+        if (!response.ok || receipt.stored !== true || receipt.consent_stored !== true || !receipt.receipt_id) throw new Error('not stored');
         message.textContent = 'You’re on Blue’s list. Thanks for joining!';
         form.reset();
         window.dataLayer = window.dataLayer || [];
