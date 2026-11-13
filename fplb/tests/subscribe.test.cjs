@@ -5,3 +5,5 @@ test('durable subscriber + consent fires event once and resets',async()=>{let x=
 for(const result of [{ok:true},{stored:false,consent_stored:false},{stored:true,consent_stored:false}])test('no fabricated success '+JSON.stringify(result),async()=>{let x=setup(result);await x.submit();assert.match(x.message.textContent,/couldn’t confirm/);assert.equal(x.context.window.dataLayer,undefined);assert.equal(x.reset(),0);assert.equal(x.button.disabled,false)});
 test('invalid form does not post',async()=>{let x=setup({},false);await x.submit();assert.equal(x.calls(),0)});
 test('double submission only one request',async()=>{let x=setup({stored:true,consent_stored:true,receipt_id:'test-receipt'});await Promise.all([x.submit(),x.submit()]);assert.equal(x.calls(),1)});
+
+test('static form cannot leak email through GET when JavaScript is unavailable',()=>{const html=fs.readFileSync(__dirname+'/../index.html','utf8');assert.match(html,/<form data-fplb-signup[^>]*method="post"[^>]*action="https:\/\/forpetslikeblue.com\/">/);assert.match(html,/<button[^>]*type="submit" disabled>Follow Blue/);const x=setup({});assert.equal(x.button.disabled,false)});
