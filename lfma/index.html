@@ -719,7 +719,9 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <p class="body">Start with your firm, tort and geography. Have the full brief ready? Add your criteria, brand and intake setup below. Your answers shape the campaign preview; we confirm the build and connections with you before launch.</p>
 
     <p class="fine">Request details or a demo. This form does not take payment, create an invoice or activate advertising. We confirm your scope, schedule and terms before invoicing.</p>
-    <form class="askcard" id="firmForm" novalidate>
+    <noscript><p class="fine">Enable JavaScript to send a campaign request. This form stays disabled without it; no details will be submitted.</p></noscript>
+    <form class="askcard" id="firmForm" method="post" action="#build" novalidate>
+      <fieldset id="requestFields" disabled style="border:0;padding:0;margin:0;min-width:0">
       <div class="ask-top">
         <span class="ask-av"><img src="data:image/jpeg;base64,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" alt=""></span>
         <div class="ask-prog"><span id="stepLabel">Step 1 of 3</span><div class="bar"><i id="barFill"></i></div></div>
@@ -727,24 +729,24 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
       <div class="ask-step" data-step="1">
         <label class="ask-q" for="fBrief">What tort are you going after?</label>
-        <input id="fBrief" name="tort" autocomplete="off" placeholder="e.g. Depo-Provera">
+        <input id="fBrief" maxlength="200" name="tort" autocomplete="off" placeholder="e.g. Depo-Provera">
         <div class="match" id="match" aria-live="polite"></div>
       </div>
 
       <div class="ask-step" data-step="2" hidden>
         <p class="ask-q">Where do you take these cases?</p>
         <div class="fields">
-          <div class="field"><label for="fStates">States</label><input id="fStates" name="states" placeholder="e.g. CA, TX"></div>
-          <div class="field"><label for="fFirm">Firm name</label><input id="fFirm" name="firm" autocomplete="organization" placeholder="Firm name"></div>
+          <div class="field"><label for="fStates">States</label><input id="fStates" maxlength="300" name="states" placeholder="e.g. CA, TX"></div>
+          <div class="field"><label for="fFirm">Firm name</label><input id="fFirm" maxlength="160" name="firm" autocomplete="organization" placeholder="Firm name"></div>
         </div>
       </div>
 
       <div class="ask-step" data-step="3" hidden>
         <p class="ask-q">How do I reach you?</p>
         <div class="fields">
-          <div class="field"><label for="fName">Your name</label><input id="fName" name="name" autocomplete="name" placeholder="First and last name"></div>
-          <div class="field"><label for="fEmail">Work email</label><input id="fEmail" name="email" type="email" autocomplete="email" placeholder="you@firm.com"></div>
-          <div class="field"><label for="fPhone">Phone <span>(optional)</span></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-0100"></div>
+          <div class="field"><label for="fName">Your name</label><input id="fName" maxlength="160" name="name" autocomplete="name" placeholder="First and last name"></div>
+          <div class="field"><label for="fEmail">Work email</label><input id="fEmail" maxlength="254" name="email" type="email" autocomplete="email" placeholder="you@firm.com"></div>
+          <div class="field"><label for="fPhone">Phone <span>(optional)</span></label><input id="fPhone" maxlength="40" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-0100"></div>
         </div>
       </div>
 
@@ -768,7 +770,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       <div class="ask-nav">
         <button type="button" class="btn ghost small" id="backBtn" hidden>Back</button>
         <button type="button" class="btn" id="nextBtn">Next</button>
-        <button type="submit" class="btn" id="buildBtn" hidden>Send me the details</button>
+        <button type="submit" class="btn" id="buildBtn" hidden disabled>Send me the details</button>
       </div>
 
       <div class="result" id="result" hidden tabindex="-1">
@@ -779,6 +781,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
         <p class="fine" id="saveNote"></p>
         <div class="actions" style="justify-content:flex-start"><button type="button" class="btn ghost small" id="copyReq">Copy request</button><button type="button" class="btn ghost small" id="editBtn">Edit answers</button></div>
       </div>
+      </fieldset>
     </form>
     <section id="campaignPreview" hidden aria-live="polite" aria-label="Generated campaign concepts"></section>
 
@@ -923,6 +926,11 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   };
   function check(n) {
     var probs = STEP_NEEDS[n]();
+    Object.keys(FIELD_IDS).forEach(function (key) {
+      var field = document.getElementById(FIELD_IDS[key]);
+      var value = field.value;
+      if ((field.maxLength > 0 && value.length > field.maxLength) || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value)) probs.push([field.id, 'Please shorten or correct ' + key.replace(/_/g, ' ') + '.']);
+    });
     ['fBrief', 'fStates', 'fFirm', 'fName', 'fEmail'].forEach(function (id) { document.getElementById(id).removeAttribute('aria-invalid'); });
     probs.forEach(function (x) { document.getElementById(x[0]).setAttribute('aria-invalid', 'true'); });
     document.getElementById('formErr').textContent = probs.map(function (x) { return x[1]; }).join(' ');
@@ -953,7 +961,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     ['Lead arrives', 'Facebook or Instagram form, or the landing page, tagged with its ad and state.', 'Routing not connected', 'wait'],
     ['Consent check', 'Follow-up only happens where the lead gave consent.', 'Configured per firm', 'wait'],
     ['Sofia screens', 'She lets the person talk, then checks your criteria.', 'Text walkthrough here', 'ok'],
-    ['Not a fit', 'A kind close. Nothing reaches your intake team.', 'Script ready', 'ok'],
+    ['Needs review', 'Apply your firm’s agreed review and routing rules.', 'Configured per firm', 'wait'],
     ['Qualified', 'Short handoff to your intake line: name, claim, state.', 'Handoff unconnected', 'wait'],
     ['No answer', 'Follow-up texts and call attempts, only with consent.', 'Configured at setup', 'wait'],
     ['Reported', 'Every outcome lands in the Perspective report.', 'Layout preview', '']
@@ -1002,7 +1010,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     document.getElementById('pgHead').textContent = copy.plate;
     document.getElementById('pgBtn').style.background = BRAND;
     document.getElementById('previewNote').textContent = (tpl ? 'Starting copy for ' + tpl.label + '. ' : 'Generic example copy until I review your tort. ') +
-      'Examples illustrate the package. Nothing is built until payment is verified, and your counsel approves the final copy.';
+      'Examples illustrate the package. Production campaigns are not provisioned until payment is verified, and your counsel approves the final copy.';
     var fl = document.getElementById('pFlow'); fl.textContent = '';
     FLOW.forEach(function (x) { var li = el('li'); li.appendChild(el('b', null, x[0])); li.appendChild(el('span', 'tag ' + x[3], x[2])); li.appendChild(el('p', null, x[1])); fl.appendChild(li); });
     drawTalk(tpl);
@@ -1048,7 +1056,10 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       phone: q.requester_phone.trim(), message: msg, source: 'lfma/campaign-offer-special', submitted_at: env.created_at });
     body.set('campaign_brief', JSON.stringify(env.request_raw));
     if (window.__lfmaIntent) body.set('intent', window.__lfmaIntent);
-    return fetch(HOOK, { method: 'POST', body: body }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); });
+    var controller = new AbortController();
+    var timer;
+    var timeout = new Promise(function (_, reject) { timer = setTimeout(function () { controller.abort(); reject(new Error('Request timed out')); }, 15000); });
+    return Promise.race([fetch(HOOK, { method: 'POST', body: body, signal: controller.signal }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); }), timeout]).finally(function () { clearTimeout(timer); });
   }
   document.getElementById('firmForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -1083,6 +1094,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     var res = document.getElementById('result'); res.hidden = false;
     title.textContent = 'Sending…'; noteEl.textContent = 'Sending your answers to Kyle.';
     sending = true; btn.disabled = true;
+    document.getElementById("requestFields").disabled = true;
     sendToKyle(env, r).then(function () {
       env.status = 'accepted_for_delivery';
       document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
@@ -1094,7 +1106,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
       title.textContent = 'Not sent yet';
       noteEl.textContent = 'Something went wrong sending this. Please press Send me the details again.';
-    }).then(function () { sending = false; btn.disabled = false; res.focus(); });
+    }).then(function () { sending = false; btn.disabled = false; document.getElementById("requestFields").disabled = false; res.focus(); });
     if (typeof seam.onBuild === 'function') { try { seam.onBuild(env); } catch (x) { /* seam errors stay local */ } }
   });
 
@@ -1154,6 +1166,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   });
 
   render();
+  document.getElementById("requestFields").disabled = false;
+  document.getElementById("buildBtn").disabled = false;
 })();
 </script>
 
