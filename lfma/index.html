@@ -1046,6 +1046,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     msg += '\nCampaign brief:\n' + JSON.stringify({ qualification_criteria: q.qualification_criteria, brand: q.brand, public_assets: q.public_assets, crm: q.crm, delivery_method: q.delivery_method, intake_destination: q.intake_destination, intake_hours: q.intake_hours, integration_notes: q.integration_notes }, null, 2);
     var body = new URLSearchParams({ name: q.requester_name.trim(), firm: q.firm_name.trim(), email: q.requester_email.trim(),
       phone: q.requester_phone.trim(), message: msg, source: 'lfma/campaign-offer-special', submitted_at: env.created_at });
+    body.set('campaign_brief', JSON.stringify(env.request_raw));
     if (window.__lfmaIntent) body.set('intent', window.__lfmaIntent);
     return fetch(HOOK, { method: 'POST', body: body }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); });
   }
