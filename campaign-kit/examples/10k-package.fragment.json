@@ -1,0 +1,16 @@
+{
+  "_note": "Illustrative fragment for an approved campaign config, not a complete brief or launch authorization. Preserve the campaign's approved duration and channel split; do not copy old defaults as approval.",
+  "commercial": {
+    "currency": "USD",
+    "package_total_usd": 10000,
+    "planned_media_usd": 7500
+  },
+  "budget": {
+    "media_total_usd": 7500
+  },
+  "channels": {
+    "google": {
+      "match": "EXACT"
+    }
+  }
+}
