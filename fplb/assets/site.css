@@ -139,3 +139,9 @@ tr:last-child td{border-bottom:0}
 .meet-blue img{border-radius:20px;aspect-ratio:1/1;object-fit:cover;width:100%;max-width:320px}
 .meet-blue h2{margin-top:.2em}
 @media (min-width:760px){.meet-blue{grid-template-columns:300px 1fr}}
+
+/* Newsletter */
+.blue-signup label{display:block;font-weight:700}
+.blue-signup input{display:block;width:100%;max-width:540px;padding:14px;border:2px solid var(--ink);border-radius:12px;font:inherit;background:#fff}
+.blue-signup [role="status"]{min-height:1.7em}
+.blue-signup button:disabled{opacity:.65;cursor:wait}
