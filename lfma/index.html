@@ -347,9 +347,10 @@ table.cost tr:last-child th, table.cost tr:last-child td { border-bottom: 0; }
 .field { display: grid; gap: 6px; min-width: 0; }
 .field label { font: 500 13px/1.2 var(--body); color: var(--ink); }
 .field label span { color: var(--muted); font-weight: 400; }
-.field input, .field select { width: 100%; min-height: 48px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 0 14px; color: var(--ink); }
+.field input, .field select, .field textarea { width: 100%; min-height: 48px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; padding: 0 14px; color: var(--ink); }
+.field textarea { padding: 12px 14px; resize: vertical; font: inherit; }
 .field input[type="color"] { padding: 4px; cursor: pointer; }
-.field input:focus, .field select:focus { border-color: var(--neon); outline: none; box-shadow: 0 0 0 3px var(--neon-soft); }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--neon); outline: none; box-shadow: 0 0 0 3px var(--neon-soft); }
 .field input[aria-invalid="true"] { border-color: var(--amber); }
 .err { color: var(--amber); font-size: 14px; min-height: 1.4em; }
 
@@ -715,7 +716,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   <section id="build" aria-labelledby="build-h">
     <span class="eyebrow">Start here</span>
     <h2 id="build-h">Tell me your <em>tort.</em></h2>
-    <p class="body">That's all I need to start. No brief, no long form. Tell me the tort and where you take cases, and I go from there.</p>
+    <p class="body">Start with your firm, tort and geography. Have the full brief ready? Add your criteria, brand and intake setup below. Your answers shape the campaign preview; we confirm the build and connections with you before launch.</p>
 
     <p class="fine">Request details or a demo. This form does not take payment, create an invoice or activate advertising. We confirm your scope, schedule and terms before invoicing.</p>
     <form class="askcard" id="firmForm" novalidate>
@@ -746,6 +747,22 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
           <div class="field"><label for="fPhone">Phone <span>(optional)</span></label><input id="fPhone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-0100"></div>
         </div>
       </div>
+
+      <details class="campaign-brief" style="margin:24px 0">
+        <summary class="ask-q">Add your campaign brief <span>(optional)</span></summary>
+        <p class="fine">A short request is enough to begin. These details help us prepare a branded page and the right lead handoff. Do not enter passwords, API keys, private webhook URLs or client records.</p>
+        <div class="fields">
+          <div class="field"><label for="fCriteria">Who qualifies?</label><textarea id="fCriteria" maxlength="3000" rows="3" placeholder="Case criteria, exclusions and what your intake team needs to know"></textarea></div>
+          <div class="field"><label for="fBrand">Brand and public website</label><input id="fBrand" maxlength="500" placeholder="Firm website, colors, tone or unbranded BTL"></div>
+          <div class="field"><label for="fAssets">Public brand assets</label><input id="fAssets" maxlength="500" placeholder="Public logo or photo-library link; permissions arranged separately"></div>
+          <div class="field"><label for="fCrm">Your CRM</label><select id="fCrm"><option value="">Not decided / discuss with us</option><option>Law Ruler</option><option>Litify</option><option>Other CRM</option><option>No CRM yet</option></select></div>
+          <div class="field"><label for="fDelivery">Preferred lead delivery</label><select id="fDelivery"><option value="">Confirm with my team</option><option>CRM / API form lead</option><option>Intake phone / DID</option><option>Both form and phone</option></select></div>
+          <div class="field"><label for="fDestination">Intake destination</label><input id="fDestination" maxlength="500" placeholder="Intake email, public phone or team name (not API credentials)"></div>
+          <div class="field"><label for="fHours">Intake hours and timezone</label><input id="fHours" maxlength="300" placeholder="Mon–Fri 9–5 Eastern; after-hours callback preference"></div>
+          <div class="field"><label for="fIntegration">Integration notes</label><textarea id="fIntegration" maxlength="3000" rows="3" placeholder="API available? Required lead fields? Who can help connect it? No secrets here."></textarea></div>
+        </div>
+        <p class="fine">Today: the request is delivered to Kyle for review. Automated provisioning, invoicing and CRM connection are not activated by this form.</p>
+      </details>
 
       <p class="err" id="formErr" role="alert"></p>
       <div class="ask-nav">
@@ -865,7 +882,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   var g = function (id) { return document.getElementById(id).value.trim(); };
 
   // ---- Local request seam: Codex normalizes and validates these raw fields locally ----
-  var FIELD_IDS = { tort: 'fBrief', target_states: 'fStates', firm_name: 'fFirm', requester_name: 'fName', requester_email: 'fEmail', requester_phone: 'fPhone' };
+  var FIELD_IDS = { tort: 'fBrief', target_states: 'fStates', firm_name: 'fFirm', requester_name: 'fName', requester_email: 'fEmail', requester_phone: 'fPhone', qualification_criteria: 'fCriteria', brand: 'fBrand', public_assets: 'fAssets', crm: 'fCrm', delivery_method: 'fDelivery', intake_destination: 'fDestination', intake_hours: 'fHours', integration_notes: 'fIntegration' };
   function rawFields() { var o = {}; for (var k in FIELD_IDS) o[k] = document.getElementById(FIELD_IDS[k]).value; return o; }
   window.MA_LOCAL_REQUEST = { fields: FIELD_IDS, read: rawFields, normalized: false };
 
@@ -1023,6 +1040,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     var msg = (window.__lfmaIntent === 'demo' ? 'FREE DEMO REQUEST | ' : '') + 'CAMPAIGN OFFER SPECIAL | Tort: ' + q.tort.trim() + ' | States: ' + q.target_states.trim() +
       ' | Status: ' + (r.supported ? 'known tort, ready for invoice' : 'review first (' + r.notes.join(' ') + ')') +
       ' | Offer: $2,500 service + $7,500 media = $10,000; all-channel holiday sprint, November 16–December 1, 2026; target launches November 20, ads underway November 23';
+    msg += '\nCampaign brief:\n' + JSON.stringify({ qualification_criteria: q.qualification_criteria, brand: q.brand, public_assets: q.public_assets, crm: q.crm, delivery_method: q.delivery_method, intake_destination: q.intake_destination, intake_hours: q.intake_hours, integration_notes: q.integration_notes }, null, 2);
     var body = new URLSearchParams({ name: q.requester_name.trim(), firm: q.firm_name.trim(), email: q.requester_email.trim(),
       phone: q.requester_phone.trim(), message: msg, source: 'lfma/campaign-offer-special', submitted_at: env.created_at });
     if (window.__lfmaIntent) body.set('intent', window.__lfmaIntent);
@@ -1034,7 +1052,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     for (var n = 1; n <= 3; n++) { if (!check(n)) { showStep(n); check(n); lastEnvelope = null; document.getElementById('result').hidden = true; document.getElementById('envelope').textContent = '{}'; return; } }
     var r = review(), raw = rawFields();
     var env = {
-      type: 'campaign_request', version: 'preview-4', status: 'sent_to_kyle', created_at: new Date().toISOString(),
+      type: 'campaign_request', version: 'preview-5', status: 'pending_delivery', created_at: new Date().toISOString(),
       request_raw: raw, normalized: false,
       review: { state: r.supported ? 'scope_supported' : 'review_needed_before_billing', notes: r.notes, tort_match: r.tpl },
       invoice_draft: r.supported ? { status: 'draft_not_sent', lines: [{ item: 'Service fee', usd: 2500 }, { item: 'Media budget', usd: 7500 }], total_usd: 10000, window: '2026-11-16/2026-12-01', billing: 'not_connected' } : null,
@@ -1061,10 +1079,14 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     title.textContent = 'Sending…'; noteEl.textContent = 'Sending your answers to Kyle.';
     sending = true; btn.disabled = true;
     sendToKyle(env, r).then(function () {
+      env.status = 'accepted_for_delivery';
+      document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
       title.textContent = 'Got it' + first + '. I\'ll reach out.';
       track('generate_lead', { form_id: 'lfma_offer_request', known_tort: !!r.supported });
       noteEl.textContent = 'Your request was accepted for delivery to Kyle. Nothing is charged. He will confirm the scope and dates with you.';
     }).catch(function () {
+      env.status = 'delivery_failed';
+      document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
       title.textContent = 'Not sent yet';
       noteEl.textContent = 'Something went wrong sending this. Please press Send me the details again.';
     }).then(function () { sending = false; btn.disabled = false; res.focus(); });
@@ -1074,7 +1096,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   document.getElementById('copyReq').addEventListener('click', function () {
     var btn = this; if (!lastEnvelope) return;
     var e = lastEnvelope, q = e.request_raw, text = [
-      'Campaign request (not sent)',
+      'Campaign request (' + e.status + ')',
+      'Campaign brief: ' + JSON.stringify({ criteria: q.qualification_criteria, brand: q.brand, assets: q.public_assets, crm: q.crm, delivery: q.delivery_method, destination: q.intake_destination, hours: q.intake_hours, integration: q.integration_notes }),
       'Tort: ' + q.tort.trim(), 'States: ' + q.target_states.trim(), 'Firm: ' + q.firm_name.trim(),
       'Contact: ' + q.requester_name.trim() + ', ' + q.requester_email.trim() + (q.requester_phone.trim() ? ', ' + q.requester_phone.trim() : ''),
       'Status: ' + (e.invoice_draft ? 'ready for invoice' : 'review first'),
