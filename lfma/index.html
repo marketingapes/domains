@@ -1102,10 +1102,10 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       track('generate_lead', { form_id: 'lfma_offer_request', known_tort: !!r.supported });
       noteEl.textContent = 'Your request was accepted for delivery to Kyle. Nothing is charged. He will confirm the scope and dates with you.';
     }).catch(function () {
-      env.status = 'delivery_failed';
+      env.status = 'delivery_unconfirmed';
       document.getElementById('envelope').textContent = JSON.stringify(env, null, 2);
-      title.textContent = 'Not sent yet';
-      noteEl.textContent = 'Something went wrong sending this. Please press Send me the details again.';
+      title.textContent = 'Delivery not confirmed';
+      noteEl.textContent = 'We could not confirm delivery. Your request may already have reached Kyle. Check with him before resending to avoid a duplicate.';
     }).then(function () { sending = false; btn.disabled = false; document.getElementById("requestFields").disabled = false; res.focus(); });
     if (typeof seam.onBuild === 'function') { try { seam.onBuild(env); } catch (x) { /* seam errors stay local */ } }
   });
