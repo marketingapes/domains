@@ -22,6 +22,9 @@
       submit_text: 'By submitting this form, you agree that Phillips Law Group and its intake team, including Sofia, an AI assistant, may call and text you at the number you entered about your request, including with automated technology and an AI voice. Calls may be recorded. Consent is not a condition of any service. Message frequency varies; message and data rates may apply. Reply STOP to opt out or HELP for help.'
     }
   };
+  // Which backend contract EE_LANE.intake_endpoint speaks. 'btl.web-lead/v1' is legal-web-lead's live
+  // POST /api/v1/btl/web-lead: it stores the request and queues Sofia's callback, which transfers to the firm.
+  var WEB_LEAD = L.intake_contract === 'btl.web-lead/v1';
   var PAGE_PATH = { landing: '/sex-abuse-la-county/', quiz: '/sex-abuse-la-county/quiz/', sofia: '/sex-abuse-la-county/talk-to-sofia/' }[L.page] || '';
   var SOURCE = { landing: 'form', quiz: 'quiz', sofia: 'sofia' }[L.page] || 'form';
   var PHONE_OK = L.phone_status === 'verified_for_program' && /^\+1[2-9]\d{9}$/.test(L.phone_tel || '');
@@ -145,9 +148,31 @@
       typeof j.consent_record_id === 'string' && /^CR-[0-9a-f]{24}$/.test(j.consent_record_id) &&
       j.status === 'saved_pending_human_review' && j.dispatch === 'disabled' && j.eligibility === 'not_assessed');
   }
+  // web-lead receipt: stored and a callback queued (or started) for THIS submission, or a duplicate of a
+  // request already queued for this phone. A honeypot filter, a test or dry-run record, or any other
+  // status is not a saved request.
+  var WEB_LEAD_UID = /^MA-BTL-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var WEB_LEAD_OK = ['awaiting_executor', 'call_created', 'call_ended'];
+  function isQueued(r, submissionId) {
+    var j = r && r.json;
+    return !!(r && r.status === 200 && j && j.ok === true && !j.filtered && j.test !== true && j.dry_run !== true &&
+      typeof j.lead_uid === 'string' && WEB_LEAD_UID.test(j.lead_uid) && (j.event_id === submissionId || j.duplicate === true) &&
+      WEB_LEAD_OK.indexOf(j.status) >= 0);
+  }
+  function webLeadBody(contact, answers, submissionId, stamp, h, action) {
+    var q = new URLSearchParams(location.search), b = {
+      name: contact.first_name, phone: contact.phone, consent: true, consent_method: 'submit_button', consent_action: action,
+      consent_text: CAMPAIGN.consent.submit_text, consent_version: CAMPAIGN.consent.version, consent_sha256: h,
+      tort: 'la_county_abuse', state: 'CA', form_variant: (L.lane || 'btl-sex-abuse-la-county') + ':' + (L.page || ''),
+      page_url: location.origin + PAGE_PATH, page_path: PAGE_PATH, event_id: submissionId, submitted_at: stamp, company: ''
+    };
+    if (contact.email) b.email = contact.email;
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid', 'ttclid'].forEach(function (k) { var v = q.get(k); if (v) b[k] = v.slice(0, 250); });
+    return b;
+  }
   function done(form, state) {
     var box = $(form.getAttribute('data-done'));
-    if (state === 'saved') {
+    if (state === 'saved' || state === 'queued') {
       form.reset(); form.hidden = true;
       each('[data-hide-on-done]', function (x) { x.hidden = true; }, form.parentNode);
     }
@@ -187,6 +212,7 @@
       if (button) button.disabled = true;
       if (status) { status.className = 'status'; status.textContent = 'Saving your request…'; }
       sha256(CAMPAIGN.consent.submit_text).then(function (h) {
+        if (WEB_LEAD) return post(webLeadBody(contact, answers, submissionId, stamp, h, button ? button.textContent.trim().slice(0, 80) : 'submit'));
         return post({
           schema: CAMPAIGN.schema, campaign_id: CAMPAIGN.campaign_id, tenant: 'BTL', submission_id: submissionId, page_path: PAGE_PATH,
           question_bank_version: CAMPAIGN.question_bank_version, answers: answers,
@@ -195,7 +221,7 @@
         });
       }).then(function (r) {
         if (button) button.disabled = false;
-        if (isSaved(r, submissionId)) { if (status) status.textContent = ''; ev('ee_lead_saved'); done(form, 'saved'); return; }
+        if (WEB_LEAD ? isQueued(r, submissionId) : isSaved(r, submissionId)) { if (status) status.textContent = ''; ev('ee_lead_saved'); done(form, WEB_LEAD ? 'queued' : 'saved'); return; }
         if (status) { status.className = 'status err'; status.textContent = 'We couldn’t confirm your request was saved. Nothing has been decided. Please try again.'; }
       }, function () {
         if (button) button.disabled = false;
