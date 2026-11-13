@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+const html=readFileSync(new URL('../lfma/index.html',import.meta.url),'utf8');
+const fields=['qualification_criteria','brand','public_assets','crm','delivery_method','intake_destination','intake_hours','integration_notes'];
+const body=html.match(/function sendToKyle\(env, r\) \{([\s\S]*?)\n  \}\n  document.getElementById\('firmForm'\)/)[1];
+function sender(fetch){return vm.runInNewContext('(function(env,r){'+body+'})',{window:{},URLSearchParams,fetch,HOOK:'https://example.invalid/no-send'});}
+const raw={tort:'SSDI',target_states:'CA',firm_name:'Example Firm',requester_name:'Test',requester_email:'test@example.invalid',requester_phone:'',...Object.fromEntries(fields.map(k=>[k,'example '+k]))};
+test('all inline classic scripts parse',()=>{for(const m of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){if(!/application\/|type="module"/.test(m[1]))new vm.Script(m[2]);}});
+test('expanded brief reaches existing notification message, preserving basic contract',async()=>{let sent;await sender(async(url,request)=>{sent=request;return {ok:true};})({request_raw:raw,created_at:'2026-11-13T00:00:00Z'},{supported:true});const data=sent.body;for(const key of fields)assert.ok(data.get('message').includes(raw[key]),key);assert.equal(data.get('email'),raw.requester_email);assert.equal(data.get('firm'),raw.firm_name);assert.equal(data.get('source'),'lfma/campaign-offer-special');});
+test('minimal brief still submits with empty optional fields',async()=>{await sender(async()=>({ok:true}))({request_raw:{...raw,...Object.fromEntries(fields.map(k=>[k,'']))},created_at:'now'},{supported:true});});
+test('delivery failure rejects rather than reporting sent',async()=>{await assert.rejects(()=>sender(async()=>({ok:false,status:503}))({request_raw:raw},{supported:true}),/HTTP 503/);assert.match(html,/status: 'pending_delivery'/);assert.match(html,/env.status = 'delivery_failed'/);assert.match(html,/env.status = 'accepted_for_delivery'/);});
+test('extended fields optional and limitations explicit',()=>{assert.match(html,/Add your campaign brief/);assert.match(html,/Do not enter passwords, API keys/);assert.match(html,/Automated provisioning, invoicing and CRM connection are not activated/);assert.match(html,/<option>Law Ruler<\/option>/);assert.match(html,/<option>Litify<\/option>/);for(const id of ['fCriteria','fBrand','fAssets','fCrm','fDelivery','fDestination','fHours','fIntegration'])assert.ok(html.includes('id="'+id+'"'));});
