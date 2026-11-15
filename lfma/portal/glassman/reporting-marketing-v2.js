@@ -99,7 +99,7 @@ function marketingCharts(d){
  chart("channel-chart",channels.map(r=>({label:channel(r.channel),value:r.leads})).sort((a,b)=>b.value-a.value),String,"No submission rows returned.");
  chart("spend-chart",d.spend.visible?channels.filter(r=>money(r.spend)).map(r=>({label:channel(r.channel),value:r.spend})).sort((a,b)=>b.value-a.value):[],usd,d.spend.visible?"No spend rows loaded. Spend is unknown, not zero.":"Spend is not included in your access.");
  const days=new Map();
- for(const r of d.by_day){if(/^\d{4}-\d{2}-\d{2}$/.test(String(r.date)))days.set(r.date,(days.get(r.date)||0)+r.leads);}
+ for(const r of d.by_day){if(r.leads>0&&/^\d{4}-\d{2}-\d{2}$/.test(String(r.date)))days.set(r.date,(days.get(r.date)||0)+r.leads);}
  chart("trend-chart",[...days].sort(([a],[b])=>a.localeCompare(b)).slice(-14).map(([date,value])=>({label:day(date),value})),String,"No dated submission rows returned.");
  const box=el("channel-breakdown");box.replaceChildren();
  const keys=[...new Set(["meta","google","tiktok","openai",...channels.map(r=>r.channel)])];
