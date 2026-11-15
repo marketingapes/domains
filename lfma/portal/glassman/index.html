@@ -17,7 +17,14 @@
 <p id="v1-note" hidden>Detailed reporting is not available from the server yet. Showing request totals only.</p>
 <div id="detail" hidden>
 <nav class="phase-nav" aria-label="Campaign phases"><a href="#marketing">01 · Marketing</a><a href="#intake">02 · AI Intake</a><a href="#handoff">03 · After Handoff</a></nav>
-<section class="phase" id="marketing"><p class="eyebrow">Phase 01</p><h2>Marketing</h2><p>Where submissions come from and what ad spend is recorded. Stored spend may include partial days or account-local dates. Cross-channel CPA is withheld until reporting windows and source coverage are verified.</p><div class="marketing-visuals">
+<section class="phase" id="marketing"><p class="eyebrow">Phase 01</p><h2>Marketing</h2><p>Where submissions come from and what ad spend is recorded. Stored spend may include partial days or account-local dates. Cross-channel CPA is withheld until reporting windows and source coverage are verified.</p><div class="cards" id="budget-cards">
+<article><h3>Total campaign budget</h3><strong id="budget-total">Not loaded</strong><p>Invoice total, including management and media</p></article>
+<article><h3>Ad budget</h3><strong id="budget-media">Not loaded</strong><p id="budget-source">Budget source unavailable</p></article>
+<article><h3>Management fee</h3><strong id="budget-fee">Not loaded</strong><p>Separate from advertising spend</p></article>
+<article><h3>Recorded ad spend</h3><strong id="budget-spend">Not loaded</strong><p id="budget-coverage">Loaded platform reporting only</p></article>
+<article><h3>Budget less recorded spend</h3><strong id="budget-remaining">Not loaded</strong><p>Calculated media remainder, not a reconciled cash balance</p></article>
+<article><h3>Recorded spend / submissions</h3><strong id="budget-ratio">Not loaded</strong><p>Directional ratio across all requests, not a verified channel CPA or cost per signed case</p></article>
+</div><div class="marketing-visuals">
 <article class="chart-panel"><p class="eyebrow">Acquisition mix</p><h3 id="channel-chart-title">Submissions by channel</h3><p class="hint">Saved requests, not unique people or signed cases.</p><div id="channel-chart" aria-labelledby="channel-chart-title"></div></article>
 <article class="chart-panel"><p class="eyebrow">Budget visibility</p><h3 id="spend-chart-title">Recorded spend by channel</h3><p class="hint">Loaded amounts only. Different reporting windows may apply; this is not a complete spend comparison.</p><div id="spend-chart" aria-labelledby="spend-chart-title"></div></article>
 <article class="chart-panel chart-wide"><p class="eyebrow">Recent activity</p><h3 id="trend-chart-title">Daily submissions</h3><p class="hint">Latest 14 dates with recorded submissions, Eastern time. Missing dates are not filled with zeros. Tables below retain the full report.</p><div id="trend-chart" aria-labelledby="trend-chart-title"></div></article>
@@ -44,4 +51,3 @@
 <button id="lock" type="button">Lock reporting</button></div></section>
 <footer><a href="https://besttortlawyers.com/glassman/">Back to campaign overview</a><p>Read-only. This page does not launch ads, contact leads or change cases. Signed cases are not connected to this view.</p></footer>
 </main></body></html>
-
