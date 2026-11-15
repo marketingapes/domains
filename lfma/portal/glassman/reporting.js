@@ -97,15 +97,15 @@ function showV2(d){
  el("cpl-note").textContent=s.visible?"CPA withheld: source coverage and reporting windows must be verified before comparing costs.":"Spend is not included in your access.";
  el("connection-note").textContent="Submission totals: loaded. Outreach activity: "+(a?"available":"unavailable")+". Firm feedback: "+(f&&f.status_as_of?"latest report "+day(f.status_as_of):"no dated report available")+". Sheet synchronization, ad-platform event acceptance and signed cases are not verified by this view.";
  el("range").textContent=t.first_day?"Requests from "+day(t.first_day)+" to "+day(t.last_day)+" (Eastern time)."+
-  (a?" "+t.real_leads+" requests came from "+a.people+" people; a person who sends two requests is one person.":""):"No real requests yet.";
+  (a?" "+t.real_leads+" requests map to "+a.people+" contact groups; these are matching keys, not verified unique people.":""):"No real requests yet.";
  el("source-time").textContent=time(t.last_lead_at);el("generated-time").textContent=time(d.generated_at);
  const steps=FUNNEL.map(([k,label])=>[label,String(h[k])]);
- if(a){steps.splice(1,0,["People (repeat requests counted once)",String(a.people)]);
+ if(a){steps.splice(1,0,["Matched contact groups (repeat requests grouped)",String(a.people)]);
   steps.splice(5,0,["Calls the assistant placed",String(a.call_attempts)],["Live conversations with the assistant",String(a.spoke_live)],["Calls people made to the assistant's line",String(a.inbound_calls)]);}
  fill("funnel-body",steps,"No requests yet.",2);
  if(f){
-  fill("firm-body",[["People sent to your team",String(f.people_at_firm)],["Records in LawRuler",String(f.lawruler_records)],
-   ["Sent by live phone transfer only, no LawRuler record from us yet",String(f.live_transfer_only)],
+  fill("firm-body",[["Contact groups with handoff evidence",String(f.people_at_firm)],["Records in LawRuler",String(f.lawruler_records)],
+   ["Handoff ledger groups without a LawRuler record ID",String(f.live_transfer_only)],
    ...f.statuses.map(r=>["Your latest status: "+r.status,String(r.people)])],"Nothing has been sent to your team yet.",2);
   el("firm-note").textContent=/^\d{4}-\d{2}-\d{2}$/.test(String(f.status_as_of||""))?"Statuses are from your intake team's disposition report of "+day(f.status_as_of)+".":"No disposition report has been loaded yet.";
  }else{el("firm-body").replaceChildren();el("firm-note").textContent="";}
