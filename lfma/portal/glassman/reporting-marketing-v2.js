@@ -119,24 +119,21 @@ function showBudget(d){
  el("budget-source").textContent=visible?"Budget source unavailable":"Budget not included in your access.";
  const dates=rows.map(r=>r.date).filter(v=>/^\d{4}-\d{2}-\d{2}$/.test(v)).sort();
  el("budget-coverage").textContent=dates.length?"Recorded "+day(dates[0])+"–"+day(dates[dates.length-1])+". May include partial/account-local days; coverage not reconciled.":"No spend rows loaded.";
- if(!visible||!budgetFeed||!Array.isArray(budgetFeed.campaigns))return;
- const c=budgetFeed.campaigns.find(c=>c.id==="GLASSMAN-SSDI-002");
- if(!c||!c.budget||!money(c.budget.amount))return;
- el("budget-media").textContent=usd(c.budget.amount);
- el("budget-source").textContent=c.budget.note||"Campaign reporting budget";
- if(c.invoice&&money(c.invoice.total)){
-  el("budget-total").textContent=usd(c.invoice.total);
-  const fee=c.invoice.total-c.budget.amount;
-  el("budget-fee").textContent=fee>=0?usd(fee):"Not loaded";
- }
+ const c=budgetFeed;
+ if(!visible||!c||c.schema!=="glassman.budget/v1"||c.campaign_id!=="GLASSMAN-SSDI-002"||c.currency!=="USD"||c.available!==true)return;
+ if(!money(c.media_budget)||!money(c.management_fee)||!money(c.invoice_total))return;
+ el("budget-media").textContent=usd(c.media_budget);
+ el("budget-total").textContent=usd(c.invoice_total);
+ el("budget-fee").textContent=usd(c.management_fee);
+ el("budget-source").textContent=(c.source||"Campaign invoice")+" · "+(c.invoice_number||"")+" · "+(c.status||"");
  if(spent!==null){
-  const remaining=Math.round((c.budget.amount-spent)*100)/100;
+  const remaining=Math.round((c.media_budget-spent)*100)/100;
   el("budget-remaining").textContent=remaining>=0?usd(remaining):"Over budget by "+usd(-remaining);
  }
 }
 async function loadBudget(g){
  try{
-  const data=await request("/feed",null,session);
+  const data=await request("/budget",null,session);
   if(g!==generation||!session)return;
   budgetFeed=data;
  }catch(e){
