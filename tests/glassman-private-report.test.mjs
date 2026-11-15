@@ -212,3 +212,11 @@ test('spend charts respect access and explicit zero differs from missing',async(
  let p=page([ok({}),ok({session:'s'}),ok(zero)]);await p.run();assert.match(p.text('spend-chart'),/\$0\.00/);
  p=page([ok({}),ok({session:'s'}),ok({...V2,spend:{...V2.spend,visible:false}})]);await p.run();assert.doesNotMatch(p.text('spend-chart')+p.text('channel-breakdown'),/\$/);assert.match(p.text('spend-chart'),/not included in your access/);
 });
+
+test('daily trend excludes spend-only report rows',async()=>{
+ const d={...V2,by_day:[...V2.by_day,{date:'2026-11-30',channel:'google',leads:0,spend:1,cpl:null}]};
+ const p=page([ok({}),ok({session:'s'}),ok(d)]);await p.run();
+ assert.equal(p.element('trend-chart').children.length,2);
+ assert.doesNotMatch(p.text('trend-chart'),/Nov 30/);
+ assert.match(html,/Latest 14 dates with recorded submissions/);
+});
