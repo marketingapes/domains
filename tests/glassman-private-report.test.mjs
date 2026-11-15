@@ -91,7 +91,7 @@ test('requests, people, call attempts and conversations are shown as different t
  for(const s of ['Requests received 7','Matched contact groups (repeat requests grouped) 6','Calls the assistant placed 9','Live conversations with the assistant 1',"Calls people made to the assistant's line 5"])
   assert.ok(p.text('funnel-body').includes(s),s);
  assert.equal(p.element('firm-part').hidden,false);
- for(const s of ['Contact groups with handoff evidence 5','Records in LawRuler 4','Handoff ledger groups without a LawRuler record ID 1','Your latest status: Unable to Reach Lead 2','Your latest status: IntakePartial - iClaim error 1'])
+ for(const s of ['Contact groups with handoff evidence 5','Contact groups with a LawRuler ID 4','Handoff ledger groups without a LawRuler record ID 1','Your latest status: Unable to Reach Lead 2','Your latest status: IntakePartial - iClaim error 1'])
   assert.ok(p.text('firm-body').includes(s),s);
  assert.match(p.text('firm-note'),/disposition report of Nov 12, 2026/);
  p.handlers['lock:click']();
