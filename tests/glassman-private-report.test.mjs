@@ -87,11 +87,11 @@ test('requests, people, call attempts and conversations are shown as different t
  let p=page([ok({}),ok({session:'s'}),ok(full)]);await p.run();
  assert.equal(p.text('web-count'),'7');assert.equal(p.text('contacted-count'),'9');
  assert.equal(p.text('contacted-note'),'1 live conversations · 1 transfer attempts · 3 requests not yet called');
- assert.match(p.text('range'),/7 requests came from 6 people/);
- for(const s of ['Requests received 7','People (repeat requests counted once) 6','Calls the assistant placed 9','Live conversations with the assistant 1',"Calls people made to the assistant's line 5"])
+ assert.match(p.text('range'),/7 requests map to 6 contact groups/);
+ for(const s of ['Requests received 7','Matched contact groups (repeat requests grouped) 6','Calls the assistant placed 9','Live conversations with the assistant 1',"Calls people made to the assistant's line 5"])
   assert.ok(p.text('funnel-body').includes(s),s);
  assert.equal(p.element('firm-part').hidden,false);
- for(const s of ['People sent to your team 5','Records in LawRuler 4','no LawRuler record from us yet 1','Your latest status: Unable to Reach Lead 2','Your latest status: IntakePartial - iClaim error 1'])
+ for(const s of ['Contact groups with handoff evidence 5','Records in LawRuler 4','Handoff ledger groups without a LawRuler record ID 1','Your latest status: Unable to Reach Lead 2','Your latest status: IntakePartial - iClaim error 1'])
   assert.ok(p.text('firm-body').includes(s),s);
  assert.match(p.text('firm-note'),/disposition report of Nov 12, 2026/);
  p.handlers['lock:click']();
