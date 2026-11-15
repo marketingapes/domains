@@ -104,7 +104,7 @@ function showV2(d){
   steps.splice(5,0,["Calls the assistant placed",String(a.call_attempts)],["Live conversations with the assistant",String(a.spoke_live)],["Calls people made to the assistant's line",String(a.inbound_calls)]);}
  fill("funnel-body",steps,"No requests yet.",2);
  if(f){
-  fill("firm-body",[["Contact groups with handoff evidence",String(f.people_at_firm)],["Records in LawRuler",String(f.lawruler_records)],
+  fill("firm-body",[["Contact groups with handoff evidence",String(f.people_at_firm)],["Contact groups with a LawRuler ID",String(f.lawruler_records)],
    ["Handoff ledger groups without a LawRuler record ID",String(f.live_transfer_only)],
    ...f.statuses.map(r=>["Your latest status: "+r.status,String(r.people)])],"Nothing has been sent to your team yet.",2);
   el("firm-note").textContent=/^\d{4}-\d{2}-\d{2}$/.test(String(f.status_as_of||""))?"Statuses are from your intake team's disposition report of "+day(f.status_as_of)+".":"No disposition report has been loaded yet.";
