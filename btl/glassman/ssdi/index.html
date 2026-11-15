@@ -13,6 +13,15 @@
 <meta property="og:title" content="Out of work because of your health? Request a free SSDI consultation.">
 <meta property="og:description" content="Request a callback and share your preferred time. The team will review your request. Attorney advertising. Free consultation.">
 <meta property="og:type" content="website">
+<!-- Normalize this page's slashless alias before GTM reads the URL. No navigation or event is emitted. -->
+<script>
+(function () {
+  if (window.location.hostname !== 'besttortlawyers.com' || window.location.pathname !== '/glassman/ssdi') return;
+  try {
+    window.history.replaceState(window.history.state, '', window.location.pathname + '/' + window.location.search + window.location.hash);
+  } catch (_) { /* Keep the page usable if URL replacement is unavailable. */ }
+})();
+</script>
 <!-- Google Tag Manager (BTL web container GTM-PHC7459M). The page pushes only non-identifying events to dataLayer:
      ee_page_view, ee_lead_submit_attempt/success/error, ee_call_click (page_id, campaign_id, tenant_id).
      No names, phone numbers, emails, states or answers are ever pushed. -->
