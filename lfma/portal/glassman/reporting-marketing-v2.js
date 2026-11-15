@@ -2,9 +2,9 @@
 "use strict";
 const base="https://perspective-s3b8.onrender.com/portal/glassman";
 const el=id=>document.getElementById(id);
-let email="",session="",timer,generation=0,matchRows=[];
+let email="",session="",timer,generation=0,matchRows=[],budgetFeed=null;
 const status=text=>{el("status").textContent=text;};
-const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note","firm-note","connection-note"];
+const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note","firm-note","connection-note","budget-total","budget-media","budget-fee","budget-spend","budget-remaining","budget-source","budget-coverage","budget-ratio"];
 const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list","firm-body","channel-chart","spend-chart","trend-chart","channel-breakdown"];
 const V2_PARTS=["contacted-card","cpl-card","range","detail"];
 const CHANNELS={meta:"Meta (Facebook, Instagram)",google:"Google",bing:"Bing",tiktok:"TikTok",openai:"ChatGPT",direct_or_unknown:"Direct or unknown"};
@@ -22,7 +22,7 @@ const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Transf
  texted_not_called:"Texted, not called yet",held_not_a_fit:"Held: not a fit",stored_no_contact:"Not yet contacted"};
 const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference","Firm status","Firm status date","Platform campaign ID","Platform ad set ID","Platform ad ID"];
 function lock(){
- generation++;session="";clearTimeout(timer);
+ generation++;session="";budgetFeed=null;clearTimeout(timer);
  el("metrics").hidden=true;el("sign-in").hidden=false;el("verify").hidden=true;
  for(const id of TEXT_IDS)el(id).textContent="";
  for(const id of TABLES)el(id).replaceChildren();
@@ -107,9 +107,44 @@ function marketingCharts(d){
   const lines=[r?r.leads+" submissions":"No submission rows returned",!d.spend.visible?"Spend not included in your access":r&&money(r.spend)?usd(r.spend)+" recorded spend":"Spend unknown / not loaded",r&&r.lead_days_missing_spend?r.lead_days_missing_spend+" submission dates missing spend":"Full source coverage not verified"];
   for(const line of lines){const p=document.createElement("p");p.textContent=line;tile.append(p);}box.append(tile);}
 }
+function showBudget(d){
+ const visible=d.spend.visible;
+ const rows=visible?d.spend.loaded:[];
+ const valid=rows.length>0&&rows.every(r=>money(r.spend));
+ const spent=valid?Math.round(rows.reduce((n,r)=>n+r.spend,0)*100)/100:null;
+ for(const id of ["budget-total","budget-media","budget-fee","budget-remaining"])el(id).textContent=visible?"Not loaded":"—";
+ el("budget-spend").textContent=spent===null?(visible?"Not loaded":"—"):usd(spent);
+ const leads=d.totals&&d.totals.real_leads;
+ el("budget-ratio").textContent=!visible?"—":spent!==null&&count(leads)&&leads>0?usd(spent/leads):"Not loaded";
+ el("budget-source").textContent=visible?"Budget source unavailable":"Budget not included in your access.";
+ const dates=rows.map(r=>r.date).filter(v=>/^\d{4}-\d{2}-\d{2}$/.test(v)).sort();
+ el("budget-coverage").textContent=dates.length?"Recorded "+day(dates[0])+"–"+day(dates[dates.length-1])+". May include partial/account-local days; coverage not reconciled.":"No spend rows loaded.";
+ const c=budgetFeed;
+ if(!visible||!c||c.schema!=="glassman.budget/v1"||c.campaign_id!=="GLASSMAN-SSDI-002"||c.currency!=="USD"||c.available!==true)return;
+ if(!money(c.media_budget)||!money(c.management_fee)||!money(c.invoice_total))return;
+ el("budget-media").textContent=usd(c.media_budget);
+ el("budget-total").textContent=usd(c.invoice_total);
+ el("budget-fee").textContent=usd(c.management_fee);
+ el("budget-source").textContent=(c.source||"Campaign invoice")+" · "+(c.invoice_number||"")+" · "+(c.status||"");
+ if(spent!==null){
+  const remaining=Math.round((c.media_budget-spent)*100)/100;
+  el("budget-remaining").textContent=remaining>=0?usd(remaining):"Over budget by "+usd(-remaining);
+ }
+}
+async function loadBudget(g){
+ try{
+  const data=await request("/budget",null,session);
+  if(g!==generation||!session)return;
+  budgetFeed=data;
+ }catch(e){
+  if(g!==generation)return;
+  budgetFeed=null;
+  if(e.status===401){lock();}
+ }
+}
 function showV2(d){
  const t=d.totals,h=d.handoff,s=d.spend;
- marketingCharts(d);
+ marketingCharts(d);showBudget(d);
  el("marketing").hidden=false;el("handoff").hidden=false;el("intake-summary").hidden=false;
  el("web-count").textContent=String(t.real_leads);el("test-count").textContent=String(t.test_records);
  const a=activityOf(d),f=firmOf(d);
@@ -210,6 +245,10 @@ async function refresh(g){
   if(validV2(d))showV2(d);else if(validV1(d))showV1(d);else throw new Error("Unexpected report");
   el("metrics").hidden=false;status("Connected. The report refreshes every minute.");
   await loadMatch(g);
+  if(validV2(d)&&g===generation&&session){
+   if(d.spend.visible)await loadBudget(g);else budgetFeed=null;
+   if(g===generation&&session)showBudget(d);
+  }
  }catch(e){
   if(g!==generation)return;
   if(e.status===401||e.status===403){lock();return;}
@@ -235,4 +274,3 @@ el("verify").addEventListener("submit",async e=>{
 el("back").addEventListener("click",lock);el("lock").addEventListener("click",lock);el("match-csv").addEventListener("click",downloadMatch);
 window.addEventListener("pagehide",lock);window.addEventListener("pageshow",e=>{if(e.persisted)lock();});
 })();
-

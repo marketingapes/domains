@@ -220,3 +220,23 @@ test('daily trend excludes spend-only report rows',async()=>{
  assert.doesNotMatch(p.text('trend-chart'),/Nov 30/);
  assert.match(html,/Latest 14 dates with recorded submissions/);
 });
+
+test('budget comes only from authorized feed and resets on lock',async()=>{
+ const p=page([{status:200,body:{}},{status:200,body:{session:'test-session'}},{status:200,body:V2},{status:403,body:{}},{status:200,body:{schema:'glassman.budget/v1',campaign_id:'GLASSMAN-SSDI-002',currency:'USD',available:true,media_budget:1000,management_fee:250,invoice_total:1250,source:'Fixture budget'}}]);
+ await p.run();
+ assert.equal(p.text('budget-total'),'$1250.00');
+ assert.equal(p.text('budget-media'),'$1000.00');
+ assert.equal(p.text('budget-fee'),'$250.00');
+ assert.equal(p.text('budget-spend'),'$69.12');
+ assert.equal(p.text('budget-remaining'),'$930.88');
+ assert.equal(p.text('budget-ratio'),'$9.87');
+ assert.match(p.text('budget-coverage'),/partial\/account-local/);
+ assert.equal(p.calls.at(-1).url,'https://perspective-s3b8.onrender.com/portal/glassman/budget');
+ p.handlers['lock:click']();
+ for(const id of ['budget-total','budget-media','budget-fee','budget-spend','budget-remaining','budget-ratio'])assert.equal(p.text(id),'');
+});
+test('no marketing grant does not request or expose budget',async()=>{
+ const report=structuredClone(V2);report.spend.visible=false;
+ const p=page([{status:200,body:{}},{status:200,body:{session:'test-session'}},{status:200,body:report},{status:403,body:{}}]);
+ await p.run();assert.equal(p.text('budget-total'),'—');assert.equal(p.text('budget-spend'),'—');assert.equal(p.calls.some(c=>c.url.endsWith('/budget')),false);
+});
