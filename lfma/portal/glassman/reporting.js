@@ -11,7 +11,7 @@ const CHANNELS={meta:"Meta (Facebook, Instagram)",google:"Google",bing:"Bing",ti
 const OUTCOMES=[["QUALIFIED","Qualified"],["FIRM_REVIEW","Firm review"],["NOT_A_FIT","Not a fit"],["other","Other result"],["not_screened","Not screened on the page"]];
 // A request is one saved submission. A call attempt is not a conversation, so neither is ever labelled "reached".
 const FUNNEL=[["leads","Requests received"],["contacted","Requests with a call or text attempt"],["texted","Sent a text"],["called","Requests the assistant tried to call"],
- ["transfer_attempted","Live transfer attempted"],["transfer_connected","Live transfer handed to the firm's phone line"],["callback_booked","Callback time booked"],
+ ["transfer_attempted","Live transfer attempted"],["transfer_connected","Requests marked as phone transfer (connection unverified)"],["callback_booked","Callback time booked"],
  ["callback_sent_to_firm","Callback request sent to the firm"],["sent_to_firm_crm","Requests posted to the firm's case system (LawRuler)"],
  ["held_not_a_fit","Held: not a fit"],["not_yet_contacted","Not yet contacted"]];
 const ACTIVITY=["people","call_attempts","spoke_live","live_transfers","inbound_calls"];
@@ -87,14 +87,15 @@ function cplText(spend,cpl,visible,leads){
 }
 function showV2(d){
  const t=d.totals,h=d.handoff,s=d.spend;
+ el("marketing").hidden=false;el("handoff").hidden=false;el("intake-summary").hidden=false;
  el("web-count").textContent=String(t.real_leads);el("test-count").textContent=String(t.test_records);
  const a=activityOf(d),f=firmOf(d);
  el("contacted-count").textContent=String(a?a.call_attempts:h.called);
- el("contacted-note").textContent=a?a.spoke_live+" live conversations · "+a.live_transfers+" live transfers · "+h.not_yet_contacted+" requests not yet called"
+ el("contacted-note").textContent=a?a.spoke_live+" live conversations · "+a.live_transfers+" transfer attempts · "+h.not_yet_contacted+" requests not yet called"
   :h.called+" requests with a call attempt · "+h.not_yet_contacted+" not yet called · conversation count unavailable";
  el("cpl-value").textContent=s.visible?"Coverage review":"—";
  el("cpl-note").textContent=s.visible?"CPA withheld: source coverage and reporting windows must be verified before comparing costs.":"Spend is not included in your access.";
- el("connection-note").textContent="Campaign submissions and outreach records: loaded for this report. Firm feedback: "+(f&&f.status_as_of?"latest report "+day(f.status_as_of):"no dated report available")+". Sheet synchronization, ad-platform event acceptance and signed cases are not verified by this view.";
+ el("connection-note").textContent="Submission totals: loaded. Outreach activity: "+(a?"available":"unavailable")+". Firm feedback: "+(f&&f.status_as_of?"latest report "+day(f.status_as_of):"no dated report available")+". Sheet synchronization, ad-platform event acceptance and signed cases are not verified by this view.";
  el("range").textContent=t.first_day?"Requests from "+day(t.first_day)+" to "+day(t.last_day)+" (Eastern time)."+
   (a?" "+t.real_leads+" requests came from "+a.people+" people; a person who sends two requests is one person.":""):"No real requests yet.";
  el("source-time").textContent=time(t.last_lead_at);el("generated-time").textContent=time(d.generated_at);
@@ -126,6 +127,7 @@ function showV1(d){
  el("web-count").textContent=String(d.web_requests);el("test-count").textContent=String(d.test_requests);
  el("source-time").textContent=time(d.source_updated_at);el("generated-time").textContent=time(d.generated_at);
  for(const id of V2_PARTS)el(id).hidden=true;el("v1-note").hidden=false;
+ el("detail").hidden=false;el("marketing").hidden=true;el("handoff").hidden=true;el("intake-summary").hidden=true;
 }
 function eastern(value){
  const date=new Date(value);
@@ -210,3 +212,4 @@ el("verify").addEventListener("submit",async e=>{
 el("back").addEventListener("click",lock);el("lock").addEventListener("click",lock);el("match-csv").addEventListener("click",downloadMatch);
 window.addEventListener("pagehide",lock);window.addEventListener("pageshow",e=>{if(e.persisted)lock();});
 })();
+
