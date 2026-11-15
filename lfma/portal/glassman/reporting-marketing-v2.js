@@ -245,9 +245,13 @@ async function refresh(g){
  try{
   const d=await request("/web-summary?v=2",null,session);
   if(g!==generation||!session)return;
-  if(validV2(d)){if(d.spend.visible)await loadBudget(g);else budgetFeed=null;if(g!==generation||!session)return;showV2(d);}else if(validV1(d))showV1(d);else throw new Error("Unexpected report");
+  if(validV2(d))showV2(d);else if(validV1(d))showV1(d);else throw new Error("Unexpected report");
   el("metrics").hidden=false;status("Connected. The report refreshes every minute.");
   await loadMatch(g);
+  if(validV2(d)&&g===generation&&session){
+   if(d.spend.visible)await loadBudget(g);else budgetFeed=null;
+   if(g===generation&&session)showBudget(d);
+  }
  }catch(e){
   if(g!==generation)return;
   if(e.status===401||e.status===403){lock();return;}
