@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import vm from 'node:vm';
-const js=readFileSync(new URL('../lfma/portal/glassman/reporting.js',import.meta.url),'utf8');
+const js=readFileSync(new URL('../lfma/portal/glassman/reporting-marketing-v2.js',import.meta.url),'utf8');
 const html=readFileSync(new URL('../lfma/portal/glassman/index.html',import.meta.url),'utf8');
 test('report syntax and locked startup never load data',()=>{
  let requests=0;const elements=new Map();const handlers={};
@@ -25,7 +25,7 @@ test('fixed HTTPS endpoint and strict campaign schema',()=>{
 function page(responses){
  const elements=new Map(),handlers={},calls=[],downloads=[];
  const node=(tag)=>({tag,value:'',hidden:true,textContent:'',className:'',children:[],
-  addEventListener(ev,fn){handlers[this.id+':'+ev]=fn;},append(...c){this.children.push(...c);},replaceChildren(){this.children=[];},
+  setAttribute(k,v){this[k]=v;},addEventListener(ev,fn){handlers[this.id+':'+ev]=fn;},append(...c){this.children.push(...c);},replaceChildren(){this.children=[];},
   click(){downloads.push({name:this.download,href:this.href});}});
  const blobs=[];function Blob(parts,opts){this.parts=parts;this.opts=opts;}
  const URL={createObjectURL(b){blobs.push(b);return 'blob:test';},revokeObjectURL(){}};
@@ -125,7 +125,7 @@ test('page has the v2 report regions and keeps them hidden until data loads',()=
  for(const id of ['detail','contacted-card','cpl-card','range','v1-note'])assert.match(html,new RegExp('id="'+id+'" hidden'));
  for(const id of ['funnel-body','day-body','channel-body','door-body','outcome-body','spend-list','firm-body','firm-note'])assert.match(html,new RegExp('id="'+id+'"'));
  assert.match(html,/id="firm-part" hidden/);assert.match(html,/a call attempt is not a conversation/);
- assert.match(html,/reporting\.js\?v=5/);assert.match(html,/<th scope="col"/);
+ assert.match(html,/reporting-marketing-v2\.js/);assert.match(html,/<th scope="col"/);
 });
 
 // ---------- lead list for matching: contact details, only for logins that are granted it ----------
@@ -197,4 +197,18 @@ test('v1 fallback preserves authorized lead list and does not claim outreach loa
  const p=page([ok({}),ok({session:'s'}),ok({schema:'glassman.web-summary/v1',campaign_id:'GLASSMAN-SSDI-002',web_requests:2,test_requests:0}),ok(LIST)]);await p.run();
  assert.equal(p.element('detail').hidden,false);assert.equal(p.element('match').hidden,false);assert.equal(p.element('intake-summary').hidden,true);
  const q=page([ok({}),ok({session:'s'}),ok(V2)]);await q.run();assert.match(q.text('connection-note'),/Outreach activity: unavailable/);
+});
+
+test('charts use observed values, omit missing spend bars and clear on lock',async()=>{
+ const p=page([ok({}),ok({session:'s'}),ok(V2)]);await p.run();
+ assert.match(p.text('channel-chart'),/Meta.*4/);assert.match(p.text('channel-chart'),/Direct or unknown.*3/);
+ assert.match(p.text('spend-chart'),/\$69\.12/);assert.doesNotMatch(p.text('spend-chart'),/Direct|\$0/);
+ assert.match(p.text('channel-breakdown'),/Google No submission rows returned Spend unknown/);
+ assert.equal(p.element('trend-chart').children.length,2);
+ p.handlers['lock:click']();for(const id of ['channel-chart','spend-chart','trend-chart','channel-breakdown'])assert.equal(p.text(id),'');
+});
+test('spend charts respect access and explicit zero differs from missing',async()=>{
+ const zero={...V2,by_channel:[{channel:'meta',leads:0,spend:0,cpl:null}]};
+ let p=page([ok({}),ok({session:'s'}),ok(zero)]);await p.run();assert.match(p.text('spend-chart'),/\$0\.00/);
+ p=page([ok({}),ok({session:'s'}),ok({...V2,spend:{...V2.spend,visible:false}})]);await p.run();assert.doesNotMatch(p.text('spend-chart')+p.text('channel-breakdown'),/\$/);assert.match(p.text('spend-chart'),/not included in your access/);
 });
