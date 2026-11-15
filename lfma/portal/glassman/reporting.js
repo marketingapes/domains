@@ -4,7 +4,7 @@ const base="https://perspective-s3b8.onrender.com/portal/glassman";
 const el=id=>document.getElementById(id);
 let email="",session="",timer,generation=0,matchRows=[];
 const status=text=>{el("status").textContent=text;};
-const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note","firm-note"];
+const TEXT_IDS=["web-count","test-count","source-time","generated-time","contacted-count","contacted-note","cpl-value","cpl-note","range","spend-note","firm-note","connection-note"];
 const TABLES=["funnel-body","day-body","channel-body","door-body","outcome-body","spend-list","firm-body"];
 const V2_PARTS=["contacted-card","cpl-card","range","detail"];
 const CHANNELS={meta:"Meta (Facebook, Instagram)",google:"Google",bing:"Bing",tiktok:"TikTok",openai:"ChatGPT",direct_or_unknown:"Direct or unknown"};
@@ -20,7 +20,7 @@ const RESULTS={QUALIFIED:"Qualified",FIRM_REVIEW:"Firm review",NOT_A_FIT:"Not a 
 const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Live transfer to the firm's phone line",callback_request_sent_to_firm:"Callback request sent to the firm",
  transfer_attempted_not_connected:"Transfer tried, not connected",called_not_transferred:"Call attempted, not transferred",queued_for_call:"Queued for a call",
  texted_not_called:"Texted, not called yet",held_not_a_fit:"Held: not a fit",stored_no_contact:"Not yet contacted"};
-const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference","Firm status","Firm status date"];
+const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference","Firm status","Firm status date","Platform campaign ID","Platform ad set ID","Platform ad ID"];
 function lock(){
  generation++;session="";clearTimeout(timer);
  el("metrics").hidden=true;el("sign-in").hidden=false;el("verify").hidden=true;
@@ -92,9 +92,9 @@ function showV2(d){
  el("contacted-count").textContent=String(a?a.call_attempts:h.called);
  el("contacted-note").textContent=a?a.spoke_live+" live conversations · "+a.live_transfers+" live transfers · "+h.not_yet_contacted+" requests not yet called"
   :h.called+" requests with a call attempt · "+h.not_yet_contacted+" not yet called · conversation count unavailable";
- if(!s.visible){el("cpl-value").textContent="—";el("cpl-note").textContent="Spend is not included in your access.";}
- else if(!money(t.cpl_on_spend_days)){el("cpl-value").textContent="Not loaded";el("cpl-note").textContent="No cost per lead until ad spend is loaded for days with leads.";}
- else{el("cpl-value").textContent=usd(t.cpl_on_spend_days);el("cpl-note").textContent=usd(t.spend_loaded)+" loaded spend over "+t.leads_on_spend_days+" leads on those days";}
+ el("cpl-value").textContent=s.visible?"Coverage review":"—";
+ el("cpl-note").textContent=s.visible?"CPA withheld: source coverage and reporting windows must be verified before comparing costs.":"Spend is not included in your access.";
+ el("connection-note").textContent="Campaign submissions and outreach records: loaded for this report. Firm feedback: "+(f&&f.status_as_of?"latest report "+day(f.status_as_of):"no dated report available")+". Sheet synchronization, ad-platform event acceptance and signed cases are not verified by this view.";
  el("range").textContent=t.first_day?"Requests from "+day(t.first_day)+" to "+day(t.last_day)+" (Eastern time)."+
   (a?" "+t.real_leads+" requests came from "+a.people+" people; a person who sends two requests is one person.":""):"No real requests yet.";
  el("source-time").textContent=time(t.last_lead_at);el("generated-time").textContent=time(d.generated_at);
@@ -109,9 +109,9 @@ function showV2(d){
   el("firm-note").textContent=/^\d{4}-\d{2}-\d{2}$/.test(String(f.status_as_of||""))?"Statuses are from your intake team's disposition report of "+day(f.status_as_of)+".":"No disposition report has been loaded yet.";
  }else{el("firm-body").replaceChildren();el("firm-note").textContent="";}
  el("firm-part").hidden=!f;
- fill("day-body",d.by_day.map(r=>[day(r.date),channel(r.channel),String(r.leads),!s.visible?"—":r.spend===null?"Not loaded":usd(r.spend),cplText(r.spend,r.cpl,s.visible,r.leads)]),"No leads yet.",5,2);
+ fill("day-body",d.by_day.map(r=>[day(r.date),channel(r.channel),String(r.leads),!s.visible?"—":r.spend===null?"Not loaded":usd(r.spend),s.visible?"Not verified":"—"]),"No leads yet.",5,2);
  fill("channel-body",d.by_channel.map(r=>[channel(r.channel),String(r.leads),!s.visible?"—":r.spend===null?"Not loaded":usd(r.spend),
-  !s.visible?"—":r.spend===null?"Not loaded":r.cpl===null?(r.lead_days_missing_spend?"Partial spend":"—"):usd(r.cpl)]),"No leads yet.",4);
+  s.visible?"Not verified":"—"]),"No leads yet.",4);
  fill("door-body",d.by_door.map(r=>[r.label,String(r.leads)]),"No leads yet.",2);
  fill("outcome-body",OUTCOMES.map(([k,label])=>[label,String(d.quiz_outcomes[k])]),"No leads yet.",2);
  el("spend-note").textContent=typeof s.note==="string"?s.note:"";
@@ -137,16 +137,17 @@ function validMatch(d){
  return d.schema==="glassman.lead-list/v1"&&d.campaign_id==="GLASSMAN-SSDI-002"&&Array.isArray(d.leads)&&d.leads.length<=500&&
   d.leads.every(r=>r&&text(r.receipt_id)&&text(r.first_name)&&text(r.last_name)&&text(r.phone)&&text(r.email)&&text(r.state)&&text(r.channel)&&
    text(r.door)&&text(r.status)&&textOrNull(r.web_outcome)&&textOrNull(r.requested_callback_eastern)&&textOrNull(r.lawruler_lead_id)&&textOrNull(r.lawruler_at)&&
+   ["platform_campaign_id","platform_adset_id","platform_ad_id"].every(k=>r[k]===undefined||r[k]===null||(text(r[k])&&/^[A-Za-z0-9_-]{1,100}$/.test(r[k])))&&
    (r.firm_status===undefined||textOrNull(r.firm_status))&&(r.firm_status_date===undefined||textOrNull(r.firm_status_date)));
 }
 function showMatch(d){
  matchRows=d.leads.map(r=>[eastern(r.received_at),r.first_name,r.last_name,r.phone,r.email,r.state,channel(r.channel),DOORS[r.door]||"Other",
-  r.web_outcome?RESULTS[r.web_outcome]||"Other result":"Not screened on the page",STATUSES[r.status]||"Not yet contacted",r.requested_callback_eastern||"",
-  r.lawruler_lead_id||"",r.lawruler_lead_id?eastern(r.lawruler_at):"",r.receipt_id,r.firm_status||"",r.firm_status_date||""]);
+  r.web_outcome?RESULTS[r.web_outcome]||"Other result":"Not screened on the page",STATUSES[r.status]||"Status unavailable",r.requested_callback_eastern||"",
+  r.lawruler_lead_id||"",r.lawruler_lead_id?eastern(r.lawruler_at):"",r.receipt_id,r.firm_status||"",r.firm_status_date||"",r.platform_campaign_id||"",r.platform_adset_id||"",r.platform_ad_id||""]);
  const body=el("match-body");body.replaceChildren();
- if(!matchRows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=12;td.textContent="No real leads yet.";tr.append(td);body.append(tr);}
+ if(!matchRows.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=13;td.textContent="No real leads yet.";tr.append(td);body.append(tr);}
  for(const m of matchRows){
-  const cells=[m[0],(m[1]+" "+m[2]).trim()||"Not given",m[3]||"Not given",m[4]||"Not given",m[5]||"—",m[6],m[7],m[8],
+  const cells=[m[0],(m[1]+" "+m[2]).trim()||"Not given",m[3]||"Not given",m[4]||"Not given",m[5]||"—",m[6],m[16]?"Campaign "+m[16]+" · Ad "+(m[18]||"not linked"):"Not linked / unavailable",m[7],m[8],
    m[9]+(m[10]?" · callback asked for "+m[10]:""),m[11]||"Not posted yet",m[14]||(m[11]?"No status reported yet":"—"),m[13]];
   const tr=document.createElement("tr");
   cells.forEach((value,i)=>{const td=document.createElement(i?"td":"th");if(!i)td.scope="row";if(i===8)td.className="wrap";td.textContent=value;tr.append(td);});
