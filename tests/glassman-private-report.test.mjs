@@ -69,7 +69,7 @@ test('v2 report renders every section with honest spend states',async()=>{
  assert.match(p.text('channel-body'),/Direct or unknown 3 Not loaded Not verified/);
  assert.match(p.text('door-body'),/Callback form 6.*Eligibility quiz 1.*Talk to Sofia 0.*Meta lead form 0/);
  assert.match(p.text('outcome-body'),/Qualified 1.*Firm review 0.*Not a fit 0/);
- for(const s of ['Requests with a call or text attempt 4','Requests the assistant tried to call 4','Live transfer attempted 2',"Live transfer handed to the firm's phone line 0",'Callback time booked 4','LawRuler) 0','Not yet contacted 3'])
+ for(const s of ['Requests with a call or text attempt 4','Requests the assistant tried to call 4','Live transfer attempted 2',"Requests marked as phone transfer (connection unverified) 0",'Callback time booked 4','LawRuler) 0','Not yet contacted 3'])
   assert.ok(p.text('funnel-body').includes(s),s);
  assert.match(p.text('spend-list'),/Meta Insights API/);assert.match(p.text('spend-list'),/spend not loaded \(3 leads\)/);
  assert.match(p.text('status'),/Connected/);
@@ -86,7 +86,7 @@ test('requests, people, call attempts and conversations are shown as different t
    statuses:[{status:'Unable to Reach Lead',people:2},{status:'No status reported yet',people:2},{status:'IntakePartial - iClaim error',people:1}]}};
  let p=page([ok({}),ok({session:'s'}),ok(full)]);await p.run();
  assert.equal(p.text('web-count'),'7');assert.equal(p.text('contacted-count'),'9');
- assert.equal(p.text('contacted-note'),'1 live conversations · 1 live transfers · 3 requests not yet called');
+ assert.equal(p.text('contacted-note'),'1 live conversations · 1 transfer attempts · 3 requests not yet called');
  assert.match(p.text('range'),/7 requests came from 6 people/);
  for(const s of ['Requests received 7','People (repeat requests counted once) 6','Calls the assistant placed 9','Live conversations with the assistant 1',"Calls people made to the assistant's line 5"])
   assert.ok(p.text('funnel-body').includes(s),s);
@@ -113,7 +113,7 @@ test('no spend loaded and no spend access are shown as such, never as $0',async(
 test('a v1 server still works; malformed reports and signed-out sessions show nothing',async()=>{
  let p=page([ok({}),ok({session:'s'}),ok({schema:'glassman.web-summary/v1',campaign_id:'GLASSMAN-SSDI-002',web_requests:7,test_requests:12,source_updated_at:null,generated_at:'2026-11-09'})]);
  await p.run();
- assert.equal(p.element('metrics').hidden,false);assert.equal(p.text('web-count'),'7');assert.equal(p.element('detail').hidden,true);assert.equal(p.element('v1-note').hidden,false);
+ assert.equal(p.element('metrics').hidden,false);assert.equal(p.text('web-count'),'7');assert.equal(p.element('detail').hidden,false);assert.equal(p.element('marketing').hidden,true);assert.equal(p.element('v1-note').hidden,false);
  p=page([ok({}),ok({session:'s'}),ok({...V2,handoff:{...V2.handoff,contacted:-1}})]);await p.run();
  assert.equal(p.element('metrics').hidden,true);assert.match(p.text('status'),/Refresh failed/);
  p=page([ok({}),ok({session:'s'}),ok({...V2,campaign_id:'OTHER'})]);await p.run();
@@ -190,4 +190,11 @@ test('three phases preserve boundaries and optional ad attribution',async()=>{
  assert.match(p.text('match-body'),/Not linked \/ unavailable/);
  assert.match(p.text('connection-note'),/ad-platform event acceptance.*not verified/);
  p.handlers['lock:click']();assert.equal(p.text('connection-note'),'');
+});
+
+
+test('v1 fallback preserves authorized lead list and does not claim outreach loaded',async()=>{
+ const p=page([ok({}),ok({session:'s'}),ok({schema:'glassman.web-summary/v1',campaign_id:'GLASSMAN-SSDI-002',web_requests:2,test_requests:0}),ok(LIST)]);await p.run();
+ assert.equal(p.element('detail').hidden,false);assert.equal(p.element('match').hidden,false);assert.equal(p.element('intake-summary').hidden,true);
+ const q=page([ok({}),ok({session:'s'}),ok(V2)]);await q.run();assert.match(q.text('connection-note'),/Outreach activity: unavailable/);
 });
