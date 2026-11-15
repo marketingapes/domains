@@ -17,7 +17,7 @@ const FUNNEL=[["leads","Requests received"],["contacted","Requests with a call o
 const ACTIVITY=["people","call_attempts","spoke_live","live_transfers","inbound_calls"];
 const DOORS={callback_form:"Callback form",quiz:"Eligibility quiz",talk_to_sofia:"Talk to Sofia",meta_form:"Meta lead form",tiktok_form:"TikTok lead form",other:"Other"};
 const RESULTS={QUALIFIED:"Qualified",FIRM_REVIEW:"Firm review",NOT_A_FIT:"Not a fit"};
-const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Live transfer to the firm's phone line",callback_request_sent_to_firm:"Callback request sent to the firm",
+const STATUSES={delivered_to_firm_crm:"Posted to LawRuler",live_transfer:"Transfer attempt; connection unverified",callback_request_sent_to_firm:"Callback request sent to the firm",
  transfer_attempted_not_connected:"Transfer tried, not connected",called_not_transferred:"Call attempted, not transferred",queued_for_call:"Queued for a call",
  texted_not_called:"Texted, not called yet",held_not_a_fit:"Held: not a fit",stored_no_contact:"Not yet contacted"};
 const MATCH_HEAD=["Received (Eastern)","First name","Last name","Phone","Email","State","Channel","Way in","Page result","Status","Callback asked for (Eastern)","LawRuler lead ID","Posted to LawRuler (Eastern)","Our reference","Firm status","Firm status date","Platform campaign ID","Platform ad set ID","Platform ad ID"];
