@@ -58,6 +58,9 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.ok(slot, 'video slot exists');
   assert.ok(home.indexOf('id="video"') < home.indexOf('id="firmForm"'), 'video slot sits above the form');
   if (/data-youtube=""/.test(slot[0]) && /data-mp4=""/.test(slot[0])) assert.match(slot[0], /\bhidden\b/);
+  // The slot now carries the Holiday Sprint video; its file and poster must exist in the site.
+  assert.match(slot[0], /data-mp4="\/assets\/holiday-sprint\.mp4"/);
+  await text('lfma/assets/holiday-sprint-poster.jpg');
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
