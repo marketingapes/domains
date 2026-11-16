@@ -43,7 +43,8 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.match(home, /The Holiday Sprint/);
   assert.match(home, /December 1, 2026/);
   assert.match(home, /Facebook and Instagram, Google, and ChatGPT/);
-  assert.match(home, /href="\/talk-to-sofia\.html"/);
+  // The demo has two actions only: call Sofia, or book time with Kyle. No browser demo link, no walkthrough button.
+  assert.doesNotMatch(home, /href="\/talk-to-sofia\.html"|id="demoCta"|Talk in your browser|walk me through/);
   // Every link that leaves the homepage opens in a new tab, so the visitor never loses the offer and form.
   for (const tag of home.match(/<a\b[^>]*>/g)) {
     const href = (tag.match(/href="([^"]*)"/) || [])[1];
@@ -67,6 +68,12 @@ test('public system copy stays inside the claim boundary', async () => {
   // The slot now carries the Holiday Sprint video; its file and poster must exist in the site.
   assert.match(slot[0], /data-mp4="\/assets\/holiday-sprint\.mp4"/);
   await text('lfma/assets/holiday-sprint-poster.jpg');
+  // Platform icons and Kyle's photo: the files the page and the email point at must exist.
+  for (const f of ['platforms/facebook.png', 'platforms/instagram.png', 'platforms/google.png', 'platforms/chatgpt.png', 'kyle-headshot-480.jpg', 'kyle-headshot-200.jpg', 'holiday-sprint-email-thumb.jpg']) {
+    await text('lfma/assets/' + f);
+  }
+  assert.match(home, /class="plats"/);
+  assert.match(home, /class="kyle-strip"/);
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
