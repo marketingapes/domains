@@ -1,0 +1,292 @@
+{
+ "site": "px",
+ "title": "Sleep Gift Finder",
+ "results_title": "Sleep gifts they'll actually use",
+ "budget_label": "Budget",
+ "budgets": [
+  {
+   "v": "u50",
+   "label": "Under $50",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "v": "50-100",
+   "label": "$50 to $100",
+   "min": 50,
+   "max": 100
+  },
+  {
+   "v": "100-200",
+   "label": "$100 to $200",
+   "min": 100,
+   "max": 200
+  },
+  {
+   "v": "200+",
+   "label": "$200 and up",
+   "min": 200,
+   "max": 100000
+  }
+ ],
+ "questions": [
+  {
+   "id": "who",
+   "label": "Who is it for?",
+   "weight": 6,
+   "options": [
+    {
+     "v": "partner",
+     "label": "Partner"
+    },
+    {
+     "v": "parent",
+     "label": "Parent"
+    },
+    {
+     "v": "friend",
+     "label": "Friend"
+    },
+    {
+     "v": "host",
+     "label": "Host or family"
+    }
+   ]
+  },
+  {
+   "id": "need",
+   "label": "What would help them sleep?",
+   "weight": 14,
+   "options": [
+    {
+     "v": "light",
+     "label": "Light sleeper",
+     "icon": "🌙"
+    },
+    {
+     "v": "hot",
+     "label": "Sleeps hot",
+     "icon": "❄️"
+    },
+    {
+     "v": "beauty",
+     "label": "Hair and skin care",
+     "icon": "✨"
+    },
+    {
+     "v": "guests",
+     "label": "Hosting guests",
+     "icon": "🛏️"
+    },
+    {
+     "v": "restless",
+     "label": "Restless nights",
+     "icon": "🌿"
+    }
+   ]
+  }
+ ],
+ "products": [
+  {
+   "id": "promeed-eye-mask",
+   "merchant": "Promeed",
+   "name": "Mulberry silk contour eye mask with earplugs",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-eye-mask&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-mulberry-silk-3d-eye-mask",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/23mm-mulberry-silk-3d-eye-mask.js"
+   },
+   "tags": {
+    "who": [
+     "any"
+    ],
+    "need": [
+     "light"
+    ]
+   },
+   "blurb": "Contoured silk mask that doesn't press on the eyes, plus earplugs. The easiest gift for a light sleeper."
+  },
+  {
+   "id": "promeed-pillowcase-xmas",
+   "merchant": "Promeed",
+   "name": "Mulberry silk pillowcase, Christmas gift kit",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-pillowcase-xmas&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-6a-100-mulberry-silk-pillowcase-christmas-gift-kit",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/23mm-6a-100-mulberry-silk-pillowcase-christmas-gift-kit.js"
+   },
+   "tags": {
+    "who": [
+     "partner",
+     "parent",
+     "friend"
+    ],
+    "need": [
+     "beauty"
+    ]
+   },
+   "blurb": "A 23 momme silk pillowcase packed as a holiday gift. Smooth on hair and skin."
+  },
+  {
+   "id": "promeed-pillowcase-mask-box",
+   "merchant": "Promeed",
+   "name": "Silk pillowcase and eye mask gift box",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-pillowcase-mask&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-6a-zipper-silk-pillowcase-with-eye-mask-with-gift-box",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/23mm-6a-zipper-silk-pillowcase-with-eye-mask-with-gift-box.js"
+   },
+   "tags": {
+    "who": [
+     "partner",
+     "parent"
+    ],
+    "need": [
+     "beauty",
+     "light"
+    ]
+   },
+   "blurb": "Zippered silk pillowcase plus a matching eye mask in a gift box. Two problems, one present."
+  },
+  {
+   "id": "promeed-3pack",
+   "merchant": "Promeed",
+   "name": "Silk pillowcase 3-pack gift kit",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-silk-3pack&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-6a-mulberry-silk-pillowcase-with-zipper-3-pack-thanksgiving-gift-kit",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/23mm-6a-mulberry-silk-pillowcase-with-zipper-3-pack-thanksgiving-gift-kit.js"
+   },
+   "tags": {
+    "who": [
+     "host",
+     "parent"
+    ],
+    "need": [
+     "beauty"
+    ]
+   },
+   "blurb": "Three zippered silk pillowcases. Good for a couple's bed plus the guest room."
+  },
+  {
+   "id": "promeed-cooling-comforter",
+   "merchant": "Promeed",
+   "name": "Long-lasting cooling comforter",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-cooling-comforter&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2Flong-lasting-cooling-comforter",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/long-lasting-cooling-comforter.js"
+   },
+   "tags": {
+    "who": [
+     "partner",
+     "parent",
+     "host"
+    ],
+    "need": [
+     "hot"
+    ]
+   },
+   "blurb": "A cool-touch comforter for people who kick the covers off every night."
+  },
+  {
+   "id": "promeed-herbal-quilt",
+   "merchant": "Promeed",
+   "name": "Herbal sleep aid quilt",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-herbal-quilt&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2Fherbal-sleep-aid-quilt",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/herbal-sleep-aid-quilt.js"
+   },
+   "tags": {
+    "who": [
+     "partner",
+     "parent"
+    ],
+    "need": [
+     "restless"
+    ]
+   },
+   "blurb": "A quilt with a herbal fill meant to make bedtime feel calmer. A bigger, cozier gift."
+  },
+  {
+   "id": "promeed-gift-card",
+   "merchant": "Promeed",
+   "name": "Promeed gift card",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=px-gift-card&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2Fpromeed-gift-card-value-30",
+   "expect_host": "promeed.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://promeed.com/products/promeed-gift-card-value-30.js"
+   },
+   "tags": {
+    "who": [
+     "any"
+    ],
+    "need": [
+     "beauty",
+     "light",
+     "hot"
+    ]
+   },
+   "blurb": "Let them choose their own silk. Higher values are on the same page."
+  },
+  {
+   "id": "kingkoil-air-mattress",
+   "merchant": "King Koil",
+   "name": "King Koil luxury air mattress",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=115216&awinaffid=2572337&clickref=px-gift-king-koil&ued=https%3A%2F%2Fwww.kingkoilairbeds.com%2Fproducts%2Fking-koil-luxury-air-mattress",
+   "expect_host": "kingkoilairbeds.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://kingkoilairbeds.com/products/king-koil-luxury-air-mattress.js"
+   },
+   "tags": {
+    "who": [
+     "host",
+     "friend"
+    ],
+    "need": [
+     "guests"
+    ]
+   },
+   "blurb": "A raised air bed with a built-in pump. Holiday guests get a real night's sleep."
+  },
+  {
+   "id": "thehues-blackout",
+   "merchant": "The Hues",
+   "name": "Zoe 100% blackout linen-look custom curtain",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=114864&awinaffid=2572337&clickref=px-gift-thehues-zoe&ued=https%3A%2F%2Fwww.thehues.com%2Fproducts%2Fzoe-100-blackout-linen-look-custom-curtain",
+   "expect_host": "thehues.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://thehues.com/products/zoe-100-blackout-linen-look-custom-curtain.js"
+   },
+   "tags": {
+    "who": [
+     "partner",
+     "parent"
+    ],
+    "need": [
+     "light"
+    ]
+   },
+   "blurb": "Made-to-measure blackout curtains for early sunrises, streetlights and shift workers."
+  }
+ ]
+}

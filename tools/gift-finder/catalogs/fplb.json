@@ -1,0 +1,398 @@
+{
+ "site": "fplb",
+ "title": "Blue's Pet Gift Finder",
+ "results_title": "Gift ideas for your pet",
+ "budget_label": "Budget",
+ "budgets": [
+  {
+   "v": "u25",
+   "label": "Under $25",
+   "min": 0,
+   "max": 25
+  },
+  {
+   "v": "25-50",
+   "label": "$25 to $50",
+   "min": 25,
+   "max": 50
+  },
+  {
+   "v": "50-100",
+   "label": "$50 to $100",
+   "min": 50,
+   "max": 100
+  },
+  {
+   "v": "100+",
+   "label": "$100 and up",
+   "min": 100,
+   "max": 100000
+  }
+ ],
+ "questions": [
+  {
+   "id": "pet",
+   "label": "Who's the gift for?",
+   "required": true,
+   "weight": 12,
+   "options": [
+    {
+     "v": "dog",
+     "label": "Dog",
+     "icon": "🐶"
+    },
+    {
+     "v": "cat",
+     "label": "Cat",
+     "icon": "🐱"
+    }
+   ]
+  },
+  {
+   "id": "size",
+   "label": "How big are they?",
+   "weight": 8,
+   "options": [
+    {
+     "v": "small",
+     "label": "Small"
+    },
+    {
+     "v": "medium",
+     "label": "Medium"
+    },
+    {
+     "v": "large",
+     "label": "Large"
+    }
+   ]
+  },
+  {
+   "id": "vibe",
+   "label": "What would they love?",
+   "weight": 10,
+   "options": [
+    {
+     "v": "treats",
+     "label": "Treats and food"
+    },
+    {
+     "v": "cozy",
+     "label": "Cozy and comfy"
+    },
+    {
+     "v": "play",
+     "label": "Toys and play"
+    },
+    {
+     "v": "health",
+     "label": "Health and care"
+    },
+    {
+     "v": "keepsake",
+     "label": "A keepsake for you"
+    }
+   ]
+  }
+ ],
+ "products": [
+  {
+   "id": "bestchoice-calming-bed",
+   "merchant": "Best Choice Products",
+   "name": "Self-warming shag calming pet bed",
+   "network": "Impact",
+   "url": "https://bestchoiceproducts.sjv.io/c/335485/2873487/33479?subId1=fplb-gift-bestchoice&u=https%3A%2F%2Fbestchoiceproducts.com%2Fproducts%2Fself-warming-shag-fur-calming-pet-bed-w-water-resistant-lining",
+   "expect_host": "bestchoiceproducts.com",
+   "price_check": {
+    "type": "product",
+    "url": "https://bestchoiceproducts.com/products/self-warming-shag-fur-calming-pet-bed-w-water-resistant-lining.js"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "medium",
+     "large"
+    ],
+    "vibe": [
+     "cozy"
+    ]
+   },
+   "blurb": "Round shag bed with raised edges and a water-resistant lining. Only the 45 in size is in stock, so it suits medium and large pets."
+  },
+  {
+   "id": "purrandmutt-portrait",
+   "merchant": "Purr & Mutt",
+   "name": "Custom pet portrait from your photo",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=31868&awinaffid=2572337&clickref=fplb-gift-purrandmutt&ued=https%3A%2F%2Fwww.purrandmutt.com%2Fen-us%2Fcollections%2Fpet-portraits",
+   "expect_host": "purrandmutt.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.purrandmutt.com/en-us/collections/pet-portraits/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "keepsake"
+    ]
+   },
+   "blurb": "Upload a photo and get a hand-styled portrait print. A gift for the pet parent as much as the pet."
+  },
+  {
+   "id": "zeal-treats",
+   "merchant": "ZEAL",
+   "name": "ZEAL New Zealand treats and air-dried food",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=118439&awinaffid=2572337&clickref=fplb-gift-zeal&ued=https%3A%2F%2Fwww.zealpetfood.com%2F",
+   "expect_host": "zealpetfood.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.zealpetfood.com/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "treats"
+    ]
+   },
+   "blurb": "Jerky tenders, wet food and air-dried recipes for dogs and cats. Easy stocking stuffers."
+  },
+  {
+   "id": "rawpaws-dog-treats",
+   "merchant": "Raw Paws Pet Food",
+   "name": "Freeze-dried dog treats",
+   "network": "CJ",
+   "url": "https://www.tkqlhce.com/click-101511028-15878741-1775518573000?sid=fplb-gift-rawpaws",
+   "expect_host": "rawpawspetfood.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.rawpawspetfood.com/collections/freeze-dried-dog-treats/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "treats"
+    ]
+   },
+   "blurb": "Single-ingredient freeze-dried treats. Small bags make good add-on gifts."
+  },
+  {
+   "id": "rawpaws-sale",
+   "merchant": "Raw Paws Pet Food",
+   "name": "Raw Paws sale picks",
+   "network": "CJ",
+   "url": "https://www.tkqlhce.com/click-101511028-17295891-1779835790000?sid=fplb-gift-rawpaws-sale",
+   "expect_host": "rawpawspetfood.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.rawpawspetfood.com/collections/sale-items/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "treats"
+    ]
+   },
+   "blurb": "Marked-down treats and chews from Raw Paws. The cheapest way to fill a stocking."
+  },
+  {
+   "id": "play-toys",
+   "merchant": "P.L.A.Y.",
+   "name": "P.L.A.Y. plush toys, cat toys and beds",
+   "network": "Awin",
+   "url": "https://www.awin1.com/awclick.php?mid=46441&id=2572337&clickref=fplb-gift-play",
+   "expect_host": "playpetbrands.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.playpetbrands.com/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "play",
+     "cozy"
+    ]
+   },
+   "blurb": "Themed plush toys, cat toys and beds. Lots of holiday-style squeakers."
+  },
+  {
+   "id": "nextrition",
+   "merchant": "Nextrition",
+   "name": "Nextrition treats and supplements",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=113600&awinaffid=2572337&clickref=fplb-gift-nextrition&ued=https%3A%2F%2Fwww.nextritionpet.com%2F",
+   "expect_host": "nextritionpet.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.nextritionpet.com/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "health",
+     "treats"
+    ]
+   },
+   "blurb": "Functional treats and supplements. Check the label fits your pet before you buy."
+  },
+  {
+   "id": "petwellbeing",
+   "merchant": "Pet Wellbeing",
+   "name": "Pet Wellbeing herbal supplements",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=87939&awinaffid=2572337&clickref=fplb-gift-petwellbeing&ued=https%3A%2F%2Fwww.petwellbeing.com%2F",
+   "expect_host": "petwellbeing.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://petwellbeing.com/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "health"
+    ]
+   },
+   "blurb": "Herbal supplements for dogs and cats. Ask your vet first if your pet takes medication."
+  },
+  {
+   "id": "rawwild",
+   "merchant": "Raw Wild",
+   "name": "Raw Wild wild-sourced dog food",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=89689&awinaffid=2572337&clickref=fplb-gift-rawwild&ued=https%3A%2F%2Fwww.rawwild.com%2F",
+   "expect_host": "rawwild.com",
+   "price_check": {
+    "type": "collection",
+    "url": "https://www.rawwild.com/products.json?limit=250"
+   },
+   "tags": {
+    "pet": [
+     "dog"
+    ],
+    "size": [
+     "medium",
+     "large"
+    ],
+    "vibe": [
+     "treats"
+    ]
+   },
+   "blurb": "Frozen raw dog food made from wild-sourced meat. A splurge for big eaters."
+  },
+  {
+   "id": "budgetpetcare-hdaysale",
+   "merchant": "Budget Pet Care",
+   "name": "25% off pet essentials",
+   "network": "CJ",
+   "code": "HDAYSALE",
+   "url": "https://www.jdoqocy.com/click-101511028-17377654-1793717949000?sid=fplb-gift-budgetpetcare",
+   "expect_host": "budgetpetcare.com",
+   "price_check": null,
+   "price_note": "25% off with code",
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "health"
+    ]
+   },
+   "blurb": "Holiday sale on flea, tick and everyday pet essentials. Apply the code at checkout."
+  },
+  {
+   "id": "canadapetcare-jingle",
+   "merchant": "Canada Pet Care",
+   "name": "25% off pet protection plus free shipping",
+   "network": "CJ",
+   "code": "JINGLE",
+   "url": "https://www.jdoqocy.com/click-101511028-17379807-1793882054000?sid=fplb-gift-canadapetcare",
+   "expect_host": "canadapetcare.com",
+   "price_check": null,
+   "price_note": "25% off with code",
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "health"
+    ]
+   },
+   "blurb": "Holiday pricing on flea, tick and heartworm protection, with free shipping."
+  },
+  {
+   "id": "bestvetcare-holiday",
+   "merchant": "Best Vet Care",
+   "name": "25% off plus free shipping",
+   "network": "CJ",
+   "url": "https://www.kqzyfj.com/click-101511028-17379886-1793898161000?sid=fplb-gift-bestvetcare",
+   "expect_host": "bestvetcare.com",
+   "price_check": null,
+   "price_note": "25% off holiday sale",
+   "tags": {
+    "pet": [
+     "dog",
+     "cat"
+    ],
+    "size": [
+     "any"
+    ],
+    "vibe": [
+     "health"
+    ]
+   },
+   "blurb": "Holiday special across the store, with free shipping."
+  }
+ ]
+}
