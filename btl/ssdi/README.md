@@ -6,10 +6,11 @@ SSDI Sofia exists in Vapi with a warm transfer to Kyle's cell (standing in for t
 The full channel plan is in [CAMPAIGN.md](CAMPAIGN.md); the Sofia record is in [sofia/sofia-ssdi-config.md](sofia/sofia-ssdi-config.md).
 Add `?test=1` to any page URL to send a synthetic lead (stored as `lead.test`, never emailed or dialed).
 
-## Buyer terms (from the buyer, 2026-10-27)
+## Buyer terms (signed Insertion Order, 2026-10-29)
 
-- **Criteria:** age 54–63 · out of work at least a year · not represented by an attorney ·
-  currently under a doctor's care · not receiving government disability payments.
+- **Criteria:** age 53–64 · out of work at least a year · not represented by an attorney ·
+  currently under a doctor's care · not receiving government disability payments · U.S. citizen.
+  (Pages, quiz and Sofia used 54–63 with no citizenship question until 2026-11-16.)
 - **Hours:** Monday–Friday, 9:30 AM–6:00 PM Eastern.
 - **Geo:** all US except California and Colorado (ads: no India or Pakistan traffic).
 - **Brand:** the firm's name must not appear on the website.

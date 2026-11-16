@@ -1,15 +1,16 @@
 /* BTL-SSDI-001 rules: the buyer's criteria, transfer hours and excluded states, in one place.
    Read by the form (/ssdi/qualifier.js), the quiz (/ssdi/quiz/quiz.js) and intake (/ssdi/intake.js).
-   Criteria are the buyer's own (2026-10-27): age 54–63, out of work at least a year, not represented,
-   currently under a doctor's care, not receiving government disability payments.
+   Criteria are the buyer's own, as written in the signed Insertion Order of 2026-10-29: age 53–64, out of work at
+   least a year, not represented, currently under a doctor's care, not receiving government disability payments,
+   U.S. citizen.
    Hours: Mon–Fri 9:30 AM–6:00 PM Eastern. Geo: all US except California and Colorado.
    Outcomes: QUALIFIED = every answer matches; FIRM_REVIEW = a "Not sure" that Sofia confirms on the call;
    NOT_A_FIT = an answer outside the criteria. The visitor never sees which answer mattered. */
 (function () {
   'use strict';
   var EXCLUDED_STATES = ['CA', 'CO'];
-  var DQ = { age: ['under_54', '64_plus'], out_of_work: ['no'], doctor: ['no'], benefits: ['yes'], lawyer: ['yes'] };
-  var RV = { out_of_work: ['not_sure'], doctor: ['not_sure'], benefits: ['not_sure'], lawyer: ['not_sure'] };
+  var DQ = { age: ['under_53', '65_plus'], out_of_work: ['no'], doctor: ['no'], benefits: ['yes'], lawyer: ['yes'], citizen: ['no'] };
+  var RV = { out_of_work: ['not_sure'], doctor: ['not_sure'], benefits: ['not_sure'], lawyer: ['not_sure'], citizen: ['not_sure'] };
   var HOURS = { tz: 'America/New_York', open: 9 * 60 + 30, close: 18 * 60, label: 'Monday–Friday, 9:30 AM–6:00 PM Eastern' };
 
   function outcome(a) {
@@ -43,7 +44,7 @@
   function route(result) { return result === 'QUALIFIED' ? 'sofia_transfer' : result === 'FIRM_REVIEW' ? 'sofia_confirm' : 'hold'; }
 
   window.SSDI_RULES = {
-    version: 'btl-ssdi-001-criteria-2026-10-27',
+    version: 'btl-ssdi-001-criteria-io-2026-10-29',
     excludedStates: EXCLUDED_STATES.slice(),
     hours: HOURS,
     outcome: outcome,
