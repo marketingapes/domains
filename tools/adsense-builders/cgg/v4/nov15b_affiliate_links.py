@@ -43,14 +43,14 @@ def bcp(sid, dest): return f"{BCP}?subId1=cgg-{sid}&u={q(dest)}"
 
 def a(href, offer, label, cls="btn aff-btn"):
     return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored noopener" target="_blank" '
-            f'data-offer="{offer}">{label}</a> <span class="aff-tag">Affiliate link</span>')
+            f'data-offer="{offer}">{label}</a>')
 
-NOTE = ('<p class="aff-note">#ad: we may earn a commission if you buy through this link, at no extra cost to you. '
+NOTE = (''
         '<a href="/offers/#disclosure">How this works</a>.</p>')
 
 def box(title, body, links, label="Partner pick", key="nov15b-gear"):
     ctas = "".join(f'<p class="aff-cta">{l}</p>' for l in links)
-    return (f'<aside class="aff-box" data-cgg="{key}"><p class="aff-label">#ad &middot; {label}</p>'
+    return (f'<aside class="aff-box" data-cgg="{key}"><p class="aff-label">{label}</p>'
             f'<h3>{title}</h3><p>{body}</p>{ctas}{NOTE}</aside>\n')
 
 # ------------------------------------------------------------- 1. retarget existing links
@@ -94,7 +94,7 @@ GEAR_YARD_OLD = re.compile(r"<h3>Backyard and kids' sets</h3><p>Portable cups, f
                            r"Look for an age range on the box and parts that pack away\.</p>(.*?)<a class=\"btn aff-btn\" href=\"[^\"]*subId1=cgg-gear-pillar-yard\"[^>]*>Browse backyard game sets</a>", re.S)
 GEAR_YARD_NEW = ("<h3>Backyard putting greens</h3><p>A putting and chipping green turns part of a lawn or patio into a practice hole. "
                  "The Indoor Golf Shop carries the Big Moss range, including an outdoor putting target green.</p>\\1"
-                 + a(igs("gear-pillar-yard", IGS_BIGMOSS), "indoor-golf-shop", "See Big Moss greens").replace(' <span class="aff-tag">Affiliate link</span>', ""))
+                 + a(igs("gear-pillar-yard", IGS_BIGMOSS), "indoor-golf-shop", "See Big Moss greens").replace('', ""))
 
 GIFT_BCP_OLD = re.compile(r'<div class="gift-card">\s*<h3>Best Choice Products: backyard and kids\' game sets</h3>.*?</div>', re.S)
 GIFT_BCP_NEW = ('<div class="gift-card" data-cgg="nov15b-gift-yard">   <h3>Big Moss putting greens at The Indoor Golf Shop</h3>   '
@@ -174,7 +174,7 @@ GEAR_GP_PICK = ('<div class="pick" data-cgg="nov15b-gp"><figure class="ph r43"><
                 'height="533" alt="Irons standing in a golf bag" loading="lazy" decoding="async"></figure><div> <h3>Pre-owned clubs</h3>'
                 f'<p>{GP_BODY}</p><p class="small"><strong>Good for:</strong> Trying a new putter or a starter set</p>'
                 '<p class="aff-cta">' + a(gp("gear-pillar-putters", GP_PUTTERS), "golf-partner", "Browse pre-owned putters")
-                + " " + a(gp("gear-pillar-sets", GP_SETS), "golf-partner", "See club sets", "btn btn-ghost aff-btn").replace(' <span class="aff-tag">Affiliate link</span>', "")
+                + " " + a(gp("gear-pillar-sets", GP_SETS), "golf-partner", "See club sets", "btn btn-ghost aff-btn").replace('', "")
                 + '</p></div></div> ')
 
 

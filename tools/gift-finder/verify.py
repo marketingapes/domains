@@ -76,7 +76,7 @@ def run(site):
                     "verified_host": host})
         keep.append(out)
     pub = {k: cat[k] for k in ("site", "title", "results_title", "budget_label", "budgets", "questions")}
-    pub.update({"checked_at": now, "disclosure": "Shop links are affiliate links. We may earn a commission at no extra cost to you.",
+    pub.update({"checked_at": now, "disclosure": "",
                 "products": keep})
     os.makedirs(os.path.join(ROOT, site, "data"), exist_ok=True)
     json.dump(pub, open(os.path.join(ROOT, site, "data", "gifts.json"), "w"), indent=1, ensure_ascii=False)

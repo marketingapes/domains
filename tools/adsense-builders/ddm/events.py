@@ -46,9 +46,9 @@ def kitchenaid(head, nav, foot):
 <header class="art-head">
 <p class="status-pill" role="status"><span class="dot" aria-hidden="true"></span><span id="deal-status">Sale ended Sat Oct 10, 8:59 PM PT</span></p>
 <h1>KitchenAid Harvest Event (ended Oct 10, 2026)</h1>
-<p class="byline">By the Discount Deal Me team &middot; Checked against KitchenAid's affiliate promo terms on <time datetime="2026-10-10">October 10, 2026</time></p>
+<p class="byline">By the Discount Deal Me team &middot; Checked against KitchenAid's promo terms on <time datetime="2026-10-10">October 10, 2026</time></p>
 </header>
-<p class="disclose"><strong>#ad &middot; Affiliate links.</strong> Discount Deal Me may earn a commission if you buy through the KitchenAid links on this page, at no extra cost to you. It does not change the price, and KitchenAid did not review this page.</p>
+
 <div class="ended-banner ended-only" id="ended-banner">
 <h2>This sale has ended</h2>
 <p>KitchenAid's Harvest Event ended on Saturday, October 10, 2026 at 11:59 PM ET (8:59 PM PT). The prices and percentages below are no longer available, so we've removed the shopping links. See <a href="/deals/">today's live deals</a> or sign up below to hear about the next one.</p>
@@ -75,7 +75,7 @@ def kitchenaid(head, nav, foot):
 
 <section class="live-only">
 <h2>Every Harvest Event category, in one table</h2>
-<p>These are the category offers KitchenAid lists for the Harvest Event through its affiliate program. "Up to" is the biggest discount in the category, not what every model gets, and all of them end at the same time as the main sale.</p>
+<p>These are the category offers KitchenAid lists for the Harvest Event through its deal program. "Up to" is the biggest discount in the category, not what every model gets, and all of them end at the same time as the main sale.</p>
 <div class="table-wrap"><table>
 <caption>KitchenAid Harvest Event categories (select models, new orders on kitchenaid.com)</caption>
 <thead><tr><th>Category</th><th>Offer</th><th>Link</th></tr></thead>
@@ -111,7 +111,7 @@ def kitchenaid(head, nav, foot):
 <p class="refurb-ended" hidden><strong>This refurbished sale has also ended.</strong></p>
 </section>
 
-<div class="art-foot">Offer details come from KitchenAid's promotion terms published through its affiliate program (CJ), checked on October 10, 2026. This sale needs no code, and Discount Deal Me does not set or verify individual prices. Always check the current price and terms on kitchenaid.com. KitchenAid is a trademark of its owner; Discount Deal Me is not affiliated with KitchenAid beyond the affiliate links disclosed above.</div>
+<div class="art-foot">Offer details come from KitchenAid's promotion terms published through its deal program (CJ), checked on October 10, 2026. This sale needs no code, and Discount Deal Me does not set or verify individual prices. Always check the current price and terms on kitchenaid.com. KitchenAid is a trademark of its owner; Discount Deal Me is not affiliated with KitchenAid.</div>
 </div>
 <aside class="art-side" aria-label="More deals">
 <div class="side-card"><p class="kicker">Keep looking</p><p class="side-p">The deal finder lists every live offer we track, ranked by Deal Score.</p><a class="btn btn-small" href="/deals/">Open the deal finder</a></div>

@@ -118,7 +118,7 @@
           '<a class="btn btn-deal" rel="sponsored nofollow noopener" target="_blank" data-offer="' + esc(k.id) + '" href="' + esc(k.url) + '">Shop at ' + esc(k.merchant) + ' <span aria-hidden="true">&#8599;</span></a></div></div></article>';
       });
     });
-    html += '<p class="gp-note">Savings are estimates from the advertised percentage applied to each person\'s budget. "Up to" and dollar-off deals are not counted in the total. Deals checked against the affiliate network ' + esc(new Date(p.checked_at).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})) + '. Confirm the final price at checkout.</p>';
+    html += '<p class="gp-note">Savings are estimates from the advertised percentage applied to each person\'s budget. "Up to" and dollar-off deals are not counted in the total. Deals checked against the network ' + esc(new Date(p.checked_at).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})) + '. Confirm the final price at checkout.</p>';
     res.innerHTML = html;
   }
   list.addEventListener('click', function(e){

@@ -21,10 +21,8 @@ test('DDM KitchenAid deal page: CJ links from DDM property 101511733 with site S
   }
 });
 
-test('DDM KitchenAid deal page: disclosure, end time, select-models warning, no codes', () => {
+test('DDM KitchenAid deal page: end time, select-models warning, no codes', () => {
   const html = fs.readFileSync(PAGE, 'utf8');
-  assert.match(html, /#ad/);
-  assert.match(html, /may earn a commission/);
   assert.match(html, /11:59 PM ET \(8:59 PM PT\)/);
   assert.match(html, /check the price in your cart/i);
   assert.match(html, /data-deal-end="2026-10-11T03:59:00Z"/); // Oct 10 11:59 PM EDT

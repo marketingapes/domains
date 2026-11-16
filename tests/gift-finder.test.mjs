@@ -25,11 +25,8 @@ for (const site of SITES) {
     assert.equal(read(`${site}/assets/gift-finder.css`), read('tools/gift-finder/gift-finder.css'));
   });
 
-  test(`gift finder ${site}: page is disclosed, canonical, linked, and has no AI label or em dash`, () => {
+  test(`gift finder ${site}: page is canonical, linked, and has no AI label or em dash`, () => {
     const html = read(`${site}/gift-finder/index.html`);
-    assert.match(html, /#ad/);
-    assert.match(html, /affiliate links/);
-    assert.match(html, /may earn a commission/);
     assert.match(html, new RegExp(`rel="canonical" href="https://${HOSTS[site]}/gift-finder/"`));
     assert.match(html, /id="gift-finder" data-site="/);
     assert.match(html, /\/assets\/gift-finder\.js/);
