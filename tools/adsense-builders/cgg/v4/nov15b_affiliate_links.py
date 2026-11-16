@@ -178,7 +178,17 @@ GEAR_GP_PICK = ('<div class="pick" data-cgg="nov15b-gp"><figure class="ph r43"><
                 + '</p></div></div> ')
 
 
+VICE_DATES = [  # correction: on vicegolf.com/black-friday-deals gloves 3-for-2 is live; ball drops from 16 Nov; apparel from 21 Nov
+    ("Vice lists 3-for-2 gloves from 16 November and new ball drops from 21 November.",
+     "Vice lists 3-for-2 on all gloves (live now), new ball drops from 16 November and an apparel sale from 21 November."),
+    ("lists more drops to come: 3-for-2 gloves from 16 November and new ball drops from 21 November.",
+     "lists 3-for-2 on all gloves (live now) and more drops to come: new ball drops from 16 November and an apparel sale from 21 November."),
+]
+
+
 def process(rel, h):
+    for old, new in VICE_DATES:
+        h = h.replace(old, new)
     for old, new in RETARGET.items():
         h = h.replace(f'href="{esc(old)}"', f'href="{esc(new)}"')
     for n in VICE_NOTES:

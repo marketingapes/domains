@@ -343,7 +343,7 @@ def live_strip(prefix):
 <h2 id="live-h">Black Friday golf sales that are <em>already on</em></h2>
 <div class="live-grid">
 <div class="live-card"><h3>Vice Golf Black Friday</h3><ul>{vice_rows}</ul>
-<p class="small">Sale price, then Vice's own &ldquo;was&rdquo; price, as shown on vicegolf.com/black-friday-deals on {CHECKED_H}. Vice lists 3-for-2 gloves from 16 November and new ball drops from 21 November.</p>
+<p class="small">Sale price, then Vice's own &ldquo;was&rdquo; price, as shown on vicegolf.com/black-friday-deals on {CHECKED_H}. Vice lists 3-for-2 on all gloves (live now), new ball drops from 16 November and an apparel sale from 21 November.</p>
 <p class="aff-cta">{a_aff(vice(prefix + "-live-vice"), "vice-golf", "Shop Vice Golf")}</p>
 <p class="small">{VICE_NOTE}</p></div>
 <div class="live-card"><h3>The Indoor Golf Shop holiday sale</h3><ul>{igs_rows}</ul>
@@ -468,7 +468,7 @@ def bf_page():
 <p class="note"><strong>How we check:</strong> we open each shop's sale page and copy the listed sale price and the shop's own comparison (&ldquo;was&rdquo; or compare-at) price. We update this page by hand, so a price can change after the date shown. Always check the price in your basket.</p>
 
 <h2 id="vice">Vice Golf: Black Friday is live</h2>
-<p>Vice sells golf balls, clubs, bags and rangefinders direct. Its Black Friday page says &ldquo;daily deals&rdquo; and lists more drops to come: 3-for-2 gloves from 16 November and new ball drops from 21 November.</p>
+<p>Vice sells golf balls, clubs, bags and rangefinders direct. Its Black Friday page says &ldquo;daily deals&rdquo; and lists 3-for-2 on all gloves (live now) and more drops to come: new ball drops from 16 November and an apparel sale from 21 November.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Item (as listed by Vice)</th><th>Sale price</th><th>Was</th></tr></thead>
 <tbody>{vice_rows}</tbody></table></div>
