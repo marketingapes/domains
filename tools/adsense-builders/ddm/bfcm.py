@@ -381,7 +381,7 @@ def gift_guide(slug, page, signup, host):
 {crumbs(("/gifts/", "Gift guides"), (None, title))}
 <p class="kicker">Holiday gift guide</p>
 <h1>{E(title)}</h1>
-<p class="lede">{E(intro)} {len(ps)} Amazon picks and {len(ds)} live store deals.</p>
+<p class="lede">{E(intro)} {len(ps)} Amazon picks{f" and {len(ds)} live store deals" if ds else ""}.</p>
 {countdown(BF_START, BF_END, "Black Friday starts in", "Black Friday is on now.", "Black Friday is over. Cyber Monday is Nov 30.", "countdown-slim")}
 {disclosure()}
 </section>
