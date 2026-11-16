@@ -40,6 +40,8 @@
       body.set('session_id', '');
       body.set('is_test', q.get('signup_test') === '1' ? 'true' : 'false');
       ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { if (q.get(k)) body.set(k, q.get(k)); });
+      // First-party click IDs and visitor id from /assets/ee-click.js (ee_id, gclid, fbclid, fbc, fbp, utm_*).
+      if (window.eeClick) { var ee = window.eeClick.fields(); for (var ek in ee) { if (!body.get(ek)) body.set(ek, ee[ek]); } }
       sent = true;
       if (btn) btn.disabled = true;
       say('Saving your signup…');

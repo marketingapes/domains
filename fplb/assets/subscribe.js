@@ -17,6 +17,8 @@
           consent_version: d.consentVersion || 'fplb-blue-journey-v1', consent_timestamp: new Date().toISOString(), source: d.source || 'website-newsletter', list: list,
           is_test: 'false', session_id: '', utm_source: query.get('utm_source') || '',
           utm_medium: query.get('utm_medium') || '', utm_campaign: query.get('utm_campaign') || ''});
+        // First-party click IDs and visitor id from /assets/ee-click.js (ee_id, gclid, fbclid, fbc, fbp, utm_*).
+        if (window.eeClick) { var ee = window.eeClick.fields(); for (var k in ee) { if (!payload.get(k)) payload.set(k, ee[k]); } }
         var response = await fetch('https://hook.us2.make.com/rja3ef7xwvelfcphav5numibd4wr9dh0', {
           method: 'POST', body: payload,
           signal: AbortSignal.timeout(15000)
