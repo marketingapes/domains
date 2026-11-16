@@ -1,0 +1,25 @@
+# Discount Deal Me deal-checker lookup API. Free-tier Worker, deployed Nov 15 2026 to
+# https://ddm-deal-checker.kyleg-188.workers.dev (workers.dev only). See README.md.
+name = "ddm-deal-checker"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+[vars]
+ALLOWED_ORIGIN = "https://discountdealme.com"
+SITE = "https://discountdealme.com"
+CJ_PROPERTY = "101511733"
+ENABLE_AI = "false"
+
+# Secrets (set with `wrangler secret put`, never committed): CJ_API_TOKEN, CJ_COMPANY_ID
+
+# Built-in rate limiting (free): 30 lookups per minute per visitor IP.
+[[unsafe.bindings]]
+name = "RATE"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 30, period = 60 }
+
+# Optional, only if ENABLE_AI = "true": Workers AI for a one-sentence, labelled summary.
+# [ai]
+# binding = "AI"
