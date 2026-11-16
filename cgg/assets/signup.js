@@ -53,6 +53,7 @@
         .then(function (receipt) {
           if (receipt && receipt.stored === false) throw new Error('not stored');
           track('email_signup', { form: (form.elements.form && form.elements.form.value) || form.getAttribute('data-signup'), brand: (form.elements.brand && form.elements.brand.value) || '' });
+          form.classList.add('is-done');
           var hide = form.querySelectorAll('.signup-row, .row, .signup-consent, .signup-fine, button[type=submit]');
           hide.forEach(function (el) { el.hidden = true; });
           say(form.getAttribute('data-success') || 'You are on the list. Watch your inbox.');

@@ -509,3 +509,8 @@ blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:6px solid var(--flag
 .nl .signup-fine a{color:#fff;text-decoration:underline}
 .nl .signup-msg{font-weight:700;margin:10px 0 0;color:var(--volt)}
 .nl .signup-msg.is-err{color:#ffb4a2}
+
+form[data-signup].is-done .signup-row,
+form[data-signup].is-done .signup-consent,
+form[data-signup].is-done .signup-fine,
+form[data-signup].is-done button[type=submit]{display:none!important}
