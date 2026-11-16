@@ -39,7 +39,13 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.match(home, /id="fBrief"/);
   assert.match(home, /id="fStates"/);
   assert.match(home, /function sendToKyle\(/);
-  assert.match(home, /Here’s our strategy\./);
+  // Holiday Sprint offer (Nov 2026): $2,500 flat, one tort, three pages, three ad platforms, ends December 1.
+  assert.match(home, /The Holiday Sprint/);
+  assert.match(home, /December 1, 2026/);
+  assert.match(home, /Facebook and Instagram, Google, and ChatGPT/);
+  assert.match(home, /href="\/talk-to-sofia\.html"/);
+  assert.match(home, /campaign', 'holiday-sprint-2026'/);
+  assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
   assert.doesNotMatch(home, /href="tel:\+12138787408"/);
