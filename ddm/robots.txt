@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Allow: /ads.txt
 Allow: /deals/
+Allow: /gift-planner/
 Allow: /offers/
 Allow: /guides/
 Allow: /deal-checklist/

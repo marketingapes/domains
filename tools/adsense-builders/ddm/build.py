@@ -6,7 +6,7 @@ guides/checkout-comparison/ is generated from worksheet.py (restyled Oct 10, 202
 """
 import os, re, html, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-import svgs, deals, theme, client, events, worksheet, images
+import svgs, deals, theme, client, events, worksheet, images, planner
 from articles1 import A as A1
 from articles2 import A as A2
 
@@ -16,7 +16,7 @@ BRAND = "Discount Deal Me"
 EMAIL = "hello@discountdealme.com"
 UPDATED = "2026-09-23"
 UPDATED_H = "September 23, 2026"
-SITE_UPDATED = "2026-11-10"
+SITE_UPDATED = "2026-11-15"
 ARTS = A1 + A2
 from extras import EXTRA
 for _a in ARTS:
@@ -29,7 +29,7 @@ BY = {a["slug"]: a for a in ARTS}
 assert len(BY) == len(ARTS) == 12
 
 GTM = "GTM-W3D26R29"
-ASSET_V = "20261010b"
+ASSET_V = "20261115a"
 e = html.escape
 
 # Email opt-in. Posts form-encoded to a private Make webhook that appends one row
@@ -100,7 +100,7 @@ def nav(active=""):
 <header class="site-head">
 <div class="wrap head-inner">
 <a class="logo" href="/" aria-label="{BRAND} home"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Discount Deal Me</span></a>
-<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
+<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
 <form class="head-search" action="/deals/" method="get" role="search"><label class="sr-only" for="hs-q">Search deals</label><input id="hs-q" name="q" type="search" placeholder="Search live deals" autocomplete="off"><button type="submit" aria-label="Search">&#8594;</button></form>
 </div>
 </header>
@@ -111,7 +111,7 @@ FOOT_LINKS = f'''<div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>Discount Deal Me</span></a>
 <p class="foot-tag">Network-checked deals, scored with a published formula, summarized by labelled AI. Plus guides to paying less.</p></div>
 <nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores <small>(#ad)</small></a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
-<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
+<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
 <nav aria-label="Company"><h2 class="foot-h">Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
 </div>
 <div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout. Some links are affiliate links (#ad).</p></div>
@@ -171,7 +171,7 @@ def home():
     guides = guide_card(ARTS[0], big=True) + "".join(guide_card(a) for a in ARTS[1:7])
     body = f'''<aside class="bfcm-banner wrap" role="note">
 <p><strong>Black Friday is Friday Nov 27. Cyber Monday is Monday Nov 30.</strong>
-The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date.</p>
+The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date. New: plan every gift on your list in one place with the <a href="/gift-planner/">holiday gift budget planner</a>.</p>
 </aside>
 <section class="hero">
 <div class="wrap hero-grid">
@@ -665,6 +665,13 @@ def notfound():
     return head("Page not found", "This page could not be found on Discount Deal Me.", "/404.html", robots='<meta name="robots" content="noindex">\n') + nav() + f'<main id="main">{body}</main>\n' + FOOT
 
 
+def planner_page():
+    gift = sum(1 for d in LIVE if d.get("gift_for"))
+    extra = f'<style>{planner.CSS.strip()}</style>\n'
+    body = planner.body(len(LIVE), gift) + f'\n<script src="/assets/gift-planner.js?v={ASSET_V}" defer></script>'
+    return page("Holiday gift budget planner", "Set one holiday budget, add the people on your list and their interests, and get a gift plan built from live, checked affiliate deals with codes and end dates.", "/gift-planner/", body, "planner", extra=extra)
+
+
 def main():
     svgs.write_all(os.path.join(OUT, "images"))
     write("assets/site.css", theme.CSS.strip() + "\n")
@@ -673,6 +680,8 @@ def main():
     write("data/deals.json", json.dumps(deals.public_feed(), indent=1, ensure_ascii=False) + "\n")
     write("index.html", home())
     write("deals/index.html", deals_page())
+    write("gift-planner/index.html", planner_page())
+    write("assets/gift-planner.js", planner.js())
     write("how-we-pick-deals/index.html", method_page())
     write("deals/kitchenaid-harvest-event/index.html", events.kitchenaid(head, nav, FOOT))
     write("offers/index.html", offers_page())
@@ -706,6 +715,7 @@ def main():
 Allow: /
 Allow: /ads.txt
 Allow: /deals/
+Allow: /gift-planner/
 Allow: /offers/
 Allow: /guides/
 Allow: /deal-checklist/
@@ -716,7 +726,7 @@ Allow: /
 
 Sitemap: {HOST}/sitemap.xml
 """)
-    urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
+    urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/gift-planner/", SITE_UPDATED), ("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
             ("/articles/", SITE_UPDATED)] + [(f'/articles/{a["slug"]}/', UPDATED) for a in ARTS] + [
             ("/about/", SITE_UPDATED), ("/contact/", SITE_UPDATED), ("/privacy/", SITE_UPDATED), ("/terms/", SITE_UPDATED),
             ("/deal-checklist/", SITE_UPDATED), ("/guides/checkout-comparison/", SITE_UPDATED), ("/offers/", SITE_UPDATED)]

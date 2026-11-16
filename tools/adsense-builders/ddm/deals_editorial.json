@@ -1,5 +1,5 @@
 {
- "_about": "Editorial layer for the DDM deal feed. Network facts (terms, dates, tracking URL) come from CJ link-search on DDM property 101511733 and are merged in by refresh_deals.py. Everything here is written by us: display merchant, category, value parse used by the Deal Score, and the AI-written summary. Summaries may only use numbers that appear in the network terms (enforced by tests/ddm-redesign.test.mjs).",
+ "_about": "Editorial layer for the DDM deal feed. Network facts (terms, dates, tracking URL) come from CJ link-search on DDM property 101511733 and are merged in by refresh_deals.py. Everything here is written by us: display merchant, category, value parse used by the Deal Score, and the AI-written summary. Summaries may only use numbers that appear in the network terms (enforced by tests/ddm-redesign.test.mjs). gift_for lists the recipient interests the Holiday gift budget planner (/gift-planner/) matches against; it never changes the Deal Score.",
  "deals": [
   {
    "link_id": "17342552",
@@ -16,7 +16,10 @@
     "select"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "KitchenAid's Harvest Event takes up to 25% off select countertop appliances on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and \"up to\" means many models get less, so compare the cart price."
+   "summary_ai": "KitchenAid's Harvest Event takes up to 25% off select countertop appliances on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and \"up to\" means many models get less, so compare the cart price.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17342535",
@@ -33,7 +36,10 @@
     "select"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "Select KitchenAid stand mixers are up to $120 off during the Harvest Event. It applies to new orders on kitchenaid.com only; check which mixer models carry the full discount before you pick a size."
+   "summary_ai": "Select KitchenAid stand mixers are up to $120 off during the Harvest Event. It applies to new orders on kitchenaid.com only; check which mixer models carry the full discount before you pick a size.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17342541",
@@ -50,7 +56,10 @@
     "select"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "The deepest percentage in the Harvest Event: up to 35% off select KitchenAid food processors. Same exclusions as the main sale (no closeout, commercial or refurbished models)."
+   "summary_ai": "The deepest percentage in the Harvest Event: up to 35% off select KitchenAid food processors. Same exclusions as the main sale (no closeout, commercial or refurbished models).",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17342548",
@@ -67,7 +76,10 @@
     "select"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "KitchenAid lists up to $250 off select coffee products in the Harvest Event. The biggest dollar figure usually applies to the priciest espresso models, so check the saving on the exact machine you want."
+   "summary_ai": "KitchenAid lists up to $250 off select coffee products in the Harvest Event. The biggest dollar figure usually applies to the priciest espresso models, so check the saving on the exact machine you want.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17342536",
@@ -84,7 +96,10 @@
     "select"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/",
-   "summary_ai": "Already own a KitchenAid mixer? Select attachments are up to 30% off in the Harvest Event, which can be a cheaper upgrade than a new mixer."
+   "summary_ai": "Already own a KitchenAid mixer? Select attachments are up to 30% off in the Harvest Event, which can be a cheaper upgrade than a new mixer.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17360704",
@@ -102,7 +117,10 @@
     "refurbished"
    ],
    "event_page": "/deals/kitchenaid-harvest-event/#refurb",
-   "summary_ai": "KitchenAid's refurbished sale lists up to 50% off select refurbished countertop appliances. It can't be combined with other offers and excludes in-home delivery products; check the refurbished warranty before buying."
+   "summary_ai": "KitchenAid's refurbished sale lists up to 50% off select refurbished countertop appliances. It can't be combined with other offers and excludes in-home delivery products; check the refurbished warranty before buying.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17107552",
@@ -116,7 +134,10 @@
    "conditions": [
     "restrictions"
    ],
-   "summary_ai": "An ongoing store policy rather than a sale: KitchenAid advertises free delivery and 60-day returns on kitchenaid.com, with restrictions and exclusions. Useful when comparing it with other sellers."
+   "summary_ai": "An ongoing store policy rather than a sale: KitchenAid advertises free delivery and 60-day returns on kitchenaid.com, with restrictions and exclusions. Useful when comparing it with other sellers.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17361837",
@@ -130,7 +151,10 @@
     "upto": false
    },
    "conditions": [],
-   "summary_ai": "Rowenta lists $100 off its Compact Steam Pro professional-grade steam station, a short sale valid Oct 8-Oct 11, 2026. It's a single-product offer, so compare the final price with other retailers."
+   "summary_ai": "Rowenta lists $100 off its Compact Steam Pro professional-grade steam station, a short sale valid Oct 8-Oct 11, 2026. It's a single-product offer, so compare the final price with other retailers.",
+   "gift_for": [
+    "home"
+   ]
   },
   {
    "link_id": "17361836",
@@ -144,7 +168,10 @@
     "upto": false
    },
    "conditions": [],
-   "summary_ai": "The Rowenta Freemove Force cordless steam iron is $40 off on rowentausa.com, valid Oct 6-Oct 19, 2026. One product, no code listed in the network terms."
+   "summary_ai": "The Rowenta Freemove Force cordless steam iron is $40 off on rowentausa.com, valid Oct 6-Oct 19, 2026. One product, no code listed in the network terms.",
+   "gift_for": [
+    "home"
+   ]
   },
   {
    "link_id": "17361829",
@@ -160,7 +187,10 @@
    "conditions": [
     "select"
    ],
-   "summary_ai": "Rowenta fans are up to $84 off through Oct 31, 2026, from desk fans to outdoor models. The top figure applies to specific models, so check the one you want."
+   "summary_ai": "Rowenta fans are up to $84 off through Oct 31, 2026, from desk fans to outdoor models. The top figure applies to specific models, so check the one you want.",
+   "gift_for": [
+    "home"
+   ]
   },
   {
    "link_id": "17129175",
@@ -175,7 +205,10 @@
    "conditions": [
     "min_spend"
    ],
-   "summary_ai": "T-fal.com ships free on orders of $99.99 and above. Worth knowing if you are close to that total; not worth padding a cart for."
+   "summary_ai": "T-fal.com ships free on orders of $99.99 and above. Worth knowing if you are close to that total; not worth padding a cart for.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17240828",
@@ -192,7 +225,10 @@
     "signup",
     "new_customers"
    ],
-   "summary_ai": "T-fal offers 20% off a first order when you join its newsletter. You trade your email address for the discount, and it only applies once."
+   "summary_ai": "T-fal offers 20% off a first order when you join its newsletter. You trade your email address for the discount, and it only applies once.",
+   "gift_for": [
+    "cooking"
+   ]
   },
   {
    "link_id": "17125210",
@@ -207,7 +243,10 @@
     "upto": false
    },
    "conditions": [],
-   "summary_ai": "An affiliate-exclusive 5% off sitewide at Peets.com, including subscriptions (limited to 3 recurring payments). No minimum, one use per customer, and it combines with shipping discounts."
+   "summary_ai": "An affiliate-exclusive 5% off sitewide at Peets.com, including subscriptions (limited to 3 recurring payments). No minimum, one use per customer, and it combines with shipping discounts.",
+   "gift_for": [
+    "coffee"
+   ]
   },
   {
    "link_id": "13921671",
@@ -222,7 +261,10 @@
    "conditions": [
     "min_spend"
    ],
-   "summary_ai": "Peets.com gives free ground shipping on orders over $49 within the continental US, applied automatically at checkout."
+   "summary_ai": "Peets.com gives free ground shipping on orders over $49 within the continental US, applied automatically at checkout.",
+   "gift_for": [
+    "coffee"
+   ]
   },
   {
    "link_id": "13970947",
@@ -238,7 +280,10 @@
    "conditions": [
     "new_customers"
    ],
-   "summary_ai": "30% off the first order of a new Peet's coffee subscription. It applies to the first order only, so check the regular subscription price you'll pay after that."
+   "summary_ai": "30% off the first order of a new Peet's coffee subscription. It applies to the first order only, so check the regular subscription price you'll pay after that.",
+   "gift_for": [
+    "coffee"
+   ]
   },
   {
    "link_id": "17358487",
@@ -255,7 +300,10 @@
    "conditions": [
     "local"
    ],
-   "summary_ai": "A Groupon flash sale on One World Observatory tickets in New York, up to 50% off for a limited time. Groupon lists it for the NYC, New Jersey and Philadelphia-area markets; read the voucher's fine print and dates."
+   "summary_ai": "A Groupon flash sale on One World Observatory tickets in New York, up to 50% off for a limited time. Groupon lists it for the NYC, New Jersey and Philadelphia-area markets; read the voucher's fine print and dates.",
+   "gift_for": [
+    "experiences"
+   ]
   },
   {
    "link_id": "17358489",
@@ -272,7 +320,10 @@
    "conditions": [
     "local"
    ],
-   "summary_ai": "Up to 40% off View Boston Observation Deck tickets through Groupon, a limited-time flash sale aimed at Boston and nearby Northeast markets. Check the voucher's valid dates before buying."
+   "summary_ai": "Up to 40% off View Boston Observation Deck tickets through Groupon, a limited-time flash sale aimed at Boston and nearby Northeast markets. Check the voucher's valid dates before buying.",
+   "gift_for": [
+    "experiences"
+   ]
   },
   {
    "link_id": "17358492",
@@ -289,7 +340,11 @@
    "conditions": [
     "local"
    ],
-   "summary_ai": "Up to 33% off Aquarium of the Pacific (Long Beach, CA) tickets on Groupon. Listed for Southern California markets; compare with the aquarium's own ticket price first."
+   "summary_ai": "Up to 33% off Aquarium of the Pacific (Long Beach, CA) tickets on Groupon. Listed for Southern California markets; compare with the aquarium's own ticket price first.",
+   "gift_for": [
+    "experiences",
+    "kids"
+   ]
   },
   {
    "link_id": "17358482",
@@ -303,7 +358,10 @@
    "conditions": [
     "membership"
    ],
-   "summary_ai": "A one-year Costco membership through Groupon that includes a $20 or $40 Digital Costco Shop Card, extended through Oct 25. It's not eligible for Groupon's sitewide promo codes."
+   "summary_ai": "A one-year Costco membership through Groupon that includes a $20 or $40 Digital Costco Shop Card, extended through Oct 25. It's not eligible for Groupon's sitewide promo codes.",
+   "gift_for": [
+    "family"
+   ]
   },
   {
    "link_id": "17361800",
@@ -318,7 +376,10 @@
    "conditions": [
     "membership"
    ],
-   "summary_ai": "Groupon lists a BJ's Wholesale Club membership for just $10. Check what membership tier it covers and whether it renews at full price."
+   "summary_ai": "Groupon lists a BJ's Wholesale Club membership for just $10. Check what membership tier it covers and whether it renews at full price.",
+   "gift_for": [
+    "family"
+   ]
   },
   {
    "link_id": "17358481",
@@ -331,7 +392,11 @@
     "amount": 29
    },
    "conditions": [],
-   "summary_ai": "Bowling at AMF, Lucky Strike and Bowlero via Groupon, with AMF starting at $29 for 2 people across 300+ locations. Groupon says it's eligible for sitewide promo codes."
+   "summary_ai": "Bowling at AMF, Lucky Strike and Bowlero via Groupon, with AMF starting at $29 for 2 people across 300+ locations. Groupon says it's eligible for sitewide promo codes.",
+   "gift_for": [
+    "experiences",
+    "kids"
+   ]
   },
   {
    "link_id": "17240919",
@@ -345,7 +410,11 @@
     "upto": false
    },
    "conditions": [],
-   "summary_ai": "Save 40% on Regal movie tickets through Groupon, including Premiere and premium-format tickets, plus a discount on popcorn and snacks. Check which theaters and formats your voucher covers."
+   "summary_ai": "Save 40% on Regal movie tickets through Groupon, including Premiere and premium-format tickets, plus a discount on popcorn and snacks. Check which theaters and formats your voucher covers.",
+   "gift_for": [
+    "experiences",
+    "kids"
+   ]
   },
   {
    "link_id": "15890985",
@@ -361,7 +430,10 @@
    "conditions": [
     "select"
    ],
-   "summary_ai": "Sockwell's closeout section is up to 30% off, no code required. Closeouts mean limited sizes and colors."
+   "summary_ai": "Sockwell's closeout section is up to 30% off, no code required. Closeouts mean limited sizes and colors.",
+   "gift_for": [
+    "cozy"
+   ]
   },
   {
    "link_id": "15890984",
@@ -376,7 +448,10 @@
    "conditions": [
     "min_spend"
    ],
-   "summary_ai": "Free shipping on Sockwell orders of $75 or more, no code required."
+   "summary_ai": "Free shipping on Sockwell orders of $75 or more, no code required.",
+   "gift_for": [
+    "cozy"
+   ]
   },
   {
    "link_id": "17363630",
@@ -392,7 +467,10 @@
    "conditions": [
     "select"
    ],
-   "summary_ai": "Budget Pet Care's 10.10 sale takes 30% off flea and tick protection with free shipping when you use the code. Make sure the product and dose match your pet's weight and your vet's advice."
+   "summary_ai": "Budget Pet Care's 10.10 sale takes 30% off flea and tick protection with free shipping when you use the code. Make sure the product and dose match your pet's weight and your vet's advice.",
+   "gift_for": [
+    "pets"
+   ]
   },
   {
    "link_id": "17178120",
@@ -406,7 +484,11 @@
     "upto": true
    },
    "conditions": [],
-   "summary_ai": "Up to 43% off Chuck E. Cheese through Groupon vouchers. The top discount applies to select vouchers, so compare the voucher price with paying at the counter and check which locations accept it."
+   "summary_ai": "Up to 43% off Chuck E. Cheese through Groupon vouchers. The top discount applies to select vouchers, so compare the voucher price with paying at the counter and check which locations accept it.",
+   "gift_for": [
+    "experiences",
+    "kids"
+   ]
   },
   {
    "link_id": "17292666",
@@ -420,7 +502,10 @@
     "upto": true
    },
    "conditions": [],
-   "summary_ai": "Up to 40% off a private escape room at Escapology, sold as a Groupon voucher. Check that your nearest Escapology location is included and read the booking rules before you buy."
+   "summary_ai": "Up to 40% off a private escape room at Escapology, sold as a Groupon voucher. Check that your nearest Escapology location is included and read the booking rules before you buy.",
+   "gift_for": [
+    "experiences"
+   ]
   },
   {
    "link_id": "17323642",
@@ -436,7 +521,10 @@
    "conditions": [
     "restrictions"
    ],
-   "summary_ai": "10% off plus free shipping when you subscribe to Mighty Leaf loose leaf tea at peets.com. It only applies to subscriptions, so check the delivery schedule and how to pause or cancel."
+   "summary_ai": "10% off plus free shipping when you subscribe to Mighty Leaf loose leaf tea at peets.com. It only applies to subscriptions, so check the delivery schedule and how to pause or cancel.",
+   "gift_for": [
+    "coffee"
+   ]
   },
   {
    "link_id": "17030268",
@@ -452,7 +540,10 @@
    "conditions": [
     "new_customers"
    ],
-   "summary_ai": "20% off your first order at SockwellUSA.com with code NEWSOCKS20. First orders only, and Sockwell describes it as a limited-time offer."
+   "summary_ai": "20% off your first order at SockwellUSA.com with code NEWSOCKS20. First orders only, and Sockwell describes it as a limited-time offer.",
+   "gift_for": [
+    "cozy"
+   ]
   },
   {
    "link_id": "17111922",
@@ -466,7 +557,10 @@
     "upto": false
    },
    "conditions": [],
-   "summary_ai": "10% off at singer.com with code SEW10NOW. The network terms are short and list no exclusions, so confirm the discount shows in your cart before paying."
+   "summary_ai": "10% off at singer.com with code SEW10NOW. The network terms are short and list no exclusions, so confirm the discount shows in your cart before paying.",
+   "gift_for": [
+    "crafts"
+   ]
   },
   {
    "link_id": "17129146",
@@ -481,7 +575,10 @@
    "conditions": [
     "min_spend"
    ],
-   "summary_ai": "Free shipping on Rowenta orders of $99.99 or more at rowentausa.com, applied without a code."
+   "summary_ai": "Free shipping on Rowenta orders of $99.99 or more at rowentausa.com, applied without a code.",
+   "gift_for": [
+    "home"
+   ]
   },
   {
    "link_id": "15541103",
@@ -493,7 +590,344 @@
     "kind": "free_shipping"
    },
    "conditions": [],
-   "summary_ai": "Free shipping at Berkel's US online store, according to its affiliate program. The network terms are brief, so confirm shipping is free for your address at checkout."
+   "summary_ai": "Free shipping at Berkel's US online store, according to its affiliate program. The network terms are brief, so confirm shipping is free for your address at checkout.",
+   "gift_for": [
+    "cooking",
+    "foodie"
+   ]
+  },
+  {
+   "link_id": "17385064",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Black Friday: up to 30% off select countertop appliances",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "KitchenAid's Black Friday Event takes up to 30% off select countertop appliances through 11/29, no code needed. \"Up to\" means many models get less, so compare the cart price before you buy.",
+   "gift_for": [
+    "cooking"
+   ]
+  },
+  {
+   "link_id": "17388572",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Black Friday: up to $150 off select stand mixers",
+   "value": {
+    "kind": "usd",
+    "amount": 150,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $150 off select KitchenAid stand mixers on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and it runs until 12/26 at 11:59 PM ET while supplies last.",
+   "gift_for": [
+    "cooking"
+   ]
+  },
+  {
+   "link_id": "17388560",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Black Friday: up to 35% off select food processors",
+   "value": {
+    "kind": "pct",
+    "amount": 35,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to 35% off select KitchenAid food processors for new orders on kitchenaid.com. Closeout, commercial and refurbished models are excluded.",
+   "gift_for": [
+    "cooking"
+   ]
+  },
+  {
+   "link_id": "17388570",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Black Friday: up to $50 off select kettles",
+   "value": {
+    "kind": "usd",
+    "amount": 50,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $50 off select KitchenAid electric kettles, no code needed. A smaller gift that still gets the Black Friday price, while supplies last.",
+   "gift_for": [
+    "cooking"
+   ]
+  },
+  {
+   "link_id": "17388567",
+   "merchant": "KitchenAid",
+   "sold_by": "brand",
+   "category": "Kitchen",
+   "title": "Black Friday: up to $40 off select toasters",
+   "value": {
+    "kind": "usd",
+    "amount": 40,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $40 off select KitchenAid toasters on kitchenaid.com through 12/26. Closeout, commercial and refurbished models are excluded.",
+   "gift_for": [
+    "cooking"
+   ]
+  },
+  {
+   "link_id": "17383137",
+   "merchant": "Click & Grow",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "21% off sitewide with a partner code",
+   "value": {
+    "kind": "pct",
+    "amount": 21,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "A partner code for 21% off sitewide at Click & Grow's US store, which beats the on-site 20% offer on smaller orders. On orders over $180 the store's own 30% off is the better deal, so compare at checkout.",
+   "gift_for": [
+    "plants",
+    "home",
+    "tech"
+   ]
+  },
+  {
+   "link_id": "17386846",
+   "merchant": "Electronic Express",
+   "sold_by": "retailer",
+   "category": "Gifts",
+   "title": "5% off sitewide in November",
+   "value": {
+    "kind": "pct",
+    "amount": 5,
+    "upto": false
+   },
+   "conditions": [
+    "restrictions"
+   ],
+   "summary_ai": "5% off sitewide at Electronic Express with a November code. Some exclusions apply, so check the cart total before checkout.",
+   "gift_for": [
+    "tech",
+    "home"
+   ]
+  },
+  {
+   "link_id": "17231745",
+   "merchant": "M&M's",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "Sale prices on M&M'S gifts",
+   "value": {
+    "kind": "perk"
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "M&M'S has sale pricing across its gifts section, including personalized candy. Savings vary by item, so check the price on each gift.",
+   "gift_for": [
+    "sweets",
+    "kids"
+   ]
+  },
+  {
+   "link_id": "17249190",
+   "merchant": "M&M's",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "Free handheld dispenser on orders $50+",
+   "value": {
+    "kind": "perk"
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "Add a free handheld M&M'S dispenser to any order of $50 or more with the code below. Good as a stocking stuffer on top of a bigger gift.",
+   "gift_for": [
+    "sweets",
+    "kids"
+   ]
+  },
+  {
+   "link_id": "15343875",
+   "merchant": "MonthlyClubs",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "$15 off the Gourmet Chocolate of the Month Club",
+   "value": {
+    "kind": "usd",
+    "amount": 15,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "$15 off a Gourmet Chocolate of the Month Club gift, which ships handmade artisan chocolates each month. A gift that keeps arriving after the holidays.",
+   "gift_for": [
+    "sweets",
+    "foodie"
+   ]
+  },
+  {
+   "link_id": "15343876",
+   "merchant": "MonthlyClubs",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "$15 off the International Wine of the Month Club",
+   "value": {
+    "kind": "usd",
+    "amount": 15,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "$15 off International Wine of the Month Club options: small-production red and white wines delivered on a schedule. The recipient must be of legal drinking age to receive it.",
+   "gift_for": [
+    "wine",
+    "foodie"
+   ]
+  },
+  {
+   "link_id": "15343873",
+   "merchant": "MonthlyClubs",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "$30 off the Fresh Cut Flower of the Month Club",
+   "value": {
+    "kind": "usd",
+    "amount": 30,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "$30 off the Fresh Cut Flower of the Month Club, which sends a seasonal bouquet every month to you or the person you're gifting.",
+   "gift_for": [
+    "plants",
+    "home"
+   ]
+  },
+  {
+   "link_id": "10570212",
+   "merchant": "Winebasket",
+   "sold_by": "brand",
+   "category": "Gifts",
+   "title": "Wine and gourmet gifts under $50, plus 5% off when you register",
+   "value": {
+    "kind": "pct",
+    "amount": 5,
+    "upto": false
+   },
+   "conditions": [
+    "signup"
+   ],
+   "summary_ai": "A curated page of wine, champagne and gourmet food gifts under $50. Register an account to get 5% off every order.",
+   "gift_for": [
+    "wine",
+    "foodie"
+   ]
+  },
+  {
+   "link_id": "17382809",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Gifts",
+   "title": "Up to 30% off photo books and personalized gifts",
+   "value": {
+    "kind": "pct",
+    "amount": 30,
+    "upto": true
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to 30% off photo books and personalized gifts on Groupon with the code below. Order early so custom items arrive in time.",
+   "gift_for": [
+    "family",
+    "kids"
+   ]
+  },
+  {
+   "link_id": "17365978",
+   "merchant": "Groupon",
+   "sold_by": "marketplace",
+   "category": "Experiences",
+   "title": "Giftable experiences: wine tastings, food tours, dining",
+   "value": {
+    "kind": "perk"
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Groupon's gift page collects wine tastings, food tours and local dining deals you can give as experiences. Availability depends on your city.",
+   "gift_for": [
+    "experiences",
+    "foodie"
+   ]
+  },
+  {
+   "link_id": "17377654",
+   "merchant": "Budget Pet Care",
+   "sold_by": "retailer",
+   "category": "Pets",
+   "title": "25% off pet essentials for the holidays",
+   "value": {
+    "kind": "pct",
+    "amount": 25,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Budget Pet Care's holiday sale takes 25% off pet essentials with the code below.",
+   "gift_for": [
+    "pets"
+   ]
+  },
+  {
+   "link_id": "17379806",
+   "merchant": "Canada Pet Care",
+   "sold_by": "retailer",
+   "category": "Pets",
+   "title": "25% off pet protection plus free shipping",
+   "value": {
+    "kind": "pct",
+    "amount": 25,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "25% off pet protection products at Canada Pet Care, plus free shipping, with the code below.",
+   "gift_for": [
+    "pets"
+   ]
+  },
+  {
+   "link_id": "17379886",
+   "merchant": "Best Vet Care",
+   "sold_by": "retailer",
+   "category": "Pets",
+   "title": "25% off plus free shipping, holiday sale",
+   "value": {
+    "kind": "pct",
+    "amount": 25,
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Best Vet Care's holiday special: 25% off plus free shipping, no code listed by the network.",
+   "gift_for": [
+    "pets"
+   ]
   }
  ]
 }

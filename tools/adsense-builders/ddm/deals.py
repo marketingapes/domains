@@ -5,13 +5,15 @@ commission, EPC or any other number about what Discount Deal Me earns.
 """
 import math
 import datetime, html, json, os
+from zoneinfo import ZoneInfo
+PT = ZoneInfo("America/Los_Angeles")
 import images
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FEED = json.load(open(os.path.join(HERE, "deals_feed.json")))
 CHECKED_AT = FEED["checked_at"]
 
-CATEGORY_ORDER = ["Kitchen", "Home", "Coffee & food", "Experiences", "Memberships", "Apparel", "Pets"]
+CATEGORY_ORDER = ["Gifts", "Kitchen", "Home", "Coffee & food", "Experiences", "Memberships", "Apparel", "Pets"]
 
 # ---- Deal Score -----------------------------------------------------------------------------
 SCORE_RULES = {
@@ -104,6 +106,7 @@ def public_feed():
             "summary_ai": d["summary_ai"], "network_terms": n["terms"], "network": n["name"],
             "url": tracked(d, "ddm-finder"), "event_page": d.get("event_page", ""),
             "image": images.deal_image(d)[0], "image_alt": images.deal_image(d)[1],
+            "gift_for": d.get("gift_for", []),
         })
     return {"source": FEED["source"], "checked_at": CHECKED_AT, "score_formula": "/how-we-pick-deals/#deal-score",
             "disclosure": "Links are affiliate links. Discount Deal Me may earn a commission; it never changes your price or the Deal Score.",
@@ -117,7 +120,7 @@ E = html.escape
 def human_end(iso):
     if not iso:
         return "Ongoing"
-    dt = _dt(iso) - datetime.timedelta(hours=7)  # PT (PDT, UTC-7) for the static fallback text; JS replaces it in the reader's own zone
+    dt = _dt(iso).astimezone(PT)  # Pacific time for the static fallback text; JS replaces it in the reader's own zone
     return "Ends " + dt.strftime("%b %-d, %-I:%M %p").replace(":00 ", " ") + " PT"
 
 
@@ -158,5 +161,5 @@ def card(d, sid, compact=False, heading="h3"):
 
 
 def checked_human():
-    dt = _dt(CHECKED_AT) - datetime.timedelta(hours=7)
+    dt = _dt(CHECKED_AT).astimezone(PT)
     return dt.strftime("%b %-d, %Y, %-I:%M %p PT")
