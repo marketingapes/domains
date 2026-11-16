@@ -6,7 +6,8 @@ guides/checkout-comparison/ is generated from worksheet.py (restyled Oct 10, 202
 """
 import os, re, html, sys, json
 sys.path.insert(0, os.path.dirname(__file__))
-import svgs, deals, theme, client, events, worksheet, images, planner
+import svgs, deals, theme, client, events, worksheet, images, planner, bfcm
+import functools
 from articles1 import A as A1
 from articles2 import A as A2
 
@@ -17,6 +18,7 @@ EMAIL = "hello@discountdealme.com"
 UPDATED = "2026-09-23"
 UPDATED_H = "September 23, 2026"
 SITE_UPDATED = "2026-11-15"
+BF_UPDATED = "2026-11-15"
 ARTS = A1 + A2
 from extras import EXTRA
 for _a in ARTS:
@@ -58,7 +60,10 @@ def signup(form_id, title="Get the deals worth your click", lede="One short emai
 </section>'''
 
 
-def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra="", robots=""):
+def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra="", robots="", ads=True):
+    # AdSense never loads on deal pages (deal finder, gift planner, partner stores, event and Black Friday pages).
+    adsense = ('<meta name="google-adsense-account" content="ca-pub-5194583669093303">\n'
+               '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5194583669093303" crossorigin="anonymous"></script>\n') if ads else ""
     full = f"{title} | {BRAND}" if title != BRAND else f"{BRAND} | Live deals, scored and checked"
     return f'''<!doctype html>
 <html lang="en">
@@ -68,9 +73,7 @@ def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=
 <title>{e(full)}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{HOST}{path}">
-{robots}<meta name="google-adsense-account" content="ca-pub-5194583669093303">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5194583669093303" crossorigin="anonymous"></script>
-<script>window.dataLayer=window.dataLayer||[];</script>
+{robots}{adsense}<script>window.dataLayer=window.dataLayer||[];</script>
 <script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);}})(window,document,'script','dataLayer','{GTM}');</script>
 <meta property="og:site_name" content="{BRAND}">
 <meta property="og:title" content="{e(title)}">
@@ -100,7 +103,7 @@ def nav(active=""):
 <header class="site-head">
 <div class="wrap head-inner">
 <a class="logo" href="/" aria-label="{BRAND} home"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Discount Deal Me</span></a>
-<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
+<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/black-friday/", "Black Friday", "bf")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
 <form class="head-search" action="/deals/" method="get" role="search"><label class="sr-only" for="hs-q">Search deals</label><input id="hs-q" name="q" type="search" placeholder="Search live deals" autocomplete="off"><button type="submit" aria-label="Search">&#8594;</button></form>
 </div>
 </header>
@@ -110,7 +113,7 @@ def nav(active=""):
 FOOT_LINKS = f'''<div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>Discount Deal Me</span></a>
 <p class="foot-tag">Network-checked deals, scored with a published formula, summarized by labelled AI. Plus guides to paying less.</p></div>
-<nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores <small>(#ad)</small></a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
+<nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/black-friday/">Black Friday 2026</a><a href="/cyber-monday/">Cyber Monday 2026</a><a href="/gifts/">Holiday gift guides</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores <small>(#ad)</small></a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
 <nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
 <nav aria-label="Company"><h2 class="foot-h">Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
 </div>
@@ -171,7 +174,7 @@ def home():
     guides = guide_card(ARTS[0], big=True) + "".join(guide_card(a) for a in ARTS[1:7])
     body = f'''<aside class="bfcm-banner wrap" role="note">
 <p><strong>Black Friday is Friday Nov 27. Cyber Monday is Monday Nov 30.</strong>
-The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date. New: plan every gift on your list in one place with the <a href="/gift-planner/">holiday gift budget planner</a>.</p>
+See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">Cyber Monday deals</a> and <a href="/gifts/">gift guides by budget and person</a>. The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date. New: plan every gift on your list in one place with the <a href="/gift-planner/">holiday gift budget planner</a>.</p>
 </aside>
 <section class="hero">
 <div class="wrap hero-grid">
@@ -306,7 +309,7 @@ def deals_page():
 <h2>About these deals</h2>
 <p>This page lists time-limited offers and ongoing store perks that merchants publish through the Commission Junction (CJ) affiliate network to Discount Deal Me. We keep the merchant's own wording in "Network terms" on every card, add a short summary written by AI, and score each offer the same way. We do not see or verify individual item prices, so always compare the price in your cart with other sellers. If a deal does not work as described, <a href="/contact/">tell us</a> and we will check it and remove it if needed.</p>
 </section>'''
-    return page("Live deals", "Search live deals from official affiliate programs, filter by category, ending soon or no code needed, and see a transparent Deal Score for every offer.", "/deals/", body, "deals")
+    return page("Live deals", "Search live deals from official affiliate programs, filter by category, ending soon or no code needed, and see a transparent Deal Score for every offer.", "/deals/", body, "deals", ads=False)
 
 
 # ---------------------------------------------------------------- method
@@ -614,7 +617,7 @@ document.querySelectorAll('a[rel~="sponsored"]').forEach(function(a){
 });
 </script>
 '''
-    html_ = page("Partner stores", "Stores Discount Deal Me partners with through affiliate programs: Tayst coffee, Gardenreet lighting, Flextail gear, gift baskets, Groupon, All-Clad and M&M'S. Disclosed affiliate links; your price does not change.", "/offers/", body, "", own_signup=True)
+    html_ = page("Partner stores", "Stores Discount Deal Me partners with through affiliate programs: Tayst coffee, Gardenreet lighting, Flextail gear, gift baskets, Groupon, All-Clad and M&M'S. Disclosed affiliate links; your price does not change.", "/offers/", body, "", own_signup=True, ads=False)
     return html_.replace("</main>\n", "</main>\n" + extra_js, 1)
 
 
@@ -669,7 +672,7 @@ def planner_page():
     gift = sum(1 for d in LIVE if d.get("gift_for"))
     extra = f'<style>{planner.CSS.strip()}</style>\n'
     body = planner.body(len(LIVE), gift) + f'\n<script src="/assets/gift-planner.js?v={ASSET_V}" defer></script>'
-    return page("Holiday gift budget planner", "Set one holiday budget, add the people on your list and their interests, and get a gift plan built from live, checked affiliate deals with codes and end dates.", "/gift-planner/", body, "planner", extra=extra)
+    return page("Holiday gift budget planner", "Set one holiday budget, add the people on your list and their interests, and get a gift plan built from live, checked affiliate deals with codes and end dates.", "/gift-planner/", body, "planner", extra=extra, ads=False)
 
 
 def main():
@@ -682,8 +685,12 @@ def main():
     write("deals/index.html", deals_page())
     write("gift-planner/index.html", planner_page())
     write("assets/gift-planner.js", planner.js())
+    write("assets/bfcm.css", bfcm.CSS.strip() + "\n")
+    write("assets/bfcm.js", bfcm.CLIENT_JS.strip() + "\n")
+    for rel, content in bfcm.pages(page, signup, HOST).items():
+        write(rel, content)
     write("how-we-pick-deals/index.html", method_page())
-    write("deals/kitchenaid-harvest-event/index.html", events.kitchenaid(head, nav, FOOT))
+    write("deals/kitchenaid-harvest-event/index.html", events.kitchenaid(functools.partial(head, ads=False), nav, FOOT))
     write("offers/index.html", offers_page())
     write("deal-checklist/index.html", checklist_page())
     write("guides/checkout-comparison/index.html", checkout_page())
@@ -716,6 +723,9 @@ Allow: /
 Allow: /ads.txt
 Allow: /deals/
 Allow: /gift-planner/
+Allow: /black-friday/
+Allow: /cyber-monday/
+Allow: /gifts/
 Allow: /offers/
 Allow: /guides/
 Allow: /deal-checklist/
@@ -726,7 +736,7 @@ Allow: /
 
 Sitemap: {HOST}/sitemap.xml
 """)
-    urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/gift-planner/", SITE_UPDATED), ("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
+    urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/gift-planner/", SITE_UPDATED)] + [(u, BF_UPDATED) for u in bfcm.URLS] + [("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
             ("/articles/", SITE_UPDATED)] + [(f'/articles/{a["slug"]}/', UPDATED) for a in ARTS] + [
             ("/about/", SITE_UPDATED), ("/contact/", SITE_UPDATED), ("/privacy/", SITE_UPDATED), ("/terms/", SITE_UPDATED),
             ("/deal-checklist/", SITE_UPDATED), ("/guides/checkout-comparison/", SITE_UPDATED), ("/offers/", SITE_UPDATED)]
