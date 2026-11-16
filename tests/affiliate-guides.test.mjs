@@ -69,15 +69,22 @@ test('CGG planner carries no sponsored links and sends readers to the drills', (
   assert.match(html, /window\.print\(\)/);
 });
 
-test('CGG ships no unfinished placeholders or email capture that is not connected', () => {
+test('CGG ships no unfinished placeholders; home and clubhouse email capture is connected', () => {
   for (const rel of ['index.html', 'clubhouse/index.html', 'offers/index.html']) {
     const html = fs.readFileSync(path.join(ROOT, 'cgg', rel), 'utf8');
     assert.doesNotMatch(html, /TODO\(Kyle\)|data-todo/);
-    assert.doesNotMatch(html, /type="email"|data-newsletter/);
+    assert.doesNotMatch(html, /data-newsletter/);
+    assert.doesNotMatch(html, /isn.t live yet|not collecting emails/);
   }
-  const home = fs.readFileSync(path.join(ROOT, 'cgg/index.html'), 'utf8');
-  assert.match(home, /In the works/);
-  assert.match(home, /Follow @crazygolfgame on X/);
+  const offers = fs.readFileSync(path.join(ROOT, 'cgg/offers/index.html'), 'utf8');
+  assert.doesNotMatch(offers, /type="email"|data-signup=/);
+  for (const rel of ['cgg/index.html', 'cgg/clubhouse/index.html']) {
+    const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.match(html, /data-signup="/);
+    assert.match(html, /name="brand" value="cgg"/);
+    assert.match(html, /action="https:\/\/hook\.us2\.make\.com\//);
+    assert.match(html, /@crazygolfgame on X/);
+  }
 });
 
 test('DDM deal checklist adds Tayst discovery without editing Codex worksheet path', () => {
