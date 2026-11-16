@@ -43,7 +43,8 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.match(home, /The Holiday Sprint/);
   assert.match(home, /December 1, 2026/);
   assert.match(home, /Facebook and Instagram, Google, and ChatGPT/);
-  assert.match(home, /href="\/talk-to-sofia\.html"/);
+  // The demo has two actions only: call Sofia, or book time with Kyle. No browser demo link, no walkthrough button.
+  assert.doesNotMatch(home, /href="\/talk-to-sofia\.html"|id="demoCta"|Talk in your browser|walk me through/);
   // Every link that leaves the homepage opens in a new tab, so the visitor never loses the offer and form.
   for (const tag of home.match(/<a\b[^>]*>/g)) {
     const href = (tag.match(/href="([^"]*)"/) || [])[1];

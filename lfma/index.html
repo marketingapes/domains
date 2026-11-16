@@ -600,16 +600,15 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
 
   </section>
 
-  <!-- Live Sofia demo line (car accident demo assistant). Keeps #demoCta for the walkthrough intent. -->
+  <!-- Live Sofia demo line (car accident demo assistant). Two actions only: call her, or book time with Kyle. -->
   <section id="demo" class="center" aria-labelledby="demo-h">
     <span class="eyebrow">Live demo · car accident campaign</span>
     <h2 id="demo-h">Call Sofia. <em>She's live right now.</em></h2>
     <a class="demo-num" href="tel:+16195391455" data-demo-line="demo">(619) 539-1455</a>
     <p class="body">Sofia is the AI intake assistant your leads would meet. Play a claimant and tell her about a crash. She asks four questions: were you injured, was it in the last two years, did you go to the hospital, and do you have a lawyer. If you qualify, she offers to connect you live.</p>
-    <div class="actions"><a class="btn" href="tel:+16195391455" data-demo-line="demo-btn">Call Sofia now</a><a class="btn ghost" href="/talk-to-sofia.html" target="_blank" rel="noopener" data-sofia-demo="demo">Talk in your browser</a><a class="btn ghost" href="#build" id="demoCta">Have Kyle walk me through it</a></div>
+    <div class="actions"><a class="btn" href="tel:+16195391455" data-demo-line="demo-btn">Call Sofia now</a><a class="btn ghost" href="#build">Book time with Kyle</a></div>
     <p class="caption">Demo line. Sofia is AI, not a lawyer. Calls are recorded. A qualified demo call connects to Kyle.</p>
   </section>
-  <script>document.getElementById('demoCta').addEventListener('click', function () { window.__lfmaIntent = 'demo'; });</script>
 
   <!-- Meet Sofia -->
   <section id="sofia" class="center" aria-labelledby="sofia-h">
@@ -629,8 +628,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       </div>
     </div>
     </div>
-    <div class="actions"><a class="btn" href="/talk-to-sofia.html" target="_blank" rel="noopener" data-sofia-demo="sofia">Talk to Sofia now</a><a class="btn ghost" href="tel:+16195391455" data-demo-line="sofia">Call her: (619) 539-1455</a></div>
-    <p class="caption">The phone line is a live car accident demo. Play a claimant and she screens you in four questions. The browser demo uses your microphone. Sofia is AI, and the portrait is her brand image. The chat above is an example with a fictional caller.</p>
+    <div class="actions"><a class="btn" href="tel:+16195391455" data-demo-line="sofia">Call her: (619) 539-1455</a><a class="btn ghost" href="#build">Book time with Kyle</a></div>
+    <p class="caption">The phone line is a live car accident demo. Play a claimant and she screens you in four questions. It's just a test. Sofia is AI, and the portrait is her brand image. The chat above is an example with a fictional caller.</p>
   </section>
 
   <!-- Why this week (Holiday Sprint, Nov 2026). Figures are Adobe's published 2026 forecast. -->
