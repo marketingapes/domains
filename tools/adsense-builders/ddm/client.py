@@ -102,7 +102,8 @@ JS = r"""
     var form=$('#finder-form'),input=$('#fq'),interp=$('#interpreted'),count=$('#result-count'),empty=$('#finder-empty');
     var tEnd=$('#f-ending'),tNo=$('#f-nocode'),tLoc=$('#f-nolocal'),sort=$('#f-sort'),chips=$$('.chip[data-fcat]');
     var st={q:'',cat:''};
-    var CATS={'Kitchen':/\b(kitchen|mixer|mixers|blender|cookware|appliance|appliances|toaster|kettle|food processor|espresso|kitchenaid|t-fal|tfal)\b/,
+    var CATS={'Gifts':/\b(gift|gifts|gifting|stocking|present|presents|chocolate|candy|wine|flowers|personalized)\b/,
+      'Kitchen':/\b(kitchen|mixer|mixers|blender|cookware|appliance|appliances|toaster|kettle|food processor|espresso|kitchenaid|t-fal|tfal)\b/,
       'Home':/\b(home|iron|steam|fan|fans|laundry|household)\b/,
       'Coffee & food':/\b(coffee|tea|food|snack|snacks|peet'?s)\b/,
       'Experiences':/\b(ticket|tickets|things to do|experience|experiences|aquarium|observatory|bowling|movie|movies|cinema|date night|attraction|attractions)\b/,
