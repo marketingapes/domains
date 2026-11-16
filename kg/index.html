@@ -79,6 +79,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-W3CTJQ');</script>
 <!-- End Google Tag Manager -->
 <script src="/assets/story.js?v=1" defer></script>
+<script src="/assets/signup.js?v=20261115" defer></script>
 <meta name="google-adsense-account" content="ca-pub-5194583669093303">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5194583669093303" crossorigin="anonymous"></script>
 </head>
@@ -334,8 +335,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
       <div class="signup reveal" id="updates">
         <p style="font:600 14px var(--sans);color:var(--gold-l);margin:0">Get updates on the build</p>
+        <form class="signup-form" data-signup="home" action="https://hook.us2.make.com/ffandqain2o8auyiv4m6olexyql3k9e6" method="post" novalidate data-success="You are on the list. I will email when there is a build update worth your time." data-cta="updates_email" data-loc="work">
+          <input type="hidden" name="brand" value="kg">
+          <input type="hidden" name="domain_id" value="kg">
+          <input type="hidden" name="form" value="home">
+          <input type="hidden" name="list" value="kg-build-updates">
+          <input type="hidden" name="consent_version" value="kg-build-updates-v1">
+          <div class="hp" aria-hidden="true"><label for="kg-web">Leave this empty</label><input id="kg-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+          <div class="row">
+            <label class="sr-only" for="kg-email">Email address</label>
+            <input id="kg-email" name="email" type="email" required autocomplete="email" maxlength="254" placeholder="Your email address">
+            <button class="btn btn-call" type="submit">Get updates by email</button>
+          </div>
+          <label class="signup-consent"><input type="checkbox" name="consent" value="yes" required> <span data-consent-text>Yes, email me updates on what Kyle is building. Occasional emails, no regular newsletter cadence promised. Unsubscribe any time with one click.</span></label>
+          <p class="signup-fine">Your email is kept in a private list used only for these updates. I never sell it. See the <a href="/privacy/#email-list">privacy policy</a>.</p>
+          <p class="signup-msg" role="status" aria-live="polite"></p>
+        </form>
         <div class="row">
-          <a class="btn btn-call" href="mailto:kyleg@marketingapes.com?subject=Send%20me%20build%20updates" data-cta="updates_email" data-loc="work">Get updates by email</a>
           <a class="btn btn-ghost" href="https://m.me/257753357643105" target="_blank" rel="noopener" data-cta="updates_messenger" data-loc="work">Get updates on Messenger</a>
         </div>
       </div>

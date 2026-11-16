@@ -118,3 +118,58 @@ test('offer and portrait pages reuse existing brand GTM containers', () => {
   assert.match(cgg, /GTM-K8TXN9/);
   assert.match(fplb, /affiliate_click/);
 });
+
+
+test('H2M offers page has no untagged Amazon links and keeps tracked Awin links', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'h2m/offers/index.html'), 'utf8');
+  const amazonHrefs = [...html.matchAll(/href="([^"]*amazon\.com[^"]*)"/gi)].map((m) => m[1]);
+  assert.equal(amazonHrefs.length, 0, 'no Amazon hrefs until an H2M tracking ID exists');
+  assert.doesNotMatch(html, /tag=TAG_PENDING/);
+  assert.doesNotMatch(html, /tonedntastyne-20/);
+  for (const asin of ['B0B89P16MC', 'B096SVJZSW', 'B0170GOCVO', 'B00062ADKO']) {
+    assert.match(html, new RegExp(`TODO\\(Kyle\\)[\\s\\S]*${asin}[\\s\\S]*H2M_AMAZON_TAG`));
+  }
+  const awin = [...html.matchAll(/href="(https:\/\/www\.awin1\.com\/cread\.php[^"]+)"/g)].map((m) => m[1]);
+  assert.equal(awin.length, 6);
+  for (const href of awin) {
+    assert.match(href, /awinaffid=2572337/);
+    assert.match(href, /clickref=h2m-offers-/);
+  }
+  const aff = html.match(/<a [^>]*data-sid="h2m-offers-[^"]+"[^>]*>/g) || [];
+  assert.equal(aff.length, 6);
+  for (const a of aff) assert.match(a, /rel="sponsored nofollow noopener"/);
+  assert.match(html, /#ad/);
+  // Do not add the Amazon Associate line in visible copy until a real H2M tag is live
+  const visible = html.replace(/<!--[\s\S]*?-->/g, '');
+  assert.doesNotMatch(visible, /As an Amazon Associate/);
+});
+
+test('CGG and KG have consented, honeypotted brand-tagged signup forms', () => {
+  const pages = [
+    ['cgg/index.html', 'cgg', 'cgg-weekly-slice-v1'],
+    ['cgg/clubhouse/index.html', 'cgg', 'cgg-weekly-slice-v1'],
+    ['kg/index.html', 'kg', 'kg-build-updates-v1'],
+  ];
+  for (const [rel, brand, version] of pages) {
+    const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.equal((html.match(/data-signup="/g) || []).length, 1, rel);
+    assert.match(html, new RegExp(`name="brand" value="${brand}"`), rel);
+    assert.match(html, /name="consent" value="yes" required/, rel);
+    assert.doesNotMatch(html, /name="consent"[^>]*checked/, rel);
+    assert.match(html, /name="website"/, rel);
+    assert.match(html, new RegExp(`name="consent_version" value="${version}"`), rel);
+    assert.match(html, /\/privacy\/#email-list/, rel);
+    assert.match(html, /\/assets\/signup\.js/, rel);
+    assert.match(html, /action="https:\/\/hook\.us2\.make\.com\/[a-z0-9]+"/, rel);
+  }
+  const cggPrivacy = fs.readFileSync(path.join(ROOT, 'cgg/privacy/index.html'), 'utf8');
+  const kgPrivacy = fs.readFileSync(path.join(ROOT, 'kg/privacy/index.html'), 'utf8');
+  assert.match(cggPrivacy, /id="email-list"/);
+  assert.match(kgPrivacy, /id="email-list"/);
+  assert.ok(fs.existsSync(path.join(ROOT, 'cgg/assets/signup.js')));
+  assert.ok(fs.existsSync(path.join(ROOT, 'kg/assets/signup.js')));
+  const js = fs.readFileSync(path.join(ROOT, 'cgg/assets/signup.js'), 'utf8');
+  assert.match(js, /is_test/);
+  assert.match(js, /signup_test/);
+  assert.doesNotMatch(js, /GMass|gmass|send email|welcome/i);
+});
