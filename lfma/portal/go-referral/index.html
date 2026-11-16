@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://perspective-s3b8.onrender.com; img-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'"><title>Go Referral · Private Perspective</title><link rel="stylesheet" href="./report.css"><script src="./report.js" defer></script></head><body><main>
+<header><p class="eyebrow">Perspective · Marketing Apes</p><h1>Go Referral</h1><p>Marketing → AI Intake → After Handoff. One campaign, three clear views of the evidence.</p><span class="pill">Private · read-only</span></header>
+<section class="panel" aria-labelledby="access-title"><h2 id="access-title">Campaign reporting</h2><p>Sign in with your approved email. No private campaign information is included in this page before sign-in.</p>
+<form id="sign-in"><label for="email">Approved email</label><div class="row"><input id="email" type="email" required autocomplete="email"><button type="submit">Email sign-in code</button></div></form>
+<form id="verify" hidden><label for="code">Six-digit code</label><div class="row"><input id="code" pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="one-time-code" required><button type="submit">Open reporting</button><button id="back" type="button">Change email</button></div></form>
+<p id="status" role="status" aria-live="polite">Sign-in required. No private data loaded.</p></section>
+<div id="report" hidden><p id="scope" class="note"></p><nav aria-label="Reporting phases"><a href="#marketing">01 · Marketing</a><a href="#intake">02 · AI Intake</a><a href="#handoff">03 · After Handoff</a></nav>
+
+<section id="marketing" class="panel"><p class="eyebrow">Phase 01</p><h2>Marketing</h2><p>Facebook campaign spend and results, with the dates each figure covers. The paid invoice is a lead package and is kept apart from ad spend. Unknown data is never shown as zero.</p><div class="cards">
+<article><h3>Lead package invoice</h3><strong id="invoice-total">—</strong><p id="invoice-detail"></p></article>
+<article><h3>Invoice status</h3><strong id="invoice-status">—</strong><p id="invoice-date"></p></article>
+<article><h3>Recorded ad spend</h3><strong id="spend">—</strong><p id="spend-note"></p></article>
+<article><h3>Platform-reported leads</h3><strong id="submissions">—</strong><p>Meta's count of lead form submissions. Not a qualified, delivered or accepted lead count, and not a count against the invoice.</p></article>
+<article><h3>Qualified leads delivered against the package</h3><strong id="package-delivered">—</strong><p id="package-note"></p></article>
+<article><h3>Media budget</h3><strong>None set</strong><p>The invoice buys ten qualified leads at a fixed price. It is not a media allocation, so no budget remainder is calculated.</p></article></div>
+<p id="invoice-source" class="note"></p><div id="channel-breakdown"></div>
+<h3 id="spend-day-title">Spend by day</h3><p id="spend-coverage" class="hint"></p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="spend-day-title"><thead><tr><th scope="col">Date</th><th scope="col" class="num">Spend</th><th scope="col" class="num">Impressions</th><th scope="col" class="num">Link clicks</th><th scope="col" class="num">Platform leads</th></tr></thead><tbody id="spend-day-body"></tbody></table></div>
+<p id="marketing-note" class="note"></p></section>
+
+<section id="intake" class="panel"><p class="eyebrow">Phase 02</p><h2>AI Intake</h2><p id="intake-note"></p><div id="intake-detail" hidden><div class="cards">
+<article><h3>Opt-ins</h3><strong id="optin-count">—</strong><p id="optin-detail"></p></article>
+<article><h3>Consent recorded</h3><strong id="consent-count">—</strong><p id="consent-detail"></p></article>
+<article><h3>Sofia call attempts</h3><strong id="call-count">—</strong><p id="call-detail"></p></article>
+<article><h3>Sofia texts sent</h3><strong id="text-count">—</strong><p id="text-detail"></p></article></div>
+<h3 id="status-title">Lead status</h3><p class="hint">One status per person, the furthest step reached. A started transfer is an attempt, not a confirmed delivery.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="status-title"><thead><tr><th scope="col">Status</th><th scope="col" class="num">People</th></tr></thead><tbody id="status-body"></tbody></table></div><p id="status-check" class="note"></p>
+<h3 id="form-title">Opt-ins by form</h3>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="form-title"><thead><tr><th scope="col">Form</th><th scope="col" class="num">Submissions</th></tr></thead><tbody id="form-body"></tbody></table></div>
+<h3 id="day-title">Opt-ins by day</h3><p id="day-hint" class="hint"></p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="day-title"><thead><tr><th scope="col">Date</th><th scope="col" class="num">Submissions</th></tr></thead><tbody id="day-body"></tbody></table></div>
+<h3 id="calls-title">Sofia's call reports</h3><p id="calls-hint" class="hint"></p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="calls-title"><thead><tr><th scope="col">Call reports</th><th scope="col" class="num">Calls</th></tr></thead><tbody id="calls-body"></tbody></table></div>
+<h3 id="texts-title">Text delivery</h3><p class="hint">The carrier's last status for each text Sofia sent before a call.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="texts-title"><thead><tr><th scope="col">Carrier status</th><th scope="col" class="num">Texts</th></tr></thead><tbody id="texts-body"></tbody></table></div>
+<p id="calls-other" class="note"></p></div></section>
+
+<section id="handoff" class="panel"><p class="eyebrow">Phase 03</p><h2>After Handoff</h2><p id="handoff-note"></p><div id="handoff-detail" hidden>
+<h3 id="attempt-title">Attempts</h3><p class="hint">What we tried to hand off. An attempt is not a delivery.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="attempt-title"><thead><tr><th scope="col">Attempt</th><th scope="col" class="num">Count</th></tr></thead><tbody id="attempt-body"></tbody></table></div>
+<h3 id="confirmed-title">Confirmed delivery or acceptance</h3><p class="hint">Only what a receiving system or the firm has confirmed. “Not connected” means unknown, not zero.</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Scrollable report table"><table aria-labelledby="confirmed-title"><thead><tr><th scope="col">Evidence</th><th scope="col" class="num">Count</th><th scope="col">What it means</th></tr></thead><tbody id="confirmed-body"></tbody></table></div></div>
+<aside id="dq" class="proposed" aria-labelledby="dq-title"><p class="eyebrow">Proposed · not agreed · not tested</p><h3 id="dq-title">DQ review integration</h3><p id="dq-summary"></p><ul id="dq-list"></ul></aside></section>
+
+<p class="note">Report generated: <time id="generated"></time></p><div class="row"><button id="refresh" type="button">Refresh</button><button id="lock" type="button">Lock reporting</button></div></div>
+<footer><p>This report does not launch ads, contact leads or change routing. Only verified campaign-specific data belongs here.</p></footer></main></body></html>
