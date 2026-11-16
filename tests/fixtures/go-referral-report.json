@@ -1,0 +1,295 @@
+{
+ "schema": "go-referral.perspective/v1",
+ "generated_at": "2026-01-20T12:00:00Z",
+ "client": {
+  "id": "go-referral",
+  "name": "Go Referral"
+ },
+ "campaign_id": "BTL-SSDI-001",
+ "scope": "Campaign BTL-SSDI-001 only. Aggregate counts; test records and other campaigns are excluded.",
+ "invoice": {
+  "available": true,
+  "invoice_number": "SYNTHETIC-1",
+  "invoice_total": 2000.0,
+  "invoice_date": "2026-01-05",
+  "status": "Paid",
+  "description": "10 qualified SSDI leads at $200 each. A fixed-price lead package, not a media budget.",
+  "package": {
+   "qualified_leads": 10,
+   "unit_price": 200.0,
+   "qualified_delivered": null,
+   "delivered_note": "No confirmed delivery or acceptance record is connected, so no lead is counted against the package."
+  },
+  "media_budget": null,
+  "source": "QuickBooks invoice, copied to campaign reporting"
+ },
+ "marketing": {
+  "available": true,
+  "channel": "Meta instant form",
+  "platform_campaign_id": "120255153821950231",
+  "spend": 100.5,
+  "impressions": 2000,
+  "clicks": 40,
+  "platform_leads": 9,
+  "period_start": "2026-01-12",
+  "period_end": "2026-01-13",
+  "days_with_spend": 2,
+  "timezone": "America/Los_Angeles",
+  "as_of": "2026-01-20",
+  "source": "Meta Ads reporting, copied to campaign reporting",
+  "rows_skipped": 0,
+  "by_day": [
+   {
+    "date": "2026-01-12",
+    "spend": 40.0,
+    "impressions": 800,
+    "clicks": 16,
+    "platform_leads": 4
+   },
+   {
+    "date": "2026-01-13",
+    "spend": 60.5,
+    "impressions": 1200,
+    "clicks": 24,
+    "platform_leads": 5
+   }
+  ],
+  "note": "A manual copy of Meta's own figures for the days listed, in the ad account's time zone. Days outside this range are not loaded, which means unknown, not zero. Platform leads are Meta's count of form submissions; they are not qualified, delivered or accepted leads."
+ },
+ "intake": {
+  "available": true,
+  "timezone": "America/New_York",
+  "opt_ins": {
+   "submissions": 10,
+   "people": 9,
+   "consent_calls": 10,
+   "consent_sms": 8,
+   "first_at": "2026-01-12T15:00:00Z",
+   "last_at": "2026-01-13T22:10:00Z",
+   "by_form": [
+    {
+     "key": "A_prequal",
+     "label": "Prequalify form",
+     "count": 5
+    },
+    {
+     "key": "B_callback",
+     "label": "Call back form",
+     "count": 3
+    },
+    {
+     "key": "C_consultation",
+     "label": "Free consultation form",
+     "count": 2
+    }
+   ],
+   "by_day": [
+    {
+     "date": "2026-01-12",
+     "submissions": 4
+    },
+    {
+     "date": "2026-01-13",
+     "submissions": 6
+    }
+   ]
+  },
+  "sofia": {
+   "call_attempts": 14,
+   "people_called": 8,
+   "texts_sent": 12,
+   "people_texted": 7,
+   "people_opted_out": 1,
+   "call_reports": 6,
+   "calls_not_tied_to_a_lead": 3,
+   "calls_not_tied_note": "Calls on Sofia's line that match no campaign lead, including owner and partner test calls before launch. They are not counted anywhere else on this page.",
+   "call_direction": [
+    {
+     "key": "outbound",
+     "label": "Sofia called the person",
+     "count": 5
+    },
+    {
+     "key": "inbound",
+     "label": "The person called back",
+     "count": 1
+    }
+   ],
+   "call_outcomes": [
+    {
+     "key": "transferred",
+     "label": "Transfer started",
+     "count": 1
+    },
+    {
+     "key": "not_qualified_followup",
+     "label": "Screened: not a fit",
+     "count": 1
+    },
+    {
+     "key": "callback_booked",
+     "label": "Call back booked",
+     "count": 0
+    },
+    {
+     "key": "incomplete",
+     "label": "Ended before a screening result",
+     "count": 4
+    }
+   ],
+   "call_endings": [
+    {
+     "key": "assistant-forwarded-call",
+     "label": "Sofia forwarded the call",
+     "count": 1
+    },
+    {
+     "key": "customer-ended-call",
+     "label": "Person hung up",
+     "count": 3
+    },
+    {
+     "key": "assistant-ended-call",
+     "label": "Sofia ended the call",
+     "count": 1
+    },
+    {
+     "key": "voicemail",
+     "label": "Voicemail",
+     "count": 1
+    },
+    {
+     "key": "silence-timed-out",
+     "label": "Silence timed out",
+     "count": 0
+    }
+   ],
+   "text_statuses": [
+    {
+     "key": "delivered",
+     "label": "Delivered",
+     "count": 9
+    },
+    {
+     "key": "sent",
+     "label": "Sent, delivery not confirmed",
+     "count": 2
+    },
+    {
+     "key": "undelivered",
+     "label": "Undelivered",
+     "count": 1
+    },
+    {
+     "key": "failed",
+     "label": "Failed",
+     "count": 0
+    },
+    {
+     "key": "no_status_logged",
+     "label": "No carrier status logged",
+     "count": 0
+    }
+   ]
+  },
+  "lead_status": [
+   {
+    "key": "transfer_attempted",
+    "label": "Sofia started a transfer",
+    "count": 1
+   },
+   {
+    "key": "screened_not_a_fit",
+    "label": "Sofia screened: not a fit",
+    "count": 1
+   },
+   {
+    "key": "callback_booked",
+    "label": "Call back time booked",
+    "count": 0
+   },
+   {
+    "key": "opted_out",
+    "label": "Replied STOP",
+    "count": 1
+   },
+   {
+    "key": "attempts_exhausted",
+    "label": "Three call attempts, no conversation result",
+    "count": 2
+   },
+   {
+    "key": "called_no_result",
+    "label": "Called, no result recorded yet",
+    "count": 3
+   },
+   {
+    "key": "texted_only",
+    "label": "Texted, not called",
+    "count": 0
+   },
+   {
+    "key": "not_contacted",
+    "label": "Not contacted",
+    "count": 1
+   }
+  ],
+  "checks": {
+   "status_total": 9,
+   "status_total_matches_people": true
+  },
+  "note": "Meta lead form submissions for this campaign only. A submission, a call attempt and a completed screening are different events. One person can submit more than once; each person has one status. A call report exists only for calls Sofia summarised, so there are fewer reports than attempts. No personal lead details appear in this view."
+ },
+ "handoff": {
+  "available": true,
+  "transfers": {
+   "attempts": 1,
+   "people": 1,
+   "confirmed_answered": null,
+   "confirmed_note": "The transfer-leg log that shows whether Go Referral's line answered is switched off, so an attempt cannot be confirmed as delivered."
+  },
+  "receipts": {
+   "post_attempts": 1,
+   "accepted": 0,
+   "without_response_code": 1,
+   "note": "A post attempt is a record that we tried to send. Accepted means the buyer's system returned its acceptance code. An attempt with no response code stored is not a receipt."
+  },
+  "firm_feedback": {
+   "connected": false,
+   "accepted": null,
+   "disqualified": null,
+   "signed": null,
+   "note": "Go Referral has not reported an outcome on any lead, and no outcome feed is agreed."
+  },
+  "dq_review": {
+   "status": "proposed",
+   "agreed": false,
+   "built": false,
+   "tested": false,
+   "summary": "Proposed only. Nothing is sent for disqualification review today, and no figure on this page comes from it.",
+   "requirements": [
+    {
+     "key": "consent",
+     "label": "Consent",
+     "detail": "The current Meta form consent covers calls and texts from Best Tort Lawyers and a participating law firm. Sharing a person's details for a disqualification review needs wording that names that use, or counsel's written approval of the current wording, before any record is shared."
+    },
+    {
+     "key": "acceptance",
+     "label": "Buyer acceptance",
+     "detail": "Go Referral has to state in writing what counts as an accepted lead, what counts as a disqualified one, who decides, and how long they have to decide."
+    },
+    {
+     "key": "destination",
+     "label": "Destination",
+     "detail": "One named destination and format, agreed by both sides, with a test record that is seen to arrive and is labelled as a test."
+    },
+    {
+     "key": "duplicates",
+     "label": "Duplicate protection",
+     "detail": "One record per person, keyed so a repeat submission or a retry cannot be sent, counted or billed twice."
+    }
+   ]
+  },
+  "note": "An attempt is not a delivery, and a delivery receipt is not buyer acceptance or a signed case."
+ }
+}
