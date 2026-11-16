@@ -48,6 +48,11 @@ test('public system copy stays inside the claim boundary', async () => {
   // Car accident demo line (Vapi number, demo assistant). The Paraquat and Glassman numbers stay off this page.
   assert.match(home, /href="tel:\+16195391455"/);
   assert.match(home, /\(619\) 539-1455/);
+  // The offer and a one-screen request form are the first thing after the hero; the live demo line follows.
+  assert.ok(home.indexOf('id="firmForm"') < home.indexOf('id="demo"'), 'form comes before the demo');
+  assert.ok(home.indexOf('id="demo"') < home.indexOf('id="why-now"'), 'demo comes before why-now');
+  assert.match(home, /<button type="submit" class="btn block" id="buildBtn">Book time with Kyle<\/button>/);
+  assert.doesNotMatch(home, /id="nextBtn"|id="backBtn"|data-step=/);
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
