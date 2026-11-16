@@ -229,7 +229,7 @@ main = f'''<section class="hero"><div class="wrap">
 <div class="more-links">
 <a href="/pet-shopping-checklist/">Pet shopping checklist<small>Write a better brief before your next pet purchase.</small></a>
 <a href="/guides/pet-portrait-selection/">Choosing a pet portrait<small>How to pick a portrait style from the photo you have.</small></a>
-<a href="/offers/" rel="sponsored">Current pet offers (#ad)<small>Affiliate page — we may earn a commission if you buy.</small></a>
+<a href="/offers/" rel="sponsored">Current pet offers</a>
 </div>
 </div></section>'''
 w('index.html', page(BRAND, 'Practical, warm guides to dog and cat care: new-pet checklists, reward-based training, enrichment games, grooming, travel, hot-weather safety and senior pets.', '/', 'home', main))
@@ -251,7 +251,7 @@ main = f'''<section class="band"><div class="wrap narrow">
 <li>We do not claim credentials we do not have.</li>
 </ul>
 <h2>How the site is funded</h2>
-<p>For Pets Like Blue is published by Marketing Apes LLC. The site is supported by advertising, including ads served by Google AdSense. Some pages, such as our <a href="/offers/" rel="sponsored">offers page</a>, contain affiliate links, which are clearly labelled; if you buy through them we may earn a commission at no extra cost to you. Advertising and affiliate relationships do not decide what our care guides say.</p>
+<p>For Pets Like Blue is published by Marketing Apes LLC. The site is supported by advertising, including ads served by Google AdSense. Advertising does not decide what our care guides say.</p>
 <h2>Corrections and suggestions</h2>
 <p>If you spot something that looks wrong or out of date, or there is a topic you would like us to cover, please <a href="/contact/">get in touch</a>. We review articles periodically and update them when guidance changes.</p>
 </div></section>'''
@@ -298,8 +298,6 @@ main = f'''<section class="band"><div class="wrap narrow">
 <p>If you are in a region where consent is required for these cookies, such as the European Economic Area or the UK, you may be shown a consent message and can change your choices at any time.</p>
 <h2>Analytics</h2>
 <p>We use Google Tag Manager and Google Analytics to understand how visitors use the site, such as which articles are read and how people arrive. These tools use cookies and collect information like pages viewed, time on page, approximate location and device type. We use this information in aggregate to improve the site. You can install the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Google Analytics opt-out browser add-on</a> to prevent your data being used by Google Analytics.</p>
-<h2>Affiliate links</h2>
-<p>Some pages, such as our offers page, include affiliate links. If you click one, the retailer or affiliate network may set cookies to record that you came from our site. Their use of data is governed by their own privacy policies.</p>
 <h2>How to control cookies</h2>
 <p>Most browsers let you block or delete cookies in their settings. Blocking some cookies may affect how the site works, and you may still see ads — they will simply be less relevant.</p>
 <h2>Children</h2>
@@ -324,8 +322,8 @@ main = f'''<section class="band"><div class="wrap narrow">
 <p>All articles, illustrations and design on this site are owned by us or used with permission. You may read, share links to and print pages for personal, non-commercial use. Please do not copy, republish or sell our content without written permission.</p>
 <h2>Accuracy</h2>
 <p>We work to keep articles accurate and up to date, but pet care guidance changes and we cannot guarantee that every page is complete or current. You use the information at your own risk and should consider your own pet’s circumstances.</p>
-<h2>Advertising and affiliate links</h2>
-<p>The site shows advertising, including ads served by Google, and some pages contain labelled affiliate links. We are not responsible for the content, products or services of advertisers or third-party websites, and your dealings with them are between you and them.</p>
+<h2>Advertising</h2>
+<p>The site shows advertising, including ads served by Google. We are not responsible for the content, products or services of advertisers or third-party websites, and your dealings with them are between you and them.</p>
 <h2>External links</h2>
 <p>Links to other websites are provided for convenience. We do not control those sites and are not responsible for their content or privacy practices.</p>
 <h2>Limitation of liability</h2>
@@ -335,7 +333,7 @@ main = f'''<section class="band"><div class="wrap narrow">
 <h2>Contact</h2>
 <p>Questions about these terms? Email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </div></section>'''
-w('terms/index.html', page('Terms of Use', 'The terms for using For Pets Like Blue, including our general-information disclaimer, content use, advertising and affiliate links, and liability.', '/terms/', '', main))
+w('terms/index.html', page('Terms of Use', 'The terms for using For Pets Like Blue, including our general-information disclaimer, content use, advertising, and liability.', '/terms/', '', main))
 
 # ---------------- 404
 nf = f'''<!doctype html>

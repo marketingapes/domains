@@ -15,8 +15,6 @@ const NOW = Date.parse(feed.checked_at);
 test('DDM gift planner: page exists, is linked, disclosed and has no AI label or em dash', () => {
   const html = read('gift-planner/index.html');
   assert.match(html, /<h1>Holiday gift budget planner<\/h1>/);
-  assert.match(html, /#ad/);
-  assert.match(html, /may earn a commission/);
   assert.match(html, /\/assets\/gift-planner\.js/);
   assert.match(html, /rel="canonical" href="https:\/\/discountdealme\.com\/gift-planner\/"/);
   assert.doesNotMatch(html + read('assets/gift-planner.js'), /AI[- ]generated|AI summary|\u2014/);

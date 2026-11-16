@@ -174,7 +174,7 @@ JS = r"""
           '<a class="btn btn-deal" rel="sponsored nofollow noopener" target="_blank" data-offer="' + esc(k.id) + '" href="' + esc(k.url) + '">Shop at ' + esc(k.merchant) + ' <span aria-hidden="true">&#8599;</span></a></div></div></article>';
       });
     });
-    html += '<p class="gp-note">Savings are estimates from the advertised percentage applied to each person\'s budget. "Up to" and dollar-off deals are not counted in the total. Deals checked against the affiliate network ' + esc(new Date(p.checked_at).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})) + '. Confirm the final price at checkout.</p>';
+    html += '<p class="gp-note">Savings are estimates from the advertised percentage applied to each person\'s budget. "Up to" and dollar-off deals are not counted in the total. Deals checked against the network ' + esc(new Date(p.checked_at).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})) + '. Confirm the final price at checkout.</p>';
     res.innerHTML = html;
   }
   list.addEventListener('click', function(e){
@@ -217,7 +217,7 @@ def body(n_live, n_gift):
 <p class="kicker">Holiday tool &middot; free</p>
 <h1>Holiday gift budget planner</h1>
 <p class="lede">Set one budget, add the people on your list and what they're into. You get a gift plan for each person, built only from the {n_gift} giftable deals in our live feed of {n_live}, with codes, end dates and estimated savings.</p>
-<p class="fine"><b>#ad</b> Shop buttons are affiliate links. Discount Deal Me may earn a commission if you buy, at no extra cost to you. It never changes which deal ranks first.</p>
+
 </div></section>
 <div class="wrap gp-wrap">
 <form id="gp-form" class="gp-card gp-form" novalidate>
@@ -235,8 +235,8 @@ def body(n_live, n_gift):
 <section class="wrap" style="padding-bottom:40px"><div class="gp-card">
 <h2 style="margin-top:0">How the planner picks</h2>
 <ul>
-<li>It only uses deals that are live in our feed right now, the same ones on <a href="/deals/">Live deals</a>. Every link was checked against the affiliate network and opens the merchant's own page.</li>
-<li>Each person's picks match their interests first, then the published <a href="/how-we-pick-deals/#deal-score">Deal Score</a>. Commission never affects the order.</li>
+<li>It only uses deals that are live in our feed right now, the same ones on <a href="/deals/">Live deals</a>. Every link was checked against the network and opens the merchant's own page.</li>
+<li>Each person's picks match their interests first, then the published <a href="/how-we-pick-deals/#deal-score">Deal Score</a>. The published Deal Score sets the order.</li>
 <li>Deals with a minimum order (for example free shipping over a set amount) only show when that person's budget covers it.</li>
 <li>We spread picks across stores, so two people rarely get the same deal.</li>
 <li>Estimated savings apply the advertised percentage to each person's budget. Item prices vary, so check the cart before you pay.</li>

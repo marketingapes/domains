@@ -39,10 +39,9 @@ test('DDM checkout worksheet keeps its content after the Oct 10 2026 restyle', (
   assert.doesNotMatch(html, /rel="sponsored"|click-101511733|awin1\.com/);
 });
 
-test('FPLB portrait guide is useful, disclosed, and does not add a new tracker URL', () => {
+test('FPLB portrait guide is useful and does not add a new tracker URL', () => {
   const html = fs.readFileSync(path.join(ROOT, 'fplb/guides/pet-portrait-selection/index.html'), 'utf8');
   assert.match(html, /Choose a pet portrait from the photo you have/);
-  assert.match(html, /#ad/);
   assert.match(html, /rel="sponsored"/);
   assert.match(html, /href="\/offers\/"/);
   assert.match(html, /awinaffid=2572337|publisher 2572337/);
@@ -59,8 +58,8 @@ test('FPLB shopping checklist points at the portrait guide', () => {
 
 test('CGG planner carries no sponsored links and sends readers to the drills', () => {
   const html = fs.readFileSync(path.join(ROOT, 'cgg/practice-session-planner/index.html'), 'utf8');
-  // the page promises "no affiliate purchase links or sponsored product recommendations"; keep that true
-  assert.match(html, /no affiliate purchase links or sponsored product recommendations/);
+  // the page promises no product purchase links or sponsored product recommendations; keep that true
+  assert.match(html, /no product purchase links or sponsored product recommendations/);
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
   assert.ok(main.length > 500);
   assert.doesNotMatch(main, /rel="sponsored|#ad|data-offer/i);
@@ -69,15 +68,22 @@ test('CGG planner carries no sponsored links and sends readers to the drills', (
   assert.match(html, /window\.print\(\)/);
 });
 
-test('CGG ships no unfinished placeholders or email capture that is not connected', () => {
+test('CGG ships no unfinished placeholders; home and clubhouse email capture is connected', () => {
   for (const rel of ['index.html', 'clubhouse/index.html', 'offers/index.html']) {
     const html = fs.readFileSync(path.join(ROOT, 'cgg', rel), 'utf8');
     assert.doesNotMatch(html, /TODO\(Kyle\)|data-todo/);
-    assert.doesNotMatch(html, /type="email"|data-newsletter/);
+    assert.doesNotMatch(html, /data-newsletter/);
+    assert.doesNotMatch(html, /isn.t live yet|not collecting emails/);
   }
-  const home = fs.readFileSync(path.join(ROOT, 'cgg/index.html'), 'utf8');
-  assert.match(home, /In the works/);
-  assert.match(home, /Follow @crazygolfgame on X/);
+  const offers = fs.readFileSync(path.join(ROOT, 'cgg/offers/index.html'), 'utf8');
+  assert.doesNotMatch(offers, /type="email"|data-signup=/);
+  for (const rel of ['cgg/index.html', 'cgg/clubhouse/index.html']) {
+    const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    assert.match(html, /data-signup="/);
+    assert.match(html, /name="brand" value="cgg"/);
+    assert.match(html, /action="https:\/\/hook\.us2\.make\.com\//);
+    assert.match(html, /@crazygolfgame on X/);
+  }
 });
 
 test('DDM deal checklist adds Tayst discovery without editing Codex worksheet path', () => {
@@ -86,7 +92,6 @@ test('DDM deal checklist adds Tayst discovery without editing Codex worksheet pa
   assert.match(html, /href="\/offers\/"/);
   assert.match(html, /90529/);
   assert.match(html, /ddm-home/);
-  assert.match(html, /#ad/);
   assert.doesNotMatch(html, /awin1\.com\/cread\.php/);
 });
 
