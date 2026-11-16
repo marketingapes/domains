@@ -45,6 +45,9 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.match(home, /Facebook and Instagram, Google, and ChatGPT/);
   assert.match(home, /href="\/talk-to-sofia\.html"/);
   assert.match(home, /campaign', 'holiday-sprint-2026'/);
+  // Car accident demo line (Vapi number, demo assistant). The Paraquat and Glassman numbers stay off this page.
+  assert.match(home, /href="tel:\+16195391455"/);
+  assert.match(home, /\(619\) 539-1455/);
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);

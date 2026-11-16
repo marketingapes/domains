@@ -547,8 +547,8 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
       </div>
     </div>
     </div>
-    <div class="actions"><a class="btn" href="/talk-to-sofia.html" data-sofia-demo="sofia">Talk to Sofia now</a></div>
-    <p class="caption">The demo runs in your browser and uses your microphone. Sofia is AI, and the portrait is her brand image. The chat above is an example with a fictional caller.</p>
+    <div class="actions"><a class="btn" href="/talk-to-sofia.html" data-sofia-demo="sofia">Talk to Sofia now</a><a class="btn ghost" href="tel:+16195391455" data-demo-line="sofia">Call her: (619) 539-1455</a></div>
+    <p class="caption">The phone line is a live car accident demo. Play a claimant and she screens you in four questions. The browser demo uses your microphone. Sofia is AI, and the portrait is her brand image. The chat above is an example with a fictional caller.</p>
   </section>
 
   <!-- How this works -->
@@ -708,8 +708,9 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
   <section id="demo" class="center" aria-labelledby="demo-h">
     <span class="eyebrow">Demo bot · free</span>
     <h2 id="demo-h">Not sure your clients will talk to AI? <em>Try it first.</em></h2>
-    <p class="body">Sofia is the AI intake assistant your leads would meet. Click once and talk to her in your browser, the way a claimant would. Give her a sample case and see how she handles it.</p>
-    <div class="actions"><a class="btn" href="/talk-to-sofia.html" data-sofia-demo="demo">Talk to Sofia now</a><a class="btn ghost" href="#build" id="demoCta">Have Kyle walk me through it</a></div>
+    <p class="body">Sofia is the AI intake assistant your leads would meet. Here's a live line, so feel free to call it: <a href="tel:+16195391455" data-demo-line="demo"><b>(619) 539-1455</b></a>. It's set up as a car accident campaign. Tell her about a crash and she asks four questions: were you injured, was it in the last two years, did you go to the hospital, and do you have a lawyer. If you qualify, she offers to connect you live.</p>
+    <div class="actions"><a class="btn" href="tel:+16195391455" data-demo-line="demo-btn">Call Sofia: (619) 539-1455</a><a class="btn ghost" href="/talk-to-sofia.html" data-sofia-demo="demo">Talk in your browser</a><a class="btn ghost" href="#build" id="demoCta">Have Kyle walk me through it</a></div>
+    <p class="caption">Demo line. Sofia is AI, not a lawyer. Calls are recorded. A qualified demo call connects to Kyle.</p>
     <p class="fine">With the gorilla. He does not bite.</p>
   </section>
   <script>document.getElementById('demoCta').addEventListener('click', function () { window.__lfmaIntent = 'demo'; });</script>
@@ -1122,6 +1123,7 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     document.getElementById('sofiaPending').hidden = true;
   }
 
+  document.querySelectorAll('a[data-demo-line]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap', { placement: a.getAttribute('data-demo-line'), line: 'mva-demo' }); }); });
   document.querySelectorAll('a[data-sofia-demo]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_sofia_demo_click', { placement: a.getAttribute('data-sofia-demo') }); }); });
   document.querySelectorAll('a.way-demo').forEach(function (a, i) { a.addEventListener('click', function () { track('lfma_demo_click', { way: ['form', 'sofia', 'chat'][i] || String(i) }); }); });
   document.querySelectorAll('a[href^="tel:+12138787408"]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap'); }); });
