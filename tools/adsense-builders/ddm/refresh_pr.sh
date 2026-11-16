@@ -2,6 +2,7 @@
 # One-command DDM deal refresh: pull CJ -> rebuild feed -> build site -> release checks -> open a PR.
 # Never merges. Run from anywhere; works in a temporary worktree off origin/main.
 # Needs: CJ_API_TOKEN (or RENDER_API_KEY + RENDER_ENV_GROUP_ID), git push access, gh CLI.
+# Optional: DDM_PRICE_LOG=<dir outside the repo> keeps a copy of the price log so unmerged days are not lost.
 # Deal images are kept: see images.py. New deals fall back to a category photo until added to images.json.
 # Options: --min-hours N (default 12)  --draft  --no-pr (build and test only)
 set -euo pipefail
@@ -24,21 +25,32 @@ PULL="$WT/.cj_pull.json"
 python3 -B $B/cj_pull.py "$PULL"
 python3 -B $B/refresh_deals.py "$PULL" --min-hours "$MIN_HOURS" | tee "$WT/.refresh.log"
 rm -f "$PULL"
+# Verified store codes (/coupons/) and the deal-checker price log: CJ + Impact (+ Awin when its token works).
+# A failure here keeps the committed coupon data, so the deal refresh still goes out.
+CPULL="$WT/.coupons_pull.json"
+if python3 -B $B/coupons_pull.py "$CPULL" | tee -a "$WT/.refresh.log"; then
+  python3 -B $B/coupons_refresh.py "$CPULL" ${DDM_PRICE_LOG:+--price-log "$DDM_PRICE_LOG"} | grep -v '^note ' | tee -a "$WT/.refresh.log"
+else
+  echo "coupon pull failed; keeping the committed coupon data" | tee -a "$WT/.refresh.log"
+fi
+rm -f "$CPULL"
 # Images: carried-over deals keep their committed WebP files (ddm/images/deals/<link_id>.webp, keyed in images.json).
 # Create any file listed in images.json that is missing; new deals without an entry use their category photo.
 python3 -B $B/images.py fetch | grep -v '^  wrote' || echo "image fetch had failures; affected deals use category photos"
 python3 -B $B/images.py check | tee -a "$WT/.refresh.log"
 python3 -B $B/build.py >/dev/null
 if git diff --quiet; then echo "No deal changes; nothing to do."; exit 0; fi
-git add -A ddm $B/deals_feed.json
+git add -A ddm $B/deals_feed.json $B/coupons_feed.json $B/price_history.json
 git -c user.name="${GIT_AUTHOR_NAME:-DDM deal refresh}" commit -qm "DDM: refresh live deals ($STAMP PT)"
 bash tools/check-release.sh
 [ -n "$NOPR" ] && { echo "Built and tested on $BRANCH (not pushed)."; trap - EXIT; echo "Worktree: $WT"; exit 0; }
 git push -q -u origin "$BRANCH"
 COUNT="$(python3 -c "import json;print(json.load(open('ddm/data/deals.json'))['count'])")"
-BODY="Automated deal refresh from CJ link-search (property 101511733).
+CODES="$(python3 -c "import json;f=json.load(open('$B/coupons_feed.json'));print(sum(s['live_codes'] for s in f['stores']))")"
+BODY="Automated deal refresh from CJ link-search (property 101511733), plus verified store codes (CJ + Impact) and the deal-checker price log.
 
 - Live deals: $COUNT
+- Live store codes on /coupons/: $CODES
 - Deals ending within ${MIN_HOURS}h or not started yet are left out.
 - Release checks: PASS
 

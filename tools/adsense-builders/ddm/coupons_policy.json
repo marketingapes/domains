@@ -1,0 +1,242 @@
+{
+ "_about": "Editorial rules for /coupons/. This file can only REMOVE stores or records, or rename a store for display. It can never add a code, offer, date or claim; those come only from network records (see coupons_refresh.py).",
+ "exclude": [
+  {
+   "network": "CJ",
+   "name": "STDCheck.com",
+   "reason": "medical testing, not a fit for a consumer coupon page"
+  },
+  {
+   "network": "CJ",
+   "name": "HealthLabs.com",
+   "reason": "medical testing"
+  },
+  {
+   "network": "CJ",
+   "name": "Paternity Lab",
+   "reason": "medical / legal testing"
+  },
+  {
+   "network": "CJ",
+   "name": "Treat My UTI",
+   "reason": "medical treatment"
+  },
+  {
+   "network": "CJ",
+   "name": "TRT Nation",
+   "reason": "prescription treatment"
+  },
+  {
+   "network": "CJ",
+   "name": "Testclear.com",
+   "reason": "drug-test products"
+  },
+  {
+   "network": "CJ",
+   "name": "EdenFantasys.com",
+   "reason": "adult products"
+  },
+  {
+   "network": "CJ",
+   "name": "Instant Funding",
+   "reason": "financial product"
+  },
+  {
+   "network": "CJ",
+   "name": "LawDepot",
+   "reason": "legal services; Dot's team handles anything legal"
+  },
+  {
+   "network": "CJ",
+   "name": "24-7PressRelease",
+   "reason": "business service, not a consumer store"
+  },
+  {
+   "network": "CJ",
+   "name": "PartnerBoost - Amazon Marketplace",
+   "reason": "marketplace aggregator, not one store"
+  },
+  {
+   "network": "CJ",
+   "name": "TikTok Shop US - Marketplaces",
+   "reason": "marketplace aggregator, not one store"
+  },
+  {
+   "network": "CJ",
+   "name": "DHGate",
+   "reason": "marketplace with third-party sellers; codes and items vary by seller"
+  },
+  {
+   "network": "CJ",
+   "name": "Tech For Less",
+   "reason": "gray-market software keys seen in past pulls"
+  },
+  {
+   "network": "Impact",
+   "name": "FAB CBD",
+   "reason": "CBD"
+  },
+  {
+   "network": "Impact",
+   "name": "DankStop",
+   "reason": "smoking accessories"
+  },
+  {
+   "network": "Impact",
+   "name": "Smokpub",
+   "reason": "smoking accessories"
+  },
+  {
+   "network": "Impact",
+   "name": "Innovative Extracts Affiliate Partnership (IEAP)",
+   "reason": "botanical extracts / supplements with health claims"
+  },
+  {
+   "network": "Impact",
+   "name": "MyStartHealth",
+   "reason": "medical"
+  },
+  {
+   "network": "Impact",
+   "name": "DHgate",
+   "reason": "marketplace with third-party sellers"
+  },
+  {
+   "network": "Impact",
+   "name": "Amazon Seller",
+   "reason": "marketplace program, not one store"
+  },
+  {
+   "network": "Impact",
+   "name": "Helium 10",
+   "reason": "business software for Amazon sellers; codes are Marketing Apes partner codes"
+  },
+  {
+   "network": "Impact",
+   "name": "MarketXLS",
+   "reason": "business software"
+  },
+  {
+   "network": "Impact",
+   "name": "Arkuda Digital",
+   "reason": "business service"
+  },
+  {
+   "network": "Impact",
+   "name": "Spocket",
+   "reason": "business software (dropshipping)"
+  },
+  {
+   "network": "Impact",
+   "name": "Easyship Ambassador Program",
+   "reason": "business shipping software"
+  },
+  {
+   "network": "Impact",
+   "name": "ship7.com",
+   "reason": "package forwarding service"
+  },
+  {
+   "network": "Impact",
+   "name": "Coohom Commission Program",
+   "reason": "business software"
+  },
+  {
+   "network": "Impact",
+   "name": "DoorLoop",
+   "reason": "business software"
+  },
+  {
+   "network": "Impact",
+   "name": "CapCut Affiliate Program",
+   "reason": "app sign-up program, no store offers"
+  },
+  {
+   "network": "Impact",
+   "name": "Alaska Airlines ATMOS Rewards - Points.com",
+   "reason": "points purchase program"
+  },
+  {
+   "network": "Impact",
+   "name": "GearUP",
+   "reason": "VPN / game booster software, no store offers"
+  },
+  {
+   "network": "Impact",
+   "name": "Paw",
+   "reason": "CBD products (cbdMD)"
+  }
+ ],
+ "hide_records": [
+  {
+   "network": "Impact",
+   "campaign": "Packed with Purpose",
+   "match": "WHM15",
+   "reason": "Women's History Month offer (March); no end date published"
+  },
+  {
+   "network": "Impact",
+   "campaign": "Packed with Purpose",
+   "match": "EMPLOYEE",
+   "reason": "Employee Appreciation Day offer (March); no end date published"
+  },
+  {
+   "network": "Impact",
+   "campaign": "Packed with Purpose",
+   "match": "couponology",
+   "reason": "code made for another publisher"
+  },
+  {
+   "network": "Impact",
+   "campaign": "Angelbliss",
+   "match": "ABIP18",
+   "reason": "code field and description name different codes"
+  },
+  {
+   "network": "Impact",
+   "campaign": "Coffee Bros.: Specialty Coffee + Equipment",
+   "match": "parkins15",
+   "reason": "code made for another publisher"
+  },
+  {
+   "network": "Impact",
+   "campaign": "Best Choice Products",
+   "match": "BDSAVE12",
+   "reason": "offer made for another publisher (Brad's Deals)"
+  },
+  {
+   "network": "CJ",
+   "campaign": "SwitchBot",
+   "match": "SWITCHBOT20OFF",
+   "reason": "code name, percentage and 'no expired' wording contradict each other"
+  }
+ ],
+ "stale_words": "women's history|employee appreciation|labor day|memorial day|president'?s day|valentine|easter|mother'?s day|father'?s day|back ?2 ?(campus|school)|spring|summer|halloween|double 11|\\b(sale|deals?|event|offer)\\b.{0,20}\\b20(1\\d|2[0-5])\\b|\\b20(1\\d|2[0-5])\\b.{0,20}\\b(sale|deals?|event|offer)\\b|april|march|\\bq[1-3]\\b|red, white|rwb|fall decor",
+ "display_names": {
+  "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal": "All-Clad, Krups, Rowenta & T-fal",
+  "Winebasket/Babybasket/Capalbosonline": "Winebasket",
+  "MonthlyClubs.com™": "MonthlyClubs.com",
+  "Velocity Outdoor – Ravin/CenterPoint/Valhalla": "Ravin & CenterPoint",
+  "Velocity Outdoor-Crosman/Benjamin/LaserMax/Game Face": "Crosman & Benjamin",
+  "Adagio + Lardera + Selefina": "Adagio Teas",
+  "GameFly - Online Video Game Rentals": "GameFly",
+  "Signs, Banners, and Magnets On The Cheap": "Signs On The Cheap",
+  "Coffee Bros.: Specialty Coffee + Equipment": "Coffee Bros.",
+  "Black Widow Pro Amazon": "Black Widow Pro",
+  "Larson Jewelers Amazon": "Larson Jewelers",
+  "Haus of Brilliance Amazon": "Haus of Brilliance",
+  "babeside on Amazon": "Babeside",
+  "Mamma Mia Covers - Amazon": "Mamma Mia Covers",
+  "YEEDI-Amazon Seller-US": "Yeedi",
+  "ECOVACS Robotics Best Buy Seller": "ECOVACS (Best Buy)",
+  "ECOVACS Robotics Walmart Seller": "ECOVACS (Walmart)",
+  "Puzzle Ready affiliate program": "Puzzle Ready",
+  "Coach Soak affiliate program": "Coach Soak",
+  "Ontaki Affiliate program": "Ontaki",
+  "GOLF Partner": "GOLF Partner",
+  "Packed with Purpose": "Packed with Purpose",
+  "ShopKitchenAid.com": "KitchenAid"
+ },
+ "region_words": "\\((EU|UK|CA|AU|DE|FR)\\)|\\b(EU|UK) only\\b",
+ "dated_stale_words": "valentine|easter|memorial day|labor day|women's history|employee appreciation|back ?(2|to) ?(campus|school)|halloween|st\\.? patrick|\\b(sale|deals?|event|offer)\\b.{0,20}\\b20(1\\d|2[0-5])\\b|\\b20(1\\d|2[0-5])\\b.{0,20}\\b(sale|deals?|event|offer)\\b"
+}

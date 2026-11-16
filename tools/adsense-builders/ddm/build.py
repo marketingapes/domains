@@ -741,6 +741,7 @@ User-agent: Mediapartners-Google
 Allow: /
 
 Sitemap: {HOST}/sitemap.xml
+Sitemap: {HOST}/sitemap-tools.xml
 """)
     urls = [("/", SITE_UPDATED), ("/deals/", SITE_UPDATED), ("/gift-planner/", SITE_UPDATED)] + [(u, BF_UPDATED) for u in bfcm.URLS] + [("/how-we-pick-deals/", SITE_UPDATED), ("/deals/kitchenaid-harvest-event/", SITE_UPDATED),
             ("/articles/", SITE_UPDATED)] + [(f'/articles/{a["slug"]}/', UPDATED) for a in ARTS] + [
@@ -750,6 +751,17 @@ Sitemap: {HOST}/sitemap.xml
         f"  <url><loc>{HOST}{u}</loc><lastmod>{d}</lastmod></url>\n" for u, d in urls) + "</urlset>\n"
     write("sitemap.xml", sm)
     write("_redirects", "/preview/*  /  301\n/preview    /  301\n")
+    # Verified store codes (/coupons/), how-we-verify-codes and the deal checker. See coupons.py.
+    import coupons, shutil
+    built = coupons.pages(sys.modules[__name__])
+    for rel, content in built.items():
+        p = os.path.join(OUT, rel)
+        if not (os.path.exists(p) and open(p).read() == content):  # unchanged files are left alone
+            write(rel, content)
+    keep = {rel.split("/")[1] for rel in built if rel.startswith("coupons/") and rel.count("/") == 2}
+    for d in os.listdir(os.path.join(OUT, "coupons")):  # drop pages for stores no longer in coupons_feed.json
+        if os.path.isdir(os.path.join(OUT, "coupons", d)) and d not in keep:
+            shutil.rmtree(os.path.join(OUT, "coupons", d))
 
 
 if __name__ == "__main__":

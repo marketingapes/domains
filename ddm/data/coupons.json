@@ -1,0 +1,2541 @@
+{
+ "checked_at": "2026-11-16T01:37:45Z",
+ "sources": {
+  "CJ": "CJ link-search for DDM property 101511733 (joined advertisers)",
+  "Impact": "Impact campaign deals and promo codes (active contracts)",
+  "Awin": "Awin: skipped: Awin API returned HTTP 401 (token refused or expired)"
+ },
+ "disclosure": "Store links are affiliate links (#ad).",
+ "stores": [
+  {
+   "slug": "air-doctor",
+   "name": "Air Doctor",
+   "advertiser_names": [
+    "Air Doctor"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/air-doctor/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "all-clad-krups-rowenta-and-t-fal",
+   "name": "All-Clad, Krups, Rowenta & T-fal",
+   "advertiser_names": [
+    "Home & Cook Groupe SEB Brands: All-Clad Krups Rowenta T-Fal"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/all-clad-krups-rowenta-and-t-fal/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-17129146",
+     "title": "Free Shipping Rowentausa.com",
+     "terms": "Free shipping on orders $99.99 and above at Rowentausa.com",
+     "starts": "2025-07-24T17:14:00Z",
+     "ends": "2026-12-31T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17129175",
+     "title": "Free Shipping T-fal.com",
+     "terms": "Free shipping on orders $99.99 and above at T-fal.com",
+     "starts": "2025-07-24T17:14:00Z",
+     "ends": "2026-12-31T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17135748",
+     "title": "Rowenta – 10% Off Your First Order with Email Signup",
+     "terms": "Join the Rowenta newsletter and enjoy 10% off your first order. Discover smart steam and fabric care solutions.",
+     "starts": "2025-08-01T17:03:00Z",
+     "ends": "2027-01-01T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17165254",
+     "title": "All-Clad – 10% Off Your First Order with Email Signup",
+     "terms": "Join the Rowenta newsletter and enjoy 10% off your first order. Discover smart steam and fabric care solutions.",
+     "starts": "2025-08-01T17:03:00Z",
+     "ends": "2027-01-01T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17240828",
+     "title": "T-fal – 20% Off Your First Order with Email Signup",
+     "terms": "Join the T-fal newsletter and enjoy 20% off your first order. Discover cookware, appliances, and kitchen must-haves.",
+     "starts": "2026-02-01T05:02:00Z",
+     "ends": "2027-01-01T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17129188",
+     "title": "Rowenta - Hot Deals",
+     "terms": "Upgrade your home with exclusive discounts on Rowenta's best-selling steam irons, powerful vacuum cleaners, and innovative air purifiers.",
+     "starts": "2025-07-24T17:14:00Z",
+     "ends": "2029-12-31T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17240829",
+     "title": "T-fal - Hot Deals",
+     "terms": "Best and Latest T-fal Deals Enjoy exclusive discounts on a variety of products designed to elevate your cooking.",
+     "starts": "2025-07-24T17:14:00Z",
+     "ends": "2029-12-31T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "angelbliss",
+   "name": "Angelbliss",
+   "advertiser_names": [
+    "Angelbliss"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/angelbliss/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "angles90",
+   "name": "Angles90",
+   "advertiser_names": [
+    "Angles90"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/angles90/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "babeside",
+   "name": "Babeside",
+   "advertiser_names": [
+    "babeside on Amazon"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/babeside/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "beckett-media",
+   "name": "Beckett Media",
+   "advertiser_names": [
+    "Beckett Media"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/beckett-media/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "berkel-usa",
+   "name": "Berkel USA",
+   "advertiser_names": [
+    "Berkel USA"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/berkel-usa/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-15541103",
+     "title": "Berkel - Free Shipping",
+     "terms": "Free shipping",
+     "starts": "2023-05-24T19:36:00Z",
+     "ends": "2028-01-01T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "best-choice-products",
+   "name": "Best Choice Products",
+   "advertiser_names": [
+    "Best Choice Products"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/best-choice-products/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "best-vet-care",
+   "name": "Best Vet Care",
+   "advertiser_names": [
+    "Best Vet Care"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/best-vet-care/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-17379875",
+     "title": "Festive Savings - Flat 25% Off + Free Shipping",
+     "terms": "Shop Holiday Deals: Take 25% Off Pet Supplies + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379876",
+     "title": "Holiday Treat - Get 25% Off + Free Shipping",
+     "terms": "Shop Holiday Deals: Take 25% Off Pet Supplies + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379877",
+     "title": "Holiday Special - Enjoy 25% Off + Free Shipping",
+     "terms": "Festive Savings – Get 25% Off Pick Parasite Protection + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379878",
+     "title": "Shop Holiday Deals - 25% Off Sitewide",
+     "terms": "Festive Savings – Get 25% Off Pick Parasite Protection + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379879",
+     "title": "It's the Season to Save 25% Off + Free Shipping",
+     "terms": "Festive Savings – Get 25% Off Pick Parasite Protection + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379881",
+     "title": "Spread Holiday Cheer with 25% Off + Free Shipping",
+     "terms": "Shop Holiday Deals: Take 25% Off Pet Supplies + Free Shipping",
+     "starts": "2026-11-05T08:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379884",
+     "title": "Festive Savings: Enjoy 35% Discount",
+     "terms": "Holiday Special - Enjoy 25% Off Your Everything + Free Shipping",
+     "starts": "2026-11-05T08:50:00Z",
+     "ends": "2026-12-31T16:26:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379886",
+     "title": "Holiday Sale - Claim 25% Off + Free Shipping",
+     "terms": "Holiday Special - Enjoy 25% Off Your Everything + Free Shipping",
+     "starts": "2026-11-05T08:50:00Z",
+     "ends": "2026-12-31T16:26:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379889",
+     "title": "Season of Saving: Flat 25% Off",
+     "terms": "Holiday Special - Enjoy 25% Off Your Everything + Free Shipping",
+     "starts": "2026-11-05T08:50:00Z",
+     "ends": "2026-12-31T16:26:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17379894",
+     "title": "It's Holiday Sale Time – Save 25% Discount",
+     "terms": "Holiday Special - Enjoy 25% Off Your Everything + Free Shipping",
+     "starts": "2026-11-05T08:50:00Z",
+     "ends": "2026-12-31T16:26:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "big-bat-box",
+   "name": "Big Bat Box",
+   "advertiser_names": [
+    "Big Bat Box"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/big-bat-box/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-283736",
+     "title": "10% OFF",
+     "terms": "10% OFF",
+     "starts": "2026-03-03T14:40:00Z",
+     "ends": "2027-03-31T00:00:00Z",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "black-widow-pro",
+   "name": "Black Widow Pro",
+   "advertiser_names": [
+    "Black Widow Pro Amazon"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/black-widow-pro/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "bookseats",
+   "name": "BookSeats",
+   "advertiser_names": [
+    "BookSeats"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/bookseats/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "budget-pet-care",
+   "name": "Budget Pet Care",
+   "advertiser_names": [
+    "Budget Pet Care"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/budget-pet-care/",
+   "codes": [
+    {
+     "id": "cj-17377654",
+     "code": "HDAYSALE",
+     "title": "Holiday Season Sale",
+     "terms": "Holiday Season Savings Are Here! Enjoy 25% OFF All Pet Essentials - Apply Code HDAYSALE",
+     "starts": "2026-11-03T06:58:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17079095",
+     "code": "SUMMER12",
+     "title": "Biting Season is Back - SAVE BIG Today!",
+     "terms": "Paw-tect Your Pet this Summer with 12% Off Nexgard, Simparica Trio, Revolution Plus & More + Free Shipping Sitewide! Use Code: SUMMER12",
+     "starts": "2025-05-01T09:07:00Z",
+     "ends": "2027-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15581166",
+     "code": "SAVE15",
+     "title": "Nexgard Flea & Tick Protection",
+     "terms": "Nexgard Chews That Dogs Love! Starts only at $33 + 15% Extra Off Your Order & Free Shipping. Use Coupon: SAVE15",
+     "starts": "2026-04-16T04:38:00Z",
+     "ends": "2028-07-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "calendars-com",
+   "name": "Calendars.com",
+   "advertiser_names": [
+    "Calendars.com"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/calendars-com/",
+   "codes": [
+    {
+     "id": "cj-17382301",
+     "code": "BFSAVE",
+     "title": "BFSAVE",
+     "terms": "Up to 70% off sitewide & an extra 20% off orders of $40 or more",
+     "starts": "2026-11-13T08:00:00Z",
+     "ends": "2026-11-16T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "caliber",
+   "name": "Caliber",
+   "advertiser_names": [
+    "Caliber"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/caliber/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "canada-pet-care",
+   "name": "Canada Pet Care",
+   "advertiser_names": [
+    "Canada Pet Care"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/canada-pet-care/",
+   "codes": [
+    {
+     "id": "cj-17379789",
+     "code": "JINGLE",
+     "title": "Holiday Cheer - Enjoy 25% Off + Free Shipping",
+     "terms": "A Little Extra Cheer – Enjoy 25% Off This Holiday + Free Shipping. Apply Coupon: JINGLE",
+     "starts": "2026-11-05T04:05:00Z",
+     "ends": "2026-12-31T16:25:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "charlemange",
+   "name": "Charlemange",
+   "advertiser_names": [
+    "Charlemange"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/charlemange/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "click-and-grow",
+   "name": "Click & Grow",
+   "advertiser_names": [
+    "Click & Grow"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/click-and-grow/",
+   "codes": [
+    {
+     "id": "cj-17383137",
+     "code": "GROWSALE",
+     "title": "Black Friday 2026 - 21% off with code GROWSALE (US)",
+     "terms": "Exclusive CJ partner code GROWSALE: 21% off sitewide at Click & Grow (US store). On-site offer: 20% off sitewide, plus 30% off orders over $180 and 40% off orders over $300. Valid November 3 - December 1, 2026.",
+     "starts": "2026-11-09T10:00:00Z",
+     "ends": "2026-12-02T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "coach-soak",
+   "name": "Coach Soak",
+   "advertiser_names": [
+    "Coach Soak affiliate program"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/coach-soak/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-262607",
+     "title": "FREE US SHIPPING OVER $40+",
+     "terms": "Free US shipping on all orders $40+",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-273598",
+     "title": "Free Magnesium Discovery Kit",
+     "terms": "Free Magnesium Discovery Kit when you purchase Shilajit 6-in1 Gummies!",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "coffee-bros",
+   "name": "Coffee Bros.",
+   "advertiser_names": [
+    "Coffee Bros.: Specialty Coffee + Equipment"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/coffee-bros/",
+   "codes": [
+    {
+     "id": "impact-163143",
+     "code": "6GYTKTWXKQB8",
+     "title": "Free Shipping - Evergreen",
+     "terms": "Free shipping on all coffee - no restrictions",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-163144",
+     "code": "EKN4MHBVF7TW",
+     "title": "15% off All Coffee - Evergreen",
+     "terms": "15% off All Coffee on orders of $50.00 or more",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-163146",
+     "code": "8383F8RBN2HN",
+     "title": "Buy 4 get 1 - Evergreen",
+     "terms": "Buy four coffees get one for free!",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-163147",
+     "code": "HNP42YPQHZV2",
+     "title": "10% off All Coffee - Evergreen",
+     "terms": "10% off all coffee - no restrictions",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "dailysteals",
+   "name": "DailySteals",
+   "advertiser_names": [
+    "DailySteals"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/dailysteals/",
+   "codes": [
+    {
+     "id": "cj-17382637",
+     "code": "TBP",
+     "title": "Jumbo 9.5-Inch Tennis Ball For Pets with Pump",
+     "terms": "Jumbo 9.5-Inch Tennis Ball For Pets with Pump",
+     "starts": "2026-11-04T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382638",
+     "code": "OFM",
+     "title": "Olay Regenerist Ultra Rich Face Moisturizer (3- Pack)",
+     "terms": "Olay Regenerist Ultra Rich Face Moisturizer (3- Pack)",
+     "starts": "2026-11-04T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382639",
+     "code": "SPC",
+     "title": "3-in-1 Retractable Super Fast Charging Cable (1- to 3-Pack)",
+     "terms": "3-in-1 Retractable Super Fast Charging Cable (1- to 3-Pack)",
+     "starts": "2026-11-04T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382640",
+     "code": "FOD",
+     "title": "Flying Orb Hover Ball Drone Toy",
+     "terms": "Flying Orb Hover Ball Drone Toy",
+     "starts": "2026-11-04T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382641",
+     "code": "AGN",
+     "title": "Apple® iPad - 6th Gen, 128GB, Wi-Fi Only Bundle (2018 Release)",
+     "terms": "Apple® iPad - 6th Gen, 128GB, Wi-Fi Only Bundle (2018 Release)",
+     "starts": "2026-11-04T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382642",
+     "code": "MSC",
+     "title": "McAfee Safe Connect VPN 2025 5-Devices 1-Year",
+     "terms": "McAfee Safe Connect VPN 2025 5-Devices 1-Year",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382643",
+     "code": "ZRVM",
+     "title": "ZCWA BR151 Robotic Vacuum and Mop",
+     "terms": "ZCWA BR151 Robotic Vacuum and Mop",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382644",
+     "code": "HJE",
+     "title": "3-Level USB Electric Heated Jacket (Requires Power Bank)",
+     "terms": "3-Level USB Electric Heated Jacket (Requires Power Bank)",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382645",
+     "code": "IGC",
+     "title": "24-Inch Unisex Italian Gucci Link Chain",
+     "terms": "24-Inch Unisex Italian Gucci Link Chain",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382646",
+     "code": "ADT",
+     "title": "7-8\" Whole Naturally Shed Elk Antler Dog Treats",
+     "terms": "7-8\" Whole Naturally Shed Elk Antler Dog Treats",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382647",
+     "code": "CDC",
+     "title": "3-Channel Dash Cam",
+     "terms": "3-Channel Dash Cam",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382648",
+     "code": "SHO",
+     "title": "800W Plug-in Space Heater Electric Wall Outlet",
+     "terms": "800W Plug-in Space Heater Electric Wall Outlet",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-19T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382632",
+     "code": "33OVR",
+     "title": "Nespresso® Vertuo Next Coffee and Espresso Maker",
+     "terms": "Nespresso® Vertuo Next Coffee and Espresso Maker",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-22T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382633",
+     "code": "35OVR",
+     "title": "18K Gold Plated Cubic Zirconia Hoop Earrings",
+     "terms": "18K Gold Plated Cubic Zirconia Hoop Earrings",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-22T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382634",
+     "code": "19OVR",
+     "title": "AXE® Deodorant Body Spray, 5.07 fl. oz. (12-Pack)",
+     "terms": "AXE® Deodorant Body Spray, 5.07 fl. oz. (12-Pack)",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-22T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382635",
+     "code": "95OVR",
+     "title": "Standing Garden Waste Bag",
+     "terms": "Standing Garden Waste Bag",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-22T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382636",
+     "code": "96OVR",
+     "title": "Zone Tech Cooling Car Seat Cover (Set of 2)",
+     "terms": "Zone Tech Cooling Car Seat Cover (Set of 2)",
+     "starts": "2026-11-05T21:00:00Z",
+     "ends": "2026-11-22T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "drywater",
+   "name": "DryWater",
+   "advertiser_names": [
+    "DryWater"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/drywater/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "ecovacs-best-buy",
+   "name": "ECOVACS (Best Buy)",
+   "advertiser_names": [
+    "ECOVACS Robotics Best Buy Seller"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/ecovacs-best-buy/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "ecovacs-walmart",
+   "name": "ECOVACS (Walmart)",
+   "advertiser_names": [
+    "ECOVACS Robotics Walmart Seller"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/ecovacs-walmart/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "electronic-express",
+   "name": "Electronic Express",
+   "advertiser_names": [
+    "Electronic Express"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/electronic-express/",
+   "codes": [
+    {
+     "id": "cj-17386846",
+     "code": "NOV5",
+     "title": "5% Sitewide - NOV5 - November 2026",
+     "terms": "Save 5% sitewide with code NOV5 during November 2026. Some exclusions may apply.",
+     "starts": "2026-11-12T16:30:00Z",
+     "ends": "2026-12-01T05:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": [
+    {
+     "id": "cj-16957768",
+     "title": "Flash Deals",
+     "terms": "Flash Deals",
+     "starts": "2024-11-26T21:00:00Z",
+     "ends": "2044-09-25T20:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "fabula-coffee",
+   "name": "Fabula Coffee",
+   "advertiser_names": [
+    "Fabula Coffee"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/fabula-coffee/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-180156",
+     "title": "Subscribe and Save 50%!",
+     "terms": "Get FABULA Coffee at 50% OFF Today + FREE SHIPPING",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "flowers-fast",
+   "name": "Flowers Fast",
+   "advertiser_names": [
+    "Flowers Fast"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/flowers-fast/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-10310217",
+     "title": "120x600 skyscraper",
+     "terms": "Flowers Fast - The Popular Online Florist",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "golf-partner",
+   "name": "GOLF Partner",
+   "advertiser_names": [
+    "GOLF Partner"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/golf-partner/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-184366",
+     "title": "20% OFF for the Latest TaylorMade & Callaway",
+     "terms": "THE LATEST MODELS FROM TAYLORMADE AND CALLAWAY ARE NOW AVAILABLE WITH A SIGNIFICANT 20% OFF DISCOUNT!!",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "greatergood",
+   "name": "GreaterGood",
+   "advertiser_names": [
+    "GreaterGood"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/greatergood/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "groupon-north-america",
+   "name": "Groupon North America",
+   "advertiser_names": [
+    "Groupon North America"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/groupon-north-america/",
+   "codes": [
+    {
+     "id": "cj-17385939",
+     "code": "SELFCARE",
+     "title": "Hair, Nails & Salon",
+     "terms": "Hair, nails & salon deals just dropped — up to 80% off.",
+     "starts": "2026-11-14T19:01:00Z",
+     "ends": "2026-11-17T18:29:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17380445",
+     "code": "RELAX",
+     "title": "Black Friday came early",
+     "terms": "Black Friday came early. Top massage & spa deals up to 80% off. Use code: RELAX",
+     "starts": "2026-11-09T05:00:00Z",
+     "ends": "2026-11-23T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17382809",
+     "code": "PERSONAL",
+     "title": "Turn Memories Into Gifts",
+     "terms": "Photobooks & personalized gifts, up to 30% off with code PERSONAL.",
+     "starts": "2026-11-09T05:00:00Z",
+     "ends": "2026-12-01T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17385953",
+     "code": "CARCARE",
+     "title": "Auto & Home · Code: CARCARE Top car & home deals just dropped — up to 80% off.",
+     "terms": "Top car & home deals just dropped — up to 80% off.",
+     "starts": "2026-11-20T19:01:00Z",
+     "ends": "2026-11-22T18:29:00Z",
+     "state": "upcoming",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17385951",
+     "code": "FUN",
+     "title": "Things to Do · Code: FUN Days out & activity deals just dropped — up to 80% off.",
+     "terms": "Days out & activity deals just dropped — up to 80% off.",
+     "starts": "2026-11-17T19:01:00Z",
+     "ends": "2026-11-30T18:29:00Z",
+     "state": "upcoming",
+     "network": "CJ"
+    }
+   ],
+   "offers": [
+    {
+     "id": "cj-17310273",
+     "title": "Mountain Getaway: Relax and recharge at Massanutten (Book Now)",
+     "terms": "Mountain Getaway: Relax and recharge at Massanutten (Book Now)",
+     "starts": "2026-06-19T05:00:00Z",
+     "ends": "2026-11-16T05:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17184476",
+     "title": "Groupon Entertainment Week",
+     "terms": "Celebrate the season with live shows, museums & more — explore your city from just $30 with code",
+     "starts": "2025-11-10T06:00:00Z",
+     "ends": "2026-11-17T05:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17384971",
+     "title": "LOGO: Christmas Spectacular Starring the Radio City Rockettes�? (Get Tickets)",
+     "terms": "LOGO: Christmas Spectacular Starring the Radio City Rockettes�? (Get Tickets)",
+     "starts": "2026-10-27T04:00:00Z",
+     "ends": "2026-11-19T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17365891",
+     "title": "Festive City Breaks: Explore Europe's best Christmas markets (See Deals)",
+     "terms": "Festive City Breaks: Explore Europe's best Christmas markets (See Deals)",
+     "starts": "2026-09-01T07:00:00Z",
+     "ends": "2026-11-19T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17373212",
+     "title": "Knott's Berry Farm � Knott's Berry Farm Daytime or Scary Farm Admission",
+     "terms": "Knott's Berry Farm � Knott's Berry Farm Daytime or Scary Farm Admission",
+     "starts": "2026-08-21T10:00:00Z",
+     "ends": "2026-11-20T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17385933",
+     "title": "Black Friday came early",
+     "terms": "Black Friday Came Early",
+     "starts": "2026-11-08T19:01:00Z",
+     "ends": "2026-11-22T18:29:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17373221",
+     "title": "Carowinds - Charlotte � Unleash Fall Adventure with Carowinds Single Day Tickets �",
+     "terms": "Carowinds - Charlotte � Unleash Fall Adventure with Carowinds Single Day Tickets �",
+     "starts": "2026-04-09T10:00:00Z",
+     "ends": "2026-11-23T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17313640",
+     "title": "Circus Magic Returns: Ringling Bros. Live for a Limited Time Only! (Get Tickets)",
+     "terms": "Circus Magic Returns: Ringling Bros. Live for a Limited Time Only! (Get Tickets)",
+     "starts": "2026-06-12T05:00:00Z",
+     "ends": "2026-11-24T05:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17184477",
+     "title": "Groupon Made For You Sale",
+     "terms": "Make it personal! Shop custom gifts starting at $30 — thoughtful finds made just for you. Use code MADE4U.",
+     "starts": "2025-11-17T08:00:00Z",
+     "ends": "2026-11-24T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17190181",
+     "title": "Groupon Early Black Friday Campaign",
+     "terms": "Why wait for Black Friday? Groupon's biggest deals are dropping early — with a new sale category every few days from November 10–23. Promote now and keep audiences coming back for more savings!",
+     "starts": "2025-11-10T08:00:00Z",
+     "ends": "2026-11-24T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17178453",
+     "title": "Maroon 5 Tour [GLive Tickets]",
+     "terms": "Limited Time Only: LOVE IS LIKE 2025 US Fall Tour Tickets on Sale with Groupon",
+     "starts": "2025-10-17T15:19:00Z",
+     "ends": "2026-11-25T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17373223",
+     "title": "Kings Dominion Doswell, Virginia � Kings Dominion Single Day Fall Tickets �",
+     "terms": "Kings Dominion Doswell, Virginia � Kings Dominion Single Day Fall Tickets �",
+     "starts": "2026-04-14T10:00:00Z",
+     "ends": "2026-11-30T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "haus-of-brilliance",
+   "name": "Haus of Brilliance",
+   "advertiser_names": [
+    "Haus of Brilliance Amazon"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/haus-of-brilliance/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "herbspro-com",
+   "name": "Herbspro.com",
+   "advertiser_names": [
+    "Herbspro.com"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/herbspro-com/",
+   "codes": [
+    {
+     "id": "cj-17187653",
+     "code": "SAVE30",
+     "title": "Herbspro.com",
+     "terms": "Get 30% off all your orders use coupon code \"SAVE30\"",
+     "starts": "2025-11-03T05:30:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17187660",
+     "code": "SAVE25",
+     "title": "Herbspro.com",
+     "terms": "Get25% off all your orders use coupon code \"SAVE25\"",
+     "starts": "2025-11-03T05:46:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17187672",
+     "code": "SAVE35",
+     "title": "Herbspro.com",
+     "terms": "Get 35% off all your orders use coupon code \"SAVE35\"",
+     "starts": "2025-11-03T06:17:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17272030",
+     "code": "AFF20",
+     "title": "Herbspro.com",
+     "terms": "Special Affiliate Offer",
+     "starts": "2026-04-06T09:51:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17335642",
+     "code": "SAVE5",
+     "title": "Get 5% off on all products use Coupon code \"SAVE5\"",
+     "terms": "Get 5% off on all products use Coupon code \"SAVE5\"",
+     "starts": "2026-08-07T06:36:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17335643",
+     "code": "SAVE10",
+     "title": "Get 10% off on all products use Coupon code \"SAVE10\"",
+     "terms": "Get 10% off on all products use Coupon code \"SAVE10\"",
+     "starts": "2026-08-07T06:38:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17335644",
+     "code": "SAVE15",
+     "title": "Get 15% off on all products use Coupon code \"SAVE15\"",
+     "terms": "Get 15% off on all products use Coupon code \"SAVE15\"",
+     "starts": "2026-08-07T06:39:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17335646",
+     "code": "SAVE20",
+     "title": "Get 20% off on all products use Coupon code \"SAVE20\"",
+     "terms": "Get 20% off on all products use Coupon code \"SAVE20\"",
+     "starts": "2026-08-07T06:42:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17335650",
+     "code": "SAVE40",
+     "title": "Get 40% off on all products use Coupon code \"SAVE40\"",
+     "terms": "Get 40% off on all products use Coupon code \"SAVE40\"",
+     "starts": "2026-08-07T06:47:00Z",
+     "ends": "2026-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17256254",
+     "code": "WUPPLES10",
+     "title": "Herbspro.com",
+     "terms": "Coupon code offer",
+     "starts": "2026-03-06T07:15:00Z",
+     "ends": "2027-12-30T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "kingbull-electric-bikes",
+   "name": "Kingbull Electric Bikes",
+   "advertiser_names": [
+    "Kingbull Electric Bikes"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/kingbull-electric-bikes/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "kismile",
+   "name": "Kismile",
+   "advertiser_names": [
+    "Kismile"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/kismile/",
+   "codes": [
+    {
+     "id": "impact-277315",
+     "code": "NY15",
+     "title": "New Year Deals – 15% OFF Sitewide",
+     "terms": "Celebrate the New Year with 15% OFF sitewide for a limited time. Upgrade your home with high-quality appliances and enjoy New Year savings across the entire store.",
+     "starts": "2025-12-29T20:00:00Z",
+     "ends": "2027-12-01T20:00:00Z",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-277221",
+     "code": "KS10",
+     "title": "Evergreen Sitewide 10% OFF",
+     "terms": "Enjoy an ongoing 10% OFF sitewide on all Kismile products. This evergreen offer is always available for affiliates to promote — no expiration, perfect for long-term content and evergreen placements.",
+     "starts": "2025-12-26T20:00:00Z",
+     "ends": "2030-12-31T20:00:00Z",
+     "state": "live",
+     "network": "Impact"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "kitchenaid",
+   "name": "KitchenAid",
+   "advertiser_names": [
+    "ShopKitchenAid.com"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/kitchenaid/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-17385064",
+     "title": "The Black Friday Event! Up to 30% off select countertop appliances now through 11/29",
+     "terms": "The Black Friday Event! Up to 30% off select countertop appliances now through 11/29",
+     "starts": "2026-11-15T05:00:00Z",
+     "ends": "2026-11-30T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17251397",
+     "title": "Shop KitchenAid's Color of the Year, Spearmint!",
+     "terms": "Shop KitchenAid's Color of the Year, Spearmint!",
+     "starts": "2026-02-12T08:00:00Z",
+     "ends": "2027-01-01T20:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17107552",
+     "title": "Free Delivery + 60 Day Returns!",
+     "terms": "Free Delivery + 60 Day Returns. Restrictions and exclusions apply. offer subject to change. For full details, visit: https://www.kitchenaid.com/countertop-appliances/return-policy",
+     "starts": "2025-06-17T07:00:00Z",
+     "ends": "2030-01-01T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "larson-jewelers",
+   "name": "Larson Jewelers",
+   "advertiser_names": [
+    "Larson Jewelers Amazon"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/larson-jewelers/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "lighting-new-york",
+   "name": "Lighting New York",
+   "advertiser_names": [
+    "Lighting New York"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/lighting-new-york/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-17376893",
+     "title": "LNY Early Black Friday 2026",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17376894",
+     "title": "Early Black Friday Square Button",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17376895",
+     "title": "Early Black Friday Leaderboard",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17376897",
+     "title": "Early Black Friday Medium Rectangle",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17376898",
+     "title": "Early Black Friday Micro",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17376901",
+     "title": "Early Black Friday Skyscraper",
+     "terms": "Lighting New York | Welcome to Your Destination for Better Lighting",
+     "starts": "2026-11-01T04:00:00Z",
+     "ends": "2026-11-16T04:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "lollicup",
+   "name": "Lollicup",
+   "advertiser_names": [
+    "Lollicup"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/lollicup/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-17366822",
+     "title": "Karat Boba Straws 10% off",
+     "terms": "Karat Boba Straws | Auto 10% off at checkout Select SKUs for Karat Boba & Colossal Straws. One discount per customer. May combine with free shipping & select promotions.",
+     "starts": "2026-10-16T08:20:00Z",
+     "ends": "2026-12-16T04:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "lux",
+   "name": "Lux",
+   "advertiser_names": [
+    "Lux"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/lux/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-273602",
+     "title": "25% OFF BUNDLES",
+     "terms": "25% OFF BUNDLES",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-273603",
+     "title": "Buy 2 Get 1 Free!",
+     "terms": "Buy 2 Get 1 Free!",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "m-and-ms",
+   "name": "M&M's",
+   "advertiser_names": [
+    "M&M's"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/m-and-ms/",
+   "codes": [
+    {
+     "id": "cj-17193866",
+     "code": "COOK",
+     "title": "Enjoy 20% Off Sitewide With Code COOK",
+     "terms": "Enjoy 20% Off Sitewide With Code COOK",
+     "starts": "2025-11-10T16:51:00Z",
+     "ends": "2026-11-16T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17201688",
+     "code": "BFMMS25",
+     "title": "Enjoy 25% Off Sitewide For Black Friday!",
+     "terms": "Enjoy 25% Off Sitewide for Black Friday! Use Code BFMMS25",
+     "starts": "2025-11-24T08:00:00Z",
+     "ends": "2026-12-01T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17201690",
+     "code": "CYBER30",
+     "title": "Enjoy 30% Off Sitewide for Cyber Monday!",
+     "terms": "Enjoy 30% Off Sitewide for Cyber Monday!",
+     "starts": "2025-12-01T08:00:00Z",
+     "ends": "2026-12-03T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17214835",
+     "code": "GREEN20",
+     "title": "Enjoy 20% Off Sitewide with Code: GREEN20",
+     "terms": "Enjoy 20% Off Sitewide with Code: GREEN20",
+     "starts": "2025-12-08T08:00:00Z",
+     "ends": "2026-12-10T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17229349",
+     "code": "SMITTEN",
+     "title": "Enjoy 20% Off Sitewide with Code: SMITTEN",
+     "terms": "Enjoy 20% Off Sitewide with Code: SMITTEN",
+     "starts": "2026-01-12T08:00:00Z",
+     "ends": "2027-01-14T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17229350",
+     "code": "LOVEBIRD",
+     "title": "Enjoy 15% Off Party Favors With Code LOVEBIRD",
+     "terms": "Enjoy 15% Off Party Favors With Code LOVEBIRD",
+     "starts": "2026-01-14T08:00:00Z",
+     "ends": "2027-01-18T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17234679",
+     "code": "CRUSH",
+     "title": "Enjoy 20% Off Sitewide with Code: CRUSH",
+     "terms": "Enjoy 20% Off Sitewide with Code: CRUSH",
+     "starts": "2026-01-25T08:00:00Z",
+     "ends": "2027-02-01T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17243025",
+     "code": "HUGS",
+     "title": "Enjoy 15% Off Party Favors With Code HUGS",
+     "terms": "Enjoy 15% Off Party Favors With Code HUGS",
+     "starts": "2026-02-10T08:00:00Z",
+     "ends": "2027-02-15T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17249190",
+     "code": "GWP50",
+     "title": "Free Handheld Dispenser on orders $50+ with Code: GWP50",
+     "terms": "Free Handheld Dispenser on orders $50+ with Code: GWP50",
+     "starts": "2026-02-22T08:00:00Z",
+     "ends": "2027-03-01T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17253245",
+     "code": "GOLD",
+     "title": "Enjoy 15% Off Party Favors With Code GOLD",
+     "terms": "Enjoy 15% Off Party Favors With Code GOLD",
+     "starts": "2026-03-01T08:00:00Z",
+     "ends": "2027-03-08T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17268539",
+     "code": "LIVELY",
+     "title": "Enjoy 15% Off Bulk Candy With Code LIVELY",
+     "terms": "Enjoy 15% Off Bulk Candy With Code LIVELY",
+     "starts": "2026-03-29T07:00:00Z",
+     "ends": "2027-04-05T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17271993",
+     "code": "CHIRP",
+     "title": "Enjoy 15% Off Party Favors With Code CHIRP",
+     "terms": "Enjoy 15% Off Party Favors With Code CHIRP",
+     "starts": "2026-04-05T07:00:00Z",
+     "ends": "2027-04-13T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": [
+    {
+     "id": "cj-17231745",
+     "title": "Save Now on All Gifts!",
+     "terms": "Save Now on All Gifts!",
+     "starts": "2026-01-18T08:00:00Z",
+     "ends": "2027-01-25T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17257836",
+     "title": "Flash Sale - Sitewide Savings on Personalized M&M'S",
+     "terms": "Flash Sale - Sitewide Savings on Personalized M&M'S",
+     "starts": "2026-03-08T08:00:00Z",
+     "ends": "2027-03-11T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "mamma-mia-covers",
+   "name": "Mamma Mia Covers",
+   "advertiser_names": [
+    "Mamma Mia Covers - Amazon"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/mamma-mia-covers/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "mfi-medical",
+   "name": "MFI Medical",
+   "advertiser_names": [
+    "MFI Medical"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/mfi-medical/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "modello-turbo-llc",
+   "name": "Modello Turbo LLC",
+   "advertiser_names": [
+    "Modello Turbo LLC"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/modello-turbo-llc/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "monthlyclubs-com",
+   "name": "MonthlyClubs.com",
+   "advertiser_names": [
+    "MonthlyClubs.com™"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/monthlyclubs-com/",
+   "codes": [
+    {
+     "id": "cj-15343873",
+     "code": "SAVE30",
+     "title": "Fall Sale: Save $30 on the Fresh Cut Flower of the Month Club",
+     "terms": "The Fresh Cut Flower of the Month Club sends professionally designed monthly floral arrangements. Each month, you or your gift recipient will receive seasonal bouquets featuring flowers like Red Sonja Orchids from Thailand, Sarah Bernhardt Peonies, or Le Reve Oriental Lilies.",
+     "starts": "2026-10-20T07:00:00Z",
+     "ends": "2026-11-20T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15343875",
+     "code": "SAVE15",
+     "title": "Fall sale! Get $15 off The Gourmet Chocolate of the Month Club",
+     "terms": "The Gourmet Chocolate of the Month Club sends expertly-selected, handmade, artisanal chocolates created by the world's best chocolatiers.",
+     "starts": "2026-10-20T07:00:00Z",
+     "ends": "2026-11-20T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "naturemade",
+   "name": "NatureMade",
+   "advertiser_names": [
+    "NatureMade"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/naturemade/",
+   "codes": [
+    {
+     "id": "cj-15564446",
+     "code": "NMSHOP25",
+     "title": "25% Off First Purchase",
+     "terms": "Shop our best sellers now and receive 25% off your first order.",
+     "starts": "2023-10-18T19:50:00Z",
+     "ends": "2026-12-31T08:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "ontaki",
+   "name": "Ontaki",
+   "advertiser_names": [
+    "Ontaki Affiliate program"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/ontaki/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "packed-with-purpose",
+   "name": "Packed with Purpose",
+   "advertiser_names": [
+    "Packed with Purpose"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/packed-with-purpose/",
+   "codes": [
+    {
+     "id": "impact-189151",
+     "code": "NEW",
+     "title": "Code NEW - $10 off first order",
+     "terms": "$10 off your first order when you use code NEW",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    },
+    {
+     "id": "impact-210857",
+     "code": "FIRST10",
+     "title": "Save 10% on Packed with Purpose Gifts on Your First Order",
+     "terms": "Save 10% on Packed with Purpose Gifts on Your First Order with code",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ],
+   "offers": [
+    {
+     "id": "impact-309591",
+     "title": "10% off Sitewide at Packed with Purpose",
+     "terms": "10% off Sitewide at Packed with Purpose",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "pandahall",
+   "name": "PandaHall",
+   "advertiser_names": [
+    "PandaHall"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/pandahall/",
+   "codes": [
+    {
+     "id": "cj-17059653",
+     "code": "26101CJ",
+     "title": "$12 Coupon for New Users",
+     "terms": "Register to become a new member of PandaHall and get this Coupon gift which will expire on Dec 31, 2026, PDT.",
+     "starts": "2026-09-30T07:00:00Z",
+     "ends": "2027-01-01T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17059654",
+     "code": "26102CJ",
+     "title": "Save $19 on order over $429!",
+     "terms": "Save $19 on order over $429! It will expire on Dec 31, 2026, PDT.",
+     "starts": "2026-09-30T02:26:00Z",
+     "ends": "2027-01-01T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17059655",
+     "code": "26103CJ",
+     "title": "Save $46 on order over $919!",
+     "terms": "Save $46 on order over $919! It will expire on Dec 31, 2026, PDT.",
+     "starts": "2026-09-30T02:27:00Z",
+     "ends": "2027-01-01T07:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "peets-coffee",
+   "name": "Peet's Coffee",
+   "advertiser_names": [
+    "Peet's Coffee"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/peets-coffee/",
+   "codes": [
+    {
+     "id": "cj-13970947",
+     "code": "NEWSUB30",
+     "title": "30% Off New Coffee Subscriptions at Peets.com",
+     "terms": "30% Off first order of a new coffee subscriptions at peets.com with code NEWSUB30 at Peets.com",
+     "starts": "2023-10-03T01:25:00Z",
+     "ends": "2027-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17125210",
+     "code": "WEBFRIEND5",
+     "title": "Peets.com Affiliate Exclusive 5% off Sitewide offer",
+     "terms": "Peets.com Exclusive 5% off Sitewide offer at Peets.com with code WEBFRIEND5 Details: Exclusive for affiliates to promote For Peets.com Online Store 5% off entire order Applies to subscriptions and one-time purchases Limited to 3 recurring payments No minimum purchase requirement All customers One use per customer Combines with shipping discounts",
+     "starts": "2025-07-11T04:00:00Z",
+     "ends": "2027-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17372901",
+     "code": "EARLYBIRD",
+     "title": "Peets.com Early BFCM Sale: 20% off sitewide 11/19/26 - 11/25/26",
+     "terms": "Peet's National BFCM Sale: 20% off sitewide 11/19/26 - 11/25/26 at Peets.com with code EARLYBIRD",
+     "starts": "2026-11-19T08:00:00Z",
+     "ends": "2026-11-26T07:59:00Z",
+     "state": "upcoming",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17372903",
+     "code": "BFCM2026",
+     "title": "Peets.com Black Friday Sale: 25% off sitewide 11/26/26 - 11/29/26",
+     "terms": "Peet's Coffee Black Friday Sale: 25% off sitewide 11/26/26 - 11/29/26 at Peets.com with code BFCM2026",
+     "starts": "2026-11-26T08:00:00Z",
+     "ends": "2026-11-30T07:59:00Z",
+     "state": "upcoming",
+     "network": "CJ"
+    }
+   ],
+   "offers": [
+    {
+     "id": "cj-17323641",
+     "title": "Stock up and Save up to 10% on Tea Bags",
+     "terms": "Get up to 10% Off plus Free Shipping when you subscribe for Mighty Leaf Tea Bags at peets.com",
+     "starts": "2026-07-16T07:00:00Z",
+     "ends": "2028-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17323642",
+     "title": "Get 10% Off Loose Leaf Tea Subscriptions",
+     "terms": "Get 10% Off plus Free Shipping when you subscribe for Mighty Leaf Loose Leaf tea at peets.com",
+     "starts": "2026-07-16T07:00:00Z",
+     "ends": "2028-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-13921671",
+     "title": "Free Shipping on all orders $49+ at Peets.com",
+     "terms": "Valid for free ground shipping on orders over $49 within the continental US. Discount applied automatically at checkout with qualifying purchase.",
+     "starts": "2025-10-22T20:13:00Z",
+     "ends": "2030-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-17372913",
+     "title": "Peets.com Doorbusters Sale: 30% off daily bundles 11/27/26 - 11/29/26",
+     "terms": "Peet's Coffee Doorbusters Sale: 30% off daily bundles 11/27/26 - 11/29/26 at Peets.com. 11/27: Medium Roast Bundle 11/28: Dark Roast Bundle 11/29: Best Sellers Bundle",
+     "starts": "2026-11-27T08:00:00Z",
+     "ends": "2026-11-30T07:59:00Z",
+     "state": "upcoming",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "primal-life-organics",
+   "name": "Primal Life Organics",
+   "advertiser_names": [
+    "Primal Life Organics"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/primal-life-organics/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-257820",
+     "title": "Free Shipping on Orders $99+",
+     "terms": "Free Shipping $99+",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "puzzle-ready",
+   "name": "Puzzle Ready",
+   "advertiser_names": [
+    "Puzzle Ready affiliate program"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/puzzle-ready/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "ravin-and-centerpoint",
+   "name": "Ravin & CenterPoint",
+   "advertiser_names": [
+    "Velocity Outdoor – Ravin/CenterPoint/Valhalla"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/ravin-and-centerpoint/",
+   "codes": [
+    {
+     "id": "cj-15262749",
+     "code": "CPFORME",
+     "title": "Get the CenterPoint CP400 Bow Discount Offer",
+     "terms": "CP400 w/ silent crank $949.99 (List Price) à $599.99 (Discount Price), or 40% off CP400 $799.99 (List Price) à $499.99 (Discount Price), or 40% off",
+     "starts": "2022-06-02T17:36:00Z",
+     "ends": "2027-08-01T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15262753",
+     "code": "WRATH430",
+     "title": "Buy a Wrath 430 or 430X, Get FREE arrows with order",
+     "terms": "Buy a Wrath 430 or 430X, Get FREE arrows with order",
+     "starts": "2022-06-02T17:36:00Z",
+     "ends": "2027-08-01T06:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15263929",
+     "code": "WELCOME10",
+     "title": "10% off any order",
+     "terms": "10% off any order",
+     "starts": "2022-06-03T18:00:00Z",
+     "ends": "2031-01-01T07:59:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "restaurant-com",
+   "name": "Restaurant.com",
+   "advertiser_names": [
+    "Restaurant.com"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/restaurant-com/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "rexing",
+   "name": "Rexing",
+   "advertiser_names": [
+    "Rexing"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/rexing/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-15714585",
+     "title": "【SALE】 Rexing Top-Selling Dash Cams",
+     "terms": "Rexing Top-Selling Products",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-13999216",
+     "title": "【SALE】Rexing Dash Cam",
+     "terms": "Rexing Dash Cam",
+     "starts": "2020-04-29T18:59:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-14005763",
+     "title": "【SALE】Rexing Digital Cameras",
+     "terms": "10% OFF Rexing Digital Cameras",
+     "starts": "2020-04-29T17:00:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-14005803",
+     "title": "【SALE】Rexing Dual Channel Dash Cam",
+     "terms": "Rexing Dual Channel Dash Cam",
+     "starts": "2020-04-29T16:59:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-14005805",
+     "title": "【SALE】Rexing Dash Cameras",
+     "terms": "300x250",
+     "starts": "2020-04-29T16:57:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-14349584",
+     "title": "【SALE】 Rexing Top Deals",
+     "terms": "Rexing Top Deals",
+     "starts": "2020-10-15T06:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-14350341",
+     "title": "【SALE】 Rexing Top-Selling Trail Cameras",
+     "terms": "Rexing Top-Selling Trail Cameras",
+     "starts": "2020-10-15T06:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15059318",
+     "title": "【SALE】 Rexing New Products",
+     "terms": "Check out Rexing New Products",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15060870",
+     "title": "【SALE】 Rexing Smart Home Devices",
+     "terms": "Rexing Smart Home Devices",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15218440",
+     "title": "【New Release Offer】 Rexing Fishing Camera",
+     "terms": "Rexing Fishing Camera",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15582374",
+     "title": "【SALE】 Rexing New EV Portable Chargers & Extension Cables",
+     "terms": "Rexing New EV Portable Chargers & Extension Cables 40% Off",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15600685",
+     "title": "【New Release Offer】 Rexing 512GB Memory Card",
+     "terms": "Rexing New Released Item, 50% off on 512GB Memory Card, limited time only!",
+     "starts": "2020-04-29T18:45:00Z",
+     "ends": "2026-12-31T15:44:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "silverrushstyle",
+   "name": "SilverRushStyle",
+   "advertiser_names": [
+    "SilverRushStyle"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/silverrushstyle/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "simply-guitar",
+   "name": "Simply Guitar",
+   "advertiser_names": [
+    "Simply Guitar"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/simply-guitar/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "simply-piano",
+   "name": "Simply Piano",
+   "advertiser_names": [
+    "Simply Piano"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/simply-piano/",
+   "codes": [],
+   "offers": []
+  },
+  {
+   "slug": "singer-sewing-machines",
+   "name": "SINGER Sewing Machines",
+   "advertiser_names": [
+    "SINGER Sewing Machines"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/singer-sewing-machines/",
+   "codes": [
+    {
+     "id": "cj-17111922",
+     "code": "SEW10NOW",
+     "title": "Singer 10% Discount Coupon",
+     "terms": "10% off no expire date",
+     "starts": "2025-06-25T16:42:00Z",
+     "ends": "2027-01-01T05:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": []
+  },
+  {
+   "slug": "soccergarage-com",
+   "name": "SoccerGarage.com",
+   "advertiser_names": [
+    "SoccerGarage.com"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/soccergarage-com/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-10479433",
+     "title": "Soccer Garage - clearance",
+     "terms": "SoccerGarage.com clearance sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10479677",
+     "title": "SoccerGarage - clearance",
+     "terms": "SoccerGarage.com clearance sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10479689",
+     "title": "Soccer Equipment Sale",
+     "terms": "Soccer Equipment Sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10479691",
+     "title": "Soccer Equipment Sale - click here",
+     "terms": "Soccer Equipment Sale - click here",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10479712",
+     "title": "Huge Soccer Sale",
+     "terms": "Huge Soccer Sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10479716",
+     "title": "Huge Soccer Sale - click here",
+     "terms": "Huge Soccer Sale - click here",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10596243",
+     "title": "Soccer Garage 120x60",
+     "terms": "Click here to shop at SoccerGarage.com",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10673362",
+     "title": "animated-half-banner - clearance sale",
+     "terms": "SoccerGarage.com Clearance Sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10673364",
+     "title": "300x250 SoccerGarage Free Shipping banner",
+     "terms": "Soccer Garage FREE shipping",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-11017007",
+     "title": "animated-micro - free shipping",
+     "terms": "SoccerGarage.com free shipping",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-11017728",
+     "title": "Goalkeeper Soccer Sale",
+     "terms": "Goalkeeper Soccer Sale",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-11017792",
+     "title": "$5 Off Your Order at SoccerGarage.com",
+     "terms": "$5 off you order at SoccerGarage.com. Use coupon code \"5C4J2U\" to save $5 off your order of $50 or more.",
+     "starts": "2012-03-01T08:00:00Z",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "sockwell",
+   "name": "Sockwell",
+   "advertiser_names": [
+    "Sockwell"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/sockwell/",
+   "codes": [
+    {
+     "id": "cj-17030268",
+     "code": "NEWSOCKS20",
+     "title": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+     "terms": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+     "starts": "2025-02-14T15:30:00Z",
+     "ends": "2050-02-14T15:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15906053",
+     "code": "SOCKWELL10",
+     "title": "Take 10% Off at SockWellUSA.com with Code SOCKWELL10.",
+     "terms": "Take 10% Off at SockWellUSA.com with Code SOCKWELL10.",
+     "starts": "2024-09-16T14:30:00Z",
+     "ends": "2050-09-16T14:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ],
+   "offers": [
+    {
+     "id": "cj-15890984",
+     "title": "Enjoy Free Shipping on Orders of $75+ at SockWellUSA.com. No code required.",
+     "terms": "Enjoy Free Shipping on Orders of $75+ at SockWellUSA.com. No code required.",
+     "starts": "2024-09-19T09:30:00Z",
+     "ends": "2050-09-19T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-15890985",
+     "title": "Save Up to 30% on Closeouts at SockWellUSA.com. No code required. Limited time offer!",
+     "terms": "Save Up to 30% on Closeouts at SockWellUSA.com. No code required. Limited time offer!",
+     "starts": "2024-09-19T14:30:00Z",
+     "ends": "2050-09-19T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "the-home-depot",
+   "name": "The Home Depot",
+   "advertiser_names": [
+    "The Home Depot"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/the-home-depot/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-37095",
+     "title": "Evergreen Deals: Free Shipping",
+     "terms": "Ongoing Free Shipping Offers",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "trampoline-parts-and-supply",
+   "name": "Trampoline Parts and Supply",
+   "advertiser_names": [
+    "Trampoline Parts and Supply"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/trampoline-parts-and-supply/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-10443506",
+     "title": "Trampoline Pads",
+     "terms": "Trampoline Pads",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10443507",
+     "title": "Trampoline Mats",
+     "terms": "Trampoline Mats",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10443509",
+     "title": "14ft Trampolines",
+     "terms": "14ft Trampoline",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10443511",
+     "title": "Free Shipping Deals",
+     "terms": "Trampolines Free Shipping",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10443517",
+     "title": "Heavy Duty Trampoline Pads",
+     "terms": "Heavy Duty Trampoline Pads",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10443519",
+     "title": "Most Popular Trampoline Pads",
+     "terms": "Most Popular Trampoline Pads",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10445965",
+     "title": "Free Shipping on all Trampolines",
+     "terms": "Free Shipping on all Trampolines - Round, Rectangle, Octagon",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10445966",
+     "title": "TrampolinePartsandSupply.com - Great Deals on Trampoline Pads, Mats, Enclosure Nets",
+     "terms": "TrampolinePartsandSupply.com - Great Deals on Trampoline Pads, Mats, Enclosure Nets",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10445968",
+     "title": "Click here to visit TrampolinePartsandSupply.com",
+     "terms": "Click here to visit TrampolinePartsandSupply.com",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10593838",
+     "title": "5% off Any Order - Coupon Code: DISCOUNT",
+     "terms": "5% Off Coupon for Trampolines, Parts, Mats, Pads, Springs, Nets and More! COUPON CODE: DISCOUNT",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "wine-express",
+   "name": "Wine Express",
+   "advertiser_names": [
+    "Wine Express"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/wine-express/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "impact-2070",
+     "title": "Free shipping",
+     "terms": "Free shipping",
+     "starts": "",
+     "ends": "",
+     "state": "live",
+     "network": "Impact"
+    }
+   ]
+  },
+  {
+   "slug": "winebasket",
+   "name": "Winebasket",
+   "advertiser_names": [
+    "Winebasket/Babybasket/Capalbosonline"
+   ],
+   "networks": [
+    "CJ"
+   ],
+   "page": "/coupons/winebasket/",
+   "codes": [],
+   "offers": [
+    {
+     "id": "cj-10570210",
+     "title": "Best Selling Wine Baskets - Register to Save 5%",
+     "terms": "Best Selling Gifts & Gift Baskets at Winebasket.com. Register to Receive 5% Off Your Order",
+     "starts": "2019-10-21T18:32:00Z",
+     "ends": "2029-09-21T04:00:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10561826",
+     "title": "Winebasket468x60",
+     "terms": "Winebasket.com, We'll Bring the Gift. Lovely Selection of Unique Gift Baskets. Custom Orders Welcome.",
+     "starts": "2019-10-21T18:30:00Z",
+     "ends": "2029-10-21T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10561828",
+     "title": "Winebasket120x600",
+     "terms": "Winebasket.com - Unique Wine & Champagne Gifts to Suit Every Taste. Register to Receive 5% Off. Members Reward Program.",
+     "starts": "2019-10-21T18:30:00Z",
+     "ends": "2029-10-21T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    },
+    {
+     "id": "cj-10570212",
+     "title": "Wine Gifts Under $50",
+     "terms": "Shop fine wine, champagne, gourmet food gifts under $50 at winebasket.com. Register & receive 5% off every order.",
+     "starts": "2019-10-21T18:30:00Z",
+     "ends": "2029-10-21T18:30:00Z",
+     "state": "live",
+     "network": "CJ"
+    }
+   ]
+  },
+  {
+   "slug": "yeedi",
+   "name": "Yeedi",
+   "advertiser_names": [
+    "YEEDI-Amazon Seller-US"
+   ],
+   "networks": [
+    "Impact"
+   ],
+   "page": "/coupons/yeedi/",
+   "codes": [],
+   "offers": []
+  }
+ ]
+}
