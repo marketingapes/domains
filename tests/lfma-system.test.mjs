@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
+import {readFile, stat} from 'node:fs/promises';
 import {SAMPLE_INQUIRIES, evaluateInquiry, buildReport, nextDollar} from '../lfma/assets/system-room.mjs';
 import {readFormData, buildOrderPayload} from '../lfma/assets/order-intake-client.mjs';
 
@@ -66,7 +66,10 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.ok(home.indexOf('id="video"') < home.indexOf('id="firmForm"'), 'video slot sits above the form');
   if (/data-youtube=""/.test(slot[0]) && /data-mp4=""/.test(slot[0])) assert.match(slot[0], /\bhidden\b/);
   // The slot now carries the Holiday Sprint video; its file and poster must exist in the site.
-  assert.match(slot[0], /data-mp4="\/assets\/holiday-sprint\.mp4"/);
+  assert.match(slot[0], /data-mp4="\/assets\/holiday-sprint-v3\.mp4"/);
+  assert.match(home, /Watch · under two minutes/);
+  assert.doesNotMatch(home, /Watch · one minute/);
+  assert.ok((await stat(new URL('../lfma/assets/holiday-sprint-v3.mp4', import.meta.url))).size > 5_000_000, 'the narrated cut is the one on the page');
   await text('lfma/assets/holiday-sprint-poster.jpg');
   // Platform icons and Kyle's photo: the files the page and the email point at must exist.
   for (const f of ['platforms/facebook.png', 'platforms/instagram.png', 'platforms/google.png', 'platforms/chatgpt.png', 'kyle-headshot-480.jpg', 'kyle-headshot-200.jpg', 'holiday-sprint-email-thumb.jpg']) {
