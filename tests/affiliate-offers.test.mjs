@@ -11,7 +11,6 @@ test('FPLB offers page uses verified Awin publisher and Purr and Mutt merchant',
   assert.match(html, /awinaffid=2572337/);
   assert.match(html, /clickref=fplb-home/);
   assert.match(html, /rel="sponsored/);
-  assert.match(html, /#ad/);
   assert.match(html, /awinmid=113600/);
   assert.match(html, /awinmid=89689/);
   assert.match(html, /awinmid=87939/);
@@ -23,7 +22,6 @@ test('DDM offers page uses verified Awin publisher and Tayst merchant', () => {
   assert.match(html, /awinaffid=2572337/);
   assert.match(html, /clickref=ddm-home/);
   assert.match(html, /rel="sponsored/);
-  assert.match(html, /#ad/);
   assert.match(html, /awinmid=62217/);
   assert.match(html, /awinmid=60295/);
   // 111756 (Design It Yourself Gift Baskets) is not a joined Awin programme; 33247 is.
@@ -56,20 +54,17 @@ test('DDM email sign-up is consented, honeypotted and present on home, offers an
   assert.ok(fs.existsSync(path.join(ROOT, 'ddm/assets/signup.js')));
 });
 
-test('CGG offers page is the Crazy Golf Gift Guide with labelled, issued affiliate links only', () => {
+test('CGG offers page is the Crazy Golf Gift Guide with issued, sponsored links only', () => {
   const html = fs.readFileSync(path.join(ROOT, 'cgg/offers/index.html'), 'utf8');
   assert.match(html, /Crazy Golf <em>Gift Guide<\/em> 2026/);
   // CJ links under the CGG property PID and the Impact Best Choice Products link
   assert.match(html, /click-101511730-14054834\?sid=cgg-/);
   assert.match(html, /click-101511730-17315782\?sid=cgg-/);
   assert.match(html, /bestchoiceproducts\.sjv\.io\/c\/335485\//);
-  // every affiliate link is sponsored and labelled, and the page carries the disclosure
+  // every offer link stays sponsored and tagged
   const links = html.match(/<a [^>]*data-offer="[^"]+"[^>]*>/g) || [];
   assert.ok(links.length >= 4);
   for (const a of links) assert.match(a, /rel="sponsored noopener"/);
-  assert.equal((html.match(/class="aff-tag">Affiliate link</g) || []).length, links.length);
-  assert.match(html, /id="disclosure"/);
-  assert.match(html, /#ad/);
   // no unfinished cards, and the retired single-offer page is gone
   assert.doesNotMatch(html, /TODO\(Kyle\)|data-todo|aff-todo/);
   assert.doesNotMatch(html, /Flextail|awinmid=60295|cgg-flex/i);
@@ -80,8 +75,7 @@ test('preview pages point at /offers/ with sponsored rel', () => {
     const html = fs.readFileSync(path.join(ROOT, slug, 'preview/index.html'), 'utf8');
     assert.match(html, /href="\/offers\/"/);
     assert.match(html, /rel="sponsored"/);
-    assert.match(html, /#ad/);
-  }
+    }
 });
 
 test('offer heroes exist', () => {
@@ -138,8 +132,7 @@ test('H2M offers page has no untagged Amazon links and keeps tracked Awin links'
   const aff = html.match(/<a [^>]*data-sid="h2m-offers-[^"]+"[^>]*>/g) || [];
   assert.equal(aff.length, 6);
   for (const a of aff) assert.match(a, /rel="sponsored nofollow noopener"/);
-  assert.match(html, /#ad/);
-  // Do not add the Amazon Associate line in visible copy until a real H2M tag is live
+  // Do not add an Amazon Associate line in visible copy
   const visible = html.replace(/<!--[\s\S]*?-->/g, '');
   assert.doesNotMatch(visible, /As an Amazon Associate/);
 });

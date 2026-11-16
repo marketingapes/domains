@@ -70,7 +70,7 @@ def page(site):
 <p class="gf-kicker">{E(c["kicker"])}</p>
 <h1>{E(c["h1"])}</h1>
 <p>{E(c["lede"])}</p>
-<p class="gf-disc"><strong>#ad</strong> Shop links are affiliate links. We may earn a commission if you buy, at no extra cost to you. It never changes which gift ranks first.</p>
+
 </section>
 <div id="gift-finder" data-site="{site}"><p class="gf-empty">Loading gift ideas&hellip;</p></div>
 <noscript><p class="gf-empty">The gift finder needs JavaScript. You can still browse our <a href="/offers/">partner offers</a>.</p></noscript>

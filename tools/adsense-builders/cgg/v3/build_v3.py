@@ -171,7 +171,7 @@ FOOTER = f"""<footer class="ftr">
       <div><h4>Improve &amp; gear</h4><ul><li><a href="/get-better/">Get Better</a></li><li><a href="/get-better/putting-ladder-drill/">Putting ladder</a></li><li><a href="/gear/">Gear &amp; Gifts</a></li><li><a href="/offers/">Gift Guide 2026</a></li></ul></div>
       <div><h4>Clubhouse</h4><ul><li><a href="/clubhouse/">Talk golf</a></li><li><a href="/articles/">All guides</a></li><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/credits/">Photo credits</a></li></ul></div>
     </div>
-    <div class="legal"><span>&copy;2026 {BRAND}. Published by Marketing Apes LLC. <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span><span>Some pages contain labelled affiliate links (#ad).</span></div>
+    <div class="legal"><span>&copy;2026 {BRAND}. Published by Marketing Apes LLC. <a href="/privacy/">Privacy</a> &middot; <a href="/terms/">Terms</a></span></div>
   </div>
 </footer>
 <script src="/assets/site.js" defer></script>
@@ -196,11 +196,7 @@ def page(title, desc, path, active, body, ld=None, og="og/green-aerial-bunkers.j
 
 
 def disclosure(short=False):
-    if short:
-        return '<p class="aff-disclosure"><strong>#ad</strong> Links marked &ldquo;Affiliate link&rdquo; may earn us a commission at no extra cost to you. <a href="/offers/#disclosure">How this works</a>.</p>'
-    return ('<div class="aff-disclosure" id="disclosure"><strong>#ad &middot; Affiliate disclosure.</strong> Some links on this page are affiliate links, each labelled '
-            '&ldquo;Affiliate link&rdquo;. If you buy through one, Crazy Golf Game (Marketing Apes LLC) may earn a commission. You pay the same price. '
-            'We describe categories and what to check; we have not used every product these stores sell. Partners do not see or approve what we write.</div>')
+    return ""
 
 
 def newsletter(where):

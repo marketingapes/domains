@@ -37,18 +37,16 @@ def aff(offer, page, label):
     name, url = LINKS[offer]
     href = html.escape(url.format(p=page), quote=True)
     return (f'<a class="btn aff-btn" href="{href}" rel="sponsored noopener" target="_blank" '
-            f'data-offer="{offer}">{html.escape(label)}</a> <span class="aff-tag">Affiliate link</span>')
+            f'data-offer="{offer}">{html.escape(label)}</a>')
 
 
 
 def box(offer, page, title, body, label):
-    return (f'\n<aside class="aff-box" data-aff="{offer}">\n  <p class="aff-label">#ad &middot; Partner pick</p>\n'
+    return (f'\n<aside class="aff-box" data-aff="{offer}">\n  <p class="aff-label">Partner pick</p>\n'
             f'  <h3>{title}</h3>\n  <p>{body}</p>\n  <p class="aff-cta">{aff(offer, page, label)}</p>\n</aside>\n')
 
 
-ART_DISCLOSURE = ('<div class="aff-disclosure" data-aff="disclosure"><strong>#ad</strong> This guide contains affiliate links, '
-                  'marked &ldquo;Affiliate link&rdquo;. If you buy through one we may earn a commission, at no extra cost to you. '
-                  '<a href="/offers/#disclosure">How this works</a>.</div>')
+ART_DISCLOSURE = ('')
 
 # slug -> list of (h2 text whose section the box closes, box html)
 ARTICLE_BOXES = {
@@ -124,8 +122,8 @@ def patch_article(slug, boxes):
         doc = doc[:j] + b.lstrip("\n") + "\n" + doc[j:]
     if slug == "casual-golfer-gear-guide":
         doc = doc.replace(
-            '<p>Occasionally we point readers to a partner offer related to days outdoors. Those pages are clearly labelled as advertising, and you can find our current one on the <a href="/offers/">offers page</a> (#ad). Nothing in this guide depends on buying anything.</p>',
-            '<p>Where a category above has a partner pick, it is marked #ad and the link is labelled. For seasonal ideas sorted by budget, see our <a href="/offers/">Crazy Golf Gift Guide 2026</a> (#ad). Nothing in this guide depends on buying anything.</p>')
+            '<p>Occasionally we point readers to a partner offer related to days outdoors. You can find our current one on the <a href="/offers/">offers page</a>. Nothing in this guide depends on buying anything.</p>',
+            '<p>For seasonal ideas sorted by budget, see our <a href="/offers/">Crazy Golf Gift Guide 2026</a>. Nothing in this guide depends on buying anything.</p>')
     # visible updated date for edited guides
     doc = doc.replace('Last updated <time datetime="2026-09-23">23 September 2026</time>',
                       f'Last updated <time datetime="{TODAY}">{TODAY_H}</time>')
@@ -158,14 +156,12 @@ def gift_guide():
     P = "gift-guide"
     body = f"""
 <section class="wrap narrow page-head gift-head">
-  <p class="kicker">#ad &middot; Gift guide &middot; Updated {TODAY_H}</p>
+  <p class="kicker">Gift guide &middot; Updated {TODAY_H}</p>
   <h1>Crazy Golf Gift Guide 2026</h1>
   <p class="lead">Gifts for the putt-putt champion, the backyard course builder and the friend who has started talking about launch monitors. Sorted by budget, with a few tips for shopping the Black Friday and Cyber Monday golf sales.</p>
 </section>
 <div class="wrap narrow prose page-body">
-<div class="aff-disclosure big" id="disclosure" data-aff="disclosure">
-  <p><strong>#ad &middot; Affiliate disclosure.</strong> This page contains affiliate links. Every one is labelled &ldquo;Affiliate link&rdquo;. If you buy through one, Crazy Golf Game (published by Marketing Apes LLC) may earn a commission. You pay the same price. We have not used every product in these stores; we describe the type of gift and what to check before you buy. Partners do not see or approve this page.</p>
-</div>
+
 <figure class="hero-fig"><img src="/images/casual-golfer-gear-guide.svg" alt="Illustration of a putter, bright golf balls, a putting mat and a small flag laid out like gifts" width="1200" height="675"></figure>
 <nav class="gift-jump" aria-label="Gift guide sections">
   <a href="#under-50">Under $50</a> <a href="#backyard">Backyard &amp; party</a> <a href="#indoor">Indoor putting</a> <a href="#simulators">Big-ticket simulators</a> <a href="#experiences">Experiences</a> <a href="#black-friday">Black Friday tips</a>
@@ -246,7 +242,7 @@ def gift_guide():
 <h2 id="faq-h">Frequently asked questions</h2>
 <details><summary>What is a good golf gift for a beginner?</summary><p>Something that makes practice fun: bright balls, a short putting mat, or a backyard set they can play with family. Save expensive clubs until they know they love the game.</p></details>
 <details><summary>Is a home golf simulator worth it?</summary><p>For a regular golfer with the right space, it can mean year-round practice. Measure your room against the manufacturer's requirements and budget for the mat, net or screen and any software subscription.</p></details>
-<details><summary>Do you earn money from these links?</summary><p>Yes. Links marked &ldquo;Affiliate link&rdquo; may earn us a commission if you buy, at no extra cost to you. That helps keep Crazy Golf Game free to read.</p></details>
+
 </section>
 <p class="note">Prices, stock and promotions change often and are set by each retailer. Check the retailer's site before you buy.</p>
 </div>
@@ -303,12 +299,12 @@ def main():
         patch_article(slug, boxes)
     # 4. copy that described the old single offer
     rep = {
-        "index.html": ('<p class="small"><strong>#ad</strong> We also keep one clearly labelled partner offer for outdoor days on our <a href="/offers/" rel="sponsored">offers page</a>. If you buy through it we may earn a commission.</p>',
-                       '<p class="small"><strong>#ad</strong> Shopping for a golfer? Our <a href="/offers/">Crazy Golf Gift Guide 2026</a> sorts ideas by budget. It contains labelled affiliate links; if you buy through one we may earn a commission.</p>'),
-        "about/index.html": ('and occasionally by a clearly labelled partner offer on our <a href="/offers/">offers page</a>.',
-                             'and by clearly labelled affiliate links in some guides and our <a href="/offers/">gift guide</a>. If you buy through one, we may earn a commission at no extra cost to you.'),
-        "privacy/index.html": ('<p>Our <a href="/offers/">offers page</a> contains a clearly labelled affiliate link. If you click it,',
-                               '<p>Our <a href="/offers/">gift guide</a> and some articles contain affiliate links, each labelled &ldquo;Affiliate link&rdquo; and marked #ad. If you click one,'),
+        "index.html": ('<p class="small">We also keep a partner offer for outdoor days on our <a href="/offers/" rel="sponsored">offers page</a>.</p>',
+                       '<p class="small">Shopping for a golfer? Our <a href="/offers/">Crazy Golf Gift Guide 2026</a> sorts ideas by budget.</p>'),
+        "about/index.html": ('and by clearly labelled affiliate links in some guides and our <a href="/offers/">gift guide</a>. If you buy through one, we may earn a commission at no extra cost to you.',
+                             'It is supported by advertising, including ads served by Google AdSense. Advertising never decides what we write about.'),
+        "privacy/index.html": ('<p>Our <a href="/offers/">gift guide</a> and some articles contain affiliate links, each labelled &ldquo;Affiliate link&rdquo; and marked #ad. If you click one,',
+                               ''),
     }
     for rel, (a, b) in rep.items():
         p = SITE / rel
