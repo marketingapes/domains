@@ -74,6 +74,7 @@ test('public system copy stays inside the claim boundary', async () => {
   }
   assert.match(home, /class="plats"/);
   assert.match(home, /class="kyle-strip"/);
+  assert.match(home, /A full campaign, <em>built in hours\.<\/em>/);
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
