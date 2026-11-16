@@ -216,3 +216,8 @@ footer a:hover{color:var(--gold)}
 .signup-fine a{color:var(--gold-l)}
 .signup-msg{font:14px var(--sans);color:var(--gold);margin:0}
 .signup-msg.is-err{color:#ffb4a2}
+
+form[data-signup].is-done .row,
+form[data-signup].is-done .signup-consent,
+form[data-signup].is-done .signup-fine,
+form[data-signup].is-done button[type=submit]{display:none!important}

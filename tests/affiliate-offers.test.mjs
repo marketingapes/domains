@@ -173,3 +173,11 @@ test('CGG and KG have consented, honeypotted brand-tagged signup forms', () => {
   assert.match(js, /signup_test/);
   assert.doesNotMatch(js, /GMass|gmass|send email|welcome/i);
 });
+
+test('signup success hides the form fields even when CSS uses display:flex', () => {
+  for (const js of ['cgg/assets/signup.js', 'kg/assets/signup.js']) {
+    assert.match(fs.readFileSync(path.join(ROOT, js), 'utf8'), /classList\.add\('is-done'\)/);
+  }
+  assert.match(fs.readFileSync(path.join(ROOT, 'cgg/assets/v4.css'), 'utf8'), /form\[data-signup\]\.is-done/);
+  assert.match(fs.readFileSync(path.join(ROOT, 'kg/assets/story.css'), 'utf8'), /form\[data-signup\]\.is-done/);
+});
