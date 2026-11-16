@@ -63,6 +63,8 @@ def page(site):
     head = re.sub(r'(<meta name="twitter:title" content=")[^"]*(")', lambda m: m.group(1) + E(title) + m.group(2), head)
     head = re.sub(r'(<meta name="twitter:description" content=")[^"]*(")', lambda m: m.group(1) + E(c["desc"]) + m.group(2), head)
     head = re.sub(r'<script type="application/ld\+json">.*?</script>\s*', "", head, flags=re.S)
+    # Gift finders are shopping pages: AdSense stays on content pages only (Kyle's rule, Nov 16 2026).
+    head = re.sub(r'<script[^>]*adsbygoogle\.js[^>]*></script>\s*', "", head)
     head = head.replace("</head>", f'<link rel="stylesheet" href="/assets/gift-finder.css?v={c["v"]}">\n<style>#gift-finder,.gf-hero,.gf-how{{{c["skin"]}}}</style>\n</head>', 1)
     main = f'''<main id="main">
 <div class="gf-wrap">

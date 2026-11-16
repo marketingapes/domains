@@ -25,6 +25,8 @@
       body.set('referrer', document.referrer || '');
       body.set('user_agent', navigator.userAgent || '');
       ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { if (q.get(k)) body.set(k, q.get(k)); });
+      // First-party click IDs and visitor id from /assets/ee-click.js (ee_id, gclid, fbclid, fbc, fbp, utm_*).
+      if (window.eeClick) { var ee = window.eeClick.fields(); for (var ek in ee) { if (!body.get(ek)) body.set(ek, ee[ek]); } }
       sent = true; btn.disabled = true; say('Signing you up…');
       fetch(form.action, { method: 'POST', body: body, keepalive: true })
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })

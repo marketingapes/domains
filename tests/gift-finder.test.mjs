@@ -31,7 +31,9 @@ for (const site of SITES) {
     assert.match(html, /id="gift-finder" data-site="/);
     assert.match(html, /\/assets\/gift-finder\.js/);
     assert.match(html, /googletagmanager|GTM-/, 'keeps the site tag manager');
-    assert.match(html, /ca-pub-5194583669093303/, 'keeps AdSense');
+    assert.match(html, /name="google-adsense-account" content="ca-pub-5194583669093303"/, 'keeps the AdSense account meta');
+    assert.doesNotMatch(html, /adsbygoogle\.js/, 'gift finders are shopping pages: no AdSense loader (content pages only)');
+    assert.match(html, /\/assets\/ee-click\.js/, 'carries first-party click-ID capture');
     for (const s of [html, JSON.stringify(gifts), read(`${site}/assets/gift-finder.js`)]) {
       assert.doesNotMatch(s, /AI[- ]generated|AI summary|\u2014/);
     }
