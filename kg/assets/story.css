@@ -207,3 +207,12 @@ footer a:hover{color:var(--gold)}
 .vegas-home .softia .phone{background:#0b120e;color:#e9f3ec}.vegas-home .softia .phone::before{background:radial-gradient(circle,#3dff8a20,transparent 70%)}.vegas-home .signup input{background:#0b120e;border-color:#3dff8a73}.vegas-home footer{background:#050806;color:#94a69b}.vegas-home footer a{color:#c4dfcd}
 @keyframes vegas-float{50%{transform:translateY(-7px)}}
 @media(prefers-reduced-motion:reduce){.vegas-home .vegas-art .vegas-portrait{animation:none}}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.signup .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.signup-consent{display:flex;gap:10px;align-items:flex-start;font:14px/1.45 var(--sans);color:var(--gold-l);cursor:pointer;margin:0}
+.signup-consent input{width:18px;height:18px;margin-top:2px;flex:0 0 auto;accent-color:var(--bronze)}
+.signup-fine{font:13px/1.45 var(--sans);color:rgba(255,240,184,.75);margin:0}
+.signup-fine a{color:var(--gold-l)}
+.signup-msg{font:14px var(--sans);color:var(--gold);margin:0}
+.signup-msg.is-err{color:#ffb4a2}
