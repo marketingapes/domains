@@ -52,7 +52,7 @@ test('signed-in report renders the three sections from the server figures',async
  assert.match(p.text('spend-coverage'),/2 days loaded, 2026-01-12 to 2026-01-13.*Copied from Meta on 2026-01-20\. Days outside this range are not loaded\./);
  assert.equal(p.text('package-delivered'),'Not counted');assert.match(p.text('package-note'),/No confirmed delivery or acceptance record is connected/);
  assert.match(p.text('spend-day-body'),/2026-01-12 \$40\.00 800 16 4 2026-01-13 \$60\.50 1,200 24 5 Total loaded \$100\.50 2,000 40 9/);
- assert.match(p.text('channel-breakdown'),/Facebook campaign 120255153821950231 .* \$11\.17 per platform lead \(not per qualified lead\)/);
+ assert.match(p.text('channel-breakdown'),/Facebook campaign 100000000000000001 .* \$11\.17 per platform lead \(not per qualified lead\)/);
  assert.match(html,/It is not a media allocation, so no budget remainder is calculated\./);
  // 02 AI Intake: submissions, people, attempts and statuses are separate numbers
  assert.equal(p.element('intake-detail').hidden,false);
