@@ -1,0 +1,272 @@
+{
+ "site": "h2m",
+ "title": "Gift Set Finder",
+ "results_title": "Gift sets matched to their hair and skin",
+ "budget_label": "Budget",
+ "budgets": [
+  {
+   "v": "u50",
+   "label": "Under $50",
+   "min": 0,
+   "max": 50
+  },
+  {
+   "v": "50-100",
+   "label": "$50 to $100",
+   "min": 50,
+   "max": 100
+  },
+  {
+   "v": "100+",
+   "label": "$100 and up",
+   "min": 100,
+   "max": 100000
+  }
+ ],
+ "questions": [
+  {
+   "id": "hair",
+   "label": "Their hair",
+   "weight": 12,
+   "options": [
+    {
+     "v": "straight",
+     "label": "Straight"
+    },
+    {
+     "v": "wavy",
+     "label": "Wavy"
+    },
+    {
+     "v": "curly",
+     "label": "Curly or coily"
+    },
+    {
+     "v": "damaged",
+     "label": "Color-treated or dry"
+    },
+    {
+     "v": "wig",
+     "label": "Wears wigs or wants to try"
+    }
+   ]
+  },
+  {
+   "id": "skin",
+   "label": "Their skin",
+   "weight": 10,
+   "options": [
+    {
+     "v": "dry",
+     "label": "Dry"
+    },
+    {
+     "v": "sensitive",
+     "label": "Sensitive"
+    },
+    {
+     "v": "oily",
+     "label": "Oily or breakout-prone"
+    },
+    {
+     "v": "mature",
+     "label": "Mature"
+    }
+   ]
+  }
+ ],
+ "checked_at": "2026-11-16T01:42:05Z",
+ "disclosure": "Shop links are affiliate links. We may earn a commission at no extra cost to you.",
+ "products": [
+  {
+   "id": "promeed-pillowcase-xmas",
+   "merchant": "Promeed",
+   "name": "Mulberry silk pillowcase, Christmas gift kit",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=h2m-gift-pillowcase-xmas&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-6a-100-mulberry-silk-pillowcase-christmas-gift-kit",
+   "tags": {
+    "hair": [
+     "curly",
+     "wavy",
+     "damaged",
+     "straight"
+    ],
+    "skin": [
+     "sensitive",
+     "dry",
+     "mature",
+     "oily"
+    ]
+   },
+   "blurb": "Silk has less friction than cotton, so it's kinder to curls, color-treated hair and sensitive skin. Arrives gift-packed.",
+   "price_from": 41.99,
+   "price_to": 61.99,
+   "image": "https://cdn.shopify.com/s/files/1/0604/9241/5192/files/1_889f8b5d-3354-49e0-ab55-48ca2dc70e6e.jpg?v=1734938651&width=480",
+   "image_alt": "Mulberry silk pillowcase, Christmas gift kit, photo from Promeed",
+   "available": true,
+   "verified_host": "promeed.com"
+  },
+  {
+   "id": "promeed-hydrating",
+   "merchant": "Promeed",
+   "name": "Slip-in hydrating silk pillowcase",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=h2m-gift-hydrating&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2Fhydrating-mulberry-silk-pillowcase",
+   "tags": {
+    "hair": [
+     "damaged",
+     "curly"
+    ],
+    "skin": [
+     "dry",
+     "mature"
+    ]
+   },
+   "blurb": "A slip-in mulberry silk pillowcase. Silk tends to soak up less moisture than cotton, a nice pick for dry skin and thirsty hair.",
+   "price_from": 54.99,
+   "price_to": 60.99,
+   "image": "https://cdn.shopify.com/s/files/1/0604/9241/5192/files/11_fdad16a6-ad48-4787-a1a9-c45769f07b9f.jpg?v=1723530607&width=480",
+   "image_alt": "Slip-in hydrating silk pillowcase, photo from Promeed",
+   "available": true,
+   "verified_host": "promeed.com"
+  },
+  {
+   "id": "promeed-pillowcase-mask-box",
+   "merchant": "Promeed",
+   "name": "Silk pillowcase and eye mask gift box",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=h2m-gift-pillowcase-mask&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-6a-zipper-silk-pillowcase-with-eye-mask-with-gift-box",
+   "tags": {
+    "hair": [
+     "curly",
+     "wavy",
+     "damaged",
+     "straight"
+    ],
+    "skin": [
+     "sensitive",
+     "mature",
+     "dry"
+    ]
+   },
+   "blurb": "The full silk beauty-sleep set: zippered pillowcase plus eye mask, in a gift box.",
+   "price_from": 55.99,
+   "price_to": 73.99,
+   "image": "https://cdn.shopify.com/s/files/1/0604/9241/5192/files/6_500787c7-117b-4950-ba91-a048719b4ba6.jpg?v=1703829857&width=480",
+   "image_alt": "Silk pillowcase and eye mask gift box, photo from Promeed",
+   "available": true,
+   "verified_host": "promeed.com"
+  },
+  {
+   "id": "promeed-eye-mask",
+   "merchant": "Promeed",
+   "name": "Mulberry silk contour eye mask",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=100833&awinaffid=2572337&clickref=h2m-gift-eye-mask&ued=https%3A%2F%2Fpromeed.com%2Fproducts%2F23mm-mulberry-silk-3d-eye-mask",
+   "tags": {
+    "hair": [
+     "any"
+    ],
+    "skin": [
+     "sensitive",
+     "mature"
+    ]
+   },
+   "blurb": "Soft on the delicate skin around the eyes. A small gift or a stocking stuffer.",
+   "price_from": 24.99,
+   "price_to": 24.99,
+   "image": "https://cdn.shopify.com/s/files/1/0604/9241/5192/files/1_54f2c540-9ec5-480f-8c2b-71003e28c379.jpg?v=1728988301&width=480",
+   "image_alt": "Mulberry silk contour eye mask, photo from Promeed",
+   "available": true,
+   "verified_host": "promeed.com"
+  },
+  {
+   "id": "zlike-glueless",
+   "merchant": "Zlike Hair",
+   "name": "Glueless wigs",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=102013&awinaffid=2572337&clickref=h2m-gift-zlike-glueless&ued=https%3A%2F%2Fzlikehair.com%2Fcollections%2Fglueless-wigs",
+   "tags": {
+    "hair": [
+     "wig"
+    ],
+    "skin": [
+     "sensitive"
+    ]
+   },
+   "blurb": "Wear-and-go human hair wigs with no glue, which is easier on sensitive skin and on first-time wig wearers.",
+   "price_from": 86.33,
+   "price_to": 489.32,
+   "image": "https://cdn.shopify.com/s/files/1/0683/9179/7036/files/zlike1.jpg?v=1735875663&width=480",
+   "image_alt": "Glueless wigs, photo from Zlike Hair",
+   "available": true,
+   "verified_host": "zlikehair.com"
+  },
+  {
+   "id": "zlike-lace-front",
+   "merchant": "Zlike Hair",
+   "name": "Lace front wigs",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=102013&awinaffid=2572337&clickref=h2m-gift-zlike-lace&ued=https%3A%2F%2Fzlikehair.com%2Fcollections%2Flace-front-wigs",
+   "tags": {
+    "hair": [
+     "wig",
+     "straight",
+     "wavy",
+     "curly"
+    ],
+    "skin": []
+   },
+   "blurb": "Human hair lace front wigs in straight, body wave and curly textures.",
+   "price_from": 69.0,
+   "price_to": 739.52,
+   "image": "https://cdn.shopify.com/s/files/1/0683/9179/7036/files/Luxury_300_Density_Loose_Deep_Lace_Front_Wig_Front_View.jpg?v=1782119777&width=480",
+   "image_alt": "Lace front wigs, photo from Zlike Hair",
+   "available": true,
+   "verified_host": "zlikehair.com"
+  },
+  {
+   "id": "zlike-best",
+   "merchant": "Zlike Hair",
+   "name": "Zlike best sellers",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=102013&awinaffid=2572337&clickref=h2m-gift-zlike-best&ued=https%3A%2F%2Fzlikehair.com%2Fcollections%2Fbest-sellers",
+   "tags": {
+    "hair": [
+     "wig"
+    ],
+    "skin": []
+   },
+   "blurb": "The most-ordered Zlike wigs, a safe start if you don't know their style yet.",
+   "price_from": 79.0,
+   "price_to": 739.52,
+   "image": "https://cdn.shopify.com/s/files/1/0683/9179/7036/files/Luxury_300_Density_Loose_Deep_Lace_Front_Wig_Front_View.jpg?v=1782119777&width=480",
+   "image_alt": "Zlike best sellers, photo from Zlike Hair",
+   "available": true,
+   "verified_host": "zlikehair.com"
+  },
+  {
+   "id": "ashimary-hot",
+   "merchant": "Ashimary Hair",
+   "name": "Ashimary hot sale wigs and bundles",
+   "network": "Awin",
+   "url": "https://www.awin1.com/cread.php?awinmid=46793&awinaffid=2572337&clickref=h2m-gift-ashimary-hot&ued=https%3A%2F%2Fwww.ashimaryhair.com%2Fcollections%2Fhot-sale",
+   "tags": {
+    "hair": [
+     "wig",
+     "curly",
+     "wavy",
+     "straight"
+    ],
+    "skin": []
+   },
+   "blurb": "Sale-priced human hair wigs and bundles in many textures and lengths.",
+   "price_from": 57.0,
+   "price_to": 1031.65,
+   "image": "https://cdn.shopify.com/s/files/1/0072/6063/5209/files/360ww_invisistrap_glueless_wigs_11.webp?v=1782101190&width=480",
+   "image_alt": "Ashimary hot sale wigs and bundles, photo from Ashimary Hair",
+   "available": true,
+   "verified_host": "ashimaryhair.com"
+  }
+ ]
+}
