@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile, stat} from 'node:fs/promises';
+import {readFile, readdir, stat} from 'node:fs/promises';
 import {SAMPLE_INQUIRIES, evaluateInquiry, buildReport, nextDollar} from '../lfma/assets/system-room.mjs';
 import {readFormData, buildOrderPayload} from '../lfma/assets/order-intake-client.mjs';
 
@@ -149,4 +149,49 @@ test('films are h264 and carry no audio track', async () => {
     assert.equal(buf.includes(Buffer.from('mp4a')), false, name);
     assert.ok(buf.length > 20000 && buf.length < 2000000, name);
   }
+});
+
+test('every public LFMA page controls its own share preview', async () => {
+  // A page without these tags lets Facebook and LinkedIn pick any picture on it. Pages marked noindex are not meant to be shared.
+  const root = new URL('../lfma/', import.meta.url);
+  const pages = [];
+  async function walk(dir) {
+    for (const entry of await readdir(new URL(dir, root), {withFileTypes: true})) {
+      if (entry.isDirectory()) await walk(dir + entry.name + '/');
+      else if (entry.name.endsWith('.html')) pages.push(dir + entry.name);
+    }
+  }
+  await walk('');
+  const site = 'https://lawfirmmarketingapes.com/';
+  let checked = 0;
+  for (const page of pages) {
+    const html = await text('lfma/' + page);
+    if (/<meta[^>]*robots[^>]*noindex|<meta[^>]*noindex[^>]*robots/i.test(html) || !html.includes('</head>')) continue;
+    for (const key of ['og:title', 'og:description', 'og:url', 'og:image', 'twitter:card']) {
+      assert.match(html, new RegExp(`<meta[^>]+(?:property|name)="${key}"`), `${page} is missing ${key}`);
+    }
+    const tag = html.match(/<meta[^>]+property="og:image"[^>]*>/)[0];
+    const image = tag.match(/content="([^"]+)"/)[1];
+    assert.ok(image.startsWith(site), `${page}: share image must be on this site`);
+    const file = new URL('../lfma/' + image.slice(site.length), import.meta.url);
+    const found = await stat(file).then(() => true, () => stat(new URL(file.href + '.b64')).then(() => true, () => false));
+    assert.ok(found, `${page}: share image ${image} does not exist`);
+    checked += 1;
+  }
+  assert.ok(checked >= 25, `only ${checked} public pages were checked`);
+  // The two share images are the size Facebook and LinkedIn ask for, and light enough to load fast.
+  for (const name of ['holiday-sprint.jpg', 'default.jpg']) {
+    const buf = await readFile(new URL('../lfma/assets/share/' + name, import.meta.url));
+    assert.ok(buf.length < 300_000, `${name} is too heavy`);
+    let width = 0, height = 0;
+    for (let i = 2; i + 9 < buf.length && buf[i] === 0xFF;) {
+      const marker = buf[i + 1], size = buf.readUInt16BE(i + 2);
+      if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) { height = buf.readUInt16BE(i + 5); width = buf.readUInt16BE(i + 7); break; }
+      i += 2 + size;
+    }
+    assert.deepEqual([width, height], [1200, 630], `${name} must be 1200 by 630`);
+  }
+  const home = await text('lfma/index.html');
+  assert.match(home, /<meta property="og:image" content="https:\/\/lawfirmmarketingapes\.com\/assets\/share\/holiday-sprint\.jpg">/);
+  assert.match(home, /<meta name="twitter:card" content="summary_large_image">/);
 });
