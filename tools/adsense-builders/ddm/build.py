@@ -320,7 +320,7 @@ def method_page():
 </section>
 <section class="wrap narrow prose">
 <h2 id="sources">Where the deals come from</h2>
-<p>Deals come from merchants' affiliate programs on the Commission Junction (CJ) network, through Discount Deal Me's own publisher account. Each offer arrives with the merchant's wording, a start and end date, any promo code, and a tracking link. We only list programs we have joined, and we only publish codes that the merchant issued to affiliates. We do not scrape coupon sites, and we do not accept user-submitted codes.</p>
+<p>Deals come from merchants' deal programs on the Commission Junction (CJ) network, through Discount Deal Me's own publisher account. Each offer arrives with the merchant's wording, a start and end date, any promo code, and a tracking link. We only list programs we have joined, and we only publish codes that the merchant issued. We do not scrape coupon sites, and we do not accept user-submitted codes.</p>
 <p>We then choose which offers to show. We skip offers that look stale (for example last year's holiday codes left running), offers aimed only at other countries, health products that need a doctor's input, software keys sold by third-party resellers, and anything we would not be comfortable buying ourselves.</p>
 <h2 id="checked">What "checked" means</h2>
 <p>The time next to "Terms checked" is the last time we pulled the offer from the network and confirmed it was still active for our account. It means the merchant was still publishing that offer, with those terms and that end date, at that moment. It does not mean we checked the price of every item, and merchants can change or end an offer early. Your browser hides a deal automatically once its end time passes.</p>
