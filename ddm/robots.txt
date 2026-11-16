@@ -3,6 +3,9 @@ Allow: /
 Allow: /ads.txt
 Allow: /deals/
 Allow: /gift-planner/
+Allow: /black-friday/
+Allow: /cyber-monday/
+Allow: /gifts/
 Allow: /offers/
 Allow: /guides/
 Allow: /deal-checklist/

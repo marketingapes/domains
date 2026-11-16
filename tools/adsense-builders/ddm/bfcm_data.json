@@ -1,0 +1,1386 @@
+{
+ "_doc": "Black Friday / Cyber Monday hub data for discountdealme.com. CJ rows come from a CJ link-search pull for DDM property 101511733. Amazon rows are curated ASINs; each ASIN was opened on amazon.com and matched to the product name. No Amazon prices, ratings or images are stored or shown (no Product Advertising API access). Prices used only to sort products into budget guides were seen on amazon.com on the check date and are not published.",
+ "cj_pulled_at": "2026-11-16T01:14:28Z",
+ "amazon": {
+  "tag": "tonedntastyne-20",
+  "tag_note": "Kyle's only Amazon Associates tracking ID found (in use on tonedntasty.com). Swap for a DDM-specific tracking ID here if one is created.",
+  "checked_at": "2026-11-16T03:00:00Z",
+  "products": [
+   {
+    "asin": "B00006JSUA",
+    "name": "Lodge cast iron skillet, 10.25 in",
+    "brand": "Lodge",
+    "blurb": "A pre-seasoned 10.25-inch cast iron skillet that goes from stovetop to oven to grill. A buy-once kitchen basic.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-25",
+     "for-dad",
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B0002AR0I8",
+    "name": "KONG Classic stuffable dog toy (large)",
+    "brand": "KONG",
+    "blurb": "The natural-rubber chew you can stuff with treats or freeze for a longer challenge. This listing is the large size; pick the size that matches your dog.",
+    "kind": "Pets",
+    "guides": [
+     "under-25",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B07XXSYLL8",
+    "name": "TempPro TempSwift TP19H instant-read thermometer",
+    "brand": "ThermoPro",
+    "blurb": "A fold-out instant-read meat thermometer for the person who grills, smokes or roasts the holiday turkey.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-25",
+     "for-dad",
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B00006IX59",
+    "name": "Chuckit! Classic 26 in ball launcher",
+    "brand": "Chuckit!",
+    "blurb": "The ball thrower that saves arms and keeps hands slobber-free. Comes with one medium ball.",
+    "kind": "Pets",
+    "guides": [
+     "under-25",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B005VS9WO6",
+    "name": "Outward Hound Hide-A-Squirrel puzzle toy (XL)",
+    "brand": "Outward Hound",
+    "blurb": "A plush tree trunk with squeaky squirrels to pull out. A puzzle toy for dogs who love to dig and fetch.",
+    "kind": "Pets",
+    "guides": [
+     "under-25",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B001BOVEU4",
+    "name": "GoCat Da Bird feather wand",
+    "brand": "GoCat",
+    "blurb": "A rod-and-feather wand toy that spins like a bird in flight. A long-time favorite of cat owners.",
+    "kind": "Pets",
+    "guides": [
+     "under-25",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B099F2H5KH",
+    "name": "Anker Nano 20W USB-C charger",
+    "brand": "Anker",
+    "blurb": "A small 20W USB-C wall charger. A practical stocking stuffer for anyone with a newer phone.",
+    "kind": "Tech",
+    "guides": [
+     "under-25",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B00151WA06",
+    "name": "Microplane Premium Classic zester",
+    "brand": "Microplane",
+    "blurb": "The rasp-style zester for citrus, hard cheese, garlic and nutmeg. Small, useful and easy to wrap.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-25",
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B07JZTBV9C",
+    "name": "Taco vs Burrito card game",
+    "brand": "Taco vs Burrito",
+    "blurb": "A quick family card game invented by a 7-year-old. Easy to learn and good for mixed ages.",
+    "kind": "Games",
+    "guides": [
+     "under-25"
+    ]
+   },
+   {
+    "asin": "B010TQY7A8",
+    "name": "Exploding Kittens card game (original edition)",
+    "brand": "Exploding Kittens",
+    "blurb": "A fast, silly card game for 2 to 5 players, ages 7 and up. Rounds take about 15 minutes.",
+    "kind": "Games",
+    "guides": [
+     "under-25",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B07XXPHQZK",
+    "name": "LANEIGE Lip Sleeping Mask",
+    "brand": "LANEIGE",
+    "blurb": "An overnight lip mask for dry, flaky winter lips. A small luxury that fits in a stocking.",
+    "kind": "Beauty",
+    "guides": [
+     "under-25",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B0CF173VLZ",
+    "name": "Bedsure faux fur sherpa throw, 50 x 60 in",
+    "brand": "Bedsure",
+    "blurb": "A fluffy faux-fur throw with a sherpa back for the couch. Easy to gift; check colors on the listing.",
+    "kind": "Home",
+    "guides": [
+     "under-25",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B0CGY4J7QT",
+    "name": "LEGO Creator 3-in-1 flatbed truck with helicopter",
+    "brand": "LEGO",
+    "blurb": "A 3-in-1 LEGO set that rebuilds into different vehicles, so one box gives three builds.",
+    "kind": "Toys",
+    "guides": [
+     "under-25"
+    ]
+   },
+   {
+    "asin": "B0D4PGY3XF",
+    "name": "Burt's Bees lip balm party pack (4 tubes)",
+    "brand": "Burt's Bees",
+    "blurb": "Four Burt's Bees lip balms in one pack. Easy to split between stockings.",
+    "kind": "Beauty",
+    "guides": [
+     "under-25",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B085DV8T75",
+    "name": "Owala FreeSip 24 oz water bottle",
+    "brand": "Owala",
+    "blurb": "An insulated steel bottle with a lid you can sip from or swig from. Comes in many colors.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-50",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B0CP9YB3Q4",
+    "name": "Stanley Quencher H2.0 tumbler, 30 oz",
+    "brand": "Stanley",
+    "blurb": "The handled tumbler with a straw lid that fits most car cup holders.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-50",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B0CTNYC4BS",
+    "name": "JBL Go 4 portable Bluetooth speaker",
+    "brand": "JBL",
+    "blurb": "A pocket-size waterproof and dustproof Bluetooth speaker for the bedroom, beach or backpack.",
+    "kind": "Tech",
+    "guides": [
+     "under-50",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B07MZDTG76",
+    "name": "FURminator deShedding tool (large dog, long hair)",
+    "brand": "FURminator",
+    "blurb": "An undercoat deshedding tool for long-haired large dogs. Other sizes and coat types are sold separately.",
+    "kind": "Pets",
+    "guides": [
+     "under-50",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B07P6DQMQ4",
+    "name": "Best Friends by Sheri calming donut bed (medium, 30 in)",
+    "brand": "Best Friends by Sheri",
+    "blurb": "A round, raised-rim donut bed that dogs and cats curl into. Measure your pet before you choose a size.",
+    "kind": "Pets",
+    "guides": [
+     "under-50",
+     "for-pets"
+    ]
+   },
+   {
+    "asin": "B071Y3MSRK",
+    "name": "Rocketbook Core reusable notebook (letter)",
+    "brand": "Rocketbook",
+    "blurb": "A notebook you write in, scan to the cloud with the app, then wipe clean and reuse.",
+    "kind": "School",
+    "guides": [
+     "under-50",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B073WJMKHN",
+    "name": "YETI Rambler 20 oz tumbler",
+    "brand": "YETI",
+    "blurb": "A vacuum-insulated steel tumbler with a MagSlider lid. Keeps coffee hot on the commute.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-50",
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B005DI0XM4",
+    "name": "Leatherman Wingman multi-tool",
+    "brand": "Leatherman",
+    "blurb": "A spring-action pliers multi-tool with scissors, knife and screwdrivers for everyday fixes.",
+    "kind": "Tools",
+    "guides": [
+     "under-50",
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B008M5U1C2",
+    "name": "Victorinox Fibrox Pro 8 in chef's knife",
+    "brand": "Victorinox",
+    "blurb": "A no-frills, dishwasher-safe chef's knife that many cooking schools and test kitchens use.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-50",
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B0049C2S32",
+    "name": "Nordic Ware Naturals half sheet pan",
+    "brand": "Nordic Ware",
+    "blurb": "A heavy aluminum half sheet pan made in the USA, for cookies, sheet-pan dinners and roasting.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-50",
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B000FZX93K",
+    "name": "Stanley Classic vacuum bottle, 1.1 qt",
+    "brand": "Stanley",
+    "blurb": "The classic hammertone green thermos for job sites, tailgates and long drives.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-50",
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B0CZ9M6X8Q",
+    "name": "Anker 10,000mAh 30W power bank",
+    "brand": "Anker",
+    "blurb": "A compact 10,000mAh USB-C power bank that can top up a phone more than once.",
+    "kind": "Tech",
+    "guides": [
+     "under-50",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B07YXM6XTF",
+    "name": "Hydro Flask 32 oz wide mouth bottle",
+    "brand": "Hydro Flask",
+    "blurb": "An insulated wide-mouth bottle with a leakproof Flex Lid. Big enough for a full day.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-50"
+    ]
+   },
+   {
+    "asin": "B0BWNYPCT1",
+    "name": "Fujifilm Instax Mini 12 instant camera",
+    "brand": "Fujifilm",
+    "blurb": "An instant camera that prints credit-card-size photos on the spot. Film is sold separately.",
+    "kind": "Tech",
+    "guides": [
+     "under-100",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B07NQPYGYD",
+    "name": "Ember Mug 2, 10 oz",
+    "brand": "Ember",
+    "blurb": "A heated smart mug that keeps coffee or tea at a set temperature, controlled from an app.",
+    "kind": "Drinkware",
+    "guides": [
+     "under-100",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B0GJTXVN9Z",
+    "name": "Apple AirTag (2nd generation), 4-pack",
+    "brand": "Apple",
+    "blurb": "Four Bluetooth trackers for keys, bags and luggage. Works with Apple's Find My, so it's for iPhone users.",
+    "kind": "Tech",
+    "guides": [
+     "under-100",
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B000N501BK",
+    "name": "Lodge Essential enameled cast iron Dutch oven, 6 qt",
+    "brand": "Lodge",
+    "blurb": "A 6-quart enameled cast iron Dutch oven for soups, braises and bread.",
+    "kind": "Kitchen",
+    "guides": [
+     "under-100",
+     "for-the-kitchen",
+     "for-mom"
+    ]
+   },
+   {
+    "asin": "B09B8V1LZ3",
+    "name": "Amazon Echo Dot",
+    "brand": "Amazon",
+    "blurb": "A compact smart speaker with Alexa for music, timers and smart-home controls.",
+    "kind": "Tech",
+    "guides": [
+     "under-100"
+    ]
+   },
+   {
+    "asin": "B0BP9SNVH9",
+    "name": "Amazon Fire TV Stick 4K Max",
+    "brand": "Amazon",
+    "blurb": "A 4K streaming stick with Wi-Fi 6E and an Alexa voice remote. Plugs into any HDMI TV.",
+    "kind": "Tech",
+    "guides": [
+     "under-100",
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B0BS1QCFHX",
+    "name": "Sony WH-CH720N noise-canceling headphones",
+    "brand": "Sony",
+    "blurb": "Lightweight wireless over-ear headphones with noise canceling, from Sony's everyday line.",
+    "kind": "Tech",
+    "guides": [
+     "under-100",
+     "for-teens"
+    ]
+   },
+   {
+    "asin": "B002G9UDYG",
+    "name": "Carhartt A18 watch cap beanie",
+    "brand": "Carhartt",
+    "blurb": "The classic ribbed-knit Carhartt beanie with the cuff and patch logo. Many colors.",
+    "kind": "Apparel",
+    "guides": [
+     "for-dad"
+    ]
+   },
+   {
+    "asin": "B07FDJMC9Q",
+    "name": "Ninja AF101 air fryer, 4 qt",
+    "brand": "Ninja",
+    "blurb": "A 4-quart, 4-in-1 air fryer (air fry, roast, reheat, dehydrate) with a nonstick basket.",
+    "kind": "Kitchen",
+    "guides": [
+     "for-the-kitchen"
+    ]
+   },
+   {
+    "asin": "B00FLYWNYQ",
+    "name": "Instant Pot Duo 7-in-1, 6 qt",
+    "brand": "Instant Pot",
+    "blurb": "The 6-quart multicooker that pressure cooks, slow cooks, steams and makes rice and yogurt.",
+    "kind": "Kitchen",
+    "guides": [
+     "for-the-kitchen"
+    ]
+   }
+  ]
+ },
+ "deals": [
+  {
+   "link_id": "17385064",
+   "merchant": "KitchenAid",
+   "title": "Up to 30% off select countertop appliances",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 30
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "KitchenAid's Black Friday Event takes up to 30% off select countertop appliances on kitchenaid.com through Nov 29. Only some models are included, so check the price in your cart.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen",
+    "for-mom"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Up to 30% off select countertop appliances now through 11/29",
+    "terms": "The Black Friday Event! Up to 30% off select countertop appliances now through 11/29",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-11-30T04:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17385064-1794367343000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances"
+   }
+  },
+  {
+   "link_id": "17388547",
+   "merchant": "KitchenAid",
+   "title": "Up to $150 off select stand mixers",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": true,
+    "amount": 150
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $150 off select KitchenAid stand mixers on kitchenaid.com, through Dec 26. Closeout, commercial and refurbished models are excluded, and stock is limited.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-the-kitchen",
+    "for-mom"
+   ],
+   "image": "17107552",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to $150 off select Stand Mixers!",
+    "terms": "The Black Friday Event! Save up to $150 off select Stand Mixers! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17388547-1794637976000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/kitchenaid-stand-mixers"
+   }
+  },
+  {
+   "link_id": "17388560",
+   "merchant": "KitchenAid",
+   "title": "Up to 35% off select food processors",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 35
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to 35% off select KitchenAid food processors, new orders on kitchenaid.com only, through Dec 26. Excludes closeout, commercial and refurbished models.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to 35% on select Food Processors!",
+    "terms": "The Black Friday Event! Save up to 35% on select Food Processors! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17388560-1794637976000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/food-processors/food-processor-and-chopper-products"
+   }
+  },
+  {
+   "link_id": "17388573",
+   "merchant": "KitchenAid",
+   "title": "Up to 35% off select hand blenders",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 35
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to 35% off select KitchenAid hand blenders on kitchenaid.com, through Dec 26. Excludes closeout, commercial and refurbished models.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen",
+    "under-50"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to 35% on select Hand Blenders!",
+    "terms": "The Black Friday Event! Save up to 35% on select Hand Blenders! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17388573-1794637977000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/hand-blenders/han"
+   }
+  },
+  {
+   "link_id": "17388574",
+   "merchant": "KitchenAid",
+   "title": "Up to $70 off select stand mixer attachments",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": true,
+    "amount": 70
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $70 off select stand mixer attachments on kitchenaid.com, through Dec 26. A good gift if they already own a KitchenAid mixer; check the attachment fits their model.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen",
+    "for-dad"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to $70 off select Stand Mixer Attachments!",
+    "terms": "The Black Friday Event! Save up to $70 off select Stand Mixer Attachments! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17388574-1794637977000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/stand-mixers/attachments/see-all"
+   }
+  },
+  {
+   "link_id": "17388551",
+   "merchant": "KitchenAid",
+   "title": "$100 off select grain and rice cookers",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": false,
+    "amount": 100
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "$100 off select KitchenAid grain and rice cookers on kitchenaid.com, through Dec 26. New orders only; closeout, commercial and refurbished models are excluded.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save $100 off select Grain and Rice Cookers!",
+    "terms": "The Black Friday Event! Save $100 off select Grain and Rice Cookers! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17388551-1794637976000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/slowcookers-and-multicookers/slowcooker-and-multicooker-products/p.grain-and-rice-cooker.KGC3155BM.html"
+   }
+  },
+  {
+   "link_id": "17388570",
+   "merchant": "KitchenAid",
+   "title": "Up to $50 off select kettles",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": true,
+    "amount": 50
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $50 off select KitchenAid electric kettles on kitchenaid.com, through Dec 26. Only select models; check the cart price.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen",
+    "for-mom"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to $50 off select Kettles!",
+    "terms": "The Black Friday Event! Save up to $50 off select Kettles! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17388570-1794637977000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/kettles/electric-kettles"
+   }
+  },
+  {
+   "link_id": "17388567",
+   "merchant": "KitchenAid",
+   "title": "Up to $40 off select toasters",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": true,
+    "amount": 40
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Up to $40 off select KitchenAid toasters on kitchenaid.com, through Dec 26. Only select models are included.",
+   "pages": [
+    "black-friday",
+    "for-the-kitchen"
+   ],
+   "image": "cat-kitchen",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "1845109",
+    "link_name": "The Black Friday Event! Save up to $40 off select Toasters!",
+    "terms": "The Black Friday Event! Save up to $40 off select Toasters! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
+    "code": "",
+    "starts": "2026-11-15T05:00:00Z",
+    "ends": "2026-12-27T04:59:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17388567-1794637977000",
+    "destination": "https://www.kitchenaid.com/countertop-appliances/toasters/toaster-products"
+   }
+  },
+  {
+   "link_id": "17372901",
+   "merchant": "Peet's Coffee",
+   "title": "20% off sitewide with code EARLYBIRD",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 20
+   },
+   "conditions": [],
+   "summary_ai": "Peet's early Black Friday sale: 20% off sitewide at peets.com with code EARLYBIRD, Nov 19 to Nov 25.",
+   "pages": [
+    "black-friday",
+    "for-mom",
+    "for-dad",
+    "under-25"
+   ],
+   "image": "13970947",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "link_name": "Peets.com Early BFCM Sale: 20% off sitewide 11/19/26 - 11/25/26",
+    "terms": "Peet's National BFCM Sale: 20% off sitewide 11/19/26 - 11/25/26 at Peets.com with code EARLYBIRD",
+    "code": "EARLYBIRD",
+    "starts": "2026-11-19T08:00:00Z",
+    "ends": "2026-11-26T07:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17372901-1793133223000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "17372903",
+   "merchant": "Peet's Coffee",
+   "title": "25% off sitewide with code BFCM2026",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 25
+   },
+   "conditions": [],
+   "summary_ai": "Peet's Black Friday sale: 25% off sitewide at peets.com with code BFCM2026, Nov 26 to Nov 29.",
+   "pages": [
+    "black-friday",
+    "for-mom",
+    "for-dad",
+    "under-25"
+   ],
+   "image": "17125210",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "link_name": "Peets.com Black Friday Sale: 25% off sitewide 11/26/26 - 11/29/26",
+    "terms": "Peet's Coffee Black Friday Sale: 25% off sitewide 11/26/26 - 11/29/26 at Peets.com with code BFCM2026",
+    "code": "BFCM2026",
+    "starts": "2026-11-26T08:00:00Z",
+    "ends": "2026-11-30T07:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17372903-1793133436000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "17372913",
+   "merchant": "Peet's Coffee",
+   "title": "Doorbusters: 30% off a different bundle each day",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 30
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "Peet's doorbusters, Nov 27 to 29: 30% off one bundle per day (medium roast on the 27th, dark roast on the 28th, best sellers on the 29th). No code listed.",
+   "pages": [
+    "black-friday"
+   ],
+   "image": "13970947",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "link_name": "Peets.com Doorbusters Sale: 30% off daily bundles 11/27/26 - 11/29/26",
+    "terms": "Peet's Coffee Doorbusters Sale: 30% off daily bundles 11/27/26 - 11/29/26 at Peets.com. 11/27: Medium Roast Bundle 11/28: Dark Roast Bundle 11/29: Best Sellers Bundle",
+    "code": "",
+    "starts": "2026-11-27T08:00:00Z",
+    "ends": "2026-11-30T07:59:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17372913-1793706979000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "17372910",
+   "merchant": "Peet's Coffee",
+   "title": "Cyber Monday: 25% off sitewide with code BFCM2026",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 25
+   },
+   "conditions": [],
+   "summary_ai": "Peet's Cyber Monday sale: 25% off sitewide at peets.com with code BFCM2026, on Nov 30 only.",
+   "pages": [
+    "cyber-monday",
+    "for-mom",
+    "for-dad"
+   ],
+   "image": "17125210",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2346375",
+    "link_name": "Peets.com Cyber Monday Sale: 25% off sitewide 11/30/26",
+    "terms": "Peet's Coffee Cyber Monday Sale: 25% off sitewide on 11/30/2026 at Peets.com with code BFCM2026",
+    "code": "BFCM2026",
+    "starts": "2026-11-30T08:00:00Z",
+    "ends": "2026-12-01T07:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17372910-1793133773000",
+    "destination": "https://www.peets.com/collections/all-coffees"
+   }
+  },
+  {
+   "link_id": "17383137",
+   "merchant": "Click & Grow",
+   "title": "21% off sitewide with code GROWSALE",
+   "category": "Home",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 21
+   },
+   "conditions": [],
+   "summary_ai": "Click & Grow's partner code GROWSALE takes 21% off sitewide in the US store through Dec 1. The store's own on-site tiers (more off larger orders) are separate, so compare before you apply the code.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-mom",
+    "for-the-kitchen"
+   ],
+   "image": "cat-home",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4297609",
+    "link_name": "Black Friday 2026 - 21% off with code GROWSALE (US)",
+    "terms": "Exclusive CJ partner code GROWSALE: 21% off sitewide at Click & Grow (US store). On-site offer: 20% off sitewide, plus 30% off orders over $180 and 40% off orders over $300. Valid November 3 - December 1, 2026.",
+    "code": "GROWSALE",
+    "starts": "2026-11-09T10:00:00Z",
+    "ends": "2026-12-02T07:59:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17383137-1794247276000",
+    "destination": "https://www.clickandgrow.com/?utm_source=cj&utm_medium=affiliate&utm_campaign=blackfriday2026&utm_content=textlink"
+   }
+  },
+  {
+   "link_id": "17385933",
+   "merchant": "Groupon",
+   "title": "Early Black Friday deals on Groupon",
+   "category": "Experiences",
+   "sold_by": "marketplace",
+   "value": {
+    "kind": "perk",
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Groupon's early Black Friday page, live through Nov 22. The network listing does not name a discount size, so judge each voucher on its own price and fine print.",
+   "pages": [
+    "black-friday"
+   ],
+   "image": "cat-experiences",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "link_name": "Black Friday came early",
+    "terms": "Black Friday Came Early",
+    "code": "",
+    "starts": "2026-11-08T19:01:00Z",
+    "ends": "2026-11-22T18:29:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17385933-1794438029000",
+    "destination": "https://www.groupon.com/landing/black-friday"
+   }
+  },
+  {
+   "link_id": "17380445",
+   "merchant": "Groupon",
+   "title": "Up to 80% off massage and spa deals with code RELAX",
+   "category": "Experiences",
+   "sold_by": "marketplace",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 80
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Groupon massage and spa vouchers, up to 80% off with code RELAX through Nov 22. Local deals: check that a spa near you is included before you buy.",
+   "pages": [
+    "black-friday",
+    "for-mom"
+   ],
+   "image": "cat-experiences",
+   "region": "Local deals",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "link_name": "Black Friday came early",
+    "terms": "Black Friday came early. Top massage & spa deals up to 80% off. Use code: RELAX",
+    "code": "RELAX",
+    "starts": "2026-11-09T05:00:00Z",
+    "ends": "2026-11-23T05:00:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17380445-1793970000000",
+    "destination": "https://www.groupon.com/landing/black-friday"
+   }
+  },
+  {
+   "link_id": "17385951",
+   "merchant": "Groupon",
+   "title": "Up to 80% off things to do with code FUN",
+   "category": "Experiences",
+   "sold_by": "marketplace",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 80
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Groupon's activities sale: up to 80% off days out and things to do with code FUN, Nov 17 to Nov 30. Local deals, so check what's near you.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-teens",
+    "for-dad"
+   ],
+   "image": "cat-experiences",
+   "region": "Local deals",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "link_name": "Things to Do · Code: FUN Days out & activity deals just dropped — up to 80% off.",
+    "terms": "Days out & activity deals just dropped — up to 80% off.",
+    "code": "FUN",
+    "starts": "2026-11-17T19:01:00Z",
+    "ends": "2026-11-30T18:29:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17385951-1794644111000",
+    "destination": "https://www.groupon.com/landing/black-friday"
+   }
+  },
+  {
+   "link_id": "17385953",
+   "merchant": "Groupon",
+   "title": "Up to 80% off car and home services with code CARCARE",
+   "category": "Experiences",
+   "sold_by": "marketplace",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 80
+   },
+   "conditions": [
+    "local"
+   ],
+   "summary_ai": "Groupon car-care and home-service vouchers, up to 80% off with code CARCARE, Nov 20 to Nov 22 only. Local deals.",
+   "pages": [
+    "black-friday",
+    "for-dad"
+   ],
+   "image": "cat-experiences",
+   "region": "Local deals",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "link_name": "Auto & Home · Code: CARCARE Top car & home deals just dropped — up to 80% off.",
+    "terms": "Top car & home deals just dropped — up to 80% off.",
+    "code": "CARCARE",
+    "starts": "2026-11-20T19:01:00Z",
+    "ends": "2026-11-22T18:29:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17385953-1794439350000",
+    "destination": "https://www.groupon.com/landing/black-friday"
+   }
+  },
+  {
+   "link_id": "17382809",
+   "merchant": "Groupon",
+   "title": "Up to 30% off photo books and personalized gifts with code PERSONAL",
+   "category": "Experiences",
+   "sold_by": "marketplace",
+   "value": {
+    "kind": "pct",
+    "upto": true,
+    "amount": 30
+   },
+   "conditions": [],
+   "summary_ai": "Photo books and personalized gifts on Groupon, up to 30% off with code PERSONAL through Nov 30. Leave time for printing and shipping before the holidays.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-mom",
+    "for-dad",
+    "under-50",
+    "under-100"
+   ],
+   "image": "cat-experiences",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "5840172",
+    "link_name": "Turn Memories Into Gifts",
+    "terms": "Photobooks & personalized gifts, up to 30% off with code PERSONAL.",
+    "code": "PERSONAL",
+    "starts": "2026-11-09T05:00:00Z",
+    "ends": "2026-12-01T05:00:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17382809-1794033786000",
+    "destination": "https://www.groupon.com/landing/personalized-gifts"
+   }
+  },
+  {
+   "link_id": "17377654",
+   "merchant": "Budget Pet Care",
+   "title": "25% off pet essentials with code HDAYSALE",
+   "category": "Pets",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 25
+   },
+   "conditions": [],
+   "summary_ai": "Budget Pet Care's holiday sale: 25% off pet essentials with code HDAYSALE, through Dec 30. Prescription items may need your vet's approval.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-pets"
+   ],
+   "image": "17363630",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4250177",
+    "link_name": "Holiday Season Sale",
+    "terms": "Holiday Season Savings Are Here! Enjoy 25% OFF All Pet Essentials - Apply Code HDAYSALE",
+    "code": "HDAYSALE",
+    "starts": "2026-11-03T06:58:00Z",
+    "ends": "2026-12-30T18:30:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-17377654-1793717949000",
+    "destination": "https://www.budgetpetcare.com/?utm_source=cjtext&utm_campaign=holiday-season-2026&Coupon_no=HDAYSALE"
+   }
+  },
+  {
+   "link_id": "17379886",
+   "merchant": "Best Vet Care",
+   "title": "25% off plus free shipping",
+   "category": "Pets",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 25
+   },
+   "conditions": [],
+   "summary_ai": "Best Vet Care's holiday sale: 25% off plus free shipping, through Dec 31. No code is listed in the network terms; check the discount shows in your cart.",
+   "pages": [
+    "black-friday",
+    "for-pets"
+   ],
+   "image": "cat-pets",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4247934",
+    "link_name": "Holiday Sale - Claim 25% Off + Free Shipping",
+    "terms": "Holiday Special - Enjoy 25% Off Your Everything + Free Shipping",
+    "code": "",
+    "starts": "2026-11-05T08:50:00Z",
+    "ends": "2026-12-31T16:26:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17379886-1793898161000",
+    "destination": "https://www.bestvetcare.com/?utm_source=cjtext&utm_campaign=holiday-sale"
+   }
+  },
+  {
+   "link_id": "17231745",
+   "merchant": "M&M's",
+   "title": "Savings on M&M'S gifts",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "perk",
+    "upto": false
+   },
+   "conditions": [
+    "select"
+   ],
+   "summary_ai": "M&M'S gift collection with savings on selected gifts. The listing doesn't give a discount size, so compare prices on mms.com.",
+   "pages": [
+    "black-friday",
+    "under-25",
+    "for-teens"
+   ],
+   "image": "cat-coffee-food",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2603623",
+    "link_name": "Save Now on All Gifts!",
+    "terms": "Save Now on All Gifts!",
+    "code": "",
+    "starts": "2026-01-18T08:00:00Z",
+    "ends": "2027-01-25T08:00:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17231745-1768618176000",
+    "destination": "https://www.mms.com/en-us/shop/gifts-c.html"
+   }
+  },
+  {
+   "link_id": "17249190",
+   "merchant": "M&M's",
+   "title": "Free handheld dispenser on $50+ orders with code GWP50",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "perk",
+    "upto": false
+   },
+   "conditions": [
+    "min_spend"
+   ],
+   "summary_ai": "Free M&M'S handheld dispenser on orders of $50 or more with code GWP50. A bonus item, not a price cut.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "under-50"
+   ],
+   "image": "cat-coffee-food",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2603623",
+    "link_name": "Free Handheld Dispenser on orders $50+ with Code: GWP50",
+    "terms": "Free Handheld Dispenser on orders $50+ with Code: GWP50",
+    "code": "GWP50",
+    "starts": "2026-02-22T08:00:00Z",
+    "ends": "2027-03-01T08:00:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-17249190-1771571399000",
+    "destination": "https://www.mms.com/en-us"
+   }
+  },
+  {
+   "link_id": "17386846",
+   "merchant": "Electronic Express",
+   "title": "5% off sitewide with code NOV5",
+   "category": "Home",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 5
+   },
+   "conditions": [
+    "restrictions"
+   ],
+   "summary_ai": "Electronic Express takes 5% off sitewide with code NOV5 through Nov 30. Some exclusions apply.",
+   "pages": [
+    "black-friday",
+    "cyber-monday",
+    "for-dad",
+    "for-teens",
+    "under-100"
+   ],
+   "image": "cat-home",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7227611",
+    "link_name": "5% Sitewide - NOV5 - November 2026",
+    "terms": "Save 5% sitewide with code NOV5 during November 2026. Some exclusions may apply.",
+    "code": "NOV5",
+    "starts": "2026-11-12T16:30:00Z",
+    "ends": "2026-12-01T05:59:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17386846-1794530477000",
+    "destination": "https://www.electronicexpress.com/"
+   }
+  },
+  {
+   "link_id": "17111922",
+   "merchant": "SINGER",
+   "title": "10% off with code SEW10NOW",
+   "category": "Home",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 10
+   },
+   "conditions": [],
+   "summary_ai": "10% off at singer.com with code SEW10NOW. The network lists no near-term end date.",
+   "pages": [
+    "black-friday",
+    "for-mom"
+   ],
+   "image": "17111922",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7111284",
+    "link_name": "Singer 10% Discount Coupon",
+    "terms": "10% off no expire date",
+    "code": "SEW10NOW",
+    "starts": "2025-06-25T16:42:00Z",
+    "ends": "2027-01-01T05:00:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-17111922-1755112374000",
+    "destination": "https://www.singer.com/"
+   }
+  },
+  {
+   "link_id": "17240828",
+   "merchant": "T-fal",
+   "title": "20% off a first T-fal order with email sign-up",
+   "category": "Kitchen",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 20
+   },
+   "conditions": [
+    "signup",
+    "new_customers"
+   ],
+   "summary_ai": "Join T-fal's email list for 20% off your first order of cookware or appliances. First orders only.",
+   "pages": [
+    "for-the-kitchen"
+   ],
+   "image": "17240828",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "4685883",
+    "link_name": "T-fal – 20% Off Your First Order with Email Signup",
+    "terms": "Join the T-fal newsletter and enjoy 20% off your first order. Discover cookware, appliances, and kitchen must-haves.",
+    "code": "",
+    "starts": "2026-02-01T05:02:00Z",
+    "ends": "2027-01-01T04:59:00Z",
+    "click_url": "https://www.dpbolvw.net/click-101511733-17240828-1776205184000",
+    "destination": "https://t.lt02.net/lp/fam6E4Jn/t-fal-email-signup/?utm_source=CJ&utm_medium=affiliate_marketing&utm_campaign=1WcFqx_US_TEF_CWB_.NSF_.NSSFP_PU_AFFMK_OTHER"
+   }
+  },
+  {
+   "link_id": "15343875",
+   "merchant": "MonthlyClubs.com",
+   "title": "$15 off the Gourmet Chocolate of the Month Club with code SAVE15",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": false,
+    "amount": 15
+   },
+   "conditions": [
+    "membership"
+   ],
+   "summary_ai": "$15 off the Gourmet Chocolate of the Month Club with code SAVE15, through Nov 19. It's a subscription gift, so check the length and renewal terms.",
+   "pages": [
+    "for-mom",
+    "under-50"
+   ],
+   "image": "cat-coffee-food",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2397857",
+    "link_name": "Fall sale! Get $15 off The Gourmet Chocolate of the Month Club",
+    "terms": "The Gourmet Chocolate of the Month Club sends expertly-selected, handmade, artisanal chocolates created by the world's best chocolatiers.",
+    "code": "SAVE15",
+    "starts": "2026-10-20T07:00:00Z",
+    "ends": "2026-11-20T07:00:00Z",
+    "click_url": "https://www.tkqlhce.com/click-101511733-15343875-1792504206000",
+    "destination": "https://www.chocolatemonthclub.com/?utm_source=dynamic&utm_medium=affiliate&utm_campaign=cj"
+   }
+  },
+  {
+   "link_id": "15343876",
+   "merchant": "MonthlyClubs.com",
+   "title": "$15 off the International Wine of the Month Club with code SAVE15",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "usd",
+    "upto": false,
+    "amount": 15
+   },
+   "conditions": [
+    "membership"
+   ],
+   "summary_ai": "$15 off International Wine of the Month Club options with code SAVE15, through Nov 19. Subscription gift; the recipient must be 21+ to receive wine.",
+   "pages": [
+    "for-dad"
+   ],
+   "image": "cat-coffee-food",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2397857",
+    "link_name": "Fall  Sale: Get $15 off International Wine of the Month Club Options!",
+    "terms": "Limited-production, boutique red and white wines representing incredible value and delivering impressive varietal and regional character.",
+    "code": "SAVE15",
+    "starts": "2026-10-20T07:00:00Z",
+    "ends": "2026-11-20T08:00:00Z",
+    "click_url": "https://www.anrdoezrs.net/click-101511733-15343876-1792503834000",
+    "destination": "https://www.winemonthclub.com/?utm_source=dynamic&utm_medium=affiliate&utm_campaign=cj"
+   }
+  },
+  {
+   "link_id": "17030268",
+   "merchant": "Sockwell",
+   "title": "20% off a first Sockwell order with code NEWSOCKS20",
+   "category": "Apparel",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "pct",
+    "upto": false,
+    "amount": 20
+   },
+   "conditions": [
+    "new_customers"
+   ],
+   "summary_ai": "20% off your first order at sockwellusa.com with code NEWSOCKS20. First orders only.",
+   "pages": [
+    "for-dad",
+    "for-mom",
+    "under-25"
+   ],
+   "image": "17030268",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "7200770",
+    "link_name": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+    "terms": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
+    "code": "NEWSOCKS20",
+    "starts": "2025-02-14T15:30:00Z",
+    "ends": "2050-02-14T15:30:00Z",
+    "click_url": "https://www.kqzyfj.com/click-101511733-17030268-1792393086000",
+    "destination": "https://sockwellusa.com/"
+   }
+  },
+  {
+   "link_id": "10570212",
+   "merchant": "Winebasket",
+   "title": "Wine and gourmet gifts under $50",
+   "category": "Coffee & food",
+   "sold_by": "merchant",
+   "value": {
+    "kind": "perk",
+    "upto": false
+   },
+   "conditions": [],
+   "summary_ai": "Winebasket's collection of wine, champagne and gourmet food gifts priced under $50. Registering gets 5% off every order, per the store.",
+   "pages": [
+    "under-50",
+    "for-dad"
+   ],
+   "image": "cat-coffee-food",
+   "region": "",
+   "network": {
+    "name": "CJ",
+    "advertiser_id": "2387081",
+    "link_name": "Wine Gifts Under $50",
+    "terms": "Shop fine wine, champagne, gourmet food gifts under $50 at winebasket.com. Register & receive 5% off every order.",
+    "code": "",
+    "starts": "2019-10-21T18:30:00Z",
+    "ends": "2029-10-21T18:30:00Z",
+    "click_url": "https://www.jdoqocy.com/click-101511733-10570212-1648781334000",
+    "destination": "https://www.winebasket.com/search?pricelevel5=37.99to49.99"
+   }
+  }
+ ],
+ "awin": [
+  {
+   "id": "awin-gourmet-gift-basket",
+   "merchant": "Gourmet Gift Basket Store",
+   "title": "Gift baskets for every budget",
+   "blurb": "Food and snack gift baskets that ship nationwide. No current promo is listed in our feed; check the store for pricing and delivery dates.",
+   "href": "https://www.awin1.com/cread.php?awinmid=33247&awinaffid=2572337&clickref=ddm-gifts&ued=https%3A%2F%2Fwww.gourmetgiftbasketstore.com%2F",
+   "pages": [
+    "for-mom",
+    "for-dad",
+    "black-friday"
+   ]
+  }
+ ]
+}
