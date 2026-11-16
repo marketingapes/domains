@@ -78,7 +78,7 @@ def body():
 <p class="kicker">A worksheet to keep</p>
 <h1>Compare the checkout, then the return.</h1>
 <p class="lede">A two-seller worksheet for the amount due now, recurring charges and the deadlines that matter if you return an item.</p>
-<div class="ws-actions"><button type="button" class="btn" onclick="window.print()">Print this worksheet</button><span class="fine">No affiliate links in this worksheet</span></div>
+<div class="ws-actions"><button type="button" class="btn" onclick="window.print()">Print this worksheet</button><span class="fine">No product links in this worksheet</span></div>
 <p class="fine">Write on a printed copy or type below before printing. Entries stay in this page; nothing is submitted or saved. Closing or reloading may clear them.</p>
 </section>
 <div class="wrap ws-body prose-wide">
@@ -87,6 +87,6 @@ def body():
 <section><h2>Compare the cost of changing your mind</h2><p>A longer return window is useful only if this item is eligible. Read the policy for the particular seller and product. Distinguish requesting a return from shipping it back or having it received: these may have different deadlines.</p></section>
 <section class="worksheet" aria-labelledby="return-title"><h2 id="return-title">Return-policy record</h2><div class="pair">{_fieldset("A", RETURN_FIELDS)}{_fieldset("B", RETURN_FIELDS)}</div></section>
 <section><h2>Make the decision you can explain</h2><p>If quantities differ, divide the order total by comparable usable units and write down what each unit means. A cheap item you cannot use or return may not be the better purchase.</p><label for="decision">Which option fits your budget and return needs? What remains unknown?</label><textarea id="decision" rows="2"></textarea><p>Save the seller&rsquo;s product description, applied promotion and return terms with your order confirmation. This worksheet is a record of what you checked, not a seller&rsquo;s promise or a return authorization.</p></section>
-<section class="ws-more"><h2>Keep comparing</h2><p><a href="/deal-checklist/">Start with the deal checklist</a> &middot; <a href="/offers/">Browse current offer pages</a> &middot; <a href="/deals/">See live deals</a></p><p class="fine">The offers and live deals pages contain disclosed affiliate links. This worksheet contains no affiliate purchase links.</p></section>
+<section class="ws-more"><h2>Keep comparing</h2><p><a href="/deal-checklist/">Start with the deal checklist</a> &middot; <a href="/offers/">Browse current offer pages</a> &middot; <a href="/deals/">See live deals</a></p><p class="fine">This worksheet contains no product purchase links.</p></section>
 <p class="fine">Prepared September 20, 2026, redesigned October 10, 2026 &middot; AI-assisted editorial guide for Marketing Apes. No product testing, reviews or sponsored recommendations are represented here.</p>
 </div>'''

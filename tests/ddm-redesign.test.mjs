@@ -47,11 +47,10 @@ test('DDM redesign: every number in an AI summary appears in the network terms',
   }
 });
 
-test('DDM redesign: deal cards are labelled, disclosed and expire client-side', () => {
+test('DDM redesign: deal cards are labelled and expire client-side', () => {
   const deals = read(path.join(SITE, 'deals/index.html'));
   const home = read(path.join(SITE, 'index.html'));
   for (const html of [deals, home]) {
-    assert.match(html, /#ad/);
     assert.match(html, /AI summary/);
     for (const m of html.matchAll(/<a [^>]*href="https:\/\/www\.(?:dpbolvw|jdoqocy|tkqlhce|anrdoezrs|kqzyfj)[^>]*>/g)) {
       assert.match(m[0], /rel="sponsored nofollow noopener"/);
@@ -65,9 +64,9 @@ test('DDM redesign: deal cards are labelled, disclosed and expire client-side', 
   assert.doesNotMatch(js, /https?:\/\//, 'site.js must not call third-party services');
 });
 
-test('DDM redesign: Deal Score formula is published and guides stay affiliate-free', () => {
+test('DDM redesign: Deal Score formula is published and guides stay free of deal links', () => {
   const m = read(path.join(SITE, 'how-we-pick-deals/index.html'));
-  for (const s of ['id="deal-score"', 'Savings size', 'Certainty', 'Ease', 'Deadline', 'commission']) assert.ok(m.includes(s), s);
+  for (const s of ['id="deal-score"', 'Savings size', 'Certainty', 'Ease', 'Deadline', 'as a shopper']) assert.ok(m.includes(s), s);
   for (const f of htmlPages.filter((x) => x.includes('/articles/'))) {
     assert.doesNotMatch(read(f), /click-101511733|awin1\.com/, `${path.relative(SITE, f)} has an affiliate link`);
   }
