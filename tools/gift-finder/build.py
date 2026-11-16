@@ -70,7 +70,7 @@ def page(site):
 <p class="gf-kicker">{E(c["kicker"])}</p>
 <h1>{E(c["h1"])}</h1>
 <p>{E(c["lede"])}</p>
-<p class="gf-disc"><strong>#ad</strong> Shop links are affiliate links. We may earn a commission if you buy, at no extra cost to you. It never changes which gift ranks first.</p>
+
 </section>
 <div id="gift-finder" data-site="{site}"><p class="gf-empty">Loading gift ideas&hellip;</p></div>
 <noscript><p class="gf-empty">The gift finder needs JavaScript. You can still browse our <a href="/offers/">partner offers</a>.</p></noscript>
@@ -79,7 +79,7 @@ def page(site):
 <ul>
 <li>It only shows products from partner stores we already link to, and every link was opened to confirm it lands on the store's own page.</li>
 <li>Prices and stock come from each store's site when we last checked. Out-of-stock items are left out.</li>
-<li>Picks are ranked by how many of your answers they match, then by fit for your budget. Commission does not affect the order.</li>
+<li>Picks are ranked by how many of your answers they match, then by fit for your budget.</li>
 <li>Your answers stay in this browser tab. Nothing is sent to us.</li>
 </ul>
 </section>

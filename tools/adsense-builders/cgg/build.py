@@ -237,7 +237,7 @@ def home(arts):
       <li><a href="/articles/putting-practice-games/">Putting games that feel like play</a></li>
       <li><a href="/practice-session-planner/">Plan a focused practice session</a></li>
     </ul>
-    <p class="small"><strong>#ad</strong> We also keep one clearly labelled partner offer for outdoor days on our <a href="/offers/" rel="sponsored">offers page</a>. If you buy through it we may earn a commission.</p>
+    <p class="small">We also keep a partner offer for outdoor days on our <a href="/offers/" rel="sponsored">offers page</a>.</p>
   </aside>
 </section>
 """ + FOOT
@@ -327,8 +327,6 @@ PRIVACY = f"""<p class="small">Last updated: <time datetime="{UPDATED}">{UPDATED
 <p>If you are in a region where consent is required before personalised ads are shown (such as the European Economic Area or the United Kingdom), you may be shown a consent message provided through Google's certified consent tools, and you can change your choice at any time.</p>
 <h2>Analytics</h2>
 <p>We use Google Analytics and Google Tag Manager to understand how visitors use the site, for example which articles are popular and how people find us. These tools use cookies and collect information such as pages visited, time on page, approximate location derived from IP address, and device and browser details. This information is aggregated and helps us improve our content. You can learn more at <a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a> and can install the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Google Analytics opt-out browser add-on</a>.</p>
-<h2>Affiliate links</h2>
-<p>Our <a href="/offers/">offers page</a> contains a clearly labelled affiliate link. If you click it, the partner may use cookies to record that you came from us so that we can earn a commission if you make a purchase.</p>
 <h2>How we use information</h2>
 <ul>
 <li>To operate, secure and improve the website.</li>
@@ -359,8 +357,8 @@ TERMS = f"""<p class="small">Last updated: <time datetime="{UPDATED}">{UPDATED_H
 <p>{BRAND} does not operate a golf course and does not take bookings or payments for play.</p>
 <h2>Intellectual property</h2>
 <p>The text and illustrations on this site are owned by {BRAND} unless otherwise noted. You may share links and short quotations with attribution. Please do not republish whole articles or illustrations without permission. You are welcome to print a page for personal, non-commercial use, such as a scorecard idea for a family party.</p>
-<h2>Advertising and affiliate links</h2>
-<p>The site shows ads, including ads from Google AdSense, and may contain clearly labelled affiliate links. We are not responsible for the products, services or content of advertisers or linked websites. See our <a href="/privacy/">privacy policy</a> for how advertising cookies work.</p>
+<h2>Advertising</h2>
+<p>The site shows ads, including ads from Google AdSense. We are not responsible for the products, services or content of advertisers or linked websites. See our <a href="/privacy/">privacy policy</a> for how advertising cookies work.</p>
 <h2>No warranty</h2>
 <p>We work to keep content accurate and up to date, but the site is provided "as is" without warranties of any kind. To the fullest extent allowed by law, we are not liable for any loss arising from use of the site.</p>
 <h2>Changes</h2>

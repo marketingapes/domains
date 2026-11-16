@@ -50,7 +50,7 @@ def vice(sid):
 
 def a_aff(href, offer, label, cls="btn aff-btn"):
     return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored noopener" target="_blank" '
-            f'data-offer="{offer}">{label}</a> <span class="aff-tag">Affiliate link</span>')
+            f'data-offer="{offer}">{label}</a>')
 
 
 IGS_BF = "https://shopindoorgolf.com/collections/black-friday-golf-simulator-deals"
@@ -264,12 +264,12 @@ def article_crumbs(rel, h):
 
 
 # ---------------------------------------------------------------- gear boxes + side-game strip
-NOTE = ('<p class="aff-note">#ad: we may earn a commission if you buy through this link, at no extra cost to you. '
+NOTE = (''
         '<a href="/offers/#disclosure">How this works</a>.</p>')
 
 
 def gbox(title, body, link):
-    return (f'<aside class="aff-box" data-cgg="nov15-gear"><p class="aff-label">#ad &middot; Gear for the game</p>'
+    return (f'<aside class="aff-box" data-cgg="nov15-gear"><p class="aff-label">Gear for the game</p>'
             f'<h3>{title}</h3><p>{body}</p><p class="aff-cta">{link}</p>{NOTE}</aside>\n')
 
 
@@ -456,15 +456,13 @@ def bf_page():
     main = f'''<main id="main">
 <section class="dhero gift"><div class="wrap"><div class="in"><div>
   <p class="crumbs"><a href="/">Home</a> / <a href="/gear/">Gear &amp; Gifts</a> / <span>Black Friday deals</span></p>
-  <p class="kicker">#ad &middot; Deals &middot; Prices checked {CHECKED_H}</p>
+  <p class="kicker">Deals &middot; Prices checked {CHECKED_H}</p>
   <h1>Black Friday Golf Deals <em>2026</em></h1>
   <p class="stamp">Only sales we can link to. Only prices we saw on the shop's own page.</p>
   <p class="lead">Black Friday is Friday 27 November 2026 and Cyber Monday is Monday 30 November. Two of the golf shops we work with already have their sales running. Here is what they listed on {CHECKED_H}, with the date, so you know how fresh it is.</p>
 </div><div class="ph-col"><figure class="ph r43">{hero_img}<figcaption class="cred">Illustrative photo, not a product we link to. Photo: Brian J. McDermott / <a href="https://commons.wikimedia.org/wiki/File:2009_US_Open_-_Nike_golf_balls_(3648699153).jpg" rel="noopener">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="license noopener">CC BY 2.0</a></figcaption></figure></div></div></div></section>
 <div class="wrap narrow prose page-body">
-<div class="aff-disclosure big" id="disclosure" data-aff="disclosure">
-  <p><strong>#ad &middot; Affiliate disclosure.</strong> This page contains affiliate links, each labelled &ldquo;Affiliate link&rdquo;. If you buy through one, Crazy Golf Game (published by Marketing Apes LLC) may earn a commission. You pay the same price. We have not used every product listed; we copy the shop's own price and &ldquo;was&rdquo; price on the date shown. Partners do not see or approve this page.</p>
-</div>
+
 <p class="note"><strong>How we check:</strong> we open each shop's sale page and copy the listed sale price and the shop's own comparison (&ldquo;was&rdquo; or compare-at) price. We update this page by hand, so a price can change after the date shown. Always check the price in your basket.</p>
 
 <h2 id="vice">Vice Golf: Black Friday is live</h2>
@@ -506,7 +504,7 @@ def bf_page():
 <h2 id="faq-h">Frequently asked questions</h2>
 <details><summary>When is Black Friday 2026?</summary><p>Friday 27 November 2026. Cyber Monday is Monday 30 November 2026.</p></details>
 <details><summary>Are these the lowest prices of the year?</summary><p>We can't promise that. We only show what each shop listed on the date we checked, next to the shop's own &ldquo;was&rdquo; price.</p></details>
-<details><summary>Do you earn money from these links?</summary><p>Yes. Links marked &ldquo;Affiliate link&rdquo; may earn us a commission if you buy, at no extra cost to you.</p></details>
+
 </section>
 <p class="note">Prices checked {CHECKED_H}. Prices, stock and promotions change often and are set by each retailer.</p>
 </div>

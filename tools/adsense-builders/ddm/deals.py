@@ -109,7 +109,7 @@ def public_feed():
             "gift_for": d.get("gift_for", []),
         })
     return {"source": FEED["source"], "checked_at": CHECKED_AT, "score_formula": "/how-we-pick-deals/#deal-score",
-            "disclosure": "Links are affiliate links. Discount Deal Me may earn a commission; it never changes your price or the Deal Score.",
+            "disclosure": "",
             "count": len(items), "deals": items}
 
 
@@ -155,7 +155,7 @@ def card(d, sid, compact=False, heading="h3"):
 <details class="deal-details"><summary>Network terms and score breakdown</summary>
 <p class="terms"><strong>Terms as published by {E(d["merchant"])} through {n["name"]}:</strong> {E(n["terms"] or n["link_name"])}</p>
 {breakdown(d)}
-<p class="checked">Checked against the {n["name"]} affiliate feed <time datetime="{CHECKED_AT}" data-checked>{checked_human()}</time>. We did not verify individual product prices.</p>
+<p class="checked">Checked against the {n["name"]} feed <time datetime="{CHECKED_AT}" data-checked>{checked_human()}</time>. We did not verify individual product prices.</p>
 </details>
 </article>'''
 

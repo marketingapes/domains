@@ -37,7 +37,7 @@ e = html.escape
 SIGNUP_HOOK = "https://hook.us2.make.com/slmuyswz99f297vw6uw4a79jlekuqof7"
 SIGNUP_CONSENT_VERSION = "DDM_EMAIL_2026-10-09_V1"
 SIGNUP_CONSENT = ("Yes, email me deal alerts and shopping guides from Discount Deal Me. "
-                  "About one email a week, more around big sales. Some emails include affiliate links (#ad). "
+                  "About one email a week, more around big sales. "
                   "Unsubscribe any time with one click.")
 
 LIVE = deals.deals()
@@ -96,8 +96,7 @@ def nav(active=""):
     def a(href, label, key):
         cur = ' aria-current="page"' if key == active else ""
         return f'<a href="{href}"{cur}>{label}</a>'
-    return f'''<div class="topbar"><div class="wrap topbar-inner"><span><b>#ad</b> Deal links are affiliate links. They never change your price or a deal's score.</span> <a href="/how-we-pick-deals/#money">How we make money</a></div></div>
-<header class="site-head">
+    return f'''<header class="site-head">
 <div class="wrap head-inner">
 <a class="logo" href="/" aria-label="{BRAND} home"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Discount Deal Me</span></a>
 <nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
@@ -110,11 +109,11 @@ def nav(active=""):
 FOOT_LINKS = f'''<div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>Discount Deal Me</span></a>
 <p class="foot-tag">Network-checked deals, scored with a published formula, summarized by labelled AI. Plus guides to paying less.</p></div>
-<nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores <small>(#ad)</small></a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
+<nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores</a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
 <nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
 <nav aria-label="Company"><h2 class="foot-h">Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
 </div>
-<div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout. Some links are affiliate links (#ad).</p></div>
+<div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout.</p></div>
 </footer>
 <script src="/assets/site.js?v={ASSET_V}" defer></script>
 <script src="/assets/signup.js?v={ASSET_V}" defer></script>
@@ -178,7 +177,7 @@ The <a href="/deals/">deal finder</a> lists only offers that have not yet reache
 <div class="hero-copy">
 {feed_status()}
 <h1>Today's best deals, scored and checked.</h1>
-<p class="lede">We pull live offers straight from merchants' official affiliate programs, rank every one with a published Deal Score, and use AI to summarize the fine print. No invented codes, no made-up "was" prices, no fake reviews.</p>
+<p class="lede">We pull live offers straight from merchants' official deal programs, rank every one with a published Deal Score, and use AI to summarize the fine print. No invented codes, no made-up "was" prices, no fake reviews.</p>
 <form class="big-search" action="/deals/" method="get" role="search">
 <label class="sr-only" for="home-q">Search live deals</label>
 <input id="home-q" name="q" type="search" placeholder='Try "kitchen ending soon" or "no code"' autocomplete="off">
@@ -189,8 +188,8 @@ The <a href="/deals/">deal finder</a> lists only offers that have not yet reache
 <aside class="hero-panel" aria-label="How every deal is handled">
 <figure class="hero-photo"><img src="/images/photos/hero-1200.webp" srcset="/images/photos/hero-640.webp 640w, /images/photos/hero-1200.webp 1200w" sizes="(min-width:960px) 480px, 100vw" alt="{e(images.hero()["alt"])}" width="1200" height="800" fetchpriority="high" decoding="async"></figure>
 <ol class="pipeline">
-<li><span class="step">1</span><div><b>Pulled from the source</b><p>Offers come from the merchant's own affiliate program feed, with the network's start and end dates.</p></div></li>
-<li><span class="step">2</span><div><b>Scored by formula</b><p>A 0&ndash;100 Deal Score from savings size, certainty, ease and deadline. Our commission is never an input.</p></div></li>
+<li><span class="step">1</span><div><b>Pulled from the source</b><p>Offers come from the merchant's own deal-program feed, with the network's start and end dates.</p></div></li>
+<li><span class="step">2</span><div><b>Scored by formula</b><p>A 0&ndash;100 Deal Score from savings size, certainty, ease and deadline. The formula uses shopper-side factors only.</p></div></li>
 <li><span class="step">3</span><div><b>Summarized by AI, labelled</b><p>Every summary is marked "AI summary" and sits next to the merchant's own terms.</p></div></li>
 <li><span class="step">4</span><div><b>Expired deals disappear</b><p>Your browser hides a deal the moment its end time passes.</p></div></li>
 </ol>
@@ -219,7 +218,7 @@ The <a href="/deals/">deal finder</a> lists only offers that have not yet reache
 
 <section class="wrap section" aria-labelledby="guides-h">
 <div class="sec-head"><div><p class="kicker">Shopping guides</p><h2 id="guides-h">Know a real deal when you see one</h2></div><a class="sec-link" href="/articles/">All 12 guides</a></div>
-<p class="sec-lede">Twelve plain-English guides to reference prices, coupon stacking, price tracking, cashback, returns and budgeting. They contain no affiliate links.</p>
+<p class="sec-lede">Twelve plain-English guides to reference prices, coupon stacking, price tracking, cashback, returns and budgeting. They contain no product links.</p>
 <div class="guide-grid">{guides}</div>
 </section>
 
@@ -257,9 +256,9 @@ The <a href="/deals/">deal finder</a> lists only offers that have not yet reache
 <div class="trust">
 <div><p class="kicker">Our rules</p><h2 id="trust-h">What we will never do</h2><p>Discount Deal Me earns money when you buy through some links. These rules keep that from bending what we show you.</p><a class="sec-link" href="/how-we-pick-deals/">How we pick deals</a></div>
 <ul class="rules">
-<li><b>No invented codes or prices.</b> Every code and date comes from the merchant's affiliate program. We do not publish item prices we have not seen.</li>
+<li><b>No invented codes or prices.</b> Every code and date comes from the merchant's deal program. We do not publish item prices we have not seen.</li>
 <li><b>No fake reviews or user counts.</b> We do not claim to have tested products and we do not show ratings or "people bought" numbers.</li>
-<li><b>Commission never sets the score.</b> The Deal Score uses shopper-side factors only, and the formula is public.</li>
+<li><b>The score uses shopper-side factors only.</b> The formula is public.</li>
 <li><b>AI is labelled.</b> Summaries written by AI say so, sit beside the original terms, and are checked so their numbers match those terms.</li>
 </ul>
 </div>
@@ -269,7 +268,7 @@ The <a href="/deals/">deal finder</a> lists only offers that have not yet reache
     ld = {"@context": "https://schema.org", "@type": "WebSite", "name": BRAND, "url": HOST + "/",
           "potentialAction": {"@type": "SearchAction", "target": HOST + "/deals/?q={search_term_string}", "query-input": "required name=search_term_string"}}
     body += f'\n<script type="application/ld+json">{json.dumps(ld)}</script>'
-    return page(BRAND, "Live deals from official affiliate programs, ranked by a published Deal Score, with labelled AI summaries of the fine print. Plus plain-English guides to spotting a real deal.", "/", body, "home", own_signup=True)
+    return page(BRAND, "Live deals from official merchant programs, ranked by a published Deal Score, with labelled AI summaries of the fine print. Plus plain-English guides to spotting a real deal.", "/", body, "home", own_signup=True)
 
 
 # ---------------------------------------------------------------- deal finder
@@ -281,9 +280,9 @@ def deals_page():
     body = f'''<section class="wrap page-head">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>Live deals</span></nav>
 <h1>Live deals</h1>
-<p class="lede">Every offer below comes from a merchant's affiliate program feed and is ranked by our <a href="/how-we-pick-deals/#deal-score">Deal Score</a>. Search in plain English: try "kitchen deals ending soon", "no code", "30% off" or "tickets in LA".</p>
+<p class="lede">Every offer below comes from a merchant's deal-program feed and is ranked by our <a href="/how-we-pick-deals/#deal-score">Deal Score</a>. Search in plain English: try "kitchen deals ending soon", "no code", "30% off" or "tickets in LA".</p>
 {feed_status("feed-status-page")}
-<p class="disclose"><b>#ad</b> The "Get deal" buttons are affiliate links. If you buy, Discount Deal Me may earn a commission at no extra cost to you. It never changes the price or the Deal Score.</p>
+
 </section>
 <section class="wrap finder" aria-label="Deal finder">
 <div class="finder-bar">
@@ -304,9 +303,9 @@ def deals_page():
 </section>
 <section class="wrap section narrow-sec">
 <h2>About these deals</h2>
-<p>This page lists time-limited offers and ongoing store perks that merchants publish through the Commission Junction (CJ) affiliate network to Discount Deal Me. We keep the merchant's own wording in "Network terms" on every card, add a short summary written by AI, and score each offer the same way. We do not see or verify individual item prices, so always compare the price in your cart with other sellers. If a deal does not work as described, <a href="/contact/">tell us</a> and we will check it and remove it if needed.</p>
+<p>This page lists time-limited offers and ongoing store perks that merchants publish through the Commission Junction (CJ) network to Discount Deal Me. We keep the merchant's own wording in "Network terms" on every card, add a short summary written by AI, and score each offer the same way. We do not see or verify individual item prices, so always compare the price in your cart with other sellers. If a deal does not work as described, <a href="/contact/">tell us</a> and we will check it and remove it if needed.</p>
 </section>'''
-    return page("Live deals", "Search live deals from official affiliate programs, filter by category, ending soon or no code needed, and see a transparent Deal Score for every offer.", "/deals/", body, "deals")
+    return page("Live deals", "Search live deals from official merchant programs, filter by category, ending soon or no code needed, and see a transparent Deal Score for every offer.", "/deals/", body, "deals")
 
 
 # ---------------------------------------------------------------- method
@@ -317,16 +316,16 @@ def method_page():
     body = f'''<section class="wrap page-head narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>How we pick deals</span></nav>
 <h1>How we pick, score and check deals</h1>
-<p class="lede">Discount Deal Me is part software, part editorial. Here is exactly where the deals come from, how the Deal Score is calculated, what our AI does and does not do, and how we make money.</p>
+<p class="lede">Discount Deal Me is part software, part editorial. Here is exactly where the deals come from, how the Deal Score is calculated, and what our AI does and does not do.</p>
 </section>
 <section class="wrap narrow prose">
 <h2 id="sources">Where the deals come from</h2>
-<p>Deals come from merchants' affiliate programs on the Commission Junction (CJ) network, through Discount Deal Me's own publisher account. Each offer arrives with the merchant's wording, a start and end date, any promo code, and a tracking link. We only list programs we have joined, and we only publish codes that the merchant issued to affiliates. We do not scrape coupon sites, and we do not accept user-submitted codes.</p>
+<p>Deals come from merchants' deal programs on the Commission Junction (CJ) network, through Discount Deal Me's own publisher account. Each offer arrives with the merchant's wording, a start and end date, any promo code, and a tracking link. We only list programs we have joined, and we only publish codes that the merchant issued. We do not scrape coupon sites, and we do not accept user-submitted codes.</p>
 <p>We then choose which offers to show. We skip offers that look stale (for example last year's holiday codes left running), offers aimed only at other countries, health products that need a doctor's input, software keys sold by third-party resellers, and anything we would not be comfortable buying ourselves.</p>
 <h2 id="checked">What "checked" means</h2>
 <p>The time next to "Terms checked" is the last time we pulled the offer from the network and confirmed it was still active for our account. It means the merchant was still publishing that offer, with those terms and that end date, at that moment. It does not mean we checked the price of every item, and merchants can change or end an offer early. Your browser hides a deal automatically once its end time passes.</p>
 <h2 id="deal-score">The Deal Score (0&ndash;100)</h2>
-<p>Every deal gets the same four-part score. The inputs are things that matter to you as a shopper. Our commission, the network's earnings-per-click figures and how much a merchant pays us are never inputs.</p>
+<p>Every deal gets the same four-part score. The inputs are things that matter to you as a shopper. Earnings figures and how a deal is paid for are never inputs.</p>
 <div class="table-wrap"><table>
 <caption>Deal Score components</caption>
 <thead><tr><th>Component</th><th>How it is scored</th><th class="num">Max</th></tr></thead>
@@ -348,12 +347,12 @@ def method_page():
 <p>Each deal has a one- or two-sentence summary marked <span class="ai-tag">AI summary</span>. It is written by an AI model from the merchant's network terms, to turn dense promotional wording into something you can scan. Before a summary is published, an automated check confirms that every number in it (percentages, dollar amounts, dates) appears in the merchant's terms; if it does not, our release checks fail and the update is not published. The original terms are always one click away on the card.</p>
 <p>The search box on the <a href="/deals/">deal finder</a> is smart in a simpler way: it runs in your browser and recognises categories, "ending soon", "no code", "free shipping", percentages and a few places. It is not a chatbot and it does not send what you type anywhere.</p>
 <p>AI does not choose which deals to list, does not set the score and does not write our <a href="/articles/">guides</a>' advice on its own; people decide what goes on the site and review changes before they are published.</p>
-<h2 id="money">How we make money</h2>
-<p>When you buy through a "Get deal" button, the affiliate network may pay Discount Deal Me a commission. You pay the same price. We also show ads served by Google AdSense. Merchants do not pay to be listed, cannot buy a higher score and do not review what we write. Our <a href="/articles/">guides</a> contain no affiliate links.</p>
+<h2 id="money">Advertising and independence</h2>
+<p>We show ads served by Google AdSense. Merchants do not pay to be listed, cannot buy a higher score and do not review what we write. Our <a href="/articles/">guides</a> contain no product links.</p>
 <h2 id="mistakes">If a deal is wrong</h2>
 <p>Merchants sometimes end offers early or change terms. If a deal does not work as described, <a href="/contact/">contact us</a> with the deal name and what happened. We check it against the network and remove or correct it.</p>
 </section>'''
-    return page("How we pick deals", "Where Discount Deal Me's deals come from, the exact Deal Score formula, what our AI summaries do, what 'checked' means and how the site makes money.", "/how-we-pick-deals/", body, "method")
+    return page("How we pick deals", "Where Discount Deal Me's deals come from, the exact Deal Score formula, what our AI summaries do, and what 'checked' means.", "/how-we-pick-deals/", body, "method")
 
 
 # ---------------------------------------------------------------- articles
@@ -377,7 +376,7 @@ def article_page(a):
 <header class="art-head">
 <span class="gcard-cat">{a["cat"]}</span>
 <h1>{a["title"]}</h1>
-<p class="byline">By the Discount Deal Me team &middot; Updated <time datetime="{UPDATED}">{UPDATED_H}</time> &middot; {mins} min read &middot; No affiliate links in this guide</p>
+<p class="byline">By the Discount Deal Me team &middot; Updated <time datetime="{UPDATED}">{UPDATED_H}</time> &middot; {mins} min read &middot; No product links in this guide</p>
 </header>
 <div class="art-layout">
 <div class="art-main">
@@ -386,7 +385,7 @@ def article_page(a):
 {a["body"]}
 <figure class="art-diagram"><img src="/images/{a["slug"]}.svg" alt="{e(svgs.ART[a["slug"]][0])}" loading="lazy" width="1200" height="675"><figcaption>At a glance: {e(a["short"])}</figcaption></figure>
 <section class="faq" aria-labelledby="faq-h"><h2 id="faq-h">Frequently asked questions</h2>{faq}</section>
-<div class="art-foot">Discount Deal Me writes general shopping guides. Guides contain no affiliate links and no coupon codes, and we are not affiliated with the stores mentioned in general terms. Always check current prices and terms with the retailer.</div>
+<div class="art-foot">Discount Deal Me writes general shopping guides. Guides contain no product links and no coupon codes, and we are not affiliated with the stores mentioned in general terms. Always check current prices and terms with the retailer.</div>
 </div>
 </div>
 {sidebar()}
@@ -415,7 +414,7 @@ def articles_index():
 <section class="wrap narrow section">
 <h2>What you'll find here</h2>
 <p>Discount Deal Me covers the mechanics of shopping well: how reference prices work, the order discounts are applied in, how cashback tracking can break, what a restocking fee is, how pack sizes hide price changes and how to keep sale season from swallowing a budget. Each guide includes a table or checklist you can use straight away, a short FAQ and links to related guides.</p>
-<p>Guides contain no affiliate links, coupon codes, product rankings or star ratings. Live offers live separately on the <a href="/deals/">deal finder</a>, where every link is labelled and every deal is scored the same way.</p>
+<p>Guides contain no product links, coupon codes, product rankings or star ratings. Live offers live separately on the <a href="/deals/">deal finder</a>, where every deal is scored the same way.</p>
 </section>'''
     return page("Shopping guides", "Every Discount Deal Me guide in one place: spotting real deals, coupon stacking, price tracking, cashback, returns, sale seasons, unit pricing and budgeting.", "/articles/", body, "articles")
 
@@ -425,25 +424,25 @@ def about():
     body = f'''<section class="wrap page-head narrow">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>About</span></nav>
 <h1>About Discount Deal Me</h1>
-<p class="lede">Discount Deal Me is a small, independent deal site. We list live offers from merchants' official affiliate programs, score them with a formula anyone can read, and publish plain-English guides to shopping well.</p>
+<p class="lede">Discount Deal Me is a small, independent deal site. We list live offers from merchants' official deal programs, score them with a formula anyone can read, and publish plain-English guides to shopping well.</p>
 </section>
 <section class="wrap narrow prose">
 <h2>What we do</h2>
-<p>Most deal sites are a wall of codes that may or may not work. We take a narrower approach. Offers come straight from the merchant's affiliate program, so the code, the dates and the terms are the merchant's own. Every deal gets the same <a href="/how-we-pick-deals/#deal-score">Deal Score</a>, a short summary of the fine print written by AI and clearly labelled, and an automatic end time so expired deals disappear. Alongside the deals, our <a href="/articles/">guides</a> explain how reference prices work, how coupons and cashback combine, how to read a return policy in a minute and how to keep a budget that survives sale season.</p>
+<p>Most deal sites are a wall of codes that may or may not work. We take a narrower approach. Offers come straight from the merchant's deal program, so the code, the dates and the terms are the merchant's own. Every deal gets the same <a href="/how-we-pick-deals/#deal-score">Deal Score</a>, a short summary of the fine print written by AI and clearly labelled, and an automatic end time so expired deals disappear. Alongside the deals, our <a href="/articles/">guides</a> explain how reference prices work, how coupons and cashback combine, how to read a return policy in a minute and how to keep a budget that survives sale season.</p>
 <h2>Who runs it</h2>
 <p>The site is published by Marketing Apes, a US digital marketing company. Software pulls and scores offers; people decide which merchants and deals to list, write and edit the guides, and review every change before it goes live. We do not claim special credentials, and we do not present opinions as expert testimony. Where a topic touches on money management, such as credit card rewards or budgeting, we keep to general, widely accepted information and say clearly that it is not personal financial advice.</p>
 <h2>Our editorial rules</h2>
 <ul class="checklist">
-<li><strong>Only merchant-issued codes.</strong> Any code we show was issued by the merchant to affiliates through its program. We never publish codes from coupon aggregators or guesses.</li>
+<li><strong>Only merchant-issued codes.</strong> Any code we show was issued by the merchant through its program. We never publish codes from coupon aggregators or guesses.</li>
 <li><strong>No fake testing or reviews.</strong> We do not claim to have tested products, and we do not publish star ratings, testimonials, rankings of products or "people bought this" counts.</li>
-<li><strong>Commission does not set the score.</strong> The Deal Score uses shopper-side factors only. The formula is public.</li>
+<li><strong>The score uses shopper-side factors only.</strong> The formula is public.</li>
 <li><strong>AI is labelled.</strong> AI-written summaries say so and sit beside the merchant's original terms.</li>
 <li><strong>Corrections welcome.</strong> If something is wrong or out of date, <a href="/contact/">tell us</a> and we will review it.</li>
 </ul>
 <h2>How the site is funded</h2>
-<p>Discount Deal Me earns affiliate commissions when you buy through the labelled deal links, and shows advertising served by Google AdSense. Neither changes the price you pay. Merchants do not pay to be listed and do not review what we write, and our guides contain no affiliate links. More detail is on <a href="/how-we-pick-deals/#money">how we make money</a>.</p>
+<p>Discount Deal Me shows advertising served by Google AdSense. Merchants do not pay to be listed and do not review what we write, and our guides contain no product links. More detail is on <a href="/how-we-pick-deals/#money">advertising and independence</a>.</p>
 <h2 id="image-credits">Image credits</h2>
-<p>Deal photos of products, venues and attractions come from each merchant's own product feed in its affiliate program. Other photos are from <a href="https://unsplash.com/license" rel="nofollow noopener">Unsplash</a>, used under the Unsplash License. Thanks to {images.credit_names()}.</p>
+<p>Deal photos of products, venues and attractions come from each merchant's own product feed. Other photos are from <a href="https://unsplash.com/license" rel="nofollow noopener">Unsplash</a>, used under the Unsplash License. Thanks to {images.credit_names()}.</p>
 <h2>Get in touch</h2>
 <p>Questions, corrections and deal problems are always welcome. Visit the <a href="/contact/">contact page</a> or email <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </section>'''
@@ -500,9 +499,7 @@ def privacy():
 <p>We use Google Tag Manager to load site measurement tools, which may include Google Analytics. These tools use cookies or similar technologies to help us understand how visitors use the site, for example which guides are read most, so we can improve it. Google processes this information under its own privacy policy. You can prevent Google Analytics from using your data with the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">Google Analytics opt-out browser add-on</a>, and you can block or delete cookies in your browser settings.</p>
 <h2 id="email-list">Our email list</h2>
 <p>Joining is optional and needs you to tick the consent box. Your sign-up is sent through our automation provider (Make) and stored in a private Google Sheet that only Discount Deal Me can access. We use it only to send Discount Deal Me emails: deal alerts and shopping guides, roughly once a week and more often around major sales. Emails are sent from a Google Workspace mailbox using a mail-merge tool (GMass), which records opens, clicks and unsubscribes so we can honour opt-outs and stop sending to inactive addresses.</p>
-<p>Some emails contain affiliate links marked #ad; if you buy through them we may earn a commission at no extra cost to you. We never sell or rent your email address and do not share it with advertisers. Every email has a one-click unsubscribe link, and you can also ask us to remove you by emailing <a href="mailto:{EMAIL}">{EMAIL}</a>. We delete addresses on request and remove ones that repeatedly bounce.</p>
-<h2>Affiliate links</h2>
-<p>The "Get deal" buttons on our <a href="/deals/">deal pages</a> and the links on our <a href="/offers/">partner stores page</a> are affiliate links, marked #ad. When you click one, the affiliate network and retailer may set cookies to record that you came from our site, so a commission can be credited if you make a purchase. Their use of that information is governed by their own privacy policies.</p>
+<p>We never sell or rent your email address and do not share it with advertisers. Every email has a one-click unsubscribe link, and you can also ask us to remove you by emailing <a href="mailto:{EMAIL}">{EMAIL}</a>. We delete addresses on request and remove ones that repeatedly bounce.</p>
 <h2>How we use information</h2>
 <ul>
 <li>To operate, secure and improve the website.</li>
@@ -520,7 +517,7 @@ def privacy():
 <h2>Changes and contact</h2>
 <p>We may update this policy from time to time and will change the "last updated" date above when we do. Questions about privacy can be sent to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 </section>'''
-    return page("Privacy Policy", "How Discount Deal Me handles information: Google AdSense advertising cookies and opt-outs, Google Analytics and Tag Manager, affiliate links and your choices.", "/privacy/", body)
+    return page("Privacy Policy", "How Discount Deal Me handles information: Google AdSense advertising cookies and opt-outs, Google Analytics and Tag Manager, and your choices.", "/privacy/", body)
 
 
 def terms():
@@ -535,10 +532,10 @@ def terms():
 <p>Discount Deal Me publishes general information about shopping, discounts and budgeting. It is not financial, legal or tax advice, and it is not tailored to your circumstances. Store prices, policies, promotions and laws change often and vary by location. Always check current prices and terms directly with the retailer or relevant authority before relying on anything you read here.</p>
 <h2>No guarantee of offers</h2>
 <p>We do not sell products and are not responsible for the goods, services, prices or policies of any retailer. Examples on this site are illustrative. Where we link to third-party offers, the retailer's terms apply, and offers may change or end without notice.</p>
-<h2>Advertising and affiliate links</h2>
-<p>The site displays ads served by Google AdSense, and our deal pages and partner stores page contain clearly labelled affiliate links. We may earn money from ads and qualifying purchases. This does not change the price you pay, and it is not an input to the Deal Score. Ads are not endorsements.</p>
+<h2>Advertising</h2>
+<p>The site displays ads served by Google AdSense. This does not change the price you pay, and it is not an input to the Deal Score. Ads are not endorsements.</p>
 <h2>Deal information, scores and AI summaries</h2>
-<p>Deal terms, codes and dates come from merchants through their affiliate programs and are shown as published at the time we last checked them. Merchants can change or end offers at any time, and we do not verify individual item prices. The Deal Score is our own opinion, calculated with the formula on <a href="/how-we-pick-deals/">how we pick deals</a>. Short deal summaries marked "AI summary" are written by an AI model from the merchant's terms; the merchant's own terms and the retailer's checkout always take precedence.</p>
+<p>Deal terms, codes and dates come from merchants through their deal programs and are shown as published at the time we last checked them. Merchants can change or end offers at any time, and we do not verify individual item prices. The Deal Score is our own opinion, calculated with the formula on <a href="/how-we-pick-deals/">how we pick deals</a>. Short deal summaries marked "AI summary" are written by an AI model from the merchant's terms; the merchant's own terms and the retailer's checkout always take precedence.</p>
 <h2>Intellectual property</h2>
 <p>The text, graphics and design of this site are owned by or licensed to the publisher. You may share links and quote brief excerpts with attribution. You may print our checklists and worksheets for personal use. Please do not republish full articles or illustrations without permission.</p>
 <h2>Acceptable use</h2>
@@ -550,7 +547,7 @@ def terms():
 <h2>Changes and contact</h2>
 <p>We may update these terms and will change the date above when we do. Questions: <a href="mailto:{EMAIL}">{EMAIL}</a>. See also our <a href="/privacy/">privacy policy</a>.</p>
 </section>'''
-    return page("Terms of Use", "The terms of use for Discount Deal Me: general shopping information only, no guarantee of offers, advertising and affiliate disclosure, and content rights.", "/terms/", body)
+    return page("Terms of Use", "The terms of use for Discount Deal Me: general shopping information only, no guarantee of offers, advertising, and content rights.", "/terms/", body)
 
 
 
@@ -578,13 +575,11 @@ def offers_page():
 <div class="store-top"><span class="deal-merchant">{e(o["name"])}</span><span class="deal-cat">{e(o["what"])}</span></div>
 <p>{e(o["blurb"])}</p>
 <a class="btn btn-ghost" rel="sponsored nofollow noopener" data-offer="{o["id"]}" href="{e(o["href"])}">{e(o["cta"])} <span aria-hidden="true">&#8599;</span></a>
-<p class="store-net">Affiliate link via {o["net"]}</p>
 </article>''' for o in OFFERS)
     body = f'''<section class="wrap page-head">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>Partner stores</span></nav>
-<p class="adchip">#ad &middot; Sponsored</p>
 <h1>Partner stores</h1>
-<p class="lede">A short list of stores whose affiliate programs we have joined. These are store links, not time-limited deals; for those, use the <a href="/deals/">deal finder</a>. Commission possible. Your price does not change.</p>
+<p class="lede">A short list of stores we partner with. These are store links, not time-limited deals; for those, use the <a href="/deals/">deal finder</a>. Your price does not change.</p>
 </section>
 <section class="wrap feature-store">
 <div class="feature-img"><img src="/offers/hero.jpg" width="1400" height="1050" alt="A compostable coffee pod beside a mug on a walnut counter at dusk, a small lamp glowing in the window"></div>
@@ -593,7 +588,6 @@ def offers_page():
 <h2>Compostable coffee pods</h2>
 <p>Compostable pods for single-serve machines. Check machine fit, pack size and your city's composting rules on the seller's page; composting rules vary by product and city.</p>
 <a class="btn" rel="sponsored nofollow noopener" data-offer="tayst" href="{e(TAYST)}">See Tayst coffee <span aria-hidden="true">&#8599;</span></a>
-<p class="store-net">Affiliate link via Awin</p>
 </div>
 </section>
 <section class="wrap section">
@@ -614,7 +608,7 @@ document.querySelectorAll('a[rel~="sponsored"]').forEach(function(a){
 });
 </script>
 '''
-    html_ = page("Partner stores", "Stores Discount Deal Me partners with through affiliate programs: Tayst coffee, Gardenreet lighting, Flextail gear, gift baskets, Groupon, All-Clad and M&M'S. Disclosed affiliate links; your price does not change.", "/offers/", body, "", own_signup=True)
+    html_ = page("Partner stores", "Stores Discount Deal Me partners with through deal programs: Tayst coffee, Gardenreet lighting, Flextail gear, gift baskets, Groupon, All-Clad and M&M'S. Your price does not change.", "/offers/", body, "", own_signup=True)
     return html_.replace("</main>\n", "</main>\n" + extra_js, 1)
 
 
@@ -641,7 +635,7 @@ def checklist_page():
 </section>
 <section class="wrap narrow section">
 <div class="note-card"><b>Compare two checkouts.</b> Use the printable <a href="/guides/checkout-comparison/">checkout and return-policy worksheet</a> to compare two sellers side by side.</div>
-<div class="note-card"><b>#ad &middot; If the item is compostable coffee pods.</b> Match your machine, pack size and disposal rules to the exact product page before treating a headline as the checkout total. Our <a href="/offers/" rel="sponsored">partner stores page</a> lists a disclosed Tayst offer (Awin merchant 90529, tracking tag ddm-home). This checklist adds no tracking link and states no commission rate.</div>
+<div class="note-card"><b>If the item is compostable coffee pods.</b> Match your machine, pack size and disposal rules to the exact product page before treating a headline as the checkout total. Our <a href="/offers/" rel="sponsored">partner stores page</a> lists a Tayst offer (Awin merchant 90529, tracking tag ddm-home). This checklist adds no tracking link.</div>
 <p class="fine">Published September 20, 2026, redesigned October 10, 2026. Prepared with AI assistance and reviewed for Marketing Apes.</p>
 </section>'''
     return page("Deal checklist", "A four-point checklist to run before you pay: same item, final total, promotion restrictions and return terms. Printable, and nothing you tick is saved.", "/deal-checklist/", body, "")
@@ -669,7 +663,7 @@ def planner_page():
     gift = sum(1 for d in LIVE if d.get("gift_for"))
     extra = f'<style>{planner.CSS.strip()}</style>\n'
     body = planner.body(len(LIVE), gift) + f'\n<script src="/assets/gift-planner.js?v={ASSET_V}" defer></script>'
-    return page("Holiday gift budget planner", "Set one holiday budget, add the people on your list and their interests, and get a gift plan built from live, checked affiliate deals with codes and end dates.", "/gift-planner/", body, "planner", extra=extra)
+    return page("Holiday gift budget planner", "Set one holiday budget, add the people on your list and their interests, and get a gift plan built from live, checked deals with codes and end dates.", "/gift-planner/", body, "planner", extra=extra)
 
 
 def main():
