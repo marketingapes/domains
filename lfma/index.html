@@ -224,6 +224,15 @@ button, input, select { font: inherit; color: inherit; }
 .center-text { text-align: center; justify-self: center; }
 .demo-num { white-space: nowrap; font: 900 clamp(26px, 8vw, 60px)/1 var(--display); font-stretch: 116%; color: var(--neon); text-decoration: none; font-variant-numeric: tabular-nums; }
 .demo-num:hover { text-decoration: underline; }
+/* Video slot (hidden until a source is set) */
+.vidslot { display: grid; gap: 14px; justify-items: center; text-align: center; padding-bottom: 48px; }
+.vid { position: relative; width: 100%; max-width: 720px; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; border: 1.5px solid var(--neon-line); background: var(--panel) center / cover no-repeat; box-shadow: 0 0 80px rgba(61,255,138,.12); }
+.vid.tall { max-width: 340px; }
+.vid iframe, .vid video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.vid-play { position: absolute; inset: 0; width: 100%; display: grid; place-content: center; justify-items: center; gap: 12px; border: 0; cursor: pointer; background: linear-gradient(180deg, rgba(5,8,6,.15), rgba(5,8,6,.7)); color: var(--ink); font: 600 15px/1.3 var(--body); padding: 16px; }
+.vid-play i { width: 76px; height: 76px; border-radius: 50%; background: var(--neon); display: grid; place-items: center; box-shadow: 0 0 0 8px rgba(61,255,138,.18); }
+.vid-play i::before { content: ""; margin-left: 6px; border-style: solid; border-width: 14px 0 14px 24px; border-color: transparent transparent transparent #03140a; }
+.vid-play:hover i { filter: brightness(1.08); }
 @media (prefers-reduced-motion: no-preference) { .ask-step:not([hidden]) { animation: rise .25s ease; } @keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } } }
 
 .phone { width: min(340px, 100%); margin: 0 auto; border: 2px solid var(--neon-line); border-radius: 38px; padding: 12px; background: var(--panel); box-shadow: 0 0 60px rgba(61,255,138,.12); text-align: left; }
@@ -508,6 +517,18 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     <p class="caption">Holiday Sprint · ends December 1, 2026 · $2,500 flat</p>
     <div class="creds" aria-label="Partner status"><a class="cred" href="https://www.google.com/partners/agency?id=4951017547" target="_blank" rel="noopener"><i aria-hidden="true"></i>Google Premier Partner 2026</a><span class="cred"><i aria-hidden="true"></i>Meta Business Partner</span></div>
   </header>
+
+  <!--
+    VIDEO SLOT (added Nov 16, 2026). Hidden until a source is set on the element below.
+      data-youtube="VIDEO_ID"                 an unlisted or public YouTube video id, or
+      data-mp4="/assets/holiday-sprint.mp4"   a video file in this site
+    Optional: data-poster="/assets/holiday-sprint-poster.jpg", data-ratio="9 / 16" for a vertical phone video.
+    Nothing loads from YouTube until the visitor presses play.
+  -->
+  <div id="video" class="vidslot" data-youtube="" data-mp4="" data-poster="" data-ratio="16 / 9" hidden>
+    <span class="eyebrow">A minute from Kyle</span>
+    <div class="vid" id="vidBox"><button type="button" class="vid-play" id="vidPlay" aria-label="Play Kyle's one-minute video"><i aria-hidden="true"></i><span>Watch: the whole test in a minute</span></button></div>
+  </div>
 
   <!-- Offer and request form: the main part of the page (moved to the top Nov 16, 2026 per Kyle) -->
   <section id="build" class="start" aria-labelledby="build-h">
@@ -1131,6 +1152,32 @@ footer { border-top: 1px solid var(--line); padding-top: 24px; font-size: 12px; 
     sp.src = assets.sofiaPortrait; sp.hidden = false;
     document.getElementById('sofiaPending').hidden = true;
   }
+
+  // ---- Video slot: stays hidden unless a source is set in the markup ----
+  (function () {
+    var slot = document.getElementById('video'); if (!slot) return;
+    var yt = (slot.getAttribute('data-youtube') || '').replace(/[^\w-]/g, ''), mp4 = slot.getAttribute('data-mp4') || '';
+    if (!yt && !mp4) return;
+    var box = document.getElementById('vidBox'), ratio = slot.getAttribute('data-ratio') || '16 / 9';
+    box.style.aspectRatio = ratio;
+    if (/^\s*9\s*\/\s*16\s*$/.test(ratio)) box.classList.add('tall');
+    var poster = slot.getAttribute('data-poster') || (yt ? 'https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg' : '');
+    if (poster) box.style.backgroundImage = 'url("' + poster.replace(/"/g, '') + '")';
+    slot.hidden = false;
+    document.getElementById('vidPlay').addEventListener('click', function () {
+      track('lfma_video_play', { source: yt ? 'youtube' : 'mp4' });
+      var el;
+      if (yt) {
+        el = document.createElement('iframe');
+        el.src = 'https://www.youtube-nocookie.com/embed/' + yt + '?autoplay=1&rel=0&playsinline=1';
+        el.allow = 'autoplay; encrypted-media; picture-in-picture'; el.allowFullscreen = true; el.title = 'A minute from Kyle';
+      } else {
+        el = document.createElement('video');
+        el.src = mp4; el.controls = true; el.autoplay = true; el.playsInline = true;
+      }
+      box.textContent = ''; box.appendChild(el);
+    });
+  })();
 
   document.querySelectorAll('a[data-demo-line]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_demo_line_tap', { placement: a.getAttribute('data-demo-line'), line: 'mva-demo' }); }); });
   document.querySelectorAll('a[data-sofia-demo]').forEach(function (a) { a.addEventListener('click', function () { track('lfma_sofia_demo_click', { placement: a.getAttribute('data-sofia-demo') }); }); });

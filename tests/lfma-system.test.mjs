@@ -53,6 +53,11 @@ test('public system copy stays inside the claim boundary', async () => {
   assert.ok(home.indexOf('id="demo"') < home.indexOf('id="why-now"'), 'demo comes before why-now');
   assert.match(home, /<button type="submit" class="btn block" id="buildBtn">Book time with Kyle<\/button>/);
   assert.doesNotMatch(home, /id="nextBtn"|id="backBtn"|data-step=/);
+  // Video slot: present between the hero and the form, and hidden while no source is set.
+  const slot = home.match(/<div id="video"[^>]*>/);
+  assert.ok(slot, 'video slot exists');
+  assert.ok(home.indexOf('id="video"') < home.indexOf('id="firmForm"'), 'video slot sits above the form');
+  if (/data-youtube=""/.test(slot[0]) && /data-mp4=""/.test(slot[0])) assert.match(slot[0], /\bhidden\b/);
   assert.doesNotMatch(home, /October 19|\$7,500|\$5,000/);
   for (const p of ['/paraquat/"', '/paraquat/talk-to-sofia/"', '/paraquat/quiz/"']) assert.ok(home.includes('https://besttortlawyers.com' + p), p);
   assert.doesNotMatch(home, />Call Sofia to test</);
