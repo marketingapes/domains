@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="ee-thank-you" content="callback">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Request received — Jeffrey Glassman Injury Lawyers</title>
 <meta name="description" content="Your SSDI callback request to Jeffrey Glassman Injury Lawyers was received.">
@@ -17,7 +16,7 @@
      a shared link, ?test=1, a duplicate or an other-options request loads no tags, so nothing is counted twice.
      dataLayer gets generate_lead with lead_id = the receipt only: no names, phone numbers, emails, states or answers. -->
 <script>(function(w,d){var r=null;try{r=JSON.parse(sessionStorage.getItem('ee_ssdi_thanks')||'null')}catch(e){}
-var m=d.querySelector('meta[name="ee-thank-you"]'),kind=m?m.content:'callback';
+var kind='callback';
 if(/(?:^|[?&])test=1(?:&|$)/.test(location.search)||!r||r.conv!==true||r.real!==true||r.kind!==kind||!(Date.now()-r.at<6e5))return;
 w.dataLayer=w.dataLayer||[];var o={event:'generate_lead',page_id:'glassman-ssdi-thank-you',campaign_id:'GLASSMAN-SSDI-002',tenant_id:'glassman'};
 if(typeof r.receipt==='string'&&/^[A-Za-z0-9-]{1,40}$/.test(r.receipt))o.lead_id=r.receipt;w.dataLayer.push(o);

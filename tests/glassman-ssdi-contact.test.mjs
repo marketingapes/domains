@@ -125,10 +125,13 @@ test('every saved request ends on a thank-you page; a phone the intake cannot di
     assert.match(html, new RegExp('<main data-thank-you="' + kind + '">'));
     assert.match(html, new RegExp('<meta name="ee-page-id" content="' + pid + '">'));
     assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
-    assert.match(html, /GTM-PHC7459M/);
-    // Tag Manager loads only for a real first-time lead straight from a form; never for tests, reloads or other options.
-    assert.match(html, /r\.conv!==true\|\|r\.real!==true\|\|r\.kind!==kind/);
-    assert.match(html, /test=1/);
+    // Tag Manager loads only on the callback thank-you page, only for a real first-time lead straight from a form;
+    // never for tests, reloads or duplicates. The other-options page loads no tags at all.
+    if (kind === 'callback') {
+      assert.match(html, /GTM-PHC7459M/);
+      assert.match(html, /r\.conv!==true\|\|r\.real!==true\|\|r\.kind!==kind/);
+      assert.match(html, /test=1/);
+    } else assert.doesNotMatch(html, /GTM-PHC7459M|generate_lead/);
     assert.doesNotMatch(html, /ns\.html\?id=GTM/);
     assert.match(html, /<section id="networkTools"[^>]+hidden/);
     assert.match(html, /thank-you\/network\.js\?v=/);
