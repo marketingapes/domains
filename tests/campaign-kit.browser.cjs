@@ -93,7 +93,8 @@ function serve(livePages) {
           await page.locator('.attorney-photo img').evaluate(img => img.decode());
           await shot(page,`${c.slug}-attorney-${w}`);
           if (process.env.SHOTS) await page.screenshot({path:path.join(process.env.SHOTS,`${c.slug}-full-${w}.jpg`),type:'jpeg',quality:85,fullPage:true});
-          for (const alias of c.legacy_slugs ?? []) {
+          // publish:false (MultiPlan, 2026-11-18): the alias redirects to the hand-built live page, which is not the kit preview.
+          for (const alias of (c.publish === false ? [] : c.legacy_slugs ?? [])) {
             await page.goto(`${base}/c/${alias}/`);
             assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://besttortlawyers.com/c/multiplan/');
             assert.ok(await page.locator('#provider-screen').isVisible());

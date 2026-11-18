@@ -202,8 +202,23 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.match(html, /vanderhahn-logo.png/);
   assert.doesNotMatch(html, /provider-review.svg|firm-monogram/);
   assert.ok(html.indexOf('id="review"') < html.indexOf('id="overview"'));
-  for (const slug of [c.slug, ...c.legacy_slugs]) {
-    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'index.html'),'utf8'), html);
-    assert.equal(readFileSync(join(kit, '..', 'btl', 'c', slug, 'site.css'),'utf8'), renderCss(c));
-  }
+  // 2026-11-18 (Kyle approved go-live): the kit copy is preview-only; btl/c/multiplan/ is the hand-built live page.
+  assert.equal(raw.publish, false);
+  assert.equal(readFileSync(join(kit, 'out', 'multiplan', 'preview', 'index.html'),'utf8'), html);
+  assert.equal(readFileSync(join(kit, 'out', 'multiplan', 'preview', 'site.css'),'utf8'), renderCss(c));
+  const live = readFileSync(join(kit, '..', 'btl', 'c', 'multiplan', 'index.html'),'utf8');
+  assert.match(live, /rel="canonical" href="https:\/\/besttortlawyers.com\/c\/multiplan\/"/);
+  assert.match(live, /name="robots" content="noindex, nofollow"/);
+  assert.match(live, /https:\/\/hook\.us2\.make\.com\/8lnamwwptnsoppvw38t8l4fumv9ey8va/); // Make 6777650: store → receipt
+  assert.match(live, /schema:'btl\.intake\.web\/v1'/);
+  assert.match(live, /campaign_id:CONFIG\.CAMPAIGN_ID/);
+  assert.match(live, /CAMPAIGN_ID: "MULTIPLAN-PILOT-001"/);
+  assert.match(live, /id="consent"[^>]*required/);
+  assert.match(live, /Attorney advertising/);
+  assert.doesNotMatch(live, /kit-preview|nothing is sent|nothing is booked|PREVIEW: true/i);
+  for (const img of ['devin-avatar','devin-studio','devin-sofa-wide']) for (const ext of ['jpg','webp'])
+    assert.ok(readFileSync(join(kit, '..', 'btl', 'c', 'multiplan', 'images', `${img}.${ext}`)).length > 1000, `${img}.${ext}`);
+  const alias = readFileSync(join(kit, '..', 'btl', 'c', 'devin-multiplan', 'index.html'),'utf8');
+  assert.match(alias, /url=\/c\/multiplan\//);
+  assert.match(alias, /rel="canonical" href="https:\/\/besttortlawyers.com\/c\/multiplan\/"/);
 });
