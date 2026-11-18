@@ -399,12 +399,11 @@
       pending = false; completed = true;
       if (btn) { btn.disabled = false; }
       if (!otherOptions) push('ee_lead_submit_success');
-      /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
-         leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
+      /* Real first-time leads only: never a test (?test=1 / test mode) or a duplicate resubmission.
+         Since 2026-11-18 the lead conversion fires on the thank-you page, not here (Kyle: "all forms go to a thank you
+         page that pushes a lead conversion"). This page only records that the next thank-you view is a real lead. */
       var conversion = !otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate';
-      /* eventCallback tells the thank-you redirect (below) when GTM has finished the generate_lead tags. */
       if (otherOptions) push('ee_other_options_request_received');
-      else if (conversion) push('generate_lead', { lead_id: j.receipt_id, eventCallback: function () { tagsDone = true; }, eventTimeout: 2000 });
       /* TikTok's web ad group optimizes for TikTok's standard SubmitForm event, but GTM forwards generate_lead to TikTok
          only under its own name. Same real-first-time-lead rule; event_id is the receipt; no contact or screening data. */
       if (!otherOptions && j && !isTest && j.mode !== 'test' && j.status !== 'duplicate' && window.ttq && typeof window.ttq.track === 'function') {
@@ -441,29 +440,23 @@
 
     /* Every saved request ends on a thank-you page: callback requests and quiz matches (QUALIFIED, FIRM_REVIEW) on
        /glassman/ssdi/thank-you/, quiz non-matches that asked to check other options on /glassman/ssdi/thank-you/other-options/.
-       The conversions above fire on this page first: a real first-time lead waits for GTM's generate_lead callback
-       (at least 1.5 s so the pixels and the ChatGPT-ads SDK can send, at most 2.5 s); anything else leaves after 0.4 s.
-       The in-place confirmation shows meanwhile. The thank-you pages fire no conversions of their own. Only the kind,
-       requested time and receipt go along, in sessionStorage — never contact or screening data. ?test=1 is carried over.
-       A listener can cancel the 'ee:thank-you' event to stay on the page. */
-    var tagsDone = false;
+       The lead conversion fires there: the thank-you page loads Tag Manager only when this record says the view is a
+       real first-time lead (conv: true), so a reload, a shared link, ?test=1, a duplicate or an other-options request
+       fires nothing. Only the kind, requested time, receipt and the conv flag go along, in sessionStorage — never contact
+       or screening data. ?test=1 is carried over. A listener can cancel the 'ee:thank-you' event to stay on the page. */
     function thankYou(conversion, j) {
       var url = '/glassman/ssdi/thank-you/' + (otherOptions ? 'other-options/' : '') + (isTest ? '?test=1' : '');
       try {
         sessionStorage.setItem('ee_ssdi_thanks', JSON.stringify({ kind: otherOptions ? 'other_options' : 'callback',
           time: timeLabel(), receipt: j && j.receipt_id ? String(j.receipt_id).slice(0, 40) : null,
-          real: !!(j && !isTest && j.mode !== 'test' && j.status !== 'duplicate'), at: Date.now() }));
+          real: !!(j && !isTest && j.mode !== 'test' && j.status !== 'duplicate'), conv: !!conversion, at: Date.now() }));
       } catch (e) {}
-      var started = Date.now(), gone = false;
+      var gone = false;
       function go() {
         if (gone) return; gone = true;
         if (form.dispatchEvent(new CustomEvent('ee:thank-you', { cancelable: true, detail: { url: url } }))) location.assign(url);
       }
-      if (!conversion) { setTimeout(go, 400); return; }
-      (function wait() {
-        var t = Date.now() - started;
-        if (t >= 2500 || (tagsDone && t >= 1500)) go(); else setTimeout(wait, 100);
-      })();
+      setTimeout(go, 400);
     }
     function fail() {
       pending = false;

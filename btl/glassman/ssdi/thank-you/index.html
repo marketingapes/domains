@@ -10,14 +10,18 @@
 <meta name="theme-color" content="#0f2338">
 <meta name="ee-campaign" content="GLASSMAN-SSDI-002">
 <meta name="ee-page-id" content="glassman-ssdi-thank-you">
-<!-- Google Tag Manager (BTL web container GTM-PHC7459M). This page pushes only ee_thank_you_view (page_id, campaign_id, tenant_id,
-     thank_you, fresh, and lead_id = the receipt when fresh). No names, phone numbers, emails, states or answers. Conversions fire on the form page, not here. -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PHC7459M');</script>
-<!-- End Google Tag Manager -->
+<!-- Lead conversion (2026-11-18). Tag Manager (BTL web container GTM-PHC7459M) loads on this page ONLY for a real,
+     first-time lead arriving straight from a form (the form leaves {conv: true} in sessionStorage 'ee_ssdi_thanks' for
+     10 minutes). The container's thank-you trigger then sends the Lead conversion (Meta pixel + Google Ads) once. A reload,
+     a shared link, ?test=1, a duplicate or an other-options request loads no tags, so nothing is counted twice.
+     dataLayer gets generate_lead with lead_id = the receipt only: no names, phone numbers, emails, states or answers. -->
+<script>(function(w,d){var r=null;try{r=JSON.parse(sessionStorage.getItem('ee_ssdi_thanks')||'null')}catch(e){}
+var kind='callback';
+if(/(?:^|[?&])test=1(?:&|$)/.test(location.search)||!r||r.conv!==true||r.real!==true||r.kind!==kind||!(Date.now()-r.at<6e5))return;
+w.dataLayer=w.dataLayer||[];var o={event:'generate_lead',page_id:'glassman-ssdi-thank-you',campaign_id:'GLASSMAN-SSDI-002',tenant_id:'glassman'};
+if(typeof r.receipt==='string'&&/^[A-Za-z0-9-]{1,40}$/.test(r.receipt))o.lead_id=r.receipt;w.dataLayer.push(o);
+w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M';d.head.appendChild(j);})(window,document);</script>
 <link rel="icon" href="/glassman-ssdi/img/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,7 +30,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <!-- data-sofia-tel: Glassman's Sofia line (339) 329-6165, same as the other Glassman SSDI pages. -->
 <body data-sofia-tel="+13393296165">
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
 <a class="skip" href="#tyCard">Skip to your confirmation</a>
 
 <div class="bar"><div class="in"><span><b>No fee unless we win.</b> <span class="hide-s">Free consultation. Not the government.</span></span><a href="#" data-sofia-call="topbar">Talk to Sofia: <span data-num>(339) 329-6165</span></a></div></div>

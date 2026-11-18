@@ -157,9 +157,10 @@
     function succeed(j) {
       if (btn) { btn.disabled = false; }
       push('ee_lead_submit_success');
-      /* The Meta ad set optimizes for the pixel's Lead event, and GTM maps generate_lead to Lead. Real first-time
-         leads only: never a test (?test=1 / test mode) or a duplicate resubmission. lead_id is the receipt, not PII. */
-      if (j && !isTest && j.mode !== 'test' && j.status !== 'duplicate') push('generate_lead', { lead_id: j.receipt_id });
+      /* Since 2026-11-18 every saved request goes to /ssdi/thank-you/, and the Lead conversion fires there, once, for a
+         real first-time lead (never a test (?test=1 / test mode) or a duplicate). Only the kind, the receipt and the
+         conv flag go along, in sessionStorage; never contact or screening data. */
+      var conversion = !!(j && !isTest && j.mode !== 'test' && j.status !== 'duplicate');
       form.dispatchEvent(new CustomEvent('ee:lead-saved', { detail: { message: thanks(), bestTime: bestTime() } }));
       if (synthetic) {
         try { sessionStorage.setItem('ee_ssdi_last_lead', JSON.stringify(payload)); } catch (e) {}
@@ -173,6 +174,11 @@
         status.className = 'status ok';
         status.textContent = thanks();
       }
+      try {
+        sessionStorage.setItem('ee_ssdi_thanks', JSON.stringify({ kind: 'request',
+          receipt: j && j.receipt_id ? String(j.receipt_id).slice(0, 40) : null, real: conversion, conv: conversion, at: Date.now() }));
+      } catch (e) {}
+      setTimeout(function () { location.assign('/ssdi/thank-you/' + (isTest || synthetic ? '?test=1' : '')); }, 400);
     }
     function fail() {
       if (btn) { btn.disabled = false; }

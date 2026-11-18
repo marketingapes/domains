@@ -19,13 +19,19 @@ test('all active Glassman forms have explicit accessible required contact fields
     assert.match(html,/Marketing Apes will ask your permission before referring your inquiry to another law firm/);
     assert.match(html,/Your requested time is a preference, not a confirmed appointment/);
     assert.doesNotMatch(html,/Sofia calls you\.|calls you at the time you pick|usually means within minutes|She books a time/);
-    assert.match(html,/Call for an automated intake conversation/);
-    assert.match(html,/Or request a callback/);
-    assert.match(html,/A live transfer may be offered when available/);
-    assert.match(html,/Your chosen time is a preference, not a confirmed appointment/);
+    if (file === 'quiz/index.html') {
+      // 2026-11-18: the quiz page is quiz-only (Kyle: "remove all the AI stuff"); Call Sofia stays as one link.
+      assert.doesNotMatch(html,/Call for an automated intake conversation|Or request a callback|Talk it through|AI<\/b><span>intake/);
+      assert.match(html,/data-sofia-call="close">Call Sofia/);
+    } else {
+      assert.match(html,/Call for an automated intake conversation/);
+      assert.match(html,/Or request a callback/);
+      assert.match(html,/A live transfer may be offered when available/);
+      assert.match(html,/Your chosen time is a preference, not a confirmed appointment/);
+    }
     assert.doesNotMatch(html,/24\/7|same call|Call any time|24 to 48 hours|you’re connected/);
     assert.doesNotMatch(html,/glassman-ssdi-form-1080x1080\.jpg/);
-    if (file !== 'index.html') assert.match(html,/glassman-ssdi-form-1254x1254\.jpg[^" ]*" width="1254" height="1254"/);
+    if (file === 'talk-to-sofia/index.html') assert.match(html,/glassman-ssdi-form-1254x1254\.jpg[^" ]*" width="1254" height="1254"/);
 
 
 
@@ -64,7 +70,9 @@ test('one tap-to-agree line covers calls and texts, with no consent checkbox on 
 test('generate_lead fires only for real first-time leads',()=>{
   const intake=readFileSync(new URL('intake.js',root),'utf8');
   assert.match(intake,/var conversion = !otherOptions && j && !isTest && j\.mode !== 'test' && j\.status !== 'duplicate';/);
-  assert.match(intake,/else if \(conversion\) push\('generate_lead', \{ lead_id: j\.receipt_id, eventCallback:/);
+  // 2026-11-18: the conversion fires on the thank-you page; the form page only records conv for the next view.
+  assert.doesNotMatch(intake,/push\('generate_lead'/);
+  assert.match(intake,/conv: !!conversion/);
   assert.match(intake,/succeed\(j\);/);
 });
 test('TikTok SubmitForm fires only for real first-time leads, keyed by receipt, with no contact data',()=>{
@@ -99,7 +107,7 @@ test('attribution keeps the landing ad click IDs and platform cookie IDs, never 
   assert.doesNotMatch(block, /email|phone|first_name|last_name|answers|screening\.|val\(/);
   assert.match(intake, /attribution: tracking\(\),/);
   for (const file of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) {
-    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261111-ad-ids/);
+    assert.match(readFileSync(new URL(file, root), 'utf8'), /intake\.js\?v=20261118-ty-lead/);
   }
 });
 test('every saved request ends on a thank-you page; a phone the intake cannot dial is stopped in the browser', () => {
@@ -117,11 +125,18 @@ test('every saved request ends on a thank-you page; a phone the intake cannot di
     assert.match(html, new RegExp('<main data-thank-you="' + kind + '">'));
     assert.match(html, new RegExp('<meta name="ee-page-id" content="' + pid + '">'));
     assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
-    assert.match(html, /GTM-PHC7459M/);
+    // Tag Manager loads only on the callback thank-you page, only for a real first-time lead straight from a form;
+    // never for tests, reloads or duplicates. The other-options page loads no tags at all.
+    if (kind === 'callback') {
+      assert.match(html, /GTM-PHC7459M/);
+      assert.match(html, /r\.conv!==true\|\|r\.real!==true\|\|r\.kind!==kind/);
+      assert.match(html, /test=1/);
+    } else assert.doesNotMatch(html, /GTM-PHC7459M|generate_lead/);
+    assert.doesNotMatch(html, /ns\.html\?id=GTM/);
     assert.match(html, /<section id="networkTools"[^>]+hidden/);
     assert.match(html, /thank-you\/network\.js\?v=/);
     assert.match(html, /thank-you\/thanks\.js\?v=/);
-    assert.doesNotMatch(html, /intake\.js|generate_lead|oaiq|ttq\.track|fbq\(/, 'thank-you pages never re-send conversions');
+    assert.doesNotMatch(html, /intake\.js|oaiq|ttq\.track|fbq\(/, 'thank-you pages send only the one gated Lead');
     assert.match(html, /ATTORNEY ADVERTISING/);
   }
   const oo = readFileSync(new URL('thank-you/other-options/index.html', root), 'utf8');

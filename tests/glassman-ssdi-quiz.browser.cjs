@@ -132,23 +132,29 @@ const cases = [
         const latest=sent.at(-1);assert.equal(latest.screening.web_outcome,outcome);assert.equal(latest.routing.route,route);
         assert.equal(latest.request_type,'screened_inquiry');assert.equal(latest.followup_request,undefined);
         assert.equal(latest.consent.version,'glassman-ssdi-002-consent-marketing-apes-2026-11-06-v1');
-        assert.equal((await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='generate_lead').length,1);
+        // 2026-11-18: no conversion on the form page; the record tells the thank-you page this view is a real lead.
+        assert.equal((await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='generate_lead').length,0);
         await page.waitForFunction(()=>window.__thankYou,null,{timeout:4000});
+        assert.equal(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('ee_ssdi_thanks')).conv),true);
         assert.equal(await page.evaluate(()=>window.__thankYou),'/glassman/ssdi/thank-you/');
         console.log(`PASS ${label} unaffected @${width}`);passed++;
       }
       // The thank-you pages: requested time from the submit, one fresh view, nothing on reload, no conversions resent.
       for (const [url,kind] of [['/glassman/ssdi/thank-you/','callback'],['/glassman/ssdi/thank-you/other-options/','other_options']]) {
         await page.goto(origin+quizPath);
-        await page.evaluate(k=>sessionStorage.setItem('ee_ssdi_thanks',JSON.stringify({kind:k,time:'As soon as possible',receipt:'BTLK-0000000000',real:true,at:Date.now()})),kind);
+        await page.evaluate(k=>sessionStorage.setItem('ee_ssdi_thanks',JSON.stringify({kind:k,time:'As soon as possible',receipt:'BTLK-0000000000',real:true,conv:true,at:Date.now()})),kind);
         await page.goto(origin+url);
         await page.locator('#tyCard').waitFor({state:'visible'});
         assert.match(await page.locator('#tyTime').innerText(),/Your requested time: As soon as possible\./);
         let ev=(await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='ee_thank_you_view');
         assert.equal(ev.length,1);assert.equal(ev[0].thank_you,kind);assert.equal(ev[0].fresh,true);assert.equal(ev[0].lead_id,'BTLK-0000000000');
-        assert.equal((await page.evaluate(()=>window.dataLayer)).some(e=>e.event==='generate_lead'),false);
+        // One Lead on the first callback view (keyed by the receipt); none on the other-options page.
+        const leads=(await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='generate_lead');
+        assert.equal(leads.length,kind==='callback'?1:0);
+        if (kind==='callback') assert.equal(leads[0].lead_id,'BTLK-0000000000');
         assert.equal(await page.locator('#networkTools').isVisible(),false);
         await page.reload();
+        assert.equal((await page.evaluate(()=>window.dataLayer)).some(e=>e.event==='generate_lead'),false,'a reload sends nothing');
         ev=(await page.evaluate(()=>window.dataLayer)).filter(e=>e.event==='ee_thank_you_view');
         assert.equal(ev[0].fresh,false);assert.equal(ev[0].lead_id,undefined);
         assert.equal(await page.locator('#tyTime').isVisible(),false);
