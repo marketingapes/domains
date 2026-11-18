@@ -487,7 +487,9 @@ footer a{color:#dbe6ea}
     // LIVE: btl.intake.web/v1 → Make 6777650 "BTL — Campaign Kit Web Intake (store → receipt)"
     // Stores to BigQuery raw_lead_events + dedupe, then receipt, then emails Kyle + Sofia. No buyer routing for this campaign.
     WEBHOOK_URL: "https://hook.us2.make.com/8lnamwwptnsoppvw38t8l4fumv9ey8va",
-    BOOKING_URL: "",            // Devin's calendar link (self-book) — add when he sends it
+    // Option D (Kyle, 2026-11-18): Tier A (billed OON + $1M+/yr) books straight onto Devin's calendar;
+    // Tier B/C go to Kyle first, then an office callback. Empty = everyone gets the callback message.
+    BOOKING_URL: "",            // Devin's calendar link — paste here when he sends it
     TENANT_ID: "vanderhahn",
     DOMAIN_ID: "besttortlawyers.com",
     PAGE_ID: "btl-vanderhahn-multiplan",
@@ -581,7 +583,7 @@ footer a{color:#dbe6ea}
       consent:{version:CONFIG.CONSENT_VERSION,captured_at:now,page_url:location.href,method:'clickwrap_submit_button',calls:{granted:true,text:consentText},sms:{granted:true,text:consentText}},
       attribution:{utm_source:qs.get('utm_source')||'',utm_medium:qs.get('utm_medium')||'',utm_campaign:qs.get('utm_campaign')||'',utm_content:qs.get('utm_content')||'',utm_term:qs.get('utm_term')||'',
         gclid:qs.get('gclid')||'',fbclid:qs.get('fbclid')||'',ttclid:qs.get('ttclid')||'',referrer:document.referrer,landing_url:location.href},
-      callback:{window:'office will reach out'},
+      callback:{window:(tier==='A'&&CONFIG.BOOKING_URL)?'self_book_offered':'office_callback_after_review'},
       test:{synthetic:isTest}};
     btn.disabled=true; btn.textContent='Sending…';
     var ctl = window.AbortController ? new AbortController() : null; var to = ctl ? setTimeout(function(){ctl.abort();},20000) : null;
@@ -592,13 +594,18 @@ footer a{color:#dbe6ea}
         try{ sessionStorage.removeItem('mp_submission_id'); }catch(e){}
         document.getElementById('receiptId').textContent = j.receipt_id || '—';
         track('ee_lead_submit_success',{prequal_tier:tier, receipt_id:j.receipt_id, lead_test:isTest},true);
-        if(CONFIG.BOOKING_URL){ var b=document.getElementById('bookBtn'); b.href=CONFIG.BOOKING_URL; b.hidden=false;
-          document.getElementById('doneMsg').textContent='Pick a time that works for you below. Devin’s office will confirm the criteria before the call.'; }
+        if(tier==='A' && CONFIG.BOOKING_URL){ var b=document.getElementById('bookBtn'); b.href=CONFIG.BOOKING_URL; b.hidden=false;
+          b.target='_blank'; b.rel='noopener';
+          document.querySelector('[data-step=done] h3').textContent='You look like a strong fit. Pick a time with Devin.';
+          document.getElementById('doneMsg').textContent='Choose a time that works for you below. Devin’s office will confirm the details before the call.';
+          track('ee_booking_offered',{prequal_tier:tier},true); }
         show('done');
       })
       .catch(function(x){ if(to) clearTimeout(to); track('ee_lead_submit_error',{error:String(x)}); btn.disabled=false; btn.textContent='Request a time with Devin →';
         err.textContent='Something went wrong sending your request. Please try again in a moment.'; });
   });
+
+  document.getElementById('bookBtn').addEventListener('click',function(){ track('ee_booking_click',{prequal_tier:document.getElementById('prequal_tier').value},true); });
 
   // card view + chip expanders
   document.querySelectorAll('.chip.more').forEach(function(b){b.addEventListener('click',function(){b.closest('.who').classList.add('open');});});

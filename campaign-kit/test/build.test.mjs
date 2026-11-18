@@ -217,6 +217,7 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.match(live, /CAMPAIGN_ID: "MULTIPLAN-PILOT-001"/);
   assert.match(live, /id="consentText">By clicking "Request a time with Devin,"/); // clickwrap consent beside the button (Kyle, 2026-11-18)
   assert.doesNotMatch(live, /type="checkbox"/);
+  assert.match(live, /if\(tier==='A' && CONFIG\.BOOKING_URL\)/); // option D: only Tier A self-books
   assert.doesNotMatch(live, /pick a time myself|AI assistant call me/i);
   assert.match(live, /Attorney advertising/);
   assert.doesNotMatch(live, /kit-preview|nothing is sent|nothing is booked|PREVIEW: true/i);
