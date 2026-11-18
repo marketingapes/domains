@@ -96,8 +96,7 @@ legend{font-family:var(--serif);font-size:1.4rem;font-weight:600;line-height:1.2
 .field input:focus,.field select:focus{border-color:var(--emerald);outline:none;box-shadow:0 0 0 4px rgba(15,107,92,.12)}
 .choice{display:grid;gap:10px;margin:18px 0 6px}
 @media (min-width:560px){.choice{grid-template-columns:1fr 1fr}}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:.78rem;color:var(--muted);line-height:1.5;margin:18px 0}
-.consent input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--emerald)}
+.consent{font-size:.78rem;color:var(--muted);line-height:1.5;margin:18px 0 14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:14px 26px;border:0;border-radius:999px;background:var(--brass);color:#1c1406;font:inherit;font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;transition:background .15s,transform .1s;box-shadow:0 8px 22px rgba(214,165,78,.32)}
 .btn:hover{background:var(--brass-2)}
 .btn:active{transform:translateY(1px)}
@@ -295,8 +294,7 @@ footer a{color:#dbe6ea}
           <div class="field"><label for="org_type">Organization type</label>
             <select id="org_type" name="org_type"><option value="">Select…</option><option>Physician practice or group</option><option>Facility or center</option><option>Laboratory</option><option>Ambulance service</option><option>Other</option></select></div>
         </div>
-        <label class="consent"><input type="checkbox" id="consent" name="consent" value="yes" required>
-          <span>By clicking "Request a time with Devin," I agree that VanderHahn LLP and Best Tort Lawyers (operated by Marketing Apes LLC) may contact me by phone, text and email at the details above about this review, including with automated technology and an AI assistant, and calls may be recorded. Consent is not a condition of any service. Message and data rates may apply. Reply STOP to opt out. I agree to the <a href="https://besttortlawyers.com/privacy-policy/">Privacy Policy</a> and <a href="https://besttortlawyers.com/terms-and-conditions/">Terms</a>.</span></label>
+        <p class="consent" id="consentText">By clicking "Request a time with Devin," I agree that VanderHahn LLP and Best Tort Lawyers (operated by Marketing Apes LLC) may contact me by phone, text and email at the details above about this review, including with automated technology and an AI assistant, and calls may be recorded. Consent is not a condition of any service. Message and data rates may apply. Reply STOP to opt out. I agree to the <a href="https://besttortlawyers.com/privacy-policy/">Privacy Policy</a> and <a href="https://besttortlawyers.com/terms-and-conditions/">Terms</a>.</p>
         <!-- hidden tracking -->
         <input type="hidden" name="ee_system_id" id="ee_system_id">
         <input type="hidden" name="session_id" id="session_id">
@@ -493,7 +491,7 @@ footer a{color:#dbe6ea}
     TENANT_ID: "vanderhahn",
     DOMAIN_ID: "besttortlawyers.com",
     PAGE_ID: "btl-vanderhahn-multiplan",
-    CONSENT_VERSION: "multiplan-consent-2026-11-18",
+    CONSENT_VERSION: "multiplan-consent-2026-11-18b-clickwrap",
     CAMPAIGN_ID: "MULTIPLAN-PILOT-001",
     VERTICAL: "antitrust_oon_provider"
   };
@@ -571,17 +569,16 @@ footer a{color:#dbe6ea}
     var digits=(document.getElementById('phone').value.match(/\d/g)||[]).join('');
     if(digits.length===11&&digits[0]==='1') digits=digits.slice(1);
     if(digits.length!==10){err.textContent='Please enter a 10-digit US phone number.';document.getElementById('phone').focus();return;}
-    if(!document.getElementById('consent').checked){err.textContent='Please check the consent box so the firm can reach you.';return;}
     var name=document.getElementById('full_name').value.trim().replace(/\s+/g,' '), parts=name.split(' ');
     var tier=document.getElementById('prequal_tier').value||'B', now=new Date().toISOString();
-    var consentText=document.querySelector('.consent span').textContent.trim().replace(/\s+/g,' ');
+    var consentText=document.getElementById('consentText').textContent.trim().replace(/\s+/g,' ');
     var isTest = qs.get('test')==='1';
     var p={schema:'btl.intake.web/v1',submission_id:sid(),tenant_id:CONFIG.TENANT_ID,domain_id:CONFIG.DOMAIN_ID,campaign_id:CONFIG.CAMPAIGN_ID,
       page_id:CONFIG.PAGE_ID,door:'provider_review',request_type:'screened_inquiry',vertical:CONFIG.VERTICAL,ee_system_id:sysId,session_id:sessId,
       contact:{full_name:name,first_name:parts[0],last_name:parts.slice(1).join(' '),phone_e164:'+1'+digits,email:email,state:document.getElementById('state').value,
         organization:document.getElementById('organization').value.trim(),org_type:document.getElementById('org_type').value},
       screening:{web_outcome:OUTCOME[tier],prequal_tier:tier,answers:{role:val('role'),oon_2015_2026:val('oon_2015_2026'),annual_billed:val('annual_billed')}},
-      consent:{version:CONFIG.CONSENT_VERSION,captured_at:now,page_url:location.href,method:'checkbox',calls:{granted:true,text:consentText},sms:{granted:true,text:consentText}},
+      consent:{version:CONFIG.CONSENT_VERSION,captured_at:now,page_url:location.href,method:'clickwrap_submit_button',calls:{granted:true,text:consentText},sms:{granted:true,text:consentText}},
       attribution:{utm_source:qs.get('utm_source')||'',utm_medium:qs.get('utm_medium')||'',utm_campaign:qs.get('utm_campaign')||'',utm_content:qs.get('utm_content')||'',utm_term:qs.get('utm_term')||'',
         gclid:qs.get('gclid')||'',fbclid:qs.get('fbclid')||'',ttclid:qs.get('ttclid')||'',referrer:document.referrer,landing_url:location.href},
       callback:{window:'office will reach out'},
