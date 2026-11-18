@@ -17,7 +17,7 @@
   var YN = [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']];
   var A = {};
   var steps = [
-    { q: 'state', text: 'Hi, I’m Sofia. Seven quick questions about the person who needs disability benefits. First, which state do you live in?', why: 'This review isn’t available in California or Colorado.', select: STATES },
+    { q: 'state', text: 'Seven quick questions about the person who needs disability benefits. First, which state do you live in?', why: 'This review isn’t available in California or Colorado.', select: STATES },
     { q: 'age', text: 'How old are you?', why: 'This review is for people 53 to 64. Social Security’s own rules give age more weight after 50.', opts: [['under_53', 'Under 53'], ['53_64', '53 to 64'], ['65_plus', '65 or older']] },
     { q: 'out_of_work', text: 'Have you been out of work for at least a year?', why: 'SSDI is for people whose health keeps them from working, so time out of work matters.', opts: YN },
     { q: 'doctor', text: 'Are you currently under a doctor’s care?', why: 'Records from regular medical care are the main evidence Social Security looks at.', opts: YN },

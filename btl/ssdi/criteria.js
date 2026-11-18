@@ -34,10 +34,8 @@
   function resultText(result, date) {
     if (result === 'NOT_A_FIT') return 'Thank you for explaining. Based on what you’ve shared, this doesn’t match what this SSDI review is looking for right now. That isn’t a legal opinion about your situation, and it doesn’t affect any right you may have to apply or appeal on your own.';
     return 'Based on what you’ve shared, you may qualify for a free review by a participating law firm. ' +
-      (inHours(date)
-        ? 'If you send your name and number, Sofia, our AI intake assistant, can call you in the next few minutes and connect you with the firm’s team.'
-        : 'If you send your name and number, Sofia, our AI intake assistant, will call you during business hours (' + HOURS.label + ').') +
-      ' Nothing is guaranteed.';
+      'If you send your name and number, the intake team will review it and may call you during business hours (' + HOURS.label + ').' +
+     ' Nothing is guaranteed.';
   }
 
   /* What happens to the lead next. Only QUALIFIED leads are offered to the buyer; Sofia confirms FIRM_REVIEW first. */
