@@ -221,8 +221,13 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.doesNotMatch(live, /pick a time myself|AI assistant call me/i);
   assert.match(live, /Attorney advertising/);
   assert.doesNotMatch(live, /kit-preview|nothing is sent|nothing is booked|PREVIEW: true/i);
-  for (const img of ['devin-avatar','devin-studio','devin-sofa-wide']) for (const ext of ['jpg','webp'])
+  for (const img of ['devin-avatar','devin-sofa-wide','multiplan-remit']) for (const ext of ['jpg','webp'])
     assert.ok(readFileSync(join(liveDir, 'images', `${img}.${ext}`)).length > 1000, `${img}.${ext}`);
+  // Share preview is about MultiPlan, not the attorney (Kyle, 2026-11-19)
+  assert.ok(readFileSync(join(liveDir, 'images', 'og-multiplan.jpg')).length > 1000);
+  assert.match(live, /property="og:image" content="https:\/\/besttortlawyers.com\/vanderhahn\/multiplan\/images\/og-multiplan.jpg"/);
+  assert.match(live, /property="og:title" content="Were your out-of-network claims cut by MultiPlan repricing\?"/);
+  assert.match(live, /name="twitter:card" content="summary_large_image"/);
   for (const slug of ['multiplan', 'devin-multiplan']) {
     const alias = readFileSync(join(kit, '..', 'btl', 'c', slug, 'index.html'),'utf8');
     assert.match(alias, /url=\/vanderhahn\/multiplan\//);
