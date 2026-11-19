@@ -491,26 +491,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .legal{margin-top:24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.15);display:grid;gap:.5rem;font-size:.82rem;color:#c9cedd}
 
 /* Mobile action bar */
-.mbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:1.4fr 1fr;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--navy);box-shadow:0 -6px 20px rgba(0,0,0,.2);transition:transform .2s}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:1fr;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--navy);box-shadow:0 -6px 20px rgba(0,0,0,.2);transition:transform .2s}
 .mbar.off{transform:translateY(110%)}
 @media (min-width:960px){.mbar{display:none}}
 
-/* Chat */
-.chat-fab{position:fixed;right:18px;bottom:18px;z-index:55;display:none;box-shadow:var(--shadow)}
-@media (min-width:960px){.chat-fab{display:inline-flex}}
-.chat{position:fixed;right:12px;bottom:84px;z-index:70;width:min(370px,calc(100vw - 24px));background:#fff;border-radius:var(--radius);box-shadow:0 18px 50px rgba(35,37,56,.3);overflow:hidden;display:flex;flex-direction:column}
-.chat[hidden]{display:none}
-@media (min-width:960px){.chat{right:18px;bottom:84px}}
-.chat-head{display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;padding:12px 14px;border-bottom:3px solid var(--red)}
-.chat-head h2{font-size:1.05rem;color:#fff;font-family:var(--sans)}
-.chat-head button{background:none;border:0;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;min-width:40px;min-height:40px}
-.chat-log{height:240px;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
-.msg{max-width:85%;padding:.55rem .75rem;border-radius:12px;font-size:.93rem}
-.msg.bot{background:#fff;border:1px solid var(--line);align-self:flex-start}
-.msg.me{background:var(--navy);color:#fff;align-self:flex-end}
-#chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
-#chat-form input{flex:1;font:inherit;font-size:1rem;padding:.55rem .7rem;border:1.5px solid #9a9fb3;border-radius:10px;min-height:44px}
-.chat .fine{padding:0 12px 12px}
 </style>
 </head>
 <body>
@@ -524,7 +508,6 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 <!-- Icon sprite -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.12.37 2.33.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></symbol>
-  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></symbol>
   <symbol id="i-sms" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM9 11H7V9h2zm4 0h-2V9h2zm4 0h-2V9h2z"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></symbol>
@@ -593,7 +576,6 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
         </ul>
         <div class="cta-row">
           <a class="btn btn-red" href="tel:+12136647069"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg><span><span data-i18n="cta_sofia">Talk to Sofia</span> <span class="num">(213) 664-7069</span></span></a>
-          <button class="btn btn-ghost" type="button" data-chat-open><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="cta_chat">Chat privately</span></button>
           <a class="btn btn-ghost only-mobile" href="#evaluation" data-i18n="cta_form">Free Case Evaluation</a>
         </div>
         <!-- Holiday coverage claim: confirm the intake line's holiday hours with the firm before launch. -->
@@ -689,8 +671,6 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
           <h2 tabindex="-1" data-i18n="ty_title">Thanks. To speak with someone now, call <a href="tel:+12136647069">(213) 664-7069</a>.</h2>
           <p data-i18n="ty_body">You are in control of what you share.</p>
           <p class="demo" id="ty-demo" hidden data-i18n="ty_demo">Demo mode: the form endpoint is a placeholder, so nothing was sent.</p>
-          <!-- Booking link placeholder. Point it at the firm's scheduler. -->
-          <p><a class="btn btn-navy" id="book-link" href="https://example.com/book" target="_blank" rel="noopener" data-i18n="ty_book">Choose a consultation time</a></p>
           <p data-i18n="ty_now">Prefer to talk now?</p>
           <p><a class="btn btn-red" href="tel:+12136647069"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg><span><span data-i18n="cta_sofia">Talk to Sofia</span> <span class="num">(213) 664-7069</span></span></a></p>
         </div>
@@ -740,7 +720,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
           <p data-i18n="help_p2">Since 1990, our attorneys have handled sensitive cases with care. We listen first, explain your options in plain language, and let you decide what happens next.</p>
         </div>
         <ul class="checks">
-          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="help_c1">Speak privately, by phone, chat, or form</span></li>
+          <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="help_c1">Speak privately, by phone or form</span></li>
           <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="help_c2">Share only what you are comfortable sharing</span></li>
           <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="help_c3">No legal fee until we win</span></li>
           <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="help_c4">Help in English and Spanish</span></li>
@@ -805,7 +785,6 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       </div>
       <div class="cta-row">
         <a class="btn btn-white" href="tel:+12136647069"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg><span><span data-i18n="cta_sofia">Talk to Sofia</span> <span class="num">(213) 664-7069</span></span></a>
-        <button class="btn btn-ghost" type="button" data-chat-open><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="cta_chat">Chat privately</span></button>
       </div>
     </div>
   </section>
@@ -818,7 +797,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
         <p class="kicker" data-i18n="wh_kicker">What to expect</p>
         <h2 data-i18n="wh_h2">What happens when you reach out</h2>
         <ol class="steps">
-          <li><h3 data-i18n="st1_t">You reach out, your way</h3><p data-i18n="st1_d">Call, chat, or send the form. A name and a phone number is enough.</p></li>
+          <li><h3 data-i18n="st1_t">You reach out, your way</h3><p data-i18n="st1_d">Call or send the form. A name and a phone number is enough.</p></li>
           <li><h3 data-i18n="st2_t">A private conversation</h3><p data-i18n="st2_d">We ask a few simple questions. You can skip anything, and you can stop at any time.</p></li>
           <li><h3 data-i18n="st3_t">Your options, explained</h3><p data-i18n="st3_d">An attorney explains whether you may have a claim and what the next steps look like. There is no cost and no obligation.</p></li>
         </ol>
@@ -916,27 +895,10 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
 <!-- Mobile action bar (hidden while the form is on screen so it never covers the consent text) -->
 <div class="mbar on-dark" id="mbar" data-loc="mobile_bar">
   <a class="btn btn-red" href="tel:+12136647069"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg><span data-i18n="cta_sofia">Talk to Sofia</span></a>
-  <button class="btn btn-ghost" type="button" data-chat-open><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="mb_chat">Chat</span></button>
 </div>
 
-<!-- Chat: preview widget only. Replace with the production chat and keep the chat_start / chat_engaged calls. -->
-<button class="btn btn-red chat-fab" type="button" id="chat-fab" data-chat-open data-loc="chat_fab" aria-haspopup="dialog" aria-controls="chat" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg><span data-i18n="cta_chat">Chat privately</span></button>
-<section class="chat" id="chat" role="dialog" aria-modal="false" aria-labelledby="chat-h" hidden data-loc="chat">
-  <div class="chat-head on-dark">
-    <h2 id="chat-h" data-i18n="ch_title">Chat privately with Sofia</h2>
-    <button type="button" id="chat-close" aria-label="Close chat" data-i18n-attr="aria-label:ch_close">&times;</button>
-  </div>
-  <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
-  <form id="chat-form" autocomplete="off">
-    <label class="sr" for="chat-input" data-i18n="ch_label">Your message</label>
-    <input id="chat-input" type="text" maxlength="500" placeholder="Type your message" data-i18n-attr="placeholder:ch_ph">
-    <button class="btn btn-navy" type="submit" data-i18n="ch_send">Send</button>
-  </form>
-  <p class="fine" data-i18n="ch_fine">Sofia is an AI assistant, not an attorney. Preview only: messages are not sent or saved.</p>
-</section>
-
 <script>
-/* Page behavior: language toggle, event tracking, form, chat. Vanilla JS, no dependencies. */
+/* Page behavior: language toggle, event tracking, form. Vanilla JS, no dependencies. */
 (function (w, d) {
   'use strict';
   var EE = w.EE;
@@ -958,7 +920,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     hero_h1: "Abogados de abuso sexual en California",
     hero_sub: "No está solo. Hable con alguien en privado, a su manera, sobre cómo responsabilizar a los abusadores y a las instituciones que le fallaron.",
     pt_free: "Consulta gratis y confidencial", pt_fee: "Sin honorarios legales hasta que ganemos", pt_since: "Luchando por las personas lesionadas desde 1990, con 16 oficinas en California",
-    cta_sofia: "Hable con Sofia", cta_chat: "Chatee en privado", cta_form: "Evaluación gratuita de su caso", mb_chat: "Chat",
+    cta_sofia: "Hable con Sofia", cta_form: "Evaluación gratuita de su caso",
     holiday_pill: "Comuníquese esta temporada navideña. Nuestra línea de admisión contesta todos los días, incluso en días festivos.",
     sofia_note: "Sofia es nuestra asistente de admisión con inteligencia artificial; no es abogada. Ella toma la información básica para que nuestro equipo legal le dé seguimiento en privado. Las llamadas pueden ser grabadas.",
     form_title: "Evaluación gratuita y confidencial",
@@ -975,7 +937,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     ty_title: "Gracias. Para hablar con alguien ahora, llame al <a href=\"tel:+12136647069\">(213) 664-7069</a>.",
     ty_body: "Usted decide qué compartir.",
     ty_demo: "Modo de demostración: el destino del formulario es provisional, así que no se envió nada.",
-    ty_book: "Elegir una hora de consulta", ty_now: "¿Prefiere hablar ahora?",
+    ty_now: "¿Prefiere hablar ahora?",
     trust_label: "Por qué los sobrevivientes eligen a Nadrich",
     tb_1a: "$750 millones", tb_1b: "Recuperados", tb_2a: "Desde 1990", tb_2b: "Luchando por las personas lesionadas",
     tb_3b: "Oficinas en California", tb_4a: "Sin honorarios legales", tb_4b: "Hasta que ganemos", tb_5a: "Gratis", tb_5b: "Consulta confidencial",
@@ -989,7 +951,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     help_h2: "Compasión, discreción y respeto",
     help_p1: "El abuso sexual es un delito, y también puede ser la base de una demanda civil que responsabilice a los abusadores y a las instituciones negligentes. Un reclamo civil es independiente de cualquier caso penal.",
     help_p2: "Desde 1990, nuestros abogados manejan casos delicados con cuidado. Primero escuchamos, le explicamos sus opciones con palabras sencillas y usted decide qué sigue.",
-    help_c1: "Hable en privado, por teléfono, chat o formulario", help_c2: "Comparta solo lo que le resulte cómodo", help_c3: "Sin honorarios legales hasta que ganemos", help_c4: "Ayuda en inglés y en español",
+    help_c1: "Hable en privado, por teléfono o formulario", help_c2: "Comparta solo lo que le resulte cómodo", help_c3: "Sin honorarios legales hasta que ganemos", help_c4: "Ayuda en inglés y en español",
     set_kicker: "Dónde ocurre el abuso",
     set_h2: "Las instituciones tienen el deber de proteger a las personas",
     set_lead: "Ayudamos a sobrevivientes a presentar reclamos contra abusadores y contra las organizaciones que no los detuvieron, en toda California.",
@@ -1009,7 +971,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     chips_h: "Otros casos de abuso sexual que manejamos", ch_clergy: "Abuso por clérigos", ch_discord: "Grooming en Discord", ch_traff: "Trata de personas",
     band1_h: "¿Listo para hablar? Alguien le contestará.", band1_p: "Gratis, confidencial y a su manera. Incluso durante las fiestas.",
     wh_kicker: "Qué esperar", wh_h2: "Qué pasa cuando se comunica",
-    st1_t: "Usted se comunica, a su manera", st1_d: "Llame, chatee o envíe el formulario. Basta con un nombre y un número de teléfono.",
+    st1_t: "Usted se comunica, a su manera", st1_d: "Llame o envíe el formulario. Basta con un nombre y un número de teléfono.",
     st2_t: "Una conversación privada", st2_d: "Le hacemos algunas preguntas sencillas. Puede omitir cualquiera y puede parar en cualquier momento.",
     st3_t: "Sus opciones, explicadas", st3_d: "Un abogado le explica si podría tener un reclamo y cuáles serían los siguientes pasos. Sin costo y sin compromiso.",
     of_kicker: "En toda California", of_h2: "16 oficinas, de Santa Rosa a Palm Desert", of_lead: "Reúnase en persona o hable por teléfono. Dondequiera que esté en California, podemos ayudarle.",
@@ -1031,8 +993,6 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
     ft_noacr: "Comunicarse con nosotros o enviar un formulario no crea una relación de abogado y cliente. La información de esta página es información general, no asesoría legal.",
     ft_crisis: "Si está en peligro inmediato, llame al 911. Para apoyo confidencial en cualquier momento, la Línea Nacional de Asalto Sexual es 1-800-656-4673.",
     ft_rights: "Todos los derechos reservados.",
-    ch_title: "Chatee en privado con Sofia", ch_close: "Cerrar chat", ch_label: "Su mensaje", ch_ph: "Escriba su mensaje", ch_send: "Enviar",
-    ch_fine: "Sofia es una asistente de inteligencia artificial; no es abogada. Solo vista previa: los mensajes no se envían ni se guardan."
   };
   // Strings created by script (both languages).
   var DYN = {
@@ -1044,10 +1004,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       err_phone: "Please enter a 10-digit phone number.",
       err_consent: "Please check the box to send the form, or call us instead.",
       err_send: "Something went wrong and your request was not sent. Please try again or call (213) 664-7069.",
-      sending: "Sending…",
-      chat_hi: "Hi, I'm Sofia, the AI intake assistant for Nadrich Accident Injury Lawyers. This is a private conversation, and you only need to share what you're comfortable with. How can I help?",
-      chat_reply: "Thank you for reaching out. This preview chat is not connected yet. To talk now, call (213) 664-7069, any day including holidays, or send the confidential form."
-    },
+      sending: "Sending…"    },
     es: {
       title: "Abogados de abuso sexual en California | Nadrich Accident Injury Lawyers",
       desc: "Ayuda confidencial para sobrevivientes de abuso sexual en California. Consulta gratis y confidencial, y sin honorarios legales hasta que ganemos. 16 oficinas en California. Luchando por las personas lesionadas desde 1990.",
@@ -1056,10 +1013,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       err_phone: "Ingrese un número de teléfono de 10 dígitos.",
       err_consent: "Marque la casilla para enviar el formulario, o llámenos.",
       err_send: "Algo salió mal y su solicitud no se envió. Inténtelo de nuevo o llame al (213) 664-7069.",
-      sending: "Enviando…",
-      chat_hi: "Hola, soy Sofia, la asistente de admisión con inteligencia artificial de Nadrich Accident Injury Lawyers. Esta es una conversación privada y solo necesita compartir lo que le resulte cómodo. ¿Cómo puedo ayudarle?",
-      chat_reply: "Gracias por comunicarse. Este chat de vista previa aún no está conectado. Para hablar ahora, llame al (213) 664-7069, cualquier día, incluso en días festivos, o envíe el formulario confidencial."
-    }
+      sending: "Enviando…"    }
   };
   // Version label of the consent text shown to the visitor. Stored with every submission.
   // Bump the version whenever the wording changes, and archive the old text server-side.
@@ -1107,7 +1061,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   })();
 
   /* ------------------------------------------------------------------ *
-   * 2. Click events: call_click, text_click, email_click, booking
+   * 2. Click events: call_click, text_click, email_click
    *    Detected from the link type, so new tel:/sms:/mailto: links are
    *    tracked automatically. No PII: only our own numbers are involved.
    * ------------------------------------------------------------------ */
@@ -1123,15 +1077,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
       EE.track('text_click', { click_location: locOf(a) });
     } else if (href.indexOf('mailto:') === 0) {
       EE.track('email_click', { click_location: locOf(a) });
-    } else if (a.id === 'book-link') {
-      // Demo: fires when the booking link is opened. In production, fire `booking`
-      // from the scheduler's confirmation callback instead (see the listener below).
-      EE.track('booking', { click_location: locOf(a), booking_status: 'link_click' });
     }
-  });
-  // Scheduler confirmation hook (Calendly-style postMessage). Carries no PII.
-  w.addEventListener('message', function (ev) {
-    if (ev.data && ev.data.event === 'calendly.event_scheduled') EE.track('booking', { booking_status: 'scheduled' });
   });
 
   /* ------------------------------------------------------------------ *
@@ -1212,50 +1158,7 @@ height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Ma
   });
 
   /* ------------------------------------------------------------------ *
-   * 4. Chat (preview widget): chat_start, chat_engaged
-   *    Message text stays in the page. It is never sent or pushed anywhere.
-   * ------------------------------------------------------------------ */
-  var chat = $('#chat'), chatLog = $('#chat-log'), chatInput = $('#chat-input'), fab = $('#chat-fab');
-  var chatStarted = false, chatEngaged = false, opener = null;
-
-  function addMsg(text, who) {
-    var m = d.createElement('div');
-    m.className = 'msg ' + who;
-    m.textContent = text;
-    chatLog.appendChild(m);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-  function openChat(from) {
-    opener = from || null;
-    chat.hidden = false; fab.setAttribute('aria-expanded', 'true');
-    if (!chatStarted) {
-      chatStarted = true;
-      EE.track('chat_start', { click_location: from ? locOf(from) : '' });
-      addMsg(t('chat_hi'), 'bot');
-    }
-    chatInput.focus();
-  }
-  function closeChat() {
-    chat.hidden = true; fab.setAttribute('aria-expanded', 'false');
-    if (opener && opener.focus) opener.focus();
-  }
-  $$('[data-chat-open]').forEach(function (b) {
-    b.addEventListener('click', function () { if (chat.hidden) openChat(b); else closeChat(); });
-  });
-  $('#chat-close').addEventListener('click', closeChat);
-  d.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !chat.hidden) closeChat(); });
-  $('#chat-form').addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    var text = chatInput.value.trim();
-    if (!text) return;
-    addMsg(text, 'me');
-    chatInput.value = '';
-    if (!chatEngaged) { chatEngaged = true; EE.track('chat_engaged', {}); }
-    setTimeout(function () { addMsg(t('chat_reply'), 'bot'); }, 500);
-  });
-
-  /* ------------------------------------------------------------------ *
-   * 5. Mobile action bar: slide away while the form is on screen
+   * 4. Mobile action bar: slide away while the form is on screen
    * ------------------------------------------------------------------ */
   if ('IntersectionObserver' in w) {
     new IntersectionObserver(function (entries) {
