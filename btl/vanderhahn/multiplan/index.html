@@ -251,7 +251,7 @@ footer a{color:#dbe6ea}
     <p class="eyebrow">MultiPlan antitrust review · For healthcare providers</p>
     <h1>Were your out-of-network claims cut by <em>MultiPlan</em> repricing?</h1>
     <p class="lede">Lawsuits allege MultiPlan (now Claritev) and major insurers worked together to push out-of-network payments down. Billed commercial plans out-of-network in <span style="white-space:nowrap">2015–2026?</span> Answer 3 quick questions to see if your practice may qualify.</p>
-    <div class="seen"><span>Seen these on your remits?</span><b>MultiPlan</b><b>Claritev</b><b>Data iSight</b><b>Viant</b><b>NCN</b></div>
+    <div class="seen"><span>Seen these on your remits?</span><b>MultiPlan</b><b>Claritev</b><b>Data iSight</b><b>Viant</b><b>NCN</b><b>Zelis</b></div>
     <div class="byline">
       <picture><source srcset="images/devin-avatar.webp" type="image/webp"><img src="images/devin-avatar.jpg" alt="Devin van der Hahn" width="46" height="46"></picture>
       <div><strong>Devin van der Hahn</strong><span>Managing Partner &amp; Founder, VanderHahn LLP</span></div>
@@ -348,7 +348,7 @@ footer a{color:#dbe6ea}
       <div class="step" data-step="done">
         <span class="result-badge">✓ Request received</span>
         <h3>Thanks. Devin's office has your details.</h3>
-        <p class="hint" id="doneMsg">You'll hear from Devin's office about confirming the criteria and setting up a time.</p>
+        <p class="hint" id="doneMsg">Devin's team will reach out shortly to schedule your call. Watch for a call or email from VanderHahn LLP.</p>
         <p class="hint" style="font-size:.8rem">Reference: <b id="receiptId">—</b></p>
         <a class="btn block" id="bookBtn" href="#" hidden>Pick a time with Devin →</a>
         <div class="ready" style="margin-top:18px"><b>Good to have ready for the call</b>
@@ -441,7 +441,7 @@ footer a{color:#dbe6ea}
         <p>Lawsuits allege that MultiPlan, now Claritev, and major insurers used shared repricing tools to push out-of-network payments down for more than a decade, costing providers billions of dollars.</p>
         <ul class="points">
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span>Billed commercial health plans out-of-network between 2015 and 2026</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span>MultiPlan, Claritev, Data iSight, Viant or NCN on your remits, or allowed amounts far below what you billed</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span>MultiPlan, Claritev, Data iSight, Viant, NCN or Zelis on your remits, or allowed amounts far below what you billed</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span>About $1 million a year in billed charges is a guide, not a hard cutoff</span></li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg><span>Physician groups, facilities, labs and ambulance services can all fit</span></li>
         </ul>
@@ -498,7 +498,7 @@ footer a{color:#dbe6ea}
   <div class="wrap">
     <p><strong style="color:#fff">Attorney advertising.</strong> Responsible attorney: Devin van der Hahn, VanderHahn LLP. Best Tort Lawyers is a matching and intake service run by Marketing Apes LLC. It is not a law firm and gives no legal advice.</p>
     <p>This page doesn't show that a provider has a claim. The firm decides on review and representation itself. Submitting this form doesn't create an attorney-client relationship. No recovery or outcome is guaranteed, and prior results don't guarantee a similar outcome.</p>
-    <p>MultiPlan, Claritev, Data iSight, Viant and NCN are named only to describe the subject of the review. Descriptions of the litigation are allegations, not findings. This page isn't affiliated with or endorsed by any of them or by any health plan.</p>
+    <p>MultiPlan, Claritev, Data iSight, Viant, NCN and Zelis are named only to describe the subject of the review. Descriptions of the litigation are allegations, not findings. This page isn't affiliated with or endorsed by any of them or by any health plan.</p>
     <div class="flinks">
       <a href="https://besttortlawyers.com/privacy-policy/">Privacy policy</a>
       <a href="https://besttortlawyers.com/terms-and-conditions/">Terms</a>
@@ -626,6 +626,7 @@ footer a{color:#dbe6ea}
           document.querySelector('[data-step=done] h3').textContent='You look like a strong fit. Pick a time with Devin.';
           document.getElementById('doneMsg').textContent='Choose a time that works for you below. Devin’s office will confirm the details before the call.';
           track('ee_booking_offered',{prequal_tier:tier},true); }
+        if(tier==='C') document.getElementById('doneMsg').textContent='Devin\u2019s team will review your answers and reach out if your organization fits this review.';
         show('done');
       })
       .catch(function(x){ if(to) clearTimeout(to); track('ee_lead_submit_error',{error:String(x)}); btn.disabled=false; btn.textContent='Request a time with Devin →';
