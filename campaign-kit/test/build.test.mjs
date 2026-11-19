@@ -228,6 +228,8 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.match(live, /property="og:image" content="https:\/\/besttortlawyers.com\/vanderhahn\/multiplan\/images\/og-multiplan.jpg"/);
   assert.match(live, /property="og:title" content="Were your out-of-network claims cut by MultiPlan repricing\?"/);
   assert.match(live, /name="twitter:card" content="summary_large_image"/);
+  assert.ok(readFileSync(join(liveDir, 'images', 'og-multiplan-square.jpg')).length > 1000);
+  assert.match(live, /property="og:image" content="https:\/\/besttortlawyers.com\/vanderhahn\/multiplan\/images\/og-multiplan-square.jpg"/);
   for (const slug of ['multiplan', 'devin-multiplan']) {
     const alias = readFileSync(join(kit, '..', 'btl', 'c', slug, 'index.html'),'utf8');
     assert.match(alias, /url=\/vanderhahn\/multiplan\//);
