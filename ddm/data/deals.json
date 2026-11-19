@@ -1,10 +1,68 @@
 {
  "source": "CJ link-search, DDM property 101511733",
- "checked_at": "2026-11-16T01:14:28Z",
+ "checked_at": "2026-11-19T16:31:46Z",
  "score_formula": "/how-we-pick-deals/#deal-score",
  "disclosure": "",
  "count": 36,
  "deals": [
+  {
+   "id": "cj-17240919",
+   "merchant": "Groupon",
+   "title": "40% off Regal movie tickets",
+   "category": "Experiences",
+   "region": "",
+   "sold_by": "marketplace",
+   "kind": "pct",
+   "pct": 40,
+   "usd": null,
+   "upto": false,
+   "conditions": [],
+   "code": "",
+   "starts": "2026-01-29T05:00:00Z",
+   "ends": "2027-01-01T05:00:00Z",
+   "score": 82,
+   "score_parts": [
+    {
+     "key": "savings",
+     "label": "Savings size",
+     "points": 30.0,
+     "max": 45,
+     "why": "40% off"
+    },
+    {
+     "key": "certainty",
+     "label": "Certainty",
+     "points": 22,
+     "max": 25,
+     "why": "voucher sold through a marketplace"
+    },
+    {
+     "key": "ease",
+     "label": "Ease",
+     "points": 15,
+     "max": 15,
+     "why": "no code needed"
+    },
+    {
+     "key": "deadline",
+     "label": "Deadline clarity",
+     "points": 15,
+     "max": 15,
+     "why": "clear end date within 45 days"
+    }
+   ],
+   "summary_ai": "Save 40% on Regal movie tickets through Groupon, including Premiere and premium-format tickets, plus a discount on popcorn and snacks. Check which theaters and formats your voucher covers.",
+   "network_terms": "Save 40% on Regal Movie Tickets — Including Premiere & Premium Format Tickets — Plus Discount On Popcorn and Snacks!",
+   "network": "CJ",
+   "url": "https://www.dpbolvw.net/click-101511733-17240919-1787000589000?sid=ddm-finder",
+   "event_page": "",
+   "image": "/images/deals/17240919.webp",
+   "image_alt": "Moviegoers with popcorn in reclining cinema seats",
+   "gift_for": [
+    "experiences",
+    "kids"
+   ]
+  },
   {
    "id": "cj-17178120",
    "merchant": "Groupon",
@@ -54,68 +112,10 @@
    "summary_ai": "Up to 43% off Chuck E. Cheese through Groupon vouchers. The top discount applies to select vouchers, so compare the voucher price with paying at the counter and check which locations accept it.",
    "network_terms": "Epic Fun, Made Easy. Get Up to 43% Off Chuck E. Cheese",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-17178120-1787000589000?sid=ddm-finder",
+   "url": "https://www.dpbolvw.net/click-101511733-17178120-1787000589000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17178120.webp",
    "image_alt": "Rows of arcade game cabinets in a dimly lit arcade",
-   "gift_for": [
-    "experiences",
-    "kids"
-   ]
-  },
-  {
-   "id": "cj-17240919",
-   "merchant": "Groupon",
-   "title": "40% off Regal movie tickets",
-   "category": "Experiences",
-   "region": "",
-   "sold_by": "marketplace",
-   "kind": "pct",
-   "pct": 40,
-   "usd": null,
-   "upto": false,
-   "conditions": [],
-   "code": "",
-   "starts": "2026-01-29T05:00:00Z",
-   "ends": "2027-01-01T05:00:00Z",
-   "score": 75,
-   "score_parts": [
-    {
-     "key": "savings",
-     "label": "Savings size",
-     "points": 30.0,
-     "max": 45,
-     "why": "40% off"
-    },
-    {
-     "key": "certainty",
-     "label": "Certainty",
-     "points": 22,
-     "max": 25,
-     "why": "voucher sold through a marketplace"
-    },
-    {
-     "key": "ease",
-     "label": "Ease",
-     "points": 15,
-     "max": 15,
-     "why": "no code needed"
-    },
-    {
-     "key": "deadline",
-     "label": "Deadline clarity",
-     "points": 8,
-     "max": 15,
-     "why": "end date within a year"
-    }
-   ],
-   "summary_ai": "Save 40% on Regal movie tickets through Groupon, including Premiere and premium-format tickets, plus a discount on popcorn and snacks. Check which theaters and formats your voucher covers.",
-   "network_terms": "Save 40% on Regal Movie Tickets — Including Premiere & Premium Format Tickets — Plus Discount On Popcorn and Snacks!",
-   "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-17240919-1787000589000?sid=ddm-finder",
-   "event_page": "",
-   "image": "/images/deals/17240919.webp",
-   "image_alt": "Moviegoers with popcorn in reclining cinema seats",
    "gift_for": [
     "experiences",
     "kids"
@@ -227,7 +227,7 @@
    "summary_ai": "Budget Pet Care's holiday sale takes 25% off pet essentials with the code below.",
    "network_terms": "Holiday Season Savings Are Here! Enjoy 25% OFF All Pet Essentials - Apply Code HDAYSALE",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-17377654-1793717949000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17377654-1793717949000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-pets.webp",
    "image_alt": "Smiling beagle looking at the camera",
@@ -284,7 +284,7 @@
    "summary_ai": "25% off pet protection products at Canada Pet Care, plus free shipping, with the code below.",
    "network_terms": "Give More Love, Spend 25% Less on Pet Protection + Free Shipping. Apply Code: JINGLE",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17379806-1793881865000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17379806-1793881865000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-pets.webp",
    "image_alt": "Smiling beagle looking at the camera",
@@ -343,12 +343,71 @@
    "summary_ai": "Up to 35% off select KitchenAid food processors for new orders on kitchenaid.com. Closeout, commercial and refurbished models are excluded.",
    "network_terms": "The Black Friday Event! Save up to 35% on select Food Processors! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-17388560-1794637976000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17388560-1794638700000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-kitchen.webp",
    "image_alt": "Bright, modern kitchen counter with fresh produce",
    "gift_for": [
     "cooking"
+   ]
+  },
+  {
+   "id": "cj-13970947",
+   "merchant": "Peet's Coffee",
+   "title": "30% off a new coffee subscription",
+   "category": "Coffee & food",
+   "region": "",
+   "sold_by": "brand",
+   "kind": "pct",
+   "pct": 30,
+   "usd": null,
+   "upto": false,
+   "conditions": [
+    "new_customers"
+   ],
+   "code": "NEWSUB30",
+   "starts": "2023-10-03T01:25:00Z",
+   "ends": "2027-01-01T07:59:00Z",
+   "score": 68,
+   "score_parts": [
+    {
+     "key": "savings",
+     "label": "Savings size",
+     "points": 22.5,
+     "max": 45,
+     "why": "30% off"
+    },
+    {
+     "key": "certainty",
+     "label": "Certainty",
+     "points": 19,
+     "max": 25,
+     "why": "first order / new customers only"
+    },
+    {
+     "key": "ease",
+     "label": "Ease",
+     "points": 11,
+     "max": 15,
+     "why": "code needed"
+    },
+    {
+     "key": "deadline",
+     "label": "Deadline clarity",
+     "points": 15,
+     "max": 15,
+     "why": "clear end date within 45 days"
+    }
+   ],
+   "summary_ai": "30% off the first order of a new Peet's coffee subscription. It applies to the first order only, so check the regular subscription price you'll pay after that.",
+   "network_terms": "30% Off first order of a new coffee subscriptions at peets.com with code NEWSUB30 at Peets.com",
+   "network": "CJ",
+   "url": "https://www.tkqlhce.com/click-101511733-13970947-1785379467000?sid=ddm-finder",
+   "event_page": "",
+   "image": "/images/deals/13970947.webp",
+   "image_alt": "Bag of Peet's Arabian Mocha Sanani dark roast coffee",
+   "gift_for": [
+    "coffee"
    ]
   },
   {
@@ -400,7 +459,7 @@
    "summary_ai": "A partner code for 21% off sitewide at Click & Grow's US store, which beats the on-site 20% offer on smaller orders. On orders over $180 the store's own 30% off is the better deal, so compare at checkout.",
    "network_terms": "Exclusive CJ partner code GROWSALE: 21% off sitewide at Click & Grow (US store). On-site offer: 20% off sitewide, plus 30% off orders over $180 and 40% off orders over $300. Valid November 3 - December 1, 2026.",
    "network": "CJ",
-   "url": "https://www.anrdoezrs.net/click-101511733-17383137-1794247276000?sid=ddm-finder",
+   "url": "https://www.tkqlhce.com/click-101511733-17383137-1794247276000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
@@ -461,7 +520,7 @@
    "summary_ai": "Up to 33% off Aquarium of the Pacific (Long Beach, CA) tickets on Groupon. Listed for Southern California markets; compare with the aquarium's own ticket price first.",
    "network_terms": "Aquarium of the Pacific (Long Beach, CA) - make a splash with up to 33% off tickets. New Jelly Dreamscapes exhibit. Markets: Los Angeles, Orange County, Inland Empire, San Diego, Ventura County, Santa Barbara, Bakersfield.",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-17358492-1790852400000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17358492-1790852400000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17358492.webp",
    "image_alt": "Visitors watching fish and a ray at a large aquarium window",
@@ -521,7 +580,7 @@
    "summary_ai": "KitchenAid's Black Friday Event takes up to 30% off select countertop appliances through 11/29, no code needed. \"Up to\" means many models get less, so compare the cart price before you buy.",
    "network_terms": "The Black Friday Event! Up to 30% off select countertop appliances now through 11/29",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-17385064-1794367343000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17385064-1794367343000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-kitchen.webp",
    "image_alt": "Bright, modern kitchen counter with fresh produce",
@@ -578,7 +637,7 @@
    "summary_ai": "Bowling at AMF, Lucky Strike and Bowlero via Groupon, with AMF starting at $29 for 2 people across 300+ locations. Groupon says it's eligible for sitewide promo codes.",
    "network_terms": "Right Up Your Alley - save at Lucky Strike, AMF & Bowlero with new lower prices. AMF bowling starts at $29 for 2 people, 300+ locations nationwide. Eligible for sitewide promo codes.",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17358481-1790852400000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17358481-1790852400000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17358481.webp",
    "image_alt": "Bowling lanes lit in blue and purple with a rack of bowling balls",
@@ -636,7 +695,7 @@
    "summary_ai": "Up to 40% off a private escape room at Escapology, sold as a Groupon voucher. Check that your nearest Escapology location is included and read the booking rules before you buy.",
    "network_terms": "Escape the Ordinary: Up to 40% Off Private Escape Room at Escapology",
    "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-17292666-1787000589000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17292666-1787000589000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17292666.webp",
    "image_alt": "Group solving puzzles in a library-themed escape room",
@@ -695,7 +754,7 @@
    "summary_ai": "Up to $150 off select KitchenAid stand mixers on kitchenaid.com, no code needed. Closeout, commercial and refurbished models are excluded, and it runs until 12/26 at 11:59 PM ET while supplies last.",
    "network_terms": "The Black Friday Event! Save up to $150 off select Stand Mixers! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17388572-1794637977000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17388572-1794638700000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-kitchen.webp",
    "image_alt": "Bright, modern kitchen counter with fresh produce",
@@ -754,7 +813,7 @@
    "summary_ai": "T-fal.com ships free on orders of $99.99 and above. Worth knowing if you are close to that total; not worth padding a cart for.",
    "network_terms": "Free shipping on orders $99.99 and above at T-fal.com",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17129175-1770250140000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17129175-1770250140000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17129175.webp",
    "image_alt": "Frying pan on a stovetop with steam rising",
@@ -813,7 +872,7 @@
    "summary_ai": "Free shipping on Rowenta orders of $99.99 or more at rowentausa.com, applied without a code.",
    "network_terms": "Free shipping on orders $99.99 and above at Rowentausa.com",
    "network": "CJ",
-   "url": "https://www.anrdoezrs.net/click-101511733-17129146-1776204605000?sid=ddm-finder",
+   "url": "https://www.kqzyfj.com/click-101511733-17129146-1776204605000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17129146.webp",
    "image_alt": "Person ironing a green shirt with a steam iron",
@@ -822,62 +881,63 @@
    ]
   },
   {
-   "id": "cj-13970947",
-   "merchant": "Peet's Coffee",
-   "title": "30% off a new coffee subscription",
-   "category": "Coffee & food",
+   "id": "cj-17365978",
+   "merchant": "Groupon",
+   "title": "Giftable experiences: wine tastings, food tours, dining",
+   "category": "Experiences",
    "region": "",
-   "sold_by": "brand",
-   "kind": "pct",
-   "pct": 30,
+   "sold_by": "marketplace",
+   "kind": "perk",
+   "pct": null,
    "usd": null,
    "upto": false,
    "conditions": [
-    "new_customers"
+    "local"
    ],
-   "code": "NEWSUB30",
-   "starts": "2023-10-03T01:25:00Z",
+   "code": "",
+   "starts": "2026-10-01T07:00:00Z",
    "ends": "2027-01-01T07:59:00Z",
-   "score": 61,
+   "score": 60,
    "score_parts": [
     {
      "key": "savings",
      "label": "Savings size",
-     "points": 22.5,
+     "points": 12,
      "max": 45,
-     "why": "30% off"
+     "why": "perk or bonus, not a price cut"
     },
     {
      "key": "certainty",
      "label": "Certainty",
-     "points": 19,
+     "points": 18,
      "max": 25,
-     "why": "first order / new customers only"
+     "why": "local / regional only, voucher sold through a marketplace"
     },
     {
      "key": "ease",
      "label": "Ease",
-     "points": 11,
+     "points": 15,
      "max": 15,
-     "why": "code needed"
+     "why": "no code needed"
     },
     {
      "key": "deadline",
      "label": "Deadline clarity",
-     "points": 8,
+     "points": 15,
      "max": 15,
-     "why": "end date within a year"
+     "why": "clear end date within 45 days"
     }
    ],
-   "summary_ai": "30% off the first order of a new Peet's coffee subscription. It applies to the first order only, so check the regular subscription price you'll pay after that.",
-   "network_terms": "30% Off first order of a new coffee subscriptions at peets.com with code NEWSUB30 at Peets.com",
+   "summary_ai": "Groupon's gift page collects wine tastings, food tours and local dining deals you can give as experiences. Availability depends on your city.",
+   "network_terms": "Get a head start on the holidays with wine tastings, food tours and local dining deals. Great for date nights now and even better as gifts later.",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-13970947-1785379467000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17365978-1791955707000?sid=ddm-finder",
    "event_page": "",
-   "image": "/images/deals/13970947.webp",
-   "image_alt": "Bag of Peet's Arabian Mocha Sanani dark roast coffee",
+   "image": "/images/deals/cat-experiences.webp",
+   "image_alt": "City skyline at dusk",
    "gift_for": [
-    "coffee"
+    "experiences",
+    "foodie"
    ]
   },
   {
@@ -931,13 +991,70 @@
    "summary_ai": "Up to 30% off photo books and personalized gifts on Groupon with the code below. Order early so custom items arrive in time.",
    "network_terms": "Photobooks & personalized gifts, up to 30% off with code PERSONAL.",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-17382809-1794033786000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17382809-1794033786000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
    "gift_for": [
     "family",
     "kids"
+   ]
+  },
+  {
+   "id": "cj-17111922",
+   "merchant": "SINGER",
+   "title": "10% off at singer.com",
+   "category": "Home",
+   "region": "",
+   "sold_by": "brand",
+   "kind": "pct",
+   "pct": 10,
+   "usd": null,
+   "upto": false,
+   "conditions": [],
+   "code": "SEW10NOW",
+   "starts": "2025-06-25T16:42:00Z",
+   "ends": "2027-01-01T05:00:00Z",
+   "score": 59,
+   "score_parts": [
+    {
+     "key": "savings",
+     "label": "Savings size",
+     "points": 7.5,
+     "max": 45,
+     "why": "10% off"
+    },
+    {
+     "key": "certainty",
+     "label": "Certainty",
+     "points": 25,
+     "max": 25,
+     "why": "no extra conditions"
+    },
+    {
+     "key": "ease",
+     "label": "Ease",
+     "points": 11,
+     "max": 15,
+     "why": "code needed"
+    },
+    {
+     "key": "deadline",
+     "label": "Deadline clarity",
+     "points": 15,
+     "max": 15,
+     "why": "clear end date within 45 days"
+    }
+   ],
+   "summary_ai": "10% off at singer.com with code SEW10NOW. The network terms are short and list no exclusions, so confirm the discount shows in your cart before paying.",
+   "network_terms": "10% off no expire date",
+   "network": "CJ",
+   "url": "https://www.kqzyfj.com/click-101511733-17111922-1755112374000?sid=ddm-finder",
+   "event_page": "",
+   "image": "/images/deals/17111922.webp",
+   "image_alt": "Vintage black sewing machine with gold detailing on a wooden table",
+   "gift_for": [
+    "crafts"
    ]
   },
   {
@@ -999,6 +1116,63 @@
    ]
   },
   {
+   "id": "cj-17125210",
+   "merchant": "Peet's Coffee",
+   "title": "5% off sitewide",
+   "category": "Coffee & food",
+   "region": "",
+   "sold_by": "brand",
+   "kind": "pct",
+   "pct": 5,
+   "usd": null,
+   "upto": false,
+   "conditions": [],
+   "code": "WEBFRIEND5",
+   "starts": "2025-07-11T04:00:00Z",
+   "ends": "2027-01-01T07:59:00Z",
+   "score": 55,
+   "score_parts": [
+    {
+     "key": "savings",
+     "label": "Savings size",
+     "points": 3.8,
+     "max": 45,
+     "why": "5% off"
+    },
+    {
+     "key": "certainty",
+     "label": "Certainty",
+     "points": 25,
+     "max": 25,
+     "why": "no extra conditions"
+    },
+    {
+     "key": "ease",
+     "label": "Ease",
+     "points": 11,
+     "max": 15,
+     "why": "code needed"
+    },
+    {
+     "key": "deadline",
+     "label": "Deadline clarity",
+     "points": 15,
+     "max": 15,
+     "why": "clear end date within 45 days"
+    }
+   ],
+   "summary_ai": "An affiliate-exclusive 5% off sitewide at Peets.com, including subscriptions (limited to 3 recurring payments). No minimum, one use per customer, and it combines with shipping discounts.",
+   "network_terms": "Peets.com Exclusive 5% off Sitewide offer at Peets.com with code WEBFRIEND5 Details: Exclusive for affiliates to promote For Peets.com Online Store 5% off entire order Applies to subscriptions and one-time purchases Limited to 3 recurring payments No minimum purchase requirement All customers One use per customer Combines with shipping discounts",
+   "network": "CJ",
+   "url": "https://www.dpbolvw.net/click-101511733-17125210-1760760270000?sid=ddm-finder",
+   "event_page": "",
+   "image": "/images/deals/17125210.webp",
+   "image_alt": "Bag of Peet's Major Dickason's Blend coffee beans",
+   "gift_for": [
+    "coffee"
+   ]
+  },
+  {
    "id": "cj-15890985",
    "merchant": "Sockwell",
    "title": "Up to 30% off closeouts",
@@ -1049,7 +1223,7 @@
    "summary_ai": "Sockwell's closeout section is up to 30% off, no code required. Closeouts mean limited sizes and colors.",
    "network_terms": "Save Up to 30% on Closeouts at SockWellUSA.com. No code required. Limited time offer!",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-15890985-1792393100000?sid=ddm-finder",
+   "url": "https://www.dpbolvw.net/click-101511733-15890985-1792393100000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/15890985.webp",
    "image_alt": "Charcoal Sockwell Ranger everyday crew sock",
@@ -1108,7 +1282,7 @@
    "summary_ai": "M&M'S has sale pricing across its gifts section, including personalized candy. Savings vary by item, so check the price on each gift.",
    "network_terms": "Save Now on All Gifts!",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17231745-1768618176000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17231745-1768618176000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
@@ -1166,7 +1340,7 @@
    "summary_ai": "Free shipping at Berkel's US online store, according to its affiliate program. The network terms are brief, so confirm shipping is free for your address at checkout.",
    "network_terms": "Free shipping",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-15541103-1685505101000?sid=ddm-finder",
+   "url": "https://www.kqzyfj.com/click-101511733-15541103-1685505101000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/15541103.webp",
    "image_alt": "Red Berkel Home Line Plus 200 food slicer",
@@ -1224,7 +1398,7 @@
    "summary_ai": "$15 off a Gourmet Chocolate of the Month Club gift, which ships handmade artisan chocolates each month. A gift that keeps arriving after the holidays.",
    "network_terms": "The Gourmet Chocolate of the Month Club sends expertly-selected, handmade, artisanal chocolates created by the world's best chocolatiers.",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-15343875-1792504206000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-15343875-1792504206000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
@@ -1342,7 +1516,7 @@
    "summary_ai": "Up to $50 off select KitchenAid electric kettles, no code needed. A smaller gift that still gets the Black Friday price, while supplies last.",
    "network_terms": "The Black Friday Event! Save up to $50 off select Kettles! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
    "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-17388570-1794637977000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17388570-1794638700000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-kitchen.webp",
    "image_alt": "Bright, modern kitchen counter with fresh produce",
@@ -1401,72 +1575,12 @@
    "summary_ai": "Up to $40 off select KitchenAid toasters on kitchenaid.com through 12/26. Closeout, commercial and refurbished models are excluded.",
    "network_terms": "The Black Friday Event! Save up to $40 off select Toasters! *Ends 12/26/2026 11:59PM EST. Only valid for new orders on kitchenaid.com. Excludes closeout, commercial, and refurbished models. While supplies last. Offer subject to change*",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17388567-1794637977000?sid=ddm-finder",
+   "url": "https://www.anrdoezrs.net/click-101511733-17388567-1794638700000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/cat-kitchen.webp",
    "image_alt": "Bright, modern kitchen counter with fresh produce",
    "gift_for": [
     "cooking"
-   ]
-  },
-  {
-   "id": "cj-17365978",
-   "merchant": "Groupon",
-   "title": "Giftable experiences: wine tastings, food tours, dining",
-   "category": "Experiences",
-   "region": "",
-   "sold_by": "marketplace",
-   "kind": "perk",
-   "pct": null,
-   "usd": null,
-   "upto": false,
-   "conditions": [
-    "local"
-   ],
-   "code": "",
-   "starts": "2026-10-01T07:00:00Z",
-   "ends": "2027-01-01T07:59:00Z",
-   "score": 53,
-   "score_parts": [
-    {
-     "key": "savings",
-     "label": "Savings size",
-     "points": 12,
-     "max": 45,
-     "why": "perk or bonus, not a price cut"
-    },
-    {
-     "key": "certainty",
-     "label": "Certainty",
-     "points": 18,
-     "max": 25,
-     "why": "local / regional only, voucher sold through a marketplace"
-    },
-    {
-     "key": "ease",
-     "label": "Ease",
-     "points": 15,
-     "max": 15,
-     "why": "no code needed"
-    },
-    {
-     "key": "deadline",
-     "label": "Deadline clarity",
-     "points": 8,
-     "max": 15,
-     "why": "end date within a year"
-    }
-   ],
-   "summary_ai": "Groupon's gift page collects wine tastings, food tours and local dining deals you can give as experiences. Availability depends on your city.",
-   "network_terms": "Get a head start on the holidays with wine tastings, food tours and local dining deals. Great for date nights now and even better as gifts later.",
-   "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-17365978-1791955707000?sid=ddm-finder",
-   "event_page": "",
-   "image": "/images/deals/cat-experiences.webp",
-   "image_alt": "City skyline at dusk",
-   "gift_for": [
-    "experiences",
-    "foodie"
    ]
   },
   {
@@ -1520,7 +1634,7 @@
    "summary_ai": "An ongoing store policy rather than a sale: KitchenAid advertises free delivery and 60-day returns on kitchenaid.com, with restrictions and exclusions. Useful when comparing it with other sellers.",
    "network_terms": "Free Delivery + 60 Day Returns. Restrictions and exclusions apply. offer subject to change. For full details, visit: https://www.kitchenaid.com/countertop-appliances/return-policy",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-17107552-1792629971000?sid=ddm-finder",
+   "url": "https://www.tkqlhce.com/click-101511733-17107552-1792629971000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17107552.webp",
    "image_alt": "KitchenAid tilt-head stand mixer in evergreen with a wooden bowl",
@@ -1579,70 +1693,13 @@
    "summary_ai": "5% off sitewide at Electronic Express with a November code. Some exclusions apply, so check the cart total before checkout.",
    "network_terms": "Save 5% sitewide with code NOV5 during November 2026. Some exclusions may apply.",
    "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-17386846-1794530477000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-17386846-1794530478000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
    "gift_for": [
     "tech",
     "home"
-   ]
-  },
-  {
-   "id": "cj-17111922",
-   "merchant": "SINGER",
-   "title": "10% off at singer.com",
-   "category": "Home",
-   "region": "",
-   "sold_by": "brand",
-   "kind": "pct",
-   "pct": 10,
-   "usd": null,
-   "upto": false,
-   "conditions": [],
-   "code": "SEW10NOW",
-   "starts": "2025-06-25T16:42:00Z",
-   "ends": "2027-01-01T05:00:00Z",
-   "score": 52,
-   "score_parts": [
-    {
-     "key": "savings",
-     "label": "Savings size",
-     "points": 7.5,
-     "max": 45,
-     "why": "10% off"
-    },
-    {
-     "key": "certainty",
-     "label": "Certainty",
-     "points": 25,
-     "max": 25,
-     "why": "no extra conditions"
-    },
-    {
-     "key": "ease",
-     "label": "Ease",
-     "points": 11,
-     "max": 15,
-     "why": "code needed"
-    },
-    {
-     "key": "deadline",
-     "label": "Deadline clarity",
-     "points": 8,
-     "max": 15,
-     "why": "end date within a year"
-    }
-   ],
-   "summary_ai": "10% off at singer.com with code SEW10NOW. The network terms are short and list no exclusions, so confirm the discount shows in your cart before paying.",
-   "network_terms": "10% off no expire date",
-   "network": "CJ",
-   "url": "https://www.tkqlhce.com/click-101511733-17111922-1755112374000?sid=ddm-finder",
-   "event_page": "",
-   "image": "/images/deals/17111922.webp",
-   "image_alt": "Vintage black sewing machine with gold detailing on a wooden table",
-   "gift_for": [
-    "crafts"
    ]
   },
   {
@@ -1696,7 +1753,7 @@
    "summary_ai": "Add a free handheld M&M'S dispenser to any order of $50 or more with the code below. Good as a stocking stuffer on top of a bigger gift.",
    "network_terms": "Free Handheld Dispenser on orders $50+ with Code: GWP50",
    "network": "CJ",
-   "url": "https://www.anrdoezrs.net/click-101511733-17249190-1771571399000?sid=ddm-finder",
+   "url": "https://www.dpbolvw.net/click-101511733-17249190-1771571399000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
@@ -1756,7 +1813,7 @@
    "summary_ai": "Peets.com gives free ground shipping on orders over $49 within the continental US, applied automatically at checkout.",
    "network_terms": "Valid for free ground shipping on orders over $49 within the continental US. Discount applied automatically at checkout with qualifying purchase.",
    "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-13921671-1761189413000?sid=ddm-finder",
+   "url": "https://www.jdoqocy.com/click-101511733-13921671-1761189413000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/13921671.webp",
    "image_alt": "Bag of Peet's Sun Catcher light roast coffee",
@@ -1815,12 +1872,72 @@
    "summary_ai": "Free shipping on Sockwell orders of $75 or more, no code required.",
    "network_terms": "Enjoy Free Shipping on Orders of $75+ at SockWellUSA.com. No code required.",
    "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-15890984-1792393100000?sid=ddm-finder",
+   "url": "https://www.kqzyfj.com/click-101511733-15890984-1792393100000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/15890984.webp",
    "image_alt": "Khaki Sockwell Trout everyday crew sock",
    "gift_for": [
     "cozy"
+   ]
+  },
+  {
+   "id": "cj-17240828",
+   "merchant": "T-fal",
+   "title": "20% off your first order with email sign-up",
+   "category": "Kitchen",
+   "region": "",
+   "sold_by": "brand",
+   "kind": "pct",
+   "pct": 20,
+   "usd": null,
+   "upto": false,
+   "conditions": [
+    "signup",
+    "new_customers"
+   ],
+   "code": "",
+   "starts": "2026-02-01T05:02:00Z",
+   "ends": "2027-01-01T04:59:00Z",
+   "score": 49,
+   "score_parts": [
+    {
+     "key": "savings",
+     "label": "Savings size",
+     "points": 15.0,
+     "max": 45,
+     "why": "20% off"
+    },
+    {
+     "key": "certainty",
+     "label": "Certainty",
+     "points": 13,
+     "max": 25,
+     "why": "requires an email sign-up, first order / new customers only"
+    },
+    {
+     "key": "ease",
+     "label": "Ease",
+     "points": 6,
+     "max": 15,
+     "why": "sign-up needed"
+    },
+    {
+     "key": "deadline",
+     "label": "Deadline clarity",
+     "points": 15,
+     "max": 15,
+     "why": "clear end date within 45 days"
+    }
+   ],
+   "summary_ai": "T-fal offers 20% off a first order when you join its newsletter. You trade your email address for the discount, and it only applies once.",
+   "network_terms": "Join the T-fal newsletter and enjoy 20% off your first order. Discover cookware, appliances, and kitchen must-haves.",
+   "network": "CJ",
+   "url": "https://www.dpbolvw.net/click-101511733-17240828-1776205184000?sid=ddm-finder",
+   "event_page": "",
+   "image": "/images/deals/17240828.webp",
+   "image_alt": "Nonstick frying pan with a wooden handle on a white background",
+   "gift_for": [
+    "cooking"
    ]
   },
   {
@@ -1933,129 +2050,12 @@
    "summary_ai": "20% off your first order at SockwellUSA.com with code NEWSOCKS20. First orders only, and Sockwell describes it as a limited-time offer.",
    "network_terms": "Save 20% on your first order at SockwellUSA.com. Use code NEWSOCKS20. Limited time only!",
    "network": "CJ",
-   "url": "https://www.kqzyfj.com/click-101511733-17030268-1792393086000?sid=ddm-finder",
+   "url": "https://www.dpbolvw.net/click-101511733-17030268-1792393086000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/deals/17030268.webp",
    "image_alt": "White and teal Sockwell pleated everyday quarter sock",
    "gift_for": [
     "cozy"
-   ]
-  },
-  {
-   "id": "cj-17125210",
-   "merchant": "Peet's Coffee",
-   "title": "5% off sitewide",
-   "category": "Coffee & food",
-   "region": "",
-   "sold_by": "brand",
-   "kind": "pct",
-   "pct": 5,
-   "usd": null,
-   "upto": false,
-   "conditions": [],
-   "code": "WEBFRIEND5",
-   "starts": "2025-07-11T04:00:00Z",
-   "ends": "2027-01-01T07:59:00Z",
-   "score": 48,
-   "score_parts": [
-    {
-     "key": "savings",
-     "label": "Savings size",
-     "points": 3.8,
-     "max": 45,
-     "why": "5% off"
-    },
-    {
-     "key": "certainty",
-     "label": "Certainty",
-     "points": 25,
-     "max": 25,
-     "why": "no extra conditions"
-    },
-    {
-     "key": "ease",
-     "label": "Ease",
-     "points": 11,
-     "max": 15,
-     "why": "code needed"
-    },
-    {
-     "key": "deadline",
-     "label": "Deadline clarity",
-     "points": 8,
-     "max": 15,
-     "why": "end date within a year"
-    }
-   ],
-   "summary_ai": "An affiliate-exclusive 5% off sitewide at Peets.com, including subscriptions (limited to 3 recurring payments). No minimum, one use per customer, and it combines with shipping discounts.",
-   "network_terms": "Peets.com Exclusive 5% off Sitewide offer at Peets.com with code WEBFRIEND5 Details: Exclusive for affiliates to promote For Peets.com Online Store 5% off entire order Applies to subscriptions and one-time purchases Limited to 3 recurring payments No minimum purchase requirement All customers One use per customer Combines with shipping discounts",
-   "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-17125210-1760760270000?sid=ddm-finder",
-   "event_page": "",
-   "image": "/images/deals/17125210.webp",
-   "image_alt": "Bag of Peet's Major Dickason's Blend coffee beans",
-   "gift_for": [
-    "coffee"
-   ]
-  },
-  {
-   "id": "cj-17240828",
-   "merchant": "T-fal",
-   "title": "20% off your first order with email sign-up",
-   "category": "Kitchen",
-   "region": "",
-   "sold_by": "brand",
-   "kind": "pct",
-   "pct": 20,
-   "usd": null,
-   "upto": false,
-   "conditions": [
-    "signup",
-    "new_customers"
-   ],
-   "code": "",
-   "starts": "2026-02-01T05:02:00Z",
-   "ends": "2027-01-01T04:59:00Z",
-   "score": 42,
-   "score_parts": [
-    {
-     "key": "savings",
-     "label": "Savings size",
-     "points": 15.0,
-     "max": 45,
-     "why": "20% off"
-    },
-    {
-     "key": "certainty",
-     "label": "Certainty",
-     "points": 13,
-     "max": 25,
-     "why": "requires an email sign-up, first order / new customers only"
-    },
-    {
-     "key": "ease",
-     "label": "Ease",
-     "points": 6,
-     "max": 15,
-     "why": "sign-up needed"
-    },
-    {
-     "key": "deadline",
-     "label": "Deadline clarity",
-     "points": 8,
-     "max": 15,
-     "why": "end date within a year"
-    }
-   ],
-   "summary_ai": "T-fal offers 20% off a first order when you join its newsletter. You trade your email address for the discount, and it only applies once.",
-   "network_terms": "Join the T-fal newsletter and enjoy 20% off your first order. Discover cookware, appliances, and kitchen must-haves.",
-   "network": "CJ",
-   "url": "https://www.dpbolvw.net/click-101511733-17240828-1776205184000?sid=ddm-finder",
-   "event_page": "",
-   "image": "/images/deals/17240828.webp",
-   "image_alt": "Nonstick frying pan with a wooden handle on a white background",
-   "gift_for": [
-    "cooking"
    ]
   },
   {
@@ -2109,7 +2109,7 @@
    "summary_ai": "A curated page of wine, champagne and gourmet food gifts under $50. Register an account to get 5% off every order.",
    "network_terms": "Shop fine wine, champagne, gourmet food gifts under $50 at winebasket.com. Register & receive 5% off every order.",
    "network": "CJ",
-   "url": "https://www.jdoqocy.com/click-101511733-10570212-1648781334000?sid=ddm-finder",
+   "url": "https://www.kqzyfj.com/click-101511733-10570212-1648781334000?sid=ddm-finder",
    "event_page": "",
    "image": "/images/photos/hero-640.webp",
    "image_alt": "Shopper holding a payment card while checking out on a laptop",
