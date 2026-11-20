@@ -1,5 +1,5 @@
 {
- "_doc": "Image manifest for discountdealme.com. Every image lists its source and license; see NOTES in the PR. Files live in ddm/images/deals, ddm/images/photos. Run images.py fetch to (re)create missing WebP files.",
+ "_doc": "Image manifest for discountdealme.com. Every image lists its source and license; see NOTES in the PR. Files live in ddm/images/deals, ddm/images/photos. Run images.py fetch to (re)create missing WebP files. season: photos for the homepage season tiles (Nov 2026 redesign). Cyber Monday reuses the hero photo and Gift guides reuse the Gifts category photo.",
  "hero": {
   "source": "unsplash",
   "id": "Q59HmzK38eQ",
@@ -221,6 +221,17 @@
    "license": "Unsplash License",
    "license_url": "https://unsplash.com/license",
    "alt": "Smiling beagle looking at the camera",
+   "fit": "cover"
+  },
+  "Gifts": {
+   "source": "unsplash",
+   "id": "PxM8aeJbzvk",
+   "author": "freestocks",
+   "page": "https://unsplash.com/photos/PxM8aeJbzvk",
+   "src": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a",
+   "license": "Unsplash License",
+   "license_url": "https://unsplash.com/license",
+   "alt": "Stack of wrapped gift boxes with ribbons",
    "fit": "cover"
   }
  },
@@ -521,6 +532,30 @@
    "license": "CJ advertiser product feed (affiliate promotional use)",
    "alt": "Red Berkel Home Line Plus 200 food slicer",
    "fit": "contain"
+  }
+ },
+ "season": {
+  "black-friday": {
+   "source": "unsplash",
+   "id": "_3Q3tsJ01nc",
+   "author": "freestocks",
+   "page": "https://unsplash.com/photos/_3Q3tsJ01nc",
+   "src": "https://images.unsplash.com/photo-1483985988355-763728e1935b",
+   "license": "Unsplash License",
+   "license_url": "https://unsplash.com/license",
+   "alt": "Shopper holding white and black paper shopping bags",
+   "fit": "cover"
+  },
+  "gift-planner": {
+   "source": "unsplash",
+   "id": "LUPXhXj2ip0",
+   "author": "Mel Poole",
+   "page": "https://unsplash.com/photos/LUPXhXj2ip0",
+   "src": "https://images.unsplash.com/photo-1545608444-f045a6db6133",
+   "license": "Unsplash License",
+   "license_url": "https://unsplash.com/license",
+   "alt": "Wrapped gift boxes topped with red baubles",
+   "fit": "cover"
   }
  }
 }

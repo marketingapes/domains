@@ -14,7 +14,7 @@ HIST = json.load(open(os.path.join(HERE, "price_history.json")))
 CHECKED = FEED["checked_at"]
 PT = ZoneInfo("America/Los_Angeles")
 E = html.escape
-TOOLS_V = "20261115a"
+TOOLS_V = "20261120b"
 # Amazon Associates tag used for Amazon search links on /deal-checker/. Empty = no Amazon links.
 AMAZON_TAG = "tonedntastyne-20"  # Kyle, Nov 15 2026: DDM uses the TNT tag for now
 # Optional live lookup backend (tools/ddm-deal-checker-worker). Empty = static data only.
@@ -353,7 +353,7 @@ TOOLS_CSS = r"""
 .dc-price s{color:var(--ink-3)}
 .dc-verdict{display:inline-flex;align-items:center;gap:8px;font-weight:700;border-radius:999px;padding:4px 12px;font-size:.9rem;background:var(--surface-2);border:1px solid var(--line)}
 .dc-verdict.is-good{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
-.dc-verdict.is-bad{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+.dc-verdict.is-bad{background:#fffbeb;border-color:#fde68a;color:#92400e}
 .dc-note{font-size:.875rem;color:var(--ink-2);margin:8px 0}
 .dc-tag{font-size:.72rem;font-weight:700;border:1px solid var(--line-2);border-radius:6px;padding:1px 6px;color:var(--ink-2);margin-left:6px}
 .dc-alts{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:8px}

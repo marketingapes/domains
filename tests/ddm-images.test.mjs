@@ -44,11 +44,15 @@ test('DDM images: every live deal in the public feed has an image file, carried-
 
 test('DDM images: homepage hero and guide photos are WebP with srcset, sizes, alt and dimensions', () => {
   const home = read(path.join(SITE, 'index.html'));
+  // Nov 2026 redesign: the homepage hero is the spec search, not a stock photo. If a hero photo returns, it must be eager.
   const hero = imgs(home).find((t) => t.includes('/images/photos/hero-1200.webp'));
-  assert.ok(hero, 'homepage hero photo');
-  assert.equal(attr(hero, 'fetchpriority'), 'high');
-  assert.equal(attr(hero, 'loading'), undefined, 'hero is not lazy');
-  assert.match(attr(hero, 'srcset'), /hero-640\.webp 640w/);
+  if (hero) {
+    assert.equal(attr(hero, 'fetchpriority'), 'high');
+    assert.equal(attr(hero, 'loading'), undefined, 'hero is not lazy');
+    assert.match(attr(hero, 'srcset'), /hero-640\.webp 640w/);
+  } else {
+    assert.match(home, /id="amz-form"/, 'homepage hero is the Amazon spec search');
+  }
   for (const slug of Object.keys(manifest.guides)) {
     const html = read(path.join(SITE, `articles/${slug}/index.html`));
     const t = imgs(html).find((x) => x.includes(`/images/photos/${slug}-1200.webp`));
