@@ -406,7 +406,7 @@ a:hover{text-decoration-color:var(--link)}
 .ctile b{font-size:.92rem}
 .ctile small{font-size:.72rem;opacity:.85}
 /* other offers */
-.offers{margin-top:28px}
+.offers{margin-top:28px;scroll-margin-top:84px}
 .ogrid{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(min-width:900px){.ogrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .ocard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:box-shadow .15s,border-color .15s,transform .15s}
@@ -481,5 +481,109 @@ a:hover{text-decoration-color:var(--link)}
 .page-head h1{font-size:clamp(2rem,4.6vw,3rem)}
 .disclose{border-left:3px solid var(--brand)}
 @media(prefers-reduced-motion:reduce){.ocard:hover,.stile:hover{transform:none}.ctile:hover img{transform:none}}
+/* ===== tablet pass (2026-11-20): 640-1199 portrait + landscape, touch targets, readable labels ===== */
+/* touch targets: 44px minimum on every control, all sizes */
+.btn,.btn-small,.car-btn,.code-copy,.chip,.ex-row a,.fc-field input,.fc-field select{min-height:44px}
+.car-btn{width:44px;height:44px}
+.code-copy{min-width:64px;padding:6px 14px}
+.chip{padding:8px 14px}
+.ex-row a{display:inline-flex;align-items:center;padding:6px 14px}
+.deal-details summary{min-height:44px;display:flex;align-items:center}
+.ocard-go{display:flex;align-items:center;min-height:44px}
+.sec-link{display:inline-flex;align-items:center;min-height:44px}
+.logo{min-height:44px}
+.head-search input,.head-search button{min-height:44px}
+.finder-search input,.finder-search .btn{min-height:44px}
+.toggles label{min-height:44px;display:inline-flex;align-items:center;gap:8px}
+.toggles input{width:20px;height:20px}
+/* readable small labels (12px floor) */
+.score small{font-size:.75rem;letter-spacing:.02em}
+.ai-tag,.adchip-sm,.season-date,.ocard-store,.gcard-cat{font-size:.75rem}
+.ctile small{font-size:.75rem}
+/* touch devices and tablet widths: roomier nav and footer links */
+@media (any-pointer:coarse), (max-width:1366px){
+ .main-nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px}
+ .foot-grid nav{gap:0}
+ .foot-grid nav a{display:flex;align-items:center;min-height:44px}
+ .crumbs a{display:inline-flex;align-items:center;min-height:44px;padding-right:4px}
+ .bfcm-banner a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px}
+ .bfcm-inner{padding-top:2px;padding-bottom:2px}
+ .feed-status a,.jump a,.linklike,.rad-cta a{display:inline-flex;align-items:center;min-height:44px}
+ .signup-consent{min-height:44px;align-items:center}
+}
+.head-search button{min-width:44px}
+#f-sort,.sort select{min-height:44px}
+/* category tiles: phone = swipe row; tablet = 3x3 grid; desktop = one row of 9 */
+@media(min-width:640px){
+ .cat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;overflow:visible;max-width:860px}
+ .ctile{height:116px;flex:none}
+}
+@media(min-width:1200px){
+ .cat-row{grid-template-columns:repeat(9,minmax(0,1fr));max-width:1200px;gap:10px}
+ .ctile{height:100px}
+}
+/* other offers: 2 / 3 / 4 columns, show full rows only (8 / 9 / 8 cards) */
+.ogrid>.ocard:nth-child(n+9){display:none}
+@media(min-width:700px) and (max-width:1023px){
+ .ogrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .ogrid>.ocard:nth-child(9){display:flex}
+}
+@media(min-width:1024px){.ogrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* deal cards: 3 columns from 960 */
+@media(min-width:960px){.deal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* tablet range */
+@media(min-width:640px) and (max-width:1199px){
+ .wrap{padding:0 28px}
+ .smart-wrap{max-width:760px;padding-top:40px}
+ .hero-smart h1{font-size:clamp(2.3rem,5.4vw,3rem)}
+ .hero-smart .lede{font-size:1.08rem;max-width:56ch}
+ .smart{padding:8px 8px 8px 16px;border-radius:18px}
+ .smart input{font-size:1.15rem;padding:14px 6px}
+ .smart .btn-amz{min-height:56px;font-size:1.02rem;padding:0 1.4em}
+ .ex-row{gap:10px}
+ .section{margin-top:48px}
+ .car-track{grid-auto-columns:calc((100% - 28px)/3)}
+ .stiles{gap:16px}
+ .split{gap:28px}
+ .code-stores a{min-height:52px}
+ .ocard-title{font-size:1rem}
+ .page-head{padding-top:28px}
+ .finder-bar{top:auto;position:static}
+}
+/* portrait tablets narrower than ~900: season tiles 2x2 with wider images, verified codes beside the checker card */
+@media(min-width:640px) and (max-width:959px){
+ .split{grid-template-columns:1fr}
+ .tool-card{display:grid;grid-template-columns:1fr auto;gap:4px 20px;align-items:center}
+ .tool-card .kicker,.tool-card h3,.tool-card p{grid-column:1}
+ .tool-card .btn{grid-column:2;grid-row:1/4}
+}
+/* landscape tablets (iPad Air/Pro 1180-1366 wide, short viewport): keep the search and first offers above the fold */
+@media(min-width:1024px) and (max-height:900px){
+ .smart-wrap{padding-top:24px}
+ .hero-smart h1{font-size:2.6rem}
+ .hero-smart .lede{margin-bottom:14px}
+ .amz-fine{margin-top:8px}
+ .cat-row{padding-top:14px}
+ .ctile{height:88px}
+ .offers{margin-top:22px}
+}
+@media(min-width:1024px) and (max-height:900px){.hero-smart .smart-hint{margin-top:10px}}
+/* tablet pass, round 2 */
+.jump{align-items:center}
+@media(max-width:1279px){.head-search{display:none}}
+@media(min-width:1280px){.main-nav{order:0;width:auto;margin:0}}
+@media(min-width:640px) and (max-width:1199px){
+ .smart input{font-size:1.04rem}
+ .smart .btn-amz{padding:0 1.15em}
+ .ctile{height:96px}
+ .smart-wrap{padding-top:32px}
+ .hero-smart .lede{margin-bottom:16px}
+}
+@media(min-width:640px) and (max-width:1023px){.bfcm-banner a[href="/gift-planner/"]{display:none}}
+@media(min-width:1024px) and (orientation:landscape){
+ .smart-wrap{max-width:900px}
+ .cat-row{grid-template-columns:repeat(9,minmax(0,1fr));max-width:1200px;gap:10px}
+ .ctile{height:92px}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 """

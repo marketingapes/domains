@@ -31,7 +31,7 @@ BY = {a["slug"]: a for a in ARTS}
 assert len(BY) == len(ARTS) == 12
 
 GTM = "GTM-W3D26R29"
-ASSET_V = "20261120b"
+ASSET_V = "20261120c"
 e = html.escape
 
 # Email opt-in. Posts form-encoded to a private Make webhook that appends one row
@@ -203,9 +203,9 @@ def home():
         src = images.deal_image(d)[0]
         if src not in seen_img:
             picks.append(d); seen_img.add(src)
-        if len(picks) == 8:
+        if len(picks) == 9:
             break
-    picks += [d for d in LIVE if d not in picks][:8 - len(picks)]
+    picks += [d for d in LIVE if d not in picks][:9 - len(picks)]
     offers = "".join(ocard(d, "ddm-home-offers", i < 4) for i, d in enumerate(picks))
     soon = sorted([d for d in LIVE if d["network"]["ends"]], key=lambda d: d["network"]["ends"])[:10]
     soon_cards = "".join(ocard(d, "ddm-home-soon") for d in soon)
@@ -215,6 +215,10 @@ def home():
         if im:
             cat_tiles += (f'<a class="ctile" href="/deals/?cat={e(c)}"><img src="{im[0]}" alt="" loading="lazy" decoding="async" width="720" height="450">'
                           f'<span><b>{e(c)}</b><small><span data-cat-count="{e(c)}">{counts[c]}</span> deals</small></span></a>')
+    cat_tiles += (f'<a class="ctile ctile-more" href="/deals/"><img src="/images/photos/hero-640.webp" alt="" loading="lazy" decoding="async" width="640" height="427">'
+                  f'<span><b>All live deals</b><small><span data-live-count>{len(LIVE)}</span> deals</small></span></a>'
+                  f'<a class="ctile ctile-more" href="/coupons/"><img src="{images.guide_img("coupon-stacking-explained", "640")}" alt="" loading="lazy" decoding="async" width="640" height="360">'
+                  f'<span><b>Promo codes</b><small>{n_codes} verified</small></span></a>')
     def stile(key, href, date, title, blurb):
         src, alt = images.season_img(key)
         return (f'<a class="stile" href="{href}"><img src="{src}" alt="{e(alt)}" loading="lazy" decoding="async" width="640" height="400">'

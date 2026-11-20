@@ -55,12 +55,12 @@
         var n=hits([s.name].concat(live.map(function(c){return c.title+' '+c.terms;})).join(' '),ts);if(n>=need)cm.push({n:n,s:s,live:live});});
     }
     dm.sort(function(a,b){return b.n-a.n||b.d.score-a.d.score;}); cm.sort(function(a,b){return b.n-a.n;});
-    var list=dm.map(function(x){return x.d;}).slice(0,8), matched=list.length>0, ids={};
+    var list=dm.map(function(x){return x.d;}).slice(0,9), matched=list.length>0, ids={};
     list.forEach(function(d){ids[d.id]=1;d._m=1;});
     var rest=deals.slice().sort(function(a,b){return b.score-a.score;}).filter(function(d){return !ids[d.id];}), imgs={};
     list.forEach(function(d){imgs[d.image]=1;});
-    rest.forEach(function(d){if(list.length<8&&!imgs[d.image]){d._m=0;imgs[d.image]=1;ids[d.id]=1;list.push(d);}});
-    rest.forEach(function(d){if(list.length<8&&!ids[d.id]){d._m=0;list.push(d);}});
+    rest.forEach(function(d){if(list.length<9&&!imgs[d.image]){d._m=0;imgs[d.image]=1;ids[d.id]=1;list.push(d);}});
+    rest.forEach(function(d){if(list.length<9&&!ids[d.id]){d._m=0;list.push(d);}});
     head.textContent=matched?'Other offers for \u201c'+words+'\u201d':'Other offers worth a look';
     sub.textContent=matched?(dm.length+' live deal'+(dm.length>1?'s':'')+' from stores we work with match'+(dm.length>1?'':'es')+' your search, followed by today\u2019s top-scoring deals. Terms and end dates come from each store\u2019s affiliate program.'):'No partner-store deals match \u201c'+words+'\u201d right now, so here are today\u2019s top-scoring deals.';
     grid.innerHTML=list.map(card).join('');
@@ -76,7 +76,7 @@
     try{(window.dataLayer=window.dataLayer||[]).push({event:'ddm_amazon_search',has_budget:!!(p.lo||p.hi)});}catch(e){}
     return true;
   }
-  f.addEventListener('submit',function(e){e.preventDefault();run(input.value,true);});
+  f.addEventListener('submit',function(e){e.preventDefault();if(run(input.value,true)){var o=document.getElementById('offers');if(o&&o.scrollIntoView)setTimeout(function(){o.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});},150);}});
   [].forEach.call(document.querySelectorAll('[data-q]'),function(el){
     el.addEventListener('click',function(e){e.preventDefault();input.value=el.getAttribute('data-q');run(input.value,false);
       var o=document.getElementById('offers');if(o&&o.scrollIntoView)o.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
