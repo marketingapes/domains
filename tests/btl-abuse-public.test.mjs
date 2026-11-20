@@ -28,6 +28,14 @@ test('LA runtime cannot assess eligibility and requires the matching saved recei
   assert.match(s,/saved_pending_human_review/);assert.match(s,/not_assessed/);assert.match(s,/submission_id/);assert.match(s,/consent_record_id/);
   assert.match(s,/if \(!L\.intake_endpoint\)/);
 });
+test('LA pages speak the live BTL web-lead contract and only count a queued callback for this submission',()=>{
+  for(const p of ['index.html','quiz/index.html','talk-to-sofia/index.html']){const s=read(p);assert.match(s,/intake_contract:"btl\.web-lead\/v1"/);assert.match(s,/data-state="queued"/);}
+  const s=read('lane.js');
+  assert.match(s,/tort: 'la_county_abuse', state: 'CA'/);
+  assert.match(s,/j\.test !== true && j\.dry_run !== true/);
+  assert.match(s,/\['awaiting_executor', 'call_created', 'call_ended'\]/);
+  assert.match(s,/j\.event_id === submissionId \|\| j\.duplicate === true/);
+});
 
 test('requested image-led design is restored without changing Sofia or transport',()=>{
   for(const p of ['index.html','quiz/index.html']){const s=read(p);assert.match(s,/<body class="lp">/);assert.doesNotMatch(s,/form-experience|quiz-experience/);assert.match(s,/hero-900\.jpg/)}
@@ -46,5 +54,5 @@ test('template: two quiz questions (where it happened, facility name), name and 
   assert.doesNotMatch(form, /data-q=|data-q-text=|id="email"/, 'landing form is name and phone only; the questions live on the quiz');
   assert.doesNotMatch(form, /current_age/);
   assert.match(read('quiz/index.html'), /Answer two short questions/);
-  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261023c1/);
+  for (const p of ['index.html', 'quiz/index.html', 'talk-to-sofia/index.html']) assert.match(read(p), /lane\.js\?v=20261027w1/);
 });
