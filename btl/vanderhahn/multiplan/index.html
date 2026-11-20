@@ -626,7 +626,6 @@ footer a{color:#dbe6ea}
           document.querySelector('[data-step=done] h3').textContent='You look like a strong fit. Pick a time with Devin.';
           document.getElementById('doneMsg').textContent='Choose a time that works for you below. Devin’s office will confirm the details before the call.';
           track('ee_booking_offered',{prequal_tier:tier},true); }
-        if(tier==='C') document.getElementById('doneMsg').textContent='Devin\u2019s team will review your answers and reach out if your organization fits this review.';
         show('done');
       })
       .catch(function(x){ if(to) clearTimeout(to); track('ee_lead_submit_error',{error:String(x)}); btn.disabled=false; btn.textContent='Request a time with Devin →';
