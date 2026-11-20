@@ -218,7 +218,7 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.match(live, /id="consentText">By clicking "Request a time with Devin,"/); // clickwrap consent beside the button (Kyle, 2026-11-18)
   assert.match(live, /<b>NCN<\/b><b>Zelis<\/b><\/div>/); // Zelis chip (Devin, 2026-11-19)
   assert.match(live, /Devin's team will reach out shortly to schedule your call/); // thank-you expectation (Kyle, 2026-11-19)
-  assert.match(live, /tier==='C'\) document\.getElementById\('doneMsg'\)/); // Tier C is not promised a call
+  assert.doesNotMatch(live, /tier==='C'\) document\.getElementById\('doneMsg'\)/); // all tiers go to the firm (Kyle, 2026-11-19)
   assert.doesNotMatch(live, /type="checkbox"/);
   assert.match(live, /if\(tier==='A' && CONFIG\.BOOKING_URL\)/); // option D: only Tier A self-books
   assert.doesNotMatch(live, /pick a time myself|AI assistant call me/i);
