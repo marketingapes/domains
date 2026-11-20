@@ -60,6 +60,24 @@ def deal_img_tag(d):
             f'loading="lazy" decoding="async" width="{DEAL_W}" height="{DEAL_H}"></div>')
 
 
+def season_img(key):
+    """(src, alt) for a homepage season tile."""
+    if key in M.get("season", {}):
+        return f"/images/season/{key}-640.webp", M["season"][key]["alt"]
+    if key == "cyber-monday":
+        return "/images/photos/hero-640.webp", M["hero"]["alt"]
+    if key == "gifts":
+        return "/images/deals/cat-gifts.webp", M["categories"]["Gifts"]["alt"]
+    return "/images/photos/hero-640.webp", M["hero"]["alt"]
+
+
+def cat_img(cat):
+    """(src, alt) for a category tile, or None."""
+    c = M["categories"].get(cat)
+    rel = f"/images/deals/cat-{slug(cat)}.webp"
+    return (rel, c["alt"]) if c and _exists(rel) else None
+
+
 def guide_img(slug_, size="1200"):
     return f"/images/photos/{slug_}-{size}.webp"
 
@@ -75,7 +93,7 @@ def hero():
 def credit_names():
     """Unsplash photographers, linked to the photo pages, for the About page."""
     seen = {}
-    for m in [M["hero"], *M["guides"].values(), *M["categories"].values(), *M["deals"].values()]:
+    for m in [M["hero"], *M["guides"].values(), *M["categories"].values(), *M["deals"].values(), *M.get("season", {}).values()]:
         if m["source"] == "unsplash" and m["author"] not in seen:
             seen[m["author"]] = m["page"]
     links = [f'<a href="{p}" rel="nofollow noopener">{_esc(a)}</a>' for a, p in sorted(seen.items(), key=lambda x: x[0].lower())]
@@ -132,6 +150,8 @@ def jobs():
         yield f"cat:{c}", m, [(f"/images/deals/cat-{slug(c)}.webp", DEAL_W, DEAL_H, "cover")]
     for i, m in M["deals"].items():
         yield f"deal:{i}", m, [(f"/images/deals/{i}.webp", DEAL_W, DEAL_H, m.get("fit", "cover"))]
+    for k, m in M.get("season", {}).items():
+        yield f"season:{k}", m, [(f"/images/season/{k}-640.webp", 640, 400, "cover")]
 
 
 def fetch(cache=None):
