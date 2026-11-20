@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Discount Deal Me | Live deals, scored and checked</title>
-<meta name="description" content="Live deals from official merchant programs, ranked by a published Deal Score, with labelled AI summaries of the fine print. Plus plain-English guides to spotting a real deal.">
+<title>Discount Deal Me | Shop by your specs, find the deal that fits</title>
+<meta name="description" content="Search Amazon by your budget, size, features and use, then compare live deals and verified promo codes from official merchant programs. No invented prices or reviews.">
 <link rel="canonical" href="https://discountdealme.com/">
 <meta name="google-adsense-account" content="ca-pub-5194583669093303">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5194583669093303" crossorigin="anonymous"></script>
@@ -12,18 +12,19 @@
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W3D26R29');</script>
 <meta property="og:site_name" content="Discount Deal Me">
 <meta property="og:title" content="Discount Deal Me">
-<meta property="og:description" content="Live deals from official merchant programs, ranked by a published Deal Score, with labelled AI summaries of the fine print. Plus plain-English guides to spotting a real deal.">
+<meta property="og:description" content="Search Amazon by your budget, size, features and use, then compare live deals and verified promo codes from official merchant programs. No invented prices or reviews.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://discountdealme.com/">
 <meta property="og:image" content="https://discountdealme.com/images/og.svg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b1020">
 <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=20261115a">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css?v=20261120a">
 <script src="/assets/ee-click.js?v=1" defer data-site="ddm"></script>
+<script src="/assets/amazon-search.js?v=20261120a" defer></script>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3D26R29" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -31,43 +32,75 @@
 <header class="site-head">
 <div class="wrap head-inner">
 <a class="logo" href="/" aria-label="Discount Deal Me home"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Discount Deal Me</span></a>
-<nav class="main-nav" aria-label="Main"><a href="/deals/">Live deals</a><a href="/black-friday/">Black Friday</a><a href="/gift-planner/">Gift planner</a><a href="/articles/">Guides</a><a href="/how-we-pick-deals/">How we pick deals</a><a href="/about/">About</a></nav>
+<nav class="main-nav" aria-label="Main"><a href="/deals/">Live deals</a><a href="/coupons/">Promo codes</a><a href="/deal-checker/">Deal checker</a><a href="/black-friday/">Black Friday</a><a href="/gifts/">Gift guides</a><a href="/gift-planner/">Gift planner</a><a href="/articles/">Guides</a></nav>
 <form class="head-search" action="/deals/" method="get" role="search"><label class="sr-only" for="hs-q">Search deals</label><input id="hs-q" name="q" type="search" placeholder="Search live deals" autocomplete="off"><button type="submit" aria-label="Search">&#8594;</button></form>
 </div>
 </header>
 <main id="main">
-<aside class="bfcm-banner wrap" role="note">
-<p><strong>Black Friday is Friday Nov 27. Cyber Monday is Monday Nov 30.</strong>
-See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">Cyber Monday deals</a> and <a href="/gifts/">gift guides by budget and person</a>. The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date. New: plan every gift on your list in one place with the <a href="/gift-planner/">holiday gift budget planner</a>.</p>
-</aside>
-<section class="hero">
-<div class="wrap hero-grid">
+<aside class="bfcm-banner" role="note"><div class="wrap bfcm-inner">
+<p><strong>Black Friday is Fri, Nov 27. Cyber Monday is Mon, Nov 30.</strong> <a href="/black-friday/">Black Friday hub</a> <a href="/cyber-monday/">Cyber Monday deals</a> <a href="/gifts/">Gift guides</a> <a href="/gift-planner/">Gift budget planner</a></p>
+</div></aside>
+<section class="hero hero-dark" id="find">
+<div class="wrap hero-stack">
 <div class="hero-copy">
-<p class="feed-status "><span class="dot" aria-hidden="true"></span><span><b data-live-count>36</b> live deals from 16 stores</span><span>Terms checked <time datetime="2026-11-16T01:14:28Z" data-checked>Nov 15, 2026, 5:14 PM PT</time></span><a href="/how-we-pick-deals/#checked">What "checked" means</a></p>
-<h1>Today's best deals, scored and checked.</h1>
-<p class="lede">We pull live offers straight from merchants' official deal programs, rank every one with a published Deal Score, and use AI to summarize the fine print. No invented codes, no made-up "was" prices, no fake reviews.</p>
-<form class="big-search" action="/deals/" method="get" role="search">
-<label class="sr-only" for="home-q">Search live deals</label>
-<input id="home-q" name="q" type="search" placeholder='Try "kitchen ending soon" or "no code"' autocomplete="off">
-<button class="btn" type="submit">Find deals</button>
-</form>
-<p class="try">Try: <a href="/deals/?q=ending+soon">ending soon</a> <a href="/deals/?q=kitchen">kitchen</a> <a href="/deals/?q=no+code">no code</a> <a href="/deals/?q=free+shipping">free shipping</a> <a href="/deals/?q=tickets">tickets</a></p>
+<p class="eyebrow">Amazon search, made specific</p>
+<h1>Shop by your specs. Find the deal that fits.</h1>
+<p class="lede">Tell us your budget, size, must-haves and what it&rsquo;s for. We turn that into a precise Amazon search sorted by price, then show live deals and verified codes from stores we work with.</p>
 </div>
-<aside class="hero-panel" aria-label="How every deal is handled">
-<figure class="hero-photo"><img src="/images/photos/hero-1200.webp" srcset="/images/photos/hero-640.webp 640w, /images/photos/hero-1200.webp 1200w" sizes="(min-width:960px) 480px, 100vw" alt="Shopper holding a payment card while checking out on a laptop" width="1200" height="800" fetchpriority="high" decoding="async"></figure>
-<ol class="pipeline">
-<li><span class="step">1</span><div><b>Pulled from the source</b><p>Offers come from the merchant's own deal-program feed, with the network's start and end dates.</p></div></li>
-<li><span class="step">2</span><div><b>Scored by formula</b><p>A 0&ndash;100 Deal Score from savings size, certainty, ease and deadline. The formula uses shopper-side factors only.</p></div></li>
-<li><span class="step">3</span><div><b>Summarized by AI, labelled</b><p>Every summary is marked "AI summary" and sits next to the merchant's own terms.</p></div></li>
-<li><span class="step">4</span><div><b>Expired deals disappear</b><p>Your browser hides a deal the moment its end time passes.</p></div></li>
-</ol>
-<a class="panel-link" href="/how-we-pick-deals/">Read the full method</a>
-</aside>
+<form class="finder-card" id="amz-form" action="https://www.amazon.com/s" method="get" target="_blank" rel="sponsored" data-tag="tonedntastyne-20" data-amz="https://www.amazon.com/s" novalidate>
+<input type="hidden" name="tag" value="tonedntastyne-20">
+<div class="fc-row fc-main">
+<label class="fc-field fc-q"><span>What are you shopping for?</span><input name="k" id="amz-q" type="search" placeholder="e.g. air fryer, carry-on suitcase, desk lamp" autocomplete="off" required></label>
+</div>
+<div class="fc-row fc-grid">
+<label class="fc-field"><span>Budget min ($)</span><input name="min" type="number" inputmode="decimal" min="0" step="1" placeholder="0"></label>
+<label class="fc-field"><span>Budget max ($)</span><input name="max" type="number" inputmode="decimal" min="0" step="1" placeholder="Any"></label>
+<label class="fc-field"><span>Size <small>optional</small></span><input name="size" type="text" placeholder="e.g. queen, 6 qt, 48 inch" autocomplete="off"></label>
+<label class="fc-field"><span>Used for</span><select name="use"><option value="">Any use</option><option value="gift">A gift</option><option value="everyday">Everyday use</option><option value="travel">Travel</option><option value="kids">Kids</option><option value="pets">Pets</option><option value="kitchen">Kitchen</option><option value="home office">Home office</option><option value="outdoor">Outdoors</option><option value="gym">Gym and fitness</option></select></label>
+</div>
+<fieldset class="fc-feats"><legend>Must-haves <small>optional</small></legend><div class="fchips"><label class="fchip"><input type="checkbox" name="feat" value="Wireless"><span>Wireless</span></label><label class="fchip"><input type="checkbox" name="feat" value="Rechargeable"><span>Rechargeable</span></label><label class="fchip"><input type="checkbox" name="feat" value="Waterproof"><span>Waterproof</span></label><label class="fchip"><input type="checkbox" name="feat" value="Compact"><span>Compact</span></label><label class="fchip"><input type="checkbox" name="feat" value="Quiet"><span>Quiet</span></label><label class="fchip"><input type="checkbox" name="feat" value="Stainless steel"><span>Stainless steel</span></label><label class="fchip"><input type="checkbox" name="feat" value="Dishwasher safe"><span>Dishwasher safe</span></label><label class="fchip"><input type="checkbox" name="feat" value="Large capacity"><span>Large capacity</span></label></div>
+<label class="fc-field fc-more"><span class="sr-only">Other must-haves</span><input name="more" type="text" placeholder="Anything else? e.g. 2 slot, USB-C, BPA free" autocomplete="off"></label></fieldset>
+<div class="fc-row fc-go">
+<label class="fc-field fc-sort"><span>Sort Amazon results by</span><select name="s"><option value="price-asc-rank">Price: low to high</option><option value="">Amazon&#x27;s featured order</option><option value="review-rank">Customer review</option><option value="date-desc-rank">Newest arrivals</option></select></label>
+<button class="btn btn-go" type="submit">Find matches <span aria-hidden="true">&#8594;</span></button>
+</div>
+</form>
+<p class="ex-row"><span>Try:</span><a class="ex" href="/?q=air+fryer&amp;max=100&amp;feat=Dishwasher+safe#find" data-fill='{&quot;q&quot;: &quot;air fryer&quot;, &quot;max&quot;: &quot;100&quot;, &quot;feat&quot;: &quot;Dishwasher safe&quot;}'>Air fryer, under $100</a><a class="ex" href="/?q=carry-on+suitcase&amp;size=22+x+14+x+9&amp;use=travel#find" data-fill='{&quot;q&quot;: &quot;carry-on suitcase&quot;, &quot;size&quot;: &quot;22 x 14 x 9&quot;, &quot;use&quot;: &quot;travel&quot;}'>Carry-on suitcase</a><a class="ex" href="/?q=headphones&amp;max=30&amp;use=kids&amp;feat=Wireless#find" data-fill='{&quot;q&quot;: &quot;headphones&quot;, &quot;max&quot;: &quot;30&quot;, &quot;use&quot;: &quot;kids&quot;, &quot;feat&quot;: &quot;Wireless&quot;}'>Kids&#x27; headphones, under $30</a><a class="ex" href="/?q=standing+desk&amp;size=48+inch&amp;use=home+office#find" data-fill='{&quot;q&quot;: &quot;standing desk&quot;, &quot;size&quot;: &quot;48 inch&quot;, &quot;use&quot;: &quot;home office&quot;}'>Standing desk, 48 inch</a><a class="ex" href="/?q=dog+bed&amp;size=large&amp;use=pets&amp;feat=Waterproof#find" data-fill='{&quot;q&quot;: &quot;dog bed&quot;, &quot;size&quot;: &quot;large&quot;, &quot;use&quot;: &quot;pets&quot;, &quot;feat&quot;: &quot;Waterproof&quot;}'>Dog bed, large</a></p>
+<section class="matches" id="matches" aria-live="polite" hidden>
+<div class="m-amz">
+<p class="kicker">Your Amazon search</p>
+<p class="m-query" id="m-query"></p>
+<a class="btn btn-amz" id="m-amz" rel="sponsored nofollow noopener" target="_blank" href="https://www.amazon.com/s?k=deals&amp;s=price-asc-rank&amp;tag=tonedntastyne-20">Check on Amazon <span class="adchip-sm">#ad</span> <span aria-hidden="true">&#8599;</span></a>
+<p class="fine">Amazon sets every price and does the filtering and sorting. We don&rsquo;t see or track Amazon prices, so we never show them. As an Amazon Associate, Discount Deal Me earns from qualifying purchases.</p>
+</div>
+<div class="m-ours">
+<p class="kicker">From stores we work with</p>
+<ul class="m-list" id="m-deals"></ul>
+<p class="fine" id="m-none" hidden>No live deals or verified codes from our partner stores match this search right now. <a href="/deals/">Browse all live deals</a> or <a href="/coupons/">every verified code</a>.</p>
+<p class="fine">Deals and codes come from the merchants&rsquo; affiliate programs (CJ and Impact). Links are affiliate links (#ad).</p>
+</div>
+</section>
+<ul class="hero-facts" aria-label="What is behind this page">
+<li><b data-live-count>36</b> live deals from merchant programs</li>
+<li><b>71</b> verified codes from 19 stores</li>
+<li>Terms checked <time datetime="2026-11-16T01:14:28Z" data-checked>Nov 15, 2026, 5:14 PM PT</time></li>
+<li><a href="/how-we-pick-deals/">How we pick deals</a></li>
+</ul>
+</div>
+</section>
+
+<section class="wrap section" aria-labelledby="season-h">
+<div class="sec-head"><div><p class="kicker">Holiday 2026</p><h2 id="season-h">Shop the season</h2></div></div>
+<div class="season-grid">
+<a class="season" href="/black-friday/"><span class="season-date">Fri, Nov 27</span><b>Black Friday</b><span>Early deals with network end dates, sorted by store.</span></a>
+<a class="season" href="/cyber-monday/"><span class="season-date">Mon, Nov 30</span><b>Cyber Monday</b><span>Online-only offers and codes as they go live.</span></a>
+<a class="season" href="/gifts/"><span class="season-date">By budget &amp; person</span><b>Gift guides</b><span>Under $25, $50 and $100, plus for mom, dad, teens and pets.</span></a>
+<a class="season" href="/gift-planner/"><span class="season-date">Free tool</span><b>Gift budget planner</b><span>Plan every gift on your list in one place.</span></a>
 </div>
 </section>
 
 <section class="wrap section" aria-labelledby="top-h">
-<div class="sec-head"><div><p class="kicker">Ranked by Deal Score</p><h2 id="top-h">Top deals right now</h2></div><a class="sec-link" href="/deals/">See all 36 deals</a></div>
+<div class="sec-head"><div><p class="kicker">Ranked by Deal Score</p><h2 id="top-h">Top deals right now</h2></div><a class="sec-link" href="/deals/">See all 36 deals &#8594;</a></div>
 <div class="deal-grid" data-limit="6"><article class="deal" id="cj-17178120" data-deal="cj-17178120" data-cat="Experiences" data-ends="2026-12-31T06:59:00Z" data-score="76" data-code="0" data-local="0">
 <div class="deal-media"><img src="/images/deals/17178120.webp" alt="Rows of arcade game cabinets in a dimly lit arcade" loading="lazy" decoding="async" width="720" height="450"></div><div class="deal-top"><span class="deal-merchant">Groupon</span><span class="deal-cat">Experiences</span><span class="score is-high" title="Deal Score 76/100 (Strong). See how it is calculated."><b>76</b><small>Deal Score</small></span></div>
 <h3 class="deal-title">Chuck E. Cheese: up to 43% off</h3>
@@ -173,14 +206,29 @@ See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">
 
 <section class="wrap section split" aria-labelledby="end-h">
 <div>
-<div class="sec-head"><div><p class="kicker">Clock is running</p><h2 id="end-h">Ending soonest</h2></div><a class="sec-link" href="/deals/?ending=1">All ending soon</a></div>
+<div class="sec-head"><div><p class="kicker">Clock is running</p><h2 id="end-h">Ending soonest</h2></div><a class="sec-link" href="/deals/?ending=1">All ending soon &#8594;</a></div>
 <ol class="ending-list"><li data-deal="cj-15343873" data-ends="2026-11-20T07:00:00Z"><span class="er-merchant">MonthlyClubs</span><a href="/deals/?q=monthlyclubs">$30 off the Fresh Cut Flower of the Month Club</a><span class="er-end" data-end-label>Ends Nov 19, 11 PM PT</span><span class="score" title="Deal Score 55/100 (Fair). See how it is calculated."><b>55</b><small>Deal Score</small></span></li><li data-deal="cj-15343875" data-ends="2026-11-20T07:00:00Z"><span class="er-merchant">MonthlyClubs</span><a href="/deals/?q=monthlyclubs">$15 off the Gourmet Chocolate of the Month Club</a><span class="er-end" data-end-label>Ends Nov 19, 11 PM PT</span><span class="score" title="Deal Score 53/100 (Fair). See how it is calculated."><b>53</b><small>Deal Score</small></span></li><li data-deal="cj-15343876" data-ends="2026-11-20T08:00:00Z"><span class="er-merchant">MonthlyClubs</span><a href="/deals/?q=monthlyclubs">$15 off the International Wine of the Month Club</a><span class="er-end" data-end-label>Ends Nov 20, 12 AM PT</span><span class="score" title="Deal Score 53/100 (Fair). See how it is calculated."><b>53</b><small>Deal Score</small></span></li><li data-deal="cj-17385064" data-ends="2026-11-30T04:59:00Z"><span class="er-merchant">KitchenAid</span><a href="/deals/?q=kitchenaid">Black Friday: up to 30% off select countertop appliances</a><span class="er-end" data-end-label>Ends Nov 29, 8:59 PM PT</span><span class="score" title="Deal Score 66/100 (Strong). See how it is calculated."><b>66</b><small>Deal Score</small></span></li><li data-deal="cj-17382809" data-ends="2026-12-01T05:00:00Z"><span class="er-merchant">Groupon</span><a href="/deals/?q=groupon">Up to 30% off photo books and personalized gifts</a><span class="er-end" data-end-label>Ends Nov 30, 9 PM PT</span><span class="score" title="Deal Score 59/100 (Fair). See how it is calculated."><b>59</b><small>Deal Score</small></span></li><li data-deal="cj-17386846" data-ends="2026-12-01T05:59:00Z"><span class="er-merchant">Electronic Express</span><a href="/deals/?q=electronic">5% off sitewide in November</a><span class="er-end" data-end-label>Ends Nov 30, 9:59 PM PT</span><span class="score" title="Deal Score 52/100 (Fair). See how it is calculated."><b>52</b><small>Deal Score</small></span></li></ol>
+<div class="cats"><a class="cat" href="/deals/?cat=Gifts"><span>Gifts</span><b data-cat-count="Gifts">9</b></a><a class="cat" href="/deals/?cat=Kitchen"><span>Kitchen</span><b data-cat-count="Kitchen">9</b></a><a class="cat" href="/deals/?cat=Home"><span>Home</span><b data-cat-count="Home">2</b></a><a class="cat" href="/deals/?cat=Coffee &amp; food"><span>Coffee &amp; food</span><b data-cat-count="Coffee &amp; food">4</b></a><a class="cat" href="/deals/?cat=Experiences"><span>Experiences</span><b data-cat-count="Experiences">6</b></a><a class="cat" href="/deals/?cat=Apparel"><span>Apparel</span><b data-cat-count="Apparel">3</b></a><a class="cat" href="/deals/?cat=Pets"><span>Pets</span><b data-cat-count="Pets">3</b></a></div>
 </div>
 <div>
-<div class="sec-head"><div><p class="kicker">Browse</p><h2>Deals by category</h2></div></div>
-<div class="cats"><a class="cat" href="/deals/?cat=Gifts"><span>Gifts</span><b data-cat-count="Gifts">9</b></a><a class="cat" href="/deals/?cat=Kitchen"><span>Kitchen</span><b data-cat-count="Kitchen">9</b></a><a class="cat" href="/deals/?cat=Home"><span>Home</span><b data-cat-count="Home">2</b></a><a class="cat" href="/deals/?cat=Coffee &amp; food"><span>Coffee &amp; food</span><b data-cat-count="Coffee &amp; food">4</b></a><a class="cat" href="/deals/?cat=Experiences"><span>Experiences</span><b data-cat-count="Experiences">6</b></a><a class="cat" href="/deals/?cat=Apparel"><span>Apparel</span><b data-cat-count="Apparel">3</b></a><a class="cat" href="/deals/?cat=Pets"><span>Pets</span><b data-cat-count="Pets">3</b></a></div>
-<div class="note-card"><b>Why some big percentages score lower.</b> An "up to 50% off" is the best case on a few items, so it counts for 75% of its face value. A plain "40% off" counts in full. <a href="/how-we-pick-deals/#deal-score">See the formula</a>.</div>
+<div class="sec-head"><div><p class="kicker">From the networks, not scraped</p><h2 id="codes-h">Verified promo codes</h2></div><a class="sec-link" href="/coupons/">All stores &#8594;</a></div>
+<ul class="code-stores"><li><a href="/coupons/dailysteals/"><span>DailySteals</span><b>17 codes</b></a></li><li><a href="/coupons/m-and-ms/"><span>M&amp;M&#x27;s</span><b>12 codes</b></a></li><li><a href="/coupons/herbspro-com/"><span>Herbspro.com</span><b>10 codes</b></a></li><li><a href="/coupons/coffee-bros/"><span>Coffee Bros.</span><b>4 codes</b></a></li><li><a href="/coupons/budget-pet-care/"><span>Budget Pet Care</span><b>3 codes</b></a></li><li><a href="/coupons/groupon-north-america/"><span>Groupon North America</span><b>3 codes</b></a></li><li><a href="/coupons/pandahall/"><span>PandaHall</span><b>3 codes</b></a></li><li><a href="/coupons/ravin-and-centerpoint/"><span>Ravin &amp; CenterPoint</span><b>3 codes</b></a></li></ul>
+<div class="tool-card">
+<p class="kicker">Free tool</p>
+<h3>Is this a real deal?</h3>
+<p>Paste a product link or name. See the price history we&rsquo;ve actually recorded and a plain verdict, or &ldquo;not enough history yet&rdquo; when we don&rsquo;t know.</p>
+<a class="btn btn-ghost" href="/deal-checker/">Open the deal checker &#8594;</a>
 </div>
+</div>
+</section>
+
+<section class="wrap section how" aria-labelledby="how-h">
+<div class="sec-head"><div><p class="kicker">How it works</p><h2 id="how-h">Three steps, no guesswork</h2></div></div>
+<ol class="how-steps">
+<li><span class="how-n">1</span><b>Describe what you need</b><p>Budget, size, must-have features and what it&rsquo;s for. Your inputs stay in your browser.</p></li>
+<li><span class="how-n">2</span><b>Check the Amazon matches</b><p>We open an Amazon search with your filters, sorted lowest price first. Amazon shows the live prices.</p></li>
+<li><span class="how-n">3</span><b>Compare our partner deals</b><p>Matching live deals and verified codes from merchant programs, with their real end dates and terms.</p></li>
+</ol>
 </section>
 
 <section class="wrap section" aria-labelledby="guides-h">
@@ -270,12 +318,12 @@ See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>Discount Deal Me</span></a>
 <p class="foot-tag">Network-checked deals, scored with a published formula, summarized by labelled AI. Plus guides to paying less.</p></div>
 <nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/black-friday/">Black Friday 2026</a><a href="/cyber-monday/">Cyber Monday 2026</a><a href="/gifts/">Holiday gift guides</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores</a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
-<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
+<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/coupons/">Verified promo codes</a><a href="/deal-checker/">Is this a real deal?</a><a href="/how-we-verify-codes/">How we verify codes</a><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
 <nav aria-label="Company"><h2 class="foot-h">Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
 </div>
-<div class="wrap foot-base"><p>&copy;2026 Discount Deal Me. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout.</p></div>
+<div class="wrap foot-base"><p>&copy;2026 Discount Deal Me. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout.</p><p>Some links are affiliate links (#ad). If you buy, we may earn a commission at no extra cost to you.</p><p>As an Amazon Associate, Discount Deal Me earns from qualifying purchases.</p></div>
 </footer>
-<script src="/assets/site.js?v=20261115a" defer></script>
-<script src="/assets/signup.js?v=20261115a" defer></script>
+<script src="/assets/site.js?v=20261120a" defer></script>
+<script src="/assets/signup.js?v=20261120a" defer></script>
 </body>
 </html>

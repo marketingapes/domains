@@ -31,7 +31,7 @@ BY = {a["slug"]: a for a in ARTS}
 assert len(BY) == len(ARTS) == 12
 
 GTM = "GTM-W3D26R29"
-ASSET_V = "20261115a"
+ASSET_V = "20261120a"
 e = html.escape
 
 # Email opt-in. Posts form-encoded to a private Make webhook that appends one row
@@ -75,7 +75,7 @@ def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=
     # AdSense (script and account meta) never loads on deal pages.
     tag = ads_tag(path) if ads else ""
     adsense = ('<meta name="google-adsense-account" content="ca-pub-5194583669093303">\n' + tag) if tag else ""
-    full = f"{title} | {BRAND}" if title != BRAND else f"{BRAND} | Live deals, scored and checked"
+    full = f"{title} | {BRAND}" if title != BRAND else f"{BRAND} | Shop by your specs, find the deal that fits"
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -93,11 +93,11 @@ def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=
 <meta property="og:url" content="{HOST}{path}">
 <meta property="og:image" content="{HOST}{og_image}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b1020">
 <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
 <script src="/assets/ee-click.js?v=1" defer data-site="ddm"></script>
 {extra}</head>
@@ -114,7 +114,7 @@ def nav(active=""):
     return f'''<header class="site-head">
 <div class="wrap head-inner">
 <a class="logo" href="/" aria-label="{BRAND} home"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Discount Deal Me</span></a>
-<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/black-friday/", "Black Friday", "bf")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}{a("/how-we-pick-deals/", "How we pick deals", "method")}{a("/about/", "About", "about")}</nav>
+<nav class="main-nav" aria-label="Main">{a("/deals/", "Live deals", "deals")}{a("/coupons/", "Promo codes", "coupons")}{a("/deal-checker/", "Deal checker", "checker")}{a("/black-friday/", "Black Friday", "bf")}{a("/gifts/", "Gift guides", "gifts")}{a("/gift-planner/", "Gift planner", "planner")}{a("/articles/", "Guides", "articles")}</nav>
 <form class="head-search" action="/deals/" method="get" role="search"><label class="sr-only" for="hs-q">Search deals</label><input id="hs-q" name="q" type="search" placeholder="Search live deals" autocomplete="off"><button type="submit" aria-label="Search">&#8594;</button></form>
 </div>
 </header>
@@ -125,10 +125,10 @@ FOOT_LINKS = f'''<div class="wrap foot-grid">
 <div><a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>Discount Deal Me</span></a>
 <p class="foot-tag">Network-checked deals, scored with a published formula, summarized by labelled AI. Plus guides to paying less.</p></div>
 <nav aria-label="Deals"><h2 class="foot-h">Deals</h2><a href="/deals/">Live deals</a><a href="/black-friday/">Black Friday 2026</a><a href="/cyber-monday/">Cyber Monday 2026</a><a href="/gifts/">Holiday gift guides</a><a href="/deals/?ending=1">Ending soon</a><a href="/offers/">Partner stores</a><a href="/how-we-pick-deals/">How we pick deals</a></nav>
-<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
+<nav aria-label="Guides and tools"><h2 class="foot-h">Guides &amp; tools</h2><a href="/coupons/">Verified promo codes</a><a href="/deal-checker/">Is this a real deal?</a><a href="/how-we-verify-codes/">How we verify codes</a><a href="/gift-planner/">Holiday gift budget planner</a><a href="/articles/">All guides</a><a href="/deal-checklist/">Deal checklist</a><a href="/guides/checkout-comparison/">Checkout worksheet</a><a href="/#calculator">Real-discount calculator</a></nav>
 <nav aria-label="Company"><h2 class="foot-h">Company</h2><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
 </div>
-<div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout.</p></div>
+<div class="wrap foot-base"><p>&copy;2026 {BRAND}. Published by Marketing Apes.</p><p>Deal terms can change without notice; check the final price at checkout.</p><p>Some links are affiliate links (#ad). If you buy, we may earn a commission at no extra cost to you.</p><p>As an Amazon Associate, Discount Deal Me earns from qualifying purchases.</p></div>
 </footer>
 <script src="/assets/site.js?v={ASSET_V}" defer></script>
 <script src="/assets/signup.js?v={ASSET_V}" defer></script>
@@ -183,52 +183,74 @@ def home():
     counts = {c: sum(1 for d in LIVE if d["category"] == c) for c in CATS}
     cats = "".join(f'<a class="cat" href="/deals/?cat={e(c)}"><span>{e(c)}</span><b data-cat-count="{e(c)}">{counts[c]}</b></a>' for c in CATS)
     guides = guide_card(ARTS[0], big=True) + "".join(guide_card(a) for a in ARTS[1:7])
-    body = f'''<aside class="bfcm-banner wrap" role="note">
-<p><strong>Black Friday is Friday Nov 27. Cyber Monday is Monday Nov 30.</strong>
-See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">Cyber Monday deals</a> and <a href="/gifts/">gift guides by budget and person</a>. The <a href="/deals/">deal finder</a> lists only offers that have not yet reached their network end date. New: plan every gift on your list in one place with the <a href="/gift-planner/">holiday gift budget planner</a>.</p>
-</aside>
-<section class="hero">
-<div class="wrap hero-grid">
+    import coupons, amazon_search
+    code_stores = sorted([st for st in coupons.FEED["stores"] if any(c.get("state") == "live" for c in st["codes"])],
+                         key=lambda st: (-sum(1 for c in st["codes"] if c.get("state") == "live"), st["name"]))
+    n_codes = sum(sum(1 for c in st["codes"] if c.get("state") == "live") for st in code_stores)
+    code_rows = "".join(
+        f'<li><a href="/coupons/{e(st["slug"])}/"><span>{e(st["name"])}</span><b>{sum(1 for c in st["codes"] if c.get("state") == "live")} codes</b></a></li>' for st in code_stores[:8])
+    body = f'''<aside class="bfcm-banner" role="note"><div class="wrap bfcm-inner">
+<p><strong>Black Friday is Fri, Nov 27. Cyber Monday is Mon, Nov 30.</strong> <a href="/black-friday/">Black Friday hub</a> <a href="/cyber-monday/">Cyber Monday deals</a> <a href="/gifts/">Gift guides</a> <a href="/gift-planner/">Gift budget planner</a></p>
+</div></aside>
+<section class="hero hero-dark" id="find">
+<div class="wrap hero-stack">
 <div class="hero-copy">
-{feed_status()}
-<h1>Today's best deals, scored and checked.</h1>
-<p class="lede">We pull live offers straight from merchants' official deal programs, rank every one with a published Deal Score, and use AI to summarize the fine print. No invented codes, no made-up "was" prices, no fake reviews.</p>
-<form class="big-search" action="/deals/" method="get" role="search">
-<label class="sr-only" for="home-q">Search live deals</label>
-<input id="home-q" name="q" type="search" placeholder='Try "kitchen ending soon" or "no code"' autocomplete="off">
-<button class="btn" type="submit">Find deals</button>
-</form>
-<p class="try">Try: <a href="/deals/?q=ending+soon">ending soon</a> <a href="/deals/?q=kitchen">kitchen</a> <a href="/deals/?q=no+code">no code</a> <a href="/deals/?q=free+shipping">free shipping</a> <a href="/deals/?q=tickets">tickets</a></p>
+<p class="eyebrow">Amazon search, made specific</p>
+<h1>Shop by your specs. Find the deal that fits.</h1>
+<p class="lede">Tell us your budget, size, must-haves and what it&rsquo;s for. We turn that into a precise Amazon search sorted by price, then show live deals and verified codes from stores we work with.</p>
 </div>
-<aside class="hero-panel" aria-label="How every deal is handled">
-<figure class="hero-photo"><img src="/images/photos/hero-1200.webp" srcset="/images/photos/hero-640.webp 640w, /images/photos/hero-1200.webp 1200w" sizes="(min-width:960px) 480px, 100vw" alt="{e(images.hero()["alt"])}" width="1200" height="800" fetchpriority="high" decoding="async"></figure>
-<ol class="pipeline">
-<li><span class="step">1</span><div><b>Pulled from the source</b><p>Offers come from the merchant's own deal-program feed, with the network's start and end dates.</p></div></li>
-<li><span class="step">2</span><div><b>Scored by formula</b><p>A 0&ndash;100 Deal Score from savings size, certainty, ease and deadline. The formula uses shopper-side factors only.</p></div></li>
-<li><span class="step">3</span><div><b>Summarized by AI, labelled</b><p>Every summary is marked "AI summary" and sits next to the merchant's own terms.</p></div></li>
-<li><span class="step">4</span><div><b>Expired deals disappear</b><p>Your browser hides a deal the moment its end time passes.</p></div></li>
-</ol>
-<a class="panel-link" href="/how-we-pick-deals/">Read the full method</a>
-</aside>
+{amazon_search.form()}
+{amazon_search.results()}
+<ul class="hero-facts" aria-label="What is behind this page">
+<li><b data-live-count>{len(LIVE)}</b> live deals from merchant programs</li>
+<li><b>{n_codes}</b> verified codes from {len(code_stores)} stores</li>
+<li>Terms checked <time datetime="{deals.CHECKED_AT}" data-checked>{deals.checked_human()}</time></li>
+<li><a href="/how-we-pick-deals/">How we pick deals</a></li>
+</ul>
+</div>
+</section>
+
+<section class="wrap section" aria-labelledby="season-h">
+<div class="sec-head"><div><p class="kicker">Holiday 2026</p><h2 id="season-h">Shop the season</h2></div></div>
+<div class="season-grid">
+<a class="season" href="/black-friday/"><span class="season-date">Fri, Nov 27</span><b>Black Friday</b><span>Early deals with network end dates, sorted by store.</span></a>
+<a class="season" href="/cyber-monday/"><span class="season-date">Mon, Nov 30</span><b>Cyber Monday</b><span>Online-only offers and codes as they go live.</span></a>
+<a class="season" href="/gifts/"><span class="season-date">By budget &amp; person</span><b>Gift guides</b><span>Under $25, $50 and $100, plus for mom, dad, teens and pets.</span></a>
+<a class="season" href="/gift-planner/"><span class="season-date">Free tool</span><b>Gift budget planner</b><span>Plan every gift on your list in one place.</span></a>
 </div>
 </section>
 
 <section class="wrap section" aria-labelledby="top-h">
-<div class="sec-head"><div><p class="kicker">Ranked by Deal Score</p><h2 id="top-h">Top deals right now</h2></div><a class="sec-link" href="/deals/">See all {len(LIVE)} deals</a></div>
+<div class="sec-head"><div><p class="kicker">Ranked by Deal Score</p><h2 id="top-h">Top deals right now</h2></div><a class="sec-link" href="/deals/">See all {len(LIVE)} deals &#8594;</a></div>
 <div class="deal-grid" data-limit="6">{top}</div>
 <p class="empty" hidden>Every deal in this snapshot has ended. <a href="/deals/">Check the deal finder</a> for the latest list.</p>
 </section>
 
 <section class="wrap section split" aria-labelledby="end-h">
 <div>
-<div class="sec-head"><div><p class="kicker">Clock is running</p><h2 id="end-h">Ending soonest</h2></div><a class="sec-link" href="/deals/?ending=1">All ending soon</a></div>
+<div class="sec-head"><div><p class="kicker">Clock is running</p><h2 id="end-h">Ending soonest</h2></div><a class="sec-link" href="/deals/?ending=1">All ending soon &#8594;</a></div>
 <ol class="ending-list">{ending_rows}</ol>
+<div class="cats">{cats}</div>
 </div>
 <div>
-<div class="sec-head"><div><p class="kicker">Browse</p><h2>Deals by category</h2></div></div>
-<div class="cats">{cats}</div>
-<div class="note-card"><b>Why some big percentages score lower.</b> An "up to 50% off" is the best case on a few items, so it counts for 75% of its face value. A plain "40% off" counts in full. <a href="/how-we-pick-deals/#deal-score">See the formula</a>.</div>
+<div class="sec-head"><div><p class="kicker">From the networks, not scraped</p><h2 id="codes-h">Verified promo codes</h2></div><a class="sec-link" href="/coupons/">All stores &#8594;</a></div>
+<ul class="code-stores">{code_rows}</ul>
+<div class="tool-card">
+<p class="kicker">Free tool</p>
+<h3>Is this a real deal?</h3>
+<p>Paste a product link or name. See the price history we&rsquo;ve actually recorded and a plain verdict, or &ldquo;not enough history yet&rdquo; when we don&rsquo;t know.</p>
+<a class="btn btn-ghost" href="/deal-checker/">Open the deal checker &#8594;</a>
 </div>
+</div>
+</section>
+
+<section class="wrap section how" aria-labelledby="how-h">
+<div class="sec-head"><div><p class="kicker">How it works</p><h2 id="how-h">Three steps, no guesswork</h2></div></div>
+<ol class="how-steps">
+<li><span class="how-n">1</span><b>Describe what you need</b><p>Budget, size, must-have features and what it&rsquo;s for. Your inputs stay in your browser.</p></li>
+<li><span class="how-n">2</span><b>Check the Amazon matches</b><p>We open an Amazon search with your filters, sorted lowest price first. Amazon shows the live prices.</p></li>
+<li><span class="how-n">3</span><b>Compare our partner deals</b><p>Matching live deals and verified codes from merchant programs, with their real end dates and terms.</p></li>
+</ol>
 </section>
 
 <section class="wrap section" aria-labelledby="guides-h">
@@ -283,7 +305,7 @@ See the <a href="/black-friday/">Black Friday hub</a>, <a href="/cyber-monday/">
     ld = {"@context": "https://schema.org", "@type": "WebSite", "name": BRAND, "url": HOST + "/",
           "potentialAction": {"@type": "SearchAction", "target": HOST + "/deals/?q={search_term_string}", "query-input": "required name=search_term_string"}}
     body += f'\n<script type="application/ld+json">{json.dumps(ld)}</script>'
-    return page(BRAND, "Live deals from official merchant programs, ranked by a published Deal Score, with labelled AI summaries of the fine print. Plus plain-English guides to spotting a real deal.", "/", body, "home", own_signup=True)
+    return page(BRAND, "Search Amazon by your budget, size, features and use, then compare live deals and verified promo codes from official merchant programs. No invented prices or reviews.", "/", body, "home", own_signup=True, extra=amazon_search.script())
 
 
 # ---------------------------------------------------------------- deal finder
@@ -685,6 +707,8 @@ def main():
     svgs.write_all(os.path.join(OUT, "images"))
     write("assets/site.css", theme.CSS.strip() + "\n")
     write("assets/site.js", client.JS.strip() + "\n")
+    import amazon_search
+    write("assets/amazon-search.js", amazon_search.JS.strip() + "\n")
     write("assets/signup.js", client.SIGNUP_JS.strip() + "\n")
     write("data/deals.json", json.dumps(deals.public_feed(), indent=1, ensure_ascii=False) + "\n")
     write("index.html", home())
