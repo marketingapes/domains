@@ -33,11 +33,16 @@ for (const [site, host] of Object.entries(SITES)) {
 }
 
 test('AdSense loader is never on deal or shopping pages', () => {
+  // FPLB exception (Kyle, Nov 20 2026): labeled display units were requested on
+  // /deals/, /offers/, /gift-finder/ and /amazon-dog-deals/. Other FPLB shopping
+  // paths, and deal pages on other brands, still must not load the AdSense script.
+  const FPLB_ADS_OK = /^(offers|deals|gift-finder)\/index\.html$/;
   for (const site of ['fplb', 'ddm', 'h2m', 'px', 'cgg']) {
     const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
     for (const f of walk(path.join(ROOT, site)).filter((x) => x.endsWith('.html'))) {
       const rel = path.relative(path.join(ROOT, site), f).split(path.sep).join('/');
       if (!DEAL.test(rel)) continue;
+      if (site === 'fplb' && FPLB_ADS_OK.test(rel)) continue;
       assert.doesNotMatch(fs.readFileSync(f, 'utf8'), /adsbygoogle\.js/, `${site}/${rel} loads AdSense`);
     }
   }

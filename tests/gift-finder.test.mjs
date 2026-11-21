@@ -32,7 +32,15 @@ for (const site of SITES) {
     assert.match(html, /\/assets\/gift-finder\.js/);
     assert.match(html, /googletagmanager|GTM-/, 'keeps the site tag manager');
     assert.match(html, /name="google-adsense-account" content="ca-pub-5194583669093303"/, 'keeps the AdSense account meta');
-    assert.doesNotMatch(html, /adsbygoogle\.js/, 'gift finders are shopping pages: no AdSense loader (content pages only)');
+    if (site === 'fplb') {
+      // Kyle, Nov 20 2026: put labeled AdSense boxes on the FPLB gift finder.
+      assert.match(html, /adsbygoogle\.js\?client=ca-pub-5194583669093303/, 'FPLB gift finder carries the AdSense loader');
+      assert.match(html, /data-ad-slot="8234075512"/, 'FPLB gift finder has the wide homepage slot');
+      assert.match(html, /data-ad-slot="6342409340"/, 'FPLB gift finder has the square homepage slot');
+      assert.match(html, /class="ad-label">Advertisement</, 'FPLB gift finder labels the ad boxes');
+    } else {
+      assert.doesNotMatch(html, /adsbygoogle\.js/, 'gift finders are shopping pages: no AdSense loader (content pages only)');
+    }
     assert.match(html, /\/assets\/ee-click\.js/, 'carries first-party click-ID capture');
     for (const s of [html, JSON.stringify(gifts), read(`${site}/assets/gift-finder.js`)]) {
       assert.doesNotMatch(s, /AI[- ]generated|AI summary|\u2014/);
