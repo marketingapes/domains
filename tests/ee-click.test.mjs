@@ -27,7 +27,7 @@ for (const [site, host] of Object.entries(SITES)) {
       if (!fs.existsSync(path.join(ROOT, f))) continue;
       const html = read(f);
       if (/http-equiv="refresh"/.test(html) || PINNED.has(f)) continue;
-      assert.match(html, /<script src="\/assets\/ee-click\.js\?v=1" defer data-site="[a-z0-9]+"/, `${f} missing ee-click`);
+      assert.match(html, /<script src="\/assets\/ee-click\.js\?v=2" defer data-site="[a-z0-9]+"/, `${f} missing ee-click`);
     }
   });
 }

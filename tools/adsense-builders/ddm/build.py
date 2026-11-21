@@ -99,7 +99,7 @@ def head(title, desc, path, og_image="/images/og.svg", og_type="website", extra=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v={ASSET_V}">
-<script src="/assets/ee-click.js?v=1" defer data-site="ddm"></script>
+<script src="/assets/ee-click.js?v=2" defer data-site="ddm"></script>
 {extra}</head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
