@@ -132,12 +132,16 @@
 
   function stamp(a) {
     if (!a || !a.href || a.getAttribute('data-ee') === 'skip') return;
+    var cur = a.getAttribute('href');
     var orig = a.getAttribute('data-ee-orig');
-    if (!orig) { orig = a.getAttribute('href'); if (!orig || /^(#|mailto:|tel:|javascript:)/i.test(orig)) return; }
+    // A page script changed the address since the last stamp (one <a> reused for many searches):
+    // the current address is the new original, not the stored one.
+    if (orig && cur !== orig && cur !== tag(orig)) { a.removeAttribute('data-ee-orig'); orig = ''; }
+    if (!orig) { orig = cur; if (!orig || /^(#|mailto:|tel:|javascript:)/i.test(orig)) return; }
     var next = tag(orig);
     if (next !== orig) {
-      if (!a.getAttribute('data-ee-orig')) a.setAttribute('data-ee-orig', orig);
-      if (a.getAttribute('href') !== next) a.setAttribute('href', next);
+      if (a.getAttribute('data-ee-orig') !== orig) a.setAttribute('data-ee-orig', orig);
+      if (cur !== next) a.setAttribute('href', next);
     }
   }
   function stampAll(root) {

@@ -26,5 +26,6 @@ The server-side join (BigQuery `clicks_raw` / `conversions_raw`) and CAPI / Goog
 come next and need BigQuery access.
 
 Run `python3 tools/ee-click/sync.py` after editing the source. It copies the file into each site and tags
-new pages. Copies must stay byte-identical (`tests/ee-click.test.mjs`). BTL loads it with
+new pages. Raise `VERSION` in `sync.py` (and the same number in the DDM builder and the test) to move every
+tagged page to a new `?v=` cache marker. Copies must stay byte-identical (`tests/ee-click.test.mjs`). BTL loads it with
 `data-ee-forms="off"` so legal intake payloads are unchanged.
