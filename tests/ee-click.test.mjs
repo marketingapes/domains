@@ -60,7 +60,18 @@ function boot(url, cookie = '') {
     localStorage: { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, String(v)) },
     URL, URLSearchParams, crypto: globalThis.crypto, JSON, Math, Date, String, Object, Uint8Array, RegExp };
   vm.runInNewContext(SRC, ctx);
-  return { ee: window.eeClick, jar, dataLayer: window.dataLayer };
+  const press = (target, type = 'mousedown') => { for (const f of listeners[type] || []) f({ target }); };
+  return { ee: window.eeClick, jar, dataLayer: window.dataLayer, press };
+}
+
+// A stand-in <a>: only what stamp() and the press listeners read.
+function anchor(href, attrs = {}) {
+  const map = new Map(Object.entries({ href, ...attrs }));
+  return { nodeType: 1, tagName: 'A', parentNode: null,
+    get href() { return map.get('href') || ''; },
+    getAttribute: (n) => (map.has(n) ? map.get(n) : null),
+    setAttribute: (n, v) => { map.set(n, String(v)); },
+    removeAttribute: (n) => { map.delete(n); } };
 }
 
 test('ee-click: stores click IDs, builds _fbc/_fbp and a visitor id', () => {
@@ -100,4 +111,50 @@ test('ee-click: the visitor id survives a later visit', () => {
   const second = boot('https://forpetslikeblue.com/offers/', cookie);
   assert.equal(second.ee.id, first.ee.id);
   assert.equal(second.ee.fields().gclid, 'G1');
+});
+
+test('ee-click: a link whose address a page script changes keeps the new address', () => {
+  const { ee, press } = boot('https://tonedntasty.com/blackfriday/?gclid=G1');
+  const tail = new RegExp(`_${ee.id}_g$`);
+  const a = anchor('https://www.amazon.com/s?k=air+fryer&tag=tonedntasty-20');
+  press(a);
+  const first = new URL(a.getAttribute('href'));
+  assert.equal(first.searchParams.get('k'), 'air fryer');
+  assert.match(first.searchParams.get('ascsubtag'), tail);
+
+  // The page reuses the same <a> for the next search, as /blackfriday/ does.
+  a.setAttribute('href', 'https://www.amazon.com/s?k=stand+mixer&tag=tonedntasty-20');
+  for (const ev of ['mousedown', 'touchstart', 'click']) press(a, ev);
+  const second = new URL(a.getAttribute('href'));
+  assert.equal(second.searchParams.get('k'), 'stand mixer', 'the new search is kept, not reverted to the first one');
+  assert.equal(second.searchParams.get('tag'), 'tonedntasty-20');
+  assert.match(second.searchParams.get('ascsubtag'), tail);
+  assert.equal(a.getAttribute('data-ee-orig'), 'https://www.amazon.com/s?k=stand+mixer&tag=tonedntasty-20');
+
+  // Changed to a link the tracker does not tag: left exactly as the page set it.
+  a.setAttribute('href', 'https://www.chewy.com/x?y=1');
+  press(a); press(a, 'click');
+  assert.equal(a.getAttribute('href'), 'https://www.chewy.com/x?y=1');
+  assert.equal(a.getAttribute('data-ee-orig'), null);
+});
+
+test('ee-click: repeated presses on an unchanged link do not change it further', () => {
+  const { ee, press } = boot('https://tonedntasty.com/blackfriday/?gclid=G1');
+  const a = anchor('https://www.amazon.com/s?k=air+fryer&tag=tonedntasty-20&ascsubtag=tnt-bf-finder');
+  press(a);
+  const once = a.getAttribute('href');
+  assert.equal(new URL(once).searchParams.get('ascsubtag'), `tnt-bf-finder_${ee.id}_g`);
+  for (let i = 0; i < 5; i++) for (const ev of ['mousedown', 'touchstart', 'click']) press(a, ev);
+  assert.equal(a.getAttribute('href'), once, 'no stacked sub-tags');
+  assert.equal(a.getAttribute('data-ee-orig'), 'https://www.amazon.com/s?k=air+fryer&tag=tonedntasty-20&ascsubtag=tnt-bf-finder');
+
+  // A page script that re-sets an already stamped address must not stack a second stamp.
+  const b = anchor(once);
+  press(b); press(b, 'click');
+  assert.equal(b.getAttribute('href'), once);
+
+  const skip = anchor('https://www.amazon.com/dp/B000?tag=tonedntasty-20', { 'data-ee': 'skip' });
+  press(skip); press(skip, 'click');
+  assert.equal(skip.getAttribute('href'), 'https://www.amazon.com/dp/B000?tag=tonedntasty-20');
+  assert.equal(skip.getAttribute('data-ee-orig'), null);
 });
