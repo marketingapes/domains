@@ -63,9 +63,38 @@ def page(site):
     head = re.sub(r'(<meta name="twitter:title" content=")[^"]*(")', lambda m: m.group(1) + E(title) + m.group(2), head)
     head = re.sub(r'(<meta name="twitter:description" content=")[^"]*(")', lambda m: m.group(1) + E(c["desc"]) + m.group(2), head)
     head = re.sub(r'<script type="application/ld\+json">.*?</script>\s*', "", head, flags=re.S)
-    # Gift finders are shopping pages: AdSense stays on content pages only (Kyle's rule, Nov 16 2026).
-    head = re.sub(r'<script[^>]*adsbygoogle\.js[^>]*></script>\s*', "", head)
+    # Gift finders are shopping pages: AdSense stays on content pages only (Kyle's rule, Nov 16 2026),
+    # except FPLB, where labeled display units were requested on /gift-finder/ on Nov 20 2026.
+    if site != "fplb":
+        head = re.sub(r'<script[^>]*adsbygoogle\.js[^>]*></script>\s*', "", head)
     head = head.replace("</head>", f'<link rel="stylesheet" href="/assets/gift-finder.css?v={c["v"]}">\n<style>#gift-finder,.gf-hero,.gf-how{{{c["skin"]}}}</style>\n</head>', 1)
+    wide = square = push = ""
+    if site == "fplb":
+        wide = """<div class="ad-wrap" aria-label="Advertisement">
+<div class="ad-box ad-wide-box">
+<span class="ad-label">Advertisement</span>
+<ins class="adsbygoogle ads-wide" data-ad-client="ca-pub-5194583669093303" data-ad-slot="8234075512"></ins>
+</div>
+</div>
+"""
+        square = """<div class="ad-wrap" aria-label="Advertisement">
+<div class="ad-box ad-square-box">
+<span class="ad-label">Advertisement</span>
+<ins class="adsbygoogle ads-square" data-ad-client="ca-pub-5194583669093303" data-ad-slot="6342409340"></ins>
+</div>
+</div>
+"""
+        push = """<script>
+(function () {
+  try {
+    var units = document.querySelectorAll('ins.adsbygoogle');
+    for (var i = 0; i < units.length; i++) { (window.adsbygoogle = window.adsbygoogle || []).push({}); }
+  } catch (e) { /* AdSense blocked or not yet approved; the page works without it */ }
+})();
+</script>
+"""
+        if "querySelectorAll('ins.adsbygoogle')" not in foot:
+            foot = foot.replace("</body>", push + "</body>", 1)
     main = f'''<main id="main">
 <div class="gf-wrap">
 <section class="gf-hero">
@@ -74,7 +103,7 @@ def page(site):
 <p>{E(c["lede"])}</p>
 
 </section>
-<div id="gift-finder" data-site="{site}"><p class="gf-empty">Loading gift ideas&hellip;</p></div>
+{wide}<div id="gift-finder" data-site="{site}"><p class="gf-empty">Loading gift ideas&hellip;</p></div>
 <noscript><p class="gf-empty">The gift finder needs JavaScript. You can still browse our <a href="/offers/">partner offers</a>.</p></noscript>
 <section class="gf-how">
 <h2>How the finder picks</h2>
@@ -85,7 +114,7 @@ def page(site):
 <li>Your answers stay in this browser tab. Nothing is sent to us.</li>
 </ul>
 </section>
-</div>
+{square}</div>
 <script src="/assets/gift-finder.js?v={c["v"]}" defer></script>
 </main>'''
     return head + main + foot
