@@ -15,6 +15,9 @@ const HOSTS = {
 };
 // tnt and sliq are built but held by the owner (branch claude/adsense-tnt-sliq-held).
 const LEGAL = ['btl', 'dihac', 'nil', 'lfma', 'lee'];
+// Brands whose home page is a marketplace, not a content page. AdSense only goes on content
+// pages (owner rule), so these homes must NOT load it; the rest of the checks still apply.
+const MARKETPLACE_HOME = new Set(['px']);
 const BANNED = /we tested|hands-on test|our testing|our lab|example\.com|coming soon|website preview/i;
 // Allow selecting a subset while a brand is being built: ADSENSE_BRANDS=cgg,tnt
 const ONLY = process.env.ADSENSE_BRANDS ? process.env.ADSENSE_BRANDS.split(',') : null;
@@ -65,8 +68,12 @@ for (const b of BRANDS) {
   test(`${b}: every new page carries AdSense + canonical + description`, () => {
     for (const rel of newPages(dir)) {
       const html = read(path.join(dir, rel));
-      assert.ok(html.includes(`adsbygoogle.js?client=${PUB}`), `${rel} missing AdSense script`);
-      assert.ok(html.includes(`name="google-adsense-account" content="${PUB}"`), `${rel} missing account meta`);
+      if (rel === 'index.html' && MARKETPLACE_HOME.has(b)) {
+        assert.doesNotMatch(html, /adsbygoogle/, `${b} marketplace home must not load AdSense`);
+      } else {
+        assert.ok(html.includes(`adsbygoogle.js?client=${PUB}`), `${rel} missing AdSense script`);
+        assert.ok(html.includes(`name="google-adsense-account" content="${PUB}"`), `${rel} missing account meta`);
+      }
       assert.match(html, new RegExp(`rel="canonical" href="https://${host.replace('.', '\\.')}/`), `${rel} canonical`);
       assert.match(html, /<meta name="description" content="[^"]{40,}"/, `${rel} description`);
       assert.match(html, /name="viewport"/, `${rel} viewport`);

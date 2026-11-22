@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /preview/
+Disallow: /account/
+Disallow: /my-swaps/
 
 User-agent: Mediapartners-Google
 Allow: /
