@@ -79,7 +79,7 @@
     return '<li><a class="lcard" href="/listing/?id=' + l.id + '">' +
       '<span class="ph"><img src="' + esc(imgUrl(l.images[0])) + '" alt="' + esc(l.title) + '" loading="lazy" width="400" height="300">' +
       (l.is_demo ? '<span class="tag tag-demo">Example</span>' : '') + '</span>' +
-      '<span class="bd"><h3>' + esc(l.title) + '</h3>' +
+      '<span class="bd"><span class="kicker">' + esc(lab('style', l.style)) + (l.color ? ' &middot; ' + esc(lab('color', l.color)) : '') + '</span><h3>' + esc(l.title) + '</h3>' +
       '<span class="meta">' + esc(lab('size', l.size)) + ' &middot; ' + esc(lab('condition', l.condition)) + (l.quantity > 1 ? ' &middot; set of ' + l.quantity : '') + '</span>' +
       '<span class="loc">' + esc(l.city) + ' &middot; ' + esc(lab('method', l.method)) + '</span></span></a></li>';
   }

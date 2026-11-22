@@ -181,7 +181,7 @@ details[open] summary{border-bottom:2px dashed var(--lav)}
 /* ---- 2026-11 refresh: match the swap marketplace (neutral, editorial) ---- */
 :root{
   --night:#161513;--night-2:#161513;--ink:#161513;--muted:#6E6A62;
-  --cream:#F6F4EF;--paper:#FFFFFF;--moon:#E0532F;--lav:#E3DFD6;--lav-soft:#F1EEE7;
+  --cream:#F6F4EF;--paper:#FFFFFF;--moon:#8A5F43;--lav:#E3DFD6;--lav-soft:#F1EEE7;
   --peach:#E3DFD6;--peach-soft:#F1EEE7;--mint:#E3DFD6;--mint-soft:#F1EEE7;
   --link:#161513;--radius:8px;--shadow:none;
   --head:"Instrument Serif","Georgia",serif;--body:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -189,7 +189,7 @@ details[open] summary{border-bottom:2px dashed var(--lav)}
 body{background:var(--cream);font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-weight:400;letter-spacing:-.015em}
 h3{font-family:var(--body);font-weight:600;letter-spacing:-.01em}
-a:hover{color:#B83D1E}
+a:hover{color:#6E4A33}
 .eyebrow{font-family:var(--body);color:var(--muted);letter-spacing:.08em;font-size:.75rem}
 .site-head{background:rgba(246,244,239,.92);color:var(--ink);box-shadow:none;border-bottom:1px solid #E3DFD6;backdrop-filter:blur(10px)}
 .logo,.logo:hover{color:var(--ink);font-family:var(--body);font-weight:700;letter-spacing:-.035em;font-size:1.2rem}
@@ -206,7 +206,7 @@ a:hover{color:#B83D1E}
 .home-hero::after{display:none}
 .home-hero h1,.home-hero .lede{color:var(--ink)}
 .home-hero .eyebrow{color:var(--muted)}
-.squiggle{background:none;color:#E0532F;font-style:italic}
+.squiggle{background:none;color:#8A5F43;font-style:italic}
 .card,.pos-grid a,.matcher,.more-box,.result,.note,.mail-card{border-radius:8px;box-shadow:none;border:1px solid #E3DFD6;background:#fff}
 .card:hover,.pos-grid a:hover{transform:none;box-shadow:none;border-color:var(--ink)}
 .card-img{border-radius:0}
