@@ -85,3 +85,19 @@ Review clarification: the quiz privacy footer distinguishes Glassman review
 requests from Marketing Apes other-options requests. Other-options submissions
 use separate ee_other_options_* attempt/error/receipt events and never emit
 ee_lead_submit_* events. Existing non-quiz buttons retain their original markup.
+
+Answer validation (2026-11-22, staged): the six required answers must use their
+exact Glassman state/answer enums before a screening decision exists. Missing or
+invalid answers return no outcome; they are not qualified, disqualified or sent
+for firm review. The quiz resumes at the first invalid question, and a
+capture-phase submit guard prevents the shared intake handler from sending an
+unfinished quiz. Buyer criteria, valid outcomes, consent, callback/form behavior,
+and the receipt-gated thank-you conversion are preserved. The quiz loads new
+versioned rules and quiz script URLs together.
+
+Run `node --test tests/glassman-ssdi-answer-contract.test.mjs tests/glassman-ssdi-quiz.test.mjs`
+and `node tests/glassman-ssdi-quiz.browser.cjs` for isolated verification. All
+browser requests are intercepted and provider requests are never released.
+This browser guard does not secure ingestion: Make 6777650 must independently
+validate these required fields/enums in an isolated, reviewed change. No Make
+scenario, production runtime, call, message or deployment is changed here.
