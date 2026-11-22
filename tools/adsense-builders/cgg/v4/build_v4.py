@@ -36,6 +36,11 @@ b.PILLARS[:] = [
 ]
 DEFAULT_OG = "og/swing-sunset.jpg"
 
+# Single homepage AdSense display-slot config. Replace with a real slot ID
+# from AdSense (Ads > By ad unit) before merge. Until then the unit is
+# labeled and reserves space but does not request an ad. Do not invent an ID.
+CGG_HOME_AD_SLOT = "REPLACE_WITH_ADSENSE_SLOT_ID"
+
 # ------------------------------------------------------------------ chrome
 b.FONT_PRELOAD = ('<link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>\n'
                   '<link rel="preload" href="/assets/fonts/archivo-italic-latin.woff2" as="font" type="font/woff2" crossorigin>')
@@ -179,6 +184,38 @@ def page(title, desc, path, active, body, ld=None, og=DEFAULT_OG):
 b.page = page
 
 
+
+def home_ad_unit():
+    """Labeled manual display unit for the homepage only. Uses CGG_HOME_AD_SLOT."""
+    return f"""<aside class="cgg-home-ad" aria-label="Advertisement">
+<div class="wrap">
+<p class="cgg-home-ad__label">Advertisement</p>
+<div class="cgg-home-ad__slot">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5194583669093303" data-ad-format="auto" data-full-width-responsive="true" id="cgg-home-ad-unit"></ins>
+</div>
+</div>
+</aside>
+<script>
+/* CGG_HOME_AD_SLOT is the single slot-ID config for this homepage unit.
+   Replace REPLACE_WITH_ADSENSE_SLOT_ID with a real AdSense display slot ID
+   (AdSense > Ads > By ad unit) before merge. Until then the unit is labeled
+   and reserves space, but does not request an ad.
+   Pushing to window.adsbygoogle before adsbygoogle.js loads is AdSense's
+   official queue pattern. The existing data-cgg="nov15-tags" loader injects
+   the script later (first interaction or 3.5s), which then drains the queue. */
+var CGG_HOME_AD_SLOT = "{CGG_HOME_AD_SLOT}";
+(function(){{
+  var el = document.getElementById("cgg-home-ad-unit");
+  var ready = typeof CGG_HOME_AD_SLOT === "string" && CGG_HOME_AD_SLOT && CGG_HOME_AD_SLOT !== "REPLACE_WITH_ADSENSE_SLOT_ID";
+  if (el && ready) {{
+    el.setAttribute("data-ad-slot", CGG_HOME_AD_SLOT);
+    (window.adsbygoogle = window.adsbygoogle || []).push({{}});
+  }}
+}})();
+</script>
+"""
+
+
 # ------------------------------------------------------------------ home
 def bet_card(slug, title, line, tag):
     return f'<a class="bet" href="/games/{slug}/" style="text-decoration:none"><span class="odds">{tag}</span><b>{title}</b><p>{line}</p></a>'
@@ -212,6 +249,7 @@ def home(cards):
 </div></div>
 <p class="cred">{b.credit_html(hero_key)}</p></section>
 
+{home_ad_unit()}
 <section class="sec"><div class="wrap manifesto">
 <div><span class="kick">The crazy manifesto</span><h2>Crazy is a <em>compliment</em> here.</h2>
 <p class="lede">Golf has a reputation: quiet, collared, slightly afraid of fun. The game never agreed. Golfers have been inventing bets, partner swaps and ridiculous penalties for as long as two of them have shared a tee. That's the golf we're here for, whether you're scratch or still counting on your fingers.</p>

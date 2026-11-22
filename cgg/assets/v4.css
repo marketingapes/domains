@@ -456,7 +456,7 @@ blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:6px solid var(--flag
 .credits img{width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:3px}
 
 @media print{
-  .util,.hdr,.ftr,.no-print,.toc,.ph-col,ins.adsbygoogle,.phero3 .bg,.planner .cta,.planner button{display:none!important}
+  .util,.hdr,.ftr,.no-print,.toc,.ph-col,ins.adsbygoogle,.cgg-home-ad,.phero3 .bg,.planner .cta,.planner button{display:none!important}
   body{background:#fff}.print-only{display:block}
   .dhero,.phero3{background:#fff;color:#000;clip-path:none}.dhero h1{color:#000}
   .tool{box-shadow:none;margin:0}.tool .card-top{background:#fff;color:#000;border-bottom:2px solid #000}.tool .card-top h3{color:#000}
@@ -468,6 +468,14 @@ blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:6px solid var(--flag
 .prose a.btn,.prose2 a.btn,.prose a.aff-btn{color:#fff}
 .dhero .intro{font-size:1.25rem;line-height:1.55;color:#D3D6CF;max-width:60ch}
 .planner article h2{font-size:clamp(1.6rem,2.6vw,2.1rem);margin-top:.5em}
+/* Homepage manual AdSense display unit. Slot ID is the CGG_HOME_AD_SLOT
+   config in cgg/index.html and tools/adsense-builders/cgg/v4/build_v4.py. */
+.cgg-home-ad{background:var(--chalk);border-block:1px solid var(--rule);padding:18px 0 22px}
+.cgg-home-ad__label{margin:0 0 10px;font:800 .72rem/1 var(--f);font-stretch:85%;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
+.cgg-home-ad__slot{min-height:280px;background:var(--sand);border-radius:3px}
+@media (min-width:768px){.cgg-home-ad__slot{min-height:250px}}
+@media print{.cgg-home-ad{display:none!important}}
+
 /* nov15: contrast, headings, live-now, side games */
 :root{--flag-d:#C8340F}
 .btn,.btn-light,.aff-btn,.prose a.btn,.prose2 a.btn,.prose a.aff-btn{color:var(--ink)!important}
