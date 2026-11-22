@@ -23,6 +23,7 @@ automatic call, CRM enrollment, or submission-success message.
 | `sitemap.xml` | Lists only the public homepage |
 | `privacy/index.html` | Existing preview policy; still noindex and excluded from the sitemap pending review |
 | `pricing/index.html`, `order/index.html`, `anti-agency/index.html` | Existing unfinished pages; retain their noindex directives and remain outside the sitemap |
+| `marketing-apes-network/index.html` | Public Marketing Apes Network page; every network site's footer links here (absolute URL). Listed in the sitemap |
 | `404.html` | Existing not-found page |
 | `favicon.svg`, `site.webmanifest` | Existing supporting assets |
 
