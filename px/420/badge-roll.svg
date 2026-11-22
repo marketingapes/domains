@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 200" role="img" aria-label="Roll With It badge">
+<rect x="10" y="10" width="240" height="180" rx="90" fill="#ffd23c" stroke="#0b3d1c" stroke-width="7"/>
+<g transform="rotate(-14 130 104)">
+<rect x="52" y="78" width="140" height="52" rx="26" fill="#1fa64a" stroke="#0b3d1c" stroke-width="6"/>
+<path d="M78 78 v52 M104 78 v52 M130 78 v52 M156 78 v52" stroke="#b8ff3c" stroke-width="6"/>
+<ellipse cx="192" cy="104" rx="20" ry="26" fill="#eaffc9" stroke="#0b3d1c" stroke-width="6"/>
+<path d="M192 104 m-10 0 a10 12 0 1 0 20 0 a6 8 0 1 0 -12 0" fill="none" stroke="#1a7a3a" stroke-width="4"/>
+</g>
+<text x="130" y="58" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="26" font-weight="900" fill="#0b3d1c" letter-spacing="2">ROLL</text>
+<text x="130" y="172" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" fill="#0b3d1c" letter-spacing="2">WITH IT</text>
+</svg>
