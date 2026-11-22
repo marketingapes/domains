@@ -77,7 +77,8 @@ FOOT = f'''<footer class="site-foot"><div class="wrap">
 <ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy</a></li><li><a href="/terms/">Terms</a></li><li><a href="/articles/">All articles</a></li></ul>
 <p>Our guides are general information, not veterinary advice. Always talk to your vet about your own pet’s health.</p>
 <p>© 2026 For Pets Like Blue. All rights reserved.</p>
-</div></footer>
+</div><!-- ma-network-footer --><p class="ma-network" style="flex:1 1 100%;grid-column:1/-1;width:100%;max-width:none;box-sizing:border-box;margin:16px 0 0;font-size:12px;line-height:1.5;text-align:center;opacity:.85"><a href="https://marketingapes.com/marketing-apes-network/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">forpetslikeblue.com is part of the Marketing Apes Network</a></p>
+</footer>
 <script src="/assets/site.js" defer></script>
 </body>
 </html>
