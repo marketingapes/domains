@@ -80,6 +80,7 @@ FOOT = f"""<footer class="site-footer">
     </nav>
   </div>
   <div class="wrap foot-bottom"><p>&copy;2026 {BRAND}. All rights reserved.</p></div>
+<!-- ma-network-footer --><p class="ma-network" style="flex:1 1 100%;grid-column:1/-1;width:100%;max-width:none;box-sizing:border-box;margin:16px 0 0;font-size:12px;line-height:1.5;text-align:center;opacity:.85"><a href="https://marketingapes.com/marketing-apes-network/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">smartlifeinsurancequote.com is part of the Marketing Apes Network</a></p>
 </footer>
 <script src="/assets/site.js" defer></script>
 </body>
