@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" role="img" aria-label="Couch-Lock Certified stamp">
+<g transform="rotate(-8 150 100)">
+<rect x="14" y="18" width="272" height="164" rx="18" fill="#eaffc9" stroke="#1a7a3a" stroke-width="8"/>
+<rect x="28" y="32" width="244" height="136" rx="10" fill="none" stroke="#1a7a3a" stroke-width="3" stroke-dasharray="10 6"/>
+<g transform="translate(30 30) scale(.8)"><path d="M70 120 h160 v-18 q0-14 -14-14 h-132 q-14 0 -14 14Z M58 98 q-12 0 -12 12 v26 h20 v-26 q0-12 -8-12Z M242 98 q12 0 12 12 v26 h-20 v-26 q0-12 8-12Z M70 120 v14 h160 v-14" fill="#1fa64a" stroke="#0b3d1c" stroke-width="4" stroke-linejoin="round"/>
+<rect x="92" y="70" width="44" height="30" rx="10" fill="#b8ff3c" stroke="#0b3d1c" stroke-width="4"/>
+<rect x="164" y="70" width="44" height="30" rx="10" fill="#ffd23c" stroke="#0b3d1c" stroke-width="4"/></g>
+<text x="150" y="66" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="22" font-weight="900" fill="#0b3d1c" letter-spacing="2">COUCH-LOCK</text>
+<text x="150" y="156" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="15" font-weight="900" fill="#1a7a3a" letter-spacing="5">CERTIFIED COMFY</text>
+</g></svg>
