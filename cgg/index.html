@@ -65,6 +65,33 @@
 </div></div>
 <p class="cred">Photo: Tourmandarin / <a href="https://commons.wikimedia.org/wiki/File:Golf_swing_sunset.jpg" rel="noopener">Wikimedia Commons</a>, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" rel="license noopener">CC0</a></p></section>
 
+<aside class="cgg-home-ad" aria-label="Advertisement">
+<div class="wrap">
+<p class="cgg-home-ad__label">Advertisement</p>
+<div class="cgg-home-ad__slot">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5194583669093303" data-ad-format="auto" data-full-width-responsive="true" id="cgg-home-ad-unit"></ins>
+</div>
+</div>
+</aside>
+<script>
+/* CGG_HOME_AD_SLOT is the single slot-ID config for this homepage unit.
+   Replace REPLACE_WITH_ADSENSE_SLOT_ID with a real AdSense display slot ID
+   (AdSense > Ads > By ad unit) before merge. Until then the unit is labeled
+   and reserves space, but does not request an ad.
+   Pushing to window.adsbygoogle before adsbygoogle.js loads is AdSense's
+   official queue pattern. The existing data-cgg="nov15-tags" loader injects
+   the script later (first interaction or 3.5s), which then drains the queue. */
+var CGG_HOME_AD_SLOT = "REPLACE_WITH_ADSENSE_SLOT_ID";
+(function(){
+  var el = document.getElementById("cgg-home-ad-unit");
+  var ready = typeof CGG_HOME_AD_SLOT === "string" && CGG_HOME_AD_SLOT && CGG_HOME_AD_SLOT !== "REPLACE_WITH_ADSENSE_SLOT_ID";
+  if (el && ready) {
+    el.setAttribute("data-ad-slot", CGG_HOME_AD_SLOT);
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }
+})();
+</script>
+
 <section class="sec"><div class="wrap manifesto">
 <div><span class="kick">The crazy manifesto</span><h2>Crazy is a <em>compliment</em> here.</h2>
 <p class="lede">Golf has a reputation: quiet, collared, slightly afraid of fun. The game never agreed. Golfers have been inventing bets, partner swaps and ridiculous penalties for as long as two of them have shared a tee. That's the golf we're here for, whether you're scratch or still counting on your fingers.</p>
