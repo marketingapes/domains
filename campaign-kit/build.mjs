@@ -17,10 +17,11 @@
 import {readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {absoluteWebUrl, campaignPageUrl, pageMetadata, absoluteHtmlReferences} from './metadata.mjs';
 
 const KIT = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(KIT, '..');
-export const KIT_VERSION = '2026-10-26.2';
+export const KIT_VERSION = '2026-11-22.1';
 
 // ---------- defaults (Best Tort Lawyers house brand, BTL web container, BTL Meta assets) ----------
 const BTL_BRAND = {
@@ -150,14 +151,14 @@ const pid = (c, page) => `${c.slug}-${page}`;
 function head(c, page, title, desc) {
   const b = c.brand, f = b.fonts, fam = [...new Set([f.display, f.body])].map(n => 'family=' + n.replace(/ /g, '+') + ':wght@400;600;700').join('&');
   const live = c.mode === 'live', tf = live && c.intake.trustedform && (page === 'quiz' || page === 'form') ? TRUSTEDFORM : '';
+  const og = c.images?.og && readRepoAsset(c.images.og);
+  const metadata = pageMetadata({title, description:desc, url:campaignPageUrl(c, PAGE_FILES[page]), siteName:b.name, image:c.images?.og, imageAlt:c.images?.og_alt, imageSize:og?.buf ? imageSize(og.buf) : null});
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${esc(title)}</title>
-<meta name="description" content="${esc(desc)}">
+${metadata}
 <meta name="robots" content="noindex,follow">
 <meta name="campaign-kit" content="${esc(c.campaign_id)} · ${KIT_VERSION} · ${c.mode}">${live ? '' : `
 <meta http-equiv="Content-Security-Policy" content="${PREVIEW_CSP}">`}
-<meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:type" content="website">${c.images?.og ? `<meta property="og:image" content="${esc(c.images.og)}">` : ''}
 <link rel="icon" href="${esc(b.logo)}" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${fam}&display=swap">
@@ -409,7 +410,10 @@ export function renderPages(c) {
   if (c.layout === "provider-review") return {"index.html": renderProviderReview(c)};
   const t = c.tort.name, b = c.brand.name, C = c.copy;
   const cl = {quiz: ['quiz.html', 'Check my claim'], sofia: ['sofia.html', 'Talk to someone now'], form: ['form.html', 'Request a callback']};
-  const page = (key, title, desc, h, card, body, script = '') => head(c, key, title, desc) + hero(h, card) + body + script + foot(c);
+  const page = (key, title, desc, h, card, body, script = '') => {
+    const html = head(c, key, title, desc) + hero(h, card) + body + script + foot(c);
+    return c.mode === 'live' ? absoluteHtmlReferences(html, campaignPageUrl(c, PAGE_FILES[key])) : html;
+  };
   return {
     'index.html': page('index', `${t} Claims · ${b}`, C.index.lede, C.index, indexCard(c), trust(c) + doorsSection(c) + proof(c) + steps('What happens after you reach out', C.steps) + close(c, cl.quiz, cl.sofia)),
     'quiz.html': page('quiz', `${t} Claim Check · ${b}`, `${c.quiz.length} quick questions about ${t}. See your next step right away.`, C.quiz, quizCard(c), trust(c) + proof(c) + steps('What happens next', C.steps) + close(c, cl.sofia, cl.form), captureJs(c, 'quiz', QUIZ_EXTRA(c))),
@@ -422,7 +426,8 @@ export function renderPages(c) {
 export function renderCss(c) {
   if (c.layout === "provider-review") return PROVIDER_CSS;
   const k = c.brand.colors, f = c.brand.fonts;
-  const vars = `:root{--navy:${k.navy};--deep:${k.deep};--blue:${k.blue};--blue-ink:${k.blue_ink};--gold:${k.gold};--gold-ink:${k.gold_ink};--bg2:${k.bg2};--line:${k.line};--ok:${k.ok};--display:"${f.display}",Georgia,serif;--body:"${f.body}",system-ui,-apple-system,sans-serif;--hero-img:${c.images?.hero ? `url(${c.images.hero})` : 'none'}}
+  const heroUrl = c.images?.hero && (c.mode === 'live' ? absoluteWebUrl(c.images.hero, new URL(campaignPageUrl(c)).origin + '/') : c.images.hero);
+  const vars = `:root{--navy:${k.navy};--deep:${k.deep};--blue:${k.blue};--blue-ink:${k.blue_ink};--gold:${k.gold};--gold-ink:${k.gold_ink};--bg2:${k.bg2};--line:${k.line};--ok:${k.ok};--display:"${f.display}",Georgia,serif;--body:"${f.body}",system-ui,-apple-system,sans-serif;--hero-img:${heroUrl ? `url(${heroUrl})` : 'none'}}
 .door-row.primary{background:var(--blue);color:#fff;border-radius:14px;padding:16px 14px;margin:6px 0 10px}.door-row.primary b,.door-row.primary small,.door-row.primary .arr,.door-row.primary .n{color:#fff}.door-row.primary .n{background:rgba(255,255,255,.18)}
 .firm-disclaimer{display:block;margin:0;padding:10px max(16px,env(safe-area-inset-left,0px));background:#fff;color:#111;border-bottom:1px solid #c7cbd2;font:12pt/1.4 "Times New Roman",Times,serif}
 .kit-preview{background:#fff4c2;color:#3d2e00;font:600 14px/1.4 var(--body);text-align:center;padding:8px max(16px,env(safe-area-inset-left,0px))}
@@ -517,9 +522,14 @@ const mdRows = rows => rows.map(r => `| ${r.area} | ${r.item} | **${r.status}** 
 // ---------- internal bundle: channels, voice, delivery, portal, tracking, launch ----------
 export function renderBundle(c) {
   if (c.layout === "provider-review") return {"REVIEW.md": providerReviewNotes(c)};
-  const usd = c.budget.media_total_usd, days = c.budget.days, base = `${c.domain_id === 'besttortlawyers.com' ? 'https://besttortlawyers.com' : 'https://' + c.domain_id}/c/${c.slug}/`;
+  const usd = c.budget.media_total_usd, days = c.budget.days, base = campaignPageUrl(c);
   const landing = c.landing ?? (c.publish === false ? null : Object.fromEntries(DOORS.map(d => [d, base + PAGE_FILES[d]])));
-  const url = (door, source, medium = 'paid') => landing?.[door] && `${landing[door]}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${encodeURIComponent(c.campaign_id)}&utm_content=${door}`;
+  const url = (door, source, medium = 'paid') => {
+    if (!landing?.[door]) return null;
+    const target = new URL(absoluteWebUrl(landing[door], base));
+    for (const [key, value] of Object.entries({utm_source:source, utm_medium:medium, utm_campaign:c.campaign_id, utm_content:door})) target.searchParams.set(key, value);
+    return target.href;
+  };
   const daily = ch => Math.max(1, Math.round((usd * c.split[ch]) / days));
   const name = (ch, extra = '') => `${c.campaign_id} | ${c.tort.name} | ${ch}${extra} | DRAFT PAUSED | campaign-kit ${KIT_VERSION}`;
   const states = c.geo.states.includes('US') ? ['US'] : c.geo.states;
@@ -529,7 +539,7 @@ export function renderBundle(c) {
     ad_account: c.channels.meta.ad_account, page_id: c.channels.meta.page_id, instagram_id: c.channels.meta.instagram_id, pixel_id: c.channels.meta.pixel_id,
     campaign: {name: name('Meta', ' | 3 doors'), objective: c.channels.meta.objective, status: 'PAUSED', special_ad_categories: c.channels.meta.special_ad_categories, daily_budget_usd: daily('meta')},
     ad_sets: [{name: `${c.campaign_id} | ${states.join(',')} | 3 doors`, status: 'PAUSED', optimization_goal: 'OFFSITE_CONVERSIONS', promoted_object: {pixel_id: c.channels.meta.pixel_id, custom_event_type: 'LEAD'}, targeting: {geo_locations: states[0] === 'US' ? {countries: ['US']} : {regions_by_state_code: states}, age_min: c.geo.age_min ?? 25, publisher_platforms: ['facebook', 'instagram']}}],
-    ads: c.ads.map(a => ({name: `${c.campaign_id} | door:${a.door}`, status: 'PAUSED', headline: a.headline, primary_text: a.primary_text, call_to_action: a.cta, link: url(a.door, 'facebook'), image: c.images?.['ad_' + a.door] ? 'https://besttortlawyers.com' + c.images['ad_' + a.door] : null, image_hash: c.meta_creatives?.[a.door]?.image_hash ?? null})),
+    ads: c.ads.map(a => ({name: `${c.campaign_id} | door:${a.door}`, status: 'PAUSED', headline: a.headline, primary_text: a.primary_text, call_to_action: a.cta, link: url(a.door, 'facebook'), image: c.images?.['ad_' + a.door] ? absoluteWebUrl(c.images['ad_' + a.door], new URL(base).origin + '/') : null, image_hash: c.meta_creatives?.[a.door]?.image_hash ?? null})),
     ...(landing ? {} : {landing_note: 'Preview-only campaign: no deployed kit landing page. Set config.landing.{quiz,sofia,form} before creating ads.'}),
   };
   const kw = c.keywords ?? [`${c.tort.name} lawsuit`, `${c.tort.name} lawyer`, `${c.tort.name} claim`, `${c.tort.name} attorney`];
@@ -632,10 +642,11 @@ function providerReviewNotes(c) {
   return `# ${c.title}: provider page review\n\nGenerated by campaign-kit/build.mjs. Page-review mode only; no canonical campaign ID has been assigned or registered. This is not a live intake campaign.\n\n## Review and connection gates\n- Firm approval of copy, disclosures, educational material, scope and final screening criteria.\n- Confirm consultation terms, permitted geography and final pre-qualification criteria, plus direct self-scheduling and the optional AI scheduling call. Neither scheduling route is connected.\n- Approved privacy/consent language and separate, optional educational-email permission.\n- Connect approved intake only after durable receipt, failure and duplicate tests pass.\n- Verify campaign identity, analytics and platform permissions before any advertising.\n\n## Public content\nThe page contains only provider-facing educational draft copy. It contains no proposal pricing, contact lists, private correspondence, internal document links, budgets or account identifiers. It is noindex and not linked from the main site. No contact information is collected.\n\n## Images\nReal attorney portrait: ${c.hero_image}, sourced from https://www.vanderhahn.com/wp-content/uploads/2024/07/devin-van-der-hahn-new-1.jpg and the named biography https://www.vanderhahn.com/devin-van-der-hahn/. Secondary portrait: ${c.attorney_image}, supplied 400px crop matching the named Devin Team card on the firm homepage (original https://www.vanderhahn.com/wp-content/uploads/2024/02/21637CHH_7_hr_edited.png). Firm logo: ${c.firm_logo}, from https://www.vanderhahn.com/wp-content/uploads/2024/05/logo.png. These identify the attorney and firm, not an endorsement, testimonial or result. The billing illustration ${c.billing_image} explains concepts only.\n\n## Routes\nCanonical public demo: https://besttortlawyers.com/c/${c.slug}/. The old /c/devin-multiplan/ route remains a generated alias with a canonical link to the new route. Both stay noindex with no capture or tracking.\n\n## Source\n${c.firm_source} supports the public firm description. Screening language remains a preliminary discussion aid, not a legal eligibility decision.\n`;
 }
 function renderProviderReview(c) {
+  const metadata = pageMetadata({title:`${c.title} · Provider review · Best Tort Lawyers`, description:'An educational starting point for healthcare providers and organizations with questions about commercial out-of-network payments.', url:campaignPageUrl({domain_id:'besttortlawyers.com', slug:c.slug}), siteName:'Best Tort Lawyers', image:'/assets/og-btl.jpg', imageAlt:'Best Tort Lawyers'});
   const questions = c.questions.map((q,i)=>`<div class="field"><label for="${esc(q.key)}"><span>0${i+1}</span>${esc(q.label)}</label><select id="${esc(q.key)}" name="${esc(q.key)}" required aria-describedby="help-${esc(q.key)}"><option value="">Choose an answer</option>${q.options.map(o=>`<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('')}</select><p id="help-${esc(q.key)}">${esc(q.help)}</p></div>`).join('');
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${esc(c.title)} · Provider review · Best Tort Lawyers</title><meta name="description" content="An educational starting point for healthcare providers and organizations with questions about commercial out-of-network payments."><meta name="robots" content="noindex,follow"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#184143"><meta http-equiv="Content-Security-Policy" content="${PREVIEW_CSP}"><meta property="og:title" content="${esc(c.title)}"><meta property="og:description" content="Healthcare provider education and preliminary review. Preview only; no intake or booking."><link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml"><link rel="canonical" href="https://besttortlawyers.com/c/${esc(c.slug)}/"><link rel="stylesheet" href="site.css"></head>
+${metadata}<meta name="robots" content="noindex,follow"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#184143"><meta http-equiv="Content-Security-Policy" content="${PREVIEW_CSP}"><link rel="icon" href="/assets/btl-seal.svg" type="image/svg+xml"><link rel="stylesheet" href="site.css"></head>
 <body><a class="skip" href="#main">Skip to content</a><div class="kit-preview" role="note"><strong>Page preview</strong> · Explore the questions. No information is sent and no appointment is booked.</div>
 <header class="site-head"><div class="wrap head-inner"><a class="brand" href="#main" aria-label="Best Tort Lawyers, provider education"><img src="/assets/btl-seal.svg" alt="" width="44" height="44"><span>Best Tort Lawyers<small>HEALTHCARE PROVIDER EDUCATION</small></span></a><nav aria-label="Page navigation"><a href="#attorney">Meet Devin</a><a href="#questions">Common questions</a><a class="btn compact" href="#review">Start here <span aria-hidden="true">↗</span></a></nav></div></header>
 <main id="main"><section class="hero"><div class="wrap hero-grid"><div class="hero-copy"><p class="eyebrow">MultiPlan · Commercial out-of-network billing</p><h1>${esc(c.headline)}</h1><p class="lede">${esc(c.intro)}</p><div class="actions"><a class="btn cream" href="#review">Check your starting point <span aria-hidden="true">↗</span></a><a class="text-link" href="#overview">Understand the review</a></div><p class="hero-note">For healthcare providers and organizations.<br>No patient records needed for this first step.</p></div><figure class="hero-art"><div class="portrait-frame"><img src="${esc(c.hero_image)}" width="567" height="709" fetchpriority="high" alt="Devin van der Hahn, Managing Partner and Founder of VanderHahn LLP."><div class="portrait-label"><span>PROVIDER-SIDE HEALTHCARE DISPUTES</span><strong>${esc(c.attorney_name)}</strong><p>Managing Partner &amp; Founder</p></div></div><figcaption><img src="${esc(c.firm_logo)}" width="643" height="64" alt="VanderHahn LLP"><a href="#attorney">Meet the attorney <span aria-hidden="true">↗</span></a></figcaption></figure></div></section>
@@ -710,3 +721,4 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   for (const f of files) { if (!existsSync(f)) { console.error('missing ' + f); process.exit(1); } console.log(JSON.stringify(build(f))); }
   if (args[0] === '--all') writeBriefChecklist(files.map(f => normalize(JSON.parse(readFileSync(f, 'utf8')))));
 }
+
