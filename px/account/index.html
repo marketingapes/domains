@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in | Pillow Exchange</title>
+<meta name="description" content="Sign in to Pillow Exchange or create a free account to post throw pillows for swap and make or answer swap offers.">
+<link rel="canonical" href="https://pillowexchange.com/account/">
+<meta name="robots" content="noindex">
+<meta name="px-api" content="https://px-exchange-api.onrender.com">
+<script>window.dataLayer=window.dataLayer||[];</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MGXD56R2');</script>
+<meta property="og:site_name" content="Pillow Exchange">
+<meta property="og:title" content="Sign in | Pillow Exchange">
+<meta property="og:description" content="Sign in to Pillow Exchange or create a free account to post throw pillows for swap and make or answer swap offers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pillowexchange.com/account/">
+<meta property="og:image" content="https://pillowexchange.com/images/demo/sage-linen.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#232a5c">
+<link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:ital,wght@0,400;0,600;0,800;1,400&amp;display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/exchange.css?v=1">
+<link rel="preconnect" href="https://px-exchange-api.onrender.com" crossorigin>
+<script src="/assets/ee-click.js?v=1" defer data-site="px"></script>
+</head>
+<body class="mx" data-page="account">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGXD56R2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="logo" href="/" aria-label="Pillow Exchange home"><img src="/images/logo.svg" alt="" width="40" height="40"><span>Pillow<b>Exchange</b></span></a>
+    <nav aria-label="Main">
+      <a href="/">Browse</a>
+      <a href="/post/" class="nav-cta">Post a pillow</a>
+      <a href="/my-swaps/">My swaps</a>
+      <a href="/rules/">Swap rules</a>
+      <a href="/guides/">Guides</a>
+      <a href="/offers/">Deals</a>
+      <a class="acct-link" id="acct-link" href="/account/">Sign in</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="wrap" style="padding-top:24px">
+  <div id="signed-out">
+    <h1>Sign in or join Pillow Exchange</h1>
+    <p class="lede">An account lets you post pillows, make offers and answer offers. It is free.</p>
+    <div class="auth-grid">
+      <form class="panel" id="login-form" novalidate>
+        <h2 style="margin-top:0">Sign in</h2>
+        <div class="field"><label for="li-email">Email</label><input type="email" id="li-email" name="email" autocomplete="email" required></div>
+        <div class="field" style="margin-top:10px"><label for="li-pass">Password</label><input type="password" id="li-pass" name="password" autocomplete="current-password" required></div>
+        <div class="form-actions"><button class="btn" type="submit">Sign in</button></div>
+        <p class="form-msg" role="alert"></p>
+      </form>
+      <form class="panel" id="signup-form" novalidate>
+        <h2 style="margin-top:0">Create an account</h2>
+        <div class="form-grid">
+          <div class="field full"><label for="su-name">Display name</label><input type="text" id="su-name" name="display_name" maxlength="40" autocomplete="given-name" required><small>First name is fine. Other members see this.</small></div>
+          <div class="field full"><label for="su-email">Email</label><input type="email" id="su-email" name="email" autocomplete="email" required><small>Only shared with someone after you both agree to a swap.</small></div>
+          <div class="field full"><label for="su-pass">Password</label><input type="password" id="su-pass" name="password" minlength="8" autocomplete="new-password" required><small>At least 8 characters.</small></div>
+          <div class="field"><label for="su-city">City</label><input type="text" id="su-city" name="city" maxlength="60" autocomplete="address-level2" required></div>
+          <div class="field"><label for="su-zip">ZIP</label><input type="text" id="su-zip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required></div>
+          <div class="field full checks"><label><input type="checkbox" name="agree"> I am 18 or older and agree to the <a href="/rules/" target="_blank">swap rules</a> and <a href="/terms/" target="_blank">terms</a>.</label></div>
+        </div>
+        <div class="form-actions"><button class="btn" type="submit">Create account</button></div>
+        <p class="form-msg" role="alert"></p>
+      </form>
+    </div>
+  </div>
+  <div id="signed-in" hidden>
+    <h1>Your account</h1>
+    <div class="panel" style="max-width:560px">
+      <p id="who"></p>
+      <div class="form-actions"><a class="btn btn-sm" href="/my-swaps/">My swaps</a><a class="btn btn-sm btn-ghost" href="/post/">Post a pillow</a><button class="btn btn-sm btn-ghost" type="button" id="signout">Sign out</button></div>
+      <p style="margin-top:22px;font-size:.92rem">Want to leave? <button class="linkish" type="button" id="delete-acct">Delete my account</button> removes your profile, pillows, photos and offers.</p>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-foot">
+  <div class="wrap foot-row">
+    <div>
+      <a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Pillow<b>Exchange</b></span></a>
+      <p class="tag">Swap the pillows you are tired of. Exchange anything, starting with throw pillows.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="/">Browse swaps</a>
+      <a href="/post/">Post a pillow</a>
+      <a href="/rules/">Swap rules</a>
+      <a href="/guides/">Sleep guides</a>
+      <a href="/articles/">Articles</a>
+      <a href="/offers/">Deals</a>
+      <a href="/gift-finder/">Gift finder</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+  </div>
+  <p class="wrap copy">&copy;2026 Pillow Exchange. Members swap directly with each other; Pillow Exchange does not inspect, ship or guarantee items.</p>
+</footer>
+<script src="/assets/exchange.js?v=1" defer></script>
+</body>
+</html>
