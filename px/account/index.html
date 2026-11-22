@@ -15,50 +15,48 @@
 <meta property="og:description" content="Sign in to Pillow Exchange or create a free account to post throw pillows for swap and make or answer swap offers.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pillowexchange.com/account/">
-<meta property="og:image" content="https://pillowexchange.com/images/demo/sage-linen.jpg">
+<meta property="og:image" content="https://pillowexchange.com/images/demo/hero-sofa.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#232a5c">
+<meta name="theme-color" content="#F6F4EF">
 <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:ital,wght@0,400;0,600;0,800;1,400&amp;display=swap">
-<link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/exchange.css?v=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="/assets/exchange.css?v=2">
 <link rel="preconnect" href="https://px-exchange-api.onrender.com" crossorigin>
 <script src="/assets/ee-click.js?v=1" defer data-site="px"></script>
 </head>
-<body class="mx" data-page="account">
+<body data-page="account">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGXD56R2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap head-row">
-    <a class="logo" href="/" aria-label="Pillow Exchange home"><img src="/images/logo.svg" alt="" width="40" height="40"><span>Pillow<b>Exchange</b></span></a>
-    <nav aria-label="Main">
+    <a class="wordmark" href="/" aria-label="Pillow Exchange home"><img src="/images/logo.svg" alt="" width="28" height="28"><span>pillow<em>exchange</em></span></a>
+    <form class="head-search" id="head-search" role="search"><label class="sr" for="head-q">Search pillows</label><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5.25"/><path d="M11 11l3.5 3.5" stroke-linecap="round"/></svg><input type="search" id="head-q" placeholder="Search velvet, plaid, lumbar&hellip;" autocomplete="off"></form>
+    <nav class="head-nav" aria-label="Main">
       <a href="/">Browse</a>
-      <a href="/post/" class="nav-cta">Post a pillow</a>
-      <a href="/my-swaps/">My swaps</a>
-      <a href="/rules/">Swap rules</a>
+      <a href="/rules/">How it works</a>
       <a href="/guides/">Guides</a>
-      <a href="/offers/">Deals</a>
+      <a href="/my-swaps/">My swaps</a>
       <a class="acct-link" id="acct-link" href="/account/">Sign in</a>
+      <a class="nav-cta" href="/post/">Post a pillow</a>
     </nav>
   </div>
 </header>
 <main id="main">
-<section class="wrap" style="padding-top:24px">
+<section class="wrap">
   <div id="signed-out">
-    <h1>Sign in or join Pillow Exchange</h1>
-    <p class="lede">An account lets you post pillows, make offers and answer offers. It is free.</p>
+    <div class="page-head"><h1>Sign in or join</h1><p class="lede muted">An account lets you post pillows, make offers and answer offers. It is free.</p></div>
     <div class="auth-grid">
       <form class="panel" id="login-form" novalidate>
-        <h2 style="margin-top:0">Sign in</h2>
+        <h2 style="font-size:20px;margin-bottom:16px">Sign in</h2>
         <div class="field"><label for="li-email">Email</label><input type="email" id="li-email" name="email" autocomplete="email" required></div>
-        <div class="field" style="margin-top:10px"><label for="li-pass">Password</label><input type="password" id="li-pass" name="password" autocomplete="current-password" required></div>
+        <div class="field" style="margin-top:14px"><label for="li-pass">Password</label><input type="password" id="li-pass" name="password" autocomplete="current-password" required></div>
         <div class="form-actions"><button class="btn" type="submit">Sign in</button></div>
         <p class="form-msg" role="alert"></p>
       </form>
       <form class="panel" id="signup-form" novalidate>
-        <h2 style="margin-top:0">Create an account</h2>
+        <h2 style="font-size:20px;margin-bottom:16px">Create an account</h2>
         <div class="form-grid">
           <div class="field full"><label for="su-name">Display name</label><input type="text" id="su-name" name="display_name" maxlength="40" autocomplete="given-name" required><small>First name is fine. Other members see this.</small></div>
           <div class="field full"><label for="su-email">Email</label><input type="email" id="su-email" name="email" autocomplete="email" required><small>Only shared with someone after you both agree to a swap.</small></div>
@@ -73,7 +71,7 @@
     </div>
   </div>
   <div id="signed-in" hidden>
-    <h1>Your account</h1>
+    <div class="page-head"><h1>Your account</h1></div>
     <div class="panel" style="max-width:560px">
       <p id="who"></p>
       <div class="form-actions"><a class="btn btn-sm" href="/my-swaps/">My swaps</a><a class="btn btn-sm btn-ghost" href="/post/">Post a pillow</a><button class="btn btn-sm btn-ghost" type="button" id="signout">Sign out</button></div>
@@ -83,27 +81,19 @@
 </section>
 </main>
 <footer class="site-foot">
-  <div class="wrap foot-row">
-    <div>
-      <a class="logo logo-foot" href="/"><img src="/images/logo.svg" alt="" width="32" height="32"><span>Pillow<b>Exchange</b></span></a>
-      <p class="tag">Swap the pillows you are tired of. Exchange anything, starting with throw pillows.</p>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="wordmark" href="/"><img src="/images/logo.svg" alt="" width="28" height="28"><span>pillow<em>exchange</em></span></a>
+        <p class="foot-tag">Trade the throw pillows you are over for ones you will love. Exchange anything, starting with pillows.</p>
+      </div>
+      <div><h4>Swap</h4><ul><li><a href="/">Browse pillows</a></li><li><a href="/post/">Post a pillow</a></li><li><a href="/my-swaps/">My swaps</a></li><li><a href="/rules/">Swap rules</a></li></ul></div>
+      <div><h4>Read</h4><ul><li><a href="/guides/">Sleep guides</a></li><li><a href="/articles/">Articles</a></li><li><a href="/offers/">Deals</a></li><li><a href="/gift-finder/">Gift finder</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy/">Privacy</a></li><li><a href="/terms/">Terms</a></li><li><a href="/credits/">Photo credits</a></li></ul></div>
     </div>
-    <nav aria-label="Footer">
-      <a href="/">Browse swaps</a>
-      <a href="/post/">Post a pillow</a>
-      <a href="/rules/">Swap rules</a>
-      <a href="/guides/">Sleep guides</a>
-      <a href="/articles/">Articles</a>
-      <a href="/offers/">Deals</a>
-      <a href="/gift-finder/">Gift finder</a>
-      <a href="/about/">About</a>
-      <a href="/contact/">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/terms/">Terms</a>
-    </nav>
+    <p class="copy">&copy;2026 Pillow Exchange. Members swap directly with each other; Pillow Exchange does not inspect, ship or guarantee items.</p>
   </div>
-  <p class="wrap copy">&copy;2026 Pillow Exchange. Members swap directly with each other; Pillow Exchange does not inspect, ship or guarantee items.</p>
 </footer>
-<script src="/assets/exchange.js?v=1" defer></script>
+<script src="/assets/exchange.js?v=2" defer></script>
 </body>
 </html>

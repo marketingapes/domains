@@ -14,6 +14,18 @@
     color: { white: 'White', cream: 'Cream', gray: 'Gray', black: 'Black', blue: 'Blue', green: 'Green', yellow: 'Yellow', orange: 'Orange / rust', red: 'Red', pink: 'Pink', purple: 'Purple', brown: 'Brown / tan', multi: 'Multicolor' }
   };
 
+  // Licensed photos used by the example listings (Wikimedia Commons). Shown on the listing page.
+  var CREDITS = {
+    '/images/demo/leather-sofa-pair.jpg': ['Aaaatu', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Decorative_pillows_on_a_leather_sofa.jpg'],
+    '/images/demo/batik-blue.jpg': ['Gunarta', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Batik_Kawung_Cushion.jpg'],
+    '/images/demo/szekely-red.jpg': ['Laslovarga', 'CC BY-SA 2.5', 'https://commons.wikimedia.org/wiki/File:Sz%C3%A9kely_traditional_ornamental_Pillow.JPG'],
+    '/images/demo/red-scatter-pair.jpg': ['Markjones959', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Throw_Pillows_(Scatter_Cushions).jpg'],
+    '/images/demo/yellow-navy-velvet.jpg': ['Lear 21', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Home24sofa.jpg'],
+    '/images/demo/geometric-bw.jpg': ['Kari Shea (Unsplash)', 'CC0', 'https://commons.wikimedia.org/wiki/File:Home_Sweet_Home_Pt._6_(Unsplash).jpg'],
+    '/images/demo/mint-mustard.jpg': ['Irene van der Poel (Unsplash)', 'CC0', 'https://commons.wikimedia.org/wiki/File:Cozy_bed_by_a_windowsill_(Unsplash).jpg'],
+    '/images/demo/armenian-pattern.jpg': ['\u0531\u0580\u0561\u0580\u0561\u057f \u0539\u0580\u057e\u0561\u0576\u0581', 'CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Decorative_pillows_with_traditional_Armenian_patterns.jpg']
+  };
+
   // ---------- helpers ----------
   function $(s, r) { return (r || document).querySelector(s); }
   function $all(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
@@ -66,17 +78,17 @@
   function card(l) {
     return '<li><a class="lcard" href="/listing/?id=' + l.id + '">' +
       '<span class="ph"><img src="' + esc(imgUrl(l.images[0])) + '" alt="' + esc(l.title) + '" loading="lazy" width="400" height="300">' +
-      (l.is_demo ? '<span class="badge badge-demo">Example</span>' : '') + '</span>' +
+      (l.is_demo ? '<span class="tag tag-demo">Example</span>' : '') + '</span>' +
       '<span class="bd"><h3>' + esc(l.title) + '</h3>' +
       '<span class="meta">' + esc(lab('size', l.size)) + ' &middot; ' + esc(lab('condition', l.condition)) + (l.quantity > 1 ? ' &middot; set of ' + l.quantity : '') + '</span>' +
-      (l.want ? '<span class="wants"><b>Wants:</b> ' + esc(l.want) + '</span>' : '') +
-      '<span class="loc">' + esc(l.city) + ' ' + esc(l.zip) + ' &middot; ' + esc(lab('method', l.method)) + '</span></span></a></li>';
+      '<span class="loc">' + esc(l.city) + ' &middot; ' + esc(lab('method', l.method)) + '</span></span></a></li>';
   }
 
   // ---------- browse (home) ----------
   function initBrowse() {
     var form = $('#filters'), grid = $('#grid'), count = $('#count');
-    ['size', 'style', 'color', 'condition'].forEach(function (k) { var s = form.elements[k]; s.innerHTML = options(k, 'Any'); });
+    var PH = { size: 'Size', style: 'Style', color: 'Color', condition: 'Condition' };
+    ['size', 'style', 'color', 'condition'].forEach(function (k) { var s = form.elements[k]; s.innerHTML = options(k, PH[k]); });
     var p = new URLSearchParams(location.search);
     ['q', 'size', 'style', 'color', 'condition', 'method', 'zip'].forEach(function (k) { if (p.get(k)) form.elements[k].value = p.get(k); });
     if (p.get('real') === '1') form.elements.real.checked = true;
@@ -87,6 +99,7 @@
       if (form.elements.real.checked) q.set('real', '1');
       history.replaceState(null, '', q.toString() ? '?' + q + '#browse' : location.pathname + (location.hash || ''));
       grid.setAttribute('aria-busy', 'true');
+      $all('select', form).forEach(function (s) { s.classList.toggle('on', !!s.value); });
       api('GET', '/api/listings?' + q).then(function (j) {
         grid.removeAttribute('aria-busy');
         var n = j.listings.length, real = j.totals.real;
@@ -100,9 +113,16 @@
         var r = $('#retry'); if (r) r.onclick = load;
       });
     }
+    var hq = $('#head-q');
+    if (hq) {
+      hq.value = form.elements.q.value;
+      hq.addEventListener('input', function () { form.elements.q.value = hq.value; clearTimeout(timer); timer = setTimeout(load, 250); });
+      hq.form.addEventListener('submit', function (e) { e.preventDefault(); load(); $('#browse').scrollIntoView({ behavior: 'smooth' }); });
+    }
+    grid.innerHTML = new Array(9).join('<li><div class="skel"></div></li>');
     form.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(load, 250); });
     form.addEventListener('submit', function (e) { e.preventDefault(); load(); });
-    $('#reset').addEventListener('click', function () { form.reset(); load(); });
+    $('#reset').addEventListener('click', function () { form.reset(); if (hq) hq.value = ''; load(); });
     load();
   }
 
@@ -200,16 +220,17 @@
       $('#crumb-title').textContent = l.title;
       var ticks = [l.cover_washed ? 'Cover washed' : '', l.insert_included ? 'Insert included' : 'Cover only', l.smoke_free ? 'Smoke-free home' : '', l.pet_free ? 'Pet-free home' : ''].filter(Boolean);
       root.innerHTML = '<div class="detail"><div class="gallery"><div class="main"><img id="main-img" src="' + esc(imgUrl(l.images[0])) + '" alt="' + esc(l.title) + '" width="800" height="600"></div>' +
+        (l.is_demo && CREDITS[l.images[0]] ? '<p class="credit">Example photo: ' + esc(CREDITS[l.images[0]][0]) + ', <a href="' + esc(CREDITS[l.images[0]][2]) + '" rel="noopener" target="_blank">' + esc(CREDITS[l.images[0]][1]) + ' via Wikimedia Commons</a>, cropped. <a href="/credits/">All photo credits</a>.</p>' : '') +
         (l.images.length > 1 ? '<div class="strip">' + l.images.map(function (im, i) { return '<button type="button" data-src="' + esc(imgUrl(im)) + '" aria-current="' + (i === 0) + '" aria-label="Photo ' + (i + 1) + '"><img src="' + esc(imgUrl(im)) + '" alt=""></button>'; }).join('') + '</div>' : '') + '</div>' +
-        '<div><p>' + (l.is_demo ? '<span class="badge badge-demo">Example listing</span> ' : '') + (l.status === 'traded' ? '<span class="badge badge-traded">Swapped</span>' : '<span class="badge">Open to swaps</span>') + '</p>' +
+        '<div class="info-col"><p style="margin:0;display:flex;gap:6px">' + (l.is_demo ? '<span class="tag tag-demo">Example listing</span> ' : '') + (l.status === 'traded' ? '<span class="tag tag-traded">Swapped</span>' : '<span class="tag tag-ok">Open to swaps</span>') + '</p>' +
         '<h1>' + esc(l.title) + '</h1>' +
         '<dl class="facts"><dt>Size</dt><dd>' + esc(lab('size', l.size)) + (l.quantity > 1 ? ' (set of ' + l.quantity + ')' : '') + '</dd><dt>Condition</dt><dd>' + esc(lab('condition', l.condition)) + '</dd>' +
         '<dt>Style</dt><dd>' + esc(lab('style', l.style)) + ', ' + esc(lab('color', l.color).toLowerCase()) + '</dd><dt>Location</dt><dd>' + esc(l.city) + ' ' + esc(l.zip) + '</dd><dt>Swap by</dt><dd>' + esc(lab('method', l.method)) + '</dd></dl>' +
         '<ul class="ticks">' + ticks.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
         (l.want ? '<div class="wants-box"><b>Would like in return</b>' + esc(l.want) + '</div>' : '') +
-        (l.description ? '<p>' + esc(l.description) + '</p>' : '') +
+        (l.description ? '<p class="desc">' + esc(l.description) + '</p>' : '') +
         '<div class="owner"><span class="avatar">' + esc((l.owner.name || '?').charAt(0)) + '</span><span>Listed by <b>' + esc(l.owner.name) + '</b> &middot; ' + esc(ago(l.created_at)) + '</span></div>' +
-        '<div id="cta"></div><p style="font-size:.85rem;margin-top:14px"><button type="button" class="linkish" id="report">Report this listing</button></p></div></div>' +
+        '<div id="cta"></div><p style="font-size:13px;margin-top:14px"><button type="button" class="linkish" id="report">Report this listing</button></p></div></div>' +
         '<section class="propose panel" id="propose" hidden aria-labelledby="propose-h"></section>';
       $all('.strip button', root).forEach(function (b) { b.onclick = function () { $('#main-img').src = b.dataset.src; $all('.strip button').forEach(function (x) { x.setAttribute('aria-current', x === b); }); }; });
       $('#report').onclick = function () {
@@ -289,12 +310,12 @@
   function offerRow(o, side) {
     var other = side === 'received' ? o.from : o.to;
     var acts = '';
-    if (o.status === 'pending' && side === 'received') acts = '<div class="acts"><button class="btn btn-sm" data-act="accept" data-id="' + o.id + '">Accept swap</button><button class="btn btn-sm btn-ghost" data-act="decline" data-id="' + o.id + '">Decline</button></div>';
+    if (o.status === 'pending' && side === 'received') acts = '<div class="acts"><button class="btn btn-sm btn-accent" data-act="accept" data-id="' + o.id + '">Accept swap</button><button class="btn btn-sm btn-ghost" data-act="decline" data-id="' + o.id + '">Decline</button></div>';
     if (o.status === 'pending' && side === 'sent') acts = '<div class="acts"><button class="btn btn-sm btn-ghost" data-act="withdraw" data-id="' + o.id + '">Withdraw offer</button></div>';
     var contact = o.contact ? '<div class="contact-box"><b>Swap agreed.</b> Email ' + esc(o.contact.name) + ' at <a href="mailto:' + esc(o.contact.email) + '">' + esc(o.contact.email) + '</a> to set up shipping or a public meetup spot.</div>' : '';
     return '<article class="offer"><a href="/listing/?id=' + o.listing.id + '"><img src="' + esc(imgUrl(o.listing.images[0])) + '" alt="' + esc(o.listing.title) + '"></a><span class="arrow" aria-hidden="true">&#8646;</span>' +
       '<img src="' + esc(imgUrl(o.offered.images[0])) + '" alt="' + esc(o.offered.title) + '">' +
-      '<div><h3>' + (side === 'received' ? esc(o.from.name) + ' offers &ldquo;' + esc(o.offered.title) + '&rdquo;' : 'You offered &ldquo;' + esc(o.offered.title) + '&rdquo;') + ' <span class="badge badge-' + o.status + '">' + esc(o.status) + '</span></h3>' +
+      '<div><h3>' + (side === 'received' ? esc(o.from.name) + ' offers &ldquo;' + esc(o.offered.title) + '&rdquo;' : 'You offered &ldquo;' + esc(o.offered.title) + '&rdquo;') + ' <span class="tag tag-' + o.status + '">' + esc(o.status) + '</span></h3>' +
       '<p>For ' + (side === 'received' ? 'your' : esc(other.name) + '&rsquo;s') + ' &ldquo;' + esc(o.listing.title) + '&rdquo; &middot; ' + esc(ago(o.created_at)) + '</p>' +
       '<p><small>' + esc(o.offered.size_label) + ', ' + esc(lab('condition', o.offered.condition)) + ', ' + esc(lab('style', o.offered.style)) + ' &middot; ' + (o.offered.insert_included ? 'insert included' : 'cover only') + ' &middot; ' + esc(o.offered.city) + ' &middot; ' + esc(lab('method', o.offered.method)) + '</small></p>' +
       (o.offered.description ? '<p><small>' + esc(o.offered.description) + '</small></p>' : '') +
@@ -316,7 +337,7 @@
       api('GET', '/api/my/listings').then(function (j) {
         panes.mine.innerHTML = j.listings.length ? j.listings.map(function (l) {
           return '<div class="mine-row"><img src="' + esc(imgUrl(l.images[0])) + '" alt=""><div><h3><a href="/listing/?id=' + l.id + '">' + esc(l.title) + '</a></h3><p><small>' + esc(lab('size', l.size)) + ' &middot; ' + (l.visibility === 'offer' ? 'only shown in an offer' : 'public') + ' &middot; ' + esc(l.status) + (l.offer_count ? ' &middot; ' + l.offer_count + ' pending offer(s)' : '') + '</small></p></div>' +
-            (l.status === 'active' ? '<button class="btn btn-sm btn-danger" data-remove="' + l.id + '">Remove</button>' : '<span class="badge badge-traded">' + esc(l.status) + '</span>') + '</div>';
+            (l.status === 'active' ? '<button class="btn btn-sm btn-danger" data-remove="' + l.id + '">Remove</button>' : '<span class="tag tag-traded">' + esc(l.status) + '</span>') + '</div>';
         }).join('') : '<p class="empty">No pillows listed. <a href="/post/">Post your first pillow</a>.</p>';
       }).catch(function () {});
     }
@@ -372,6 +393,8 @@
   }
 
   paintHeader();
+  var hs = $('#head-search');
+  if (hs && page !== 'browse') hs.addEventListener('submit', function (e) { e.preventDefault(); location.href = '/?q=' + encodeURIComponent($('#head-q').value) + '#browse'; });
   var init = { browse: initBrowse, post: initPost, listing: initListing, swaps: initMySwaps, account: initAccount }[page];
   if (init) init();
 })();

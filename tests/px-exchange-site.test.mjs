@@ -6,7 +6,7 @@ import path from 'node:path';
 
 const PX = path.resolve(import.meta.dirname, '..', 'px');
 const read = (p) => fs.readFileSync(path.join(PX, p), 'utf8');
-const MARKET = ['index.html', 'post/index.html', 'listing/index.html', 'my-swaps/index.html', 'account/index.html', 'rules/index.html'];
+const MARKET = ['index.html', 'post/index.html', 'listing/index.html', 'my-swaps/index.html', 'account/index.html', 'rules/index.html', 'credits/index.html'];
 
 for (const rel of MARKET) {
   test(`px market ${rel}: no AdSense, has API meta, exchange script and click capture`, () => {
@@ -28,10 +28,14 @@ test('px market: guides, articles and deals stay reachable from the home page', 
 });
 
 test('px market: example listings are labelled and their photos exist', () => {
-  assert.match(read('index.html'), /badge-demo">Example</);
-  for (const f of ['mustard-velvet', 'cream-knit', 'lumbar-mudcloth', 'navy-stripe', 'sage-linen', 'tartan-holiday', 'blush-boucle', 'boho-fringe']) {
+  assert.match(read('index.html'), /tag-demo">Example</);
+  const credits = read('credits/index.html');
+  for (const f of ['leather-sofa-pair', 'batik-blue', 'szekely-red', 'red-scatter-pair', 'yellow-navy-velvet', 'geometric-bw', 'mint-mustard', 'armenian-pattern', 'hero-sofa', 'hero-living', 'hero-beagle']) {
     assert.ok(fs.existsSync(path.join(PX, 'images/demo', `${f}.jpg`)), f);
+    assert.ok(credits.includes(`/images/demo/${f}.jpg`), `credit for ${f}`);
   }
+  const server = fs.readFileSync(path.join(PX, '..', 'services/px-exchange/server.js'), 'utf8');
+  for (const m of server.matchAll(/'(\/images\/demo\/[a-z-]+\.jpg)'/g)) assert.ok(fs.existsSync(path.join(PX, m[1])), m[1]);
 });
 
 test('px market: old /preview/ exchange page is retired', () => {

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap");
 /* Pillow Exchange — shared styles. Palette: midnight indigo, moon cream, lavender, peach, mint. */
 :root{
   --night:#232a5c;--night-2:#1a1f47;--ink:#1d2140;--muted:#4f557a;
@@ -176,3 +177,45 @@ details[open] summary{border-bottom:2px dashed var(--lav)}
   .two-col{grid-template-columns:1.4fr 1fr}
   .home-hero{padding:56px 0 80px}
 }
+
+/* ---- 2026-11 refresh: match the swap marketplace (neutral, editorial) ---- */
+:root{
+  --night:#161513;--night-2:#161513;--ink:#161513;--muted:#6E6A62;
+  --cream:#F6F4EF;--paper:#FFFFFF;--moon:#E0532F;--lav:#E3DFD6;--lav-soft:#F1EEE7;
+  --peach:#E3DFD6;--peach-soft:#F1EEE7;--mint:#E3DFD6;--mint-soft:#F1EEE7;
+  --link:#161513;--radius:8px;--shadow:none;
+  --head:"Instrument Serif","Georgia",serif;--body:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body{background:var(--cream);font-size:1rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:400;letter-spacing:-.015em}
+h3{font-family:var(--body);font-weight:600;letter-spacing:-.01em}
+a:hover{color:#B83D1E}
+.eyebrow{font-family:var(--body);color:var(--muted);letter-spacing:.08em;font-size:.75rem}
+.site-head{background:rgba(246,244,239,.92);color:var(--ink);box-shadow:none;border-bottom:1px solid #E3DFD6;backdrop-filter:blur(10px)}
+.logo,.logo:hover{color:var(--ink);font-family:var(--body);font-weight:700;letter-spacing:-.035em;font-size:1.2rem}
+.logo img{width:28px;height:28px}
+.logo b{color:var(--ink);font-family:var(--head);font-style:italic;font-weight:400;font-size:1.3rem;letter-spacing:-.01em;margin-left:2px}
+.logo:hover img{transform:none}
+.site-head nav a{color:#3B3934;font-weight:500;font-size:.9rem;border-radius:6px}
+.site-head nav a:hover{background:rgba(22,21,19,.06);color:var(--ink)}
+.btn{background:var(--ink);color:#fff;font-family:var(--body);font-weight:600;font-size:.95rem;border:1px solid var(--ink);border-radius:6px;box-shadow:none;padding:11px 18px}
+.btn:hover{transform:none;box-shadow:none;background:#000;color:#fff}
+.btn-ghost{background:transparent;color:var(--ink);border-color:#D3CEC3}
+.btn-ghost:hover{background:#fff;color:var(--ink)}
+.home-hero{background:var(--cream);color:var(--ink);border-bottom:1px solid #E3DFD6}
+.home-hero::after{display:none}
+.home-hero h1,.home-hero .lede{color:var(--ink)}
+.home-hero .eyebrow{color:var(--muted)}
+.squiggle{background:none;color:#E0532F;font-style:italic}
+.card,.pos-grid a,.matcher,.more-box,.result,.note,.mail-card{border-radius:8px;box-shadow:none;border:1px solid #E3DFD6;background:#fff}
+.card:hover,.pos-grid a:hover{transform:none;box-shadow:none;border-color:var(--ink)}
+.card-img{border-radius:0}
+.chips span{border-radius:6px;border-width:1px}
+.chips input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
+.matcher-wrap{background:#F1EEE7}
+.site-foot{background:var(--cream);color:#3B3934;border-top:1px solid #E3DFD6}
+.site-foot::before{display:none}
+.site-foot nav a{color:var(--ink);font-weight:500}
+.site-foot .logo b{color:var(--ink)}
+.site-foot .tag{color:var(--muted)}
+.copy{color:var(--muted)}
