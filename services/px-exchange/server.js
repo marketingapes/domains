@@ -53,14 +53,14 @@ CREATE TABLE IF NOT EXISTS reports (
 
 // Clearly-labelled example listings so the grid is not empty on day one. They cannot receive offers.
 const DEMO = [
-  ['Mustard velvet square', 'Soft cotton-velvet cover with a hidden zip. Example listing to show how a post looks.', '20in', 'velvet', 'yellow', 'like-new', 'either', 'San Diego', '92101', 'Anything in sage, cream or a muted floral', '/images/demo/mustard-velvet.jpg', true],
-  ['Cream cable-knit cover', 'Chunky knit cover, hand-wash only. Example listing.', '18in', 'knit', 'cream', 'good', 'meetup', 'Vista', '92084', 'A holiday plaid or a dark green pillow', '/images/demo/cream-knit.jpg', false],
-  ['Terracotta mudcloth-style lumbar', '12x20 lumbar with a printed geometric pattern. Example listing.', 'lumbar', 'geometric', 'orange', 'like-new', 'ship', 'Phoenix', '85004', 'Another lumbar in navy or black and white', '/images/demo/lumbar-mudcloth.jpg', true],
-  ['Navy stripe outdoor pair', 'Two outdoor-fabric covers, fade resistant. Example listing.', '22in', 'outdoor', 'blue', 'good', 'either', 'Long Beach', '90802', 'A pair of 20" or 22" in a warm color', '/images/demo/navy-stripe.jpg', false],
-  ['Sage linen with tassels', 'Linen-blend cover with corner tassels. Example listing.', '20in', 'linen', 'green', 'like-new', 'meetup', 'Oceanside', '92054', 'Blush, rust or a velvet in any color', '/images/demo/sage-linen.jpg', true],
-  ['Red tartan holiday pillow', 'Seasonal plaid cover, used one December. Example listing.', '18in', 'plaid', 'red', 'good', 'either', 'Escondido', '92025', 'A spring floral or a solid cream', '/images/demo/tartan-holiday.jpg', false],
-  ['Blush boucle square', 'Nubby boucle cover, very soft. Example listing.', '20in', 'boucle', 'pink', 'new', 'ship', 'Irvine', '92618', 'Mustard, sage or terracotta', '/images/demo/blush-boucle.jpg', false],
-  ['Black and white boho with fringe', 'Woven geometric front with cotton fringe. Example listing.', '22in', 'boho', 'black', 'like-new', 'either', 'Carlsbad', '92008', 'Solid neutrals or a lumbar', '/images/demo/boho-fringe.jpg', true],
+  ['Mustard check + bottle-green cord pair', 'Two 20" covers: a mustard window-check and a green corduroy. Example listing to show how a post looks.', '20in', 'geometric', 'yellow', 'like-new', 'either', 'San Diego', '92101', 'A pair in rust, cream or a soft floral', '/images/demo/leather-sofa-pair.jpg', true],
+  ['Blue batik kawung square', 'Hand-printed cotton batik cover. Example listing.', '18in', 'geometric', 'blue', 'good', 'ship', 'Vista', '92084', 'Something solid in cream, white or mustard', '/images/demo/batik-blue.jpg', false],
+  ['Red cross-stitch folk lumbar', 'Traditional embroidered panel, long lumbar shape. Example listing.', 'lumbar', 'floral', 'red', 'good', 'either', 'Phoenix', '85004', 'Another lumbar, any neutral color', '/images/demo/szekely-red.jpg', true],
+  ['Red damask pair', 'Two flocked damask covers in red and cream. Example listing.', '18in', 'floral', 'red', 'good', 'meetup', 'Long Beach', '90802', 'A pair of 18" in green or navy', '/images/demo/red-scatter-pair.jpg', false],
+  ['Mustard velvet + navy velvet', 'Two 20" velvet covers, soft pile, hidden zips. Example listing.', '20in', 'velvet', 'yellow', 'like-new', 'either', 'Oceanside', '92054', 'Linen or boucle in a light color', '/images/demo/yellow-navy-velvet.jpg', true],
+  ['Black and white diamond geometric', 'Graphic woven cover, 20" square. Example listing.', '20in', 'geometric', 'black', 'like-new', 'meetup', 'Escondido', '92025', 'A plaid or a seasonal cover', '/images/demo/geometric-bw.jpg', false],
+  ['Mint cross + mustard triangle pair', 'Two printed cotton covers that work as a set. Example listing.', '18in', 'geometric', 'green', 'good', 'ship', 'Irvine', '92618', 'Anything in blush, terracotta or gray', '/images/demo/mint-mustard.jpg', false],
+  ['Woven folk-pattern pair', 'Two covers with traditional woven patterns in red and blue. Example listing.', '22in', 'boho', 'multi', 'good', 'either', 'Carlsbad', '92008', 'Solid neutrals or a lumbar', '/images/demo/armenian-pattern.jpg', true],
 ];
 
 async function migrate() {
@@ -68,8 +68,15 @@ async function migrate() {
   const { rows } = await pool.query(`INSERT INTO users (email, display_name, city, zip, is_demo) VALUES ('examples@pillowexchange.invalid','Pillow Exchange examples','Vista','92084',TRUE)
     ON CONFLICT (email) DO UPDATE SET is_demo = TRUE RETURNING id`);
   const demoId = rows[0].id;
-  const have = await pool.query('SELECT count(*)::int AS n FROM listings WHERE is_demo');
-  if (have.rows[0].n === 0) {
+  const have = await pool.query('SELECT id FROM listings WHERE is_demo ORDER BY id');
+  if (have.rows.length) {
+    // Keep example rows in step with DEMO (photos and copy are refreshed on deploy).
+    for (let i = 0; i < have.rows.length && i < DEMO.length; i++) {
+      const d = DEMO[i];
+      await pool.query(`UPDATE listings SET title=$2,description=$3,size=$4,style=$5,color=$6,condition=$7,method=$8,city=$9,zip=$10,want=$11,images=ARRAY[$12],insert_included=$13,updated_at=now() WHERE id=$1 AND is_demo`, [have.rows[i].id, ...d]);
+    }
+  }
+  if (have.rows.length === 0) {
     for (const d of DEMO) {
       await pool.query(`INSERT INTO listings (user_id,title,description,size,style,color,condition,method,city,zip,want,images,insert_included,cover_washed,smoke_free,pet_free,is_demo)
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,ARRAY[$12],$13,TRUE,TRUE,TRUE,TRUE)`, [demoId, ...d]);
