@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Weed Exchange (a joke) | Pillow Exchange</title>
-<meta name="description" content="A parody Weed Exchange on Pillow Exchange. Real top-shelf strain names, published compare-at prices, and swap offers that ask for pillows instead of money. This is a joke. Nothing is bought, sold, or traded here.">
+<title>Weed Exchange: a peer-to-peer network | Pillow Exchange</title>
+<meta name="description" content="Introducing a new peer-to-peer network for people who really want to share the best weed. Browse the menu, track an order, and reach Weed Exchange customer service.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://pillowexchange.com/420/">
 <script>window.dataLayer=window.dataLayer||[];</script>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MGXD56R2');</script>
 <meta property="og:site_name" content="Pillow Exchange">
-<meta property="og:title" content="The Weed Exchange (a joke) | Pillow Exchange">
-<meta property="og:description" content="Real strain names, published compare-at prices, and buttons that punchline you. This is a parody. Nothing is bought, sold, or traded here. We swap pillows.">
+<meta property="og:title" content="Weed Exchange: a peer-to-peer network">
+<meta property="og:description" content="Introducing a new peer-to-peer network for people who really want to share the best weed.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://pillowexchange.com/420/">
 <meta property="og:image" content="https://pillowexchange.com/420/og-420.png">
@@ -23,33 +23,35 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&amp;family=Bungee+Shade&amp;family=Outfit:wght@400;600;800&amp;display=swap">
 <script src="/assets/ee-click.js?v=1" defer data-site="px"></script>
 <style>
-:root{--deep:#062812;--forest:#0b3d1c;--leaf:#1fa64a;--lime:#b8ff3c;--mint:#eaffc9;--sun:#ffd23c;--pink:#ff9fb6;--ink:#0b3d1c}
+:root{--deep:#062812;--forest:#0b3d1c;--leaf:#1fa64a;--lime:#b8ff3c;--mint:#eaffc9;--sun:#ffd23c;--pink:#ff9fb6;--ink:#0b3d1c;--out:#7a1f1f;--outbadge:#ffd0d0}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-#stash,#how,#legal,#faq,#puff-bio,#logos,.sources li{scroll-margin-top:140px}
+#menu,#track,#service,#puff-bio,#logos,#faq,.sources li{scroll-margin-top:140px}
 body{margin:0;font-family:Outfit,system-ui,sans-serif;color:var(--mint);background:var(--deep);line-height:1.55;overflow-x:hidden}
 a{color:var(--lime)}
 img{max-width:100%;display:block}
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--lime);color:var(--ink);padding:8px 12px;z-index:99}
-.notice{background:var(--sun);color:var(--ink);text-align:center;font-weight:800;padding:10px 16px;border-bottom:3px solid var(--forest);position:relative;z-index:31}
-.notice strong{font-family:Outfit,sans-serif;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
-.notice a{color:var(--ink);text-decoration-thickness:2px}
-.top{position:sticky;top:0;z-index:30;background:rgba(6,40,18,.82);backdrop-filter:blur(10px);border-bottom:2px solid rgba(184,255,60,.25)}
+.util{background:#041a0b;color:var(--mint);font-size:.82rem;font-weight:600;letter-spacing:.04em;padding:8px 16px;text-align:center;border-bottom:1px solid rgba(184,255,60,.2)}
+.util a{color:var(--lime);text-decoration:none}
+.util a:hover{text-decoration:underline}
+.top{position:sticky;top:0;z-index:30;background:rgba(6,40,18,.9);backdrop-filter:blur(10px);border-bottom:2px solid rgba(184,255,60,.25)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:68px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--mint)}
 .brand img{width:44px;height:44px;transition:transform .6s}
 .brand:hover img{transform:rotate(360deg)}
 .brand span{font-family:Bungee,sans-serif;font-size:1.02rem;line-height:1.05}
-.brand small{display:block;font-family:Outfit,sans-serif;font-weight:800;font-size:.7rem;letter-spacing:.22em;color:var(--lime)}
+.brand small{display:block;font-family:Outfit,sans-serif;font-weight:800;font-size:.68rem;letter-spacing:.2em;color:var(--lime)}
 .top nav{display:flex;gap:18px;align-items:center;font-weight:600}
 .top nav a{color:var(--mint);text-decoration:none}.top nav a:hover{color:var(--lime)}
+.cart-btn{background:transparent;color:var(--mint);border:2px solid var(--mint);border-radius:12px;padding:8px 12px;font-weight:800;font-family:Outfit,sans-serif;cursor:pointer}
+.cart-btn:hover{background:var(--mint);color:var(--ink)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:Bungee,sans-serif;font-size:1rem;padding:14px 22px;border-radius:14px;border:3px solid var(--forest);text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s;background:transparent;color:inherit}
 .btn-lime{background:var(--lime);color:var(--ink);box-shadow:6px 6px 0 var(--forest),6px 6px 0 3px var(--lime)}
 .btn-lime:hover{transform:translate(-2px,-2px) rotate(-1deg);box-shadow:9px 9px 0 var(--forest),9px 9px 0 3px var(--lime)}
 .btn-ghost{background:transparent;color:var(--mint);border-color:var(--mint)}
 .btn-ghost:hover{background:var(--mint);color:var(--ink)}
-.top .btn{padding:9px 14px;font-size:.85rem;box-shadow:none;white-space:nowrap}
+.btn[disabled],.btn.sold{background:#9aa38a;color:#243123;box-shadow:none;cursor:not-allowed;transform:none}
 .hero{position:relative;padding:56px 0 70px;overflow:hidden;background:radial-gradient(1200px 600px at 20% 10%,#1d7a3a 0%,transparent 60%),radial-gradient(900px 500px at 90% 80%,#14592b 0%,transparent 60%),var(--deep)}
 .haze{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .haze i{position:absolute;bottom:-30%;width:46vw;height:46vw;max-width:560px;max-height:560px;border-radius:50%;background:radial-gradient(circle,rgba(234,255,201,.22),rgba(234,255,201,0) 65%);filter:blur(18px);animation:rise 18s linear infinite}
@@ -63,7 +65,7 @@ img{max-width:100%;display:block}
 .big420{font-family:'Bungee Shade',Bungee,sans-serif;font-size:clamp(7rem,22vw,15rem);line-height:.85;margin:18px 0 6px;color:var(--lime);letter-spacing:-.02em;text-shadow:0 0 30px rgba(184,255,60,.55),0 0 80px rgba(31,166,74,.6);cursor:pointer;user-select:none;animation:glow 4.2s ease-in-out infinite}
 @keyframes glow{50%{text-shadow:0 0 45px rgba(184,255,60,.85),0 0 120px rgba(31,166,74,.9)}}
 .hero h1{font-family:Bungee,sans-serif;font-size:clamp(1.7rem,3.6vw,2.7rem);line-height:1.1;margin:0 0 14px;color:#fff}
-.hero h1 em{font-style:normal;color:var(--sun);white-space:nowrap}
+.hero h1 em{font-style:normal;color:var(--sun)}
 .lede{font-size:1.18rem;max-width:580px;margin:0 0 26px;color:var(--mint)}
 .ctas{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:28px}
 .clock{display:inline-flex;align-items:center;gap:14px;background:rgba(0,0,0,.35);border:2px solid rgba(184,255,60,.4);border-radius:18px;padding:12px 18px}
@@ -93,8 +95,7 @@ section.band{padding:84px 0}
 .step:before{counter-increment:s;content:counter(s);position:absolute;top:-22px;left:22px;width:48px;height:48px;border-radius:50%;background:var(--sun);color:var(--ink);font-family:Bungee,sans-serif;display:grid;place-items:center;font-size:1.4rem;border:3px solid var(--forest)}
 .step h3{font-family:Bungee,sans-serif;font-size:1.25rem;margin:14px 0 8px;color:var(--lime)}
 .step p{margin:0}
-.tip{margin-top:26px;background:rgba(184,255,60,.12);border:2px dashed var(--lime);border-radius:18px;padding:16px 20px;font-weight:600}
-.stash{background:linear-gradient(180deg,var(--deep),#0a3418)}
+.menu{background:linear-gradient(180deg,var(--deep),#0a3418)}
 .filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
 .chip{font-family:Outfit,sans-serif;font-weight:800;font-size:.9rem;padding:8px 14px;border-radius:999px;border:2px solid var(--lime);background:transparent;color:var(--mint);cursor:pointer}
 .chip:hover,.chip.on{background:var(--lime);color:var(--ink)}
@@ -102,7 +103,8 @@ section.band{padding:84px 0}
 .card{background:var(--mint);color:var(--ink);border-radius:26px;padding:16px;border:3px solid var(--forest);box-shadow:8px 8px 0 var(--leaf);position:relative;transition:transform .2s;display:flex;flex-direction:column}
 .card:hover{transform:translateY(-6px) rotate(.8deg)}
 .card[hidden]{display:none}
-.card .demo{position:absolute;top:26px;left:26px;z-index:2;background:var(--ink);color:var(--lime);font-weight:800;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.stock{position:absolute;top:26px;left:26px;z-index:2;background:#146c2c;color:#eaffc9;font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.stock.out{background:var(--out);color:var(--outbadge)}
 .stage{height:230px;border-radius:18px;display:grid;place-items:center;background:repeating-linear-gradient(45deg,#dff7c7 0 14px,#d3f0b8 14px 28px)}
 .jar{width:120px;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 10px 0 rgba(11,61,28,.18));transition:transform .4s}
 .card:hover .jar{transform:rotate(-6deg) scale(1.05)}
@@ -112,28 +114,34 @@ section.band{padding:84px 0}
 .jar .glass .bit{font-size:3.2rem;line-height:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.15));z-index:1}
 .jar .tag{margin-top:8px;font-family:Bungee,sans-serif;font-size:.72rem;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:8px;padding:3px 8px;transform:rotate(-3deg)}
 .j-couch .glass{background:linear-gradient(#8fd99a,#1fa64a 55%,#0b5a25)}
-.j-munch .glass{background:linear-gradient(#ffe08a,#ff9fb6 50%,#e85a7a)}
-.j-haze .glass{background:linear-gradient(#eaffc9,#9ad4c8 40%,#4a7c74)}
-.j-remote .glass{background:linear-gradient(#d6e4ff,#6b8cff 50%,#2a3f8f)}
 .j-socks .glass{background:linear-gradient(#fff3b0,#ffd23c 45%,#e09a12)}
+.j-remote .glass{background:linear-gradient(#d6e4ff,#6b8cff 50%,#2a3f8f)}
 .j-episode .glass{background:linear-gradient(#e4d4ff,#9b5cff 50%,#4a1f8f)}
-.j-laundry .glass{background:linear-gradient(#dff3ff,#7ec8e8 50%,#2a6a88)}
 .j-puff .glass{background:linear-gradient(#f4fff0,#c8f7a8 40%,#7ac96a)}
-.j-mute .glass{background:linear-gradient(#ffd6c9,#ff8a6b 50%,#c44a3a)}
-.card h3{font-family:Bungee,sans-serif;font-size:1.08rem;line-height:1.2;margin:16px 4px 4px}
-.card .who{margin:0 4px 8px;font-size:.85rem;color:#2c5a39;font-weight:600}
-.card .cmp{margin:0 4px 8px;font-weight:800;font-size:.88rem}
-.card .cmp small{font-weight:800}
-.sources{margin:28px 0 0;padding:16px 20px;background:rgba(184,255,60,.08);border:2px dashed rgba(184,255,60,.45);border-radius:18px;font-size:.88rem;color:var(--mint)}
-.sources h3{font-family:Bungee,sans-serif;font-size:.95rem;color:var(--lime);margin:0 0 10px}
-.sources ol{margin:0;padding-left:22px;display:grid;gap:8px}
-.sources a{color:var(--lime)}
 .j-cake .glass{background:linear-gradient(#ffe7c2,#e8a070 50%,#b85a3a)}
 .j-cream .glass{background:linear-gradient(#fff6e0,#f0d9a0 45%,#c9a66b)}
 .j-pie .glass{background:linear-gradient(#ffd8a8,#f0a05a 50%,#c45a2a)}
 .j-lemon .glass{background:linear-gradient(#fff6a8,#c8e86a 40%,#e85a6a)}
-.card .want{margin:0 4px 14px;font-size:.95rem;flex:1}
-.card .btn{width:calc(100% - 8px);margin:0 4px 4px;font-size:.85rem;padding:11px 14px;box-shadow:4px 4px 0 var(--forest)}
+.card h3{font-family:Bungee,sans-serif;font-size:1.08rem;line-height:1.2;margin:16px 4px 4px}
+.card .who{margin:0 4px 8px;font-size:.85rem;color:#2c5a39;font-weight:600}
+.card .cmp{margin:0 4px 8px;font-weight:800;font-size:.88rem}
+.card .restock{margin:0 4px 14px;font-size:.95rem;flex:1}
+.card .btn{width:calc(100% - 8px);margin:0 4px 4px;font-size:.78rem;padding:11px 14px;box-shadow:4px 4px 0 var(--forest)}
+.card .btn.sold{box-shadow:none}
+.sources{margin:28px 0 0;padding:16px 20px;background:rgba(184,255,60,.08);border:2px dashed rgba(184,255,60,.45);border-radius:18px;font-size:.88rem;color:var(--mint)}
+.sources h3{font-family:Bungee,sans-serif;font-size:.95rem;color:var(--lime);margin:0 0 10px}
+.sources ol{margin:0;padding-left:22px;display:grid;gap:8px}
+.sources a{color:var(--lime)}
+.track-box,.cs-grid{display:grid;gap:22px}
+.track-box{max-width:640px;background:var(--forest);border:3px solid var(--leaf);border-radius:26px;padding:28px}
+.track-box label{display:block;font-weight:800;margin:0 0 8px}
+.track-row{display:flex;flex-wrap:wrap;gap:10px}
+.track-box input{flex:1;min-width:180px;border:3px solid var(--ink);border-radius:12px;padding:12px 14px;font:inherit;background:var(--mint);color:var(--ink)}
+.track-out{margin:18px 0 0;padding:14px 16px;border-radius:14px;background:rgba(184,255,60,.12);border:2px solid rgba(184,255,60,.4);font-weight:600}
+.cs-grid{grid-template-columns:repeat(3,1fr)}
+.cs-card{background:var(--forest);border:3px solid var(--leaf);border-radius:26px;padding:26px}
+.cs-card h3{font-family:Bungee,sans-serif;font-size:1.15rem;color:var(--lime);margin:0 0 10px}
+.cs-card p{margin:0}
 .logos{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .logo-tile{background:var(--forest);border:3px solid rgba(184,255,60,.35);border-radius:26px;padding:26px;text-align:center;transition:transform .25s}
 .logo-tile:hover{transform:scale(1.04) rotate(-2deg);border-color:var(--lime)}
@@ -148,20 +156,6 @@ section.band{padding:84px 0}
 .facts{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
 .facts li{background:rgba(234,255,201,.08);border-left:5px solid var(--lime);padding:10px 14px;border-radius:0 12px 12px 0}
 .facts b{color:var(--lime)}
-.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
-.review{background:var(--forest);border:3px solid rgba(184,255,60,.35);border-radius:22px;padding:22px}
-.review .mark{display:inline-block;font-weight:800;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;background:var(--sun);color:var(--ink);padding:4px 8px;border-radius:999px;margin-bottom:12px}
-.review p{margin:0 0 14px;font-size:1.02rem}
-.review cite{font-style:normal;font-weight:800;color:var(--lime)}
-.legal{background:var(--lime);color:var(--ink);position:relative;overflow:hidden}
-.legal .h2{color:var(--ink)}
-.legal-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center}
-.legal ul{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:1.08rem}
-.legal li{padding-left:40px;position:relative}
-.legal li:before{content:"🚫";position:absolute;left:0;top:-2px;font-size:1.3rem}
-.legal li.ok:before{content:"✅"}
-.legal .stamp{font-family:Bungee,sans-serif;font-size:1.5rem;line-height:1.15;text-align:center;border:6px double var(--ink);border-radius:20px;padding:24px;transform:rotate(4deg);background:var(--mint)}
-.legal .stamp small{display:block;font-family:Outfit,sans-serif;font-weight:800;font-size:.85rem;letter-spacing:.15em;margin-top:10px}
 .faq{max-width:820px}
 .faq details{background:var(--forest);border:2px solid rgba(184,255,60,.3);border-radius:18px;margin-bottom:14px;padding:4px 20px}
 .faq summary{cursor:pointer;font-family:Bungee,sans-serif;font-size:1.05rem;padding:14px 0;color:#fff;list-style:none}
@@ -174,7 +168,7 @@ footer{background:#041a0b;padding:40px 0 30px;font-size:.92rem;border-top:3px so
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;align-items:flex-start}
 footer nav{display:flex;flex-wrap:wrap;gap:14px}
 footer nav a{color:var(--mint)}
-footer .copy{flex-basis:100%;opacity:.85;margin:10px 0 0}
+footer .copy{flex-basis:100%;opacity:.8;margin:12px 0 0;font-size:.8rem;max-width:820px;line-height:1.45}
 .snack-btn{background:none;border:0;font-size:1.2rem;cursor:pointer;opacity:.35;color:inherit}
 .snack-btn:hover{opacity:1}
 #snacks{display:none;flex-basis:100%;background:var(--forest);border-radius:14px;padding:12px 16px}
@@ -186,27 +180,23 @@ body.farout{animation:hue 6s linear infinite}
 @keyframes hue{to{filter:hue-rotate(360deg)}}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(260%);visibility:hidden;background:var(--sun);color:var(--ink);font-family:Bungee,sans-serif;padding:14px 22px;border-radius:16px;border:3px solid var(--ink);z-index:70;transition:transform .35s;text-align:center;max-width:92vw}
 .toast.on{transform:translateX(-50%) translateY(0);visibility:visible}
-.modal{position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:20px;background:rgba(4,26,11,.72)}
-.modal.on{display:grid}
-.modal .box{background:var(--mint);color:var(--ink);border:4px solid var(--forest);border-radius:28px;box-shadow:12px 12px 0 var(--leaf);max-width:480px;width:100%;padding:36px 28px 28px;text-align:center;position:relative}
-.modal h2{font-family:Bungee,sans-serif;font-size:clamp(1.4rem,4vw,2rem);line-height:1.15;margin:0 0 12px}
-.modal p{margin:0 0 22px;font-size:1.08rem}
-.modal .ctas{justify-content:center;margin:0}
-.modal .x{position:absolute;top:10px;right:12px;background:none;border:0;font-size:1.6rem;cursor:pointer;color:var(--ink);line-height:1;padding:6px}
 @media (max-width:900px){
-  .hero-grid,.bio,.legal-grid{grid-template-columns:1fr}
-  .mascot .puff{width:220px}.mascot .hint{display:none}.bubble{top:-20px}
-  .steps,.cards,.logos,.reviews{grid-template-columns:1fr 1fr}
+  .hero-grid,.bio,.cs-grid{grid-template-columns:1fr}
+  .mascot .puff{width:220px}.mascot .hint{display:none}.bubble{top:-20px;white-space:normal;max-width:80%}
+  .steps,.cards,.logos{grid-template-columns:1fr 1fr}
   .top nav a.hide-sm{display:none}
 }
 @media (max-width:600px){
-  .steps,.cards,.logos,.reviews{grid-template-columns:1fr}
-  .brand span{font-size:.82rem}.brand img{width:36px;height:36px}.top .btn{padding:8px 10px;font-size:.75rem}
+  .steps,.cards,.logos,.cs-grid{grid-template-columns:1fr}
+  .brand span{font-size:.82rem}.brand img{width:36px;height:36px}
   .top nav{gap:10px}
   .hero{padding-top:30px}
+  .hero h1 em{white-space:normal}
+  .ctas{flex-direction:column;align-items:stretch}
+  .ctas .btn{width:100%}
   section.band{padding:64px 0}
   .clock b{font-size:1.5rem}
-  .bubble{white-space:normal;max-width:80%;font-size:.85rem}
+  .util{font-size:.75rem;white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.haze{display:none}}
 </style>
@@ -214,20 +204,15 @@ body.farout{animation:hue 6s linear infinite}
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MGXD56R2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="skip" href="#main">Skip to content</a>
-<div class="notice">
-  <strong>Parody.</strong> This is a joke. Nothing is bought, sold, or traded here.
-  Pillow Exchange does not facilitate any drug transactions.
-  21+ where that is the law.
-  <a href="/">We swap pillows.</a>
-</div>
+<div class="util">Customer service hours: around 4:20, usually later &nbsp;·&nbsp; Shipping: currently delayed &nbsp;·&nbsp; <a href="#track">Track an order</a></div>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/420/" aria-label="Pillow Exchange 420 Edition, a parody"><img src="/420/logo-420.svg" alt="" width="44" height="44"><span>Pillow Exchange<small>Joke Weed Exchange</small></span></a>
-    <nav aria-label="Parody Weed Exchange">
-      <a class="hide-sm" href="#stash">The stash</a>
-      <a class="hide-sm" href="#legal">The fine print</a>
-      <a class="hide-sm" href="/">Real site</a>
-      <button class="btn btn-lime" type="button" data-joke>Post your stash</button>
+    <a class="brand" href="/420/" aria-label="Weed Exchange, a peer-to-peer network"><img src="/420/logo-420.svg" alt="" width="44" height="44"><span>Weed Exchange<small>Peer-to-peer network</small></span></a>
+    <nav aria-label="Weed Exchange">
+      <a class="hide-sm" href="#menu">The menu</a>
+      <a class="hide-sm" href="#track">Track an order</a>
+      <a class="hide-sm" href="#service">Customer service</a>
+      <button class="cart-btn" type="button" id="cart-btn" aria-label="Cart">Cart (0)</button>
     </nav>
   </div>
 </header>
@@ -237,139 +222,139 @@ body.farout{animation:hue 6s linear infinite}
   <div class="haze" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow">100% fake marketplace</span>
-      <p class="big420" id="big420" title="Go on, click it. Four times." aria-hidden="true">420</p>
-      <h1>The Weed Exchange. <em>Just kidding.</em></h1>
-      <p class="lede">Welcome to the least functional cannabis swap on the internet. The strain names are real, the compare-at prices came from published retail ranges, and every swap offer is a punchline. Pillow Exchange does not buy, sell, or trade weed. We swap throw pillows.</p>
+      <span class="eyebrow">Now accepting peers</span>
+      <p class="big420" id="big420" title="Refresh inventory" aria-hidden="true">420</p>
+      <h1>Weed Exchange. <em>A new peer-to-peer network.</em></h1>
+      <p class="lede">Introducing a new peer-to-peer network for people who really want to share the best weed. Our peers list the best flower on the menu. Inventory is reviewed on site before it ships. The review process is thorough.</p>
       <div class="ctas">
-        <button class="btn btn-lime" type="button" data-joke>Post your stash</button>
-        <a class="btn btn-ghost" href="#stash">Browse fake listings</a>
+        <a class="btn btn-lime" href="#menu">Shop the menu</a>
+        <a class="btn btn-ghost" href="#track">Track an order</a>
       </div>
       <div class="clock" id="clock" aria-live="polite">
         <svg class="flame" viewBox="0 0 30 40" aria-hidden="true"><path d="M15 2 C19 12 28 16 26 28 C25 35 20 39 15 39 C9 39 4 35 4 28 C4 20 11 18 11 10 C14 13 14 17 15 20 C17 16 17 9 15 2Z" fill="#ff8a1f"/><path d="M15 18 C18 24 22 26 20 32 C19 36 17 37 15 37 C12 37 10 35 10 32 C10 28 14 26 15 18Z" fill="#ffd23c"/></svg>
-        <div><small id="clock-label">Next 4:20 in</small><b id="clock-time">--:--:--</b></div>
+        <div><small id="clock-label">Next restock window</small><b id="clock-time">--:--:--</b></div>
       </div>
     </div>
     <div class="mascot">
-      <span class="bubble" id="bubble">Hey, I'm Puff.</span>
-      <img class="puff" id="puff" src="/420/puff.svg" alt="Puff, a sleepy, smiling cloud mascot" width="420" height="315">
-      <p class="hint">Puff is a mellow cloud. Click Puff for wisdom.</p>
+      <span class="bubble" id="bubble">Weed Exchange customer service, how can I help?</span>
+      <img class="puff" id="puff" src="/420/puff.svg" alt="Puff, Head of Customer Service, a sleepy smiling cloud" width="420" height="315">
+      <p class="hint">Puff, Head of Customer Service. Click for an update.</p>
     </div>
   </div>
 </section>
 
 <div class="ticker" aria-hidden="true"><div>
-  <span>This is a parody</span><span>Nothing is for sale</span><span>No plants were exchanged</span><span>We swap pillows, not ounces</span><span>Zero real trades, on purpose</span><span>Nice try. This is a joke.</span><span>The prices are real. The trades are not.</span><span>21+ humor</span><span>Puff is a cloud, not a dealer</span><span>Keep it legal. Keep it fluffy.</span>
-  <span>This is a parody</span><span>Nothing is for sale</span><span>No plants were exchanged</span><span>We swap pillows, not ounces</span><span>Zero real trades, on purpose</span><span>Nice try. This is a joke.</span><span>The prices are real. The trades are not.</span><span>21+ humor</span><span>Puff is a cloud, not a dealer</span><span>Keep it legal. Keep it fluffy.</span>
+  <span>Always the best. Rarely on the shelf.</span><span>In stock! Checking the back…</span><span>Peer-to-peer. Couch-to-couch.</span><span>Back in stock whenever Dave gets up</span><span>Inventory reviewed on site</span><span>Shipping: currently delayed</span><span>Hours: around 4:20, usually later</span><span>The cart opened. The jar did too.</span><span>Quality first. Sequence second.</span><span>A new peer-to-peer network</span>
+  <span>Always the best. Rarely on the shelf.</span><span>In stock! Checking the back…</span><span>Peer-to-peer. Couch-to-couch.</span><span>Back in stock whenever Dave gets up</span><span>Inventory reviewed on site</span><span>Shipping: currently delayed</span><span>Hours: around 4:20, usually later</span><span>The cart opened. The jar did too.</span><span>Quality first. Sequence second.</span><span>A new peer-to-peer network</span>
 </div></div>
 
 <section class="band" id="how">
   <div class="wrap">
-    <h2 class="h2">How the <span class="hl">Weed Exchange</span> does not work</h2>
-    <p class="sub">It looks like a marketplace. It is a bit. There is no post form, no offer system, and no one is trading anything here.</p>
+    <h2 class="h2">How the <span class="hl">network</span> works</h2>
+    <p class="sub">Peers list the best weed they have. You browse the menu, add what you want, and we handle fulfillment. Fulfillment has been experiencing unusually high internal demand.</p>
     <div class="steps">
-      <div class="step"><h3>Post your stash</h3><p>Go ahead, tap the button. It will compliment your enthusiasm and then remind you that this is a joke.</p></div>
-      <div class="step"><h3>Propose a swap</h3><p>Every "deal" on this page is fake. Propose a swap and we will offer you a pillow instead.</p></div>
-      <div class="step"><h3>Get a real pillow</h3><p>The actual site is a throw-pillow exchange. Post a cushion, not a cut. That part is real.</p></div>
+      <div class="step"><h3>Browse the menu</h3><p>Nine current listings from peers who really want to share the best weed. Published retail references are shown for comparison. They are not our prices.</p></div>
+      <div class="step"><h3>Add to cart</h3><p>Select an eighth and add it to your cart. Availability is live and can change while you are looking at it.</p></div>
+      <div class="step"><h3>We ship it</h3><p>Once an order leaves the building, it is on its way. Several recent orders have not yet left the building.</p></div>
     </div>
-    <p class="tip">Pro tip: if you came here to trade something leafy, try a licensed dispensary where that is legal, or better yet, <a href="/">swap a throw pillow</a> with a stranger who has great taste in couches.</p>
   </div>
 </section>
 
-<section class="band stash" id="stash">
+<section class="band menu" id="menu">
   <div class="wrap">
-    <h2 class="h2">Today's <span class="hl">stash</span> (also fake)</h2>
-    <p class="sub">These are real, widely known top-shelf strain names, each with a compare-at retail range we found in published sources. The swap offers are a joke. Every card is labeled Parody. Nothing here is for sale or trade.</p>
-    <div class="filters" role="group" aria-label="Filter joke listings">
-      <button class="chip on" type="button" data-filter="all">All jokes</button>
-      <button class="chip" type="button" data-filter="dessert">Dessert strains</button>
+    <h2 class="h2">Today's <span class="hl">menu</span></h2>
+    <p class="sub">Top-shelf cultivars currently listed on the network. Compare-at figures are published retail references, not prices set by Weed Exchange. Stock is confirmed at the moment of listing.</p>
+    <div class="filters" role="group" aria-label="Filter the menu">
+      <button class="chip on" type="button" data-filter="all">All listings</button>
+      <button class="chip" type="button" data-filter="dessert">Dessert</button>
       <button class="chip" type="button" data-filter="gas">Gas and glue</button>
     </div>
     <ul class="cards">
       <li class="card" data-cat="gas">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-episode" role="img" aria-label="Cartoon jar with a marker inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🖊️</span></span><span class="tag">PM</span></div></div>
         <h3>Permanent Marker</h3>
-        <p class="who">Posted by: A Couch That Got Tagged</p>
-        <p class="cmp">Compare at $40–$75 a premium eighth<sup><a href="#src-1">1</a></sup></p>
-        <p class="want">Will swap this eighth of Permanent Marker for 3 throw pillows and someone who can get a Sharpie stain out of a white couch.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: Dave, last seen on the couch</p>
+        <p class="cmp">Published retail reference: $40–$75 a premium eighth<sup><a href="#src-1">1</a></sup></p>
+        <p class="restock">Back in stock: whenever Dave gets up off the couch.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-cream" role="img" aria-label="Cartoon jar with a cereal bowl inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🥣</span></span><span class="tag">CM</span></div></div>
         <h3>Cereal Milk</h3>
-        <p class="who">Posted by: The Last Splash in the Carton</p>
-        <p class="cmp">Compare at $65 a high-grade eighth<sup><a href="#src-2">2</a></sup></p>
-        <p class="want">Will swap this eighth of Cereal Milk for a full box of the good cereal and the last splash of milk. Marshmallows are a plus.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: The kitchen, shortly after midnight</p>
+        <p class="cmp">Published retail reference: $65 a high-grade eighth<sup><a href="#src-2">2</a></sup></p>
+        <p class="restock">Back in stock: after a fresh carton arrives and is not used on cereal.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-socks" role="img" aria-label="Cartoon jar with a cookie inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🍪</span></span><span class="tag">OZ</span></div></div>
         <h3>Oreoz</h3>
-        <p class="who">Posted by: The Other Half of the Cookie</p>
-        <p class="cmp">Compare at $60 a top-shelf eighth<sup><a href="#src-3">3</a></sup></p>
-        <p class="want">Will swap this eighth of Oreoz for the cookie's other half, a glass of milk, and a throw pillow to sit on while dunking.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: The other half of the cookie</p>
+        <p class="cmp">Published retail reference: $60 a top-shelf eighth<sup><a href="#src-3">3</a></sup></p>
+        <p class="restock">Back in stock: whenever Dave gets up off the couch.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-cake" role="img" aria-label="Cartoon jar with a cake inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🎂</span></span><span class="tag">LAK</span></div></div>
         <h3>LA Kush Cake</h3>
-        <p class="who">Posted by: A Nap That Overslept</p>
-        <p class="cmp">Compare at $65 a top-shelf eighth<sup><a href="#src-4">4</a></sup></p>
-        <p class="want">Will swap this eighth of LA Kush Cake for a birthday cake I did not have to bake, and a nap on a clean couch.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: A nap that ran long</p>
+        <p class="cmp">Published retail reference: $65 a top-shelf eighth<sup><a href="#src-4">4</a></sup></p>
+        <p class="restock">Back in stock: after the next restock window, if anyone is awake for it.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="gas">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-couch" role="img" aria-label="Cartoon jar with a couch inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🛋️</span></span><span class="tag">GG4</span></div></div>
         <h3>Original Glue</h3>
-        <p class="who">Posted by: The Cushions, still stuck together</p>
-        <p class="cmp">Compare at $55–$80 a high-grade eighth<sup><a href="#src-5">5</a></sup></p>
-        <p class="want">Will swap this eighth of Original Glue for help unsticking the remote from the couch cushions. Again.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: The cushions, still together</p>
+        <p class="cmp">Published retail reference: $55–$80 a high-grade eighth<sup><a href="#src-5">5</a></sup></p>
+        <p class="restock">Back in stock: whenever Dave gets up off the couch. The couch has not approved this.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-pie" role="img" aria-label="Cartoon jar with a pie inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🥧</span></span><span class="tag">PIE</span></div></div>
         <h3>Georgia Pie</h3>
-        <p class="who">Posted by: A Warm Slice, mid-crumb</p>
-        <p class="cmp">Compare at $50 a top-shelf eighth<sup><a href="#src-6">6</a></sup></p>
-        <p class="want">Will swap this eighth of Georgia Pie for a warm slice of actual pie and a pillow to catch the crumbs.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: A warm slice, mid-crumb</p>
+        <p class="cmp">Published retail reference: $50 a top-shelf eighth<sup><a href="#src-6">6</a></sup></p>
+        <p class="restock">Back in stock: pending a full cooling period, plus a snack period.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-puff" role="img" aria-label="Cartoon jar with an ice cream cone inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🍦</span></span><span class="tag">ICC</span></div></div>
         <h3>Ice Cream Cake</h3>
-        <p class="who">Posted by: The Freezer Door, slightly ajar</p>
-        <p class="cmp">Compare at $50 a high-grade eighth<sup><a href="#src-7">7</a></sup></p>
-        <p class="want">Will swap this eighth of Ice Cream Cake for freezer space and a spoon. The pillow is for when I crash.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: The freezer door, slightly ajar</p>
+        <p class="cmp">Published retail reference: $50 a high-grade eighth<sup><a href="#src-7">7</a></sup></p>
+        <p class="restock">Back in stock: whenever Dave gets up off the couch.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="gas">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-remote" role="img" aria-label="Cartoon jar with a basketball inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🏀</span></span><span class="tag">G.P.</span></div></div>
         <h3>Gary Payton</h3>
-        <p class="who">Posted by: The Snack Defender</p>
-        <p class="cmp">Compare at $50 a high-grade eighth<sup><a href="#src-8">8</a></sup></p>
-        <p class="want">Will swap this eighth of Gary Payton for defensive help keeping the snacks on my side of the couch.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: The snack defender</p>
+        <p class="cmp">Published retail reference: $50 a high-grade eighth<sup><a href="#src-8">8</a></sup></p>
+        <p class="restock">Back in stock: after halftime, or whenever the chips run out, whichever is later.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
       <li class="card" data-cat="dessert">
-        <span class="demo">Parody</span>
+        <span class="stock" data-stock aria-live="polite">In stock!</span>
         <div class="stage"><div class="jar j-lemon" role="img" aria-label="Cartoon jar with a lemon inside"><span class="lid"></span><span class="neck"></span><span class="glass"><span class="bit">🍋</span></span><span class="tag">LCG</span></div></div>
         <h3>Lemon Cherry Gelato</h3>
-        <p class="who">Posted by: A Pint That Started to Melt</p>
-        <p class="cmp">Compare at $29–$57 an eighth in New York City<sup><a href="#src-9">9</a></sup></p>
-        <p class="want">Will swap this eighth of Lemon Cherry Gelato for a pint of the frozen stuff and a throw pillow to sit on while it melts.</p>
-        <button class="btn btn-lime" type="button" data-joke>Propose a swap</button>
+        <p class="who">Peer: A pint that started to melt</p>
+        <p class="cmp">Published retail reference: $29–$57 an eighth in New York City<sup><a href="#src-9">9</a></sup></p>
+        <p class="restock">Back in stock: whenever Dave gets up off the couch.</p>
+        <button class="btn btn-lime" type="button" data-cart>Add to cart</button>
       </li>
     </ul>
 <!--
   Compare-at sources. Strain names only; no dispensary, grower or seller brands are used in the listings.
+  These are published retail references, not prices set by Weed Exchange.
   1. Permanent Marker: Leafly, "The Permanent Marker strain wins Leafly Strain of the Year 2023," David Downs, updated Dec 6, 2023. Quote: "This intense top-shelf experience runs $40 to $75 for a premium eighth-ounce." https://www.leafly.com/news/strains-products/permanent-marker-2023-leafly-strain-of-the-year
   2. Cereal Milk: Leafly, "Get sweet on the Cereal Milk strain—February 2023's Leafly HighLight," David Downs, updated Feb 7, 2023. US dispensary table: 3.5g flower low-grade $20, mid-grade $45, high-grade $65. The card uses the high-grade figure. https://www.leafly.com/news/strains-products/cereal-milk-strain-february-2023-highlight
   3. Oreoz: Leafly, "America runs on Oreoz—May's Leafly HighLight strain," David Downs, updated May 7, 2023. Average US table: eighth-ounce top-shelf $60 (low-grade $10, mid-grade $30). Article also notes Washington eighths "all the way up to $60" for top-shelf. https://www.leafly.com/news/strains-products/oreoz-strain-may-2023-highlight
@@ -380,8 +365,8 @@ body.farout{animation:hue 6s linear infinite}
   8. Gary Payton: Leafly, "Slam dunk 2023 with the Gary Payton strain—January's Leafly HighLight," David Downs, updated Jan 6, 2023. US table: high-grade 3.5 g of flower buds $50 (low-grade $25, mid-grade $40). https://www.leafly.com/news/strains-products/gary-payton-strain-january-2023-highlight
   9. Lemon Cherry Gelato: Just Weed Strains, "Lemon Cherry Gelato Strain: Lineage, THC and Where to Buy It in NYC," updated Oct 26, 2026. Licensed NYC dispensary flower menus read Oct 17, 2026: eighths $29 to $57 (citywide median $40). This is a New York City range, not a national average. https://justweedstrains.com/lemon-cherry-gelato-strain/
 -->
-    <aside class="sources" aria-label="Compare-at price sources">
-      <h3>Where the compare-at prices come from</h3>
+    <aside class="sources" aria-label="Published retail references">
+      <h3>Published retail references, not our prices</h3>
       <ol>
         <li id="src-1"><a href="https://www.leafly.com/news/strains-products/permanent-marker-2023-leafly-strain-of-the-year">Leafly, Dec 6, 2023</a>: Permanent Marker “runs $40 to $75 for a premium eighth-ounce.”</li>
         <li id="src-2"><a href="https://www.leafly.com/news/strains-products/cereal-milk-strain-february-2023-highlight">Leafly, Feb 7, 2023</a>: Cereal Milk U.S. dispensary table, high-grade 3.5g $65 (range $20–$65).</li>
@@ -397,118 +382,107 @@ body.farout{animation:hue 6s linear infinite}
   </div>
 </section>
 
-<section class="band" id="logos">
+<section class="band" id="track">
   <div class="wrap">
-    <h2 class="h2">The <span class="hl">logo lounge</span></h2>
-    <p class="sub">Our in-house design department (one very relaxed cloud) cooked up a few official marks for this joke. They certify nothing, except the vibe.</p>
-    <div class="logos">
-      <div class="logo-tile"><img src="/420/logo-420.svg" alt="A green throw pillow with a leaf in the middle"><h3>The Pillow Leaf</h3><p>Our main mark. A puffy pillow wearing a leaf like a tiny tattoo.</p></div>
-      <div class="logo-tile"><img src="/420/badge-hq.svg" alt="Round seal reading High-Quality Cushions Co., Est. 4:20"><h3>High-Quality Cushions Co.</h3><p>Est. 4:20. Our quality control is very thorough and very sleepy.</p></div>
-      <div class="logo-tile"><img src="/420/badge-couchlock.svg" alt="Stamp of a green couch reading Couch-Lock Certified Comfy"><h3>Couch-Lock Certified</h3><p>Awarded to any pillow you cannot get up from. Every pillow, basically.</p></div>
-      <div class="logo-tile"><img src="/420/badge-roll.svg" alt="Yellow badge with a rolled-up green blanket reading Roll With It"><h3>Roll With It</h3><p>A rolled-up throw blanket. Obviously. What else would it be?</p></div>
-      <div class="logo-tile"><img src="/420/badge-smiley.svg" alt="Lime smiley face with sleepy eyes and a small leaf"><h3>The Mellow Smiley</h3><p>The face you make when a swap button turns into a punchline.</p></div>
-      <div class="logo-tile wordmark"><span class="wm">420</span><span class="wm2">Joke Exchange Edition</span><p>The wordmark. Best viewed slowly.</p></div>
+    <h2 class="h2">Track an <span class="hl">order</span></h2>
+    <p class="sub">Enter your order number for a live status update from the network. No account is required. Updates are as current as the last time someone checked the kitchen.</p>
+    <div class="track-box">
+      <label for="order-id">Order number</label>
+      <div class="track-row">
+        <input id="order-id" name="order-id" type="text" maxlength="24" autocomplete="off" spellcheck="false" placeholder="WE-420-0000" inputmode="text">
+        <button class="btn btn-lime" type="button" id="order-check">Check status</button>
+      </div>
+      <p class="track-out" id="order-out" hidden></p>
     </div>
   </div>
 </section>
 
-<section class="band" id="puff-bio" style="background:#0a3418">
-  <div class="wrap bio">
-    <img src="/420/puff.svg" alt="Puff the cloud mascot" width="420" height="315">
-    <div>
-      <h2 class="h2">Meet <span class="hl">Puff</span></h2>
-      <p class="sub" style="margin-bottom:0">Puff is a mellow, puffed-up cloud and the unofficial host of this parody. Puff has never facilitated a drug transaction, mostly because Puff is water vapor and cannot hold a jar.</p>
-      <ul class="facts">
-        <li><b>Favorite listing:</b> all of them, because they are fake and therefore low-stress.</li>
-        <li><b>Hobbies:</b> drifting, lounging, declining swap offers with a pillow recommendation.</li>
-        <li><b>Catchphrase:</b> "Nice try. This is a joke. We swap pillows."</li>
-        <li><b>Is Puff made of smoke?</b> Absolutely not. Puff is water vapor and good intentions.</li>
-      </ul>
-    </div>
-  </div>
+<section class="band" id="service" style="background:#0a3418">
   <div class="wrap">
-    <h2 class="h2" style="margin-top:48px">Parody <span class="hl">reviews</span></h2>
-    <p class="sub">These are not real reviews. The characters are fictional, except Puff, who is a cartoon cloud. Nobody actually traded anything.</p>
-    <div class="reviews">
-      <blockquote class="review"><span class="mark">Parody review</span><p>"I sniffed this listing. It smelled like fabric softener and broken promises. Ten out of ten, would not trade, because this is a joke."</p><cite>— Puff, a cloud</cite></blockquote>
-      <blockquote class="review"><span class="mark">Parody review</span><p>"I was promised an eighth of Original Glue. I am still a couch. The cushions have filed a formal complaint."</p><cite>— A Couch Named Linda</cite></blockquote>
-      <blockquote class="review"><span class="mark">Parody review</span><p>"Still waiting on that Lost-the-Remote Relief trade. I have been under the sofa since 2019 and I have seen things."</p><cite>— The TV Remote, last seen 2019</cite></blockquote>
+    <h2 class="h2">Weed Exchange <span class="hl">customer service</span></h2>
+    <p class="sub">We are here to help with shipping, returns, restocks, and anything that happened to the order after it was packed. Office hours are posted below and are observed in spirit.</p>
+    <div class="cs-grid">
+      <div class="cs-card"><h3>Hours</h3><p>Around 4:20, usually later. If the door is unlocked and the lights are on, we may still be in a meeting on the couch.</p></div>
+      <div class="cs-card"><h3>Shipping</h3><p>We forgot. The label was printed. The box was found. The package is in the building, or it was. A new label can be printed after the next restock window.</p></div>
+      <div class="cs-card"><h3>Returns</h3><p>You can't return what we smoked. If your order arrived incomplete, that is also our current understanding of the inventory.</p></div>
     </div>
-  </div>
-</section>
-
-<section class="band legal" id="legal">
-  <div class="wrap legal-grid">
-    <div>
-      <h2 class="h2">This is a parody. We swap pillows.</h2>
-      <p class="sub" style="margin-bottom:22px">The jokes are the point. The next part is not a joke:</p>
-      <ul>
-        <li>This page is a parody. Nothing is bought, sold, or traded here. The strain names are real and the compare-at prices are published retail ranges, cited under the stash. The listings and swap offers are made up.</li>
-        <li>Pillow Exchange does not facilitate any drug transactions. No weed, seeds, edibles, oils, vapes, or paraphernalia. Not as a listing, not as a "bonus," not ever.</li>
-        <li>You must be 21+ to hang out with this humor where that is the law. If cannabis is legal where you live, buy it from a licensed shop, not a pillow website.</li>
-        <li class="ok">Yes to laughing, clicking buttons that go nowhere, and then swapping an actual throw pillow on the real site.</li>
-        <li class="ok">Puff is a cartoon cloud. Puff is not a budtender.</li>
-      </ul>
-      <p style="margin:22px 0 0;font-weight:600">Want to trade something for real? Make it a pillow. The <a href="/" style="color:var(--ink)">throw-pillow exchange</a> is the actual marketplace, and it follows the regular <a href="/rules/" style="color:var(--ink)">swap rules</a>.</p>
+    <div class="ctas" style="margin:32px 0 0">
+      <button class="btn btn-lime" type="button" id="chat-btn">Chat with customer service</button>
     </div>
-    <div class="stamp">Keep it legal.<br>Keep it fluffy.<small>A parody. 21+ where legal. No drug transactions.</small></div>
   </div>
 </section>
 
 <section class="band" id="faq">
   <div class="wrap faq">
-    <h2 class="h2">Frequently <span class="hl">blazed</span> questions</h2>
-    <details><summary>Wait, is this actually a weed exchange?</summary><p>No. It is a joke. A parody marketplace with fake listings and buttons that refuse to work on purpose. Pillow Exchange does not buy, sell, or trade cannabis, or help anyone else do that.</p></details>
-    <details><summary>Can I post my stash?</summary><p>You can tap the button. It will open a punchline. There is no form, no account flow, and no way to list anything here. If you want to post something real, post a throw pillow on the main site.</p></details>
-    <details><summary>Are these strain names real?</summary><p>Yes. They are widely known top-shelf cultivars, and the compare-at figures are published retail ranges, cited under the stash. The swap offers are the joke. Please do not try to pay for any of this here. We do not sell it, trade it, or ship it.</p></details>
-    <details><summary>Why is this on a pillow site?</summary><p>Someone asked for a pimped-out 420 page, and then asked us to make it a joke weed exchange. So here we are: green, goofy, and firmly in pillow territory.</p></details>
-    <details><summary>Is Puff available for parties?</summary><p>Puff is booked solid with naps through next year. Also Puff cannot legally enter into a contract, being a cloud.</p></details>
+    <h2 class="h2">Frequently <span class="hl">asked</span> questions</h2>
+    <details><summary>Why is everything out of stock?</summary><p>It was in stock. We confirmed it, listed it, and opened the jar to check the quality. The quality was excellent. The listing has been updated.</p></details>
+    <details><summary>When will it be back?</summary><p>Whenever Dave gets up off the couch. We have asked Dave for an estimated time. Dave asked if we were going to the kitchen.</p></details>
+    <details><summary>Can I pay for an order now?</summary><p>The cart will not take payment at this time. Inventory is currently reserved for internal review, which is ongoing.</p></details>
+    <details><summary>Do you ship?</summary><p>We meant to. We forgot. If you already placed an order, use the tracker above for the latest status.</p></details>
+    <details><summary>What is your return policy?</summary><p>You can't return what we smoked. This policy is applied evenly and with regret.</p></details>
+    <details><summary>What are your hours?</summary><p>Around 4:20, usually later. Customer service is staffed by Puff, who also takes a scheduled cloud break.</p></details>
+  </div>
+</section>
+
+<section class="band" id="puff-bio" style="background:#0a3418">
+  <div class="wrap bio">
+    <img src="/420/puff.svg" alt="Puff, Head of Customer Service" width="420" height="315">
+    <div>
+      <h2 class="h2">Meet <span class="hl">Puff</span></h2>
+      <p class="sub" style="margin-bottom:0">Puff is Head of Customer Service for the Weed Exchange network. Puff handles restock questions, delayed orders, and the waiting room. Walk-ins are welcome once someone finds the key.</p>
+      <ul class="facts">
+        <li><b>Desk hours:</b> around 4:20, usually later.</li>
+        <li><b>Specialty:</b> checking the back and returning with news.</li>
+        <li><b>Current ticket:</b> locating Dave, and also the scale.</li>
+        <li><b>Composition:</b> water vapor, good intentions, and a very full inbox.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="logos">
+  <div class="wrap">
+    <h2 class="h2">Network <span class="hl">marks</span></h2>
+    <p class="sub">Official marks of the Weed Exchange peer-to-peer network. Displayed here for peers who need a badge for the break room.</p>
+    <div class="logos">
+      <div class="logo-tile"><img src="/420/logo-420.svg" alt="A green throw pillow with a leaf in the middle"><h3>The Pillow Leaf</h3><p>The main mark. A puffy pillow wearing a leaf like a tiny tattoo.</p></div>
+      <div class="logo-tile"><img src="/420/badge-hq.svg" alt="Round seal reading High-Quality Cushions Co., Est. 4:20"><h3>High-Quality Cushions Co.</h3><p>Est. 4:20. Quality control is thorough and often sleepy.</p></div>
+      <div class="logo-tile"><img src="/420/badge-couchlock.svg" alt="Stamp of a green couch reading Couch-Lock Certified Comfy"><h3>Couch-Lock Certified</h3><p>Awarded to any listing that does not leave the couch. Most listings.</p></div>
+      <div class="logo-tile"><img src="/420/badge-roll.svg" alt="Yellow badge with a rolled-up green blanket reading Roll With It"><h3>Roll With It</h3><p>A rolled-up throw blanket, used here as a fulfillment standard.</p></div>
+      <div class="logo-tile"><img src="/420/badge-smiley.svg" alt="Lime smiley face with sleepy eyes and a small leaf"><h3>The Mellow Smiley</h3><p>The official face of customer service after a long restock window.</p></div>
+      <div class="logo-tile wordmark"><span class="wm">420</span><span class="wm2">Peer-to-peer edition</span><p>The wordmark. Best viewed slowly.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="final">
   <div class="wrap">
-    <h2 class="h2">Got a stash you want to <span class="hl">trade?</span></h2>
-    <p class="sub" style="margin:0 auto 30px">Nice try. This is a joke. If you have a throw pillow you are over, though, we can actually help with that.</p>
+    <h2 class="h2">The menu is updated <span class="hl">continuously.</span></h2>
+    <p class="sub" style="margin:0 auto 30px">Availability changes quickly. If you just missed a listing, check back around 4:20, usually later.</p>
     <div class="ctas">
-      <button class="btn btn-lime" type="button" data-joke>Post your stash</button>
-      <a class="btn btn-ghost" href="/">Browse real pillow swaps</a>
+      <a class="btn btn-lime" href="#menu">Return to the menu</a>
+      <a class="btn btn-ghost" href="#service">Customer service</a>
     </div>
-    <p style="font-size:.9rem;opacity:.75">Psst. There are a few Easter eggs hidden on this page. Try typing <b>420</b> on your keyboard.</p>
   </div>
 </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <a class="brand" href="/"><img src="/420/logo-420.svg" alt="" width="36" height="36"><span>Pillow Exchange<small>Back to the main site</small></span></a>
+    <a class="brand" href="/"><img src="/420/logo-420.svg" alt="" width="36" height="36"><span>Pillow Exchange<small>Main site</small></span></a>
     <nav aria-label="Footer">
-      <a href="/">Browse swaps</a>
-      <a href="/post/">Post a pillow</a>
-      <a href="/my-swaps/">My swaps</a>
-      <a href="/rules/">Swap rules</a>
+      <a href="/">Home</a>
       <a href="/about/">About</a>
       <a href="/contact/">Contact</a>
       <a href="/privacy/">Privacy</a>
       <a href="/terms/">Terms</a>
       <button class="snack-btn" id="snack-btn" type="button" aria-label="Open the snack drawer" title="?">🍪</button>
     </nav>
-    <div id="snacks">You found the snack drawer. Inside: one cookie, a bag of chips, and a note that says "this is a parody, we swap pillows." Puff left it here.</div>
-    <p class="copy">&copy;2026 Pillow Exchange. This /420 page is a parody "Weed Exchange." It is not a real marketplace. Nothing is bought, sold, or traded here. Pillow Exchange does not facilitate any drug transactions. You must be 21+ where that is the law. The strain names and compare-at prices come from published sources. The listings, reviews, and swap offers are jokes. If you want to swap something, make it a throw pillow on the main site. Members there swap directly with each other; Pillow Exchange does not inspect, ship, or guarantee items.</p>
+    <div id="snacks">Snack drawer. Contents: one cookie, a bag of chips, and a note that says “back in five.” Puff left it here.</div>
+    <p class="copy">This page is parody. Nothing is sold or traded here. Pillow Exchange is a pillow site. 21+ where legal.</p>
   </div>
 </footer>
 <div class="toast" id="toast" role="status"></div>
-<div class="modal" id="joke-modal" role="dialog" aria-modal="true" aria-labelledby="joke-title" aria-hidden="true">
-  <div class="box">
-    <button class="x" type="button" data-close-joke aria-label="Close">×</button>
-    <h2 id="joke-title">Nice try. This is a joke.</h2>
-    <p>We swap pillows. There is no stash to post, no offer to accept, and no weed on this website. Puff already checked the couch cushions.</p>
-    <div class="ctas">
-      <a class="btn btn-lime" href="/">Browse real pillow swaps</a>
-      <a class="btn btn-ghost" href="/post/" style="color:var(--ink);border-color:var(--ink)">Post a real pillow</a>
-    </div>
-  </div>
-</div>
 
 <script>
 (function () {
@@ -532,35 +506,63 @@ body.farout{animation:hue 6s linear infinite}
     }
   }
 
-  var modal = document.getElementById('joke-modal');
-  var lastFocus = null;
-  function openJoke() {
-    lastFocus = document.activeElement;
-    modal.classList.add('on');
-    modal.setAttribute('aria-hidden', 'false');
-    var closeBtn = modal.querySelector('[data-close-joke]');
-    if (closeBtn) closeBtn.focus();
-  }
-  function closeJoke() {
-    modal.classList.remove('on');
-    modal.setAttribute('aria-hidden', 'true');
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-  document.addEventListener('click', function (e) {
-    var joke = e.target.closest('[data-joke]');
-    if (joke) { e.preventDefault(); openJoke(); return; }
-    if (e.target.closest('[data-close-joke]')) { closeJoke(); return; }
-    if (e.target === modal) closeJoke();
+  document.querySelectorAll('[data-stock]').forEach(function (badge, i) {
+    var delay = reduce ? 0 : 700 + i * 180;
+    setTimeout(function () {
+      badge.textContent = 'Oops. We smoked it.';
+      badge.classList.add('out');
+    }, delay);
   });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('on')) closeJoke();
+
+  document.querySelectorAll('[data-cart]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.classList.contains('sold')) return;
+      btn.classList.add('sold');
+      btn.setAttribute('disabled', 'disabled');
+      btn.textContent = 'Sold out (to ourselves).';
+      var badge = btn.closest('.card').querySelector('[data-stock]');
+      if (badge) { badge.textContent = 'Oops. We smoked it.'; badge.classList.add('out'); }
+      toast('Added to… actually, that one did not make it to the cart.');
+    });
+  });
+
+  var cartBtn = document.getElementById('cart-btn');
+  cartBtn.addEventListener('click', function () {
+    toast('Your cart is empty. It was full earlier.');
+  });
+
+  document.getElementById('chat-btn').addEventListener('click', function () {
+    toast('Connecting to Puff… Puff stepped away. Try around 4:20, usually later.');
+  });
+
+  var orderIn = document.getElementById('order-id');
+  var orderOut = document.getElementById('order-out');
+  var orderLines = [
+    'Order delayed. Someone on the network got the munchies and took a detour to the snack aisle. Estimated arrival: after the nachos.',
+    'Your order is in progress, then it was hungry. Status: delayed because someone got the munchies. We have sent a reminder to the kitchen.',
+    'We located your order next to a bag of chips. It has not moved. Delay reason: munchies. A new update will post after the next restock window.',
+    'Status: delayed. A peer opened the package to confirm quality, then confirmed a craving. We will ship what is left, if anything is left.'
+  ];
+  var orderN = 0;
+  document.getElementById('order-check').addEventListener('click', function () {
+    var q = (orderIn.value || '').trim();
+    orderOut.hidden = false;
+    if (!q) {
+      orderOut.textContent = 'We looked anyway. Your order is delayed because someone got the munchies. An order number would not have changed the snacks.';
+    } else {
+      orderOut.textContent = 'Order ' + q + ': ' + orderLines[orderN % orderLines.length];
+      orderN++;
+    }
+  });
+  orderIn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('order-check').click(); }
   });
 
   document.querySelectorAll('[data-filter]').forEach(function (chip) {
     chip.addEventListener('click', function () {
       var cat = chip.getAttribute('data-filter');
       document.querySelectorAll('[data-filter]').forEach(function (c) { c.classList.toggle('on', c === chip); });
-      document.querySelectorAll('#stash .card').forEach(function (card) {
+      document.querySelectorAll('#menu .card').forEach(function (card) {
         card.hidden = !(cat === 'all' || card.getAttribute('data-cat') === cat);
       });
     });
@@ -571,11 +573,11 @@ body.farout{animation:hue 6s linear infinite}
   function tickClock() {
     var now = new Date(), h = now.getHours(), m = now.getMinutes();
     if ((h === 4 || h === 16) && m === 20) {
-      clock.classList.add('now'); label.textContent = 'Right now'; timeEl.textContent = "IT'S 4:20!";
-      if (!celebrated) { celebrated = true; rain('leaf', 60); toast('It is 4:20. Still just pillows.'); }
+      clock.classList.add('now'); label.textContent = 'Restock window'; timeEl.textContent = "IT'S 4:20!";
+      if (!celebrated) { celebrated = true; rain('leaf', 60); toast('It is 4:20. The window is open. The jar is empty.'); }
       return;
     }
-    clock.classList.remove('now'); celebrated = false; label.textContent = 'Next 4:20 in';
+    clock.classList.remove('now'); celebrated = false; label.textContent = 'Next restock window';
     var targets = [4, 16, 28].map(function (hh) { var t = new Date(now); t.setHours(hh, 20, 0, 0); return t; });
     var next = targets.filter(function (t) { return t > now; })[0];
     var s = Math.floor((next - now) / 1000);
@@ -583,33 +585,33 @@ body.farout{animation:hue 6s linear infinite}
   }
   tickClock(); setInterval(tickClock, 1000);
 
-  var lines = ['Whoa. Is this a real exchange? Nope.', 'Nice try. I only puff clouds.', 'We swap pillows, man.', 'That listing is fake. I would know. I wrote it.', 'Have you tried flipping it to the cool side?', 'I am 100% water vapor. Relax.', 'Puff, puff, pass the pillow.', 'Kush-ions, not ounces. Wait.', 'I got the munchies.'];
+  var lines = ['Let me check the back. … It is gone.', 'Dave is still on the couch.', 'Have you tried coming back at 4:20?', 'The last eighth did not make it to the mailroom.', 'I am with a customer. The customer is a bag of chips.', 'Shipping is delayed. We forgot the label, then the box.', 'Hours are around 4:20, usually later.', 'Your cart looked great. The inventory had other plans.', 'I got the munchies.'];
   var puff = document.getElementById('puff'), bubble = document.getElementById('bubble'), clicks = 0, bTimer;
   puff.addEventListener('click', function () {
     var line = lines[clicks % lines.length]; clicks++;
     bubble.textContent = line; bubble.classList.add('on');
-    clearTimeout(bTimer); bTimer = setTimeout(function () { bubble.classList.remove('on'); }, 2600);
+    clearTimeout(bTimer); bTimer = setTimeout(function () { bubble.classList.remove('on'); }, 2800);
     if (line === 'I got the munchies.') rain(['🍕', '🍩', '🌮', '🍪', '🍟', '🧁'], 36);
   });
 
   var big = document.getElementById('big420'), bigClicks = 0, bigTimer;
   big.addEventListener('click', function () {
     bigClicks++; clearTimeout(bigTimer); bigTimer = setTimeout(function () { bigClicks = 0; }, 1500);
-    if (bigClicks === 4) { bigClicks = 0; rain('leaf', 50); toast('Leaf storm! Still a joke. We swap pillows.'); }
+    if (bigClicks === 4) { bigClicks = 0; rain('leaf', 50); toast('Inventory refreshed. Inventory gone.'); }
   });
 
   var buf = '';
   document.addEventListener('keydown', function (e) {
     if (/input|textarea/i.test((e.target || {}).tagName || '')) return;
     buf = (buf + (e.key || '')).slice(-6);
-    if (buf.slice(-3) === '420') { buf = ''; document.body.classList.toggle('farout'); toast(document.body.classList.contains('farout') ? 'Far Out Mode: ON. Whoa.' : 'Far Out Mode: off. Welcome back.'); }
-    if (buf.slice(-4).toLowerCase() === 'puff') { buf = ''; rain(['☁️'], 30); toast('Puff says hi.'); }
+    if (buf.slice(-3) === '420') { buf = ''; document.body.classList.toggle('farout'); toast(document.body.classList.contains('farout') ? 'Store lighting recalibrated.' : 'Store lighting restored.'); }
+    if (buf.slice(-4).toLowerCase() === 'puff') { buf = ''; rain(['☁️'], 30); toast('Puff is with a customer. Please hold.'); }
   });
 
   var sb = document.getElementById('snack-btn'), sn = document.getElementById('snacks');
   sb.addEventListener('click', function () { sn.classList.toggle('on'); });
 
-  if (window.console) console.log('%cLooking for the stash? It is a joke, man. We swap pillows. 🌿🛋️', 'color:#1fa64a;font-size:16px;font-weight:bold');
+  if (window.console) console.log('%cWeed Exchange customer service. The back is being checked. 🌿', 'color:#1fa64a;font-size:16px;font-weight:bold');
 })();
 </script>
 </body>
