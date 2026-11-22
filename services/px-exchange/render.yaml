@@ -1,0 +1,35 @@
+# Pillow Exchange swap marketplace API. Separate Blueprint from the repo-root render.yaml
+# (which only declares static faces). The static site px-site calls this service.
+services:
+  - type: web
+    name: px-exchange-api
+    runtime: node
+    plan: starter
+    region: oregon
+    rootDir: services/px-exchange
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    autoDeployTrigger: checksPass
+    buildFilter:
+      paths:
+        - services/px-exchange/**
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: px-exchange-db
+          property: connectionString
+      - key: ALLOWED_ORIGINS
+        value: https://pillowexchange.com,https://www.pillowexchange.com,https://px-site.onrender.com
+      - key: NODE_VERSION
+        value: "22"
+
+databases:
+  - name: px-exchange-db
+    plan: basic-256mb
+    region: oregon
+    databaseName: px_exchange_db
+    user: px_exchange_db_user
+    diskSizeGB: 1
+    postgresMajorVersion: "16"
+    ipAllowList: []
