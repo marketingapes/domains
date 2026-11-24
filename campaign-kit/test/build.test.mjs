@@ -229,7 +229,7 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   // Share preview is about MultiPlan, not the attorney (Kyle, 2026-11-19)
   assert.ok(readFileSync(join(liveDir, 'images', 'og-multiplan.jpg')).length > 1000);
   assert.match(live, /property="og:image" content="https:\/\/besttortlawyers.com\/vanderhahn\/multiplan\/images\/og-multiplan.jpg"/);
-  assert.match(live, /property="og:title" content="Were your out-of-network claims cut by MultiPlan repricing\?"/);
+  assert.match(live, /property="og:title" content="Were your out-of-network claims cut by MultiPlan or Zelis repricing\?"/);
   assert.match(live, /name="twitter:card" content="summary_large_image"/);
   assert.ok(readFileSync(join(liveDir, 'images', 'og-multiplan-square.jpg')).length > 1000);
   assert.match(live, /property="og:image" content="https:\/\/besttortlawyers.com\/vanderhahn\/multiplan\/images\/og-multiplan-square.jpg"/);
