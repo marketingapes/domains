@@ -12,13 +12,14 @@ const html = read('thanksgiving/index.html');
 const js = read('assets/price-finder.js');
 const css = read('assets/thanksgiving.css');
 
-test('BTL Thanksgiving finder: a holiday extra kept apart from intake. No form to us, no ad pixels, not indexed', () => {
+test('BTL Thanksgiving finder: a holiday extra kept apart from intake. No form to us, no tag manager or ad pixels, not indexed', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/besttortlawyers\.com\/thanksgiving\/">/);
   assert.match(html, /<meta name="robots" content="noindex,follow">/);
   assert.ok(!read('sitemap.xml').includes('/thanksgiving/'), 'a noindex page stays out of the sitemap');
   assert.equal([...html.matchAll(/<h1[ >]/g)].length, 1);
   assert.equal([...html.matchAll(/<form[ >]/g)].length, 1, 'the only form is the Amazon search');
-  assert.match(html, /GTM-PHC7459M/);
+  // The site tag container loads the ad pixels, so this page leaves it out (owner's call, 2026-11-24).
+  assert.doesNotMatch(html, /googletagmanager|GTM-[A-Z0-9]+/, 'no tag manager, so no ad pixels fire here');
   assert.match(html, /<script src="\/assets\/ee-click\.js\?v=1" defer data-site="btl"><\/script>/);
   assert.doesNotMatch(html, /fbq\(|connect\.facebook\.net|analytics\.tiktok\.com|ttq\./, 'no ad pixels on a shopping page');
   assert.doesNotMatch(html, /adsbygoogle|google-adsense-account/, 'legal brands never carry AdSense');
