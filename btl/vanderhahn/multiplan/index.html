@@ -502,6 +502,7 @@ footer a{color:#dbe6ea}
     <div class="flinks">
       <a href="https://besttortlawyers.com/privacy-policy/">Privacy policy</a>
       <a href="https://besttortlawyers.com/terms-and-conditions/">Terms</a>
+      <a href="https://besttortlawyers.com/network/">Part of the Marketing Apes Network</a>
       <a href="https://www.vanderhahn.com/service/healthcare-litigation/" target="_blank" rel="noopener">VanderHahn healthcare practice ↗</a>
     </div>
   </div>
@@ -526,13 +527,18 @@ footer a{color:#dbe6ea}
   };
   /* ========================================== */
 
+  var NOT_FIT_URL='/vanderhahn/multiplan/not-a-fit/';
   var dl = window.dataLayer = window.dataLayer || [];
   var fired = {};
   function track(ev, extra, once){
     if(once && fired[ev]) return; fired[ev]=1;
-    var o = {event:ev, ee_system_id:sysId, campaign_id:CONFIG.CAMPAIGN_ID, vertical:CONFIG.VERTICAL};
+    var o = {event:ev, ee_system_id:sysId, campaign_id:CONFIG.CAMPAIGN_ID, tenant_id:CONFIG.TENANT_ID, page_id:CONFIG.PAGE_ID, vertical:CONFIG.VERTICAL};
     for(var k in extra) o[k]=extra[k];
     dl.push(o);
+    /* Standard funnel names (GA4 funnel tag in GTM-PHC7459M): quiz_start, quiz_step, quiz_qualified, quiz_not_qualified. No answers, no PII. */
+    var std={ee_form_start:'quiz_start',ee_form_step_complete:'quiz_step',ee_prequal_pass:'quiz_qualified',ee_prequal_fail:'quiz_not_qualified'}[ev];
+    if(ev==='ee_prequal_pass' && extra && extra.prequal_tier==='C') std='quiz_not_qualified';
+    if(std){ var s={event:std,campaign_id:CONFIG.CAMPAIGN_ID,tenant_id:CONFIG.TENANT_ID,page_id:CONFIG.PAGE_ID}; if(extra&&extra.step) s.step=extra.step; dl.push(s); }
   }
   function uid(p){return p+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
   var sysId = uid('EE');
@@ -567,7 +573,8 @@ footer a{color:#dbe6ea}
     if(n==='role'){ track('ee_form_start',{},true); setTimeout(function(){show(2)},220); }
     if(n==='oon_2015_2026'){
       track('ee_form_step_complete',{step:2, answer:e.target.value});
-      setTimeout(function(){ show(e.target.value==='no'?'nofit':3); if(e.target.value==='no') track('ee_prequal_fail',{reason:'no_oon'}); },220);
+      if(e.target.value==='no'){ track('ee_prequal_fail',{reason:'no_oon'}); setTimeout(function(){ location.assign(NOT_FIT_URL + location.search); },260); }
+      else setTimeout(function(){ show(3); },220);
     }
     if(n==='annual_billed'){
       var tier = (val('oon_2015_2026')==='yes' && e.target.value==='1m_plus') ? 'A' :
@@ -588,6 +595,10 @@ footer a{color:#dbe6ea}
     if(!v){ v=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16);})); try{sessionStorage.setItem(k,v);}catch(e){} }
     return v; }
   var OUTCOME={A:'TIER_A_1M_PLUS',B:'TIER_B_NEAR_OR_UNSURE',C:'TIER_C_BELOW'};
+  /* After a stored request the visitor goes to the thank-you page. That page fires the lead conversion (generate_lead)
+     once, only for a real, first-time, qualified request: tier A or B. Tier C (below the range), duplicates and ?test=1
+     get the same page with no conversion. A 'no' on out-of-network billing goes to the not-a-fit page, which loads no tags. */
+  var THANKS_URL='/vanderhahn/multiplan/thank-you/', THANKS_KEY='ee_mp_thanks';
   form.addEventListener('submit', function(e){
     e.preventDefault(); err.textContent='';
     track('ee_lead_submit_attempt',{});
@@ -626,6 +637,10 @@ footer a{color:#dbe6ea}
           document.querySelector('[data-step=done] h3').textContent='You look like a strong fit. Pick a time with Devin.';
           document.getElementById('doneMsg').textContent='Choose a time that works for you below. Devin’s office will confirm the details before the call.';
           track('ee_booking_offered',{prequal_tier:tier},true); }
+        var handed=false;
+        try{ sessionStorage.setItem(THANKS_KEY, JSON.stringify({conv:(tier==='A'||tier==='B') && j.status==='received', real:!isTest, kind:'qualified',
+          receipt:j.receipt_id||'', tier:tier, book:(tier==='A'&&CONFIG.BOOKING_URL)?CONFIG.BOOKING_URL:'', at:Date.now()})); handed=true; }catch(e){}
+        if(handed){ location.assign(THANKS_URL + (isTest?'?test=1':'')); return; }
         show('done');
       })
       .catch(function(x){ if(to) clearTimeout(to); track('ee_lead_submit_error',{error:String(x)}); btn.disabled=false; btn.textContent='Request a time with Devin →';
