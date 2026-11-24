@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request received | VanderHahn LLP</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="ee-campaign" content="MULTIPLAN-PILOT-001">
+<meta name="ee-page-id" content="btl-vanderhahn-multiplan-thank-you">
+<!-- QUALIFIED page. This is the only MultiPlan page that fires the lead conversion.
+     Tag Manager (BTL web container GTM-PHC7459M) loads here ONLY for a real, first-time, qualified request arriving straight
+     from the review page, which leaves {conv:true, real:true, kind:'qualified', receipt} in sessionStorage 'ee_mp_thanks' for
+     10 minutes. The container's generate_lead trigger then sends the Lead conversion once (Meta, Google Ads, TikTok, GA4, OpenAI),
+     with lead_id = the receipt for dedupe. A reload, a shared link, ?test=1, a duplicate, or a tier C request loads no tags.
+     dataLayer gets the receipt only: no names, phones, emails, organizations or answers. -->
+<script>(function(w,d){var K='ee_mp_thanks',r=null;try{r=JSON.parse(sessionStorage.getItem(K)||'null')}catch(e){}
+w.__mpThanks=r;
+if(/(?:^|[?&])test=1(?:&|$)/.test(location.search)||!r||r.conv!==true||r.real!==true||r.kind!=='qualified'||!(Date.now()-r.at<6e5))return;
+if(typeof r.receipt!=='string'||!/^[A-Za-z0-9-]{1,40}$/.test(r.receipt))return;
+try{r.conv=false;sessionStorage.setItem(K,JSON.stringify(r))}catch(e){return}
+w.dataLayer=w.dataLayer||[];
+w.dataLayer.push({event:'generate_lead',page_id:'btl-vanderhahn-multiplan-thank-you',campaign_id:'MULTIPLAN-PILOT-001',tenant_id:'vanderhahn',lead_id:r.receipt});
+w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M';d.head.appendChild(j);})(window,document);</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d1920;--ink-2:#13242d;--emerald:#0f6b5c;--emerald-2:#14826f;--brass:#d6a54e;--paper:#f6f4ef;--line:#e4e0d6;--text:#14212a;--muted:#56646d;--muted-dark:#a9b8bf;--radius:20px;
+--serif:"Fraunces",Georgia,"Times New Roman",serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font-family:var(--sans);color:var(--text);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit}
+.top{background:linear-gradient(180deg,var(--ink-2),var(--ink));color:#fff;padding:20px 0}
+.wrap{width:min(1080px,calc(100% - 40px));margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.02em}
+.mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--emerald-2),var(--emerald));display:grid;place-items:center;font-family:var(--serif)}
+main{flex:1;display:grid;place-items:start center;padding:44px 0 64px}
+.card{width:min(560px,calc(100% - 40px));background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;text-align:center;box-shadow:0 18px 44px rgba(5,15,20,.10)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#eaf6f2;color:var(--emerald);font-weight:700;font-size:.82rem;padding:6px 12px;border-radius:999px;margin-bottom:14px}
+.badge.warn{background:#fbf3e3;color:#7a5410}
+h1{font-family:var(--serif);font-weight:600;line-height:1.14;margin:0 0 12px;font-size:clamp(1.55rem,5vw,2rem);letter-spacing:-.01em}
+p{margin:0 0 14px;color:var(--muted)}
+.ref{font-size:.82rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;width:100%;padding:14px 26px;border-radius:999px;background:var(--brass);color:#1c1406;font-weight:700;text-decoration:none;box-shadow:0 8px 22px rgba(214,165,78,.32)}
+.ready{margin-top:20px;background:#eaf6f2;border-radius:var(--radius);padding:18px 20px;text-align:left}
+.ready b{display:block;margin-bottom:8px}.ready ul{margin:0;padding-left:20px;color:#2c4a44}
+:focus-visible{outline:3px solid var(--brass);outline-offset:3px;border-radius:6px}
+footer{background:var(--ink);color:var(--muted-dark);font-size:.8rem;padding:32px 0 40px}
+footer p{margin:0 0 12px;max-width:90ch;color:var(--muted-dark)}
+.flinks{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px}footer a{color:#dbe6ea}
+</style></head>
+<body>
+<div class="top"><div class="wrap"><div class="brand"><span class="mark">V</span>VanderHahn LLP</div></div></div>
+<main>
+  <div class="card">
+    <span class="badge">&#10003; Request received</span>
+    <h1 id="tyH">Thanks. Devin's office has your details.</h1>
+    <p id="tyMsg">Devin's team will reach out shortly to schedule your call. Watch for a call or email from VanderHahn LLP.</p>
+    <p class="ref" id="refRow" hidden>Reference: <b id="receiptId"></b></p>
+    <a class="btn" id="bookBtn" href="#" target="_blank" rel="noopener" hidden>Pick a time with Devin &rarr;</a>
+    <div class="ready"><b>Good to have ready for the call</b>
+      <ul><li>A short description of your organization</li><li>The years you billed out-of-network</li><li>An estimate of annual billed charges</li></ul></div>
+  </div>
+</main>
+<footer>
+  <div class="wrap">
+    <p><strong style="color:#fff">Attorney advertising.</strong> Responsible attorney: Devin van der Hahn, VanderHahn LLP. Best Tort Lawyers is a matching and intake service run by Marketing Apes LLC. It is not a law firm and gives no legal advice.</p>
+    <p>This page doesn't show that a provider has a claim. The firm decides on review and representation itself. Submitting a request doesn't create an attorney-client relationship. No recovery or outcome is guaranteed.</p>
+    <div class="flinks">
+      <a href="https://besttortlawyers.com/privacy-policy/">Privacy policy</a>
+      <a href="https://besttortlawyers.com/terms-and-conditions/">Terms</a>
+      <a href="https://besttortlawyers.com/network/">Part of the Marketing Apes Network</a>
+    </div>
+  </div>
+</footer>
+<script>(function(){var r=window.__mpThanks;if(!r)return;
+if(typeof r.receipt==='string'&&/^[A-Za-z0-9-]{1,40}$/.test(r.receipt)){document.getElementById('receiptId').textContent=r.receipt;document.getElementById('refRow').hidden=false;}
+if(typeof r.book==='string'&&/^https:\/\//.test(r.book)){var b=document.getElementById('bookBtn');b.href=r.book;b.hidden=false;
+document.getElementById('tyH').textContent='You look like a strong fit. Pick a time with Devin.';
+document.getElementById('tyMsg').textContent='Choose a time that works for you below. Devin\u2019s office will confirm the details before the call.';}
+})();</script>
+</body>
+</html>
