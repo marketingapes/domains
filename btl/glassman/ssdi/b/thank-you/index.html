@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Thank you — your SSDI details were received</title>
+<meta name="description" content="Your SSDI request was received.">
+<link rel="canonical" href="https://besttortlawyers.com/glassman/ssdi/b/thank-you/">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0f2338">
+<meta name="ee-campaign" content="GLASSMAN-SSDI-002">
+<meta name="ee-page-id" content="glassman-ssdi-b-thank-you">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2338'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='26' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ESSD%3C/text%3E%3Ccircle cx='50' cy='14' r='6' fill='%231f6bff'/%3E%3C/svg%3E">
+<!-- THE lead conversion. generate_lead (lead_id = BTLK receipt, campaign_id, tenant_id; no PII) is pushed ONCE, only for a
+     real QUALIFIED lead (once per receipt per browser) arriving straight from the form (sessionStorage 'btl_ty', 10 min, removed on read).
+     GTM's generic "Client - lead receipt" trigger then fires Meta, Google Ads, GA4 (+ sGTM server CAPI), TikTok, OpenAI.
+     Reloads, shared links, tests, duplicates and not-qualified sign-ups push nothing. Tag Manager loads on production only. -->
+<script>(function(w,d){var r=null;try{r=JSON.parse(sessionStorage.getItem('btl_ty')||'null');sessionStorage.removeItem('btl_ty')}catch(e){}
+w.BTL_TY=r;var prod=location.hostname==='besttortlawyers.com';
+var fresh=r&&r.campaign_id==='GLASSMAN-SSDI-002'&&r.kind==='lead'&&r.real===true&&(Date.now()-r.at<6e5)&&!/(?:^|[?&])test=1(?:&|$)/.test(location.search)&&typeof r.receipt==='string'&&/^BTLK-[0-9A-F]{10}$/.test(r.receipt);
+w.dataLayer=w.dataLayer||[];
+var fired=[];try{fired=JSON.parse(localStorage.getItem('btl_fired')||'[]')}catch(e){}
+if(fresh&&fired.indexOf(r.receipt)<0){w.dataLayer.push({event:'generate_lead',page_id:'glassman-ssdi-b-thank-you',campaign_id:'GLASSMAN-SSDI-002',tenant_id:'glassman',lead_id:r.receipt});
+try{fired.push(r.receipt);localStorage.setItem('btl_fired',JSON.stringify(fired.slice(-50)))}catch(e){}}
+if(prod){w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M';d.head.appendChild(j);}
+})(window,document);</script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/glassman/ssdi/pages.css?v=20261106-simple-form-339">
+<style>.hero{background-image:url(https://besttortlawyers.com/assets/ssdi/hero-woman-phone-960.jpg)}@media(min-width:961px){.hero{background-image:url(https://besttortlawyers.com/assets/ssdi/hero-woman-phone-1472.jpg)}}</style>
+</head>
+<body>
+<div class="bar"><div class="in"><span><b>No fee unless we win.</b> <span class="hide-s">Free consultation. Not the government.</span></span></div></div>
+<header class="nav"><div class="in"><a class="brand gl" href="/glassman/ssdi/b/" aria-label="Jeffrey Glassman Injury Lawyers, SSDI"><img src="https://besttortlawyers.com/glassman-ssdi/img/logo.svg" width="240" height="52" alt="Jeffrey Glassman Injury Lawyers"></a></div></header>
+<main>
+<section class="hero" aria-labelledby="h1"><div class="in hero-grid split">
+  <div class="hero-head"><p class="eyebrow">Social Security Disability · Received</p><h1 id="h1">Thank you. Your details are in.</h1></div>
+  <div class="hero-card"><div class="card"><div class="ok-box"><b>Request received.</b><p id="tyLede">Your request is on its way to Jeffrey Glassman Injury Lawyers. Their intake team reviews it and reaches out by call or text, so keep your phone nearby.</p></div></div></div>
+</div></section>
+<section class="band2" aria-labelledby="stepsH"><div class="in"><p class="eyebrow dark">What happens next</p><h2 class="sec" id="stepsH">Here’s what to expect.</h2>
+  <div class="steps"><div><b>The firm reviews your details</b><span>Your answers and contact details go to Jeffrey Glassman Injury Lawyers and no other law firm.</span></div><div><b>Expect a call or text</b><span>From the firm’s intake team, at the number you gave. Answer unknown numbers for the next few days.</span></div><div><b>Free consultation</b><span>No cost, no obligation. The firm decides whether it can take your case.</span></div></div>
+</div></section>
+</main>
+<footer><div class="in"><nav aria-label="Footer"><a href="/network/">Network disclosures</a><a href="/privacy-policy/">Privacy Policy</a><a href="/sms-terms/">SMS Terms</a><a href="/terms-and-conditions/">Terms</a></nav>
+<p><a href="/network/">Part of the Marketing Apes Network</a></p>
+<p><strong>ATTORNEY ADVERTISING.</strong> Jeffrey Glassman Injury Lawyers · One International Place, Suite 1810, Boston, MA 02110. Not affiliated with the Social Security Administration. No review, representation, benefit approval or outcome is guaranteed. © 2026</p></div></footer>
+<script>(function(){var r=window.BTL_TY;if(r&&r.kind==='review'){document.getElementById('tyLede').textContent='A few of your answers need a quick review by the firm. If your request fits, the firm’s intake team will reach out.';}
+if(r&&r.kind==='not_qualified'){document.getElementById('h1').textContent='Thanks. You’re on the list.';
+document.getElementById('tyLede').textContent='We’ll let you know about other options that may fit. Reply STOP to any text to opt out.';
+var c=document.querySelector('.steps,.promises');if(c)c.hidden=true;}})();</script>
+</body>
+</html>

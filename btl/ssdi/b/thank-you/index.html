@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Thank you — your SSDI details were received</title>
+<meta name="description" content="Your SSDI details were received. The firm’s intake team will reach out.">
+<link rel="canonical" href="https://besttortlawyers.com/ssdi/b/thank-you/">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0f2338">
+<meta name="ee-campaign" content="BTL-SSDI-001">
+<meta name="ee-page-id" content="btl-ssdi-b-thank-you">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f6bff'/%3E%3Ctext x='32' y='42' font-family='Arial,Helvetica,sans-serif' font-size='26' font-weight='700' fill='%23ffffff' text-anchor='middle'%3ESSD%3C/text%3E%3Ccircle cx='50' cy='14' r='6' fill='%230f2338'/%3E%3C/svg%3E">
+<!-- THE lead conversion. generate_lead (lead_id = BTLK receipt, campaign_id, tenant_id; no PII) is pushed ONCE, only for a
+     real QUALIFIED lead (once per receipt per browser) arriving straight from the form (sessionStorage 'btl_ty', 10 min, removed on read).
+     GTM's generic "Client - lead receipt" trigger then fires Meta, Google Ads, GA4 (+ sGTM server CAPI), TikTok, OpenAI.
+     Reloads, shared links, tests, duplicates and not-qualified sign-ups push nothing. Tag Manager loads on production only. -->
+<script>(function(w,d){var r=null;try{r=JSON.parse(sessionStorage.getItem('btl_ty')||'null');sessionStorage.removeItem('btl_ty')}catch(e){}
+w.BTL_TY=r;var prod=location.hostname==='besttortlawyers.com';
+var fresh=r&&r.campaign_id==='BTL-SSDI-001'&&r.kind==='lead'&&r.real===true&&(Date.now()-r.at<6e5)&&!/(?:^|[?&])test=1(?:&|$)/.test(location.search)&&typeof r.receipt==='string'&&/^BTLK-[0-9A-F]{10}$/.test(r.receipt);
+w.dataLayer=w.dataLayer||[];
+var fired=[];try{fired=JSON.parse(localStorage.getItem('btl_fired')||'[]')}catch(e){}
+if(fresh&&fired.indexOf(r.receipt)<0){w.dataLayer.push({event:'generate_lead',page_id:'btl-ssdi-b-thank-you',campaign_id:'BTL-SSDI-001',tenant_id:'btl',lead_id:r.receipt});
+try{fired.push(r.receipt);localStorage.setItem('btl_fired',JSON.stringify(fired.slice(-50)))}catch(e){}}
+if(prod){w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M';d.head.appendChild(j);}
+})(window,document);</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/ssdi/friendly.css?v=20261102a">
+</head>
+<body>
+<div class="hero">
+<header class="top"><div class="wrap"><a class="logo" href="/ssdi/b/" aria-label="Best Tort Lawyers"><img src="https://besttortlawyers.com/assets/btl-seal.svg" width="40" height="40" alt=""><b>Best Tort Lawyers</b></a></div></header>
+<main><section aria-labelledby="h1"><div class="wrap hero-grid"><div class="hero-copy">
+  <p class="tagline"><i aria-hidden="true"></i>Social Security Disability · Received</p>
+  <h1 id="h1">Thank you. <em>Your details are in.</em></h1>
+  <p class="lede" id="tyLede">A participating law firm’s intake team will reach out to get your claim started (Mon–Fri, 9:30 AM–6 PM Eastern). Keep your phone nearby.</p>
+</div></div></section></main>
+</div>
+<section class="band" aria-labelledby="nextH"><div class="wrap"><span class="eyebrow">What happens next</span><h2 class="title" id="nextH">Here’s what to expect</h2>
+  <div class="promises"><div><h3>The firm reviews</h3><p>Your details went only to the participating law firm reviewing this request.</p></div><div><h3>Expect a call or text</h3><p>From the firm’s intake team during business hours.</p></div><div><h3>Free consultation</h3><p>No cost, no obligation. The firm decides whether it can take your case.</p></div></div>
+</div></section>
+<footer class="foot"><div class="wrap"><nav aria-label="Footer"><a href="/network/">Network disclosures</a><a href="/privacy-policy/">Privacy Policy</a><a href="/sms-terms/">SMS Terms</a><a href="/terms-and-conditions/">Terms</a></nav>
+<p>Best Tort Lawyers is part of the <a href="/network/">Marketing Apes Network</a>.</p>
+<p><strong>ATTORNEY ADVERTISING.</strong> Best Tort Lawyers is not a law firm. Not affiliated with the Social Security Administration. No review, representation, benefit approval or outcome is guaranteed. © 2026 Marketing Apes LLC</p></div></footer>
+<script>(function(){var r=window.BTL_TY;if(r&&r.kind==='review'){document.getElementById('tyLede').textContent='A few of your answers need a quick review by the firm. If your request fits, the firm’s intake team will reach out.';}
+if(r&&r.kind==='not_qualified'){document.getElementById('h1').textContent='Thanks. You’re on the list.';
+document.getElementById('tyLede').textContent='We’ll let you know about other options that may fit. Reply STOP to any text to opt out.';
+var c=document.querySelector('.steps,.promises');if(c)c.hidden=true;}})();</script>
+</body>
+</html>
