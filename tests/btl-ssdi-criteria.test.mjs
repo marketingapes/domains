@@ -35,14 +35,17 @@ test('no page or script still states or scores the old criteria',()=>{
  const files=[...pages(),...QUIZZES,'criteria.js','qualifier.js','intake.js','friendly.js','pages.js'];
  for(const f of files)assert.doesNotMatch(read(f),/54 to 63|54–63 years|under_54|54_63|64_plus|[Ss]ix (quick )?questions/,f);
  assert.match(read('index.html'),/<li>53 to 64 years old<\/li>\s*<li>A U\.S\. citizen<\/li>/);
- assert.match(read('b/index.html'),/<li>53 to 64 years old<\/li>\s*<li>A U\.S\. citizen<\/li>/);
+ // /ssdi/b/ is the quiz-only page since 2026-11-24 (Kyle): shared engine, age 55 to 64 per the buyer (2026-11-23), and no citizenship question.
+ const b=read('b/index.html');assert.match(b,/\/_quiz\/quiz\.js\?v=/);assert.match(b,/This review is for people 55 to 64\./);
+ assert.doesNotMatch(b,/key: 'citizen'|U\.S\. citizen/);assert.doesNotMatch(b,/\/ssdi\/criteria\.js|talk-to-sofia|tel:/);
+ assert.deepEqual([...b.matchAll(/\{ key: '([a-z_]+)'/g)].map(m=>m[1]),['state','age','out_of_work','doctor','benefits','lawyer']);
 });
 
 test('every page loads the same version of the rules, and each quiz page its matching quiz script',()=>{
  const versions=new Set();let loaded=0;
  for(const p of pages()){const html=read(p);const m=html.match(/\/ssdi\/criteria\.js\?v=([0-9a-z]+)/);if(!m)continue;loaded++;versions.add(m[1]);
   const quiz=html.match(/\/ssdi\/(quiz\/quiz|quiz-b\/quiz-b|b\/quiz\/quiz)\.js\?v=([0-9a-z]+)/);if(quiz)assert.equal(quiz[2],m[1],p);}
- assert.ok(loaded>=8,`pages loading the rules: ${loaded}`);assert.equal(versions.size,1,[...versions].join());
+ assert.ok(loaded>=7,`pages loading the rules: ${loaded}`);assert.equal(versions.size,1,[...versions].join());
 });
 
 test('the Glassman SSDI pages keep their own criteria',()=>{
