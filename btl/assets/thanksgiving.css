@@ -1,0 +1,178 @@
+/* Best Tort Lawyers: Thanksgiving price finder (/thanksgiving/).
+   Brand tokens come from brand.json (paper, ink, gold); the harvest colours are for this
+   page only. Every class is prefixed tf-. Motion starts hidden only inside @keyframes, so
+   with reduced motion everything is simply visible. */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: #f6f1e7; color: #111827; font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Arial, sans-serif; overflow-x: hidden; }
+.tf {
+  --ink: #111827;
+  --ink-2: #4b5563;
+  --paper: #f6f1e7;
+  --soft: #ece7de;
+  --line: #d9d2c5;
+  --gold: #c6a15b;
+  --gold-2: #e3cc9c;
+  --pumpkin: #c2571a;
+  --pumpkin-deep: #9a3f0d;
+  --cranberry: #8e2338;
+  --sage: #6f7f55;
+  --serif: "Iowan Old Style", "Baskerville", "Palatino Linotype", Georgia, serif;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.tf-skip { position: absolute; left: -999px; }
+.tf-skip:focus { left: 12px; top: 12px; z-index: 20; background: #fff; padding: 8px 12px; border: 2px solid var(--ink); }
+.tf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.tf-in { position: relative; width: min(780px, calc(100% - 2.25rem)); margin: 0 auto; }
+.tf-wide { position: relative; width: min(1000px, calc(100% - 2.25rem)); margin: 0 auto; }
+:where(a, button, input):focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* Top bar */
+.tf-top { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: min(1000px, calc(100% - 2.25rem)); margin: 0 auto; padding: 1rem 0; }
+.tf-brand { display: inline-flex; align-items: center; gap: 0.65rem; color: var(--ink); text-decoration: none; font: 700 1.12rem/1 var(--serif); letter-spacing: 0.01em; }
+.tf-brand img { width: 40px; height: 40px; display: block; }
+.tf-home { color: var(--ink); font-weight: 600; font-size: 0.95rem; text-underline-offset: 3px; }
+
+/* Harvest light and falling leaves behind the tool. Decorative only. */
+.tf-glow { position: absolute; inset: 0 0 auto 0; height: 820px; pointer-events: none; }
+.tf-glow i { position: absolute; border-radius: 50%; filter: blur(80px); }
+.tf-glow i:nth-child(1) { width: 460px; height: 460px; left: -150px; top: -160px; background: #f0b86a; opacity: 0.55; animation: tf-drift 17s var(--ease) infinite alternate; }
+.tf-glow i:nth-child(2) { width: 400px; height: 400px; right: -130px; top: 30px; background: #e79a7b; opacity: 0.4; animation: tf-drift 21s var(--ease) infinite alternate-reverse; }
+.tf-glow i:nth-child(3) { width: 320px; height: 320px; left: 40%; top: 380px; background: var(--gold-2); opacity: 0.5; animation: tf-drift 25s var(--ease) infinite alternate; }
+@keyframes tf-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(44px, 30px, 0) scale(1.13); }
+}
+.tf-leaves { position: absolute; inset: 0 0 auto 0; height: 760px; pointer-events: none; overflow: hidden; }
+.tf-leaves svg { position: absolute; top: -40px; width: 26px; height: 26px; opacity: 0; animation: tf-fall 13s linear infinite; }
+.tf-leaves svg:nth-child(1) { left: 6%; color: var(--pumpkin); animation-duration: 12s; }
+.tf-leaves svg:nth-child(2) { left: 17%; color: var(--gold); width: 20px; height: 20px; animation-duration: 15s; animation-delay: 2.5s; }
+.tf-leaves svg:nth-child(3) { left: 29%; color: var(--cranberry); animation-duration: 13s; animation-delay: 5s; }
+.tf-leaves svg:nth-child(4) { left: 43%; color: var(--sage); width: 18px; height: 18px; animation-duration: 17s; animation-delay: 1s; }
+.tf-leaves svg:nth-child(5) { left: 58%; color: var(--pumpkin); width: 22px; height: 22px; animation-duration: 14s; animation-delay: 7s; }
+.tf-leaves svg:nth-child(6) { left: 70%; color: var(--gold); animation-duration: 16s; animation-delay: 3.5s; }
+.tf-leaves svg:nth-child(7) { left: 82%; color: var(--cranberry); width: 20px; height: 20px; animation-duration: 12.5s; animation-delay: 6s; }
+.tf-leaves svg:nth-child(8) { left: 93%; color: var(--pumpkin-deep); animation-duration: 18s; animation-delay: 9s; }
+@keyframes tf-fall {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+  8% { opacity: 0.75; }
+  50% { transform: translate3d(38px, 380px, 0) rotate(160deg); }
+  92% { opacity: 0.6; }
+  100% { transform: translate3d(-18px, 780px, 0) rotate(330deg); opacity: 0; }
+}
+
+.tf-hero { position: relative; padding: 1.6rem 0 1.4rem; text-align: center; }
+.tf-hero > .tf-in > * { animation: tf-up 0.7s var(--ease) both; }
+.tf-hero > .tf-in > *:nth-child(2) { animation-delay: 0.07s; }
+.tf-hero > .tf-in > *:nth-child(3) { animation-delay: 0.14s; }
+.tf-hero > .tf-in > *:nth-child(4) { animation-delay: 0.21s; }
+.tf-hero > .tf-in > *:nth-child(n + 5) { animation-delay: 0.3s; }
+@keyframes tf-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.tf-pill { display: inline-flex; align-items: center; gap: 0.55rem; margin: 0 0 1.1rem; padding: 0.42rem 1rem; border-radius: 999px; background: #fff; border: 1px solid var(--gold); font-weight: 700; font-size: 0.76rem; line-height: 1.3; letter-spacing: 0.09em; text-transform: uppercase; color: var(--pumpkin-deep); }
+.tf-pill svg { width: 16px; height: 16px; color: var(--pumpkin); animation: tf-sway 3.4s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes tf-sway { 50% { transform: rotate(-14deg); } }
+.tf h1 { margin: 0 0 0.9rem; font: 600 clamp(2.05rem, 6.2vw, 3.4rem)/1.07 var(--serif); letter-spacing: -0.015em; color: var(--ink); }
+.tf h1 em { display: block; font-style: italic; font-weight: 500; color: var(--pumpkin); }
+.tf-lead { margin: 0 auto 1.6rem; max-width: 56ch; font-size: 1.1rem; color: var(--ink-2); }
+
+/* The tool */
+.tf-form { margin: 0; }
+.tf-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.4rem 0.4rem 1.1rem; background: #fff; border: 2px solid var(--ink); border-radius: 999px; box-shadow: 0 20px 46px -24px rgba(17, 24, 39, 0.6), 0 0 0 6px rgba(198, 161, 91, 0.28); transition: box-shadow 0.25s, border-color 0.25s; }
+.tf-bar:focus-within { border-color: var(--pumpkin); box-shadow: 0 20px 46px -24px rgba(17, 24, 39, 0.6), 0 0 0 6px rgba(198, 161, 91, 0.6); }
+.tf-bar svg { flex: none; width: 22px; height: 22px; color: var(--ink-2); }
+.tf-bar input { flex: 1 1 auto; min-width: 0; min-height: 52px; border: 0; background: transparent; color: var(--ink); font-weight: 500; font-size: 1.08rem; font-family: inherit; outline: none; -webkit-appearance: none; appearance: none; }
+.tf-bar input::placeholder { color: #7b8490; font-weight: 400; }
+.tf-bar input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.tf-go { flex: none; display: inline-flex; align-items: center; gap: 0.45rem; min-height: 52px; padding: 0 1.35rem; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 700; font-size: 1.02rem; font-family: inherit; cursor: pointer; transition: background 0.2s, transform 0.2s var(--ease); }
+.tf-go span, .tf-amz span { display: inline-block; transition: transform 0.25s var(--ease); }
+.tf-go:active { transform: scale(0.97); }
+.tf-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin: 1.15rem 0 0; color: var(--ink-2); }
+.tf-label { font-weight: 700; color: var(--ink); margin-right: 0.15rem; }
+.tf-label small { font-weight: 500; font-size: 0.9rem; color: var(--ink-2); margin-left: 0.2rem; }
+.tf-opt { position: relative; display: inline-flex; }
+.tf-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.tf-opt span { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.1rem; border: 1.5px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font-weight: 600; transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s var(--ease); }
+.tf-opt input:checked + span { background: var(--pumpkin); border-color: var(--pumpkin); color: #fff; transform: translateY(-1px); }
+.tf-opt input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 3px; }
+.tf-money { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0 0.85rem; background: #fff; border: 1.5px solid var(--line); border-radius: 999px; transition: border-color 0.2s, box-shadow 0.2s; }
+.tf-money:focus-within { border-color: var(--pumpkin); box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.45); }
+.tf-money b { font-weight: 600; color: var(--ink-2); }
+.tf-money input { width: 5rem; min-height: 48px; border: 0; background: transparent; color: var(--ink); font-weight: 500; font-size: 1.05rem; font-family: inherit; padding: 0; outline: none; -moz-appearance: textfield; appearance: textfield; }
+.tf-money input::placeholder { color: #7b8490; font-weight: 400; }
+.tf-money input::-webkit-outer-spin-button,
+.tf-money input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.tf-hint { margin: 0.75rem 0 0; font-size: 0.94rem; color: var(--ink-2); }
+.tf-error { margin: 1rem 0 0; color: #a3261a; font-weight: 600; }
+
+/* The link, once it is ready */
+.tf-result { margin: 1.5rem auto 0; padding: 1.5rem 1.25rem 1.3rem; background: #fff; border: 2px solid var(--gold); border-radius: 26px; box-shadow: 0 24px 54px -28px rgba(17, 24, 39, 0.6); }
+.tf-result.pf-pop { animation: tf-pop 0.5s var(--ease) both; }
+@keyframes tf-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.tf-kicker { margin: 0 0 0.45rem; font-weight: 700; font-size: 0.76rem; line-height: 1.3; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pumpkin-deep); }
+.tf-query { margin: 0 0 1.1rem; font-size: 1.14rem; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+.tf-query b { color: var(--ink); }
+.tf-amz { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 56px; padding: 0 1.9rem; border-radius: 999px; background: #f2c04a; border: 2px solid var(--ink); color: var(--ink); font-weight: 700; font-size: 1.1rem; text-decoration: none; box-shadow: 0 6px 0 var(--ink); transition: transform 0.15s, box-shadow 0.15s, background 0.2s; }
+.tf-amz:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+.tf-fine { margin: 1rem 0 0; font-size: 0.88rem; line-height: 1.5; color: var(--ink-2); }
+
+.tf-ex { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: 1.1rem 0 0; }
+.tf-ex > span { font-weight: 700; font-size: 0.76rem; line-height: 1.3; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin-right: 0.15rem; }
+.pf-chip { display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.1rem; border: 1.5px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.85); color: var(--ink); font-weight: 600; font-size: 0.98rem; text-decoration: none; animation: tf-up 0.45s var(--ease) both; transition: border-color 0.2s, background 0.2s, transform 0.2s var(--ease); }
+.pf-chip:active { border-color: var(--pumpkin); background: #fff; }
+
+/* How it works */
+.tf-steps { list-style: none; display: grid; gap: 0.9rem; margin: 2.6rem auto 0; padding: 0; counter-reset: tf; }
+.tf-steps li { counter-increment: tf; position: relative; padding: 1.15rem 1.2rem 1.2rem 4.1rem; background: #fff; border: 1px solid var(--line); border-radius: 22px; text-align: left; }
+.tf-steps li::before { content: counter(tf); position: absolute; left: 1.1rem; top: 1.05rem; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--gold-2); font: 600 1.15rem var(--serif); color: var(--ink); }
+.tf-steps strong { display: block; font: 600 1.14rem/1.3 var(--serif); }
+.tf-steps span { display: block; margin-top: 0.2rem; font-size: 0.98rem; line-height: 1.5; color: var(--ink-2); }
+.tf-how { margin: 1.6rem auto 0; padding: 1.5rem 1.4rem; background: var(--soft); border-radius: 22px; }
+.tf-how h2 { margin: 0 0 0.6rem; font: 600 1.45rem/1.2 var(--serif); }
+.tf-how ul { margin: 0; padding-left: 1.2rem; }
+.tf-how li { margin: 0.35rem 0; line-height: 1.55; color: var(--ink-2); max-width: 78ch; }
+.tf-disclose { margin: 1rem 0 0; padding: 0.85rem 1rem; background: #fff; border-left: 4px solid var(--pumpkin); border-radius: 12px; font-size: 0.92rem; line-height: 1.55; color: var(--ink-2); }
+.tf-disclose strong { color: var(--ink); }
+.tf-thanks { margin: 2.2rem auto 0; text-align: center; font: italic 500 1.35rem/1.4 var(--serif); color: var(--ink); }
+.tf-thanks small { display: block; margin-top: 0.3rem; font: 500 0.95rem/1.5 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif; font-style: normal; color: var(--ink-2); }
+
+/* Footer: the site's own footer words, in the site's colours */
+.tf-foot { margin-top: 3rem; padding: 2.4rem 0 2.2rem; background: var(--ink); color: #cfd3da; font-size: 0.9rem; line-height: 1.65; }
+.tf-foot .tf-wide { display: grid; gap: 1.2rem; }
+.tf-foot a { color: #fff; text-underline-offset: 3px; }
+.tf-foot p { margin: 0 0 0.6rem; max-width: 78ch; }
+.tf-foot .tf-name { font: 700 1.1rem var(--serif); color: #fff; }
+.tf-foot ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; margin: 0; padding: 0; }
+.tf-foot .tf-small { color: #a8aeb8; font-size: 0.84rem; }
+
+@media (hover: hover) {
+  .tf-go:hover { background: var(--pumpkin-deep); }
+  .tf-go:hover span { transform: translateX(4px); }
+  .tf-opt:hover input:not(:checked) + span { border-color: var(--ink); }
+  .pf-chip:hover { border-color: var(--ink); background: #fff; transform: translateY(-2px); }
+  .tf-amz:hover { background: #f6cd6b; transform: translateY(-2px); box-shadow: 0 8px 0 var(--ink); }
+  .tf-amz:hover span { transform: translate(3px, -3px); }
+}
+@media (min-width: 760px) {
+  .tf-hero { padding-top: 2.4rem; }
+  .tf-steps { grid-template-columns: repeat(3, 1fr); }
+  .tf-foot .tf-wide { grid-template-columns: 1fr 1.4fr; }
+}
+@media (max-width: 560px) {
+  .tf-bar { flex-wrap: wrap; border-radius: 26px; padding: 0.45rem; }
+  .tf-bar svg { margin-left: 0.6rem; }
+  .tf-bar input { flex: 1 1 60%; }
+  .tf-go { flex: 1 1 100%; justify-content: center; }
+  .tf-label { flex: 1 1 100%; margin: 0; }
+  .tf-amz { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tf *, .tf *::before { animation: none !important; transition: none !important; }
+}
