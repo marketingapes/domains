@@ -217,7 +217,13 @@ test('MultiPlan uses verified portraits and reproducible canonical and legacy ro
   assert.match(live, /CAMPAIGN_ID: "MULTIPLAN-PILOT-001"/);
   assert.match(live, /id="consentText">By clicking "Request a time with Devin,"/); // clickwrap consent beside the button (Kyle, 2026-11-18)
   assert.match(live, /<b>NCN<\/b><b>Zelis<\/b><\/div>/); // Zelis chip (Devin, 2026-11-19)
-  assert.match(live, /Devin's team will reach out shortly to schedule your call/); // thank-you expectation (Kyle, 2026-11-19)
+  // The page can confirm storage, not receipt by the firm or a scheduled call.
+  const thankYou = readFileSync(join(liveDir, 'thank-you', 'index.html'), 'utf8');
+  for (const page of [live, thankYou]) {
+    assert.match(page, /Thanks\. Your request was received\./);
+    assert.match(page, /Your request is pending review\./);
+    assert.doesNotMatch(page, /Devin's office has your details|will reach out shortly to schedule your call/);
+  }
   assert.doesNotMatch(live, /tier==='C'\) document\.getElementById\('doneMsg'\)/); // all tiers go to the firm (Kyle, 2026-11-19)
   assert.doesNotMatch(live, /type="checkbox"/);
   assert.match(live, /if\(tier==='A' && CONFIG\.BOOKING_URL\)/); // option D: only Tier A self-books
