@@ -16,7 +16,13 @@ const day = v => { const d = new Date(v); return !v || isNaN(d) ? '—' : d.toLo
 const stamp = v => { const d = new Date(v); return !v || isNaN(d) ? '' : d.toLocaleString(undefined, {month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'}); };
 const words = s => String(s || '').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
 const KIND = {screened_inquiry: 'Provider review', quiz_submission: 'Provider review', callback_request: 'Callback request', 'Web lead': 'Web lead', 'Updates signup': 'Updates signup'};
-const SOURCE = {facebook: 'Facebook ad', email: 'Welcome email', direct: 'Direct visit', google: 'Google'};
+const SOURCE = {facebook: 'Facebook', email: 'Welcome email', direct: 'Direct visit', google: 'Google'};
+const inquiryKinds = new Set(['screened_inquiry', 'quiz_submission', 'callback_request']);
+function breakdown(leads) {
+  const real = leads.filter(l => !l.is_test);
+  return {signups: real.filter(l => l.kind === 'Updates signup').length,
+    inquiries: real.filter(l => inquiryKinds.has(l.kind)).length};
+}
 const BADGE = {'New': 'new', 'Contacted': 'blue', 'Consult booked': 'blue', 'Retained': 'ok', 'Not a fit': 'off', 'No response': 'off'};
 const safeUrl = u => /^https:\/\//.test(u || '') ? u : '';
 
@@ -66,19 +72,19 @@ function visible() {
 }
 
 function leadCard(l) {
-  const c = cameFrom(l), isOpen = open === l.lead_uid, can = feed.viewer.can_edit;
+  const c = cameFrom(l), isOpen = open === l.lead_uid, can = feed.viewer.can_edit && !l.is_test;
   const d = drafts[l.lead_uid] || {status: l.status.status || '', consult_date: l.status.consult_date || '', signed: l.status.signed, note: l.status.note || ''};
-  const sub = [l.organization, words(l.role), l.state].filter(Boolean).join(' · ');
+  const sub = l.is_test ? 'QA only' : [l.organization, words(l.role), l.state].filter(Boolean).join(' · ');
   let h = `<article class="lead${l.is_test ? ' test' : ''}">
     <button class="lead-head" data-open="${esc(l.lead_uid)}" aria-expanded="${isOpen}">
-      <span class="who"><b>${esc(title(l))}${l.is_test ? ' <span class="badge">Test</span>' : ''}</b><span>${esc(sub || (feed.viewer.contact ? '' : 'Contact details need more access'))}</span></span>
+      <span class="who"><b>${esc(l.is_test ? (KIND[l.kind] || 'QA record') : title(l))}${l.is_test ? ' <span class="badge">Test</span>' : ''}</b><span>${esc(sub || (feed.viewer.contact ? '' : 'Contact details need more access'))}</span></span>
       <span class="kind"><span class="badge">${esc(KIND[l.kind] || words(l.kind))}</span>${l.tier ? ` <span class="badge blue">Tier ${esc(l.tier)}</span>` : ''}</span>
       <span class="came"><b>${esc(c.src)}</b><span>${esc(c.ad || day(l.first_seen))}${c.ad ? ' · ' + esc(day(l.first_seen)) : ''}</span></span>
       <span>${statusBadge(l)}</span>
     </button>`;
   if (!isOpen) return h + '</article>';
   h += '<div class="lead-body"><section class="contact"><h3>Follow up</h3><dl>';
-  if (feed.viewer.contact) {
+  if (feed.viewer.contact && !l.is_test) {
     h += `<dt>Name</dt><dd>${esc(l.name || '—')}</dd><dt>Organization</dt><dd>${esc(l.organization || '—')}</dd>`;
     h += `<dt>Email</dt><dd>${l.email ? `<a href="mailto:${esc(encodeURI(l.email))}">${esc(l.email)}</a>` : '—'}</dd>`;
     h += `<dt>Phone</dt><dd>${l.phone ? `<a href="tel:${esc(l.phone.replace(/[^+0-9]/g, ''))}">${esc(l.phone)}</a>` : '—'}</dd><dt>State</dt><dd>${esc(l.state || '—')}</dd>`;
@@ -86,11 +92,13 @@ function leadCard(l) {
   h += `<dt>Role</dt><dd>${esc(words(l.role) || '—')}</dd><dt>Practice type</dt><dd>${esc(l.org_type || '—')}</dd>`;
   h += `<dt>Came in</dt><dd>${esc(stamp(l.first_seen))} · ${esc(KIND[l.kind] || words(l.kind))}${l.tier ? ' · Tier ' + esc(l.tier) : ''}</dd>`;
   h += `<dt>Came from</dt><dd>${esc(c.src)}${c.ad ? ' · ' + (c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">${esc(c.ad)}</a>` : esc(c.ad)) : ''}</dd></dl>`;
-  if (feed.viewer.contact && (l.email || l.phone)) {
+  h += `<dl><dt>Lead ID</dt><dd>${esc(l.lead_uid)}</dd></dl>`;
+  if (feed.viewer.contact && !l.is_test && (l.email || l.phone)) {
     h += '<div class="quick">' + (l.phone ? `<a class="btn ghost" href="tel:${esc(l.phone.replace(/[^+0-9]/g, ''))}">Call</a>` : '') +
          (l.email ? `<a class="btn ghost" href="mailto:${esc(encodeURI(l.email))}">Email</a>` : '') + '</div>';
   }
   h += '</section><section class="form"><h3>Status</h3>';
+  if (l.is_test) return h + '<p class="muted">Test record only. Excluded from reporting and follow-up.</p></section></div></article>';
   if (!can) return h + `<p class="muted">${statusBadge(l)} Your access can view leads but not change status.</p></section></div></article>`;
   h += `<form data-lead="${esc(l.lead_uid)}"><div class="row2"><div><label for="st">Where is this lead?</label><select id="st" name="status" required>
       <option value="">Choose a status</option>${feed.statuses.map(s => `<option${d.status === s ? ' selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
@@ -105,8 +113,8 @@ function leadCard(l) {
 }
 
 function leadsView() {
-  const c = feed.counts, by = c.by_status || {};
-  const stats = [['', c.leads, 'Leads'], [' hot', c.no_status, 'Need a status'], ['', by['Contacted'] || 0, 'Contacted'], ['', by['Consult booked'] || 0, 'Consults booked'], [' win', c.signed, 'Signed']];
+  const c = feed.counts, by = c.by_status || {}, totals = breakdown(feed.leads);
+  const stats = [['', totals.signups, 'Updates signups'], ['', totals.inquiries, 'Review requests'], [' hot', c.no_status, 'Need a status'], ['', by['Contacted'] || 0, 'Contacted'], ['', by['Consult booked'] || 0, 'Consults booked'], [' win', c.signed, 'Signed']];
   const chips = [['all', 'All'], ['none', 'Needs status']].concat(feed.statuses.map(s => [s, s]));
   const list = visible();
   return `<div class="stats">${stats.map(s => `<div class="stat${s[0]}"><b>${esc(s[1])}</b><span>${esc(s[2])}</span></div>`).join('')}</div>
@@ -121,16 +129,15 @@ function marketingView() {
   const m = feed.marketing;
   if (!m) return '<div class="empty">Your access does not include the marketing view.</div>';
   const pct = m.ad_budget ? Math.min(100, Math.round(100 * (m.spend_total || 0) / m.ad_budget)) : 0;
-  const cpl = feed.counts.leads && m.spend_total ? money(m.spend_total / feed.counts.leads) : '—';
-  const cps = feed.counts.signed && m.spend_total ? money(m.spend_total / feed.counts.signed) : '—';
+  const totals = breakdown(feed.leads);
   const link = a => safeUrl(a.url) ? `<a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">${esc(a.label)}</a>` : '';
   return `<div class="cards">
     <div class="card"><h3>Ad budget</h3><div class="kv"><span>Spent so far</span><b>${money(m.spend_total)} of ${money(m.ad_budget)}</b></div>
       <div class="meter"><i data-w="${pct}"></i></div><div class="kv"><span>Left to spend</span><b>${money(m.ad_budget_remaining)}</b></div>
       <div class="kv"><span>Spend read on</span><b>${esc(m.spend_as_of || 'No spend yet')}</b></div></div>
-    <div class="card"><h3>What it is producing</h3><div class="kv"><span>Leads</span><b>${esc(feed.counts.leads)}</b></div>
-      <div class="kv"><span>Cost per lead</span><b>${cpl}</b></div><div class="kv"><span>Signed</span><b>${esc(feed.counts.signed)}</b></div>
-      <div class="kv"><span>Cost per signed client</span><b>${cps}</b></div></div>
+    <div class="card"><h3>Campaign activity</h3><div class="kv"><span>Updates signups</span><b>${esc(totals.signups)}</b></div>
+      <div class="kv"><span>Provider review requests</span><b>${esc(totals.inquiries)}</b></div><div class="kv"><span>Firm-reported signed</span><b>${esc(feed.counts.signed)}</b></div>
+      <p class="muted">These are captured activities, not paid conversion totals. The source label alone does not prove paid attribution.</p></div>
     <div class="card"><h3>Invoice</h3><div class="kv"><span>${esc(m.invoices || 'Invoice')}</span><b>${money(m.paid_total)} paid</b></div>
       <div class="kv"><span>Ad budget</span><b>${money(m.ad_budget)}</b></div><div class="kv"><span>Management</span><b>${money(m.fees)}</b></div></div>
     <div class="card"><h3>Ads running for you</h3><div class="links">${m.ads.map(link).join('') || '<span class="muted">No previews filed yet.</span>'}</div></div>
