@@ -27,6 +27,40 @@ function quiz() {
   const state=value=>{const select=walk(get('qBody')).find(e=>e.tagName==='SELECT');select.value=value;select.events.change();};
   return {get,context,pick,state,all:()=>walk(get('qBody'))};
 }
+test('unfinished quiz submissions are blocked before downstream intake and resume at the first missing question',()=>{
+  const q=quiz();
+  function blocked() {
+    const ev={preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;}};
+    q.get('leadForm').events.submit(ev);
+    assert.equal(ev.prevented,true);assert.equal(ev.stopped,true);
+    assert.equal(q.get('contactWrap').hidden,true);
+    assert.equal(q.context.window.BTL_SSDI_QUIZ.answers().web_outcome,null);
+    assert.equal(q.context.window.dataLayer.some(e=>e.event==='ee_quiz_complete'),false);
+    assert.match(q.all().map(e=>e.textContent).join(' '),/Please finish all six questions/);
+  }
+  blocked();assert.equal(q.get('qCount').textContent,'1 of 6');
+  q.state('MA');blocked();assert.equal(q.get('qCount').textContent,'2 of 6');
+  ['48 to 64','Yes','Yes','No','No'].forEach(q.pick);
+  const ev={preventDefault(){throw Error('valid quiz blocked');},stopImmediatePropagation(){throw Error('valid quiz stopped');}};
+  q.get('leadForm').events.submit(ev);
+  assert.equal(q.context.window.BTL_SSDI_QUIZ.answers().web_outcome,'QUALIFIED');
+});
+test('invalid state never completes the quiz and can be corrected without a false outcome event',()=>{
+  const q=quiz();q.state('ZZ');['48 to 64','Yes','Yes','No','No'].forEach(q.pick);
+  assert.equal(q.get('contactWrap').hidden,true);
+  assert.equal(q.get('qCount').textContent,'1 of 6');
+  assert.equal(q.context.window.dataLayer.some(e=>e.event==='ee_quiz_complete'),false);
+  q.state('MA');['48 to 64','Yes','Yes','No','No'].forEach(q.pick);
+  assert.equal(q.context.window.BTL_SSDI_QUIZ.answers().web_outcome,'QUALIFIED');
+  assert.equal(q.context.window.dataLayer.filter(e=>e.event==='ee_quiz_complete').length,1);
+});
+test('a stale rules script without the validator fails closed at quiz submission',()=>{
+  const q=quiz();q.state('MA');['48 to 64','Yes','Yes','No','No'].forEach(q.pick);
+  delete q.context.window.SSDI_RULES.invalidAnswers;
+  const ev={preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;}};
+  q.get('leadForm').events.submit(ev);
+  assert.equal(ev.prevented,true);assert.equal(ev.stopped,true);
+});
 for(const [name,state,answers] of [
   ['state','AK',['48 to 64','Yes','Yes','No','No']],
   ['age','MA',['Under 48','Yes','Yes','No','No']],
@@ -68,7 +102,8 @@ test('alternative requests retain hold and disqualification, have separate conse
   const notice=read('quiz/index.html');
   assert.match(notice,/Optional requests to check other firms are handled by Marketing Apes and its service providers/);
   assert.doesNotMatch(notice,/and share it with Jeffrey Glassman/);
-  assert.match(read('quiz/index.html'),/quiz\.js\?v=20261110-criteria-v2/);
+  assert.match(read('quiz/index.html'),/quiz\.js\?v=20261122-answer-validation/);
+  assert.match(read('quiz/index.html'),/criteria\.js\?v=20261122-answer-validation/);
   assert.match(read('quiz/index.html'),/intake\.js\?v=20261118-ty-lead/);
   assert.doesNotMatch(read('quiz/quiz.js'),/ssa\.gov|location\.href|window\.open/);
 });

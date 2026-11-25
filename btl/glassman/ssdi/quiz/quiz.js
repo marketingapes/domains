@@ -77,6 +77,7 @@
   }
   function finish() {
     var res = R.outcome(A);
+    if (!res) { showIncomplete(); return; }
     push('ee_quiz_complete', { result: res });
     progress();
     body.innerHTML = '';
@@ -103,8 +104,31 @@
     resultText: function () { return R.resultText(R.outcome(A)); }
   };
 
-  /* once the lead is saved there is nothing left to change */
+  function invalidKeys() {
+    // A mixed/stale rules script must not let an unfinished quiz become an unscreened inquiry.
+    return typeof R.invalidAnswers === 'function' ? R.invalidAnswers(A) : steps.map(function (s) { return s.q; });
+  }
+  function showIncomplete() {
+    var invalid = invalidKeys();
+    if (contact) contact.hidden = true;
+    idx = Math.max(0, steps.findIndex(function (s) { return invalid.indexOf(s.q) >= 0; }));
+    render(true);
+    var message = el('p', 'status err', 'Please finish all six questions before submitting your request.');
+    message.setAttribute('role', 'alert');
+    body.appendChild(message);
+  }
+
+  /* Quiz-only guard: runs before the shared intake submit handler. The server must
+     independently validate the same contract; browser validation is not authorization. */
   var form = $('leadForm');
+  if (form) form.addEventListener('submit', function (ev) {
+    if (!invalidKeys().length) return;
+    ev.preventDefault();
+    ev.stopImmediatePropagation();
+    showIncomplete();
+  }, true);
+
+  /* once the lead is saved there is nothing left to change */
   if (form) form.addEventListener('ee:lead-saved', function () { var b = body.querySelector('.backrow'); if (b) b.remove(); });
 
   push('ee_quiz_start');

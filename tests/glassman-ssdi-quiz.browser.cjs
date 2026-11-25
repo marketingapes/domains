@@ -65,6 +65,35 @@ const cases = [
         assert.equal(await page.evaluate(()=>BTL_SSDI_QUIZ.answers().web_outcome),'NOT_A_FIT');
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
       }
+      // The quiz's capture-phase guard must stop the shared intake handler, even if a hidden form is submitted.
+      await page.goto(origin+quizPath);
+      await page.evaluate(() => {
+        for (const [id,value] of Object.entries({first_name:'Offline',last_name:'Test',email:'offline@example.invalid',phone:'2025550100'})) document.getElementById(id).value=value;
+        window.__downstreamSubmitSeen=0;
+        document.getElementById('leadForm').addEventListener('submit',()=>window.__downstreamSubmitSeen++);
+      });
+      for (const step of [1,2]) {
+        await page.evaluate(()=>document.getElementById('leadForm').requestSubmit());
+        assert.equal(await page.evaluate(()=>window.__downstreamSubmitSeen),0);
+        assert.equal(sent.length,0,'unfinished screening cannot reach intake');
+        assert.equal(await page.locator('#contactWrap').isVisible(),false);
+        assert.equal(await page.locator('#qCount').textContent(),step+' of 6');
+        assert.match(await page.locator('#qBody [role="alert"]').textContent(),/Please finish all six questions/);
+        assert.equal(await page.evaluate(()=>window.dataLayer.some(e=>e.event==='ee_lead_submit_attempt'||e.event==='generate_lead')),false);
+        if (step===1) await page.getByLabel('Your state',{exact:true}).selectOption('MA');
+      }
+      // A value outside the rendered state enum must not emit a completed/qualified result.
+      await page.goto(origin+quizPath);
+      await page.evaluate(()=>document.querySelector('#qBody select').add(new Option('Invalid state','ZZ')));
+      await page.getByLabel('Your state',{exact:true}).selectOption('ZZ');
+      for (const answer of standard) await page.locator('#qBody').getByRole('button',{name:new RegExp('^'+answer+'(?:$| )')}).click();
+      assert.equal(await page.locator('#contactWrap').isVisible(),false);
+      assert.equal(await page.locator('#qCount').textContent(),'1 of 6');
+      assert.equal(await page.evaluate(()=>BTL_SSDI_QUIZ.answers().web_outcome),null);
+      assert.equal(await page.evaluate(()=>window.dataLayer.some(e=>e.event==='ee_quiz_complete')),false);
+      assert.equal(sent.length,0);
+      console.log(`PASS incomplete/invalid quiz blocked before intake @${width}`);passed++;
+
       for (const [name,state,answers] of cases) {
         await open(state,answers); await validateOtherOptions();
         assert.equal(sent.length,0,'completion never submits without the optional form');
