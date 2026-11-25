@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- BTL Confirm page (v1). A lead-ad lead gets a text and an email with a link that carries a token only (no personal data).
+     This page shows their details back, captures TrustedForm, and Submit is the opt-in: it records lead.confirmed once
+     (Make 7184951 -> BigQuery) and only then is the lead sent to the firm. Unconfirmed leads are never sent to a firm.
+     Mobile-first, centered, one object. No sticky or fixed elements. -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Confirm your information | Best Tort Lawyers</title>
+<meta name="description" content="Confirm your information to submit your request.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0f2338">
+<meta name="ee-page-id" content="btl-confirm">
+<link rel="icon" type="image/svg+xml" href="/assets/btl-seal.svg">
+<style>
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#eef2f7;color:#12202f;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+header{padding:18px 0 6px;text-align:center}
+header img{width:40px;height:40px;vertical-align:middle}
+header b{font-size:1.02rem;margin-left:8px;vertical-align:middle;color:#0f2338}
+.card{background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(15,35,56,.10);padding:24px 20px 22px;margin:12px 0 22px;text-align:center}
+h1{font-size:1.5rem;line-height:1.25;margin:0 0 8px;color:#0f2338}
+.lede{margin:0 0 16px;color:#3b4a5c}
+.rows{text-align:left;border:1px solid #dfe6ee;border-radius:12px;margin:0 0 16px;overflow:hidden}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid #edf1f6;font-size:1rem}
+.row:first-child{border-top:0}
+.row span{color:#5b6b7e;flex:0 0 auto}
+.row b{text-align:right;word-break:break-word;font-weight:600}
+.btn{display:block;width:100%;min-height:60px;border:0;border-radius:999px;background:#1f6bff;color:#fff;font:inherit;font-size:1.15rem;font-weight:800;cursor:pointer}
+.btn:disabled{opacity:.65;cursor:wait}
+.fine{font-size:.8rem;line-height:1.45;color:#5b6b7e;margin:14px 0 0;text-align:left}
+.fine a{color:#1f4fbf}
+.status{min-height:1.2em;margin:12px 0 0;font-size:.95rem;color:#b3261e}
+.wrong{font-size:.9rem;color:#5b6b7e;margin:14px 0 0}
+.ok{font-size:2.4rem;line-height:1;margin:0 0 8px}
+footer{font-size:.78rem;line-height:1.55;color:#5b6b7e;text-align:center;padding:0 0 34px}
+footer a{color:#3b4a5c}
+footer nav a{margin:0 7px;white-space:nowrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="wrap"><img src="/assets/btl-seal.svg" alt=""><b>Best Tort Lawyers</b></div></header>
+<main class="wrap">
+
+  <section class="card" id="loading" aria-live="polite"><p class="lede" style="margin:0">Loading your information…</p></section>
+
+  <section class="card" id="confirm" hidden>
+    <h1 id="h1">Confirm your information</h1>
+    <p class="lede" id="lede">Here is what you just sent us. If it is right, tap Submit.</p>
+    <form id="cf" novalidate>
+      <input type="hidden" name="xxTrustedFormCertUrl" id="xxTrustedFormCertUrl"><input type="hidden" name="xxTrustedFormPingUrl" id="xxTrustedFormPingUrl">
+      <div class="rows" id="rows"></div>
+      <button class="btn" type="submit" id="go" data-tf-element-role="submit-text">Submit</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <p class="fine" id="disclosure" data-tf-element-role="consent-language">By tapping “Submit,” I confirm this information is mine and correct, and I agree that it will be sent to <span data-tf-element-role="consent-advertiser-name" id="firmA">the firm</span> to get my claim started. I agree that <span data-tf-element-role="consent-advertiser-name">Marketing Apes</span> and <span id="firmB">the firm</span> may call and text me at the number shown about my request, including with automated technology. Consent is not a condition of any purchase or service. Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. See the <a href="/privacy-policy/">Privacy Policy</a> and <a href="/sms-terms/">SMS Terms</a>.</p>
+    </form>
+    <p class="wrong">Something wrong? Don’t submit. Reply to the text or email you received and we’ll fix it.</p>
+  </section>
+
+  <section class="card" id="done" hidden>
+    <p class="ok" aria-hidden="true">✓</p>
+    <h1>You’re confirmed.</h1>
+    <p class="lede" id="doneText">Your information was sent to the firm to get your claim started. They’ll reach out within 24 business hours. Keep your phone nearby.</p>
+    <p class="fine" style="text-align:center">This is not a legal determination, and nothing is guaranteed. The firm decides whether it can take your case.</p>
+  </section>
+
+  <section class="card" id="bad" hidden>
+    <h1>This link isn’t working.</h1>
+    <p class="lede" style="margin:0">It may have expired or been copied incorrectly. Open the newest text or email from Best Tort Lawyers and tap the link again.</p>
+  </section>
+
+</main>
+<footer><div class="wrap">
+  <nav aria-label="Footer"><a href="/network/">Network disclosures</a><a href="/privacy-policy/">Privacy Policy</a><a href="/sms-terms/">SMS Terms</a><a href="/terms-and-conditions/">Terms</a></nav>
+  <p>Part of the <a href="/network/">Marketing Apes Network</a>.</p>
+  <p id="legal"><strong>ATTORNEY ADVERTISING.</strong> Best Tort Lawyers is not a law firm. No review, representation or outcome is guaranteed. © 2026 Marketing Apes LLC</p>
+</div></footer>
+<script>
+(function (w, d) {
+  'use strict';
+  var HOOK = 'https://hook.us2.make.com/h118h8ttbh14bs8trlc1hbn6md2349pr'; /* Make 7184951: token -> details, Submit -> lead.confirmed -> firm */
+  var $ = function (id) { return d.getElementById(id); };
+  var t = (new URLSearchParams(location.search).get('t') || '').toLowerCase();
+  var prod = location.hostname === 'besttortlawyers.com';
+  var lead = null, busy = false;
+  function show(id) { ['loading', 'confirm', 'done', 'bad'].forEach(function (k) { $(k).hidden = k !== id; }); w.scrollTo(0, 0); }
+  function row(label, value) { if (!value) return; var r = d.createElement('div'); r.className = 'row'; var s = d.createElement('span'); s.textContent = label; var b = d.createElement('b'); b.textContent = value; r.appendChild(s); r.appendChild(b); $('rows').appendChild(r); }
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(t)) { show('bad'); return; }
+
+  /* TrustedForm: certify this page view and the Submit tap */
+  var tf = d.createElement('script'); tf.async = true;
+  tf.src = 'https://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=' + Date.now() + Math.random();
+  d.head.appendChild(tf);
+
+  function finished(j, first) {
+    show('done');
+    if (lead && lead.brand === 'none') $('doneText').textContent = 'Your information was sent to a participating law firm to get your claim started. They’ll reach out within 24 business hours. Keep your phone nearby.';
+    /* The conversion: once per lead per browser, real leads only. No personal data. */
+    if (!first || !j || j.test || !/^BTLK-[0-9A-F]{10}$/.test(j.lead_id || '')) return;
+    var fired = []; try { fired = JSON.parse(localStorage.getItem('btl_fired') || '[]'); } catch (e) {}
+    if (fired.indexOf(j.lead_id) >= 0) return;
+    try { fired.push(j.lead_id); localStorage.setItem('btl_fired', JSON.stringify(fired.slice(-50))); } catch (e) {}
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({ event: 'generate_lead', page_id: 'btl-confirm', campaign_id: j.campaign_id, tenant_id: lead && lead.brand === 'glassman' ? 'glassman' : 'btl', lead_id: j.lead_id });
+    if (prod) {
+      w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      var g = d.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M'; d.head.appendChild(g);
+    }
+  }
+
+  fetch(HOOK + '?action=get&t=' + encodeURIComponent(t), { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j || !j.ok) { show('bad'); return; }
+      lead = j;
+      if (j.confirmed) { finished(j, false); return; }
+      var firm = j.firm || 'a participating law firm';
+      $('firmA').textContent = firm; $('firmB').textContent = firm;
+      $('lede').textContent = 'Here is what you just sent us. Once you tap Submit, this information will be sent to ' + firm + ' to get your claim started, and they’ll reach out within 24 business hours.';
+      row('Name', ((j.first_name || '') + ' ' + (j.last_name || '')).trim());
+      row('Mobile', j.phone); row('Email', j.email); row('State', j.state);
+      if (j.brand === 'glassman') $('legal').innerHTML = '<strong>ATTORNEY ADVERTISING.</strong> Jeffrey Glassman Injury Lawyers, Boston, MA. Best Tort Lawyers is not a law firm. Not affiliated with the Social Security Administration. No review, representation, benefit approval or outcome is guaranteed. © 2026 Marketing Apes LLC';
+      show('confirm');
+    })
+    .catch(function () { show('bad'); });
+
+  $('cf').addEventListener('submit', function (ev) {
+    ev.preventDefault(); if (busy || !lead) return;
+    busy = true; $('go').disabled = true; $('status').textContent = '';
+    var cert = $('xxTrustedFormCertUrl').value || '';
+    fetch(HOOK, { method: 'POST', body: new URLSearchParams({ action: 'confirm', t: t, tf: cert }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (!j || !j.ok || !j.confirmed) throw new Error('no'); finished(j, !j.duplicate); })
+      .catch(function () { busy = false; $('go').disabled = false; $('status').textContent = 'Something went wrong. Please tap Submit again.'; });
+  });
+})(window, document);
+</script>
+</body>
+</html>
