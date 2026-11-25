@@ -42,7 +42,7 @@ def gp(sid, dest): return f"{GP}?subId1=cgg-{sid}&u={q(dest)}"
 def bcp(sid, dest): return f"{BCP}?subId1=cgg-{sid}&u={q(dest)}"
 
 def a(href, offer, label, cls="btn aff-btn"):
-    return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored noopener" target="_blank" '
+    return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored nofollow noopener" target="_blank" '
             f'data-offer="{offer}">{label}</a>')
 
 NOTE = (''

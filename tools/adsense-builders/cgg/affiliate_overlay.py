@@ -36,7 +36,7 @@ LINKS = {
 def aff(offer, page, label):
     name, url = LINKS[offer]
     href = html.escape(url.format(p=page), quote=True)
-    return (f'<a class="btn aff-btn" href="{href}" rel="sponsored noopener" target="_blank" '
+    return (f'<a class="btn aff-btn" href="{href}" rel="sponsored nofollow noopener" target="_blank" '
             f'data-offer="{offer}">{html.escape(label)}</a>')
 
 
