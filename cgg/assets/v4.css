@@ -476,6 +476,15 @@ blockquote{margin:30px 0;padding:6px 0 6px 24px;border-left:6px solid var(--flag
 @media (min-width:768px){.cgg-home-ad__slot{min-height:250px}}
 @media print{.cgg-home-ad{display:none!important}}
 
+/* nov25: in-content manual AdSense units (content pages only). Slot ID is CGG_AD_SLOT
+   in cgg/assets/cgg-ads.js. Reserved height limits CLS once real ads load. */
+.cgg-ad{margin:36px 0;padding:14px 0 18px;border-block:1px solid var(--rule);background:var(--chalk)}
+.cgg-ad__label{margin:0 0 10px;font:800 .72rem/1 var(--f);font-stretch:85%;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center}
+.cgg-ad__slot{min-height:280px;background:var(--sand);border-radius:3px}
+@media (min-width:768px){.cgg-ad__slot{min-height:250px}}
+.aff-disclosure.slim{margin:10px 0 0;padding:8px 12px;font-size:.8rem}
+@media print{.cgg-ad{display:none!important}}
+
 /* nov15: contrast, headings, live-now, side games */
 :root{--flag-d:#C8340F}
 .btn,.btn-light,.aff-btn,.prose a.btn,.prose2 a.btn,.prose a.aff-btn{color:var(--ink)!important}
