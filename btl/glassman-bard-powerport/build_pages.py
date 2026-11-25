@@ -25,6 +25,9 @@ HEAD = '''<!doctype html>
 %(extra_head)s
 ''' + GTM + '''
 </head><body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHC7459M" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="bar"><div class="in"><span><b>No Fee Unless We Win.</b> Free consultation, 24/7.</span><a href="tel:+16177777777">(617) 777-7777</a></div></div>
 <div class="nav"><div class="in"><a href="./" aria-label="Jeffrey Glassman Injury Lawyers"><img src="img/logo.svg" alt="Jeffrey Glassman Injury Lawyers"></a><nav class="links"><a href="quiz.html">Case check</a><a href="form.html">Request a callback</a><a class="call" href="sofia.html">Talk to us now</a></nav></div></div>
 '''
