@@ -21,7 +21,10 @@ var fresh=r&&r.campaign_id==='GLASSMAN-SSDI-002'&&r.kind==='lead'&&r.real===true
 w.dataLayer=w.dataLayer||[];
 var fired=[];try{fired=JSON.parse(localStorage.getItem('btl_fired')||'[]')}catch(e){}
 if(fresh&&fired.indexOf(r.receipt)<0){w.dataLayer.push({event:'generate_lead',page_id:'glassman-ssdi-b-thank-you',campaign_id:'GLASSMAN-SSDI-002',tenant_id:'glassman',lead_id:r.receipt});
-try{fired.push(r.receipt);localStorage.setItem('btl_fired',JSON.stringify(fired.slice(-50)))}catch(e){}}
+try{fired.push(r.receipt);localStorage.setItem('btl_fired',JSON.stringify(fired.slice(-50)))}catch(e){}
+/* Meta: the standard Lead event is suppressed on this pixel (restricted event), so a real first-time QUALIFIED lead also sends the custom event QuizLead (event id = receipt). Not sent for not-a-fit, firm-review, tests, reloads or duplicates. */
+if(prod){var n=0,t=setInterval(function(){n++;var f=w.fbq,ok=false;try{ok=typeof f==='function'&&f.getState&&f.getState().pixels.length>0}catch(e){}
+if(ok||n>=60){clearInterval(t);if(typeof f==='function')f('trackSingleCustom','673552078259404','QuizLead',{},{eventID:r.receipt});}},250);}}
 if(prod){w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PHC7459M';d.head.appendChild(j);}
 })(window,document);</script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
