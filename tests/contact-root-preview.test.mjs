@@ -8,6 +8,7 @@ const BRANDS = ['ddm','fplb','px','cgg','toss','ri'];
 test('sliq restores the Final Expense homepage and keeps archived lead routes disconnected', () => {
   const read = file => fs.readFileSync(path.join(ROOT, 'sliq', file), 'utf8');
   const home = read('index.html');
+  assert.match(read('fe-quote.html'), /http-equiv="refresh" content="0; url=\/"/);
   assert.match(home, /Don't leave your family with the bill\./);
   assert.doesNotMatch(home, /http-equiv=["']refresh|location\.replace/);
   assert.doesNotMatch(read('_redirects'), /^\/\s+\/preview\//m);
