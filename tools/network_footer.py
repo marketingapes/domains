@@ -17,16 +17,34 @@ SNIPPET = (
     '<div data-ma-network style="text-align:center;font-size:12px;line-height:1.5;'
     'padding:16px 12px;opacity:.75">'
     'This site is part of the '
-    '<a href="https://marketingapes.com/network/" style="color:inherit;text-decoration:underline">'
+    '<a href="https://marketingapes.com/network/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">'
     'Marketing Apes Network</a>.'
     "</div>"
 )
 
 
+# Pages the release checks protect: builder-generated, byte-locked, private,
+# demo or portal pages. They get the network line through their own builder or not at all.
+EXCLUDE = (
+    "ddm/",                      # built by tools/adsense-builders/ddm (output must match the builder)
+    "px/guides/pillow-cover-fit/",  # byte-locked worksheet
+    "ma/campaign-sprint/",       # fictional demo: local links only
+    "btl/glassman/",             # client planning snapshot: no external requests
+    "lfma/portal/",              # private portals
+    "lfma/results/la-county/",   # public aggregate report: no external dependencies
+    "lfma/system/",              # claim-boundary copy
+)
+
+
+def excluded(page: pathlib.Path) -> bool:
+    rel = page.as_posix().lstrip("./")
+    return any(rel.startswith(e) or ("/" + e) in "/" + rel for e in EXCLUDE)
+
+
 def process(folder: pathlib.Path, check: bool) -> tuple[int, int, int]:
     added = skipped = fragments = 0
     for page in sorted(folder.rglob("*.html")):
-        if ".git" in page.parts or "node_modules" in page.parts:
+        if ".git" in page.parts or "node_modules" in page.parts or excluded(page):
             continue
         raw = page.read_bytes()
         low = raw.lower()
