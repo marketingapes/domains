@@ -5,19 +5,23 @@ import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const BRANDS = ['ddm','fplb','px','cgg','toss','ri'];
-// sliq still serves its preview root until the owner launches it.
-const PREVIEW_ROOT = ['sliq'];
-
-for (const slug of PREVIEW_ROOT) {
-  test(`${slug} root still sends visitors to preview`, () => {
-    const html = fs.readFileSync(path.join(ROOT, slug, 'index.html'), 'utf8');
-    assert.match(html, /\/preview\//);
-    const redir = fs.readFileSync(path.join(ROOT, slug, '_redirects'), 'utf8');
-    assert.match(redir, /\/preview\/ 301/);
-    const ads = fs.readFileSync(path.join(ROOT, slug, 'ads.txt'), 'utf8');
-    assert.match(ads, /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
-  });
-}
+test('sliq restores the Final Expense homepage and keeps archived lead routes disconnected', () => {
+  const read = file => fs.readFileSync(path.join(ROOT, 'sliq', file), 'utf8');
+  const home = read('index.html');
+  assert.match(home, /Don't leave your family with the bill\./);
+  assert.doesNotMatch(home, /http-equiv=["']refresh|location\.replace/);
+  assert.doesNotMatch(read('_redirects'), /^\/\s+\/preview\//m);
+  assert.match(read('ads.txt'), /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
+  for (const file of ['index.html', 'fe-call.html', 'fe-options.html']) {
+    const html = read(file);
+    assert.match(html, /Online requests are temporarily unavailable/);
+    assert.match(html, /href="\/contact\.html"/);
+    assert.doesNotMatch(html, /<form\b|hooks\.zapier\.com|cdn\.callrail\.com/i);
+  }
+  for (const file of ['privacy.html', 'terms.html', 'ccpa.html']) {
+    assert.doesNotMatch(read(file), /<form\b|hooks\.zapier\.com/i);
+  }
+});
 
 for (const slug of BRANDS) {
   // Root is now the real content site (docs/ADSENSE-SITE-SPEC.md); /preview/ is retired.
