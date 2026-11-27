@@ -13,7 +13,15 @@ test('sliq restores the Final Expense homepage and keeps archived lead routes di
   assert.doesNotMatch(home, /http-equiv=["']refresh|location\.replace/);
   assert.doesNotMatch(read('_redirects'), /^\/\s+\/preview\//m);
   assert.match(read('ads.txt'), /google\.com, pub-5194583669093303, DIRECT, f08c47fec0942fa0/);
-  for (const file of ['index.html', 'fe-call.html', 'fe-options.html']) {
+  // Homepage runs the live consultation form (Kyle, 2026-11-27): Make hook only, consent under the
+  // button covering texts + AI calls, success only on a stored receipt with the same request ID.
+  assert.match(home, /<form id="sliqForm"/);
+  assert.match(home, /https:\/\/hook\.us2\.make\.com\/47tjn1p7o752a7s98nvq15sjv2x2l9fc/);
+  assert.match(home, /including calls from an AI assistant and automated technology/);
+  assert.match(home, /Reply STOP to opt out/);
+  assert.match(home, /j\.stored===true&&j\.requestId===rid/);
+  assert.doesNotMatch(home, /hooks\.zapier\.com|cdn\.callrail\.com/i);
+  for (const file of ['fe-call.html', 'fe-options.html']) {
     const html = read(file);
     assert.match(html, /Online requests are temporarily unavailable/);
     assert.match(html, /href="\/contact\.html"/);
