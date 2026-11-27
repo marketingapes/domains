@@ -1,6 +1,6 @@
 const ACTION = 'sliq_consult';
 const hostnames = new Set(['smartlifeinsurancequote.com','www.smartlifeinsurancequote.com']);
-const sources = new Set(['facebook','instagram','tiktok','youtube','direct','other']);
+const sources = new Set(['facebook','instagram','tiktok','google','openai','youtube','direct','other']);
 const required = ['TURNSTILE_SITE_KEY','TURNSTILE_SECRET_KEY','MAKE_INTAKE_URL','MAKE_INTAKE_KEY'];
 const json = (obj, status = 200) => new Response(JSON.stringify(obj), {status, headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 export default {async fetch(request, env, _ctx, http = fetch) {
