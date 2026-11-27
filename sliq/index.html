@@ -125,7 +125,14 @@
     .phone strong{font-size:clamp(19px,5vw,26px)!important;white-space:nowrap}
     .red-btn{font-size:clamp(15px,4.2vw,19px)!important;white-space:nowrap;padding-left:22px!important;padding-right:22px!important;max-width:100%}
     @media(max-width:360px){.call-btn{gap:10px!important;padding-left:14px!important;padding-right:14px!important}.red-btn{padding-left:16px!important;padding-right:16px!important}}
-  </style>
+  .qf{display:block;margin:0 0 12px;font-size:13px;font-weight:700;color:#334}.qf span{display:block;margin-bottom:5px}
+.qf input,.qf select{width:100%;box-sizing:border-box;border:1.5px solid #cfd6e2;border-radius:7px;padding:13px 12px;font-size:16px;background:#fff;color:#111}
+.qf input:focus,.qf select:focus{outline:none;border-color:#1f6feb;box-shadow:0 0 0 3px rgba(31,111,235,.15)}
+.qf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.qf-btn{width:100%;border:0;cursor:pointer;margin-top:6px;text-align:center}
+.qf-btn:disabled{opacity:.6;cursor:wait}.qf-consent{font-size:11px;line-height:1.45;color:#5b6475;margin:12px 0 0}.qf-consent a{color:#1f6feb;text-decoration:underline}
+.qf-status{font-size:15px;font-weight:700;text-align:center;margin:12px 0 0;min-height:1em}.qf-ok{color:#0f8a5f}.qf-err{color:#c81e2b}
+@media(max-width:420px){.qf-row{grid-template-columns:1fr;gap:0}}
+</style>
 
 </head>
 <body>
@@ -159,7 +166,24 @@
           </div>
         </div>
 
-        <section class="quote-card" id="quoteForm" aria-labelledby="quoteForm-status"><h2 id="quoteForm-status">Online requests are temporarily unavailable</h2><p>For questions about final expense coverage, use our contact page.</p><p><a class="red-btn" href="/contact.html">Contact SmartLife</a></p></section>
+        <section class="quote-card" id="quoteForm" aria-labelledby="quoteForm-title">
+          <h2 id="quoteForm-title">Get Your Free Final Expense Consultation</h2>
+          <form id="sliqForm" novalidate>
+            <div class="qf-row">
+              <label class="qf"><span>First name</span><input name="first_name" autocomplete="given-name" required maxlength="40"></label>
+              <label class="qf"><span>Last name</span><input name="last_name" autocomplete="family-name" maxlength="40"></label>
+            </div>
+            <label class="qf"><span>Mobile phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required placeholder="(555) 555-5555"></label>
+            <div class="qf-row">
+              <label class="qf"><span>State</span><select name="state" required><option value="">Select</option></select></label>
+              <label class="qf"><span>Age</span><select name="age_range" required><option value="">Select</option><option value="under_50">Under 50</option><option value="50_64">50–64</option><option value="65_85">65–85</option><option value="85_plus">Over 85</option></select></label>
+            </div>
+            <label class="qf"><span>Looking for</span><select name="product" required><option value="final_expense">Final expense coverage</option><option value="term_life">Term life</option><option value="not_sure">Not sure yet</option></select></label>
+            <button class="red-btn qf-btn" type="submit">Get My Free Consultation</button>
+            <p class="qf-consent">By clicking “Get My Free Consultation,” you agree that Smart Life Insurance Quote, operated by Marketing Apes LLC, and a licensed insurance agent may contact you at the number above by text message and by phone call, including calls from an AI assistant and automated technology, about life insurance options. Consent is not required to buy anything. Msg &amp; data rates may apply. Reply STOP to opt out. <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms</a>.</p>
+            <p class="qf-status" id="sliqStatus" role="status" aria-live="polite"></p>
+          </form>
+        </section>
       </div>
     </section>
 
@@ -181,7 +205,7 @@
         <h3>If you've been putting this off,<br>you're not alone.</h3>
         <p>Most people don't like thinking about final expenses — so they don't. Then a spouse, a son, or a daughter ends up calling funeral homes with a checkbook in hand, at the exact moment they should be allowed to just grieve.</p>
         <p><b>Final expense insurance takes that burden off your family before it ever lands on them</b> — a small whole life policy built to cover the funeral, final bills, and any debts left behind.</p>
-        <a class="dark-btn" href="#quoteForm" data-scroll>Contact SmartLife <span>▶</span></a>
+        <a class="dark-btn" href="#quoteForm" data-scroll>Get My Free Consultation <span>▶</span></a>
       </div>
     </section>
 
@@ -195,7 +219,7 @@
           <div class="q-item"><span class="ok">✓</span>You've been turned down before — no-exam options exist for most health situations</div>
           <div class="q-item"><span class="ok">✓</span>You want a fixed monthly rate that never goes up</div>
         </div>
-        <a class="red-btn" href="#quoteForm" data-scroll>Contact SmartLife →</a>
+        <a class="red-btn" href="#quoteForm" data-scroll>Get My Free Consultation →</a>
       </div>
     </section>
 
@@ -238,5 +262,39 @@
 
   </main>
 
+<script>
+(function(){
+  var HOOK='https://hook.us2.make.com/47tjn1p7o752a7s98nvq15sjv2x2l9fc';
+  var f=document.getElementById('sliqForm'); if(!f) return;
+  var st=document.getElementById('sliqStatus'), btn=f.querySelector('button');
+  var states='AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ');
+  var sel=f.elements.state; states.forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+  var q=new URLSearchParams(location.search), rid=null;
+  function newId(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():'sl-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);}
+  function say(t,ok){st.textContent=t;st.className='qf-status '+(ok?'qf-ok':'qf-err');}
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var d=(f.elements.phone.value||'').replace(/\D/g,'').replace(/^1(?=\d{10}$)/,'');
+    if(!f.elements.first_name.value.trim()) return say('Please enter your first name.');
+    if(!/^[2-9]\d{2}[2-9]\d{6}$/.test(d)) return say('Please enter a valid 10-digit mobile number.');
+    if(!sel.value) return say('Please choose your state.');
+    if(!f.elements.age_range.value) return say('Please choose your age range.');
+    rid=rid||newId();
+    var b=new URLSearchParams();
+    ['first_name','last_name','state','age_range','product'].forEach(function(k){b.append(k,f.elements[k].value.trim());});
+    b.append('phone',d); b.append('request_id',rid); b.append('consent','yes'); b.append('consent_version','sliq-sms-ai-v1');
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid','gclid','ttclid'].forEach(function(k){if(q.get(k))b.append(k,q.get(k));});
+    b.append('page_url',location.origin+location.pathname);
+    btn.disabled=true; say('Sending your request…',true);
+    fetch(HOOK,{method:'POST',body:b}).then(function(r){return r.json();}).then(function(j){
+      if(j&&j.stored===true&&j.requestId===rid){f.reset();rid=null;
+        Array.prototype.forEach.call(f.querySelectorAll('input,select,button'),function(x){x.disabled=true;});
+        say('Request received. Check your phone — you’ll get a text, then a quick call from Sofia to connect you with a licensed agent.',true);
+        try{if(window.fbq)fbq('track','Lead');if(window.gtag)gtag('event','generate_lead');}catch(_){}
+      } else { throw 0; }
+    }).catch(function(){btn.disabled=false; say('We couldn’t confirm your request. Please try again.');});
+  });
+})();
+</script>
 </body>
 </html>
