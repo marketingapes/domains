@@ -49,14 +49,19 @@
     "max_future_skew_seconds": 120
   },
   "legal-web-lead/sql": "copy sql/paraquat-overview.sql → sql/btl-paraquat-overview.sql; edit CONFIG lines (source \"make:btl-btl-paraquat-web\", page ids above, request_type map: form=web_inquiry, quiz=quiz_inquiry, sofia=callback_request)",
+  "privacy": {
+    "access": "private",
+    "applied": false,
+    "requires": "Verify authentication, firm-scoped authorization, logout and cross-tenant isolation before release. Flags alone do not prove privacy."
+  },
   "evolutionengine/affiliate-hub/portal.py BASIC_PORTALS": {
     "btl-paraquat": {
       "view": "v_btl_paraquat_portal_leads",
       "campaign_id": "PARAQUAT-PILOT-001",
       "title": "Paraquat · Best Tort Lawyers",
       "transfer_poll_seconds": 900,
-      "self_register": true,
-      "open_demo": true
+      "self_register": false,
+      "open_demo": false
     }
   },
   "evolutionengine/sql/views": "copy sql/views/paraquat_portal.sql → v_btl_paraquat_portal_leads; sources make:btl-btl-paraquat-web, vapi:btl-btl-paraquat-*, callrail:btl-btl-paraquat-transfer"

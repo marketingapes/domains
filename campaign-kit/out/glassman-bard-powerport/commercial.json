@@ -1,0 +1,5 @@
+{
+  "schema": "btl.campaign.media-plan/v1",
+  "status": "NOT_CONFIGURED",
+  "execution_enabled": false
+}
