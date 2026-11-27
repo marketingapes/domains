@@ -40,3 +40,14 @@ test('public config never returns secrets',async()=>{
  const r=await worker.fetch(new Request(endpoint+'/config'),env,null,()=>assert.fail());
  assert.deepEqual(await r.json(),{siteKey:env.TURNSTILE_SITE_KEY});
 });
+test('preserves approved channel source labels without sending contact data to ad platforms',async()=>{
+ for(const source of ['google','facebook','instagram','tiktok','openai','youtube']){
+  let i=0;
+  const r=await worker.fetch(submit({source}),env,null,(_url,init)=>{
+   if(++i===1)return result(ver);
+   assert.equal(JSON.parse(init.body).source,source);
+   return result({stored:true,requestId});
+  });
+  assert.deepEqual(await r.json(),{received:true});assert.equal(i,2);
+ }
+});
