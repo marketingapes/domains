@@ -49,7 +49,7 @@ def vice(sid):
 
 
 def a_aff(href, offer, label, cls="btn aff-btn"):
-    return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored noopener" target="_blank" '
+    return (f'<a class="{cls}" href="{html.escape(href, quote=True)}" rel="sponsored nofollow noopener" target="_blank" '
             f'data-offer="{offer}">{label}</a>')
 
 

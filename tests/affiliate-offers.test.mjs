@@ -64,7 +64,7 @@ test('CGG offers page is the Crazy Golf Gift Guide with issued, sponsored links 
   // every offer link stays sponsored and tagged
   const links = html.match(/<a [^>]*data-offer="[^"]+"[^>]*>/g) || [];
   assert.ok(links.length >= 4);
-  for (const a of links) assert.match(a, /rel="sponsored noopener"/);
+  for (const a of links) assert.match(a, /rel="sponsored nofollow noopener"/);
   // no unfinished cards, and the retired single-offer page is gone
   assert.doesNotMatch(html, /TODO\(Kyle\)|data-todo|aff-todo/);
   assert.doesNotMatch(html, /Flextail|awinmid=60295|cgg-flex/i);
