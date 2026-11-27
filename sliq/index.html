@@ -159,7 +159,19 @@
           </div>
         </div>
 
-        <section class="quote-card" id="quoteForm" aria-labelledby="quoteForm-status"><h2 id="quoteForm-status">Online requests are temporarily unavailable</h2><p>For questions about final expense coverage, use our contact page.</p><p><a class="red-btn" href="/contact.html">Contact SmartLife</a></p></section>
+        <section class="quote-card" id="quoteForm" aria-labelledby="quoteForm-title">
+  <h2 id="quoteForm-title">Request a Free Consultation</h2>
+  <p>Talk with a licensed agent about life insurance options.</p>
+  <form id="consultForm" hidden>
+    <label for="consultName">Name</label><input class="inp" id="consultName" autocomplete="name" maxlength="100" required>
+    <label for="consultPhone">Phone number</label><input class="inp" id="consultPhone" type="tel" autocomplete="tel" maxlength="30" required>
+    <div id="consultCheck"></div>
+    <button class="next" type="submit" aria-describedby="consultDisclosure" disabled>Request a Free Consultation</button>
+    <p class="consent" id="consultDisclosure">By clicking “Request a Free Consultation,” you ask a licensed agent to call you about this request. This does not sign you up for texts or automated calls. <a href="/privacy.html">Privacy Policy</a>.</p>
+  </form>
+  <p id="consultStatus" role="status">Checking whether online requests are available.</p>
+  <p id="consultFallback"><a class="red-btn" href="/contact.html">Contact SmartLife</a></p>
+</section>
       </div>
     </section>
 
@@ -181,7 +193,7 @@
         <h3>If you've been putting this off,<br>you're not alone.</h3>
         <p>Most people don't like thinking about final expenses — so they don't. Then a spouse, a son, or a daughter ends up calling funeral homes with a checkbook in hand, at the exact moment they should be allowed to just grieve.</p>
         <p><b>Final expense insurance takes that burden off your family before it ever lands on them</b> — a small whole life policy built to cover the funeral, final bills, and any debts left behind.</p>
-        <a class="dark-btn" href="#quoteForm" data-scroll>Contact SmartLife <span>▶</span></a>
+        <a class="dark-btn" href="#quoteForm" data-scroll>Request a Free Consultation <span>▶</span></a>
       </div>
     </section>
 
@@ -195,7 +207,7 @@
           <div class="q-item"><span class="ok">✓</span>You've been turned down before — no-exam options exist for most health situations</div>
           <div class="q-item"><span class="ok">✓</span>You want a fixed monthly rate that never goes up</div>
         </div>
-        <a class="red-btn" href="#quoteForm" data-scroll>Contact SmartLife →</a>
+        <a class="red-btn" href="#quoteForm" data-scroll>Request a Free Consultation →</a>
       </div>
     </section>
 
@@ -204,7 +216,7 @@
         <div class="label">How it works</div>
         <h3>Three steps to peace of mind.</h3>
         <div class="how-grid">
-          <div class="how-card"><div class="how-num">1</div><strong>Answer 7 quick questions</strong><p>Age, coverage amount, and ZIP — takes about 2 minutes. No medical exam to see your price.</p></div>
+          <div class="how-card"><div class="how-num">1</div><strong>Request a free consultation</strong><p>Leave your name and number so a licensed agent can call about your request.</p></div>
           <div class="how-card"><div class="how-num">2</div><strong>A licensed agent calls you</strong><p>A real U.S.-based agent reviews plans available in your state and gives you your actual rate.</p></div>
           <div class="how-card"><div class="how-num">3</div><strong>You decide — on your timeline</strong><p>Take the coverage, think it over, or walk away. The quote is free either way.</p></div>
         </div>
@@ -238,5 +250,36 @@
 
   </main>
 
+<script>
+(async()=>{
+  const form=document.querySelector('#consultForm'), status=document.querySelector('#consultStatus'), submit=form.querySelector('button');
+  let token='', widget, pending=false;
+  const id=crypto.randomUUID();
+  const source = (new URLSearchParams(location.search).get('utm_source')||'direct').toLowerCase();
+  const aliases={fb:'facebook',ig:'instagram',meta:'facebook',yt:'youtube'};
+  const unavailable=()=>{status.textContent='Online requests are temporarily unavailable. You can still use our contact page.'; form.hidden=true;};
+  try {
+    const cfg=await fetch('/api/consultation/config',{cache:'no-store'});
+    if(!cfg.ok) return unavailable();
+    const {siteKey}=await cfg.json(); if(!siteKey) return unavailable();
+    await new Promise((ok,no)=>{const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';script.onload=ok;script.onerror=no;document.head.append(script);});
+    form.hidden=false;
+    status.textContent='';
+    widget=turnstile.render('#consultCheck',{sitekey:siteKey,action:'sliq_consult',callback:t=>{token=t;if(!pending)submit.disabled=false;},'expired-callback':()=>{token='';submit.disabled=true;},'error-callback':()=>{token='';submit.disabled=true;status.textContent='Security check unavailable. Please try again or use the contact page.';}});
+  }catch{return unavailable();}
+  form.addEventListener('submit',async e=>{
+    e.preventDefault(); if(!token || pending) return;
+    pending=true; submit.disabled=true; status.textContent='Sending your request…';
+    try {
+      const r=await fetch('/api/consultation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.querySelector('#consultName').value,phone:document.querySelector('#consultPhone').value,token,requestId:id,source:aliases[source]||source})});
+      const receipt=await r.json();
+      if(r.ok && receipt.received===true){form.reset();form.hidden=true;status.textContent='Request received. A licensed agent can follow up about your consultation.';return;}
+      status.textContent=receipt.error||'Could not confirm your request. Please try again.';
+    }catch{status.textContent='Could not confirm your request. Please try again.';}
+    finally{pending=false;token='';if(!form.hidden){submit.disabled=true;turnstile.reset(widget);}}
+  });
+})();
+</script>
 </body>
 </html>
+
